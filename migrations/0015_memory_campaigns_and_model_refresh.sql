@@ -96,12 +96,12 @@ CREATE TABLE research.model_memory_coverage_cells (
     CHECK (period_to IS NULL OR period_from IS NULL OR period_to >= period_from)
 );
 
--- A model refresh compares two sealed campaigns. It does not change the old campaign.
+-- A model refresh compares two SEALED campaigns. It does not change the old campaign.
 CREATE TABLE research.model_memory_refreshes (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     industry_node_id uuid REFERENCES core.taxonomy_nodes(id),
-    baseline_campaign_id uuid NOT NULL REFERENCES research.model_memory_campaigns(id),
-    refresh_campaign_id uuid NOT NULL REFERENCES research.model_memory_campaigns(id),
+    baseline_campaign_id uuid NOT NULL REFERENCES research.model_memory_campaign_seals(campaign_id),
+    refresh_campaign_id uuid NOT NULL REFERENCES research.model_memory_campaign_seals(campaign_id),
     comparison_method text NOT NULL,
     comparator_version text NOT NULL,
     archive_knowledge_cutoff timestamptz,
@@ -127,11 +127,12 @@ CREATE TABLE research.model_memory_refresh_lead_diffs (
 );
 
 -- Delegated historical-verification task packet generated from a Memory Lead.
--- This records what an agent was instructed to prove/search, separate from the eventual evidence.
+-- It can only be emitted after the blind campaign has been sealed, preventing search
+-- feedback from contaminating unfinished recall passes.
 CREATE TABLE ops.memory_verification_tasks (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     lead_id uuid NOT NULL REFERENCES research.model_memory_leads(id),
-    campaign_id uuid REFERENCES research.model_memory_campaigns(id),
+    campaign_id uuid NOT NULL REFERENCES research.model_memory_campaign_seals(campaign_id),
     task_version text NOT NULL,
     claim_scope text NOT NULL,
     lead_summary text NOT NULL,
