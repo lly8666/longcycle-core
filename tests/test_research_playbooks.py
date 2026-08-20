@@ -22,12 +22,15 @@ class ResearchPlaybookTest(unittest.TestCase):
                 "published_at",
                 "first_known_at",
                 "url",
+                "source_origin_role",
                 "reality_rank",
                 "expectation_rank",
                 "material_roles",
             }.issubset(required)
         )
         self.assertIn("knowledge_cutoff", schema["properties"])
+        self.assertIn("claimed_primary_source", schema["properties"])
+        self.assertIn("independence_cluster_hint", schema["properties"])
         self.assertIn("claims", schema["properties"])
         self.assertIn("realityClaim", schema["$defs"])
         self.assertIn("judgmentClaim", schema["$defs"])
@@ -85,6 +88,20 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertIn("动力电池", titles)
         self.assertIn("管理层", titles)
         self.assertIn("券商", titles)
+
+    def test_lithium_memory_audits_are_separate_from_collection_agents(self) -> None:
+        manifest = json.loads(
+            (RESEARCH_DOCS / "lithium-battery-memory-audits.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(manifest["schema_version"], "longcycle-memory-audits/v1")
+        self.assertEqual(manifest["industry"], "新能源锂电池")
+        self.assertEqual(manifest["output_schema"], "docs/research/model-memory-lead.schema.json")
+        audits = manifest["audits"]
+        audit_ids = [item["audit_id"] for item in audits]
+        self.assertEqual(len(audit_ids), len(set(audit_ids)))
+        self.assertGreaterEqual(len(audits), 5)
+        self.assertTrue(any("pricing_and_contracts" in item["must_use_lenses"] for item in audits))
+        self.assertTrue(any("negative_space" in item["must_use_lenses"] for item in audits))
 
     def test_memory_audit_and_authority_playbooks_define_hard_boundaries(self) -> None:
         memory = (RESEARCH_DOCS / "model-memory-audit.md").read_text(encoding="utf-8")
