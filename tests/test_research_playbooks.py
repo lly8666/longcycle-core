@@ -129,6 +129,24 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertTrue(manifest["self_verification_stage"]["enabled"])
         self.assertTrue(manifest["self_verification_stage"]["must_start_new_run"])
 
+    def test_current_watchlist_is_source_first_and_has_completion_checks(self) -> None:
+        watchlist = json.loads(
+            (RESEARCH_DOCS / "lithium-battery-current-watchlist.json").read_text(encoding="utf-8")
+        )
+        self.assertEqual(watchlist["schema_version"], "longcycle-current-watchlist/v1")
+        self.assertEqual(watchlist["principle"], "source-first, archive-now")
+        self.assertGreaterEqual(len(watchlist["sources"]), 10)
+        p0 = [item for item in watchlist["sources"] if item["priority"] == "P0"]
+        self.assertGreaterEqual(len(p0), 5)
+        for item in watchlist["sources"]:
+            self.assertTrue(item["expected_materials"])
+            self.assertTrue(item["claim_scopes"])
+            self.assertTrue(item["archive_policy"])
+            self.assertGreater(item["stale_after_days"], 0)
+        checklist = "\n".join(watchlist["per_run_completion_checklist"])
+        self.assertIn("P0", checklist)
+        self.assertIn("primary", checklist)
+
     def test_agent_sop_prevents_shallow_historical_search(self) -> None:
         sop = (RESEARCH_DOCS / "research-agent-sop.md").read_text(encoding="utf-8")
         self.assertIn("minimum search depth", sop)
