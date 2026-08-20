@@ -1,22 +1,30 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://longcycle.local/schemas/model-memory-lead.schema.json",
-  "title": "Longcycle Model Memory Lead",
+  "$id": "https://longcycle.local/schemas/model-memory-lead/v2",
+  "title": "Longcycle Model Memory Lead v2",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "lead_kind",
     "claim_scope",
+    "memory_basis",
     "summary",
     "approximate_period",
     "memory_confidence",
     "importance_score",
     "novelty_score",
     "searchability_score",
+    "precision_risk",
+    "entity_resolution_state",
+    "uncertain_fields",
+    "aliases_or_old_terms",
+    "why_search_may_miss_it",
     "recalled_details",
     "possible_actors",
     "suggested_queries",
+    "disconfirmation_queries",
     "suggested_source_types",
+    "disconfirmation_source_types",
     "relations"
   ],
   "properties": {
@@ -39,7 +47,8 @@
         "cross_industry_dependency",
         "narrative",
         "causal_hypothesis",
-        "anomaly"
+        "anomaly",
+        "failure_dead_end"
       ]
     },
     "claim_scope": {
@@ -57,10 +66,20 @@
         "other"
       ]
     },
+    "memory_basis": {
+      "enum": [
+        "remembered_event",
+        "remembered_actor_or_name",
+        "remembered_mechanism",
+        "associative_inference",
+        "mixed"
+      ],
+      "description": "What kind of latent-memory signal produced the lead. This is separate from truth confidence."
+    },
     "summary": {
       "type": "string",
       "minLength": 1,
-      "description": "An explicitly unsourced recollection or anomaly lead, never a verified fact."
+      "description": "One atomic unsourced recollection/search proposition, never a verified fact."
     },
     "approximate_period": {
       "type": "array",
@@ -80,6 +99,27 @@
     "importance_score": {"type": "number", "minimum": 0, "maximum": 1},
     "novelty_score": {"type": "number", "minimum": 0, "maximum": 1},
     "searchability_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "precision_risk": {
+      "enum": ["low", "medium", "high", "unknown"],
+      "description": "Risk that specific names, dates, numbers, ownership or stage details are wrong even if the broad memory is useful."
+    },
+    "entity_resolution_state": {
+      "enum": ["stable", "partially_resolved", "ambiguous", "unresolved"]
+    },
+    "uncertain_fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "aliases_or_old_terms": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "why_search_may_miss_it": {
+      "type": ["string", "null"],
+      "description": "Historical-search archaeology hint: old name, ownership change, dead site, failed project, local-language term, repost chain, etc."
+    },
     "recalled_details": {"type": "object"},
     "possible_actors": {
       "type": "array",
@@ -91,10 +131,24 @@
       "items": {"type": "string", "minLength": 1},
       "uniqueItems": true
     },
+    "disconfirmation_queries": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
     "suggested_source_types": {
       "type": "array",
       "items": {"type": "string", "minLength": 1},
       "uniqueItems": true
+    },
+    "disconfirmation_source_types": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "satellite_trigger": {
+      "type": ["string", "null"],
+      "description": "If the lead repeatedly points outside the current shard, name a candidate satellite shard instead of expanding the tangent here."
     },
     "relations": {
       "type": "array",
