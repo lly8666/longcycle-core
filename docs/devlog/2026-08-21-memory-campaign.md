@@ -131,3 +131,97 @@ Tier B 若满足任一条件则升格独立 shard：
 - 只给结论，没有可证伪条件。
 
 发现问题后修改 prompt v2，再跑同类 pass 对比。
+
+## 01:25 - 实验 1：UP-HARDROCK / recall-v1
+
+首批 blind output 已落库前文件，共 30 条 Memory Lead，未使用网页或相邻 shard 结果。
+
+明显有效的召回类型包括：
+
+- Wodgina / Altura-Ngungaju / Bald Hill 等上一轮低谷退出与后续重启；
+- Mt Cattlin 等因为公司主体更名导致的历史搜索断裂；
+- Zimbabwe 本地加工政策、Arcadia/Bikita/Zulu/Sabi Star 等非洲资产；
+- Goulamina/Manono 等政府、矿权、权益争议使巨大资源长期不能转化为供给；
+- Snowway/德扯弄巴等国内资源争夺线索；
+- 精矿公式定价滞后、concentrator train、品位/回收率等公开研报摘要不一定主动覆盖的机制。
+
+结论：Memory-first 作为历史目录生成器有明显信息增益。
+
+## 01:30 - Prompt v1 问题
+
+真实输出暴露：
+
+- 事件和因果机制仍会被塞进一条 lead；
+- `recalled/inferred/mixed` 太粗；
+- 所有权、日期、项目阶段等不确定项仍埋在自由文本；
+- 只有支持性搜索，没有明确反证路径；
+- 对“为什么普通搜索容易漏掉”缺少结构化字段；
+- 宜春锂云母自然闯入硬岩 shard，说明 scope drift 有时是有价值的 satellite-shard 信号。
+
+因此 prompt 升级到 v2，并新增 structured uncertainty / falsification / search archaeology。
+
+## 01:40 - 实验 2：UP-CHEMICALS / recall-v2
+
+第二个 blind shard 独立运行，不读取 UP-HARDROCK 输出，共 28 条。
+
+v2 的改善：
+
+- `uncertain_fields` 能明确指出 ownership/date/counterparty 等精确度风险；
+- 每条都有 `disconfirmation_queries`，低级 agent 不再只能找支持材料；
+- `why_search_may_miss_it` 对公司更名、合同不公开、地方环保文件、方法口径等很有用；
+- `satellite_trigger` 自然产生多个后续节点：`SAT-LEPIDOLITE`、`UP-CONCENTRATE`、`LOOP-RECYCLING`、`BRIDGE-INVENTORY`、`BAT-CELL-PRICING` 等。
+
+这验证了动态节点升级比一开始人为列出全部细分领域更合理。
+
+## 01:45 - 首次真实 Schema failure
+
+CH-008 把 `technical_specification` 输出到了 `lead_kind`；这个值实际属于 `claim_scope`。
+
+重要结论：
+
+> Prompt 再明确，也不能把模型 JSON 当可信结构化输入。
+
+新正式路径：
+
+```text
+raw model JSONL
+→ typed candidate validation
+→ validation failure retained
+→ structural-only repair prompt
+→ validate again
+→ accepted candidate set
+→ persistence
+```
+
+禁止静默语义纠错。原始错误输出永久保留，以评估模型/提示词质量。
+
+## 01:50 - 开发修正
+
+已新增：
+
+- migration `0016_memory_lead_recall_quality.sql`；
+- `MemoryBasis` / `PrecisionRisk` / `EntityResolutionState`；
+- `failure_dead_end` lead kind；
+- `uncertain_fields`、旧称、搜索遗漏原因、反证查询、satellite trigger；
+- campaign run 的 `shard_id`；
+- typed `MemoryLeadCandidate` validator；
+- structural repair prompt；
+- 对应单元测试；
+- recall prompt v3，显式枚举并要求 JSONL 逐条自检。
+
+## 当前判断
+
+从两次 blind run 看，最优采集结构不是固定‘上中下游树’，而是：
+
+```text
+Tier-A 主节点 blind shards
++ blind bridge themes
++ 动态 satellite triggers
++ validation/repair
++ seal
++ compressed-index stitching
++ 高级模型 self-verification
++ 低级 agent 逐 lead 取证
+```
+
+下一实验重点不再是单纯多产出 lead，而是验证 v3 的结构合规率，并决定哪些 satellite trigger 需要立即升格独立 shard。
