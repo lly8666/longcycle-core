@@ -67,6 +67,19 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertIn("管理层", titles)
         self.assertIn("券商", titles)
 
+    def test_memory_audit_and_authority_playbooks_define_hard_boundaries(self) -> None:
+        memory = (RESEARCH_DOCS / "model-memory-audit.md").read_text(encoding="utf-8")
+        authority = (RESEARCH_DOCS / "source-authority-policy.md").read_text(encoding="utf-8")
+
+        self.assertIn("Blind Recall", memory)
+        self.assertIn("Negative Space", memory)
+        self.assertIn("Model memory may challenge the archive", memory)
+        self.assertIn("secondary_only_contradiction", memory)
+        self.assertIn("claim-scoped authority", authority)
+        self.assertIn("Search Result 不是 Evidence", authority)
+        self.assertIn("authoritative_conflict", authority)
+        self.assertIn("不能简单多数投票", authority)
+
 
 if __name__ == "__main__":
     unittest.main()
