@@ -17,6 +17,7 @@
     "date_uncertain",
     "url",
     "is_repost",
+    "source_origin_role",
     "reality_rank",
     "expectation_rank",
     "material_roles",
@@ -57,7 +58,24 @@
     "url": {"type": "string", "minLength": 1},
     "alternate_urls": {"type": "array", "items": {"type": "string"}, "default": []},
     "is_repost": {"type": "boolean"},
+    "source_origin_role": {
+      "enum": [
+        "primary_original",
+        "direct_record",
+        "secondary_analysis",
+        "repost",
+        "discovery_only",
+        "uncertain"
+      ],
+      "description": "Agent hint about document originality only; not the final claim-scoped authority class."
+    },
     "claimed_original_publisher": {"type": ["string", "null"]},
+    "claimed_primary_source": {"type": ["string", "null"]},
+    "independence_cluster_hint": {"type": ["string", "null"]},
+    "authority_notes": {
+      "type": ["string", "null"],
+      "description": "Only describe why the document appears original/secondary; agents must not assign final authority_class."
+    },
     "reality_rank": {"enum": ["R1", "R2", "R3", "R4"]},
     "expectation_rank": {"enum": ["E1", "E2", "E3", "E4"]},
     "material_roles": {
