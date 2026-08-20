@@ -16,17 +16,11 @@ CREATE TABLE research.model_memory_campaigns (
     manifest_version text NOT NULL,
     manifest_digest char(64) NOT NULL,
     source_visibility text NOT NULL DEFAULT 'none',
-    blind_stage_sealed boolean NOT NULL DEFAULT false,
-    blind_stage_sealed_at timestamptz,
-    stop_reason text,
-    coverage_summary jsonb NOT NULL DEFAULT '{}'::jsonb,
     created_at timestamptz NOT NULL DEFAULT now(),
     CHECK (campaign_kind IN ('historical_recall', 'model_refresh', 'benchmark', 'multi_model_compare')),
     CHECK (period_to IS NULL OR period_from IS NULL OR period_to >= period_from),
     CHECK (manifest_digest ~ '^[0-9a-f]{64}$'),
-    CHECK (source_visibility IN ('none', 'archive_only', 'archive_summary', 'search_results')),
-    CHECK ((blind_stage_sealed = false AND blind_stage_sealed_at IS NULL)
-        OR (blind_stage_sealed = true AND blind_stage_sealed_at IS NOT NULL))
+    CHECK (source_visibility IN ('none', 'archive_only', 'archive_summary', 'search_results'))
 );
 
 CREATE TABLE research.model_memory_campaign_runs (
@@ -50,8 +44,25 @@ CREATE TABLE research.model_memory_campaign_runs (
     CHECK (high_importance_novel_count IS NULL OR high_importance_novel_count >= 0)
 );
 
+-- The campaign row can exist before its runs. Sealing is a separate immutable event.
+CREATE TABLE research.model_memory_campaign_seals (
+    campaign_id uuid PRIMARY KEY REFERENCES research.model_memory_campaigns(id),
+    sealed_at timestamptz NOT NULL DEFAULT now(),
+    stop_reason text NOT NULL,
+    coverage_summary jsonb NOT NULL DEFAULT '{}'::jsonb,
+    lead_count integer NOT NULL,
+    high_importance_lead_count integer NOT NULL,
+    output_digest char(64) NOT NULL,
+    CHECK (lead_count >= 0),
+    CHECK (high_importance_lead_count >= 0),
+    CHECK (output_digest ~ '^[0-9a-f]{64}$')
+);
+
+-- Final or explicitly versioned coverage snapshots. Do not update a prior snapshot.
 CREATE TABLE research.model_memory_coverage_cells (
+    id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     campaign_id uuid NOT NULL REFERENCES research.model_memory_campaigns(id),
+    snapshot_label text NOT NULL,
     dimension_type text NOT NULL,
     dimension_key text NOT NULL,
     period_from date,
@@ -60,7 +71,10 @@ CREATE TABLE research.model_memory_coverage_cells (
     lead_count integer NOT NULL DEFAULT 0,
     high_importance_lead_count integer NOT NULL DEFAULT 0,
     notes text,
-    PRIMARY KEY (campaign_id, dimension_type, dimension_key, period_from, period_to),
+    created_at timestamptz NOT NULL DEFAULT now(),
+    UNIQUE NULLS NOT DISTINCT (
+        campaign_id, snapshot_label, dimension_type, dimension_key, period_from, period_to
+    ),
     CHECK (dimension_type IN (
         'time', 'chain_node', 'actor', 'metric', 'mechanism', 'narrative',
         'terminology', 'failure', 'cross_industry', 'negative_space', 'other'
@@ -130,14 +144,17 @@ CREATE TABLE ops.memory_verification_tasks (
     CHECK (completed_at IS NULL OR status IN ('primary_verified', 'primary_contradicted', 'unresolved', 'cancelled'))
 );
 
--- Append-only research lineage. Operational task status is mutable by design, but the
--- campaign, run membership, coverage snapshots and refresh diffs are historical records.
+-- Append-only research lineage. Operational verification-task status is mutable by design.
 CREATE TRIGGER model_memory_campaigns_immutable
     BEFORE UPDATE OR DELETE ON research.model_memory_campaigns
     FOR EACH ROW EXECUTE FUNCTION ops.reject_mutation_of_immutable_row();
 
 CREATE TRIGGER model_memory_campaign_runs_immutable
     BEFORE UPDATE OR DELETE ON research.model_memory_campaign_runs
+    FOR EACH ROW EXECUTE FUNCTION ops.reject_mutation_of_immutable_row();
+
+CREATE TRIGGER model_memory_campaign_seals_immutable
+    BEFORE UPDATE OR DELETE ON research.model_memory_campaign_seals
     FOR EACH ROW EXECUTE FUNCTION ops.reject_mutation_of_immutable_row();
 
 CREATE TRIGGER model_memory_coverage_cells_immutable
@@ -157,6 +174,9 @@ CREATE INDEX model_memory_campaign_industry_idx
 
 CREATE INDEX model_memory_campaign_run_pass_idx
     ON research.model_memory_campaign_runs (campaign_id, pass_family, pass_id, round_no);
+
+CREATE INDEX model_memory_coverage_campaign_idx
+    ON research.model_memory_coverage_cells (campaign_id, snapshot_label, dimension_type);
 
 CREATE INDEX model_memory_refresh_industry_idx
     ON research.model_memory_refreshes (industry_node_id, created_at DESC);
