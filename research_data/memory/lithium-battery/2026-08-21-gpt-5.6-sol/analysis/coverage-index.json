@@ -1,68 +1,87 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "self_gap_rounds_running_unsealed",
-  "total_raw_leads_so_far": 492,
+  "blind_stage_status": "all_primary_shards_have_self_gap_batch1_unsealed",
+  "total_raw_leads_so_far": 534,
   "search_visibility": "none",
   "shards": [
-    {"shard_id":"UP-HARDROCK","lead_count":46,"status":"corrective_complete_needs_self_gap"},
-    {"shard_id":"UP-BRINE","lead_count":34,"status":"corrective_complete_needs_self_gap"},
-    {"shard_id":"UP-CONCENTRATE","lead_count":28,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"UP-CHEMICALS","lead_count":44,"status":"corrective_complete_needs_self_gap"},
-    {"shard_id":"MID-LFP","lead_count":44,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"MID-TERNARY","lead_count":30,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"MID-ANODE","lead_count":26,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"MID-SEPARATOR","lead_count":26,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"MID-ELECTROLYTE","lead_count":28,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"BAT-CELL","lead_count":48,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"DOWN-NEV","lead_count":42,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"DOWN-ESS","lead_count":42,"status":"self_gap_batch1_complete_high_novelty_with_repair_overlay"},
-    {"shard_id":"DOWN-OTHER","lead_count":26,"status":"self_gap_batch1_complete_high_novelty"},
-    {"shard_id":"LOOP-RECYCLING","lead_count":28,"status":"self_gap_batch1_complete_high_novelty"}
+    {"shard_id":"UP-HARDROCK","lead_count":54,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"UP-BRINE","lead_count":42,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"UP-CONCENTRATE","lead_count":28,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"UP-CHEMICALS","lead_count":52,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"MID-LFP","lead_count":50,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"MID-TERNARY","lead_count":30,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"MID-ANODE","lead_count":26,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"MID-SEPARATOR","lead_count":26,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"MID-ELECTROLYTE","lead_count":28,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"BAT-CELL","lead_count":48,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"DOWN-NEV","lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"DOWN-ESS","lead_count":48,"self_gap_batches":2,"status":"high_novelty_with_repair_overlay"},
+    {"shard_id":"DOWN-OTHER","lead_count":26,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"LOOP-RECYCLING","lead_count":28,"self_gap_batches":1,"status":"high_novelty"}
   ],
-  "experiment_observation": {
-    "result": "dimension-specific self-gap passes continue producing new categories across mature and emerging value-chain nodes",
-    "implication": "one-shot or one-corrective-pass recall materially under-extracts latent model knowledge",
-    "stop_rule": "seal only after three consecutive low-novelty batches for a shard plus completed gap matrix"
+  "saturation_experiment": {
+    "result": "no primary shard has shown a low-novelty batch yet",
+    "strongest_tested_shards": [
+      {"shard_id":"MID-LFP","batch2_new_useful":"6/6"},
+      {"shard_id":"DOWN-NEV","batch2_new_useful":"6/6"},
+      {"shard_id":"DOWN-ESS","batch2_new_useful":"6/6"}
+    ],
+    "interpretation": "the latent-memory atlas remains materially under-extracted; do not seal any shard"
   },
-  "cross_chain_schema_findings": [
-    "capacity must separate nameplate, technically available, product-qualified, customer-qualified, economically operable, operating and actual output",
-    "capacity compatibility across chemistry/application/product formats is graded and needs conversion time/cost/requalification, not a boolean",
-    "price series require product/spec, delivery boundary, contract/spot status and pricing-lag dimensions",
-    "inventory must preserve physical chain location and WIP stage",
-    "demand must distinguish sales flow from installed-base replacement demand and preserve unit-intensity vintages",
-    "entity hierarchy and aliases must preserve owner/company/project/facility/phase/line/product relationships",
-    "technology adoption must preserve announcement, pilot, sample, qualification, SOP, mass production and realized share"
+  "primary_schema_conclusions": [
+    "capacity is a state chain, not one number",
+    "project maturity and production milestones must be explicit",
+    "price facts require spec/market/contract/delivery/lag semantics",
+    "inventory requires location/WIP/ownership semantics",
+    "demand requires unit intensity and stock-flow replacement semantics",
+    "technology requires promise/pilot/qualification/SOP/mass-production/adoption states",
+    "entity relationships require owner/operator/offtake/customer roles with validity time",
+    "expectations must preserve competing contemporaneous explanations and forecast vintages"
   ],
-  "new_bridge_candidates_from_self_gap": [
+  "high_priority_bridge_set": [
+    "BRIDGE-CAPACITY-SEMANTICS",
+    "BRIDGE-CAPEX-PROJECT-LIFECYCLE",
     "BRIDGE-PRODUCT-SEMANTICS",
     "BRIDGE-CUSTOMER-QUALIFICATION",
     "BRIDGE-ENTITY-ALIASES",
+    "BRIDGE-OFFTAKE-NETWORK",
+    "BRIDGE-PRICING-CONTRACTS",
+    "BRIDGE-MARGIN-TRANSMISSION",
+    "BRIDGE-INVENTORY",
+    "BRIDGE-MATERIAL-INTENSITY",
+    "BRIDGE-METRIC-SEMANTICS",
     "BRIDGE-DEMAND-STOCK-FLOW",
-    "BRIDGE-MANUFACTURING-SCRAP",
-    "BRIDGE-CHARGING-INFRA",
-    "BRIDGE-POWER-MARKET",
-    "BRIDGE-GRID-CONSTRAINTS",
-    "BRIDGE-GEOGRAPHIC-RAMP",
-    "BRIDGE-ENERGY-COST",
-    "BRIDGE-SEASONALITY"
+    "BRIDGE-EXPECTATION-VINTAGES",
+    "BRIDGE-TRADE-POLICY",
+    "BRIDGE-QUALITY-REALIZED-PERFORMANCE"
   ],
-  "new_satellite_candidates_from_self_gap": [
+  "high_priority_satellite_set": [
+    "SAT-LEPIDOLITE",
+    "SAT-DLE",
+    "SAT-NICKEL-INDONESIA",
+    "SAT-GRAPHITIZATION",
+    "SAT-SILICON-ANODE",
+    "SAT-ELECTROLYTE-ADDITIVES",
+    "SAT-LIFSI",
+    "SAT-SODIUM-ION",
+    "SAT-SOLID-STATE",
     "SAT-BATTERY-EQUIPMENT",
     "SAT-LARGE-CYLINDRICAL",
     "SAT-BATTERY-SWAP",
     "SAT-RESIDENTIAL-STORAGE",
     "SAT-LONG-DURATION-STORAGE",
-    "SAT-TELECOM-BACKUP",
-    "SAT-TWO-WHEELER-SWAP"
+    "SAT-SECOND-LIFE"
   ],
-  "repair_history": [
-    {"shard_id":"DOWN-ESS","lead_id":"ESS-C006","raw_field":"capacity_cycle","repair":"capital_cycle","raw_preserved":true}
-  ],
-  "next_experiment": {
-    "shard_id":"MID-LFP",
-    "pass":"self-gap-batch2-v4",
-    "goal":"measure marginal novelty decay after excluding categories already covered in batch1"
+  "next_phase": {
+    "goal": "measure novelty decay systematically before any seal",
+    "actions": [
+      "run batch2 on remaining high-value shards",
+      "generate compact per-shard lead indexes",
+      "classify each new lead as new_category/useful_refinement/duplicate",
+      "begin batch3 only where novelty remains high",
+      "seal only after three consecutive low-novelty batches and complete gap matrix"
+    ]
   },
   "self_verification_policy": "fresh web search remains forbidden until a shard is sealed",
-  "ci_status": "workflow exists; successful run not yet observed at this checkpoint"
+  "ci_status": "GitHub Actions ci run #94 successfully triggered; status observed in_progress during this checkpoint"
 }
