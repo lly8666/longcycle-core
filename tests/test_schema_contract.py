@@ -34,6 +34,7 @@ class SchemaContractTest(unittest.TestCase):
         required_tables = {
             "evidence.content_blobs",
             "evidence.evidence_fragments",
+            "evidence.source_authority_profiles",
             "research.fact_assertions",
             "research.canonical_fact_versions",
             "research.metric_series",
@@ -49,6 +50,12 @@ class SchemaContractTest(unittest.TestCase):
             "research.expectation_snapshots",
             "research.expectation_snapshot_members",
             "research.judgment_outcome_evaluations",
+            "research.model_prior_runs",
+            "research.model_memory_leads",
+            "research.model_memory_lead_relations",
+            "research.memory_lead_evidence_links",
+            "research.memory_disagreement_cases",
+            "research.memory_disagreement_resolutions",
             "ops.collection_jobs",
             "ops.document_processing_completions",
             "ops.pipeline_checkpoints",
@@ -72,6 +79,10 @@ class SchemaContractTest(unittest.TestCase):
         self.assertIn("expressed_probability double precision", schema)
         self.assertIn("judgment_assertions_immutable", schema)
         self.assertIn("judgment_outcome_evaluations_immutable", schema)
+        self.assertIn("source_visibility text NOT NULL", schema)
+        self.assertIn("authority_snapshot jsonb NOT NULL", schema)
+        self.assertIn("model_memory_leads_immutable", schema)
+        self.assertIn("memory_disagreement_resolutions_immutable", schema)
 
 
 if __name__ == "__main__":
