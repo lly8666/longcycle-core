@@ -77,7 +77,7 @@ def build_recall_pass_prompt(
     atlas_block = ""
     if atlas_summary is not None:
         atlas_block = f"""
-You may inspect ONLY this previously sealed/constructed memory-atlas summary.
+You may inspect ONLY this previously constructed memory-atlas summary.
 It is not fresh web material and must not be treated as evidence:
 ---
 {atlas_summary}
@@ -120,6 +120,63 @@ For each high-importance lead also answer:
 4. What was it likely called at the time?
 
 If memory is fragmentary, preserve the fragment and give search keys instead of fabricating precision.
+"""
+
+
+def build_self_verification_prompt(
+    *,
+    industry: str,
+    sealed_atlas_digest: str,
+    lead_packet: str,
+) -> str:
+    """Build a search-enabled second-stage prompt that cannot rewrite blind recall."""
+
+    if not industry.strip():
+        raise ValueError("industry must not be blank")
+    if not sealed_atlas_digest.strip():
+        raise ValueError("sealed_atlas_digest must not be blank")
+    if not lead_packet.strip():
+        raise ValueError("lead_packet must not be blank")
+
+    return f"""You are running Longcycle HIGH-MODEL SELF VERIFICATION.
+Industry: {industry}
+Sealed blind-atlas digest: {sealed_atlas_digest}
+
+The blind memory atlas is already sealed. You may use fresh web search in this stage,
+but you MUST NOT rewrite, delete, or retroactively improve the blind recall.
+
+Leads to investigate:
+---
+{lead_packet}
+---
+
+Objectives:
+1. Turn vague memory into precise actor/project/report names, historical aliases, and query terms.
+2. Find the most likely claim-scoped PRIMARY or authoritative source for each lead.
+3. Detect syndication/repost chains so repeated pages are not mistaken for independent evidence.
+4. Run at least one contradiction-oriented search for high-impact leads.
+5. Produce candidate URLs and a concrete task packet for delegated evidence agents when more work remains.
+
+Hard boundaries:
+- Search snippets are discovery material, not Evidence.
+- A candidate URL is not Evidence until the normal Longcycle fetch/archive/locator pipeline persists it.
+- Search-result count is not truth.
+- not_found is not contradiction.
+- Do not discard a lead merely because current search is weak.
+- Do not promote model memory to Fact or Judgment.
+- If primary sources disagree, preserve an authoritative conflict instead of majority voting.
+
+For each lead return:
+- lead_id
+- refined_summary
+- candidate_urls
+- refined_queries
+- possible_primary_sources
+- likely source-origin relationships/repost clusters
+- what would count as supporting evidence
+- what would count as contradicting evidence
+- unresolved questions
+- delegated-agent instructions if the lead is not yet settled
 """
 
 
