@@ -1,276 +1,189 @@
 # Schema 与时间契约
 
-这份文档是采集器、抽取器、研究模型和未来 API 共同遵守的数据契约。
+这份文档是采集器、抽取器、研究模型、Memory Campaign 和未来 API 共同遵守的数据契约。
 
-Longcycle 数据库不是把网页字段平铺成表，而是保存三类不同性质的历史：
+Longcycle 同时保存四类不同性质的研究对象：
 
 ```text
 Reality      来源声称现实发生了什么，系统后来采用了什么
 Expectation  人在某一历史时点如何判断未来，以及为什么
 Outcome      后来实际发生了什么，判断与现实如何偏离
+Model Prior  高级模型今天对历史的未举证记忆/联想/缺口，只用于生成搜索线索
 ```
 
-三类对象都必须能回溯到当时可获得的原始证据，但它们不能共享同一套真值语义。
+其中只有前三类最终可以进入对外研究结果；Model Prior 永远不能直接成为 Fact/Judgment。
+
+---
 
 ## 1. 四个 schema 的职责
 
 | Schema | 保存内容 | AI 可否直接写入可信结果 |
 | --- | --- | --- |
-| `core` | 分类、实体、别名、标识符、关系、产品规格、设施、产线、证券、单位、predicate 语义 | 否 |
-| `evidence` | 出版者、来源、抓取、Blob、文档版本、解析 artifact、证据 locator、抽取运行 | 只能通过受控管道追加 |
-| `research` | 事实断言、可信事实、指标、项目、事件、判断、预期、共识、后验评价 | AI 只能产生候选断言/判断 |
-| `ops` | 任务、租约、断点、复核、Outbox、成本、预算、健康度、审计 | 否 |
+| `core` | taxonomy、entity/alias、产品规格、设施、证券、单位、predicate/dimension semantics | 否 |
+| `evidence` | publisher/source、抓取、Blob、文档版本、artifact、evidence locator、extraction run、source authority profile | 只能通过受控归档/抽取管道追加 |
+| `research` | Fact、Canonical Fact、Judgment、Expectation、Outcome、Memory Lead、Campaign、Refresh | AI 只能生成候选/先验，不能越过 Evidence 发布可信事实 |
+| `ops` | queue/lease/checkpoint/review/outbox/cost/source health/memory verification task | 否 |
 
-正文保存在对象存储，PostgreSQL 保存身份、哈希、locator、版本和结构化研究数据。
+正文/二进制原件放对象存储；PostgreSQL 保存身份、哈希、版本、locator 和结构化研究对象。
 
-## 2. 数据库的三个真值层次
+---
 
-### 2.1 来源表达
+## 2. 时间语义
 
-来源表达是不可变历史，包括：
+### 2.1 source time
 
-- `research.fact_assertions`：来源声称现实是什么；
-- `research.judgment_assertions`：来源中的某个说话者如何判断未来或不确定状态。
+文档至少区分：
 
-来源后来改口不能修改旧行，只能追加新行并建立 revision relation。
+- `published_at`：来源正式发布日期；
+- `first_known_at`：市场/系统最早可合理知道该材料的时间；
+- `retrieved_at`：Longcycle 实际拿到该文件的时间。
 
-### 2.2 系统采用
+`retrieved_at` 不能代替历史 `published_at/first_known_at`。
 
-只有事实可以经过 reconciliation / resolution 进入 `canonical_fact_versions`。
+### 2.2 valid time
 
-观点、预测和目标不能因为来源质量高或多人一致直接进入 canonical fact。
+Fact 的 `valid_time` 回答：
 
-### 2.3 派生研究
+> 这个事实描述现实世界哪个时间段？
 
-`expectation_snapshots`、`judgment_outcome_evaluations`、`cycle_snapshots` 等都是可重放的派生结果，必须保存输入 cutoff 和 producer version。
+### 2.3 system/adoption time
 
-## 3. 主数据身份
+Canonical Fact 需要保留系统什么时候采用/结束采用该版本，不能因为后来修订就覆盖过去采用过的结论。
 
-### 分类与行业
+### 2.4 Judgment time
 
-- `core.taxonomies` 表示一套分类体系；
-- `core.taxonomy_nodes` 是稳定节点身份；
-- 分类结构和行业成员关系必须版本化；
-- 历史中消失的公司或行业参与者不得删除。
-
-### 实体、证券、工厂和产线
-
-- 组织/公司使用 `core.entities`；
-- 股票代码使用 `core.security_listings`；
-- 工厂使用 `core.facilities`；
-- 产线使用 `core.production_lines`。
-
-证券代码不能代替生产主体，公司也不能代替具体工厂和产线。
-
-### Speaker 身份
-
-Judgment 的 speaker 可以是：
-
-- 管理层个人；
-- 公司或机构作为整体；
-- 券商分析师；
-- 行业协会；
-- 政府部门；
-- 产业人士；
-- 来源无法唯一识别的署名人物。
-
-`judgment_assertions.speaker_entity_id` 优先绑定 `core.entities`。无法可靠消歧时保留 `speaker_name_text`，不能为了结构化而伪造实体。
-
-`speaker_affiliation_entity_id` 表示当时所属机构。个人后来换机构不应改变旧 judgment。
-
-## 4. 证据不可变链
-
-事实链：
+Judgment 至少有：
 
 ```text
-publisher
-→ source_connector
-→ document_fetch
-→ document / document_version
-→ content_blob / artifact
-→ evidence_fragment
-→ extraction_run
-→ fact_assertion
-→ reconciliation_evaluation
-→ fact_resolution
+said/known time
+forecast target time
+```
+
+例如 2022 年 6 月对 2025 年需求的预测，两者必须分开。
+
+### 2.5 Knowledge cutoff
+
+Expectation Snapshot、historical query 和 archive gap audit 必须保存 `knowledge_cutoff`。
+
+任何 cutoff 之后公开的资料都不能进入当时 snapshot。
+
+### 2.6 Model memory time
+
+Memory Lead 有两套完全不同的时间：
+
+```text
+approximate historical period  模型认为线索大概发生在什么时候
+model run created_at            模型什么时候回忆出这条线索
+```
+
+2028 年模型第一次想起 2021 年项目，不代表 2021 年的历史 knowledge time 是 2028，也不代表模型记忆能证明 2021 年发生过该事。
+
+---
+
+## 3. Evidence 契约
+
+所有可发布 Fact/Judgment 必须能下钻到：
+
+```text
+content blob/document version
+→ parsing artifact（若结构化/解析后）
+→ evidence fragment
+→ exact locator
+```
+
+禁止以下对象作为最终 Evidence：
+
+- 搜索结果 snippet；
+- 模型回答；
+- Memory Lead；
+- 没打开正文的搜索列表；
+- 无法追溯的截图；
+- 二手文章对原始统计的模糊转述（若 claim 要求 primary）。
+
+`evidence_fragments` 必须有 excerpt 或 structured payload；结构化 locator 必须绑定持久化 artifact。
+
+---
+
+## 4. Fact 契约
+
+`research.fact_assertions` 保存来源层现实断言。
+
+Fact key 至少由：
+
+```text
+subject
+predicate
+comparability dimensions
+```
+
+组成。
+
+时间区间决定比较/覆盖范围，不应被错误塞进 dimension hash。
+
+### 4.1 dimensions
+
+对价格/产能/产量/需求等必须尽量保存：
+
+- product spec；
+- geography；
+- spot/contract/list/auction/index；
+- tax/freight/incoterm；
+- currency；
+- frequency；
+- statistical scope。
+
+口径不完整时不得自动互证或冲突。
+
+### 4.2 trusted fact
+
+AI 不能直接写 `TRUSTED`。
+
+```text
+FactAssertion
+→ quality/comparability
+→ reconciliation evaluation
+→ resolution
 → canonical_fact_version
 ```
 
-判断链：
+高影响 predicate 可以要求更高来源质量和独立来源数量。
+
+---
+
+## 5. Judgment / Expectation 契约
+
+`research.judgment_assertions` 与 Fact 分表。
+
+保存：
+
+- speaker entity/name/role/affiliation；
+- subject；
+- topic/predicate；
+- judgment kind；
+- target time；
+- value/interval/date/direction/text；
+- expressed probability（若原文明确）；
+- source published/known time；
+- extraction provenance。
+
+### 5.1 rationale
+
+`judgment_rationales` 允许：
 
 ```text
-publisher
-→ source_connector
-→ document_version / artifact
-→ evidence_fragment
-→ extraction_run
-→ judgment_assertion
-→ judgment_rationale / judgment_relation
-→ expectation_snapshot
-→ judgment_outcome_evaluation
+premise
+mechanism
+condition
+risk
+caveat
+counterargument
 ```
 
-重要约束：
+只允许原文明确表达或有 Evidence 的 rationale 进入历史层；模型自己的后来解释不能伪装成当时理由。
 
-- 原始字节先归档，再产生结构化对象；
-- parser/OCR/表格产物必须独立版本化；
-- evidence 必须能定位页码、DOM、表格单元格或 JSON 路径；
-- 结构化 evidence 必须绑定对应 artifact；
-- 已发布事实和 judgment 不得只有 AI 摘要而没有原文证据；
-- extraction、normalizer 或 schema 版本变化必须形成新的处理身份。
+### 5.2 revision
 
-## 5. Reality：事实键与可比维度
-
-事实键继续定义为：
-
-```text
-fact_key = subject + predicate_code + comparability_hash
-```
-
-`comparability_hash` 来自版本化 `FactDimensions`，用于表达会改变比较含义的口径，例如：
-
-- 产品规格；
-- 地区；
-- 现货/长协/指数/牌价；
-- 税费；
-- 运费和交货口径；
-- Incoterm；
-- 币种；
-- 日/月/季/年频率；
-- 低价/高价/均价/结算价；
-- 统计范围。
-
-缺少必需维度时 `dimensions_complete=false`，不能与其他事实自动互证或判冲突。
-
-`core.predicate_definitions` 保存 predicate 的值类型、时间模式、维度 schema、规范单位、高影响标记和调和策略。
-
-## 6. Expectation：Judgment 契约
-
-`research.judgment_assertions` 是一等研究对象，不是 `fact_assertions.metadata`。
-
-一个 judgment 表示：
-
-> 某个 speaker 在 `first_known_at` 时点，对某个 subject/topic 的未来或不确定状态表达了一项判断。
-
-### 6.1 Judgment kind
-
-允许的核心类型：
-
-| kind | 含义 |
-| --- | --- |
-| `forecast` | 对未来结果的预测 |
-| `target` | 主体希望达到的目标 |
-| `guidance` | 管理层或机构正式指引 |
-| `scenario` | 条件化情景 |
-| `probability` | 明确概率判断 |
-| `risk` | 风险方向/可能性判断 |
-| `thesis` | 逻辑或机制判断 |
-| `commitment` | 主体承诺采取的行动 |
-| `consensus_statement` | 来源直接描述的市场共识 |
-
-“计划达到 100 万吨”和“预计需求达到 100 万吨”必须是不同 kind。
-
-### 6.2 Subject 与 topic
-
-Judgment 必须绑定一个实体或行业节点，并保存 `topic_code`。
-
-如果判断可以映射到现有事实 predicate，例如“2027 年需求 120 万吨”，则同时保存：
-
-```text
-predicate_code
-a comparable dimension set
-target period
-```
-
-这样未来才能与 Reality 自动配对。
-
-纯定性 thesis/risk 可以没有 `predicate_code`，但必须有稳定 `topic_code`。
-
-### 6.3 判断的目标时间
-
-判断发表时间和判断针对的时间必须分离。
-
-例如：
-
-```text
-first_known_at = 2024-06-15
-target_from    = 2026-01-01
-target_to      = 2027-01-01
-```
-
-这表示“2024 年 6 月作出的对 2026 年的判断”。
-
-`target_time_kind` 包含：
-
-- `instant`；
-- `period`；
-- `timeless`；
-- `unknown`。
-
-未知 horizon 不得猜测。
-
-### 6.4 Judgment value
-
-判断可以保存：
-
-- numeric point；
-- numeric range；
-- text；
-- boolean；
-- date；
-- entity；
-- json；
-- direction。
-
-数值区间优先于把“约 100–120”伪装成一个精确点值。
-
-明确表达的概率保存在 `expressed_probability`，不能把 extractor confidence 当成 speaker probability。
-
-### 6.5 原文 summary 与证据
-
-`summary` 只是规范化后的简短命题，不是证据。
-
-`research.judgment_evidence` 必须至少能保存 statement evidence，并可额外标记：
-
-- rationale；
-- condition；
-- caveat；
-- context。
-
-## 7. Judgment rationale：为什么这样判断
-
-`research.judgment_rationales` 把理由作为一等对象保存。
-
-类型包括：
-
-- `premise`：事实前提；
-- `mechanism`：因果机制；
-- `condition`：成立条件；
-- `risk`：主要风险；
-- `caveat`：限定条件；
-- `counterargument`：反方逻辑。
-
-Rationale 可以连接：
-
-- 原始 evidence；
-- 一个 `fact_assertion`；
-- 另一个 `judgment_assertion`。
-
-因此可以形成：
-
-```text
-需求预测
-  ├─ premise: 出口继续增长
-  ├─ premise: 渗透率提升
-  ├─ mechanism: 单位用量稳定
-  └─ risk: 新技术降低单位耗用量
-```
-
-后验复盘要尽可能评价哪一条 premise 或 mechanism 失败，而不是只记录最终误差。
-
-## 8. Judgment revision：观点如何变化
-
-`research.judgment_relations` 保存 judgment 之间的历史关系：
+`judgment_relations` 用：
 
 ```text
 revises
@@ -283,188 +196,456 @@ supports
 contradicts
 ```
 
-例如同一家公司连续三次调整投产时间，应保留三条 judgment，并用 `revises` 连接。
+旧 Judgment 不更新。
 
-禁止 UPDATE 旧 judgment 的 target date。
+### 5.3 expectation snapshot
 
-## 9. Consensus：共识是派生对象
+Snapshot 是派生 artifact，不是 Fact。
 
-`research.expectation_snapshots` 表示在某个 `knowledge_cutoff` 下，根据一组 judgment 计算出的共识。
+必须保存：
 
-每个 snapshot 必须保存：
-
-- subject / topic / predicate；
+- knowledge cutoff；
 - target time；
-- `knowledge_cutoff`；
-- aggregation method；
-- producer name/version；
-- 聚合值或区间；
-- member count；
-- dispersion；
-- confidence；
-- system time。
+- aggregation method/version；
+- member judgments；
+- weight；
+- dispersion/confidence。
 
-`expectation_snapshot_members` 保存具体纳入的 judgment 和权重。
+---
 
-这意味着“2024-06-30 的市场预期”与“2024-09-30 的市场预期”是两个历史对象，不能用一行不断覆盖。
+## 6. Outcome 契约
 
-多个 speaker 同意一件事，只能提高 consensus 强度，不能自动提高 Reality 的 truth score。
+`judgment_outcome_evaluations` 连接：
 
-## 10. Outcome：预期与现实的配对
+```text
+historical Judgment
+↕
+canonical Fact version
+```
 
-`research.judgment_outcome_evaluations` 将 judgment 与后来的 canonical reality 配对。
+允许保存：
 
-可以保存：
-
-- `evaluation_status`；
 - numeric error；
 - relative error；
-- timing error days；
-- direction correct；
-- 后验解释；
-- evaluator version。
+- timing error；
+- direction correctness；
+- realization status；
+- explanation。
 
-典型状态：
+Outcome Evaluation 可以随着 Canonical Fact 版本变化重新生成，但原始 Judgment 不变。
 
-```text
-realized
-partially_realized
-not_realized
-not_yet_evaluable
-invalidated
-```
+---
 
-Outcome evaluation 是可重复计算的派生记录。canonical fact 后来修订时，新增 evaluation，不修改原 judgment。
+## 7. Model Prior 契约
 
-## 11. 时间语义
+### 7.1 model_prior_runs
 
-### 11.1 Reality 时间
+每次模型记忆运行必须保存：
 
-| 字段 | 含义 |
-| --- | --- |
-| `valid_from/valid_to` | 现实事实适用时间 |
-| `source_published_at` | 来源发布时间 |
-| `first_known_at/market_known_at` | 当时最早可知时间 |
-| `system_from/system_to` | 系统采用版本的时间 |
-| `vintage_at` | 同一统计期的发布批次 |
+- industry；
+- run mode；
+- source visibility；
+- provider/name/version；
+- protocol version；
+- declared model knowledge cutoff（若可得）；
+- archive knowledge cutoff（如适用）；
+- prompt/output digest；
+- raw output。
 
-### 11.2 Expectation 时间
-
-| 字段 | 含义 |
-| --- | --- |
-| `first_known_at` | 这项判断何时进入历史信息集 |
-| `target_at` | 判断针对的未来瞬时点 |
-| `target_from/target_to` | 判断针对的未来期间 |
-| `knowledge_cutoff` | 派生共识允许使用的信息截止时间 |
-| `system_from/system_to` | 派生 snapshot 在系统中的版本时间 |
-
-永远不能用 target time 代替 known time。
-
-## 12. Point-in-time 查询契约
-
-任何历史研究查询都必须显式区分：
+允许 run mode：
 
 ```text
-observation_date / target_date
-knowledge_cutoff
-system_as_of
+blind_recall
+memory_exhaustion_pass
+atlas_refinement
+gap_audit
+association_expansion
+conflict_audit
+self_verification
+refresh_diff
 ```
 
-例如“站在 2024-12-31 看 2025 年需求预期”应满足：
+`self_verification` 必须与 blind recall 分 run。
 
-```sql
-SELECT *
-FROM research.judgment_assertions
-WHERE first_known_at <= timestamptz '2024-12-31 23:59:59+00'
-  AND target_from < timestamptz '2026-01-01 00:00:00+00'
-  AND (target_to IS NULL OR target_to > timestamptz '2025-01-01 00:00:00+00');
-```
-
-使用 expectation snapshot 时还必须：
+### 7.2 source visibility
 
 ```text
-snapshot.knowledge_cutoff <= requested_cutoff
+none
+archive_only
+archive_summary
+search_results
 ```
 
-未来测试必须专门验证无 look-ahead leakage。
+只有 `none` 可以作为真正独立 blind prior。
 
-## 13. 指标序列与修订
+看到过 `search_results` 的 run 不能回头被描述成 blind recall。
 
-`metric_definitions`、`metric_series`、`observation_assertions`、`observation_versions` 继续负责可比较指标历史。
+---
 
-价格、产能、有效产能、产量、利用率、库存、利润、资本开支、需求等必须是不同指标。
+## 8. Memory Lead 契约
 
-不要：
+`research.model_memory_leads` 保存未举证线索。
 
-- 用月产量替代产能；
-- 用设计产能替代有效产能；
-- 用当前最终修订值覆盖当年最初公布值。
+典型 lead kind：
 
-历史 vintage 本身具有研究价值。
+- landmark/missing event；
+- actor/terminology；
+- metric/mechanism；
+- pricing rule/contract change；
+- process bottleneck/project pattern；
+- inventory pattern/capital cycle；
+- policy/technology shift；
+- cross-industry dependency；
+- narrative/causal hypothesis/anomaly。
 
-## 14. 项目历史
+每条保存：
 
-`capacity_projects` 只是项目身份。
+- approximate historical period；
+- recalled details；
+- suggested queries/source types；
+- memory confidence；
+- importance/novelty/searchability。
 
-项目历史应由事实和判断共同构成：
+`memory_confidence` 只是“模型觉得自己多像记得”，不是事实概率。
+
+Memory Lead 没有任何直接 FK/流程可把它发布成 Canonical Fact。
+
+---
+
+## 9. Memory Lead Relation
+
+`model_memory_lead_relations` 保存探索图：
 
 ```text
-Reality:
-项目宣布 / 获批 / 开工 / 完工 / 试产 / 投产 / 达产 / 取消
-
-Expectation:
-管理层预计投产时间
-分析师预计投产时间
-成功概率判断
-爬坡速度判断
-延期原因判断
+associated_with
+possible_cause
+possible_effect
+predecessor
+successor
+search_synonym
+same_episode
+cross_chain_link
+possible_revision
 ```
 
-`project_status_versions` 表示系统采用的项目状态；未来计划/预测本身应优先保存为 judgment，而不是只留下最终 adopted status。
+这些边同样不是因果事实，只用于搜索和历史目录组织。
 
-## 15. 行业事件与公司行为
+---
 
-- `event_clusters` 聚合同一现实事件；
-- `event_claims` 保存来源对事件的事实说法；
-- 对事件未来影响的预测应进入 judgment；
-- `company_exposure_versions` 保存系统采用的公司产业敞口；
-- 管理层对订单、需求、价格和资本开支的 future guidance 应进入 judgment；
-- `cycle_snapshots` 是带 `knowledge_cutoff` 的派生结果，不是“历史真相标签”。
+## 10. Claim-scoped Authority 契约
 
-## 16. 不可变与幂等
+`evidence.source_authority_profiles` 不能只给网站一个全局等级。
 
-以下对象必须 append-only：
+Profile 至少绑定：
 
-- 原始 Blob；
-- document fetch/version；
-- artifact；
+```text
+publisher/source
+claim_scope
+authority_class
+authority_basis
+validity period
+rationale
+```
+
+Claim scope 例如：
+
+```text
+legal_disclosure
+official_statistic
+self_statement
+management_guidance
+market_measurement
+project_status
+policy_text
+third_party_fact
+industry_expectation
+technical_specification
+```
+
+Authority class：
+
+```text
+authoritative_primary
+primary_self_statement
+methodological_primary
+reputable_secondary
+secondary
+discovery_only
+```
+
+“正规机构”也只对匹配 scope 的陈述有高证明力。
+
+---
+
+## 11. Memory disagreement 契约
+
+Memory Lead 与 archived Evidence 比较后可产生：
+
+```text
+supports
+contradicts
+context
+weak_match
+unrelated
+```
+
+但是否能裁决还取决于：
+
+- claim scope 是否匹配；
+- authority class；
+- independence cluster；
+- 是否存在 authoritative conflict。
+
+Resolution 允许：
+
+```text
+unresolved
+seek_primary
+primary_supports_lead
+primary_contradicts_lead
+authoritative_conflict
+secondary_only_support
+secondary_only_contradiction
+scope_mismatch
+retired
+```
+
+错误 Memory Lead 不删除。
+
+---
+
+## 12. Memory Campaign 契约
+
+### 12.1 Campaign
+
+`research.model_memory_campaigns` 保存：
+
+- industry；
+- historical period；
+- campaign kind；
+- model provider/name/version；
+- declared knowledge cutoff；
+- protocol/manifest version/digest；
+- source visibility。
+
+Campaign 本身 immutable。
+
+### 12.2 Campaign Runs
+
+`model_memory_campaign_runs` 把多个 `model_prior_run` 组织成一个 campaign：
+
+- pass id/family；
+- round；
+- parent run；
+- phase；
+- new/duplicate/high-importance-new lead counts；
+- coverage delta。
+
+### 12.3 Coverage
+
+`model_memory_coverage_cells` 是 versioned snapshot，不允许覆盖旧 coverage。
+
+维度可包括：
+
+- time；
+- chain node；
+- actor；
+- metric；
+- mechanism；
+- narrative；
+- terminology；
+- failure；
+- cross-industry；
+- negative space。
+
+### 12.4 Seal
+
+Blind campaign 完成后新增 `model_memory_campaign_seals`。
+
+Seal 是独立 immutable 事件，避免“先创建 Campaign 后又必须 UPDATE sealed=true”的生命周期冲突。
+
+Seal 保存：
+
+- sealed at；
+- stop reason；
+- coverage summary；
+- lead counts；
+- output digest。
+
+---
+
+## 13. Self Verification 契约
+
+Search-enabled 高级模型只能在 blind atlas seal 后进入第二阶段。
+
+`MemorySelfVerificationGateway` 可以返回：
+
+- refined summary；
+- candidate URLs；
+- refined queries；
+- possible primary sources；
+- notes。
+
+这些仍然是 Discovery Output。
+
+Candidate URL 必须经过：
+
+```text
+Source fetch
+→ ArchiveStore
+→ SourceDocument
+→ EvidenceFragment
+```
+
+才有资格进入 authority/evidence 判断。
+
+---
+
+## 14. Delegated Verification Task 契约
+
+`ops.memory_verification_tasks` 只能引用 `model_memory_campaign_seals(campaign_id)`，也就是只有封存后才能正式派发历史验证任务。
+
+Task 保存：
+
+- lead；
+- claim scope；
+- actors/aliases；
+- query families；
+- preferred primary sources；
+- support/contradiction criteria；
+- minimum search depth；
+- cutoff；
+- operational status。
+
+这是少数允许状态 UPDATE 的 operational object，不属于 immutable research history。
+
+默认 completion gate 由 application 的 `verification_depth_satisfied()` 执行。
+
+---
+
+## 15. Model Refresh 契约
+
+`model_memory_refreshes` 只允许比较**已经 sealed**的 baseline/refresh campaign。
+
+`model_memory_refresh_lead_diffs`：
+
+```text
+known
+refined
+novel
+possible_regression
+ambiguous_match
+```
+
+并保存：
+
+- baseline lead（若匹配）；
+- semantic similarity；
+- archive coverage state；
+- refinement payload；
+- backfill priority。
+
+新模型输出不能覆盖旧模型输出。
+
+---
+
+## 16. Historical not-found 契约
+
+对于历史任务：
+
+```text
+not_found != false
+```
+
+Agent/模型搜索失败只能产生：
+
+```text
+unresolved / not_yet_verified
+```
+
+只有 matching claim scope 的 authoritative/primary Evidence 明确反驳，才允许 `primary_contradicts_lead`。
+
+---
+
+## 17. Current Collection 契约
+
+Current source watchlist 不是 Fact 表，而是采集操作配置。
+
+每个 source 至少需要：
+
+- stable source id；
+- publisher/domain/channel；
+- priority；
+- expected cadence；
+- expected materials；
+- material roles；
+- claim scopes；
+- archive policy；
+- stale threshold。
+
+Agent 每次运行必须输出 due-source completion / failure / source-health 结果。
+
+锂电第一版：`docs/research/lithium-battery-current-watchlist.json`。
+
+---
+
+## 18. 不可变与可变对象
+
+### append-only / immutable
+
+- raw content blob；
+- document/fetch version；
+- parsing artifact；
 - evidence fragment；
-- extraction run；
 - fact assertion；
-- judgment assertion；
-- judgment evidence/rationale/relation；
 - reconciliation evaluation；
+- judgment/rationale/relation；
 - outcome evaluation；
+- model prior run；
+- memory lead/relation/evidence link/disagreement resolution；
+- memory campaign/run membership/seal/coverage snapshot；
+- model refresh/diff；
 - audit log。
 
-所有 handler 必须假设至少一次执行。
+### operational mutable
 
-同一处理输入、producer version 和稳定身份必须可安全重放。
+- collection job/lease；
+- retry/heartbeat；
+- memory verification task status；
+- current source health；
+- scheduler state。
 
-## 17. 迁移规则
+历史研究对象与运行状态不能混成一张“方便更新”的表。
 
-1. 已执行的迁移永不修改，只追加新编号；
-2. predicate、维度、单位换算和 reconciliation 行为改变必须升级版本；
-3. judgment extraction schema、speaker resolution、rationale parser 改变必须升级版本；
-4. expectation 聚合方法改变必须生成新的 producer version；
-5. outcome evaluator 改变不得覆盖旧 evaluation；
-6. 无法可靠消歧的 speaker、subject、单位、时间和维度宁可进入复核，不猜；
-7. 任何可能让历史查询读到未来信息的 schema 或应用改动都必须视为高风险变更。
+---
 
-## 18. Schema 设计的最终判断标准
+## 19. 幂等契约
 
-新增字段或表前先问：
+幂等 key 应包含真正决定输出的版本：
 
-> 十年以后回看今天，如果没有保存这项信息，我们是否会失去理解当时行为和判断所需的关键上下文？
+- document hash；
+- parser producer/version/input hash；
+- extractor/model/prompt/schema；
+- normalizer/reconciler/rule fingerprint；
+- Memory Campaign manifest/protocol/model vintage；
+- self-verification protocol；
+- refresh comparator version。
 
-如果答案是否定的，它通常不应该优先进入 Longcycle Core。
+同样输入/版本重放应得到同样 identity 或安全 no-op。
+
+---
+
+## 20. 第一行业的 Schema 验证原则
+
+锂电历史是 schema 的压力测试，不是 schema 的展示样品。
+
+如果真实资料暴露：
+
+- 项目 identity 不够；
+- 名义/有效产能不够；
+- 旧称/actor 关系表达不了；
+- Judgment target time 不够；
+- 价格口径不够；
+- Memory Lead 无法转成可执行搜索 task；
+
+应修改 schema，而不是把真实产业信息硬塞进 `metadata`。
