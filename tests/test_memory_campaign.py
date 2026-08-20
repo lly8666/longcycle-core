@@ -9,6 +9,7 @@ from longcycle.application.memory_campaign import (
     SaturationPolicy,
     VerificationSearchProgress,
     build_recall_pass_prompt,
+    build_self_verification_prompt,
     evaluate_campaign_saturation,
     verification_depth_satisfied,
 )
@@ -44,6 +45,17 @@ class MemoryCampaignTest(unittest.TestCase):
                 campaign_end=date(2026, 12, 31),
                 spec=spec,
             )
+
+    def test_self_verification_is_explicitly_search_enabled_but_cannot_rewrite_prior(self) -> None:
+        prompt = build_self_verification_prompt(
+            industry="新能源锂电池",
+            sealed_atlas_digest="abc123",
+            lead_packet="lead-1: possible historical pricing mechanism",
+        )
+        self.assertIn("may use fresh web search", prompt)
+        self.assertIn("MUST NOT rewrite", prompt)
+        self.assertIn("candidate URL is not Evidence", prompt)
+        self.assertIn("not_found is not contradiction", prompt)
 
     def test_saturation_requires_low_marginal_novelty_and_no_major_gaps(self) -> None:
         outcomes = [
