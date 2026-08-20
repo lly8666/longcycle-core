@@ -32,6 +32,25 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertIn("realityClaim", schema["$defs"])
         self.assertIn("judgmentClaim", schema["$defs"])
 
+    def test_model_memory_lead_schema_marks_recall_as_unsourced(self) -> None:
+        schema = json.loads(
+            (RESEARCH_DOCS / "model-memory-lead.schema.json").read_text(encoding="utf-8")
+        )
+        required = set(schema["required"])
+        self.assertTrue(
+            {
+                "lead_kind",
+                "claim_scope",
+                "summary",
+                "memory_confidence",
+                "suggested_queries",
+                "relations",
+            }.issubset(required)
+        )
+        description = schema["properties"]["memory_confidence"]["description"]
+        self.assertIn("NOT a probability", description)
+        self.assertIn("cross_industry_dependency", schema["properties"]["lead_kind"]["enum"])
+
     def test_lithium_battery_work_packages_are_unique_and_actionable(self) -> None:
         manifest = json.loads(
             (RESEARCH_DOCS / "lithium-battery-work-packages.json").read_text(encoding="utf-8")
