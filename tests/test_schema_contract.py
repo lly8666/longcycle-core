@@ -56,6 +56,13 @@ class SchemaContractTest(unittest.TestCase):
             "research.memory_lead_evidence_links",
             "research.memory_disagreement_cases",
             "research.memory_disagreement_resolutions",
+            "research.model_memory_campaigns",
+            "research.model_memory_campaign_runs",
+            "research.model_memory_campaign_seals",
+            "research.model_memory_coverage_cells",
+            "research.model_memory_refreshes",
+            "research.model_memory_refresh_lead_diffs",
+            "ops.memory_verification_tasks",
             "ops.collection_jobs",
             "ops.document_processing_completions",
             "ops.pipeline_checkpoints",
@@ -83,6 +90,10 @@ class SchemaContractTest(unittest.TestCase):
         self.assertIn("authority_snapshot jsonb NOT NULL", schema)
         self.assertIn("model_memory_leads_immutable", schema)
         self.assertIn("memory_disagreement_resolutions_immutable", schema)
+        self.assertIn("model_memory_campaign_seals_immutable", schema)
+        self.assertIn("manifest_digest char(64) NOT NULL", schema)
+        self.assertIn("minimum_search_depth jsonb NOT NULL", schema)
+        self.assertIn("diff_kind IN ('known', 'refined', 'novel'", schema)
 
 
 if __name__ == "__main__":
