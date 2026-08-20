@@ -10,6 +10,8 @@ Expectation  当时的人认为未来会发生什么，为什么
 Outcome      后来实际发生了什么，预期与现实为何偏离
 ```
 
+同时允许模型已有知识作为一个**不可发布的历史线索层**，帮助发现档案缺口、冷门关联、旧术语和异常；最终裁决仍然回到可追溯原文。
+
 拉长时间以后，研究者应能依靠可比较的历史、当时的预期和简单常识识别当前风险与机会，而不是依赖不可解释的黑盒预测。
 
 当前仓库只做后端。网页端不在本仓库范围内。
@@ -24,6 +26,8 @@ Outcome      后来实际发生了什么，预期与现实为何偏离
 6. **可比性优先于数据量。** 产品规格、地区、税费、运费、合同、单位、统计范围和时间口径不完整时，不自动互证或判冲突。
 7. **理由是一等数据。** 预测数字之外，还要保存 premise、mechanism、condition、risk 和 caveat。
 8. **先保存历史，再做复杂分析。** 复杂模型不是当前优先级。
+9. **模型记忆可以挑战档案，但不能覆盖档案。** Memory lead 永远不是 Fact/Judgment；搜索结果也不是 Evidence。
+10. **权威必须与 claim scope 匹配。** 公司公告、政府统计、券商报告各自只对其有资格证明的问题具有高证明力，不能用“网站名气”做全局真值等级。
 
 ## 数据架构
 
@@ -31,8 +35,8 @@ PostgreSQL 16+ 使用四个 schema：
 
 ```text
 core      稳定身份、分类、产品、设施、单位和 predicate 语义
-evidence  原文、抓取、Blob、文档版本、artifact、证据、抽取运行
-research  Reality + Expectation + Outcome
+evidence  原文、抓取、Blob、文档版本、artifact、证据、来源 authority profile、抽取运行
+research  Reality + Expectation + Outcome + unsourced Model Memory Leads
 ops       队列、租约、断点、复核、Outbox、成本和审计
 ```
 
@@ -81,6 +85,31 @@ error / timing / direction / explanation
 
 这个过程的目标不是给分析师排名，而是积累产业常识，例如项目通常延期多久、景气高点需求预期通常高估多少、哪些前提最容易失效。
 
+### Model Memory / Gap Audit
+
+模型已有知识只进入独立 research lead 层：
+
+```text
+Blind model recall
+→ ModelMemoryLead
+→ hidden-association / negative-space graph
+→ targeted search
+→ archived primary material
+→ claim-scoped authority audit
+→ normal Fact/Judgment pipeline
+```
+
+第一遍 `blind_recall` 不允许看到本轮搜索结果，避免搜索锚定。模型重点从旧术语、定价与合同、工程瓶颈、库存位置、资本循环、技术替代、跨行业依赖和 negative space 等视角生成普通搜索 Agent 不容易主动想到的线索。
+
+如果模型记忆与网页冲突：
+
+- 普通二手网页不能直接推翻模型 prior；
+- 模型 prior 也不能推翻网页并直接成为事实；
+- 系统继续寻找与 claim scope 匹配的 primary source；
+- 权威原始来源仍互相冲突时保留 disagreement case 并人工复核。
+
+无论 audit 结果如何，Memory Lead 自身永远不能发布为 Fact。
+
 ## 当前实现边界
 
 已实现：
@@ -94,6 +123,9 @@ error / timing / direction / explanation
 - PostgreSQL 至少一次任务队列、租约、心跳、重试、死信、断点和确定性 fan-out；
 - 价格、产能、产量、项目、事件、上市公司敞口、上下游关系和周期快照数据库结构；
 - point-in-time Judgment / Expectation / Outcome 的数据库迁移设计；
+- Model Prior / Memory Lead / authority profile / disagreement 的数据库迁移设计；
+- deterministic memory-vs-evidence adjudication 规则；
+- blind recall / gap audit prompt protocol 与 `MemoryPriorGateway` 端口；
 - 新能源锂电池第一行业样本的采集协议、搜索方案、任务包和机器回传 Schema。
 
 尚未实现：
@@ -103,6 +135,8 @@ error / timing / direction / explanation
 - judgment extraction target 与 speaker resolution；
 - expectation snapshot builder；
 - judgment outcome evaluator；
+- 生产 `MemoryPriorGateway` adapter 与 model-prior 持久化 application service；
+- source authority profile 自动/人工维护工作流；
 - 默认全阶段 handler 装配；
 - 对外 API 或网页；
 - Outbox relay 和真实 telemetry。
@@ -115,9 +149,9 @@ error / timing / direction / explanation
 migrations/                   PostgreSQL 迁移；数据库是真实结构化数据源
 src/longcycle/domain/         不可变领域对象与枚举
 src/longcycle/ports/          可替换端口契约
-src/longcycle/application/    采集、归一、调和、调度、Worker、工作流
+src/longcycle/application/    采集、归一、调和、memory audit、调度、Worker、工作流
 src/longcycle/adapters/       HTTP/本地源、PostgreSQL、S3/文件、测试模型
-docs/                         架构、Schema、开发路线、采集 SDK、运维说明
+docs/                         架构、Schema、开发路线、研究协议、采集 SDK、运维说明
 tests/                        无网络确定性测试
 ```
 
@@ -180,13 +214,15 @@ longcycle scheduler-tick
 
 1. 用第一批 Agent 建立锂电池 `Reality` 连续历史骨架；
 2. 重建 2021–2023 周期关键阶段的 `Expectation` 时间线；
-3. 挑高影响项目建立 `宣布 → 预计投产 → 修订 → 实际投产` revision chain；
-4. 用真实采集结果反推 judgment extraction 和实体/项目语义，不继续无样本地扩平台；
-5. 开始建立可重复的 historical snapshot，验证任一 cutoff 下都不会读到未来资料。
+3. 对每个历史阶段先做 blind memory audit，再和 archive 做 gap diff，生成第二轮 targeted search；
+4. 挑高影响项目建立 `宣布 → 预计投产 → 修订 → 实际投产` revision chain；
+5. 用 claim-scoped authority 处理 model prior、二手网页和原始资料之间的冲突；
+6. 用真实采集结果反推 judgment extraction 和实体/项目语义，不继续无样本地扩平台；
+7. 开始建立可重复的 historical snapshot，验证任一 cutoff 下都不会读到未来资料。
 
 验收问题：
 
-> **站在任意历史日期，只使用当时已经知道的信息，我们能否理解当时为什么会形成那些决策和预期，并在后来解释它为什么对或错？**
+> **站在任意历史日期，只使用当时已经知道的信息，我们能否理解当时为什么会形成那些决策和预期，并在后来解释它为什么对或错？同时，我们能否发现一份看似完整的历史里其实缺掉了哪些关键机制？**
 
 ## 文档入口
 
@@ -195,6 +231,8 @@ longcycle scheduler-tick
 - [开发方案：产业记忆优先](docs/development-plan.md)
 - [锂电池历史资料采集方案](docs/research/lithium-battery-collection-plan.md)
 - [采集 Agent 协议](docs/research/agent-collection-contract.md)
+- [模型记忆与历史缺口审计](docs/research/model-memory-audit.md)
+- [Claim-scoped 来源权威策略](docs/research/source-authority-policy.md)
 - [锂电池 Agent 工作包](docs/research/lithium-battery-work-packages.json)
 - [Agent 文档回传 JSON Schema](docs/research/agent-document-record.schema.json)
 - [采集插件 SDK](docs/collector-sdk.md)
@@ -202,6 +240,6 @@ longcycle scheduler-tick
 
 ## 当前验收
 
-无需网络或数据库即可运行的单元测试覆盖内容寻址归档、来源安全、断言归一与可比性、冲突分流、同文档不同目标抽取、队列租约与死信、Worker 并发、断点重放和 Outbox 幂等。
+无需网络或数据库即可运行的单元测试覆盖内容寻址归档、来源安全、断言归一与可比性、冲突分流、同文档不同目标抽取、队列租约与死信、Worker 并发、断点重放、Outbox 幂等、Memory Lead authority adjudication 和 blind/gap prompt isolation。
 
-真实 PostgreSQL/S3 集成测试仍然是上线前必须补齐的关键工作，特别是并发 reconciliation、lease 接管、部分提交、对象存储/数据库跨边界失败恢复，以及 point-in-time 无未来信息泄漏测试。
+真实 PostgreSQL/S3 集成测试仍然是上线前必须补齐的关键工作，特别是并发 reconciliation、lease 接管、部分提交、对象存储/数据库跨边界失败恢复、Memory Prior 持久化，以及 point-in-time 无未来信息泄漏测试。
