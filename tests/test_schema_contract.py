@@ -42,6 +42,13 @@ class SchemaContractTest(unittest.TestCase):
             "research.company_exposure_versions",
             "research.industry_relation_versions",
             "research.cycle_snapshots",
+            "research.judgment_assertions",
+            "research.judgment_evidence",
+            "research.judgment_rationales",
+            "research.judgment_relations",
+            "research.expectation_snapshots",
+            "research.expectation_snapshot_members",
+            "research.judgment_outcome_evaluations",
             "ops.collection_jobs",
             "ops.document_processing_completions",
             "ops.pipeline_checkpoints",
@@ -61,6 +68,10 @@ class SchemaContractTest(unittest.TestCase):
         self.assertIn("DISABLE TRIGGER fact_assertions_immutable", schema)
         self.assertIn("ADD COLUMN unit_dimension_name text", schema)
         self.assertIn("evidence_fragments_artifact_locator_unique", schema)
+        self.assertIn("knowledge_cutoff timestamptz NOT NULL", schema)
+        self.assertIn("expressed_probability double precision", schema)
+        self.assertIn("judgment_assertions_immutable", schema)
+        self.assertIn("judgment_outcome_evaluations_immutable", schema)
 
 
 if __name__ == "__main__":
