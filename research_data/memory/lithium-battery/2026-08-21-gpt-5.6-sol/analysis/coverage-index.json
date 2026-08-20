@@ -1,0 +1,112 @@
+{
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "blind_stage_status": "running",
+  "total_raw_leads_so_far": 118,
+  "shards": [
+    {"shard_id":"UP-HARDROCK","status":"completed_unsealed","prompt":"v1","lead_count":30,"next":"rerun corrective long-tail/atomic passes with v3 before seal"},
+    {"shard_id":"UP-CHEMICALS","status":"completed_unsealed_requires_repair","prompt":"v2","lead_count":28,"next":"repair schema-invalid candidates and run v3 gap pass before seal"},
+    {"shard_id":"MID-LFP","status":"v3_pass_completed_pending_machine_validation","prompt":"v3","lead_count":20,"next":"run actors/failures/terminology/self-gap passes"},
+    {"shard_id":"DOWN-NEV","status":"v3_pass_completed_pending_machine_validation","prompt":"v3","lead_count":20,"next":"run expectations/failures/metric-gap passes"},
+    {"shard_id":"BAT-CELL","status":"v3_pass_completed_pending_machine_validation","prompt":"v3","lead_count":20,"next":"run actors/failures/technology/self-gap passes"},
+    {"shard_id":"UP-BRINE","status":"not_started"},
+    {"shard_id":"UP-CONCENTRATE","status":"not_started"},
+    {"shard_id":"MID-TERNARY","status":"not_started"},
+    {"shard_id":"MID-ANODE","status":"not_started"},
+    {"shard_id":"MID-SEPARATOR","status":"not_started"},
+    {"shard_id":"MID-ELECTROLYTE","status":"not_started"},
+    {"shard_id":"DOWN-ESS","status":"not_started"},
+    {"shard_id":"DOWN-OTHER","status":"not_started"},
+    {"shard_id":"LOOP-RECYCLING","status":"not_started"}
+  ],
+  "independent_trigger_decisions": [
+    {
+      "trigger":"BRIDGE-INVENTORY",
+      "disposition":"promote",
+      "independent_shards":["UP-CHEMICALS","MID-LFP","BAT-CELL"],
+      "example_leads":["CH-027","LFP-010","CELL-004"],
+      "reason":"inventory/destocking independently appeared at chemical, cathode and cell layers"
+    },
+    {
+      "trigger":"BRIDGE-LITHIUM-PRICE-PASS-THROUGH",
+      "disposition":"promote",
+      "independent_shards":["MID-LFP","DOWN-NEV","BAT-CELL"],
+      "example_leads":["LFP-009","NEV-009","CELL-005","CELL-006"],
+      "reason":"raw-material price transmission independently appeared at material, cell and vehicle layers"
+    },
+    {
+      "trigger":"BRIDGE-METRIC-SEMANTICS",
+      "disposition":"promote",
+      "independent_shards":["MID-LFP","DOWN-NEV","BAT-CELL"],
+      "example_leads":["LFP-018","NEV-013","NEV-014","CELL-003"],
+      "reason":"production/shipment/sales/installation/retail metric mismatch recurs across the chain"
+    },
+    {
+      "trigger":"BRIDGE-CUSTOMER-OFFTAKE",
+      "disposition":"promote",
+      "independent_shards":["MID-LFP","BAT-CELL"],
+      "example_leads":["LFP-019","CELL-009"],
+      "reason":"customer binding/equity/offtake changes whether nameplate capacity is merchant supply"
+    },
+    {
+      "trigger":"BRIDGE-OFFTAKE-NETWORK",
+      "disposition":"promote",
+      "independent_shards":["UP-CHEMICALS","BAT-CELL"],
+      "example_leads":["CH-018","CELL-019"],
+      "reason":"resource security and vertical integration appeared independently upstream and at cell makers"
+    },
+    {
+      "trigger":"SAT-SODIUM-ION",
+      "disposition":"promote",
+      "independent_shards":["MID-LFP","BAT-CELL"],
+      "example_leads":["LFP-016","CELL-018"],
+      "reason":"sodium-ion repeatedly appears as a historically important expectation/substitution branch"
+    },
+    {
+      "trigger":"SAT-LEPIDOLITE",
+      "disposition":"promote_manual_due_v1_scope_signal",
+      "independent_shards":["UP-HARDROCK","UP-CHEMICALS"],
+      "example_leads":["HR-028","CH-001","CH-010","CH-021","CH-022"],
+      "reason":"Yichun lepidolite repeatedly crossed shard boundaries and has independent cost/environment/supply-cycle semantics"
+    },
+    {
+      "trigger":"BRIDGE-KWH-PER-VEHICLE",
+      "disposition":"candidate_needs_second_independent_shard",
+      "independent_shards":["DOWN-NEV"],
+      "example_leads":["NEV-004","NEV-005","NEV-006","NEV-012"],
+      "reason":"high importance but currently recalled only inside vehicle shard; BAT-CELL follow-up should test it independently"
+    },
+    {
+      "trigger":"BRIDGE-CAPACITY-SEMANTICS",
+      "disposition":"candidate_needs_second_independent_shard",
+      "independent_shards":["BAT-CELL"],
+      "example_leads":["CELL-002","CELL-017","CELL-020"],
+      "reason":"strong within-cell signal; materials/mining corrective passes should independently test analogous capacity semantics"
+    },
+    {
+      "trigger":"SAT-PHOSPHORUS-CHEMICALS",
+      "disposition":"candidate",
+      "independent_shards":["MID-LFP"],
+      "example_leads":["LFP-004","LFP-020"],
+      "reason":"repeated inside LFP but not independently recalled elsewhere yet"
+    }
+  ],
+  "next_shard_selection_logic": {
+    "principle":"maximize new independent information and bridge confirmation rather than walk the chain sequentially",
+    "priority": [
+      "UP-BRINE",
+      "MID-TERNARY",
+      "DOWN-ESS",
+      "UP-CONCENTRATE",
+      "LOOP-RECYCLING"
+    ],
+    "why": {
+      "UP-BRINE":"tests a fundamentally different upstream cost/project mechanism from hard-rock and explains imported carbonate",
+      "MID-TERNARY":"contrasts LFP and independently tests hydroxide/export/high-nickel narratives",
+      "DOWN-ESS":"tests LFP demand and power-vs-storage cell fungibility from the demand side",
+      "UP-CONCENTRATE":"formalizes the pricing-contract bridge already surfaced by hard-rock and chemicals",
+      "LOOP-RECYCLING":"tests manufacturing-scrap/EOL and black-mass pricing leads independently"
+    }
+  },
+  "seal_policy":"no shard is sealed after one broad pass; seal only after v3 validation plus actors/failures/terminology/self-gap and saturation checks",
+  "ci_status":"workflow file added; no successful run observed yet"
+}
