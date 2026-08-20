@@ -103,6 +103,49 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertTrue(any("pricing_and_contracts" in item["must_use_lenses"] for item in audits))
         self.assertTrue(any("negative_space" in item["must_use_lenses"] for item in audits))
 
+    def test_exhaustion_manifest_forces_orthogonal_recall_and_self_verification_separation(self) -> None:
+        manifest = json.loads(
+            (RESEARCH_DOCS / "lithium-battery-memory-exhaustion-manifest.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        self.assertEqual(manifest["schema_version"], "longcycle-memory-exhaustion/v1")
+        self.assertTrue(manifest["blind_stage"]["fresh_search_forbidden"])
+        self.assertGreaterEqual(len(manifest["passes"]), 15)
+        families = {item["family"] for item in manifest["passes"]}
+        self.assertTrue(
+            {
+                "time_slice",
+                "chain_slice",
+                "actor_exhaustion",
+                "metric_exhaustion",
+                "mechanism_exhaustion",
+                "failure_dead_end",
+                "old_vocabulary",
+                "negative_space",
+                "saturation_review",
+            }.issubset(families)
+        )
+        self.assertTrue(manifest["self_verification_stage"]["enabled"])
+        self.assertTrue(manifest["self_verification_stage"]["must_start_new_run"])
+
+    def test_agent_sop_prevents_shallow_historical_search(self) -> None:
+        sop = (RESEARCH_DOCS / "research-agent-sop.md").read_text(encoding="utf-8")
+        self.assertIn("minimum search depth", sop)
+        self.assertIn("至少 6 个", sop)
+        self.assertIn("citation chain", sop)
+        self.assertIn("not_found != false", sop)
+        self.assertIn("Current Collection", sop)
+        self.assertIn("anti-premature-stop checklist", sop)
+
+    def test_model_refresh_is_append_only_and_generates_backfill(self) -> None:
+        refresh = (RESEARCH_DOCS / "model-refresh-backfill.md").read_text(encoding="utf-8")
+        self.assertIn("research instrument vintage", refresh)
+        self.assertIn("Old Model Memory Atlas", refresh)
+        self.assertIn("novel", refresh)
+        self.assertIn("Backfill Task Queue", refresh)
+        self.assertIn("不能删除旧 lead", refresh)
+
     def test_memory_audit_and_authority_playbooks_define_hard_boundaries(self) -> None:
         memory = (RESEARCH_DOCS / "model-memory-audit.md").read_text(encoding="utf-8")
         authority = (RESEARCH_DOCS / "source-authority-policy.md").read_text(encoding="utf-8")
