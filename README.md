@@ -93,7 +93,8 @@ error / timing / direction / explanation
 - predicate、维度 schema、单位换算和分 predicate 调和策略快照；
 - PostgreSQL 至少一次任务队列、租约、心跳、重试、死信、断点和确定性 fan-out；
 - 价格、产能、产量、项目、事件、上市公司敞口、上下游关系和周期快照数据库结构；
-- point-in-time Judgment / Expectation / Outcome 的数据库迁移设计。
+- point-in-time Judgment / Expectation / Outcome 的数据库迁移设计；
+- 新能源锂电池第一行业样本的采集协议、搜索方案、任务包和机器回传 Schema。
 
 尚未实现：
 
@@ -158,17 +159,32 @@ longcycle scheduler-tick
 
 迁移使用会话级 advisory lock、逐文件事务和 SHA-256 校验；已应用迁移被修改时会拒绝继续。
 
+## 当前第一行业：新能源锂电池
+
+第一个真实行业样本已经确定为新能源锂电池产业链，中国为主，第一轮重建 `2019-01-01 → 2026-12-31`。
+
+范围覆盖：
+
+- 上游锂资源和锂盐；
+- LFP、三元、负极、隔膜、电解液等中游材料；
+- 动力/储能电池和头部电池企业；
+- 新能源汽车与储能需求；
+- 项目宣布、审批、开工、延期、投产和爬坡；
+- 管理层、券商、协会和政府在各历史时点的预期与理由。
+
+第一批采集不是让 Agent 写行业结论，而是让它们忠实寻找原始材料，并按统一协议回传。
+
 ## 下一阶段
 
-下一阶段不优先继续扩张平台架构，而是选择一个真实行业，完整重建至少一个周期的历史：
+当前优先工作变成：
 
-- 价格、利润、库存、产能、产量和需求；
-- 项目宣布、审批、开工、延期、投产和退出；
-- 企业资本开支和重要经营行为；
-- 关键政策、事故和供需冲击；
-- 当时管理层、分析师、协会和产业参与者对未来的主要判断及理由。
+1. 用第一批 Agent 建立锂电池 `Reality` 连续历史骨架；
+2. 重建 2021–2023 周期关键阶段的 `Expectation` 时间线；
+3. 挑高影响项目建立 `宣布 → 预计投产 → 修订 → 实际投产` revision chain；
+4. 用真实采集结果反推 judgment extraction 和实体/项目语义，不继续无样本地扩平台；
+5. 开始建立可重复的 historical snapshot，验证任一 cutoff 下都不会读到未来资料。
 
-验收问题只有一个：
+验收问题：
 
 > **站在任意历史日期，只使用当时已经知道的信息，我们能否理解当时为什么会形成那些决策和预期，并在后来解释它为什么对或错？**
 
@@ -177,6 +193,10 @@ longcycle scheduler-tick
 - [总体架构](docs/architecture.md)
 - [Schema 与时间契约](docs/schema-contracts.md)
 - [开发方案：产业记忆优先](docs/development-plan.md)
+- [锂电池历史资料采集方案](docs/research/lithium-battery-collection-plan.md)
+- [采集 Agent 协议](docs/research/agent-collection-contract.md)
+- [锂电池 Agent 工作包](docs/research/lithium-battery-work-packages.json)
+- [Agent 文档回传 JSON Schema](docs/research/agent-document-record.schema.json)
 - [采集插件 SDK](docs/collector-sdk.md)
 - [运行、成本与安全](docs/operations.md)
 
