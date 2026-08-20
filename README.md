@@ -214,7 +214,7 @@ Old Model Memory Atlas
 - deterministic memory-vs-evidence adjudication；
 - blind/gap prompt isolation；
 - memory-campaign saturation 与 verification-depth application primitives；
-- 锂电采集协议、工作包、Memory Exhaustion Manifest 和机器回传 Schema。
+- 锂电采集协议、工作包、Memory Exhaustion Manifest、Current Watchlist 和机器回传 Schema。
 
 尚未实现：
 
@@ -223,9 +223,9 @@ Old Model Memory Atlas
 - judgment extraction target 与 speaker resolution；
 - expectation snapshot builder；
 - judgment outcome evaluator；
-- 生产 `MemoryPriorGateway` adapter 和完整 campaign orchestration；
-- 高级模型 self-verification 的搜索/归档 orchestration；
-- Current source watchlist 的完整 scheduler/connector 集合；
+- 生产 `MemoryPriorGateway` / `MemorySelfVerificationGateway` adapter 和完整 campaign orchestration；
+- 高级模型 self-verification 搜索结果进入正常 fetch/archive 的 orchestration；
+- Current source watchlist 的 scheduler/connector 集合；
 - source authority profile 管理工作流；
 - 对外 API / Web；
 - Outbox relay 和真实 telemetry。
@@ -258,6 +258,7 @@ Old Model Memory Atlas
 - [模型更新后的历史回补](docs/research/model-refresh-backfill.md)
 - [Claim-scoped 来源权威策略](docs/research/source-authority-policy.md)
 - [锂电 Memory Exhaustion Manifest](docs/research/lithium-battery-memory-exhaustion-manifest.json)
+- [锂电 Current Source Watchlist](docs/research/lithium-battery-current-watchlist.json)
 - [锂电低成本 Agent 工作包](docs/research/lithium-battery-work-packages.json)
 - [Agent 文档回传 Schema](docs/research/agent-document-record.schema.json)
 
