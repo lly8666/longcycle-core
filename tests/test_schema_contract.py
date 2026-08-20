@@ -94,6 +94,11 @@ class SchemaContractTest(unittest.TestCase):
         self.assertIn("manifest_digest char(64) NOT NULL", schema)
         self.assertIn("minimum_search_depth jsonb NOT NULL", schema)
         self.assertIn("diff_kind IN ('known', 'refined', 'novel'", schema)
+        self.assertIn("'self_verification'", schema)
+        self.assertIn(
+            "REFERENCES research.model_memory_campaign_seals(campaign_id)",
+            schema,
+        )
 
 
 if __name__ == "__main__":
