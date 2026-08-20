@@ -4,276 +4,390 @@
 
 Longcycle 的目标不是尽可能多地采集行业数据，也不是自动生成更多分析结论。
 
-核心目标是：
+核心目标：
 
 > **保存一个行业最关键、最真实、可回放的历史，同时保存人在每一个历史时点对未来的判断、预期和理由。**
 
-拉长时间以后，研究者应能够只依靠可比较的历史事实、当时的预期和简单常识，判断当前风险与机会，而不是依赖不可解释的黑盒预测。
+系统长期回答：
 
-系统长期要回答三类问题：
+1. **Reality**：当时真实发生了什么？
+2. **Expectation**：当时的人认为未来会发生什么，为什么？
+3. **Outcome**：后来实际发生了什么，预期与现实为什么偏离？
+4. **Missing History**：今天看起来完整的历史，其实还漏掉了哪些当时重要的机制、actor、失败项目、定价规则和叙事？
 
-1. **Reality：当时真实发生了什么？**
-2. **Expectation：当时的人认为未来会发生什么，为什么？**
-3. **Outcome：后来实际发生了什么，预期与现实为什么产生偏差？**
+## 2. 新的采集总原则
 
-这三条时间线共同构成产业记忆。
+历史恢复与当前采集必须拆成两条路线。
 
-## 2. 不做什么
+### 2.1 历史：Memory-first, evidence-final
 
-现阶段明确不把以下事项作为核心目标：
+互联网对旧资料的检索能力有限。低成本 Agent 如果只收到宽泛主题，天然会找到少量显著结果后提前交工。
 
-- 不追求覆盖所有网页和新闻；
-- 不把 LLM 生成的总结当作事实；
-- 不优先建设复杂预测模型、因子库或自动交易信号；
-- 不因为多家来源观点一致就把观点升级为事实；
-- 不为了“平台完整性”继续堆叠大量基础设施抽象；
-- 不用今天已经知道的结果覆盖过去当时的认知。
+因此历史研究默认改为：
 
-AI 的主要职责是读原文、定位证据、提取事实、提取判断、结构化理由和帮助补齐历史。最终事实发布、预期聚合和后验评价必须有明确规则与版本。
+```text
+高级模型 Memory Exhaustion Campaign
+→ Sealed Blind Memory Atlas
+→ 高级模型 Self Verification
+→ 低成本 Agent 逐条 Evidence Verification
+→ archived source
+→ Fact / Judgment
+```
+
+高级模型负责尽可能建立“应该找什么”的目录；原始资料负责决定“最终能确认什么”。
+
+### 2.2 当下：Source-first, archive-now
+
+今天仍在公开渠道上的原始资料不应该等几年后再抢救。
+
+```text
+high-value source watchlist
+→ 定期/事件触发检查
+→ 新文件即时归档
+→ 事实/判断抽取
+→ revision detection
+→ source inventory 扩展
+```
+
+当前采集的目标是把未来最难找的历史今天就保存下来。
 
 ## 3. 第一原则
 
 ### 3.1 历史不可重写
 
-任何来源断言、判断、预期和证据都采用 append-only。后来的修订通过新对象和关系表达，不修改旧记录。
-
-例如一家公司先后表示：
-
-```text
-2024-03 预计 2025Q2 投产
-2024-11 延期至 2025Q4
-2025-08 再次延期至 2026Q1
-2026-02 实际投产
-```
-
-数据库必须完整保留四个时点，而不是最后只留下“2026Q1”。
+Fact、Judgment、Memory Lead、原始文档、模型 campaign 都采用可回放语义。后来的修订、模型更新、搜索验证通过新增对象表达，不覆盖旧记录。
 
 ### 3.2 不让后见之明污染过去
 
-系统必须支持 point-in-time 查询：
+所有历史 snapshot 受 `knowledge_cutoff` 约束。
 
-> 站在 2024-06-30，只使用当时已经公开或市场可知的信息，我们能看到什么？
+对于模型 memory：blind recall 的运行时间可以是今天，但它只能生成“今天模型记得的历史线索”，不能自动声称“当年市场就知道这些”。只有 timestamped historical source 能建立当时可知性。
 
-因此事实和判断都必须保存 `first_known_at` / `market_known_at`，派生结果必须保存 `knowledge_cutoff`。
-
-### 3.3 事实与观点分层
-
-事实断言回答“来源声称现实世界是什么”。
-
-判断断言回答“某个说话者在某时点认为未来或不确定状态会是什么”。
-
-两者不能混用同一套真值调和逻辑：
-
-- 多个独立来源一致可以提高一个事实断言的可信度；
-- 多个分析师一致只能说明形成了共识，不能证明未来事实为真。
-
-### 3.4 理由和假设是一等数据
-
-只保存“预测 20% 增长”价值有限。更重要的是保存其理由：
-
-- 出口增长；
-- 渗透率提升；
-- 新技术路线；
-- 政策刺激；
-- 项目延期；
-- 成本下降；
-- 竞争格局变化。
-
-未来复盘要能够区分：预测数字错了，还是其中某一个关键假设错了。
-
-### 3.5 可比性优先于数据量
-
-十年不可比的数据不如三年可比的数据。
-
-价格、产能、产量、库存、利润、需求等核心序列必须优先保证产品规格、区域、税费、运费、合同、统计范围、频率、单位和时间口径稳定。
-
-## 4. 核心数据对象
-
-### 4.1 原文与证据
-
-继续使用现有 `evidence` 层：
+### 3.3 Fact、Judgment、Model Prior 三分
 
 ```text
-publisher
-→ source connector
-→ immutable document/blob/artifact
-→ evidence fragment
-→ extraction run
+Fact      来源声称现实世界是什么
+Judgment  某个说话者当时怎样判断未来/不确定状态
+ModelPrior 模型今天模糊记得或推测可能存在的历史线索
 ```
 
-任何事实或判断都必须能回到原文 locator。
+三个对象永远不能通过简单转换互相升级。
 
-### 4.2 事实时间线 Reality
+### 3.4 搜不到不是不存在
 
-继续以 `fact_assertions → reconciliation → canonical_fact_versions` 为主路径。
+历史检索的 `not_found` 只能表示当前检索路径没有找到。
 
-优先覆盖少数真正决定周期的事实：
+不能据此：
 
-- 价格与价差；
-- 产能、有效产能、产量、利用率；
-- 库存；
-- 行业利润与成本；
-- 需求与订单；
-- 项目宣布、审批、开工、延期、投产、爬坡、退出；
-- 企业资本开支；
-- 重要政策和行业事件；
-- 上下游关系和公司敞口。
+- 删除 Memory Lead；
+- 反向建立“没有发生”Fact；
+- 认为二手网页的说法胜出。
 
-### 4.3 认知时间线 Expectation
+### 3.5 权威按 claim scope 判断
 
-新增 `research.judgment_assertions` 作为一等对象，保存：
+来源是否有资格证明某件事，比来源网站名气更重要。
 
-- 谁说的：管理层、分析师、协会、政府、产业人士等；
-- 在什么时候说的；
-- 针对哪个实体/行业和主题；
-- 针对哪个未来时点或期间；
-- 是 forecast、target、guidance、scenario、risk、thesis 还是 commitment；
-- 点值、区间、日期、方向或文本判断；
-- 明示概率；
-- 原文证据；
-- 结构化理由、条件、风险和反方论据。
+例如：
 
-修订、撤回、重申、缩窄、扩大等通过 `judgment_relations` 保存。
+- 公司公告对“公司当时披露了什么”强；
+- 对“行业未来一定怎样”只是公司自己的 Judgment；
+- 券商原报告对“券商当时如何预测”是 primary；
+- 对第三方历史 actual 通常不是最终权威；
+- 政府/协会统计对自己的统计口径强，但不能自动替代其他口径。
 
-### 4.4 共识时间线
+### 3.6 可比性优先于数量
 
-市场共识不是原始事实，而是从多个 judgment 派生的 point-in-time artifact。
+价格、产能、产量、库存、需求、利润、装车等序列必须先解决规格、范围、单位、时间和统计口径，再谈长期比较。
 
-`expectation_snapshots` 必须保存：
+## 4. 第一行业：新能源锂电池
 
-- `knowledge_cutoff`；
-- 纳入哪些 judgment；
-- 聚合方法和版本；
-- 成员权重；
-- 均值/中位数/区间/方向；
-- 离散度和置信度。
+第一真实行业：新能源锂电池产业链，中国为主。
 
-同一批原始观点可以被不同聚合方法重复计算，不能覆盖历史 snapshot。
-
-### 4.5 后验结果 Outcome
-
-当目标期结束且可信事实形成后，可生成 `judgment_outcome_evaluations`：
-
-- 实际值与预测值差异；
-- 方向是否正确；
-- 投产/达产等时间误差；
-- 是否因外部条件变化而失效；
-- 哪些前提成立、哪些前提失败。
-
-这个表不是“分析师排行榜”。它的目的是积累行业经验，例如：
-
-- 某类项目公告通常低估工期多少；
-- 景气高点对需求增长的预期通常偏高多少；
-- 哪类供给约束往往被市场高估；
-- 哪些公司资本开支承诺兑现率更高。
-
-## 5. 开发顺序
-
-### Phase 0：冻结平台扩张
-
-在真实行业样本验证前，不继续新增消息中间件、复杂服务拆分、通用工作流 DSL 等平台能力。
-
-只修复影响数据真实性、幂等、可回放和采集稳定性的基础设施问题。
-
-### Phase 1：新能源锂电池完整历史样本
-
-第一个真实行业已确定为**新能源锂电池产业链**，中国为主，必要时纳入影响中国供需与价格的海外资源和需求节点。
-
-第一轮时间范围：
+第一轮时间：
 
 ```text
 2019-01-01 → 2026-12-31
 ```
 
-先重建上游锂资源/锂盐、中游关键材料与电池、下游新能源汽车/储能三层历史，再向 2015–2018 回填。
+必要时向 2015–2018 回填上一轮周期背景。
 
-关键历史清单：
+范围：
 
-1. 锂盐、材料、电芯价格与利润；
-2. 主要产能、有效产能和项目 lifecycle；
-3. 产量、库存、装车、销量和储能需求；
-4. 主要企业资本开支与经营行为；
-5. 关键政策、事故、供给约束和技术路线变化；
-6. 当时管理层、券商、协会和产业参与者对未来的主要判断；
-7. 判断的修订链，以及后来实际 outcome。
+```text
+锂矿/盐湖
+→ 精矿
+→ 碳酸锂/氢氧化锂
+→ LFP/三元/负极/隔膜/电解液
+→ 电芯/Pack
+→ 新能源汽车/储能
+→ 回收
+```
 
-执行文档：
+并纳入：
 
-- `docs/research/agent-collection-contract.md`：所有采集 Agent 的通用边界和回传契约；
-- `docs/research/lithium-battery-collection-plan.md`：锂电池产业链边界、来源地图和搜索方法；
-- `docs/research/lithium-battery-work-packages.json`：第一批可并行派发的任务；
-- `docs/research/agent-document-record.schema.json`：机器可校验的文档回传格式。
+- 设备；
+- 能源/电力；
+- 物流；
+- 融资/资本市场；
+- 海外供给与政策；
+- 项目审批与客户认证。
 
-Phase 1 验收标准不是抓取条数，而是能否回答：
+## 5. Phase 1：先榨高级模型的产业历史记忆
 
-> 为什么 2021–2022 年的短缺和高价在当时看起来合理？扩产是何时被宣布和预期的？哪些供给后来按时释放、哪些延期？需求预期如何变化？为什么产业在后续阶段发生反转？
+### 5.1 不做一次性大 Prompt
 
-并且这些回答必须能切换到任一历史 `knowledge_cutoff`，不能读取未来材料。
+“把你知道的锂电历史都说出来”只会召回显著内容。
 
-### Phase 2：实现 judgment extraction
+第一版必须按 `docs/research/lithium-battery-memory-exhaustion-manifest.json` 运行多轮正交 pass。
 
-在现有 extraction pipeline 上增加独立 judgment target，而不是把观点塞进 `FactAssertion`。
+至少包括：
+
+- 时间切片；
+- 产业链切片；
+- actor exhaustion；
+- metric exhaustion；
+- mechanism exhaustion；
+- contemporaneous narrative；
+- old vocabulary；
+- failure/dead-end；
+- reverse causality；
+- cross-industry；
+- counterfactual；
+- negative space；
+- saturation review。
+
+### 5.2 重要 lead 要递归扩展
+
+每条高重要度 lead blind 阶段继续问：
+
+```text
+Who else?
+What preceded it?
+What followed it?
+What was it called then?
+```
+
+目的是把“模糊记得一个事情”扩展成可以搜索的 actor、旧称、时间范围和机制链。
+
+### 5.3 强制挖长尾
+
+模型输出必须区分：
+
+- obvious landmarks；
+- long-tail leads；
+- forgotten actors；
+- mechanism leads；
+- search keys；
+- uncertain fragments。
+
+至少一半有效输出预算给后五类，避免全部变成著名行业大事。
+
+### 5.4 Saturation 而不是模型自称“没了”
+
+停止条件：
+
+- 连续多个正交 pass 高重要度新 lead 显著下降；
+- 时间 × 链条 × metric coverage 没有大面积空白；
+- failures / old vocabulary / forgotten actors / mechanisms / negative space 等类别不再快速增加。
+
+第一版实现已经提供 deterministic saturation primitive。
+
+### 5.5 封存 Blind Memory Atlas
+
+封存内容：
+
+```text
+model provider/name/version
+声明 knowledge cutoff（如有）
+protocol/manifest version
+所有 pass 原始输出
+normalized leads
+relations
+coverage matrix
+stop reason
+```
+
+任何后续搜索不得修改该 blind atlas。
+
+## 6. Phase 2：高级模型自己做第一轮搜索印证
+
+高级模型理解自己 recall 时的语义和关联，所以比低成本 Agent 更适合先做**高价值 lead 的第一轮研究型检索**。
+
+但必须开启新 run：
+
+```text
+blind_recall sealed
+→ self_verification(search enabled)
+```
+
+高级模型负责：
+
+- 找更精确项目名/公司名；
+- 找历史旧称；
+- 找原报告标题；
+- 判断普通网页是否转载同源；
+- 定位最可能 primary domain；
+- 设计适合低成本 Agent 的 task packet；
+- 对重大冲突自己继续追 primary source。
+
+仍然不能：
+
+- 因为搜索不到就删除 lead；
+- 把搜索摘要写成 Fact；
+- 用网页数量多数投票；
+- 修改 blind recall 让自己看起来“原本就知道”。
+
+## 7. Phase 3：低成本 Agent 做证据工程
+
+低成本 Agent 的输入从“大概主题”升级成具体 task packet：
+
+```text
+lead_id
+claim scope
+lead summary
+possible actors
+possible aliases
+query families
+preferred primary sources
+support criteria
+contradiction criteria
+minimum search depth
+knowledge cutoff
+```
+
+### 7.1 默认最低搜索深度
+
+历史高价值任务：
+
+- ≥ 6 类 query family；
+- ≥ 3 类来源类型；
+- 检查最可能 primary domain；
+- 有 citation 时至少追一次；
+- 至少做一次反向查询；
+- 需要时翻页/换旧称/找附件，直到结果高度重复。
+
+只允许三种正常结束：
+
+```text
+primary_verified
+primary_contradicted
+exhausted_but_unresolved
+```
+
+具体 SOP：`docs/research/research-agent-sop.md`。
+
+## 8. Phase 4：建立 Current Collection
+
+历史抢救的同时，从今天开始建立锂电 source watchlist。
+
+### 8.1 优先 source
+
+- 工信部、发改委、能源局、统计/海关等；
+- 动力电池联盟；
+- 中汽协、乘联会；
+- 交易所公告；
+- 头部电池/材料/锂资源公司 IR；
+- 关键海外矿业公司披露；
+- 地方政府环评/审批；
+- 价格机构公开原始资料；
+- 行业协会和政策原文。
+
+### 8.2 当前资料优先保存什么
+
+- 明确数字与统计口径；
+- 项目里程碑；
+- guidance/forecast/target；
+- 资本开支、融资、并购；
+- 政策；
+- 定价/合同/市场规则改变；
+- 统计修订；
+- 技术路线和单位耗用；
+- 高信息量 IR/业绩会/会议实录。
+
+当前资料的原则：
+
+> 能今天归档，就不要寄希望于未来模型记得。
+
+## 9. Phase 5：Judgment Extraction
+
+从真实锂电历史资料反推 Judgment schema/抽取，而不是先构建通用 NLP 平台。
 
 最小能力：
 
-- speaker 识别；
-- forecast horizon 识别；
-- judgment kind 分类；
-- 定量值/区间/日期/方向提取；
-- rationale/condition/risk 提取；
-- revision/reaffirmation 关系识别；
-- evidence locator 强校验。
+- speaker resolution；
+- said_at / target_period；
+- forecast/guidance/target/risk/scenario；
+- 数值/范围/日期/方向；
+- rationale/condition/caveat；
+- revision/reaffirm/withdraw；
+- evidence locator。
 
-人工复核优先覆盖高影响 judgment 和低置信 speaker/subject 消歧。
+## 10. Phase 6：Reality vs Expectation vs Outcome
 
-### Phase 3：建立 Reality vs Expectation 复盘
-
-先不做复杂模型，只做简单可解释查询：
+第一版研究不需要复杂模型，只做可解释查询：
 
 ```text
-当时预期需求增长多少？
-实际增长多少？
-当时预计新增产能何时投产？
-实际何时投产？
-当时最大的乐观假设是什么？
-哪个假设最后失败？
+当时预计需求多少？实际多少？
+当时预计哪些项目投产？实际什么时候形成有效供给？
+当时缺货/过剩的理由是什么？
+哪些 premise 最后失效？
+市场什么时候开始修订预期？
 ```
 
-第一版分析可以完全用 SQL / notebook / 简单图表完成。
+## 11. Phase 7：模型更新后的历史回补
 
-### Phase 4：提炼产业常识
+未来高级模型训练资料或能力更新时，不覆盖旧 Memory Atlas。
 
-只有在历史样本足够后，再建立可解释的统计：
+每个新 model vintage 重新跑固定 benchmark manifest：
 
-- 项目延期分布；
-- 管理层 guidance 偏差；
-- 行业高利润后扩产响应时滞；
-- 资本开支到有效供给的转化率；
-- 共识与实际的偏差分布；
-- 库存、利润、扩产、退出的历史组合。
+```text
+old atlas
+vs
+new atlas
+→ known / refined / novel
+→ archive gap
+→ backfill queue
+```
 
-这些结论必须能下钻到原始事实和原始判断。
+新增旧称、actor、机制、项目名都可以产生 refinement，即使事件本身以前已经有 lead。
 
-### Phase 5：再决定产品层
+长期可以统计不同模型作为历史目录生成器的：
 
-底层产业记忆稳定后，再选择是否建设：
+- novel verified lead yield；
+- false memory rate；
+- terminology yield；
+- mechanism yield；
+- forgotten actor yield；
+- primary-source search yield；
+- archive coverage uplift。
 
-- 行业时间线；
-- point-in-time research terminal；
-- 周期 dashboard；
-- AI analyst；
-- API；
-- 自动风险/机会提示。
+详细设计：`docs/research/model-refresh-backfill.md`。
 
-产品层不得反向要求 core 牺牲历史真实性。
+## 12. 数据库路线
 
-## 6. 工程路线
+### 已增加
 
-### 6.1 统一同步与异步业务 primitive
+- `0013_judgments_and_expectations.sql`
+- `0014_memory_leads_and_authority.sql`
+- `0015_memory_campaigns_and_model_refresh.sql`
 
-当前同步 `CollectionPipeline` 和阶段化 `PipelineDispatcher` 不应长期拥有两套业务逻辑。
+新增对象覆盖：
 
-逐步提取以下幂等 application services：
+```text
+Judgment / rationale / expectation snapshot / outcome evaluation
+Model Prior Run / Memory Lead / Lead Relation
+source authority profile
+memory disagreement
+Memory Campaign / Run membership / Seal / Coverage
+Model Refresh / Lead Diff
+Verification Task Packet
+```
+
+## 13. 工程路线
+
+### 13.1 业务 primitive 统一
+
+同步 pipeline 和阶段化 worker 最终应调用同一组业务 primitive：
 
 ```text
 archive_document
@@ -283,46 +397,60 @@ extract_judgments
 normalize_assertions
 reconcile_facts
 persist_judgments
+run_memory_campaign
+seal_memory_atlas
+self_verify_memory_leads
+compile_verification_tasks
 build_expectation_snapshot
 evaluate_outcomes
 ```
 
-同步 demo 和异步 worker 都只负责 orchestration。
+### 13.2 下一步实现优先级
 
-### 6.2 真实数据库优先验证
+1. Memory Campaign persistence/orchestration；
+2. 生产高级模型 `MemoryPriorGateway` adapter；
+3. self-verification 搜索结果进入 archive 的桥接；
+4. verification task packet → agent execution/import；
+5. Current source watchlist + scheduler；
+6. judgment extraction；
+7. PostgreSQL/S3 集成和故障测试。
 
-下一阶段测试优先级：
+## 14. 测试优先级
 
-1. PostgreSQL 并发 reconciliation；
-2. worker lease 过期与接管；
-3. DB commit 成功但调用方超时；
-4. 对象存储成功、DB 失败及反向情况；
-5. extraction 保存后进程崩溃的幂等重放；
-6. judgment revision 并发写入；
-7. point-in-time 查询不能读到 cutoff 之后的数据。
+- Campaign 封存后不能被搜索结果修改；
+- 同一个 lead 允许被新 model vintage 重新召回；
+- model refresh 只 append，不覆盖 baseline；
+- `not_found` 永远不能自动变成 contradiction；
+- verification agent 未达到 minimum depth 不能正常完成任务；
+- primary-source conflict 不能多数投票；
+- point-in-time snapshot 不能读 cutoff 之后资料；
+- 并发 reconciliation / lease takeover / partial commit / object-store failure。
 
-### 6.3 研究质量指标
+## 15. 研究 KPI
 
-不以“每天抓多少文档”为核心 KPI。
+不以文档条数为主。
 
-更重要的指标包括：
+更重要：
 
 - 关键历史事件覆盖率；
-- canonical fact 原文可追溯率；
-- judgment 原文可追溯率；
-- 关键序列口径完整率；
-- point-in-time 泄漏测试通过率；
-- 高影响事实人工复核积压；
-- 历史项目里程碑完整度；
-- prediction/reality 可配对比例。
+- 长尾 Memory Lead 验证率；
+- novel lead → primary source 转化率；
+- forgotten actor / failed project 覆盖率；
+- old vocabulary 搜索收益；
+- project revision-chain 完整度；
+- Judgment 可追溯率；
+- historical snapshot future-leak rate；
+- 当前 source watchlist 漏采率；
+- model refresh 带来的 archive coverage uplift。
 
-## 7. 判断是否值得继续开发一个功能
+## 16. 判断新功能值不值得做
 
-新增能力前先问：
+先问：
 
-1. 它是否帮助保存“以后最容易后悔没留下来的历史”？
-2. 它是否提高事实或当时认知的真实性、可比性、可回放性？
-3. 它是否能在十年后帮助解释今天的人为什么做出今天的决定？
-4. 如果没有它，研究者仅用历史和常识会缺失什么关键上下文？
+1. 它能否帮助保存未来最容易后悔没留下来的历史？
+2. 它能否让历史更真实、可比、可回放？
+3. 它能否帮助高级模型想起普通搜索流程不会想到的东西？
+4. 它能否让低成本 Agent 少做自由研究、多做可检查的证据工程？
+5. 它能否在未来模型升级时重新打开旧历史缺口？
 
-如果四个问题都答不上来，就不应优先进入 core。
+如果大部分答案是否，就不应优先进入 core。
