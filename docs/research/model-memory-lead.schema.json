@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://longcycle.local/schemas/model-memory-lead.schema.json",
+  "title": "Longcycle Model Memory Lead",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lead_kind",
+    "claim_scope",
+    "summary",
+    "approximate_period",
+    "memory_confidence",
+    "importance_score",
+    "novelty_score",
+    "searchability_score",
+    "recalled_details",
+    "possible_actors",
+    "suggested_queries",
+    "suggested_source_types",
+    "relations"
+  ],
+  "properties": {
+    "lead_kind": {
+      "enum": [
+        "landmark",
+        "missing_event",
+        "actor",
+        "terminology",
+        "metric",
+        "mechanism",
+        "pricing_rule",
+        "contract_change",
+        "process_bottleneck",
+        "project_pattern",
+        "inventory_pattern",
+        "capital_cycle",
+        "policy_shift",
+        "technology_shift",
+        "cross_industry_dependency",
+        "narrative",
+        "causal_hypothesis",
+        "anomaly"
+      ]
+    },
+    "claim_scope": {
+      "enum": [
+        "legal_disclosure",
+        "official_statistic",
+        "self_statement",
+        "management_guidance",
+        "market_measurement",
+        "project_status",
+        "policy_text",
+        "third_party_fact",
+        "industry_expectation",
+        "technical_specification",
+        "other"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "An explicitly unsourced recollection or anomaly lead, never a verified fact."
+    },
+    "approximate_period": {
+      "type": "array",
+      "prefixItems": [
+        {"type": ["string", "null"], "format": "date"},
+        {"type": ["string", "null"], "format": "date"}
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "memory_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Self-reported strength of recollection only. It is NOT a probability that the claim is true."
+    },
+    "importance_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "novelty_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "searchability_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "recalled_details": {"type": "object"},
+    "possible_actors": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "suggested_queries": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "suggested_source_types": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["target_ref", "relation_type", "explanation"],
+        "properties": {
+          "target_ref": {"type": "string", "minLength": 1},
+          "relation_type": {
+            "enum": [
+              "associated_with",
+              "possible_cause",
+              "possible_effect",
+              "predecessor",
+              "successor",
+              "search_synonym",
+              "same_episode",
+              "cross_chain_link",
+              "possible_revision"
+            ]
+          },
+          "explanation": {"type": "string"}
+        }
+      }
+    }
+  }
+}
