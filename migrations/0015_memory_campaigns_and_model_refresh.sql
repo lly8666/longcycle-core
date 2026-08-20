@@ -2,6 +2,17 @@
 -- Historical recovery is memory-first but evidence-final: campaigns build sealed lead maps;
 -- later verification/search runs may reference them but never rewrite them.
 
+-- 0014 introduced a small audit-oriented run-mode set. Exhaustive recall needs to record
+-- orthogonal recall passes, atlas refinement, self-search verification and model-refresh diffs.
+ALTER TABLE research.model_prior_runs
+    DROP CONSTRAINT model_prior_runs_run_mode_check;
+
+ALTER TABLE research.model_prior_runs
+    ADD CONSTRAINT model_prior_runs_run_mode_check CHECK (run_mode IN (
+        'blind_recall', 'gap_audit', 'conflict_audit', 'association_expansion',
+        'memory_exhaustion_pass', 'atlas_refinement', 'self_verification', 'refresh_diff'
+    ));
+
 CREATE TABLE research.model_memory_campaigns (
     id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     industry_node_id uuid REFERENCES core.taxonomy_nodes(id),
