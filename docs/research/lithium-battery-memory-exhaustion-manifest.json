@@ -1,0 +1,236 @@
+{
+  "schema_version": "longcycle-memory-exhaustion/v1",
+  "industry": "新能源锂电池",
+  "industry_slug": "lithium-battery",
+  "default_period": ["2019-01-01", "2026-12-31"],
+  "protocol": "docs/research/model-memory-exhaustion-protocol.md",
+  "blind_stage": {
+    "source_visibility": "none",
+    "fresh_search_forbidden": true,
+    "archive_results_forbidden": true,
+    "required_output_classes": [
+      "obvious_landmarks",
+      "long_tail_leads",
+      "forgotten_actors",
+      "mechanism_leads",
+      "search_keys",
+      "uncertain_fragments"
+    ],
+    "long_tail_token_share_min": 0.5
+  },
+  "passes": [
+    {
+      "pass_id": "MEM-TIME-2019-2020",
+      "family": "time_slice",
+      "period": ["2019-01-01", "2020-12-31"],
+      "focus": "周期底部、上一轮过剩余波、新能源车与LFP转折前后",
+      "questions": [
+        "逐季或逐半年回忆价格、供给、需求、库存、资本开支、项目、公司动作和当时叙事",
+        "哪些当时重要的公司或项目今天已经很少被提及",
+        "哪些预期后来没有兑现"
+      ]
+    },
+    {
+      "pass_id": "MEM-TIME-2021",
+      "family": "time_slice",
+      "period": ["2021-01-01", "2021-12-31"],
+      "focus": "需求加速、锂价上行、供应紧张和扩产反应",
+      "questions": [
+        "按季度回忆价格、精矿、锂盐、材料、电池、车端和资本市场的关键变化",
+        "当时市场如何解释短缺，哪些数字/项目/限制被频繁讨论"
+      ]
+    },
+    {
+      "pass_id": "MEM-TIME-2022",
+      "family": "time_slice",
+      "period": ["2022-01-01", "2022-12-31"],
+      "focus": "极端高价、资源争夺、项目/融资高峰、需求与供给预期",
+      "questions": [
+        "按季度回忆极端行情下的合同、定价、库存、项目和管理层行为",
+        "有哪些长期短缺或高价持续叙事",
+        "有哪些反向信号在当时已经出现但不显眼"
+      ]
+    },
+    {
+      "pass_id": "MEM-TIME-2023-2024",
+      "family": "time_slice",
+      "period": ["2023-01-01", "2024-12-31"],
+      "focus": "价格反转、去库存、供给释放、项目兑现差异和预期修订",
+      "questions": [
+        "按季度回忆谁先感受到需求或库存变化",
+        "哪些项目按时释放，哪些延期/低利用率/取消",
+        "市场叙事如何从短缺切换到过剩"
+      ]
+    },
+    {
+      "pass_id": "MEM-TIME-2025-2026",
+      "family": "time_slice",
+      "period": ["2025-01-01", "2026-12-31"],
+      "focus": "新平衡、低价供给响应、储能/海外/技术变化",
+      "questions": [
+        "哪些边际供需变量替代了上一轮核心矛盾",
+        "哪些旧项目、产能或技术预期仍在影响当前周期"
+      ]
+    },
+    {
+      "pass_id": "MEM-CHAIN-UPSTREAM",
+      "family": "chain_slice",
+      "focus_nodes": ["锂矿", "盐湖", "锂精矿", "碳酸锂", "氢氧化锂"],
+      "questions": [
+        "逐节点穷举关键公司、项目、旧称、定价方式、供给瓶颈、库存位置和重要历史转折",
+        "不要只列头部公司，刻意寻找失败者和后来边缘化的参与者"
+      ]
+    },
+    {
+      "pass_id": "MEM-CHAIN-MATERIALS",
+      "family": "chain_slice",
+      "focus_nodes": ["磷酸铁锂", "三元正极", "前驱体", "负极", "隔膜", "电解液", "六氟磷酸锂"],
+      "questions": [
+        "逐节点回忆价格、利润、产能、扩产、技术路线、原料约束和客户认证",
+        "哪些材料环节曾短期成为瓶颈但后来不再被讨论"
+      ]
+    },
+    {
+      "pass_id": "MEM-CHAIN-BATTERY-DOWNSTREAM",
+      "family": "chain_slice",
+      "focus_nodes": ["动力电池", "储能电池", "Pack", "新能源汽车", "储能", "回收"],
+      "questions": [
+        "回忆需求结构、排产、库存、价格传导、客户关系、技术路线和当时预期",
+        "区分销量、装车、出货、排产和终端需求"
+      ]
+    },
+    {
+      "pass_id": "MEM-ACTORS",
+      "family": "actor_exhaustion",
+      "questions": [
+        "列出各阶段头部、二线、后来退出或边缘化但当时重要的公司/矿山/项目/机构",
+        "对每个 actor 回忆其可能改变供需、成本、技术路线或预期的动作",
+        "补充公司曾用名、项目名、矿山英文名和基地名"
+      ]
+    },
+    {
+      "pass_id": "MEM-METRICS",
+      "family": "metric_exhaustion",
+      "metrics": [
+        "价格", "价差", "加工费", "精矿价格", "产能", "有效产能", "产量", "开工率",
+        "良率", "库存", "进口", "出口", "排产", "装车量", "销量", "订单", "资本开支",
+        "预付款", "应收", "现金成本", "利润", "单位材料耗用", "项目建设周期", "客户认证周期"
+      ],
+      "questions": [
+        "逐指标回忆异常阶段、历史口径、领先/滞后关系、曾被市场高度关注的数据点或统计源"
+      ]
+    },
+    {
+      "pass_id": "MEM-MECHANISMS",
+      "family": "mechanism_exhaustion",
+      "questions": [
+        "只讲产业运行机制：定价、利润分配、扩产传导、减产退出、库存迁移、技术降耗、融资约束、客户认证、海外影响",
+        "每个机制至少给出一个可能的历史案例 lead 和可搜索 actor"
+      ]
+    },
+    {
+      "pass_id": "MEM-NARRATIVES",
+      "family": "contemporaneous_narrative",
+      "questions": [
+        "按阶段回忆当时主流共识、少数派观点、长期预测、需求故事、供给故事、技术替代故事",
+        "刻意区分当时叙事和后来总结",
+        "输出可能的报告标题词、管理层表达关键词和预测目标年份"
+      ]
+    },
+    {
+      "pass_id": "MEM-TERMINOLOGY",
+      "family": "old_vocabulary",
+      "questions": [
+        "尽可能输出旧公司名、项目旧名、矿山旧名、英文/中文别名、旧指标名、旧技术名、当年媒体常用短语和PDF标题关键词",
+        "优先输出今天搜索时不容易自然想到的词"
+      ]
+    },
+    {
+      "pass_id": "MEM-FAILURES",
+      "family": "failure_dead_end",
+      "questions": [
+        "回忆取消、延期、多年爬坡、低利用率、减值、出售、停产、技术失败、融资失败的项目和公司",
+        "回忆当时很热但后来没有兑现的需求或技术故事"
+      ]
+    },
+    {
+      "pass_id": "MEM-REVERSE-2023",
+      "family": "reverse_causality",
+      "anchor": "2023年锂价显著反转下行",
+      "lookback_months": [6, 12, 18, 24, 36],
+      "questions": [
+        "倒推可能提前出现的供给、库存、资本开支、需求预期、合同和定价机制变化",
+        "不要把后来结果当成当时已知事实，只生成待验证 lead"
+      ]
+    },
+    {
+      "pass_id": "MEM-CROSS-INDUSTRY",
+      "family": "cross_industry",
+      "questions": [
+        "回忆锂电周期受到的电力、能源、化工、矿业设备、航运、汽车金融、电网、海外补贴、贸易、汇率、融资和地方财政影响",
+        "输出纯锂电数据库内部不容易看见的外部变量"
+      ]
+    },
+    {
+      "pass_id": "MEM-COUNTERFACTUAL",
+      "family": "counterfactual",
+      "questions": [
+        "对每个著名历史解释提出至少两个当时可能存在的替代解释",
+        "指出需要什么历史证据才能区分这些解释"
+      ]
+    },
+    {
+      "pass_id": "MEM-NEGATIVE-SPACE",
+      "family": "negative_space",
+      "requires_atlas_only": true,
+      "questions": [
+        "只看已生成Memory Atlas目录，逐个检查时间×产业链×指标矩阵的异常空白",
+        "假设一位做了十几年锂电产业的人认为这份目录太像公开研报摘要，他会指出哪些工程、合同、库存、项目、公司行为、失败史和当时口头叙事缺失"
+      ]
+    },
+    {
+      "pass_id": "MEM-SATURATION",
+      "family": "saturation_review",
+      "requires_atlas_only": true,
+      "questions": [
+        "聚类重复lead并给出仍未覆盖的大类",
+        "标记新增内容是新类别、细化还是重复",
+        "判断是否达到连续3轮高重要度新lead显著下降的停止条件"
+      ]
+    }
+  ],
+  "recursive_questions_for_high_importance_lead": [
+    "Who else? 还有哪些actor与它相关？",
+    "What preceded it? 它之前有哪些先行变化？",
+    "What followed it? 之后可能出现哪些行为或数据变化？",
+    "What was it called then? 当时通常用什么词描述？"
+  ],
+  "self_verification_stage": {
+    "enabled": true,
+    "must_start_new_run": true,
+    "source_visibility": "search_results",
+    "objectives": [
+      "把模糊lead变成更精确的项目名/公司名/报告名/旧称",
+      "优先定位claim-scoped primary source",
+      "识别转载链和独立来源簇",
+      "为低成本Agent生成具体verification task packet"
+    ],
+    "forbidden": [
+      "修改sealed blind atlas",
+      "把搜索摘要直接写成Fact或Judgment",
+      "因为搜不到就删除lead",
+      "因为二手网页数量多就结束争议"
+    ]
+  },
+  "saturation_rule": {
+    "consecutive_low_novelty_passes": 3,
+    "must_review_coverage_matrix": true,
+    "must_include_long_tail_categories": [
+      "forgotten_actors",
+      "failure_dead_end",
+      "old_vocabulary",
+      "mechanism",
+      "negative_space"
+    ]
+  }
+}
