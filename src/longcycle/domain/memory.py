@@ -50,6 +50,29 @@ class MemoryLeadKind(StrEnum):
     NARRATIVE = "narrative"
     CAUSAL_HYPOTHESIS = "causal_hypothesis"
     ANOMALY = "anomaly"
+    FAILURE_DEAD_END = "failure_dead_end"
+
+
+class MemoryBasis(StrEnum):
+    REMEMBERED_EVENT = "remembered_event"
+    REMEMBERED_ACTOR_OR_NAME = "remembered_actor_or_name"
+    REMEMBERED_MECHANISM = "remembered_mechanism"
+    ASSOCIATIVE_INFERENCE = "associative_inference"
+    MIXED = "mixed"
+
+
+class PrecisionRisk(StrEnum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    UNKNOWN = "unknown"
+
+
+class EntityResolutionState(StrEnum):
+    STABLE = "stable"
+    PARTIALLY_RESOLVED = "partially_resolved"
+    AMBIGUOUS = "ambiguous"
+    UNRESOLVED = "unresolved"
 
 
 class EvidenceStance(StrEnum):
@@ -76,12 +99,21 @@ class MemoryLead(DomainModel):
     kind: MemoryLeadKind
     summary: str = Field(min_length=1)
     claim_scope: ClaimScope
+    memory_basis: MemoryBasis = MemoryBasis.MIXED
     memory_confidence: float = Field(ge=0, le=1)
     importance_score: float = Field(ge=0, le=1)
     novelty_score: float = Field(ge=0, le=1)
     searchability_score: float = Field(ge=0, le=1)
+    precision_risk: PrecisionRisk = PrecisionRisk.UNKNOWN
+    entity_resolution_state: EntityResolutionState = EntityResolutionState.UNRESOLVED
+    uncertain_fields: tuple[str, ...] = ()
+    aliases_or_old_terms: tuple[str, ...] = ()
+    why_search_may_miss_it: str | None = None
     suggested_queries: tuple[str, ...] = ()
+    disconfirmation_queries: tuple[str, ...] = ()
     suggested_source_types: tuple[str, ...] = ()
+    disconfirmation_source_types: tuple[str, ...] = ()
+    satellite_trigger: str | None = None
 
     @property
     def search_priority(self) -> float:
