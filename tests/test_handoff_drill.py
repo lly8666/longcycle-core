@@ -6,13 +6,15 @@ from pathlib import Path
 from longcycle.application.handoff_drill import audit_repository_handoff
 from longcycle.application.session_handoff import HandoffMemoryCampaign, SessionHandoffCheckpoint
 
-
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class HandoffIsolationDrillTest(unittest.TestCase):
     def test_repository_only_reconstruction_matches_current_campaign(self) -> None:
         report = audit_repository_handoff(ROOT)
+        checkpoint = SessionHandoffCheckpoint.model_validate_json(
+            (ROOT / ".longcycle" / "handoff" / "current.json").read_text(encoding="utf-8")
+        )
 
         self.assertEqual(report.fidelity_score, 1.0, report.failed_checks)
         self.assertEqual(report.recovered.repository, "lly8666/longcycle-core")
@@ -22,7 +24,11 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         self.assertEqual(report.recovered.industry, "lithium-battery")
         self.assertEqual(report.recovered.phase, "blind_memory_exhaustion")
         self.assertEqual(report.recovered.search_visibility, "none")
-        self.assertEqual(report.recovered.total_raw_leads, 570)
+        self.assertEqual(
+            report.recovered.total_raw_leads,
+            checkpoint.memory_campaign.total_raw_leads,
+        )
+        self.assertGreater(report.recovered.total_raw_leads, 0)
         self.assertEqual(report.recovered.shard_count, 14)
         self.assertEqual(report.recovered.sealed_shards, ())
         self.assertTrue(report.recovered.ordered_next_actions)
@@ -48,7 +54,10 @@ class HandoffIsolationDrillTest(unittest.TestCase):
 
         self.assertLess(report.fidelity_score, 1.0)
         self.assertIn("checkpoint_total_matches_raw", failures)
-        self.assertEqual(report.recovered.total_raw_leads, 570)
+        self.assertEqual(
+            report.recovered.total_raw_leads,
+            checkpoint.memory_campaign.total_raw_leads,
+        )
 
 
 if __name__ == "__main__":
