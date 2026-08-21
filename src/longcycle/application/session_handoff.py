@@ -20,12 +20,13 @@ class HandoffCIState(BaseModel):
 
 
 class HandoffCoreRefs(BaseModel):
-    """Small, slow-changing bootstrap cores. Dynamic state must not be copied here."""
+    """Small, slow-changing bootstrap cores and semantic calibration contract."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     strategy_path: Literal["STRATEGIC_COMPASS.md"]
     methodology_path: Literal["METHODOLOGY_CORE.md"]
+    mission_fidelity_path: Literal[".longcycle/continuity/mission-fidelity.json"]
 
 
 class HandoffStrategicHorizon(BaseModel):
@@ -38,6 +39,19 @@ class HandoffStrategicHorizon(BaseModel):
     next_big_step: str = Field(min_length=1)
     local_optimization_stop_rule: str = Field(min_length=1)
     parallel_permanent_tracks: tuple[str, ...] = ()
+
+
+class HandoffContinuationCursor(BaseModel):
+    """Small, live execution pointer beneath the strategic horizon."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    parent_workstream_id: str = Field(min_length=1)
+    last_completed_action: str = Field(min_length=1)
+    current_task: str = Field(min_length=1)
+    why_now: str = Field(min_length=1)
+    done_when: str = Field(min_length=1)
+    next_atomic_action: str = Field(min_length=1)
 
 
 class HandoffActiveContext(BaseModel):
@@ -96,7 +110,7 @@ class SessionHandoffCheckpoint(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["longcycle-session-handoff/v2"]
+    schema_version: Literal["longcycle-session-handoff/v3"]
     continuity_sequence: int = Field(ge=1)
     provenance_ordering: Literal["git_commit_graph"]
     repository: Literal["lly8666/longcycle-core"]
@@ -108,6 +122,7 @@ class SessionHandoffCheckpoint(BaseModel):
     bootstrap_instruction: str = Field(min_length=1)
     core_refs: HandoffCoreRefs
     strategic_horizon: HandoffStrategicHorizon
+    continuation_cursor: HandoffContinuationCursor
     active_context: HandoffActiveContext
     pending_user_directives: tuple[str, ...] = ()
     memory_campaign: HandoffMemoryCampaign | None = None
@@ -131,10 +146,13 @@ class SessionHandoffCheckpoint(BaseModel):
         workstream_ids = [item.workstream_id for item in self.workstreams]
         if len(workstream_ids) != len(set(workstream_ids)):
             raise ValueError("handoff workstream ids must be unique")
+        if self.continuation_cursor.parent_workstream_id not in set(workstream_ids):
+            raise ValueError("continuation cursor must point to a declared workstream")
 
         required_paths = {
             self.core_refs.strategy_path,
             self.core_refs.methodology_path,
+            self.core_refs.mission_fidelity_path,
             "CONTINUE_HERE.md",
             ".longcycle/handoff/current.json",
         }
