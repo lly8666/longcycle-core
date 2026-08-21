@@ -1,0 +1,107 @@
+{
+  "artifact": "horizon-gap-priority-v1",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "created_at": "2026-08-21T13:13:00+08:00",
+  "purpose": "Choose the next blind 2015-2018 passes by causal information gain instead of filling every shard by quota.",
+  "fresh_search_used": false,
+  "neighbor_raw_outputs_used_for_ranking": false,
+  "inputs": [
+    "docs/research/lithium-battery-cycle-horizon-v2.md",
+    "analysis/coverage-index.json",
+    "promoted cross-shard bridge and satellite topology already present in coverage-index"
+  ],
+  "decision_dimensions": [
+    "ability to explain 2019-2020 Reality from decisions or expectations formed in 2015-2018",
+    "capital/project lead time and delayed supply response",
+    "importance to lithium price / effective supply / chemistry demand interpretation",
+    "current weakness of explicit pre-2019 causal setup",
+    "likelihood that the pass creates reusable cross-shard bridges rather than isolated trivia"
+  ],
+  "priority": [
+    {
+      "rank": 1,
+      "shard_id": "UP-BRINE",
+      "decision": "run_now",
+      "causal_value": "very_high",
+      "gap_density": "high",
+      "bridge_value": "very_high",
+      "reason": "Brine expansions, pond/residence-time physics, Atacama/Argentina contract regimes and slow project response are a necessary counterweight to the hard-rock story. They can explain why nominal resource/capacity signals before 2019 did not translate one-for-one into effective supply during the downturn."
+    },
+    {
+      "rank": 2,
+      "shard_id": "UP-CONCENTRATE",
+      "decision": "run_now",
+      "causal_value": "very_high",
+      "gap_density": "high",
+      "bridge_value": "very_high",
+      "reason": "Merchant spodumene concentrate pricing, offtake structures, quality/qualification and mine-to-converter bottlenecks connect upstream mine investment to chemical conversion and price transmission. This is central to reconstructing the 2017-2020 cycle rather than treating mine tonnes as immediately usable lithium supply."
+    },
+    {
+      "rank": 3,
+      "shard_id": "DOWN-ESS",
+      "decision": "run_if_upstream_novelty_remains_healthy",
+      "causal_value": "high",
+      "gap_density": "high",
+      "bridge_value": "high",
+      "reason": "Early stationary-storage economics, safety, policy and system-design expectations provide the antecedent for the later LFP second-demand-curve narrative. The value is structural, but its direct explanatory power for the 2019-2020 lithium downcycle is below the two upstream shards."
+    },
+    {
+      "rank": 4,
+      "shard_id": "LOOP-RECYCLING",
+      "decision": "hold_for_marginal_novelty_check",
+      "causal_value": "medium_high",
+      "gap_density": "medium_high",
+      "bridge_value": "high",
+      "reason": "Pre-2019 recycling is useful for scrap-first economics, cobalt/nickel value drivers, policy roots and future secondary-supply expectations, but it is less likely than the first three shards to change the primary interpretation of the 2019-2020 lithium cycle."
+    },
+    {
+      "rank": 5,
+      "shard_id": "MID-ANODE",
+      "decision": "defer",
+      "causal_value": "medium",
+      "gap_density": "medium",
+      "bridge_value": "medium_high",
+      "reason": "Graphite feedstock, graphitization and qualification have long lead times and useful cross-chain structure, but current campaign topology does not yet indicate that missing 2015-2018 anode history is a first-order blocker for cycle replay."
+    },
+    {
+      "rank": 6,
+      "shard_id": "MID-ELECTROLYTE",
+      "decision": "defer",
+      "causal_value": "medium",
+      "gap_density": "medium",
+      "bridge_value": "medium",
+      "reason": "Salt/solvent/additive history matters for cost and safety but is less likely to explain the principal 2019-2020 lithium balance without a stronger negative-space signal."
+    },
+    {
+      "rank": 7,
+      "shard_id": "MID-SEPARATOR",
+      "decision": "defer",
+      "causal_value": "medium",
+      "gap_density": "medium",
+      "bridge_value": "medium",
+      "reason": "Capacity qualification and wet/dry process history can matter, but the current information-gain case for a dedicated pre-2019 pass is weaker than upstream supply and early storage demand."
+    },
+    {
+      "rank": 8,
+      "shard_id": "DOWN-OTHER",
+      "decision": "defer",
+      "causal_value": "medium_low",
+      "gap_density": "medium",
+      "bridge_value": "medium",
+      "reason": "Two-wheelers, tools and consumer applications are real demand components, yet a blanket pre-2019 pass risks collecting descriptive history rather than changing the causal interpretation of the benchmark cycle."
+    }
+  ],
+  "execution_rule": {
+    "sequence": ["UP-BRINE", "UP-CONCENTRATE", "DOWN-ESS"],
+    "stop_rule": "After each pass classify every lead as new_category, useful_refinement or duplicate. Stop widening the pre-2019 batch when useful new causal dimensions materially decay; do not continue merely to equalize shard counts.",
+    "recycling_rule": "Run LOOP-RECYCLING only if the first three passes still show healthy marginal novelty or expose an unresolved secondary-supply / scrap-economics bridge.",
+    "search_boundary": "No fresh web/search until the individual shard is sealed."
+  },
+  "tooling_decision": {
+    "low_cost_agent_dispatcher": "defer",
+    "trigger_to_build": [
+      "a sealed shard produces substantial claim-scoped verification workload",
+      "source-first archive-now collection develops a stable repeated bounded-web workload that becomes a real bottleneck"
+    ]
+  }
+}
