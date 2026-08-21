@@ -1,6 +1,11 @@
 name: Kwinana real archive runtime probe
 
 on:
+  pull_request:
+    branches:
+      - design/industry-memory
+    paths:
+      - .github/workflows/kwinana-runtime-probe.yml
   push:
     branches:
       - design/industry-memory-runtime-probe
@@ -159,8 +164,7 @@ jobs:
               (out/f'{year}-visible.txt').write_text(text,encoding='utf-8')
               anchors=['commission','Kwinana','Stage One','Stage Two','Phase One','second half','2019']
               print(f'===== {year} ARCHIVED {r["content_sha256"]} {r["byte_length"]} bytes =====')
-              lower=text.lower()
-              hits=[]
+              lower=text.lower(); hits=[]
               for a in anchors:
                   i=lower.find(a.lower())
                   if i>=0: hits.append(i)
