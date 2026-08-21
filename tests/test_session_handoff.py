@@ -72,7 +72,7 @@ class SessionHandoffContractTest(unittest.TestCase):
         ):
             self.assertNotIn(duplicated_key, payload)
 
-    def test_pre_search_campaign_preserves_seal_and_search_boundaries(self) -> None:
+    def test_campaign_preserves_seal_and_search_boundaries(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
             HANDOFF.read_text(encoding="utf-8")
         )
@@ -85,8 +85,16 @@ class SessionHandoffContractTest(unittest.TestCase):
 
         self.assertGreater(campaign.total_raw_leads, 0)
         self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
-        self.assertEqual(campaign.search_visibility, "none")
-        self.assertIn("self_verification_preparation", campaign.phase)
+
+        if campaign.search_visibility == "none":
+            self.assertTrue(
+                campaign.phase.startswith("blind")
+                or "self_verification_preparation" in campaign.phase
+            )
+        else:
+            self.assertEqual(campaign.search_visibility, "self_verification")
+            self.assertTrue(campaign.sealed_shards)
+            self.assertIn("self_verification", campaign.phase)
 
     def test_resume_set_contains_only_small_bootstrap_plus_active_state(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
