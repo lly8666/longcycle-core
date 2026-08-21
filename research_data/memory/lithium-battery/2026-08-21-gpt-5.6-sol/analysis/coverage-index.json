@@ -1,8 +1,8 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "pre2019_batch3_started_on_nine_priority_shards_unsealed",
-  "total_raw_leads_so_far": 653,
-  "total_formal_typed_leads_so_far": 595,
+  "blind_stage_status": "pre2019_batch3_completed_on_ten_selected_shards_unsealed",
+  "total_raw_leads_so_far": 658,
+  "total_formal_typed_leads_so_far": 600,
   "legacy_experimental_raw_leads": {
     "total": 58,
     "files": [
@@ -27,17 +27,17 @@
     {"shard_id":"UP-CHEMICALS","lead_count":66,"formal_typed_lead_count":38,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-LFP","lead_count":56,"formal_typed_lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-TERNARY","lead_count":42,"formal_typed_lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"MID-ANODE","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-SEPARATOR","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-ELECTROLYTE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"MID-ANODE","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"MID-SEPARATOR","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"MID-ELECTROLYTE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
     {"shard_id":"BAT-CELL","lead_count":58,"formal_typed_lead_count":58,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"DOWN-NEV","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"DOWN-ESS","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3_with_repair_overlay"},
-    {"shard_id":"DOWN-OTHER","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"LOOP-RECYCLING","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"}
+    {"shard_id":"DOWN-OTHER","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"LOOP-RECYCLING","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"}
   ],
   "saturation_experiment": {
-    "result": "all 14 primary shards completed ordinary batch2; nine cycle-forming shards have now also completed a targeted 2015-2018 batch3 and still show no low-novelty batch",
+    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3 and still show no low-novelty batch. The pre-2019 widening experiment now stops by information-gain rule; four lower-priority shards remain deliberately deferred rather than equalized by quota",
     "ordinary_batch2": "14/14 primary shards remained high novelty",
     "pre2019_batch3": [
       {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
@@ -48,9 +48,11 @@
       {"shard_id":"BAT-CELL","non_duplicate":"6/6"},
       {"shard_id":"UP-BRINE","non_duplicate":"6/6"},
       {"shard_id":"UP-CONCENTRATE","non_duplicate":"5/5"},
-      {"shard_id":"DOWN-ESS","non_duplicate":"6/6"}
+      {"shard_id":"DOWN-ESS","non_duplicate":"6/6"},
+      {"shard_id":"LOOP-RECYCLING","non_duplicate":"5/5"}
     ],
-    "interpretation": "the 2015 horizon extension continues to expose material causal setup, including pre-2019 ESS policy, grid-service, safety and duration semantics. LOOP-RECYCLING remains a hold-for-marginal-value decision rather than an automatic next batch"
+    "pre2019_deferred": ["MID-ANODE","MID-ELECTROLYTE","MID-SEPARATOR","DOWN-OTHER"],
+    "interpretation": "the 2015 horizon extension exposed material causal setup across the highest-value cycle paths. Continued blanket widening would now violate the causal-information-gain stop rule; the next problem is novelty-decay and explicit negative-space review, not symmetric horizon completion"
   },
   "horizon_revision": {
     "primary_period": ["2015-01-01","2026-12-31"],
@@ -66,6 +68,7 @@
     "UP-CHEMICALS": ["Kwinana investment vintage","Kemerton investment vintage","pre-2019 hydroxide-premium expectations","high-price lepidolite/converter capex","converter-side feedstock lockups","2017-2018 grade/spread semantics"],
     "DOWN-NEV": ["subsidy-fraud/data-quality reset","energy-density subsidy incentives","dual-credit planning constraint","pre-2019 A00 vehicle-mix intensity","2018 Tesla Shanghai expectation vintage","2018 subsidy-phase-down expectations"],
     "DOWN-ESS": ["California Aliso Canyon emergency-storage procurement","Hornsdale grid-service expectation reset","China 2018 grid-side storage investment wave","Korea ESS policy boom to safety reset","pre-IRA solar-coupled storage tax structure","pre-2019 short-duration grid-service demand semantics"],
+    "LOOP-RECYCLING": ["2017-2018 cobalt-driven scrap economics","pre-2019 captive recycling ownership roots","China Tower second-life feedstock diversion","first retirement-wave expectation vintage","manufacturing-capacity/yield roots of early scrap feedstock"],
     "MID-LFP": ["commercial-vehicle first-wave LFP demand","policy-driven ternary substitution expectation","pre-2019 cathode capex reallocation","application-specific LFP counter-consensus","2017-2018 LFP pricing lag","survivor-bias actor gap"],
     "MID-TERNARY": ["2017-2018 NCM811 expectation vintage","cobalt-price route pressure","pre-2019 ternary capex wave","high-nickel effective-capacity constraints","cobalt sourcing-risk motive","811 commercialization optimism vocabulary"],
     "BAT-CELL": ["battery whitelist/market-access structure","first-wave GWh overcapacity","pre-2019 survivor-bias actor gap","CATL IPO expectation vintage","foreign-cell re-entry expectations","format-route expectation and stranded specialization"]
@@ -87,13 +90,13 @@
     "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
   ],
   "next_phase": {
-    "goal": "continue selective batch3 novelty-decay measurement on the 2015-2026 horizon without turning horizon extension into exhaustive calendar backfill",
+    "goal": "transition from selective horizon widening to explicit negative-space and novelty-decay measurement without fresh search",
     "actions": [
-      "rebuild deterministic compact indices from formal v3+ leads, including the new UP-BRINE, UP-CONCENTRATE and DOWN-ESS v5 pre-2019 leads",
-      "inspect LOOP-RECYCLING's deterministic compact index and decide whether a targeted pre-2019 pass has enough marginal causal value; do not run it merely because it was fourth in the old queue",
-      "if LOOP-RECYCLING is deferred, choose the next information-gain action between selected ordinary batch3 and an explicit negative-space/gap-matrix preparation pass",
-      "continue classifying each blind output as new_category/useful_refinement/duplicate",
-      "do not seal a shard until three consecutive low-novelty batches plus negative-space review are satisfied",
+      "rebuild deterministic compact indices from all 600 formal v3+ leads",
+      "create an explicit negative-space/gap-matrix preparation artifact across all 14 shards, preserving the four deliberate pre-2019 deferrals rather than treating them as missing quota",
+      "use that matrix to choose selected ordinary batch3 probes whose missing dimensions are first-order for replay; classify every output as new_category/useful_refinement/duplicate",
+      "track consecutive low-novelty results per shard explicitly; no shard currently has a qualifying low-novelty streak",
+      "perform the full negative-space/gap-matrix review before any seal and require no material uncovered dimension",
       "do not begin fresh web self-verification before the referenced shard seals",
       "defer a full low-cost-Agent web dispatcher until there is a sealed-shard evidence workload or a repeated bounded current-source collection bottleneck"
     ]
