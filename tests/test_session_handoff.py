@@ -104,12 +104,11 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertEqual(main_path.role, "main_path")
         self.assertEqual(main_path.parent_goal_ref, "strategic_horizon.short_term_goal")
 
-        support = workstreams["session-continuity"]
-        self.assertEqual(support.role, "supporting_quality_gate")
-        self.assertEqual(support.parent_goal_ref, "strategic_horizon.medium_term_goal")
+        cursor_workstream = workstreams[checkpoint.continuation_cursor.parent_workstream_id]
+        self.assertEqual(cursor_workstream.role, "main_path")
         self.assertEqual(
-            checkpoint.continuation_cursor.parent_workstream_id,
-            support.workstream_id,
+            cursor_workstream.parent_goal_ref,
+            "strategic_horizon.short_term_goal",
         )
 
     def test_live_head_difference_requires_delta_reconciliation(self) -> None:
