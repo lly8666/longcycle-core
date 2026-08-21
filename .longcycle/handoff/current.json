@@ -1,17 +1,18 @@
 {
-  "schema_version": "longcycle-session-handoff/v2",
-  "continuity_sequence": 11,
+  "schema_version": "longcycle-session-handoff/v3",
+  "continuity_sequence": 12,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "76b9fc9af4815537802e94bc7e86e3ebb1d358c8",
+  "checkpoint_based_on_head_sha": "4460560dbff52a92bb43ae3754ba1ef6125c4510",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "From a cold start, discover FRESH_AGENT_BOOTSTRAP.md on the default branch, use issue #2 to resolve the active PR/development branch, then read the bounded Strategy and Method cores, this checkpoint for medium/short horizon, and refresh live HEAD/CI. Preserve mission semantic fidelity; do not preload old industries or devlogs.",
+  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve the active branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
-    "methodology_path": "METHODOLOGY_CORE.md"
+    "methodology_path": "METHODOLOGY_CORE.md",
+    "mission_fidelity_path": ".longcycle/continuity/mission-fidelity.json"
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, and the resulting primitives must be demonstrably reusable rather than industry-specific hacks.",
@@ -21,6 +22,14 @@
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
     ]
+  },
+  "continuation_cursor": {
+    "parent_workstream_id": "session-continuity",
+    "last_completed_action": "Implemented continuity v3: think-first mission assimilation, semantic calibration contract, Vertical Alignment Loop, typed continuation cursor, fixed zero-context transfer phrase, protocol/architecture documentation, and repository regression contracts.",
+    "current_task": "Validate continuity v3 with repository-only checks, live CI, and an artificial-ignorance anti-tunnel drill before asking for another genuine fresh-Agent transfer test.",
+    "why_now": "The user asked for a system that makes new Agents actively understand and self-correct the mission, gives long-running Agents repeated parent-goal checks, and lets a fixed phrase resume the exact current task. These semantics should be validated before returning to the research main path.",
+    "done_when": "Repository-only reconstruction and hard CI pass, and an artificial-ignorance drill shows that a bounded Agent can independently reconstruct then calibrate mission semantics, recover medium/short/current task hierarchy, reject tunnel-vision traps, and resume from the fixed phrase/cursor without old devlogs or old industries.",
+    "next_atomic_action": "If internal validation passes, perform one genuine fresh-Agent transfer audit using only the canonical fixed phrase; repair only material continuity failures, otherwise stop continuity work and return to selective blind batch3 novelty-decay research."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
@@ -63,13 +72,13 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 322,
-    "observed_head_sha": "c15783f03f61089f6fa9e5587b7f2b85b1bcf646",
-    "conclusion": "in_progress when observed after the high-fidelity bounded-core drill commit; live refresh is required because the remediation devlog and this checkpoint are newer",
-    "mypy_summary": "Not yet authoritative for the newest coherent state; refresh live run.",
-    "pytest_summary": "Not yet authoritative for the newest coherent state; refresh live run.",
-    "ruff_summary": "Ruff remains diagnostic-only unless it blocks the main path.",
-    "refresh_instruction": "Fetch live HEAD and newest CI. Verify cold-start bootstrap pointer, high-fidelity Strategy Core semantic contract, Method Core boundedness, active-context exclusion, handoff v2 reconstruction and existing memory tests together."
+    "last_observed_run": 328,
+    "observed_head_sha": "ab22ec55b761a8cc1cb5c1e03ab6faae66854c9d",
+    "conclusion": "success on the previous bounded-continuity head; continuity v3 is newer and requires live refresh",
+    "mypy_summary": "Run #328: success, no issues in 55 source files.",
+    "pytest_summary": "Run #328: 133 passed.",
+    "ruff_summary": "Run #328 retained 61 diagnostic-only Ruff findings; lint remains non-blocking.",
+    "refresh_instruction": "Refresh live CI for continuity v3 schema, mission semantic contract, continuation cursor, protocol/docs and new regression tests."
   },
   "workstreams": [
     {
@@ -77,7 +86,7 @@
       "status": "all_primary_batch2_complete_unsealed_batch3_next",
       "summary": "Active benchmark remains in blind Memory Atlas saturation measurement. No shard is sealed and fresh historical search remains forbidden.",
       "next_actions": [
-        "Return to compact-index driven batch3 novelty-decay work after the rerun external bounded-continuity audit is reviewed.",
+        "Return to compact-index driven batch3 novelty-decay work after continuity v3 receives one real fresh-Agent transfer validation.",
         "Keep active-industry details inside the active context package, not long-term core files."
       ],
       "blockers": [
@@ -86,12 +95,13 @@
     },
     {
       "workstream_id": "session-continuity",
-      "status": "genuine_external_audit_found_cold_start_failure_remediated_high_fidelity_rerun_pending",
-      "summary": "The first genuine bounded-continuity audit failed because a zero-context Agent stayed on stale main and wrote its report there; issue #2 was not discoverable from the default branch. A stable FRESH_AGENT_BOOTSTRAP.md now exists on main and the active branch. Strategy Core was also rebalanced from maximal brevity toward bounded high semantic fidelity. An artificial-ignorance drill recovered 10/10 mission facets, 12/12 method facets, 4/4 horizons and rejected 10/10 drift/overcompression traps. A genuine fresh-Agent rerun is still required.",
+      "status": "v3_internal_validation_next",
+      "summary": "The latest genuine fresh-Agent audit passed cold-start discovery and mission fidelity. Continuity v3 now adds think-first semantic calibration, recurring Vertical Alignment anti-tunnel checks, a typed atomic continuation cursor, micro-checkpoint rules and one canonical zero-context transfer phrase.",
       "next_actions": [
-        "Refresh live CI for the complete cold-start + high-fidelity remediation state.",
-        "Run one genuinely fresh Agent using the strengthened docs/development/fresh-agent-bounded-continuity-audit.md with report-only mutation on the resolved active branch.",
-        "Review only material continuity failures from that report; if safe, stop handoff work and return to the active benchmark main path."
+        "Run repository-only validation and live CI for v3.",
+        "Run one artificial-ignorance drill focused on think-then-calibrate, vertical parent-goal recovery and fixed-phrase cursor resumption.",
+        "If internal validation passes, run one genuine fresh-Agent transfer test using only the canonical phrase.",
+        "Repair only material failures; otherwise stop continuity work and return to the active research main path."
       ],
       "blockers": []
     }
@@ -99,6 +109,7 @@
   "resume_read_set": [
     "STRATEGIC_COMPASS.md",
     "METHODOLOGY_CORE.md",
+    ".longcycle/continuity/mission-fidelity.json",
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json"
@@ -106,28 +117,28 @@
   "deep_reference_paths": [
     "FRESH_AGENT_BOOTSTRAP.md",
     "AGENTS.md",
-    "docs/development/project-constitution.md",
+    "docs/development/continuity-architecture.md",
     "docs/development/session-handoff-protocol.md",
+    "docs/development/project-constitution.md",
     "docs/development-plan.md",
     "docs/development/fresh-agent-bounded-continuity-audit.md",
+    "docs/devlog/2026-08-21-fresh-agent-bounded-continuity-audit-report.md"
+  ],
+  "latest_devlogs": [
+    "docs/devlog/2026-08-21-fresh-agent-bounded-continuity-audit-report.md",
     "docs/devlog/2026-08-21-bounded-continuity-cold-start-remediation.md",
     "docs/devlog/2026-08-21-high-fidelity-bounded-core-dumb-agent-drill.md"
   ],
-  "latest_devlogs": [
-    "docs/devlog/2026-08-21-bounded-continuity-cold-start-remediation.md",
-    "docs/devlog/2026-08-21-high-fidelity-bounded-core-dumb-agent-drill.md",
-    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
-  ],
   "unresolved_questions": [
-    "Will a genuinely fresh Agent now discover the default-branch bootstrap pointer, switch to the active branch and reconstruct the founding mission with high semantic fidelity without old devlogs?",
+    "Will a genuinely fresh Agent receiving only the canonical fixed transfer phrase independently synthesize and calibrate the mission, resolve the active branch, recover the exact continuation cursor and continue without user restatement?",
     "What quantitative thresholds should define new_category/useful_refinement/duplicate and a low-novelty batch?",
     "Which high-value shards should enter selective batch3 first?",
     "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough?"
   ],
   "ordered_next_actions": [
-    "Refresh live HEAD/CI and verify the complete cold-start + high-fidelity bounded-continuity remediation state.",
-    "Run one genuine fresh-Agent bounded-continuity audit from repository name only; it must discover FRESH_AGENT_BOOTSTRAP.md, resolve the active branch and write only its report there.",
-    "Review mission semantic fidelity, context economy and branch-resolution behavior; repair only material continuity defects.",
-    "If the rerun is safe, stop handoff work and return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
+    "Validate continuity v3 through repository-only drill and live CI.",
+    "Run an artificial-ignorance anti-tunnel drill against mission synthesis/calibration, parent-goal tracing and fixed-phrase cursor recovery.",
+    "If those pass, run one genuine fresh-Agent transfer test using only the canonical phrase.",
+    "Repair only material continuity defects; otherwise stop handoff work and return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
   ]
 }
