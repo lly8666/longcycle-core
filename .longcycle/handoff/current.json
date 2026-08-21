@@ -1,18 +1,19 @@
 {
   "schema_version": "longcycle-session-handoff/v1",
-  "continuity_sequence": 2,
-  "checkpoint_generated_at": "2026-08-21T09:50:00+09:00",
+  "continuity_sequence": 3,
+  "checkpoint_generated_at": "2026-08-21T10:08:00+09:00",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "25efc2541e6f06ae22a6c8b6f182907e2553b87c",
+  "checkpoint_based_on_head_sha": "da8ab2a58977f8694ea227866b8e57ae453be98a",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Read CONTINUE_HERE.md, locate the active branch through GitHub issue #2 if needed, refresh live PR/branch HEAD and CI, call the deterministic handoff-head reconciliation rule conceptually, inspect commits after checkpoint_based_on_head_sha when required, then continue ordered_next_actions without asking the user to restate persisted context.",
+  "bootstrap_instruction": "Read CONTINUE_HERE.md, locate the active branch through GitHub issue #2 if needed, refresh live PR/branch HEAD and CI, compare live HEAD with checkpoint_based_on_head_sha, inspect commits after the checkpoint when required, run or conceptually reproduce the repository-only handoff isolation drill, then continue ordered_next_actions without asking the user to restate persisted context.",
   "user_directives": [
     "把整个行业相关的最关键和真实的历史保存下来，拉长时间去看，其实不用太多分析也能用简单常识分析出当下的风险与机遇",
     "缺的是人站在当时的判断和预期。",
-    "聊天轮次多了以后就会被切断当前聊天对话框，必须开新的，设计套系统如何让新开聊天系统能实时跟上开发进度，保证原汁原味执行我们的计划和任务"
+    "聊天轮次多了以后就会被切断当前聊天对话框，必须开新的，设计套系统如何让新开聊天系统能实时跟上开发进度，保证原汁原味执行我们的计划和任务",
+    "继续任务，同时你有没有办法隔离上下文稍微自测下handoff系统还原度"
   ],
   "north_star": [
     "历史本身就是分析。",
@@ -43,46 +44,46 @@
     "industry": "lithium-battery",
     "phase": "blind_memory_exhaustion",
     "search_visibility": "none",
-    "total_raw_leads": 552,
+    "total_raw_leads": 570,
     "sealed_shards": [],
     "shard_count": 14,
     "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension.",
     "next_research_actions": [
-      "Generate and persist deterministic compact per-shard lead indices rather than reloading all raw JSONL.",
-      "Continue batch2 on remaining high-value shards using compact coverage and classify marginal novelty.",
-      "Run batch3 only where novelty remains high and start measuring novelty decay explicitly.",
+      "Persist deterministic compact per-shard lead indices and use them instead of reloading all raw JSONL for later self-gap batches.",
+      "Continue batch2 on the five primary shards that still have only one self-gap batch: UP-HARDROCK, UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
+      "Run batch3 only where novelty remains high and measure novelty decay explicitly.",
       "Only after an individual shard seals may high-capability fresh-web self-verification begin."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 166,
-    "observed_head_sha": "529ad31f0db5fcfd8ec100aa6907ae8cb3267d36",
-    "conclusion": "correctness gate success on last fully observed implementation head",
-    "mypy_summary": "Success: no issues found in 54 source files.",
-    "pytest_summary": "121 passed in 0.72s.",
-    "ruff_summary": "62 lint findings; Ruff is diagnostic-only during the Memory Campaign and is tracked as cleanup debt.",
-    "refresh_instruction": "The checkpoint and handoff-head helper commits are newer than the observed CI head. Fetch live HEAD and newest CI before reporting correctness; do not infer green from this snapshot alone."
+    "last_observed_run": 176,
+    "observed_head_sha": "5deb874f0b415ef7097601c1389d0e0285b3c967",
+    "conclusion": "success on the last fully observed head before electrolyte batch2, isolation-drill and checkpoint calibration commits",
+    "mypy_summary": "The run completed the Mypy hard gate successfully; fetch the newest live run before quoting current correctness.",
+    "pytest_summary": "The run completed the Pytest hard gate successfully; the new isolation-drill tests are newer and require a live CI refresh.",
+    "ruff_summary": "Ruff remains diagnostic-only during the Memory Campaign and is tracked as cleanup debt.",
+    "refresh_instruction": "Fetch live HEAD and the newest CI run. In particular, confirm tests/test_handoff_drill.py passes and that repository-only fidelity is 1.0 after the 570-lead calibration."
   },
   "workstreams": [
     {
       "workstream_id": "ci-correctness",
-      "status": "hard_gate_green_on_last_observed_head",
-      "summary": "Mypy and Pytest hard correctness gates are green on run #166; Ruff remains diagnostic cleanup debt. A narrowly scoped Postgres arg-type Mypy override remains temporary because the connector write API makes a one-line patch to the ~70KB adapter disproportionately risky.",
+      "status": "hard_gate_green_on_last_observed_head_newer_commits_pending_refresh",
+      "summary": "Mypy and Pytest hard gates were green on run #176. Newer research, handoff-isolation and calibration commits require a live refresh before correctness is reported as current. A narrowly scoped Postgres arg-type Mypy override remains temporary.",
       "next_actions": [
-        "Refresh CI on the live head after handoff v2 commits.",
-        "Remove the temporary Postgres arg-type override when a safe patch-capable edit is available.",
-        "Keep Mypy and Pytest as hard correctness gates and Ruff diagnostic until the campaign stabilizes."
+        "Fetch CI for the live head and confirm Mypy/Pytest correctness gates.",
+        "Confirm the new handoff isolation drill passes under CI.",
+        "Remove the temporary Postgres arg-type override when a safe patch-capable edit is available."
       ],
       "blockers": []
     },
     {
       "workstream_id": "memory-atlas-lithium-battery",
       "status": "active_high_novelty_unsealed",
-      "summary": "Blind lithium-battery Memory Atlas has 552 raw leads across 14 primary shards; no shard has met saturation criteria and search visibility remains none.",
+      "summary": "Blind lithium-battery Memory Atlas has 570 raw leads across 14 primary shards; MID-ANODE, MID-SEPARATOR and MID-ELECTROLYTE batch2 each added 6/6 new useful structural leads. No shard has met saturation criteria and search visibility remains none.",
       "next_actions": [
         "Persist compact per-shard indices from typed/repaired candidates.",
-        "Continue compact-index-driven self-gap and novelty-decay batches.",
+        "Continue batch2 on UP-HARDROCK, UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
         "Do not begin fresh web self-verification until an individual shard is sealed."
       ],
       "blockers": [
@@ -91,12 +92,12 @@
     },
     {
       "workstream_id": "session-continuity",
-      "status": "v2_repository_backed_and_ci_contracted",
-      "summary": "Fresh sessions now have a branch-independent rendezvous issue, stable bootstrap files, project constitution, handoff protocol, typed checkpoint, CI contract tests and deterministic live-HEAD delta detection.",
+      "status": "v3_repository_only_isolation_drill_added_pending_live_ci",
+      "summary": "Fresh sessions have a branch-independent rendezvous issue, stable bootstrap files, project constitution, typed checkpoint, live-HEAD delta detection and a repository-only isolation drill that reconstructs campaign state from files without chat history and detects stale checkpoints.",
       "next_actions": [
-        "Use this protocol when a new chat is opened and verify it by actually bootstrapping from issue #2 plus current.json.",
-        "Update the checkpoint after each coherent batch that materially changes CI, research phase, counts, blockers or next actions.",
-        "Keep live CI and Git HEAD authoritative over checkpoint snapshots and old chat summaries."
+        "Confirm repository-only handoff fidelity reaches 1.0 in CI after the 570-lead calibration.",
+        "Verify the deliberately stale checkpoint fixture is detected without chat context.",
+        "Continue treating live Git HEAD and CI as authoritative over all checkpoint snapshots."
       ],
       "blockers": []
     }
@@ -107,26 +108,30 @@
     ".longcycle/handoff/current.json",
     "docs/development/project-constitution.md",
     "docs/development/session-handoff-protocol.md",
+    "docs/development/handoff-isolation-drill.md",
     "docs/devlog/2026-08-21-memory-campaign-part2.md",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "src/longcycle/application/session_handoff.py",
+    "src/longcycle/application/handoff_drill.py",
     "src/longcycle/application/memory_ingest.py",
     "src/longcycle/application/memory_index.py",
+    "tests/test_handoff_drill.py",
     ".github/workflows/ci.yml"
   ],
   "latest_devlogs": [
     "docs/devlog/2026-08-21-memory-campaign-part2.md"
   ],
   "unresolved_questions": [
-    "Which lithium-battery shards first show three consecutive low-novelty batches under compact-index-driven prompting?",
+    "Will the repository-only handoff isolation drill reach fidelity_score=1.0 on the live CI checkout after calibration?",
+    "Which of the five remaining batch1-only primary shards first begins to show novelty decay?",
     "What is the best deterministic persistence format/location for generated per-shard compact indices without duplicating raw recall?",
-    "When should the 62-item Ruff cleanup be promoted back from diagnostic debt to a hard gate?"
+    "When should Ruff cleanup be promoted back from diagnostic debt to a hard gate?"
   ],
   "ordered_next_actions": [
-    "Fetch the newest CI for the live head after Session Handoff v2 and reconcile any delta.",
-    "Update PR #1 status text so it no longer falsely claims that no CI workflow exists.",
-    "Persist compact per-shard Memory Atlas indices and use them for the next blind novelty-decay batches.",
-    "Continue the lithium Memory Atlas with search_visibility=none until an individual shard satisfies the seal rule.",
+    "Fetch the newest CI for the live head and verify the repository-only handoff isolation drill plus existing hard correctness gates.",
+    "If the drill is green, record the measured restoration result and any remaining live-only limitations in the development log/checkpoint.",
+    "Persist compact per-shard Memory Atlas indices and use them for subsequent blind novelty-decay batches.",
+    "Continue batch2 on UP-HARDROCK, UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING with search_visibility=none.",
     "Checkpoint again after the next coherent research batch or any change in CI/search phase."
   ]
 }
