@@ -85,16 +85,24 @@ class SessionHandoffContractTest(unittest.TestCase):
 
         self.assertGreater(campaign.total_raw_leads, 0)
         self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
+        self.assertEqual(campaign.search_visibility, coverage["search_visibility"])
 
         if campaign.search_visibility == "none":
             self.assertTrue(
                 campaign.phase.startswith("blind")
                 or "self_verification_preparation" in campaign.phase
             )
+            self.assertNotIn("search_scope", coverage)
         else:
             self.assertEqual(campaign.search_visibility, "self_verification")
             self.assertTrue(campaign.sealed_shards)
-            self.assertIn("self_verification", campaign.phase)
+            search_scope = coverage["search_scope"]
+            self.assertEqual(
+                tuple(search_scope["allowed_shards"]),
+                campaign.sealed_shards,
+            )
+            self.assertTrue(search_scope["forbidden_unsealed_shards"])
+            self.assertEqual(search_scope["blind_mutation_from_search"], "forbidden")
 
     def test_resume_set_contains_only_small_bootstrap_plus_active_state(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
