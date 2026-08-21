@@ -174,11 +174,113 @@ GitHub Actions `ci` workflow run #94 已正常触发，目前在执行 test job�
 
 Memory JSONL raw artifacts仍允许保留历史实验错误；只有 ingestion candidate/repaired datasets 需要 typed validation。
 
-## 下一步
+## 09:15 - batch2 继续：总量推进到 552
 
-1. 等 CI #94 完成并修复真实失败；
-2. 对高新增 shard 继续 batch2/batch3，测 novelty decay；
-3. 给每个 shard 建 compact lead index，避免 saturation pass 重新加载完整 raw text；
-4. 只有连续三批 low-novelty + gap matrix 无明显空白才 seal；
-5. sealed shard 才进入 high-model self-verification；
-6. self-verification 结果再生成低成本 Agent 的 claim-specific evidence task packet。
+继续对三个不同性质的高价值 shard 做第二批 novelty-decay 测试：
+
+- BAT-CELL batch2：6/6 new/useful；
+- UP-CONCENTRATE batch2：6/6 new/useful；
+- MID-TERNARY batch2：6/6 new/useful。
+
+因此 blind raw lead 总量从 534 增加到 **552**。
+
+新增维度仍然不是同义复述：
+
+- BAT-CELL：多级库存、OEM 自供/JV、干电极、ASP product mix、送样→定点→SOP、营运资金；
+- UP-CONCENTRATE：杂质规格、floor/cap 长协、天气/港口发运、低品位产品 mix、副产品信用、贸易商货权；
+- MID-TERNARY：前驱体/正极双计、高电压中镍、LME 镍与硫酸镍基差、共沉淀工艺、环保约束、客户资格认证。
+
+结论仍然是：没有出现可支持 seal 的 novelty decay。
+
+## 09:25 - Compact Memory Index
+
+新增 `src/longcycle/application/memory_index.py` 和对应测试。
+
+原则：后续 saturation/self-gap pass 不再反复加载数百条完整 raw JSONL，而是读取确定性 compact index，只保留可审计目录字段和 coverage counters。
+
+压缩过程不使用另一个模型进行摘要，避免“为了节省上下文又引入一次模型失真”。
+
+## 09:30 - CI #116 暴露真实契约问题
+
+此前聊天中的旧状态曾把 Mypy/Pytest 描述成通过；新的完整诊断 run #116 证明这一状态已经过期：
+
+- Mypy：26 errors / 10 files；
+- Pytest：114 passed / 3 failed；
+- Ruff：72 findings。
+
+三个 Pytest failure 分别是：
+
+1. structural repair overlay 已存在但 dataset validation 没真正应用；
+2. same-shard satellite 的 candidate 语义和 promotion 实现不一致；
+3. Research Agent SOP 没有显式写出 `not_found != false`。
+
+这成为 Session Handoff 设计的直接证据：**新会话不能相信旧聊天总结，必须刷新 live HEAD 和 CI。**
+
+## 09:35 - CI correctness repair
+
+已提交的修复包括：
+
+- repair overlay 真正接入 typed candidate validation，同时 raw JSONL 保持不可改写；
+- repeated same-shard satellite 可成为 research candidate，但不会因缺乏独立 shard 自动 promote；
+- SOP 明文写入 `not_found != false`；
+- 修复 Pydantic datetime validator、value fingerprint 等 strict typing；
+- ModelGateway `model_name` 类型显式化；
+- SourcePlugin async-generator protocol 修正；
+- workflow checkpoint 类型从 Any 收紧；
+- S3 body 返回值显式验证为 bytes；
+- pipeline `_validate_envelope` 使用明确 `ExtractionEnvelope`；
+- CI 安装 `dev,postgres,s3` 全部 optional adapters。
+
+Ruff 暂时维持 diagnostic-only；Mypy/Pytest 是硬 correctness gate。
+
+## 09:42 - Session Handoff v1
+
+用户提出新的持续执行要求：
+
+> “聊天轮次多了以后就会被切断当前聊天对话框，必须开新的，设计套系统如何让新开聊天系统能实时跟上开发进度，保证原汁原味执行我们的计划和任务”
+
+因此新增 repository-backed 四层 continuity：
+
+1. `docs/development/project-constitution.md` — 慢变化的项目北极星、用户原话和不可违背规则；
+2. `.longcycle/handoff/current.json` — 快变化、机器可读的实时 checkpoint；
+3. `docs/devlog/` — 追加式决策/实验历史；
+4. `CONTINUE_HERE.md` + `AGENTS.md` — 新聊天/新 agent 的稳定启动入口。
+
+同时新增：
+
+- `docs/development/session-handoff-protocol.md`；
+- `src/longcycle/application/session_handoff.py` typed contract；
+- `tests/test_session_handoff.py`，让 handoff 本身成为 CI 契约。
+
+关键设计：checkpoint 只记录 `checkpoint_based_on_head_sha`，不能假装包含自身 commit SHA。新会话必须：
+
+```text
+read checkpoint
+→ fetch live HEAD
+→ reconcile delta
+→ fetch live CI
+→ correct stale snapshot
+→ continue ordered next actions
+```
+
+CI 状态在 checkpoint 中永远标为 `snapshot_not_authoritative`。
+
+## 09:45 - Coverage checkpoint refresh
+
+`coverage-index.json` 已从过期的 534 更新到 **552**，并显式记录：
+
+- 14 个主 shard；
+- 0 sealed；
+- `search_visibility = none`；
+- BAT-CELL / UP-CONCENTRATE / MID-TERNARY 已进入 self-gap batch2；
+- 六个已测试 batch2 shard 仍为 6/6 new/useful；
+- fresh web self-verification 继续禁止，直到对应 shard seal。
+
+## 当前下一步
+
+1. 获取 Session Handoff 首个 checkpoint head 后的最新 CI，确认 residual Mypy/Pytest；
+2. 修完真正剩余 correctness failures，不能用旧 #116 推测；
+3. CI 通过后更新 `.longcycle/handoff/current.json` 的 CI snapshot；
+4. 用 compact index 继续剩余 shard 的 batch2 / 高新增 shard 的 batch3；
+5. 只有连续三批 low-novelty + negative-space gap matrix 完整，才允许 seal；
+6. seal 后才进入 high-model fresh-web self-verification 和低成本 Agent evidence task。
