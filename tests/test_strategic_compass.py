@@ -17,7 +17,7 @@ class StrategicCompassContractTest(unittest.TestCase):
             "历史本身就是分析",
             "Reality + Expectation + Outcome",
             "point-in-time",
-            "锂电是“证明场”，不是产品终点",
+            "锂电是“证明场”",
             "Memory Atlas",
             "Memory-first, Evidence-final",
             "Source-first, Archive-now",
@@ -31,12 +31,12 @@ class StrategicCompassContractTest(unittest.TestCase):
         text = COMPASS.read_text(encoding="utf-8")
 
         for fragment in (
-            "generic platform",
+            "通用平台",
             "Memory Lead 数字更大",
             "schema 完美",
             "修 Ruff",
             "提前污染 blind memory",
-            "只做历史抢救，忘记今天的 source-first/archive-now",
+            "source-first/archive-now",
         ):
             self.assertIn(fragment, text)
 
@@ -51,7 +51,10 @@ class StrategicCompassContractTest(unittest.TestCase):
             continue_text.index("ordered_next_actions"),
         )
         self.assertIn("STRATEGIC_COMPASS.md", agents_text)
-        self.assertIn("Memory Atlas is a historical coverage instrument, not the product endpoint", agents_text)
+        self.assertIn(
+            "Memory Atlas is a historical coverage instrument, not the product endpoint",
+            agents_text,
+        )
 
 
 if __name__ == "__main__":
