@@ -8,13 +8,13 @@
     {"shard_id":"UP-HARDROCK","lead_count":54,"self_gap_batches":1,"status":"high_novelty"},
     {"shard_id":"UP-BRINE","lead_count":42,"self_gap_batches":1,"status":"high_novelty"},
     {"shard_id":"UP-CONCENTRATE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"UP-CHEMICALS","lead_count":52,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"UP-CHEMICALS","lead_count":54,"self_gap_batches":1,"status":"high_novelty"},
     {"shard_id":"MID-LFP","lead_count":50,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-TERNARY","lead_count":36,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-ANODE","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-SEPARATOR","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-ELECTROLYTE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"BAT-CELL","lead_count":54,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"BAT-CELL","lead_count":52,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"DOWN-NEV","lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"DOWN-ESS","lead_count":48,"self_gap_batches":2,"status":"high_novelty_with_repair_overlay"},
     {"shard_id":"DOWN-OTHER","lead_count":26,"self_gap_batches":1,"status":"high_novelty"},
@@ -140,5 +140,5 @@
     ]
   },
   "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed",
-  "ci_status": "snapshot only: run #176 succeeded on head 5deb874f before electrolyte batch2, handoff-drill and coverage commits; live CI must be refreshed before reporting correctness"
+  "ci_status": "snapshot only: run #192 found only a coverage per-shard allocation mismatch after total=570 calibration; live CI must be refreshed after this correction"
 }
