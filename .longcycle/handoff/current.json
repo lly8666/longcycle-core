@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 27,
+  "continuity_sequence": 28,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "c03e0649c98d8133d8e586fe4c6f79d494ca13fb",
+  "checkpoint_based_on_head_sha": "05bf7ad3f139a3b3b4c76d033161093c41f8192d",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve Issue #2, Draft PR #1 and branch design/industry-memory. On that branch read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and only the bounded active-state files below. Refresh live HEAD/CI before mutation.",
+  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on main to resolve Issue #2, Draft PR #1 and branch design/industry-memory. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and only the bounded active-state files. Refresh live HEAD/CI before mutation.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,22 +16,22 @@
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, using reusable primitives rather than lithium-specific hacks.",
-    "short_term_goal": "Measure blind-memory novelty decay on matrix-selected first-order replay gaps. Preserve the 668 raw / 610 formal typed / 58 legacy checkpoint, keep search visibility at none, and stop symmetric shard expansion. After supply-side and demand-side translation probes, the next selected gap is UP-CHEMICALS conversion nameplate-to-battery-grade-realized-supply translation.",
-    "next_big_step": "After genuine low-novelty streaks and explicit negative-space review legitimately seal a shard, begin fresh high-capability self-verification/search discovery for that sealed shard, then create claim-scoped evidence tasks and archive original sources for no-lookahead replay.",
-    "local_optimization_stop_rule": "Stop or re-rank when work no longer materially improves first-order replay coverage, evidence traceability, a seal condition or a main-path blocker. Lead count, shard symmetry, tooling and handoff polish are never objectives by themselves.",
+    "short_term_goal": "Measure genuine blind-memory novelty decay and reach the first legitimate shard seal without manufacturing saturation. Current checkpoint is 673 raw / 615 formal typed / 58 legacy. UP-CHEMICALS has the campaign's first qualifying low-novelty observation at streak=1; all shards remain unsealed and fresh search remains forbidden.",
+    "next_big_step": "Once a shard reaches three genuine consecutive low-novelty observations and passes explicit negative-space review with no material uncovered dimension, seal that shard and begin fresh high-capability self-verification/search discovery followed by claim-scoped evidence tasks and original-source archive.",
+    "local_optimization_stop_rule": "Stop or re-rank when work no longer materially improves first-order replay coverage, a genuine saturation measurement, evidence traceability or a main-path blocker. Never optimize for lead count, shard symmetry, streak manufacture, tooling or handoff polish.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Ran exactly one DOWN-NEV ordinary-gap-v6 blind demand-translation probe after the green 663/605 checkpoint. It added five immutable leads: two new_category, two useful_refinement and one explicit duplicate. New dimensions separate battery production/sales/installed GWh and make chemistry-specific installed-GWh-to-lithium-material intensity explicit. Coverage reconciled to 668 raw / 610 formal typed / 58 legacy. Matrix v3 now holds UP-HARDROCK and DOWN-NEV after their probes and selects UP-CHEMICALS as the next one-probe target.",
-    "current_task": "Validate the reconciled 668/610 checkpoint, then run exactly one UP-CHEMICALS ordinary v6 blind probe targeting the translation from announced/commissioned converter capacity into stable saleable battery-grade lithium chemical supply and its contemporaneous ramp expectations. Do not collect generic plant announcements and do not auto-run BAT-CELL or cathode work afterward.",
-    "why_now": "The two outer legs of the first-order replay are now better specified: hard-rock effective supply upstream and vehicle/battery/material demand downstream. The largest remaining middle-layer ambiguity is conversion: feed availability, commissioning, yield/purification, customer qualification, inventory and ramp guidance determine how nominal chemical nameplate became usable battery-grade supply at each historical date.",
-    "done_when": "UP-CHEMICALS's bounded v6 output is committed and honestly classified as new_category/useful_refinement/duplicate, coverage and handoff agree with deterministic raw/formal counts, hard CI gates are green, and the matrix is re-ranked before any further raw mutation.",
+    "last_completed_action": "After green CI #492 at 668/610, ran exactly one UP-CHEMICALS ordinary-gap-batch4-v6 conversion-realization probe. It produced zero new categories, two useful refinements and three explicit duplicates, the first qualifying low-novelty batch in the campaign. Coverage reconciled to 673 raw / 615 formal typed / 58 legacy with UP-CHEMICALS streak=1. Matrix v4 independently rechecked BAT-CELL and other candidates, held them, and justified one second UP-CHEMICALS saturation probe using a different failure/dead-end/reversible-state lens.",
+    "current_task": "Validate the reconciled 673/615 checkpoint, then run exactly one UP-CHEMICALS ordinary-gap-batch5-v6 blind saturation probe on failure/dead-end paths, reversible project states and expectation revisions. Preserve duplicates; if any materially new first-order replay category appears, reset the shard's low-novelty streak to zero.",
+    "why_now": "BAT-CELL compact already represents the battery-production/installation bridge exposed by DOWN-NEV. UP-CHEMICALS is the only shard with a genuine low-novelty observation, and a second independently targeted lens is now higher information value than opening another already-covered shard or repeating the same conversion-realization prompt.",
+    "done_when": "Batch5-v6 is committed and honestly classified, coverage and handoff match deterministic raw/formal counts, hard CI gates are green, and matrix state records either streak=2 for another genuinely low-novelty batch or streak reset to zero if a new category appears. No third batch is auto-authorized.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh CI for the 668/610 checkpoint. If hard gates pass, load only the UP-CHEMICALS deterministic compact index, analysis/negative-space-gap-matrix-v3.json and prompts/ordinary-gap-v6.md; run one small blind conversion-realization probe with search_visibility=none and preserve duplicates as duplicates."
+    "next_atomic_action": "Refresh CI at 673/615. If hard gates pass, load only the current UP-CHEMICALS compact index, analysis/negative-space-gap-matrix-v4.json and prompts/ordinary-gap-v6.md; run one small blind batch5-v6 failure/dead-end/reversible-state probe with search_visibility=none."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
@@ -41,62 +41,52 @@
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v3.json",
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md",
-      "docs/research/lithium-battery-cycle-horizon-v2.md"
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v4.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md"
     ],
-    "core_exclusion_terms": [
-      "lithium-battery",
-      "lithium",
-      "锂电",
-      "CATL",
-      "宁德时代",
-      "batch3",
-      "2015-2026",
-      "2026-08-21-gpt-5.6-sol"
-    ]
+    "core_exclusion_terms": ["lithium-battery","lithium","锂电","CATL","宁德时代","batch3","2015-2026","2026-08-21-gpt-5.6-sol"]
   },
   "pending_user_directives": [
-    "Treat the repository-derived collection state as authoritative for the blind-memory campaign and continue the established development line while exercising independent high-capability judgment.",
-    "Do not mechanically follow local ordering when information gain or the parent replay goal indicates a better move; the current Agent is responsible for stop/go and re-ranking decisions."
+    "Continue the established development line using repository-derived collection state while exercising independent high-capability judgment.",
+    "Do not mechanically follow task ordering or manufacture progress metrics; the current Agent owns stop/go, re-ranking and saturation judgments."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
     "phase": "blind_memory_matrix_driven_novelty_decay",
     "search_visibility": "none",
-    "total_raw_leads": 668,
+    "total_raw_leads": 673,
     "sealed_shards": [],
     "shard_count": 14,
-    "seal_rule": "Seal eligibility requires three consecutive low-novelty batches plus explicit negative-space review with no material uncovered dimension; a high-novelty latest batch resets the shard streak to zero.",
+    "seal_rule": "A shard may seal only after three consecutive genuinely low-novelty batches plus explicit negative-space review with no material uncovered dimension. Any materially new category resets the streak to zero.",
     "next_research_actions": [
-      "Require green hard CI gates against 668 raw / 610 formal typed before the next raw mutation.",
-      "Run exactly one UP-CHEMICALS v6 probe for nameplate/commissioning-to-battery-grade-realized-supply translation using only same-shard compact state and matrix v3.",
-      "Classify duplicates honestly and re-rank before any BAT-CELL, cathode or repeat supply/demand probe.",
-      "Keep fresh search forbidden until an individual shard legitimately seals."
+      "Require green hard CI gates at 673 raw / 615 formal typed before another raw mutation.",
+      "Run exactly one independent UP-CHEMICALS batch5-v6 failure/dead-end/reversible-state saturation probe.",
+      "Preserve duplicates and reset the streak if a new category appears; do not protect or manufacture streak=2.",
+      "Re-rank before any third probe or shard change; fresh search remains forbidden until a legitimate seal."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 484,
-    "observed_head_sha": "9b7cb0e09fe939c228e364792fd923546ea081d8",
-    "conclusion": "CI #484 succeeded on the synchronized 663/605 checkpoint: Mypy, Pytest, compact-index build and memory-history audit all passed. The subsequent DOWN-NEV raw probe, 668/610 coverage reconciliation, matrix-v3 decision and this handoff sync require a fresh hard-gate run before the next raw mutation.",
-    "mypy_summary": "Run #484: success.",
-    "pytest_summary": "Run #484: success.",
+    "last_observed_run": 492,
+    "observed_head_sha": "f7ea69c1b1dde9911903656cd8ebd3945c41a70b",
+    "conclusion": "CI #492 fully passed on synchronized 668/610: Mypy, Pytest, compact-index build and memory-history audit succeeded. The later UP-CHEMICALS batch4 raw, 673/615 coverage reconciliation, matrix-v4 decision and this handoff sync require fresh validation.",
+    "mypy_summary": "Run #492: success.",
+    "pytest_summary": "Run #492: success.",
     "ruff_summary": "Ruff remains diagnostic-only during the memory campaign.",
-    "refresh_instruction": "Refresh live HEAD/CI and require Mypy, Pytest, compact-index build and memory-history audit to pass against 668/610 before running UP-CHEMICALS."
+    "refresh_instruction": "Require Mypy, Pytest, compact-index build and memory-history audit to pass against 673/615 before batch5-v6."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "matrix_driven_ordinary_novelty_decay",
-      "summary": "Selective pre-2019 widening is closed. Ordinary v6 probes on UP-HARDROCK and DOWN-NEV each produced two new categories, two useful refinements and one duplicate: novelty is measurably decaying but remains materially high. Matrix v3 now moves the single next probe to UP-CHEMICALS conversion realization.",
+      "status": "first_low_novelty_streak_confirmation",
+      "summary": "Ordinary v6 probes have moved from all-new outputs to explicit duplicates. UP-CHEMICALS batch4 is the first true low-novelty observation, streak=1. Matrix v4 rejects automatic BAT-CELL widening and selects one independently targeted chemical saturation probe.",
       "next_actions": [
-        "Validate the reconciled 668/610 checkpoint with hard CI gates.",
-        "Run one bounded UP-CHEMICALS ordinary-gap-v6 probe and classify novelty honestly.",
-        "Re-rank the matrix after that one probe before any further raw work."
+        "Validate 673/615 with hard CI gates.",
+        "Run exactly one UP-CHEMICALS batch5-v6 independent saturation probe.",
+        "Reconcile counts and re-rank; do not auto-run a third batch."
       ],
       "blockers": []
     }
@@ -108,20 +98,20 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v3.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v4.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md"
   ],
   "deep_reference_paths": [],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Does one conversion-realization probe materially close the middle-layer gap or expose a cell/customer-qualification bridge instead?",
-    "After UP-CHEMICALS, is BAT-CELL still the highest first-order residual gap or should the campaign begin repeat probes to measure true low-novelty streaks?",
-    "Which shard first produces a genuine low-novelty batch and therefore begins a qualifying seal streak?"
+    "Does UP-CHEMICALS remain low novelty under an independent failure/dead-end/reversible-state lens, or does a new first-order category reset its streak?",
+    "If streak reaches two, what independent third lens is justified before explicit seal review?",
+    "Which negative-space cells must be proven closed before UP-CHEMICALS can legitimately seal?"
   ],
   "ordered_next_actions": [
-    "Require green hard CI gates at 668/610.",
-    "Run one UP-CHEMICALS ordinary-gap-v6 blind conversion-realization probe; no fresh search.",
-    "Reconcile deterministic counts and update the matrix from the observed novelty mix.",
-    "Do not auto-run the next shard and do not seal from pass count alone."
+    "Require green hard CI gates at 673/615.",
+    "Run one independent UP-CHEMICALS ordinary-gap-batch5-v6 blind saturation probe; no fresh search.",
+    "Reconcile deterministic counts and streak state honestly.",
+    "Re-rank before any third probe; never seal from pass count or streak alone."
   ]
 }
