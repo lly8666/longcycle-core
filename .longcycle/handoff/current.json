@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 26,
+  "continuity_sequence": 27,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "35d8b96da4ba054805a378c5c69af2a98d6c9f61",
+  "checkpoint_based_on_head_sha": "c03e0649c98d8133d8e586fe4c6f79d494ca13fb",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve Issue #2, Draft PR #1 and branch design/industry-memory. On that branch read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and only the bounded active-state files below. Refresh live HEAD/CI before mutation.",
@@ -16,7 +16,7 @@
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, using reusable primitives rather than lithium-specific hacks.",
-    "short_term_goal": "Measure blind-memory novelty decay on matrix-selected first-order replay gaps. Preserve the 663 raw / 605 formal typed / 58 legacy checkpoint, keep search visibility at none, and stop symmetric shard expansion. The next selected gap is DOWN-NEV vehicle-activity-to-battery/material-demand translation.",
+    "short_term_goal": "Measure blind-memory novelty decay on matrix-selected first-order replay gaps. Preserve the 668 raw / 610 formal typed / 58 legacy checkpoint, keep search visibility at none, and stop symmetric shard expansion. After supply-side and demand-side translation probes, the next selected gap is UP-CHEMICALS conversion nameplate-to-battery-grade-realized-supply translation.",
     "next_big_step": "After genuine low-novelty streaks and explicit negative-space review legitimately seal a shard, begin fresh high-capability self-verification/search discovery for that sealed shard, then create claim-scoped evidence tasks and archive original sources for no-lookahead replay.",
     "local_optimization_stop_rule": "Stop or re-rank when work no longer materially improves first-order replay coverage, evidence traceability, a seal condition or a main-path blocker. Lead count, shard symmetry, tooling and handoff polish are never objectives by themselves.",
     "parallel_permanent_tracks": [
@@ -25,13 +25,13 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Created matrix-driven ordinary-gap-v6 and ran one bounded UP-HARDROCK effective-supply probe with no fresh search. It produced five raw leads: two new_category, two useful_refinement and one explicit duplicate. Coverage reconciled to 663 raw / 605 formal typed / 58 legacy. Added negative-space-gap-matrix-v2, which holds UP-HARDROCK after the productive probe and re-ranks DOWN-NEV as the next one-probe target.",
-    "current_task": "Validate the reconciled 663/605 checkpoint, then run exactly one DOWN-NEV ordinary v6 blind probe targeting the translation from reported vehicle activity to contemporaneous battery GWh and lithium-material demand. Do not collect generic policy headlines and do not auto-run UP-CHEMICALS afterward.",
-    "why_now": "UP-HARDROCK now has explicit customer-acceptable supply, material-balance and ramp-guidance dimensions, so another immediate supply probe has lower cross-shard information gain. The largest first-order replay asymmetry is demand: production/wholesale/retail/registration/export/inventory and vehicle/battery mix cannot be treated as one lithium-demand number.",
-    "done_when": "DOWN-NEV's bounded v6 output is committed and honestly classified as new_category/useful_refinement/duplicate, coverage and handoff agree with deterministic raw/formal counts, hard CI gates are green, and the matrix is re-ranked before any further raw mutation.",
+    "last_completed_action": "Ran exactly one DOWN-NEV ordinary-gap-v6 blind demand-translation probe after the green 663/605 checkpoint. It added five immutable leads: two new_category, two useful_refinement and one explicit duplicate. New dimensions separate battery production/sales/installed GWh and make chemistry-specific installed-GWh-to-lithium-material intensity explicit. Coverage reconciled to 668 raw / 610 formal typed / 58 legacy. Matrix v3 now holds UP-HARDROCK and DOWN-NEV after their probes and selects UP-CHEMICALS as the next one-probe target.",
+    "current_task": "Validate the reconciled 668/610 checkpoint, then run exactly one UP-CHEMICALS ordinary v6 blind probe targeting the translation from announced/commissioned converter capacity into stable saleable battery-grade lithium chemical supply and its contemporaneous ramp expectations. Do not collect generic plant announcements and do not auto-run BAT-CELL or cathode work afterward.",
+    "why_now": "The two outer legs of the first-order replay are now better specified: hard-rock effective supply upstream and vehicle/battery/material demand downstream. The largest remaining middle-layer ambiguity is conversion: feed availability, commissioning, yield/purification, customer qualification, inventory and ramp guidance determine how nominal chemical nameplate became usable battery-grade supply at each historical date.",
+    "done_when": "UP-CHEMICALS's bounded v6 output is committed and honestly classified as new_category/useful_refinement/duplicate, coverage and handoff agree with deterministic raw/formal counts, hard CI gates are green, and the matrix is re-ranked before any further raw mutation.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh CI for the 663/605 checkpoint. If hard gates pass, load only the DOWN-NEV deterministic compact index, analysis/negative-space-gap-matrix-v2.json and prompts/ordinary-gap-v6.md; run one small blind demand-translation probe with search_visibility=none and preserve duplicates as duplicates."
+    "next_atomic_action": "Refresh CI for the 668/610 checkpoint. If hard gates pass, load only the UP-CHEMICALS deterministic compact index, analysis/negative-space-gap-matrix-v3.json and prompts/ordinary-gap-v6.md; run one small blind conversion-realization probe with search_visibility=none and preserve duplicates as duplicates."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
@@ -41,7 +41,7 @@
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v2.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v3.json",
       "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md",
       "docs/research/lithium-battery-cycle-horizon-v2.md"
     ],
@@ -65,26 +65,26 @@
     "industry": "lithium-battery",
     "phase": "blind_memory_matrix_driven_novelty_decay",
     "search_visibility": "none",
-    "total_raw_leads": 663,
+    "total_raw_leads": 668,
     "sealed_shards": [],
     "shard_count": 14,
     "seal_rule": "Seal eligibility requires three consecutive low-novelty batches plus explicit negative-space review with no material uncovered dimension; a high-novelty latest batch resets the shard streak to zero.",
     "next_research_actions": [
-      "Require green hard CI gates against 663 raw / 605 formal typed before the next raw mutation.",
-      "Run exactly one DOWN-NEV v6 probe for vehicle-activity-to-battery/material-demand translation using only same-shard compact state and matrix v2.",
-      "Classify duplicates honestly and re-rank before any UP-CHEMICALS or other probe.",
+      "Require green hard CI gates against 668 raw / 610 formal typed before the next raw mutation.",
+      "Run exactly one UP-CHEMICALS v6 probe for nameplate/commissioning-to-battery-grade-realized-supply translation using only same-shard compact state and matrix v3.",
+      "Classify duplicates honestly and re-rank before any BAT-CELL, cathode or repeat supply/demand probe.",
       "Keep fresh search forbidden until an individual shard legitimately seals."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 474,
-    "observed_head_sha": "99858cf52ab11ba1859a0cc12903200d75d56bf3",
-    "conclusion": "CI #474 succeeded on the 658/600 matrix-v1 checkpoint. The subsequent v6 prompt, UP-HARDROCK raw probe, coverage reconciliation and matrix-v2 commits require a fresh hard-gate run before the next raw mutation.",
-    "mypy_summary": "Run #474: success.",
-    "pytest_summary": "Run #474: success.",
+    "last_observed_run": 484,
+    "observed_head_sha": "9b7cb0e09fe939c228e364792fd923546ea081d8",
+    "conclusion": "CI #484 succeeded on the synchronized 663/605 checkpoint: Mypy, Pytest, compact-index build and memory-history audit all passed. The subsequent DOWN-NEV raw probe, 668/610 coverage reconciliation, matrix-v3 decision and this handoff sync require a fresh hard-gate run before the next raw mutation.",
+    "mypy_summary": "Run #484: success.",
+    "pytest_summary": "Run #484: success.",
     "ruff_summary": "Ruff remains diagnostic-only during the memory campaign.",
-    "refresh_instruction": "Refresh live HEAD/CI and require Mypy, Pytest, compact-index build and memory-history audit to pass against 663/605 before running DOWN-NEV."
+    "refresh_instruction": "Refresh live HEAD/CI and require Mypy, Pytest, compact-index build and memory-history audit to pass against 668/610 before running UP-CHEMICALS."
   },
   "workstreams": [
     {
@@ -92,10 +92,10 @@
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
       "status": "matrix_driven_ordinary_novelty_decay",
-      "summary": "Selective pre-2019 widening is closed. The first ordinary v6 probe on UP-HARDROCK introduced the campaign's first duplicate signal while remaining materially high novelty. Matrix v2 now moves the single next probe to DOWN-NEV demand translation.",
+      "summary": "Selective pre-2019 widening is closed. Ordinary v6 probes on UP-HARDROCK and DOWN-NEV each produced two new categories, two useful refinements and one duplicate: novelty is measurably decaying but remains materially high. Matrix v3 now moves the single next probe to UP-CHEMICALS conversion realization.",
       "next_actions": [
-        "Validate the reconciled 663/605 checkpoint with hard CI gates.",
-        "Run one bounded DOWN-NEV ordinary-gap-v6 probe and classify novelty honestly.",
+        "Validate the reconciled 668/610 checkpoint with hard CI gates.",
+        "Run one bounded UP-CHEMICALS ordinary-gap-v6 probe and classify novelty honestly.",
         "Re-rank the matrix after that one probe before any further raw work."
       ],
       "blockers": []
@@ -108,19 +108,19 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v2.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v3.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md"
   ],
   "deep_reference_paths": [],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Does one demand-translation probe materially reduce the largest 2019-2020 replay asymmetry, or does it expose a cell/chemistry bridge instead?",
-    "After DOWN-NEV, is UP-CHEMICALS still the highest first-order residual gap?",
+    "Does one conversion-realization probe materially close the middle-layer gap or expose a cell/customer-qualification bridge instead?",
+    "After UP-CHEMICALS, is BAT-CELL still the highest first-order residual gap or should the campaign begin repeat probes to measure true low-novelty streaks?",
     "Which shard first produces a genuine low-novelty batch and therefore begins a qualifying seal streak?"
   ],
   "ordered_next_actions": [
-    "Require green hard CI gates at 663/605.",
-    "Run one DOWN-NEV ordinary-gap-v6 blind demand-translation probe; no fresh search.",
+    "Require green hard CI gates at 668/610.",
+    "Run one UP-CHEMICALS ordinary-gap-v6 blind conversion-realization probe; no fresh search.",
     "Reconcile deterministic counts and update the matrix from the observed novelty mix.",
     "Do not auto-run the next shard and do not seal from pass count alone."
   ]
