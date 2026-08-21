@@ -1,0 +1,144 @@
+{
+  "schema_version": "longcycle-evidence-archive-plan/v2",
+  "task_id": "EVT-001-KWINANA-GUIDANCE-TRAJECTORY",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "status": "primary_targets_fixed_archive_not_executed",
+  "supersedes": "EVT-001-kwinana-archive-plan-v1.json",
+  "supporting_discovery": "EVT-001-kwinana-citation-chase-v1.json",
+  "epistemic_boundary": {
+    "this_plan_is_evidence": false,
+    "web_discovery_is_evidence": false,
+    "blind_atlas_mutated": false,
+    "facts_created": false,
+    "judgments_created": false,
+    "archive_required_before_evidence": true
+  },
+  "execution_principle": "Archive exact source bytes first, then record only source-grounded claim excerpts. Preserve source publication/known time separately from milestone valid/effective time and expectation horizon. Prefer contemporaneous primary vintages over later retrospective summaries when both exist. Do not collapse later Outcome into earlier expectations.",
+  "runtime_prerequisites": {
+    "database": "LONGCYCLE_DATABASE_URL configured with the normal Longcycle schema and source definitions",
+    "blob_store": "configured filesystem or S3 archive backend",
+    "source_registration_command": "scripts/register_http_source.py",
+    "archive_command": "scripts/archive_source_url.py",
+    "evidence_command": "scripts/record_source_evidence.py",
+    "pdf_rule": "application/pdf sources must be parsed through the pinned pdf-text-pages artifact and evidence must be page-scoped"
+  },
+  "required_vintages": [
+    {
+      "vintage_id": "KWINANA-2018-COMMISSIONING-EXPECTATION",
+      "role": "Expectation",
+      "requested_url": "https://en.tianqilithium.com/content/details17_41.html",
+      "source_type": "first_party_news_release_html",
+      "archive_status": "not_archived",
+      "source_date_claim": "body dateline says 2018-12-18",
+      "current_page_time": "2019-02-18",
+      "known_time_status": "unresolved_exact_first_party_publication_timestamp",
+      "known_time_bound": "A contemporaneous local report published 2018-12-21 establishes that the event and commissioning status were public by that date, but does not prove the first-party release timestamp.",
+      "target_claim_anchor": "Stage One commissioning expected around year-end; Stage Two commissioning expected around end-2019.",
+      "milestone_valid_time_candidate": "2018-12-18 event / commissioning milestone",
+      "expectation_horizon": "Stage One year-end 2018; Stage Two end-2019",
+      "next_action": "archive the first-party page; preserve exact first-party known_time as unresolved unless archive metadata or a contemporaneous filing resolves it"
+    },
+    {
+      "vintage_id": "KWINANA-2019Q1-COME-ONLINE-EXPECTATION",
+      "role": "ExpectationRevision",
+      "requested_url": "https://en.tianqilithium.com/content/details17_259.html",
+      "source_type": "first_party_results_release_html",
+      "archive_status": "not_archived",
+      "source_date_claim": "2019-04-30",
+      "known_time_candidate": "2019-04-30",
+      "known_time_status": "candidate_pending_archive_metadata",
+      "target_claim_anchor": "Phase One Kwinana expected to gradually come online in H2 2019.",
+      "expectation_horizon": "2019-H2",
+      "next_action": "archive exact HTML bytes and record the claim-scoped H2-2019 guidance excerpt"
+    },
+    {
+      "vintage_id": "KWINANA-2021-COMMISSIONING-REVISION",
+      "role": "ExpectationRevision",
+      "requested_url": "https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF",
+      "source_type": "first_party_exchange_style_announcement_pdf",
+      "archive_status": "not_archived",
+      "source_document_date": "2021-08-23",
+      "known_time_candidate": "2021-08-23",
+      "known_time_status": "candidate_pending_archive_or_filing_timestamp",
+      "target_page": 2,
+      "target_claim_anchor": "Project remained in commissioning; target full-line operation by end-2021, then ramp toward design capacity in 2022Q4, with production timing explicitly uncertain.",
+      "expectation_horizons": [
+        "2021-12-31",
+        "2022-Q4"
+      ],
+      "next_action": "archive the official PDF, create pinned pypdf page-text artifact, and record only the page-2 project-state/guidance excerpt"
+    },
+    {
+      "vintage_id": "KWINANA-2022-COMMERCIAL-PRODUCTION-DECLARATION",
+      "role": "OutcomeMilestoneAndForwardExpectation",
+      "requested_url": "https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF",
+      "source_type": "issuer_exchange_archive_pdf",
+      "archive_status": "not_archived",
+      "source_document_date": "2022-12-03",
+      "known_time_candidate": "2022-12-03",
+      "known_time_status": "candidate_pending_archive_metadata",
+      "target_pages": [
+        1,
+        2
+      ],
+      "target_claim_anchors": [
+        "The plant already had continuous-production operating capability.",
+        "TLK management reasonably expected output to improve steadily from December 2022.",
+        "The company judged Train 1 capable of commercial production from 2022-11-30.",
+        "Customer qualification and ramp to design capacity remained future steps with explicit timing risk."
+      ],
+      "milestone_valid_or_effective_time": "2022-11-30",
+      "expectation_horizon": "stable output improvement from 2022-12 plus later customer qualification / load ramp",
+      "temporal_interpretation": "The same contemporaneous primary disclosure carries a day-level commercial-production effective/declaration date and a month-level forward ramp expectation. Do not collapse them into one timestamp or treat later 'since December 2022' annual-report wording as an automatic contradiction.",
+      "next_action": "archive the exact CNINFO PDF, create pinned page-text artifact, and ground both the 2022-11-30 milestone and December-forward expectation to page-scoped locators"
+    }
+  ],
+  "optional_corroboration_vintages": [
+    {
+      "vintage_id": "KWINANA-2025-ANNUAL-REPORT-RETROSPECTIVE",
+      "role": "RetrospectiveOutcomeCorroboration",
+      "requested_url": "https://static.cninfo.com.cn/finalpage/2025-03-27/1222913103.PDF",
+      "source_type": "issuer_annual_report_exchange_archive_pdf",
+      "archive_status": "not_archived",
+      "source_document_date": "2025-03-27",
+      "target_page": 60,
+      "target_claim_anchor": "The annual report retrospectively describes commercial production since December 2022 and continued ramp-up.",
+      "use": "corroborate later outcome/ramp context after contemporaneous 2022-083 is archived; do not use this later summary to rewrite earlier expectations"
+    },
+    {
+      "vintage_id": "KWINANA-2018-LOCAL-PUBLIC-KNOWLEDGE-BOUND",
+      "role": "KnownTimeBoundingContext",
+      "requested_url": "https://www.soundtelegraph.com.au/news/perth/tianqi-lithium-office-opens-at-kwinana-plant-site-ng-b881057347z",
+      "source_type": "contemporaneous_local_reporting",
+      "archive_status": "not_archived",
+      "source_document_date": "2018-12-21",
+      "target_claim_anchor": "Reports the December 18 office opening and that Stage 1 commissioning was about to begin.",
+      "use": "only to bound public knowledge of the event/commissioning status when exact first-party publication time remains unresolved; not primary evidence for Tianqi's own expectation wording"
+    }
+  ],
+  "trajectory_acceptance": {
+    "minimum_required_archived_vintages": 4,
+    "all_required_vintages_must_archive": true,
+    "must_preserve": [
+      "source_document_digest",
+      "immutable_blob_locator",
+      "evidence_fragment_locator",
+      "source_published_or_known_time",
+      "milestone_valid_or_effective_time",
+      "expectation_horizon",
+      "source_defined_project_state_label",
+      "later_outcome_separately_from_prior_expectation",
+      "temporal_precision_or_ambiguity"
+    ],
+    "must_not_do": [
+      "promote this plan or web discovery to Evidence",
+      "rewrite 2018 or 2019 expectations using later knowledge",
+      "backdate the surviving 2018 Tianqi web page to its body dateline without source metadata",
+      "treat commissioning, continuous operation, qualified product, commercial-production capability, nameplate and customer-qualified supply as synonyms",
+      "treat 2022-11-30 and December 2022 as a conflict merely because they have different precision/semantic roles",
+      "use the 2025 retrospective as a substitute for the exact 2022-083 contemporaneous disclosure"
+    ]
+  },
+  "current_blocker": "The current chat execution host exposes no Docker/PostgreSQL executable or configured LONGCYCLE_DATABASE_URL, so actual SourceDocument/archive persistence cannot truthfully be claimed here. The normal repository path is implemented and exact required source targets are fixed; real archive execution must occur in a configured Longcycle runtime."
+}
