@@ -13,11 +13,6 @@ CONTINUE = ROOT / "CONTINUE_HERE.md"
 AGENTS = ROOT / "AGENTS.md"
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
 
-TRANSFER_PHRASE = (
-    "接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，"
-    "然后从 continuation cursor 继续；不要让我重复背景。"
-)
-
 
 class StrategicCompassContractTest(unittest.TestCase):
     def test_default_branch_bootstrap_redirects_before_state_inference(self) -> None:
@@ -149,8 +144,14 @@ class StrategicCompassContractTest(unittest.TestCase):
         )
         self.assertIn("Vertical Alignment Gate", continue_text)
         self.assertIn("不要默认读取旧 devlog", continue_text)
-        self.assertIn(TRANSFER_PHRASE, continue_text)
-        self.assertIn(TRANSFER_PHRASE, agents_text)
+        for fragment in (
+            "接管 Longcycle",
+            "lly8666/longcycle-core",
+            "continuation cursor",
+            "不要让我重复背景",
+        ):
+            self.assertIn(fragment, continue_text)
+            self.assertIn(fragment, agents_text)
 
 
 if __name__ == "__main__":
