@@ -41,6 +41,9 @@ class HandoffStrategicHorizon(BaseModel):
     parallel_permanent_tracks: tuple[str, ...] = ()
 
 
+AgentCapabilityClass = Literal["high_capability_reasoning", "bounded_execution"]
+
+
 class HandoffContinuationCursor(BaseModel):
     """Small, live execution pointer beneath the strategic horizon."""
 
@@ -51,6 +54,8 @@ class HandoffContinuationCursor(BaseModel):
     current_task: str = Field(min_length=1)
     why_now: str = Field(min_length=1)
     done_when: str = Field(min_length=1)
+    required_capability: AgentCapabilityClass
+    insufficient_capability_action: Literal["stop_and_escalate"]
     next_atomic_action: str = Field(min_length=1)
 
 
@@ -124,7 +129,7 @@ class SessionHandoffCheckpoint(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["longcycle-session-handoff/v3"]
+    schema_version: Literal["longcycle-session-handoff/v4"]
     continuity_sequence: int = Field(ge=1)
     provenance_ordering: Literal["git_commit_graph"]
     repository: Literal["lly8666/longcycle-core"]
