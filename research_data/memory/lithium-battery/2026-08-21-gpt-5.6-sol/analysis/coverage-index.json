@@ -1,7 +1,7 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
   "blind_stage_status": "all_primary_shards_have_self_gap_batch1_unsealed_batch2_expanding",
-  "total_raw_leads_so_far": 552,
+  "total_raw_leads_so_far": 570,
   "search_visibility": "none",
   "sealed_shards": [],
   "shards": [
@@ -11,9 +11,9 @@
     {"shard_id":"UP-CHEMICALS","lead_count":52,"self_gap_batches":1,"status":"high_novelty"},
     {"shard_id":"MID-LFP","lead_count":50,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-TERNARY","lead_count":36,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-ANODE","lead_count":26,"self_gap_batches":1,"status":"high_novelty"},
-    {"shard_id":"MID-SEPARATOR","lead_count":26,"self_gap_batches":1,"status":"high_novelty"},
-    {"shard_id":"MID-ELECTROLYTE","lead_count":28,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"MID-ANODE","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"MID-SEPARATOR","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"MID-ELECTROLYTE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"BAT-CELL","lead_count":54,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"DOWN-NEV","lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"DOWN-ESS","lead_count":48,"self_gap_batches":2,"status":"high_novelty_with_repair_overlay"},
@@ -28,7 +28,10 @@
       {"shard_id":"DOWN-ESS","batch2_new_useful":"6/6"},
       {"shard_id":"BAT-CELL","batch2_new_useful":"6/6"},
       {"shard_id":"UP-CONCENTRATE","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-TERNARY","batch2_new_useful":"6/6"}
+      {"shard_id":"MID-TERNARY","batch2_new_useful":"6/6"},
+      {"shard_id":"MID-ANODE","batch2_new_useful":"6/6"},
+      {"shard_id":"MID-SEPARATOR","batch2_new_useful":"6/6"},
+      {"shard_id":"MID-ELECTROLYTE","batch2_new_useful":"6/6"}
     ],
     "interpretation": "the latent-memory atlas remains materially under-extracted; do not seal any shard"
   },
@@ -56,6 +59,30 @@
       "co-precipitation process constraints",
       "environmental/wastewater constraints on realized output",
       "customer-specific qualification effects on fungibility"
+    ],
+    "MID-ANODE": [
+      "natural-graphite concentrate-to-spherical-to-purified-to-coated conversion yield",
+      "coating-pitch feedstock and cost bridge",
+      "fast-charge graphite product-grade segmentation",
+      "continuous-graphitization commercialization expectations",
+      "sodium-ion hard-carbon as a separate anode supply chain",
+      "anode material intensity per GWh changes over time"
+    ],
+    "MID-SEPARATOR": [
+      "coating-material taxonomy and cost stack",
+      "wet-process solvent recovery and environmental auxiliary capacity",
+      "separator square-meter intensity per GWh changes with thickness and cell design",
+      "dry-process separator adoption expectations in LFP and storage",
+      "base-film versus outsourced coating double-counting risk",
+      "overseas mechanical completion versus customer-qualified effective supply"
+    ],
+    "MID-ELECTROLYTE": [
+      "EC/DMC/EMC/DEC solvent-basket economics",
+      "customer-specific formulation ownership and switching cost",
+      "sodium-ion electrolyte and sodium-salt demand semantics",
+      "chemistry-dependent high-value additive intensity",
+      "finished-electrolyte moisture/HF/packaging/storage/logistics constraints",
+      "electrolyte material intensity per GWh changes over time"
     ]
   },
   "primary_schema_conclusions": [
@@ -113,5 +140,5 @@
     ]
   },
   "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed",
-  "ci_status": "snapshot only: run #156 started on the first session-handoff checkpoint head; live CI must be refreshed before reporting correctness"
+  "ci_status": "snapshot only: run #176 succeeded on head 5deb874f before electrolyte batch2, handoff-drill and coverage commits; live CI must be refreshed before reporting correctness"
 }
