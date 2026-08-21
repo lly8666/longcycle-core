@@ -35,21 +35,17 @@ jobs:
         continue-on-error: true
         run: ruff check .
 
-      - name: Mypy
+      - name: Mypy (hard gate)
         id: mypy
-        continue-on-error: true
         run: mypy src
 
-      - name: Pytest
+      - name: Pytest (hard gate)
         id: pytest
-        continue-on-error: true
         run: pytest -q
 
-      - name: Correctness gate
+      - name: Check summary
         if: always()
         run: |
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
-          echo "mypy=${{ steps.mypy.outcome }}"
-          echo "pytest=${{ steps.pytest.outcome }}"
-          test "${{ steps.mypy.outcome }}" = "success"
-          test "${{ steps.pytest.outcome }}" = "success"
+          echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
+          echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
