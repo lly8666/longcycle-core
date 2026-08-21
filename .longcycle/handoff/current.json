@@ -1,67 +1,50 @@
 {
-  "schema_version": "longcycle-session-handoff/v1",
-  "continuity_sequence": 8,
+  "schema_version": "longcycle-session-handoff/v2",
+  "continuity_sequence": 9,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "c1cec47dcaca6936ea65e07604242d64e8e8ff50",
+  "checkpoint_based_on_head_sha": "1a255641135b36210988311ce5c1330891d1611d",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resolve the active branch through issue #2, read STRATEGIC_COMPASS.md before treating the current TODO as an instruction, read the constitution and checkpoint, reconcile live Git HEAD/CI, distinguish strategic authority from implementation freshness, pass the Strategic Alignment Gate, then continue only actions that still serve the larger benchmark.",
-  "user_directives": [
-    "把整个行业相关的最关键和真实的历史保存下来，拉长时间去看，其实不用太多分析也能用简单常识分析出当下的风险与机遇",
-    "缺的是人站在当时的判断和预期。",
-    "聊天轮次多了以后就会被切断当前聊天对话框，必须开新的，设计套系统如何让新开聊天系统能实时跟上开发进度，保证原汁原味执行我们的计划和任务",
-    "把所有思考和开发日志都实时上传到github上。",
-    "高级大模型关于产业链几乎所有内容从记忆里输出来，比哪怕高级agent去互联网搜历史信息更有价值；历史信息让低级agent拿着高级agent的记忆去逐条印证。",
-    "大海航行靠舵手……让他们深刻记住最开始的大逻辑和方向，永远不要偏离航向，永远知道我下一步大的方向是什么避免多个agent过后钻入牛角尖。"
-  ],
-  "north_star": [
-    "历史本身就是分析。",
-    "Preserve a replayable record of both industrial reality and point-in-time expectations.",
-    "Standing at a historical date, future information published later must remain unavailable.",
-    "Prefer traceable and semantically comparable trajectories over a large pile of shallow snippets."
-  ],
-  "strategic_horizon": {
-    "authority": "STRATEGIC_COMPASS.md",
-    "current_big_goal": "Prove Longcycle end-to-end on the lithium value chain: archived evidence must support point-in-time Reality + Expectation + Outcome replay across a real cycle, not merely a large Memory Atlas or sophisticated platform.",
-    "current_phase_purpose": "Use blind high-capability Memory Atlas exhaustion to reduce historical coverage gaps that ordinary web retrieval would miss, then measure novelty decay so the work can legitimately exit recall and enter evidence recovery.",
-    "next_big_step": "Seal the first genuinely saturated high-value shard(s), let the high-capability model perform self-verification/search discovery, compile claim-scoped evidence tasks for lower-capability agents, archive original sources, and begin the first real Reality/Expectation/Outcome historical replay.",
-    "parallel_permanent_track": "Maintain source-first/archive-now current collection so today's original disclosures do not become tomorrow's historical-recovery gaps.",
-    "local_optimization_stop_rule": "Stop or re-rank a local engineering/research task when another coherent batch no longer materially improves coverage, evidence traceability, point-in-time replay, or a blocker on that path; do not optimize lead count, generic infrastructure, CI/handoff polish, or ontology for its own sake."
+  "bootstrap_instruction": "Resolve live branch/PR through issue #2, read the bounded strategy and methodology cores, read this checkpoint for medium/short horizon, refresh live HEAD/CI, then load only the active context needed for the task. Do not preload old industries or devlogs.",
+  "core_refs": {
+    "strategy_path": "STRATEGIC_COMPASS.md",
+    "methodology_path": "METHODOLOGY_CORE.md"
   },
-  "non_negotiable_invariants": [
-    "Model memory is a search lead, never Evidence, Fact or Judgment.",
-    "Blind memory shards must seal before fresh web self-verification can begin.",
-    "Historical not_found != false.",
-    "Raw blind-recall artifacts are immutable; schema-only corrections use explicit typed repair overlays.",
-    "Reality, Expectation/Judgment and later Outcome remain distinguishable.",
-    "valid_time and known_time must not be collapsed.",
-    "Comparability semantics are required before corroboration or conflict decisions.",
-    "Current source material should be archived proactively and historical versions must not be overwritten.",
-    "State authority must distinguish canonical/immutable, deterministic-derived, curated research assessment and narrative state.",
-    "Immediate TODOs are subordinate to STRATEGIC_COMPASS.md and the lithium end-to-end replay benchmark."
-  ],
-  "forbidden_shortcuts": [
-    "Do not start fresh web research on an unsealed blind shard.",
-    "Do not convert repeated web syndication or search rank into truth.",
-    "Do not overwrite raw model recall to make validation pass.",
-    "Do not seal a shard merely because the model says it has nothing else to recall.",
-    "Do not trust stale chat summaries, PR prose or checkpoint CI status without refreshing live GitHub state.",
-    "Do not describe curated novelty/gap judgments as deterministic facts merely because they are stored in JSON.",
-    "Do not ask the user to reconstruct project context already persisted in the repository.",
-    "Do not let Memory Atlas volume, generic platform construction, schema perfection, lint cleanup, handoff refinement or one-domain depth become the product objective."
-  ],
-  "future_phase_commitments": [
-    "Historical recovery remains memory-first and evidence-final.",
-    "After a shard seals, the high-capability model performs the first self-verification/search pass before lower-capability evidence agents are delegated work.",
-    "Lower-capability agents are evidence engineers following explicit source, search-depth, contradiction and stop-condition contracts; they do not publish cycle conclusions.",
-    "Bridge/satellite promotion depends on repeated independent triggers rather than a single shard tangent.",
-    "Current collection remains source-first/archive-now under a maintained source/watchlist discipline.",
-    "A stronger model vintage creates a new immutable Memory Atlas vintage; diff novel/refined leads into historical backfill tasks instead of overwriting prior recall.",
-    "After the lithium benchmark can perform evidence-backed point-in-time replay, extract only the primitives proven by that benchmark and validate portability on a second industry."
-  ],
+  "strategic_horizon": {
+    "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, and the resulting primitives must be demonstrably reusable rather than industry-specific hacks.",
+    "short_term_goal": "Finish evidence-based saturation measurement for the active blind Memory Atlas: use compact indices and selective batch3 novelty classification to identify the first genuinely sealable high-value shards without fresh-search contamination.",
+    "next_big_step": "After the first shard legitimately seals, let the high-capability model perform self-verification/search discovery, compile claim-scoped evidence tasks, archive original sources, and build the first evidence-backed historical replay slice.",
+    "local_optimization_stop_rule": "Stop or re-rank local work when it no longer materially improves coverage, evidence traceability, point-in-time replay, a main-path blocker, or continuity correctness. Tooling, lead count, schema elegance, lint and handoff polish are never self-justifying objectives.",
+    "parallel_permanent_tracks": [
+      "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
+    ]
+  },
+  "active_context": {
+    "context_id": "benchmark-lithium-memory-atlas-v1",
+    "context_kind": "industry_benchmark_research",
+    "label": "Lithium-battery first benchmark / blind Memory Atlas",
+    "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
+    "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
+    "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
+    "deep_context_paths": [
+      "docs/research/lithium-battery-memory-sharding.md",
+      "docs/research/lithium-battery-memory-exhaustion-protocol.md",
+      "docs/research/lithium-battery-collection-plan.md"
+    ],
+    "core_exclusion_terms": [
+      "lithium-battery",
+      "lithium",
+      "锂电",
+      "CATL",
+      "宁德时代",
+      "batch3",
+      "2026-08-21-gpt-5.6-sol"
+    ]
+  },
+  "pending_user_directives": [],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
@@ -74,97 +57,75 @@
     "next_research_actions": [
       "Rebuild deterministic compact indices for all 14 primary shards from typed/repaired blind JSONL.",
       "Rank batch3 candidates by importance, unresolved gap density and semantic coverage rather than raw shard size.",
-      "For each selected batch3, classify outputs as new_category, useful_refinement or duplicate and measure novelty decay.",
+      "Classify selected batch3 output as new_category, useful_refinement or duplicate and measure novelty decay.",
       "Keep search_visibility=none until an individual shard satisfies the seal rule."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 252,
-    "observed_head_sha": "86c30d814321d713489fca4ca4a4ff254a9c6bf9",
-    "conclusion": "success before the strategic-compass, typed strategic-horizon and dumb-agent drill commits; live refresh is required for the new coherent state",
-    "mypy_summary": "Run #252: success, no issues in 55 source files before the strategic-handoff changes.",
-    "pytest_summary": "Run #252: 127 passed before the strategic-handoff changes.",
-    "ruff_summary": "Run #252 still had 61 diagnostic-only Ruff findings.",
-    "refresh_instruction": "Fetch live HEAD and newest CI. Validate STRATEGIC_COMPASS bootstrap ordering, typed strategic_horizon, mandatory compass read-set, strategic contract tests and existing handoff/memory tests together."
+    "last_observed_run": 276,
+    "observed_head_sha": "d16fb0c48d84e373d78732f15b2b0e9c189b665c",
+    "conclusion": "success before the bounded-core v2 refactor; live refresh required",
+    "mypy_summary": "Run #276: success, no issues in 55 source files before v2 refactor.",
+    "pytest_summary": "Run #276: 130 passed before v2 refactor.",
+    "ruff_summary": "Run #276 had diagnostic-only Ruff findings; lint is not the current main path.",
+    "refresh_instruction": "Fetch live HEAD and latest CI. Validate handoff v2, bounded core budgets, generic active-context drill and existing memory contracts together."
   },
   "workstreams": [
     {
-      "workstream_id": "ci-correctness",
-      "status": "strategic_handoff_changes_require_live_hard_gate_refresh",
-      "summary": "Run #252 validated the prior handoff state. Strategic compass, typed strategic horizon and new anti-drift tests are newer and require live CI before correctness is quoted as current.",
+      "workstream_id": "memory-atlas-active-benchmark",
+      "status": "all_primary_batch2_complete_unsealed_batch3_next",
+      "summary": "Active benchmark remains in blind Memory Atlas saturation measurement. No shard is sealed and fresh historical search remains forbidden.",
       "next_actions": [
-        "Fetch CI for live HEAD and inspect exact Mypy/Pytest outcomes.",
-        "Keep repository-only handoff isolation and strategic-compass contracts in the hard gate.",
-        "Keep Ruff diagnostic-only unless it blocks the main path."
-      ],
-      "blockers": []
-    },
-    {
-      "workstream_id": "memory-atlas-lithium-battery",
-      "status": "all_14_primary_shards_batch2_complete_high_novelty_unsealed",
-      "summary": "Blind lithium-battery Memory Atlas has 600 raw leads across 14 primary shards. Counts are deterministic-derived; batch2 novelty labels are curated research assessments. No shard is sealed. The strategic compass explicitly defines the Atlas as a coverage instrument that must eventually transition to evidence and replay.",
-      "next_actions": [
-        "Use compact indices to choose a small set of high-value batch3 shards.",
-        "Define explicit novelty-classification records so batch3 decay is auditable rather than asserted in prose.",
-        "Do not begin fresh web self-verification until a shard satisfies the seal rule."
+        "Return to compact-index driven batch3 novelty-decay work after continuity refactor is validated.",
+        "Keep active-industry details inside the active context package, not long-term core files."
       ],
       "blockers": [
-        "No shard has shown a low-novelty batch yet under the current curated assessment."
+        "No shard has yet satisfied the recorded seal criterion."
       ]
     },
     {
       "workstream_id": "session-continuity",
-      "status": "strategic_compass_and_typed_next_larger_step_added_fresh_agent_test_pending",
-      "summary": "Operational handoff already survived a real fresh-chat audit. A second steering layer now forces future agents to recover the macro mission, lithium benchmark, current-phase purpose and next larger step before executing local TODOs. An adversarial same-model dumb-agent drill rejected 8/8 attractive local optima; a genuinely fresh Agent strategic audit is still required.",
+      "status": "bounded_core_v2_refactor_requires_live_validation",
+      "summary": "Continuity is being normalized into two bounded long-term cores plus dynamic handoff and active context. Stable principles are no longer duplicated inside the checkpoint.",
       "next_actions": [
-        "Validate the strategic steering changes under live CI.",
-        "Have a genuinely fresh Agent run docs/development/fresh-agent-strategic-audit.md with report-only mutation.",
-        "After the external strategic audit is reviewed, return to batch3 novelty-decay work rather than continuing to optimize handoff indefinitely."
+        "Run repository-only reconstruction and bounded-core contract tests.",
+        "Run one same-model dumb-agent test against the reduced bootstrap context.",
+        "Then use one genuinely fresh Agent for an external bounded-core continuity audit."
       ],
       "blockers": []
     }
   ],
   "resume_read_set": [
     "STRATEGIC_COMPASS.md",
+    "METHODOLOGY_CORE.md",
     "CONTINUE_HERE.md",
-    "AGENTS.md",
     ".longcycle/handoff/current.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json"
+  ],
+  "deep_reference_paths": [
+    "AGENTS.md",
     "docs/development/project-constitution.md",
     "docs/development/session-handoff-protocol.md",
-    "docs/development/handoff-isolation-drill.md",
-    "docs/development/fresh-chat-handoff-audit.md",
+    "docs/development-plan.md",
     "docs/development/fresh-agent-strategic-audit.md",
-    "docs/devlog/2026-08-21-strategic-compass-dumb-agent-drill.md",
-    "docs/devlog/2026-08-21-fresh-chat-handoff-remediation.md",
-    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "src/longcycle/application/session_handoff.py",
-    "src/longcycle/application/handoff_drill.py",
-    "src/longcycle/application/memory_ingest.py",
-    "src/longcycle/application/memory_index.py",
-    "tests/test_handoff_drill.py",
-    "tests/test_session_handoff.py",
-    "tests/test_strategic_compass.py",
-    "tests/test_memory_index_persistence.py",
-    ".github/workflows/ci.yml"
+    "docs/devlog/2026-08-21-fresh-agent-strategic-audit-report.md"
   ],
   "latest_devlogs": [
+    "docs/devlog/2026-08-21-fresh-agent-strategic-audit-report.md",
     "docs/devlog/2026-08-21-strategic-compass-dumb-agent-drill.md",
-    "docs/devlog/2026-08-21-fresh-chat-handoff-remediation.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
   ],
   "unresolved_questions": [
-    "Will a genuinely fresh Agent reconstruct the macro mission, lithium benchmark role and next larger strategic step with the same depth as the adversarial dumb-agent drill?",
-    "Which 3-5 shards should enter batch3 first when ranked by importance and unresolved gap density from compact indices?",
     "What quantitative thresholds should define new_category/useful_refinement/duplicate and a low-novelty batch?",
-    "When should the current source-first/archive-now track move from documented commitment into active scheduled collection without distracting from the first historical replay?"
+    "Which high-value shards should enter selective batch3 first?",
+    "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough?",
+    "When should source-first/archive-now current collection become an active scheduled workstream rather than only a permanent commitment?"
   ],
   "ordered_next_actions": [
-    "Refresh live HEAD/CI and validate the strategic compass + typed strategic horizon as one coherent handoff state.",
-    "Run one genuine fresh-Agent strategic audit using docs/development/fresh-agent-strategic-audit.md; the audit Agent may only write its report and must not continue development/research.",
-    "Review the fresh-Agent strategic report for macro-direction loss, local-optimum susceptibility and next-big-step fidelity; repair only real gaps.",
-    "Then return to the main path: build/rebuild compact indices, rank batch3 shards and run selective blind novelty-decay experiments with search_visibility=none.",
-    "Checkpoint after the first coherent batch3 result or any major phase transition."
+    "Validate bounded-core handoff v2 under Mypy/Pytest and repository-only reconstruction.",
+    "Run the same-model dumb-agent bounded-core test and record only real continuity gaps.",
+    "After external fresh-Agent bounded-core audit, stop continuity work unless a blocking defect remains.",
+    "Return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
   ]
 }
