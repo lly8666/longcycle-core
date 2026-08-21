@@ -89,10 +89,20 @@ class HandoffMemoryCampaign(BaseModel):
         return self
 
 
+WorkstreamRole = Literal["main_path", "supporting_quality_gate", "parallel_track"]
+ParentGoalRef = Literal[
+    "strategic_horizon.short_term_goal",
+    "strategic_horizon.medium_term_goal",
+    "strategic_horizon.parallel_permanent_tracks",
+]
+
+
 class HandoffWorkstream(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
     workstream_id: str = Field(min_length=1)
+    role: WorkstreamRole
+    parent_goal_ref: ParentGoalRef
     status: str = Field(min_length=1)
     summary: str = Field(min_length=1)
     next_actions: tuple[str, ...]
@@ -102,6 +112,10 @@ class HandoffWorkstream(BaseModel):
     def has_next_action(self) -> HandoffWorkstream:
         if not self.next_actions:
             raise ValueError("active handoff workstreams require at least one next action")
+        if self.role == "main_path" and self.parent_goal_ref == "strategic_horizon.parallel_permanent_tracks":
+            raise ValueError("main-path workstream cannot attach only to a parallel permanent track")
+        if self.role == "parallel_track" and self.parent_goal_ref != "strategic_horizon.parallel_permanent_tracks":
+            raise ValueError("parallel-track workstream must attach to parallel permanent tracks")
         return self
 
 
@@ -146,6 +160,8 @@ class SessionHandoffCheckpoint(BaseModel):
         workstream_ids = [item.workstream_id for item in self.workstreams]
         if len(workstream_ids) != len(set(workstream_ids)):
             raise ValueError("handoff workstream ids must be unique")
+        if not any(item.role == "main_path" for item in self.workstreams):
+            raise ValueError("handoff must identify at least one main-path workstream")
         if self.continuation_cursor.parent_workstream_id not in set(workstream_ids):
             raise ValueError("continuation cursor must point to a declared workstream")
 
