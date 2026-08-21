@@ -89,6 +89,37 @@ class MemoryLeadCandidate(BaseModel):
         return self
 
 
+class MemoryRepairOperation(BaseModel):
+    """One explicit structural correction applied without rewriting the raw artifact."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    lead_id: str = Field(min_length=1)
+    field: str = Field(min_length=1)
+    original: Any
+    repaired: Any
+    reason: str = Field(min_length=1)
+
+
+class MemoryRepairOverlay(BaseModel):
+    """Auditable overlay for schema-only corrections to immutable model output."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    source_file: str = Field(min_length=1)
+    repair_policy: Literal["structural_only_no_new_historical_content"]
+    repairs: tuple[MemoryRepairOperation, ...]
+    raw_file_must_remain_unchanged: Literal[True]
+    ingestion_rule: Literal["apply repair overlay before typed candidate validation"]
+
+    @model_validator(mode="after")
+    def repair_targets_are_unique(self) -> MemoryRepairOverlay:
+        targets = [(repair.lead_id, repair.field) for repair in self.repairs]
+        if len(targets) != len(set(targets)):
+            raise ValueError("repair overlay contains duplicate lead/field targets")
+        return self
+
+
 @dataclass(frozen=True, slots=True)
 class MemoryCandidateValidationFailure:
     line_no: int
@@ -104,6 +135,62 @@ class MemoryJsonlValidationResult:
     @property
     def is_clean(self) -> bool:
         return not self.failures
+
+
+def apply_memory_repair_overlay(
+    text: str,
+    overlay_text: str,
+    *,
+    source_file: str | None = None,
+) -> str:
+    """Apply only declared field substitutions and leave the raw JSONL untouched on disk."""
+
+    overlay = MemoryRepairOverlay.model_validate_json(overlay_text)
+    if source_file is not None and overlay.source_file != source_file:
+        raise ValueError("repair overlay source_file does not match the JSONL being repaired")
+
+    repairs_by_lead: dict[str, tuple[MemoryRepairOperation, ...]] = {}
+    for repair in overlay.repairs:
+        repairs_by_lead[repair.lead_id] = (*repairs_by_lead.get(repair.lead_id, ()), repair)
+
+    applied: set[tuple[str, str]] = set()
+    repaired_lines: list[str] = []
+    for line_no, raw_line in enumerate(text.splitlines(), start=1):
+        line = raw_line.strip()
+        if not line:
+            repaired_lines.append(raw_line)
+            continue
+        try:
+            payload = json.loads(line)
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"cannot apply repair overlay to invalid JSON on line {line_no}") from exc
+        if not isinstance(payload, dict):
+            raise ValueError(f"memory JSONL line {line_no} must contain an object")
+
+        lead_id = payload.get("lead_id")
+        if isinstance(lead_id, str):
+            for repair in repairs_by_lead.get(lead_id, ()):
+                if repair.field not in payload:
+                    raise ValueError(
+                        f"repair target {lead_id}.{repair.field} does not exist in source record"
+                    )
+                if payload[repair.field] != repair.original:
+                    raise ValueError(
+                        f"repair precondition changed for {lead_id}.{repair.field}; refusing drift"
+                    )
+                payload[repair.field] = repair.repaired
+                applied.add((repair.lead_id, repair.field))
+
+        repaired_lines.append(json.dumps(payload, ensure_ascii=False, separators=(",", ":")))
+
+    expected = {(repair.lead_id, repair.field) for repair in overlay.repairs}
+    missing = expected - applied
+    if missing:
+        missing_text = ", ".join(f"{lead_id}.{field}" for lead_id, field in sorted(missing))
+        raise ValueError(f"repair targets were not found in source JSONL: {missing_text}")
+
+    suffix = "\n" if text.endswith("\n") else ""
+    return "\n".join(repaired_lines) + suffix
 
 
 def validate_memory_jsonl(text: str) -> MemoryJsonlValidationResult:
@@ -152,7 +239,8 @@ def build_memory_candidate_repair_prompt(*, raw_line: str, validation_reason: st
 This is a STRUCTURAL REPAIR task, not a research task.
 Do not add a new event, actor, date, number, causal claim, citation, URL, or search result.
 Preserve the historical meaning and uncertainty of the original record.
-If a semantic field is ambiguous, choose the least committal valid enum and add the ambiguous field name to `uncertain_fields`.
+If a semantic field is ambiguous, choose the least committal valid enum and add the ambiguous
+field name to `uncertain_fields`.
 Return exactly one JSON object and no Markdown.
 
 Allowed lead_kind values:
