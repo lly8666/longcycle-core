@@ -70,8 +70,8 @@ class StrategicCompassContractTest(unittest.TestCase):
         text = METHODS.read_text(encoding="utf-8")
         raw = METHODS.read_bytes()
 
-        self.assertLessEqual(len(raw), 12000)
-        self.assertLessEqual(len(text.splitlines()), 220)
+        self.assertLessEqual(len(raw), 14000)
+        self.assertLessEqual(len(text.splitlines()), 250)
         for fragment in (
             "Memory-first, Evidence-final",
             "Source-first, Archive-now",
@@ -87,6 +87,11 @@ class StrategicCompassContractTest(unittest.TestCase):
             "最小充分上下文",
             "主动理解 + 自我纠偏 + 防钻牛角尖",
             "当前原子任务",
+            "高能力 Agent 的独立判断义务",
+            "用户提出的方法建议不是自动正确的技术结论",
+            "high_capability_reasoning",
+            "bounded_execution",
+            "停止并升级给高能力模型",
         ):
             self.assertIn(fragment, text)
 
@@ -144,6 +149,8 @@ class StrategicCompassContractTest(unittest.TestCase):
         )
         self.assertIn("Vertical Alignment Gate", continue_text)
         self.assertIn("不要默认读取旧 devlog", continue_text)
+        self.assertIn("Independent judgment", agents_text)
+        self.assertIn("stop and escalate", agents_text)
         for fragment in (
             "接管 Longcycle",
             "lly8666/longcycle-core",
