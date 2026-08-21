@@ -52,6 +52,10 @@ jobs:
         id: migrations
         run: longcycle --json db upgrade
 
+      - name: PostgreSQL repository smoke (hard gate)
+        id: postgres_repository
+        run: python scripts/smoke_postgres_repository.py
+
       - name: Ruff (diagnostic during memory campaign)
         id: ruff
         continue-on-error: true
@@ -99,6 +103,7 @@ jobs:
         if: always()
         run: |
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
+          echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
           echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
