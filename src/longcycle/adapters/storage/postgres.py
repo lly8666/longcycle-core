@@ -426,12 +426,12 @@ class PostgresResearchRepository(PostgresSupport):
             existing_cursor = await connection.execute(
                 """
                 SELECT version.id,
-                       min(fetch.first_known_at) AS first_known_at,
-                       min(fetch.published_at) FILTER (WHERE fetch.published_at IS NOT NULL) AS published_at
+                       min(document_fetch.first_known_at) AS first_known_at,
+                       min(document_fetch.published_at) FILTER (WHERE document_fetch.published_at IS NOT NULL) AS published_at
                 FROM evidence.document_versions version
-                JOIN evidence.document_fetches fetch
-                  ON fetch.document_id = version.document_id
-                 AND fetch.content_blob_id = version.content_blob_id
+                JOIN evidence.document_fetches document_fetch
+                  ON document_fetch.document_id = version.document_id
+                 AND document_fetch.content_blob_id = version.content_blob_id
                 WHERE version.document_id = %s AND version.content_blob_id = %s
                 GROUP BY version.id
                 """,
@@ -477,18 +477,18 @@ class PostgresResearchRepository(PostgresSupport):
             cursor = await connection.execute(
                 """
                 SELECT version.id, document.canonical_url, document.external_id, document.logical_title,
-                       fetch.retrieved_at, fetch.published_at, fetch.first_known_at, fetch.http_status,
+                       document_fetch.retrieved_at, document_fetch.published_at, document_fetch.first_known_at, document_fetch.http_status,
                        blob.sha256, blob.object_key, blob.byte_length, blob.content_type
-                FROM evidence.document_fetches fetch
-                JOIN evidence.documents document ON document.id = fetch.document_id
-                JOIN evidence.content_blobs blob ON blob.id = fetch.content_blob_id
+                FROM evidence.document_fetches document_fetch
+                JOIN evidence.documents document ON document.id = document_fetch.document_id
+                JOIN evidence.content_blobs blob ON blob.id = document_fetch.content_blob_id
                 JOIN evidence.document_versions version
                   ON version.document_id = document.id AND version.content_blob_id = blob.id
-                WHERE fetch.connector_id = %s
+                WHERE document_fetch.connector_id = %s
                   AND document.canonical_url = %s
                   AND document.external_id IS NOT DISTINCT FROM %s
                   AND blob.sha256 = %s
-                ORDER BY fetch.first_known_at, fetch.retrieved_at
+                ORDER BY document_fetch.first_known_at, document_fetch.retrieved_at
                 LIMIT 1
                 """,
                 (source_id, canonical_url, external_id, content_sha256),
