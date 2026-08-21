@@ -1,0 +1,51 @@
+{
+  "schema_version": "longcycle-memory-exhaustion-horizon-revision/v2",
+  "industry": "新能源锂电池",
+  "industry_slug": "lithium-battery",
+  "base_manifest": "docs/research/lithium-battery-memory-exhaustion-manifest.json",
+  "revision_reason": "The original 2019 start truncates the prior-cycle demand, price, capex, project and expectation setup needed to explain 2019-2020 outcomes without hindsight.",
+  "primary_period": ["2015-01-01", "2026-12-31"],
+  "selective_antecedent_rule": "Before 2015, backfill only material antecedents needed to explain an actor, project, contract, technology, policy or metric inside the primary horizon.",
+  "blind_stage_inherits": {
+    "source_visibility": "none",
+    "fresh_search_forbidden": true,
+    "raw_leads_immutable": true
+  },
+  "added_time_slice_passes": [
+    {
+      "pass_id": "MEM-TIME-2015-2016",
+      "family": "time_slice",
+      "period": ["2015-01-01", "2016-12-31"],
+      "focus": "early demand/policy acceleration, project sanctioning, capital response and technology expectations that later shaped supply",
+      "questions": [
+        "What demand, policy and technology expectations caused companies to commit capital or offtake before the later cycle peak?",
+        "Which projects, expansions, financing structures and customer commitments were created here but became visible as supply only years later?",
+        "Which actors, product names, statistics and market terms from this period are easy to miss when searching from a 2019 vocabulary?"
+      ]
+    },
+    {
+      "pass_id": "MEM-TIME-2017-2018",
+      "family": "time_slice",
+      "period": ["2017-01-01", "2018-12-31"],
+      "focus": "high-price/high-expectation phase, accelerated expansion, chemistry-route expectations and the beginning of reversal",
+      "questions": [
+        "What did participants believe about demand growth, lithium scarcity, chemistry share, project timing and sustainable prices before the reversal?",
+        "Which capex, mine/converter/material/cell projects and contracts were committed under those expectations?",
+        "Which leading signs of oversupply, inventory, policy change, margin pressure or project slippage were observable at the time without hindsight?"
+      ]
+    }
+  ],
+  "batch3_pre2019_priority": [
+    "UP-HARDROCK",
+    "UP-CHEMICALS",
+    "DOWN-NEV",
+    "MID-LFP",
+    "MID-TERNARY",
+    "BAT-CELL"
+  ],
+  "classification": ["new_category", "useful_refinement", "duplicate"],
+  "seal_rule": {
+    "inherits_base_manifest": true,
+    "additional_requirement": "A high-value shard cannot be considered historically complete if its 2015-2018 setup contains a material uncovered causal dimension."
+  }
+}
