@@ -3,6 +3,12 @@
   "blind_stage_status": "all_primary_shards_have_self_gap_batch2_unsealed",
   "total_raw_leads_so_far": 600,
   "search_visibility": "none",
+  "state_authority": {
+    "raw_counts": "deterministic-derived from blind JSONL and handoff drill",
+    "novelty_labels": "curated research assessment",
+    "bridge_and_satellite_priority": "curated research assessment",
+    "ci": "not stored here; refresh live GitHub Actions"
+  },
   "sealed_shards": [],
   "shards": [
     {"shard_id":"UP-HARDROCK","lead_count":60,"self_gap_batches":2,"status":"high_novelty"},
@@ -82,6 +88,5 @@
       "do not begin fresh web self-verification before the referenced shard seals"
     ]
   },
-  "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed",
-  "ci_status": "snapshot only: run #214 passed 127 tests and Mypy on the 576-lead state; the 600-lead all-primary-batch2 milestone requires a fresh live CI run"
+  "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed"
 }
