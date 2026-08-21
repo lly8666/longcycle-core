@@ -127,7 +127,7 @@ def evaluate_trigger_promotion(
                 high_importance_count=high_importance_count,
                 reason_codes=tuple(reason_codes),
             )
-        if high_importance_count >= 2:
+        if len(observations) >= 2 and high_importance_count >= 1:
             return TriggerPromotionDecision(
                 trigger=trigger,
                 disposition=TriggerDisposition.CANDIDATE,
