@@ -1,0 +1,199 @@
+name: Kwinana real archive runtime probe
+
+on:
+  push:
+    branches:
+      - design/industry-memory-runtime-probe
+    paths:
+      - .github/workflows/kwinana-runtime-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  archive-probe:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install exact Longcycle runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[postgres]'
+          python - <<'PY'
+          import pypdf
+          print('PYTHON_OK')
+          print('PYPDF_VERSION', pypdf.__version__)
+          PY
+
+      - name: Apply repository migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          longcycle --json db upgrade | tee /tmp/migrations.json
+          longcycle --json doctor --check-database | tee /tmp/doctor.json
+
+      - name: Register required first-party sources
+        id: sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p probe
+          python scripts/register_http_source.py \
+            --name 'Tianqi Lithium first-party web' \
+            --publisher-domain en.tianqilithium.com \
+            --kind company --quality-grade A | tee probe/source-tianqi.json
+          python scripts/register_http_source.py \
+            --name 'CNINFO issuer exchange archive' \
+            --publisher-domain static.cninfo.com.cn \
+            --kind exchange --quality-grade A | tee probe/source-cninfo.json
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          for key, path in [('tianqi','probe/source-tianqi.json'),('cninfo','probe/source-cninfo.json')]:
+              data=json.load(open(path))['result']
+              print(f'{key}_id={data["source_id"]}')
+          PY
+
+      - name: Archive the four required EVT-001 v2 vintages through normal path
+        shell: bash
+        env:
+          TIANQI_ID: ${{ steps.sources.outputs.tianqi_id }}
+          CNINFO_ID: ${{ steps.sources.outputs.cninfo_id }}
+        run: |
+          set -euo pipefail
+          python scripts/archive_source_url.py \
+            --source-id "$TIANQI_ID" \
+            --url 'https://en.tianqilithium.com/content/details17_41.html' \
+            --title 'Kwinana 2018 commissioning expectation' \
+            --first-known-at '2018-12-21T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2018-COMMISSIONING-EXPECTATION' \
+            | tee probe/archive-2018.json
+          python scripts/archive_source_url.py \
+            --source-id "$TIANQI_ID" \
+            --url 'https://en.tianqilithium.com/content/details17_259.html' \
+            --title 'Kwinana 2019Q1 come-online expectation' \
+            --published-at '2019-04-30T00:00:00Z' \
+            --first-known-at '2019-04-30T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2019Q1-COME-ONLINE-EXPECTATION' \
+            | tee probe/archive-2019.json
+          python scripts/archive_source_url.py \
+            --source-id "$TIANQI_ID" \
+            --url 'https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF' \
+            --title 'Kwinana 2021 commissioning revision' \
+            --published-at '2021-08-23T00:00:00Z' \
+            --first-known-at '2021-08-23T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2021-COMMISSIONING-REVISION' \
+            | tee probe/archive-2021.json
+          python scripts/archive_source_url.py \
+            --source-id "$CNINFO_ID" \
+            --url 'https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF' \
+            --title 'Kwinana 2022 commercial production declaration' \
+            --published-at '2022-12-03T00:00:00Z' \
+            --first-known-at '2022-12-03T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2022-COMMERCIAL-PRODUCTION-DECLARATION' \
+            | tee probe/archive-2022.json
+
+      - name: Build review material from exact archived bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          root=Path('.longcycle/action-blobs')
+          out=Path('probe/review'); out.mkdir(parents=True, exist_ok=True)
+
+          class Visible(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True); self.parts=[]; self.hidden=0
+              def handle_starttag(self, tag, attrs):
+                  if tag.lower() in {'script','style','noscript'}: self.hidden += 1
+              def handle_endtag(self, tag):
+                  if tag.lower() in {'script','style','noscript'} and self.hidden: self.hidden -= 1
+              def handle_data(self, data):
+                  if not self.hidden: self.parts.append(data)
+
+          def archived_bytes(result_path):
+              r=json.load(open(result_path))['result']
+              p=root/r['blob_key']
+              b=p.read_bytes()
+              import hashlib
+              assert hashlib.sha256(b).hexdigest()==r['content_sha256']
+              assert len(b)==r['byte_length']
+              return r,b
+
+          for year in ('2018','2019'):
+              r,b=archived_bytes(f'probe/archive-{year}.json')
+              v=Visible(); v.feed(b.decode('utf-8',errors='replace'))
+              text=' '.join(' '.join(v.parts).split())
+              (out/f'{year}-visible.txt').write_text(text,encoding='utf-8')
+              anchors=['commission','Kwinana','Stage One','Stage Two','Phase One','second half','2019']
+              print(f'===== {year} ARCHIVED {r["content_sha256"]} {r["byte_length"]} bytes =====')
+              lower=text.lower()
+              hits=[]
+              for a in anchors:
+                  i=lower.find(a.lower())
+                  if i>=0: hits.append(i)
+              for i in sorted(set(hits))[:8]:
+                  print(text[max(0,i-350):i+1000])
+
+          for year,pages in [('2021',[2]),('2022',[1,2])]:
+              r,b=archived_bytes(f'probe/archive-{year}.json')
+              import io
+              reader=PdfReader(io.BytesIO(b), strict=False)
+              print(f'===== {year} PDF ARCHIVED {r["content_sha256"]} {r["byte_length"]} bytes pages={len(reader.pages)} =====')
+              for page in pages:
+                  text=reader.pages[page-1].extract_text() or ''
+                  normalized=' '.join(text.split())
+                  (out/f'{year}-page-{page}.txt').write_text(normalized,encoding='utf-8')
+                  print(f'----- PAGE {page} -----')
+                  print(normalized)
+          PY
+
+      - name: Snapshot normal-path persistence for review
+        shell: bash
+        run: |
+          set -euo pipefail
+          pg_dump --no-owner --no-privileges "$LONGCYCLE_DATABASE_URL" | gzip -n -9 > probe/kwinana-probe.sql.gz
+          du -sh .longcycle/action-blobs probe
+          sha256sum probe/archive-*.json probe/kwinana-probe.sql.gz | tee probe/SHA256SUMS.txt
+
+      - name: Upload probe artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: kwinana-real-archive-probe
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            probe/
+            .longcycle/action-blobs/
