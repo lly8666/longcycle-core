@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 34,
+  "continuity_sequence": 35,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
@@ -25,13 +25,13 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Completed the first reusable evidence-final execution path and fixed Kwinana archive targets. Added archive-only source persistence, grounded archived-text evidence recording, pinned pypdf 6.15.0 page-text artifacts, page-scoped PDF evidence grounding, a unified record_source_evidence CLI, deterministic HTTP source registration and EVT-001-kwinana-archive-plan-v1.json. CI #582 passed all hard gates at substantive head 0a78d39958178e0894031ec916d4cd5c21399300. The current chat host was checked and has no docker, postgres, psql, podman or nerdctl executable, so real database/archive execution cannot occur on this host.",
-    "current_task": "Run EVT-001 in the normal Longcycle development/runtime environment rather than adding another side format. Bring up PostgreSQL with compose, run migrations, register Tianqi and CNINFO HTTP sources, archive the four fixed Kwinana source vintages and record only excerpts grounded in the archived bytes/artifacts. Preserve the 2018 publication-time ambiguity and the 2022-11-30 versus 2022-12 Outcome date conflict instead of normalizing them away.",
-    "why_now": "The product bottleneck has moved from discovery and evidence plumbing to real source execution. Exact source targets and executable interfaces now exist, so further broad search or infrastructure work would be local optimization rather than progress toward replay proof.",
+    "last_completed_action": "Completed the first reusable evidence-final execution path and fixed Kwinana archive targets. Added archive-only source persistence, grounded archived-text evidence recording, pinned pypdf 6.15.0 page-text artifacts, page-scoped PDF evidence grounding, a unified record_source_evidence CLI, deterministic HTTP source registration and EVT-001-kwinana-archive-plan-v1.json. CI #582 passed all hard gates at substantive head 0a78d39958178e0894031ec916d4cd5c21399300. After a chat interruption, continuity was revalidated against the live branch: no newer substantive research/code change exists beyond that checkpoint; only handoff state changed. Resume from Kwinana archive execution, not from blind collection or evidence-plumbing design.",
+    "current_task": "Run EVT-001 in the normal Longcycle development/runtime environment rather than adding another side format. Bring up PostgreSQL with compose, run migrations, register Tianqi and CNINFO HTTP sources, archive the four fixed Kwinana source vintages and record only excerpts grounded in the archived bytes/artifacts. Preserve the 2018 publication-time ambiguity and the 2022-11-30 versus 2022-12 Outcome date conflict instead of normalizing them away. If the current execution host still cannot run PostgreSQL/Docker, continue only with work that directly removes that concrete execution blocker or validates the normal path; do not broaden research scope.",
+    "why_now": "The product bottleneck has moved from discovery and evidence plumbing to real source execution. Exact source targets and executable interfaces now exist, so further broad search or unrelated infrastructure work would be local optimization rather than progress toward replay proof.",
     "done_when": "EVT-001 has at least four persisted SourceDocument versions with immutable digests/blobs, source-located EvidenceFragments, explicit known-time candidates or ambiguity, explicit expectation horizons, and a later Outcome kept separate from earlier guidance. Any unresolved timestamp/date conflict is preserved for reconciliation. Hard CI stays green and the sealed blind atlas remains unchanged.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "On a runtime with Docker: start postgres from compose.yaml, run the migrate service, export LONGCYCLE_DATABASE_URL=postgresql://longcycle:longcycle@localhost:5432/longcycle and use the default filesystem blob backend; run scripts/register_http_source.py for en.tianqilithium.com and static.cninfo.com.cn; then execute the four entries in EVT-001-kwinana-archive-plan-v1.json with archive_source_url.py followed by record_source_evidence.py. PDFs require --page and must pass through the pinned pdf-text-pages artifact."
+    "next_atomic_action": "Re-check available execution capabilities in the current host. If Docker/PostgreSQL is available, run the existing compose/migrate/register/archive/evidence commands for EVT-001. If it is still unavailable, inspect the normal archive runtime boundary and make only the smallest reusable change that enables truthful execution/testing without creating benchmark-specific side storage."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
@@ -63,7 +63,8 @@
   },
   "pending_user_directives": [
     "Continue the established development line using repository-derived state while exercising independent high-capability judgment.",
-    "Explain progress in more plain language while preserving the technical and methodological boundaries."
+    "Explain progress in more plain language while preserving the technical and methodological boundaries.",
+    "After chat/process instability, persist a handoff node before continuing substantive project work."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
@@ -88,7 +89,7 @@
     "authority": "snapshot_not_authoritative",
     "last_observed_run": 582,
     "observed_head_sha": "0a78d39958178e0894031ec916d4cd5c21399300",
-    "conclusion": "CI #582 completed successfully after source registration, PDF parsing/evidence grounding and the Kwinana archive plan. Earlier CI #570 also passed the complete evidence path before source-registration was added.",
+    "conclusion": "CI #582 completed successfully after source registration, PDF parsing/evidence grounding and the Kwinana archive plan. This sequence-35 commit is handoff-only; refresh live CI after any substantive mutation.",
     "mypy_summary": "Run #582: success.",
     "pytest_summary": "Run #582: success.",
     "ruff_summary": "Ruff remains diagnostic-only during the campaign.",
@@ -100,14 +101,14 @@
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
       "status": "kwinana_archive_execution_runtime_blocked_on_current_host",
-      "summary": "Evidence-final plumbing is implemented and Kwinana primary targets are fixed. The remaining blocker in this session is environmental: the current execution host lacks Docker/PostgreSQL, while the repository itself provides compose-based PostgreSQL/migrations and now provides source-registration/archive/evidence CLIs.",
+      "summary": "Evidence-final plumbing is implemented and Kwinana primary targets are fixed. The remaining blocker observed in the previous session was environmental: that execution host lacked Docker/PostgreSQL, while the repository itself provides compose-based PostgreSQL/migrations and source-registration/archive/evidence CLIs. Re-check the current host before assuming the blocker still applies.",
       "next_actions": [
-        "Move execution to any normal Docker/PostgreSQL-capable Longcycle runtime and run the four EVT-001 archive-plan entries.",
+        "Re-check current runtime capabilities, then run the four EVT-001 archive-plan entries if the normal runtime is available.",
         "Record grounded evidence fragments and preserve temporal conflicts without creating premature Facts/Judgments.",
         "After Kwinana succeeds, execute Kemerton and then define the first evidence-backed replay fixture."
       ],
       "blockers": [
-        "Current chat container has no Docker or PostgreSQL executable; this is an execution-host limitation, not a missing repository pathway."
+        "Previous chat execution host had no Docker or PostgreSQL executable; confirm whether the current host has the same limitation before choosing the next code change."
       ]
     }
   ],
@@ -129,9 +130,9 @@
     "After real Kwinana fragments exist, what smallest reusable trajectory fixture shape best preserves Reality + Expectation + Outcome without lithium-specific prose?"
   ],
   "ordered_next_actions": [
-    "Refresh live HEAD/CI and do not mutate blind data.",
-    "Execute the fixed EVT-001 archive plan in a Docker/PostgreSQL-capable Longcycle runtime using the repository's registration/archive/evidence commands.",
-    "Persist Kwinana evidence fragments and temporal ambiguity/conflict records without premature Fact/Judgment promotion.",
-    "Only after Kwinana works, execute EVT-002 Kemerton and build the first small replay fixture."
+    "Re-check live runtime capabilities and do not mutate blind data.",
+    "Execute the fixed EVT-001 archive plan with the repository's normal registration/archive/evidence commands if PostgreSQL/blob runtime is available.",
+    "If the runtime is unavailable, remove only the concrete execution blocker or validate the normal path more deeply; do not create side evidence storage or broaden search.",
+    "Persist Kwinana evidence fragments and temporal ambiguity/conflict records, then execute EVT-002 Kemerton and build the first small replay fixture."
   ]
 }
