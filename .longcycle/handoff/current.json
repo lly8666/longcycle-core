@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 16,
+  "continuity_sequence": 17,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "371e7257ea32820469fcf741440959307a3f32c2",
+  "checkpoint_based_on_head_sha": "ef1eb076183a038d04107126d337d90e73963c11",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve the active branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, verify that the Agent can satisfy the cursor's required_capability, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
@@ -25,7 +25,7 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "session-continuity",
-    "last_completed_action": "Reviewed the genuine v3 transfer report and classified it as a surface-compliance failure sample: it found the correct branch and respected mutation boundaries but did not demonstrate think-first/calibrate-second reasoning, workstream hierarchy, exact live-state reconciliation, contract-based self-audit or independent strategic judgment. Implemented bounded v4 remediation with independent-judgment methodology, capability-aware cursor semantics, regression tests and a stronger adversarial audit specification.",
+    "last_completed_action": "Continuity v4 remediation is internally complete and passed hard CI #380: the system now preserves the v3 surface-compliance failure as a regression sample, adds independent-judgment methodology, declares task capability requirements in the typed cursor, reserves bounded_execution as the future low-cost-Agent entry point, and provides a stronger adversarial fresh-Agent judgment audit without building a full dispatcher.",
     "current_task": "Run exactly one genuine zero-context Fresh-Agent Judgment + Continuity Audit v4. The fresh Agent must receive only the canonical fixed transfer phrase, recover this cursor, read docs/development/fresh-agent-judgment-continuity-audit-v4.md only as task-specific context, independently audit the prior v3 report and the strategic challenge propositions, and create only docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md on the resolved active branch.",
     "why_now": "The previous external transfer proved navigation but not high-capability judgment, so the continuity quality gate has not actually tested the behavior needed for safe autonomous continuation. One stronger bounded audit is justified; further continuity expansion is not justified unless this audit exposes a material safety/continuation defect.",
     "done_when": "A genuinely fresh Agent starting only from the canonical phrase either honestly stops with insufficient capability or produces the single allowed report demonstrating: default-branch bootstrap and active-branch resolution; separate pre-calibration mission synthesis and post-calibration delta; exact live HEAD/checkpoint/CI reconciliation; independent PASS/FAIL/INCONCLUSIVE audit of the v3 report against its recorded done_when; explicit main_path versus supporting_quality_gate reasoning; non-sycophantic but user-goal-respecting judgments on the v4 challenge propositions; capability honesty; no old-context preload; no mutations other than the report; and a derived single next atomic action.",
@@ -74,13 +74,13 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 356,
-    "observed_head_sha": "d1f47e06e18d82874f211abf3e757ded76145633",
-    "conclusion": "success on the complete continuity v3 internal head; v4 capability-aware code/tests and this handoff are newer and require live CI refresh",
-    "mypy_summary": "Run #356: success before v4 capability-aware changes.",
-    "pytest_summary": "Run #356: success before v4 capability-aware changes; v4 regression tests are newer and must pass before the external audit is trusted.",
-    "ruff_summary": "Ruff remains diagnostic-only technical debt.",
-    "refresh_instruction": "Refresh live HEAD/CI before trusting this snapshot. Do not treat the v4 external audit as ready until the current v4 code/test head passes the hard correctness gate."
+    "last_observed_run": 380,
+    "observed_head_sha": "ef1eb076183a038d04107126d337d90e73963c11",
+    "conclusion": "success on the complete continuity v4 capability-aware code/test head; this handoff-sync commit is newer and live refresh remains required",
+    "mypy_summary": "Run #380: success.",
+    "pytest_summary": "Run #380: success.",
+    "ruff_summary": "Ruff remains diagnostic-only technical debt; it is not the hard correctness gate.",
+    "refresh_instruction": "Refresh live HEAD/CI before trusting this snapshot. The substantive v4 code/test head ef1eb076183a038d04107126d337d90e73963c11 passed the hard correctness gate in run #380."
   },
   "workstreams": [
     {
@@ -101,8 +101,8 @@
       "workstream_id": "session-continuity",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "v3_surface_compliance_failure_v4_judgment_audit_next",
-      "summary": "The v3 external report proved navigation but not high-capability judgment. A bounded v4 adversarial transfer audit is the single remaining justified continuity test before returning to the research main path unless it exposes a material defect.",
+      "status": "v4_internal_green_external_judgment_audit_now",
+      "summary": "The v3 external report proved navigation but not high-capability judgment. v4 is internally green; exactly one bounded adversarial transfer audit remains before returning to the research main path unless it exposes a material defect.",
       "next_actions": [
         "Use a genuinely fresh Agent and send only the canonical fixed transfer phrase.",
         "The fresh Agent may create only docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md on the resolved active branch.",
@@ -145,7 +145,6 @@
     "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough?"
   ],
   "ordered_next_actions": [
-    "Wait for the current v4 code/test head to pass hard CI.",
     "Run exactly one genuine fresh-Agent judgment + continuity v4 audit using only the canonical fixed phrase and report-only mutation boundary encoded in the cursor.",
     "Review the resulting report independently; do not treat file creation or correct branch resolution as automatic PASS.",
     "Repair only material continuity defects; otherwise stop continuity work and return immediately to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
