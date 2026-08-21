@@ -51,7 +51,8 @@ class StrategicCompassContractTest(unittest.TestCase):
             "Reality",
             "Expectation / Judgment",
             "Outcome",
-            "把已经发生过的未来，重新变回当时仍然未知的未来",
+            "把已经发生过的未来",
+            "重新变回当时仍然未知的未来",
             "point-in-time replay",
             "hindsight database",
             "简单因果和常识",
@@ -59,7 +60,8 @@ class StrategicCompassContractTest(unittest.TestCase):
             "中期",
             "短期",
             "Strategic Alignment Gate",
-            "先确认航向，再拧螺丝",
+            "先确认航向",
+            "再拧螺丝",
         ):
             self.assertIn(fragment, text)
 
@@ -79,7 +81,9 @@ class StrategicCompassContractTest(unittest.TestCase):
             "Agent 分工",
             "模型升级产生新 research vintage",
             "有限核心 + 动态状态",
-            "高保真优先于极限压缩",
+            "Continuity 追求高保真",
+            "不追求极限压缩",
+            "最小充分上下文",
         ):
             self.assertIn(fragment, text)
 
