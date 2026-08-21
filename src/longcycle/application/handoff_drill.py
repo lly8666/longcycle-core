@@ -29,6 +29,12 @@ class RecoveredSessionState(BaseModel):
     medium_term_goal: str
     short_term_goal: str
     next_big_step: str
+    cursor_parent_workstream_id: str
+    cursor_last_completed_action: str
+    cursor_current_task: str
+    cursor_why_now: str
+    cursor_done_when: str
+    cursor_next_atomic_action: str
     campaign_id: str | None
     industry: str | None
     phase: str | None
@@ -91,6 +97,7 @@ def audit_repository_handoff(
 
     strategy = (root / checkpoint.core_refs.strategy_path).read_text(encoding="utf-8")
     methodology = (root / checkpoint.core_refs.methodology_path).read_text(encoding="utf-8")
+    mission_contract = _read_json(root / checkpoint.core_refs.mission_fidelity_path)
     continue_here = (root / "CONTINUE_HERE.md").read_text(encoding="utf-8")
 
     raw_total: int | None = None
@@ -145,6 +152,15 @@ def audit_repository_handoff(
         if term.lower() in core_text
     )
 
+    contract_text = json.dumps(mission_contract, ensure_ascii=False).lower()
+    contract_exclusion_hits = tuple(
+        term
+        for term in checkpoint.active_context.core_exclusion_terms
+        if term.lower() in contract_text
+    )
+    facets = mission_contract.get("required_facets")
+    misreadings = mission_contract.get("common_misreadings")
+
     checks_list = [
         HandoffDrillCheck(
             name="bounded_bootstrap_read_set",
@@ -152,12 +168,14 @@ def audit_repository_handoff(
             detail=f"resume_read_set={len(checkpoint.resume_read_set)}",
         ),
         HandoffDrillCheck(
-            name="bootstrap_reads_strategy_and_method",
+            name="bootstrap_reads_strategy_method_then_calibrates",
             passed=(
                 checkpoint.core_refs.strategy_path in continue_here
                 and checkpoint.core_refs.methodology_path in continue_here
+                and checkpoint.core_refs.mission_fidelity_path in continue_here
+                and "先用自己的话" in continue_here
             ),
-            detail="CONTINUE_HERE must point to both bounded long-term cores",
+            detail="CONTINUE_HERE must require first-pass synthesis before semantic calibration",
         ),
         HandoffDrillCheck(
             name="strategy_core_preserves_mission",
@@ -177,13 +195,30 @@ def audit_repository_handoff(
                 and "Source-first, Archive-now" in methodology
                 and "not_found != false" in methodology
                 and "Point-in-time" in methodology
+                and "主动理解" in methodology
             ),
-            detail="method core must preserve adopted cross-industry research methods",
+            detail="method core must preserve adopted cross-industry research and anti-tunnel methods",
+        ),
+        HandoffDrillCheck(
+            name="mission_contract_is_semantic_not_answer_key",
+            passed=(
+                isinstance(facets, list)
+                and len(facets) >= 10
+                and isinstance(misreadings, list)
+                and len(misreadings) >= 5
+                and "not an answer key" in str(mission_contract.get("purpose", ""))
+            ),
+            detail="mission contract must test semantic facets without becoming canonical prose",
         ),
         HandoffDrillCheck(
             name="long_term_cores_exclude_active_context_terms",
             passed=not core_exclusion_hits,
             detail=f"hits={core_exclusion_hits}",
+        ),
+        HandoffDrillCheck(
+            name="mission_contract_excludes_active_context_terms",
+            passed=not contract_exclusion_hits,
+            detail=f"hits={contract_exclusion_hits}",
         ),
         HandoffDrillCheck(
             name="strategic_horizon_present",
@@ -196,6 +231,20 @@ def audit_repository_handoff(
                 )
             ),
             detail="medium/short/next/stop strategic horizon must be explicit",
+        ),
+        HandoffDrillCheck(
+            name="continuation_cursor_complete",
+            passed=all(
+                (
+                    checkpoint.continuation_cursor.parent_workstream_id,
+                    checkpoint.continuation_cursor.last_completed_action,
+                    checkpoint.continuation_cursor.current_task,
+                    checkpoint.continuation_cursor.why_now,
+                    checkpoint.continuation_cursor.done_when,
+                    checkpoint.continuation_cursor.next_atomic_action,
+                )
+            ),
+            detail="cursor must recover just-finished/current/why/done/next atomic state",
         ),
         HandoffDrillCheck(
             name="resume_actions_present",
@@ -256,6 +305,7 @@ def audit_repository_handoff(
     checks = tuple(checks_list)
     score = sum(item.passed for item in checks) / len(checks)
 
+    cursor = checkpoint.continuation_cursor
     recovered = RecoveredSessionState(
         repository=checkpoint.repository,
         active_branch=checkpoint.active_branch,
@@ -264,6 +314,12 @@ def audit_repository_handoff(
         medium_term_goal=checkpoint.strategic_horizon.medium_term_goal,
         short_term_goal=checkpoint.strategic_horizon.short_term_goal,
         next_big_step=checkpoint.strategic_horizon.next_big_step,
+        cursor_parent_workstream_id=cursor.parent_workstream_id,
+        cursor_last_completed_action=cursor.last_completed_action,
+        cursor_current_task=cursor.current_task,
+        cursor_why_now=cursor.why_now,
+        cursor_done_when=cursor.done_when,
+        cursor_next_atomic_action=cursor.next_atomic_action,
         campaign_id=campaign.campaign_id if campaign else None,
         industry=campaign.industry if campaign else None,
         phase=campaign.phase if campaign else None,
