@@ -1,0 +1,90 @@
+{
+  "schema_version": "longcycle-self-verification-run/v1",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "shard_id": "UP-CHEMICALS",
+  "stage": "high_capability_self_verification_discovery",
+  "sealed_input": {
+    "compact_source": "GitHub Actions run 514 memory-compact-indexes/UP-CHEMICALS.json",
+    "formal_lead_count": 53,
+    "compact_sha256": "1009e9515a05790002da6e46f4988dd12638872e0351d51788a9b9a6127ed8b4",
+    "seal_review": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/up-chemicals-seal-review-v1.json",
+    "coverage_checkpoint_commit": "42a781184b13e31c93041df618049ee7e385fd44"
+  },
+  "isolation": {
+    "fresh_search_allowed_for": ["UP-CHEMICALS"],
+    "fresh_search_forbidden_for_unsealed_shards": true,
+    "sealed_blind_mutation_forbidden": true,
+    "write_outputs_under": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001",
+    "search_snippets_are_evidence": false,
+    "candidate_urls_are_evidence_before_archive": false,
+    "not_found_means_false": false
+  },
+  "first_pass_goal": "Resolve a small set of 2019-2020 replay-critical conversion claims into exact dated source targets and contradiction searches. Do not try to verify all 53 leads in one pass.",
+  "query_families": [
+    {
+      "family_id": "SVQ-001-KWINANA-GUIDANCE",
+      "lead_ids": ["CH-I001", "CH-J001", "CH-K002"],
+      "question": "What did Tianqi publicly expect for Kwinana completion, first production, qualification and ramp at each historical vintage, and how were those dates or output expectations revised?",
+      "primary_source_targets": ["Tianqi Lithium annual/interim reports", "HKEX/SZSE/ASX company announcements where applicable", "historical Kwinana project updates"],
+      "reverse_search": "find contemporaneous disclosures suggesting Kwinana was on schedule or commercially ready earlier than the failure narrative implies"
+    },
+    {
+      "family_id": "SVQ-002-KEMERTON-GUIDANCE",
+      "lead_ids": ["CH-I002", "CH-J001", "CH-K002"],
+      "question": "What were Albemarle's original Kemerton investment, construction and production/ramp expectations, especially before and during 2019-2020?",
+      "primary_source_targets": ["Albemarle SEC filings and annual reports", "Albemarle investor presentations", "Western Australia government project announcements"],
+      "reverse_search": "find dated primary disclosures showing earlier/later commercial readiness than remembered"
+    },
+    {
+      "family_id": "SVQ-003-HYDROXIDE-EXPECTATION-VINTAGE",
+      "lead_ids": ["CH-I003", "CH-K003", "CHC-013"],
+      "question": "What contemporaneous 2017-2020 sources explicitly expected lithium hydroxide demand or premium to outgrow carbonate because of high-nickel cathodes?",
+      "primary_source_targets": ["dated producer investor presentations", "cathode/battery company presentations", "industry conference decks with original publication dates"],
+      "reverse_search": "look for contemporaneous minority views that expected carbonate/LFP resilience or warned high-nickel adoption would be slower"
+    },
+    {
+      "family_id": "SVQ-004-RAMP-STATE-CHAIN",
+      "lead_ids": ["CH-J001", "CH-J003", "CH-K001"],
+      "question": "Which dated project disclosures distinguish mechanical completion, first product, battery-grade qualification, stable commercial output, low utilization, shutdown and restart?",
+      "primary_source_targets": ["project owner announcements", "annual/interim reports", "customer qualification or commissioning updates"],
+      "reverse_search": "find cases where first production actually did coincide quickly with qualified commercial output"
+    },
+    {
+      "family_id": "SVQ-005-EFFECTIVE-SUPPLY-VS-NAMEPLATE",
+      "lead_ids": ["CH-G002", "CH-K004", "CH-K005", "CHC-015", "CHC-016"],
+      "question": "What primary disclosures show announced or mechanically complete lithium-conversion nameplate failing to become effective battery-grade supply because of feedstock, yield, qualification, economics or project cancellation?",
+      "primary_source_targets": ["company project updates", "annual reports", "impairment/care-and-maintenance announcements"],
+      "reverse_search": "find examples where announced conversion nameplate translated into effective output with little delay"
+    },
+    {
+      "family_id": "SVQ-006-CONTRACT-VINTAGE-MARGIN",
+      "lead_ids": ["CH-I005", "CH-L001", "CHC-011"],
+      "question": "Can primary disclosures identify feedstock/offtake pricing formulas, reset timing, inventory-cost lag or realized-price timing that made converter margins differ from same-day spot spreads in the 2019-2020 cycle?",
+      "primary_source_targets": ["offtake/prepayment agreements", "company annual reports and notes", "management discussion of raw-material and product pricing"],
+      "reverse_search": "look for disclosures indicating near-immediate spot pass-through instead of lagged contract economics"
+    }
+  ],
+  "verification_depth_target": {
+    "minimum_query_families": 6,
+    "minimum_source_types": 3,
+    "primary_domain_check_required": true,
+    "reverse_query_required": true,
+    "citation_chase_when_present_required": true
+  },
+  "output_contract": {
+    "discovery_file": "discovery-v1.json",
+    "for_each_family": [
+      "refined_summary",
+      "candidate_urls",
+      "possible_primary_sources",
+      "source_origin_or_repost_relationships",
+      "supporting_evidence_test",
+      "contradicting_evidence_test",
+      "unresolved_questions",
+      "next_evidence_task"
+    ],
+    "forbidden_promotions": ["FactAssertion", "JudgmentAssertion", "publishable truth"],
+    "next_stage": "claim_scoped_evidence_task_packets_and_original_source_archive"
+  }
+}
