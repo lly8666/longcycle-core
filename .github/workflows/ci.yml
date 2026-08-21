@@ -17,6 +17,22 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,6 +47,10 @@ jobs:
 
       - name: Install
         run: python -m pip install -e ".[dev,postgres,s3]"
+
+      - name: PostgreSQL migrations (hard gate)
+        id: migrations
+        run: longcycle --json db upgrade
 
       - name: Ruff (diagnostic during memory campaign)
         id: ruff
@@ -78,6 +98,7 @@ jobs:
       - name: Check summary
         if: always()
         run: |
+          echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
           echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
