@@ -1,8 +1,8 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "ordinary_gap_probe_started_on_up_hardrock_unsealed",
-  "total_raw_leads_so_far": 663,
-  "total_formal_typed_leads_so_far": 605,
+  "blind_stage_status": "ordinary_gap_probes_completed_on_up_hardrock_and_down_nev_unsealed",
+  "total_raw_leads_so_far": 668,
+  "total_formal_typed_leads_so_far": 610,
   "legacy_experimental_raw_leads": {
     "total": 58,
     "files": [
@@ -31,13 +31,13 @@
     {"shard_id":"MID-SEPARATOR","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
     {"shard_id":"MID-ELECTROLYTE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
     {"shard_id":"BAT-CELL","lead_count":58,"formal_typed_lead_count":58,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"DOWN-NEV","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"DOWN-NEV","lead_count":59,"formal_typed_lead_count":59,"self_gap_batches":4,"status":"high_novelty_ordinary_gap_v6_with_duplicate"},
     {"shard_id":"DOWN-ESS","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3_with_repair_overlay"},
     {"shard_id":"DOWN-OTHER","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
     {"shard_id":"LOOP-RECYCLING","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"}
   ],
   "saturation_experiment": {
-    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary novelty-decay measurement has now started on UP-HARDROCK: the first v6 probe produced two new categories, two useful refinements and one duplicate, so novelty is beginning to decay but remains materially high and the shard is not close to seal",
+    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary novelty-decay measurement has now run on UP-HARDROCK and DOWN-NEV. Each v6 probe produced two new categories, two useful refinements and one duplicate, showing the first repeat signals while remaining materially high novelty; neither shard begins a low-novelty streak",
     "ordinary_batch2": "14/14 primary shards remained high novelty",
     "pre2019_batch3": [
       {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
@@ -53,9 +53,10 @@
     ],
     "pre2019_deferred": ["MID-ANODE","MID-ELECTROLYTE","MID-SEPARATOR","DOWN-OTHER"],
     "ordinary_gap_probes": [
-      {"shard_id":"UP-HARDROCK","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0}
+      {"shard_id":"UP-HARDROCK","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0},
+      {"shard_id":"DOWN-NEV","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0}
     ],
-    "interpretation": "the 2015 horizon extension exposed material causal setup across the highest-value cycle paths and is now stopped. The first matrix-driven ordinary probe shows the expected first duplicate signal, but two high-importance new replay dimensions remain; continue novelty-decay measurement selectively and do not infer saturation from one duplicate"
+    "interpretation": "the campaign has transitioned from blanket expansion into measurable novelty decay. Duplicate observations now appear when the bounded prompt hits already-resolved dimensions, but first-order replay gaps still produce multiple high-importance new dimensions. Re-rank across shards after each probe and do not treat one duplicate per batch as saturation"
   },
   "horizon_revision": {
     "primary_period": ["2015-01-01","2026-12-31"],
@@ -93,11 +94,11 @@
     "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
   ],
   "next_phase": {
-    "goal": "measure matrix-selected ordinary novelty decay and close first-order replay gaps without fresh search or symmetric shard quotas",
+    "goal": "continue matrix-selected ordinary novelty decay across first-order replay bridges without fresh search or shard-count symmetry",
     "actions": [
-      "rebuild deterministic compact indices from all 605 formal v3+ leads",
-      "reconcile analysis/negative-space-gap-matrix-v1.json against the UP-HARDROCK v6 result: two new categories, two useful refinements, one duplicate, low-novelty streak still zero",
-      "re-rank the matrix before any next raw mutation; DOWN-NEV remains the leading candidate only if vehicle-activity-to-material-demand translation is still the highest first-order replay gap",
+      "rebuild deterministic compact indices from all 610 formal v3+ leads",
+      "create the next matrix delta after the DOWN-NEV v6 result and re-rank first-order residual gaps",
+      "treat UP-CHEMICALS conversion as the leading candidate only if mine/concentrate supply and vehicle/battery demand are now sufficiently explicit that conversion remains the largest unresolved bridge",
       "classify every subsequent ordinary probe output as new_category/useful_refinement/duplicate and preserve duplicates rather than rewriting them as novelty",
       "track consecutive low-novelty results per shard explicitly; no shard currently has a qualifying low-novelty streak",
       "perform the full negative-space/gap-matrix review before any seal and require no material uncovered dimension",
