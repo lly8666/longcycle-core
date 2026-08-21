@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 20,
+  "continuity_sequence": 21,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "9d26b99d2846f51e6f48fe8962f6adbaf365727c",
+  "checkpoint_based_on_head_sha": "4da007f3b254d28339aa6b7a37c7c59ed217e1c1",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch. It must resolve GitHub Issue #2, which points to active Draft PR #1 and branch design/industry-memory. Switch subsequent reads to that branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
@@ -16,8 +16,8 @@
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, and the resulting primitives must be demonstrably reusable rather than industry-specific hacks.",
-    "short_term_goal": "Reconcile the user-confirmed completed lithium benchmark state inside the authoritative design/industry-memory branch before generating replacement research. Preserve the currently proven blind layer exactly at 636 raw leads / 578 formal typed v3+ leads / 58 legacy v1-v2 prompt-evolution records, while identifying what persisted data layer or completion artifact the reported 1500+ total actually describes.",
-    "next_big_step": "Once the completed benchmark state and its exact data-layer semantics are reconciled, verify seal/evidence boundaries and resume the evidence-final path or any genuinely unfinished blind work required by that recovered state. The product proof remains an evidence-backed no-lookahead Reality + Expectation + Outcome replay slice.",
+    "short_term_goal": "Continue the lithium blind-memory saturation experiment on the 2015-2026 horizon using selective high-information batch3 passes. Treat the collection checkpoint as the repository-derived blind layer, preserve raw outputs immutably, measure novelty decay rather than chasing a lead-count target, and reach legitimate per-shard seal boundaries without fresh-search contamination.",
+    "next_big_step": "After selective batch3 and negative-space review produce legitimately sealed shards, begin high-capability self-verification/search discovery for those shards, then convert unresolved claims into claim-scoped evidence tasks and archive original sources for the first no-lookahead Reality + Expectation + Outcome replay slice.",
     "local_optimization_stop_rule": "Stop or re-rank local work when it no longer materially improves coverage, evidence traceability, point-in-time replay, a main-path blocker, or continuity correctness. Tooling, lead count, schema elegance, lint, handoff polish and Agent orchestration are never self-justifying objectives.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
@@ -25,18 +25,18 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Re-ran the fresh-agent handoff from the default branch and proved that the repository itself discovers the active development state: main/FRESH_AGENT_BOOTSTRAP.md -> GitHub Issue #2 -> Draft PR #1 -> branch design/industry-memory. Reconciled the stale checkpoint against live HEAD 9d26b99d2846f51e6f48fe8962f6adbaf365727c. The substantive commit added a full-history blind-memory provenance audit; CI run #440 succeeded. That audit scanned 305 reachable commits and 63 distinct blind trees and found historical maxima of 636 raw / 578 formal typed leads with zero blind candidates exceeding current. This rules out a larger reachable blind tree, but does not identify or disprove another completed data layer on the active branch.",
-    "current_task": "Use design/industry-memory as the authoritative project state and reconcile what the user-confirmed 1500+ completed total refers to. Do not search for a different active branch, do not equate the 636 blind raw count with the whole completed benchmark, and do not regenerate supposedly completed research. Inspect same-branch manifests, campaign records, devlogs and data-layer semantics until the exact completion layer is identified or a concrete missing-artifact boundary is proven.",
-    "why_now": "The user explicitly clarified that the project state is in design/industry-memory and that a correct handoff should discover this branch automatically from the repository rather than requiring the user to provide the link. The fresh bootstrap does discover it. The remaining discrepancy is therefore not branch discovery and not a larger reachable blind tree; it is a data-layer/completion-state reconciliation problem inside the active branch context.",
-    "done_when": "The 1500+ completed total is tied to an exact persisted artifact or exact data-layer definition in the authoritative project state, its relationship to the 636 raw / 578 formal blind layer is explained without conflation, any legitimate seal/evidence state is reconciled without hindsight leakage, repository validation remains green, and no duplicate blind research is generated merely to recreate a remembered number.",
+    "last_completed_action": "Resumed the prior selective pre-2019 batch3 plan at UP-BRINE using only the shard compact index, the 2015-2026 horizon decision and pre2019-batch3-v5 prompt; no fresh search was used. Added six immutable v5 leads: four new_category and two useful_refinement, zero duplicates. Coverage was reconciled to 642 raw / 584 formal typed / 58 legacy experimental records, with UP-BRINE now 54 formal leads and three self-gap/batch3 passes. The first CI run after raw insertion correctly failed because coverage and handoff still said 636; coverage is now reconciled and this handoff sync completes the repository-state update.",
+    "current_task": "Continue selective pre-2019 batch3 novelty-decay measurement. UP-BRINE remains high novelty at 6/6 non-duplicates, so do not seal it and do not keep drilling the same shard merely because it is productive. Move to the ranked next shard, UP-CONCENTRATE, using only its deterministic compact index plus the fixed horizon/prompt boundary, then classify new_category/useful_refinement/duplicate and reassess whether upstream novelty remains healthy enough to justify DOWN-ESS.",
+    "why_now": "The horizon-gap priority artifact ranked UP-BRINE first and UP-CONCENTRATE second because the 2015-2018 upstream causal setup is necessary to explain 2019-2020 effective supply. UP-BRINE has now confirmed healthy marginal novelty, so cross-shard information gain is better served by advancing to UP-CONCENTRATE than by running another immediate brine pass.",
+    "done_when": "UP-CONCENTRATE's targeted 2015-2018 batch3 is committed as immutable raw output, every lead is classified as new_category/useful_refinement/duplicate, deterministic coverage/compact-index counts and handoff state agree, hard CI gates are green, and the next decision explicitly applies the novelty-decay rule rather than a shard-count quota.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Start from the complete design/industry-memory tree and reconcile same-branch completion semantics: inspect lithium memory manifests/audits, campaign devlogs and any derived or persisted benchmark-layer definitions that can explain the user-confirmed 1500+ total. Treat 636/578 only as the proven blind layer. Keep search_visibility=none and never use fresh evidence search to rewrite blind memory."
+    "next_atomic_action": "Load only the current UP-CONCENTRATE deterministic compact index, docs/research/lithium-battery-cycle-horizon-v2.md and prompts/pre2019-batch3-v5.md. Run one small blind 2015-2018 causal-setup pass with search_visibility=none, preserve uncertainty and disconfirmation queries, classify each lead, and do not read neighboring raw outputs or fresh evidence."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / active-branch completion-state reconciliation",
+    "label": "Lithium-battery first benchmark / selective blind batch3 novelty decay",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
@@ -48,7 +48,8 @@
       "docs/research/lithium-battery-memory-sharding.md",
       "docs/research/lithium-battery-collection-plan.md",
       "docs/devlog/2026-08-21-memory-campaign-part2.md",
-      "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
+      "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
+      "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md"
     ],
     "core_exclusion_terms": [
       "lithium-battery",
@@ -62,51 +63,50 @@
     ]
   },
   "pending_user_directives": [
-    "User states the real dataset should be 1500+ records and was already completed. Preserve this as an authoritative recovery constraint: do not ask the user to repeat prior work, do not pretend the currently proven 636 raw / 578 formal typed blind checkpoint is the whole completed state, and do not regenerate or mutate sealed memory merely to force the count upward.",
-    "User clarified that the project state is in the design/industry-memory branch and that a correct fresh-agent handoff should discover this branch from the repository rather than requiring the user to provide the link. Treat design/industry-memory as the active authoritative development branch unless a newer explicit repository rendezvous changes it."
+    "Treat the repository-derived collection state as authoritative for the blind-memory campaign and ignore the earlier 1500+ discrepancy for current execution. Continue from the prior Agent's development/research plan instead of pausing for further recovery work.",
+    "Continue the prior Agent's line of development while exercising independent high-capability judgment; do not follow local task ordering mechanically when evidence or parent-goal alignment indicates a better move.",
+    "The project state is in the design/industry-memory branch and a correct fresh-agent handoff should discover this branch from the repository rather than requiring the user to provide the link."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
-    "phase": "blind_memory_completion_state_reconciliation",
+    "phase": "blind_memory_selective_batch3_novelty_decay",
     "search_visibility": "none",
-    "total_raw_leads": 636,
+    "total_raw_leads": 642,
     "sealed_shards": [],
     "shard_count": 14,
-    "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension; high-value shards must also have no material uncovered 2015-2018 causal-setup dimension. Do not infer missing seals from the 636 blind layer; reconcile the completed-state semantics first.",
+    "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension; high-value shards must also have no material uncovered 2015-2018 causal-setup dimension.",
     "next_research_actions": [
-      "Do not launch new blind batches while the user-confirmed 1500+ completed state is being reconciled.",
-      "Preserve the reachable blind layer exactly: 636 raw records, of which 578 are formal typed v3+ compact inputs and 58 are immutable v1/v2 prompt-evolution experiments.",
-      "Use the active design/industry-memory branch to identify the exact persisted layer represented by the 1500+ completion total before deciding whether anything is genuinely missing.",
-      "If a larger authoritative state or different data layer is identified, reconcile its counts, seals, repair overlays and deterministic derivatives before evidence-final search begins.",
+      "Preserve the current blind layer exactly at 642 raw records: 584 formal typed v3+ compact inputs plus 58 immutable v1/v2 prompt-evolution experiments.",
+      "Run the next targeted 2015-2018 batch3 on UP-CONCENTRATE using only its deterministic compact index and the fixed blind prompt/horizon inputs.",
+      "Classify every output as new_category, useful_refinement or duplicate and use marginal novelty, not equal shard counts, to decide whether to proceed to DOWN-ESS.",
+      "Do not seal UP-BRINE: its latest targeted pre-2019 pass remained 6/6 non-duplicate.",
       "Keep search_visibility=none for blind memory and never backfill blind recall with hindsight evidence."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 440,
-    "observed_head_sha": "9d26b99d2846f51e6f48fe8962f6adbaf365727c",
-    "conclusion": "success on the latest substantive checkpoint; Mypy, Pytest, compact-index build, full-history memory provenance audit and artifact uploads passed. The history audit scanned 305 reachable commits / 63 distinct blind trees; current and historical max raw=636, formal_typed=578, candidates_exceeding_current=0.",
-    "mypy_summary": "Run #440: success; no issues found in 57 source files.",
-    "pytest_summary": "Run #440: success; 144 passed.",
-    "ruff_summary": "Run #440: diagnostic-only Ruff reported 63 findings; workflow policy keeps Ruff non-blocking during the memory campaign.",
-    "refresh_instruction": "Refresh live HEAD/CI before trusting this snapshot. A handoff-only sync commit after 9d26b99 is valid only if its delta remains confined to handoff-mutable paths."
+    "last_observed_run": 446,
+    "observed_head_sha": "ab3191b03353799c3c404d7160304bfd689e9f76",
+    "conclusion": "Run #446 failed only because the raw UP-BRINE insertion advanced repository-derived counts to 642 while coverage and handoff still reported 636. Mypy passed; Pytest reported 141 passed / 3 failed, and all three failures were expected stale-count consistency checks. Coverage has since been reconciled at substantive commit 4da007f3b254d28339aa6b7a37c7c59ed217e1c1; refresh the CI run triggered by this handoff sync before trusting final status.",
+    "mypy_summary": "Run #446: success; no issues found in 57 source files.",
+    "pytest_summary": "Run #446: 141 passed / 3 failed; failures were checkpoint_total_matches_raw, coverage_total_matches_raw/coverage_shard_counts_match_raw, and the compact-index expected count for UP-BRINE, all caused by metadata still reporting 636/48 after raw became 642/54.",
+    "ruff_summary": "Run #446: diagnostic-only Ruff reported the existing 63 findings; workflow policy keeps Ruff non-blocking during the memory campaign.",
+    "refresh_instruction": "Refresh live HEAD/CI. This handoff-only sync is valid only if its delta remains confined to the handoff path and the latest hard gates pass against the reconciled 642/584 state."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "active_branch_completion_layer_reconciliation",
-      "summary": "The fresh handoff correctly resolves design/industry-memory and the branch is green at the proven blind layer. The user-confirmed 1500+ completion claim must now be reconciled as a data-layer/completion-state question inside this active branch context, not treated as evidence for a different active branch or solved by generating more blind leads.",
+      "status": "selective_pre2019_batch3_novelty_decay",
+      "summary": "The active benchmark has resumed the planned selective 2015-2018 blind passes. Seven high-value shards now have targeted pre-2019 batch3 results, all still high novelty; UP-BRINE added 6/6 non-duplicates and moved the blind layer to 642 raw / 584 formal typed. The next ranked cross-shard pass is UP-CONCENTRATE.",
       "next_actions": [
-        "Identify the exact same-branch artifact or data-layer definition corresponding to the user-confirmed 1500+ completed total.",
-        "Reconcile that layer against the blind 636 raw / 578 formal / 58 legacy split and any legitimate seal/evidence state.",
-        "Only after that reconciliation decide whether the main path is evidence-final work or genuinely unfinished blind work."
+        "Run one bounded UP-CONCENTRATE pre-2019 v5 pass and classify novelty honestly.",
+        "Rebuild/reconcile deterministic compact and coverage state, then use the result to decide whether DOWN-ESS remains justified.",
+        "Only after genuine novelty decay and negative-space review should any shard seal and enter self-verification/evidence work."
       ],
-      "blockers": [
-        "The active branch is now correctly resolved, and full Git-history audit rules out a larger reachable blind tree; however, the exact persisted layer represented by the user-confirmed 1500+ completed total is not yet identified."
-      ]
+      "blockers": []
     }
   ],
   "resume_read_set": [
@@ -116,8 +116,9 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "docs/research/lithium-battery-memory-audits.json",
-    "docs/research/lithium-battery-memory-exhaustion-manifest.json"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/horizon-gap-priority-v1.json",
+    "docs/research/lithium-battery-cycle-horizon-v2.md",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/pre2019-batch3-v5.md"
   ],
   "deep_reference_paths": [
     "FRESH_AGENT_BOOTSTRAP.md",
@@ -127,24 +128,25 @@
     "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
     "docs/devlog/2026-08-21-memory-campaign-part2.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-    "docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md",
-    "docs/devlog/2026-08-21-continuity-v3-judgment-failure-v4-remediation.md"
+    "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md",
+    "docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md"
   ],
   "latest_devlogs": [
+    "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-    "docs/devlog/2026-08-21-memory-campaign-part2.md",
-    "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md"
+    "docs/devlog/2026-08-21-memory-campaign-part2.md"
   ],
   "unresolved_questions": [
-    "What exact persisted layer does the user-confirmed 1500+ completed total describe: blind memory, typed/repair-derived records, compiled task/audit records, evidence/calibration records, or another benchmark artifact on design/industry-memory?",
-    "Did the completed state include legitimate shard seals or evidence-final work that is not represented by the current blind-layer coverage index?",
-    "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough once the completed state is reconciled?",
+    "After UP-CONCENTRATE, is marginal upstream pre-2019 novelty still high enough that DOWN-ESS is the next best information-gain pass, or should the campaign move toward ordinary batch3/negative-space review on already-covered high-value shards?",
+    "What exact negative-space/gap-matrix rubric should be applied once low-novelty runs begin so seal decisions remain auditable rather than intuitive?",
+    "What exact replay fixture and acceptance rubric should certify the first lithium benchmark as good enough once sealed evidence work begins?",
     "Deferred bounded-execution orchestration: when a sealed-shard evidence workload or repeated current-source collection bottleneck exists, what is the smallest low-cost-Agent web task interface needed?"
   ],
   "ordered_next_actions": [
-    "Reconcile the user-confirmed 1500+ completed total against the full design/industry-memory project state and name its exact data layer without conflating it with blind JSONL counts.",
-    "Reconcile any recovered completion artifact's counts, seal status, repair overlays and deterministic derivatives against the green blind-layer checkpoint.",
-    "Only after completion-state reconciliation, resume the evidence-final or genuinely unfinished blind main path required by the authoritative state; preserve no-lookahead and search-visibility boundaries.",
-    "Keep continuity and orchestration work subordinate to the benchmark main path; do not spend further effort polishing handoff unless new substantive state changes."
+    "Run one targeted UP-CONCENTRATE 2015-2018 blind batch3 from its same-shard deterministic compact index; no fresh search and no neighboring raw outputs.",
+    "Classify novelty, reconcile raw/formal/coverage/handoff counts, and require green hard CI gates.",
+    "Use UP-BRINE + UP-CONCENTRATE marginal novelty together to decide whether to run DOWN-ESS; do not widen by quota.",
+    "When genuine low-novelty streaks emerge, perform explicit negative-space/gap-matrix review before any seal; only sealed shards may enter fresh self-verification/evidence search.",
+    "Keep continuity and orchestration work subordinate to the benchmark main path."
   ]
 }
