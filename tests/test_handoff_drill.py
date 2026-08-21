@@ -22,7 +22,7 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         self.assertEqual(report.recovered.active_pr, 1)
         self.assertEqual(report.recovered.campaign_id, "2026-08-21-gpt-5.6-sol")
         self.assertEqual(report.recovered.industry, "lithium-battery")
-        self.assertEqual(report.recovered.phase, "blind_memory_exhaustion")
+        self.assertEqual(report.recovered.phase, checkpoint.memory_campaign.phase)
         self.assertEqual(report.recovered.search_visibility, "none")
         self.assertEqual(
             report.recovered.total_raw_leads,
