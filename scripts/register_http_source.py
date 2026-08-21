@@ -20,6 +20,15 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--name", required=True)
     parser.add_argument("--publisher-domain", required=True)
     parser.add_argument(
+        "--allowed-domain",
+        action="append",
+        dest="allowed_domains",
+        help=(
+            "explicit retrieval domain allowlist; repeat for multiple domains. "
+            "Defaults to the publisher domain when omitted."
+        ),
+    )
+    parser.add_argument(
         "--kind",
         choices=[item.value for item in SourceKind],
         default=SourceKind.COMPANY.value,
@@ -45,6 +54,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
         kind=SourceKind(args.kind),
         quality_grade=QualityGrade(args.quality_grade),
         rate_limit_per_minute=args.rate_limit_per_minute,
+        allowed_domains=args.allowed_domains,
     )
     registry = PostgresSourceRegistry(settings.database_url)
     try:
