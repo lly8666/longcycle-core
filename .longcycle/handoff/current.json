@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 21,
+  "continuity_sequence": 22,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
@@ -25,13 +25,13 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Resumed the prior selective pre-2019 batch3 plan at UP-BRINE using only the shard compact index, the 2015-2026 horizon decision and pre2019-batch3-v5 prompt; no fresh search was used. Added six immutable v5 leads: four new_category and two useful_refinement, zero duplicates. Coverage was reconciled to 642 raw / 584 formal typed / 58 legacy experimental records, with UP-BRINE now 54 formal leads and three self-gap/batch3 passes. The first CI run after raw insertion correctly failed because coverage and handoff still said 636; coverage is now reconciled and this handoff sync completes the repository-state update.",
+    "last_completed_action": "Resumed the prior selective pre-2019 batch3 plan at UP-BRINE using only the shard compact index, the 2015-2026 horizon decision and pre2019-batch3-v5 prompt; no fresh search was used. Added six immutable v5 leads: four new_category and two useful_refinement, zero duplicates. Coverage was reconciled to 642 raw / 584 formal typed / 58 legacy experimental records, with UP-BRINE now 54 formal leads and three self-gap/batch3 passes. The first CI run after raw insertion correctly failed because coverage and handoff still said 636; coverage is now reconciled. A subsequent handoff sync exceeded the bounded resume_read_set contract by one entry; this sequence corrects that packaging error without changing the substantive checkpoint.",
     "current_task": "Continue selective pre-2019 batch3 novelty-decay measurement. UP-BRINE remains high novelty at 6/6 non-duplicates, so do not seal it and do not keep drilling the same shard merely because it is productive. Move to the ranked next shard, UP-CONCENTRATE, using only its deterministic compact index plus the fixed horizon/prompt boundary, then classify new_category/useful_refinement/duplicate and reassess whether upstream novelty remains healthy enough to justify DOWN-ESS.",
     "why_now": "The horizon-gap priority artifact ranked UP-BRINE first and UP-CONCENTRATE second because the 2015-2018 upstream causal setup is necessary to explain 2019-2020 effective supply. UP-BRINE has now confirmed healthy marginal novelty, so cross-shard information gain is better served by advancing to UP-CONCENTRATE than by running another immediate brine pass.",
     "done_when": "UP-CONCENTRATE's targeted 2015-2018 batch3 is committed as immutable raw output, every lead is classified as new_category/useful_refinement/duplicate, deterministic coverage/compact-index counts and handoff state agree, hard CI gates are green, and the next decision explicitly applies the novelty-decay rule rather than a shard-count quota.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Load only the current UP-CONCENTRATE deterministic compact index, docs/research/lithium-battery-cycle-horizon-v2.md and prompts/pre2019-batch3-v5.md. Run one small blind 2015-2018 causal-setup pass with search_visibility=none, preserve uncertainty and disconfirmation queries, classify each lead, and do not read neighboring raw outputs or fresh evidence."
+    "next_atomic_action": "Load only the current UP-CONCENTRATE deterministic compact index and prompts/pre2019-batch3-v5.md; use the horizon decision already referenced by active context. Run one small blind 2015-2018 causal-setup pass with search_visibility=none, preserve uncertainty and disconfirmation queries, classify each lead, and do not read neighboring raw outputs or fresh evidence."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
@@ -86,13 +86,13 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 446,
-    "observed_head_sha": "ab3191b03353799c3c404d7160304bfd689e9f76",
-    "conclusion": "Run #446 failed only because the raw UP-BRINE insertion advanced repository-derived counts to 642 while coverage and handoff still reported 636. Mypy passed; Pytest reported 141 passed / 3 failed, and all three failures were expected stale-count consistency checks. Coverage has since been reconciled at substantive commit 4da007f3b254d28339aa6b7a37c7c59ed217e1c1; refresh the CI run triggered by this handoff sync before trusting final status.",
-    "mypy_summary": "Run #446: success; no issues found in 57 source files.",
-    "pytest_summary": "Run #446: 141 passed / 3 failed; failures were checkpoint_total_matches_raw, coverage_total_matches_raw/coverage_shard_counts_match_raw, and the compact-index expected count for UP-BRINE, all caused by metadata still reporting 636/48 after raw became 642/54.",
-    "ruff_summary": "Run #446: diagnostic-only Ruff reported the existing 63 findings; workflow policy keeps Ruff non-blocking during the memory campaign.",
-    "refresh_instruction": "Refresh live HEAD/CI. This handoff-only sync is valid only if its delta remains confined to the handoff path and the latest hard gates pass against the reconciled 642/584 state."
+    "last_observed_run": 450,
+    "observed_head_sha": "a41c1d269ee38d77a61916041bb51b0b391049fc",
+    "conclusion": "Run #450 failed because the handoff resume_read_set contained nine entries while the typed contract allows at most eight. Mypy passed; Pytest reported 134 passed / 10 failed, all caused by that single handoff validation error. This sequence removes the extra default resume entry while keeping the substantive checkpoint at 4da007f3b254d28339aa6b7a37c7c59ed217e1c1.",
+    "mypy_summary": "Run #450: success; no issues found in 57 source files.",
+    "pytest_summary": "Run #450: 134 passed / 10 failed; every failure derived from SessionHandoffCheckpoint rejecting resume_read_set length 9 > 8.",
+    "ruff_summary": "Run #450: diagnostic-only Ruff reported the existing 63 findings; workflow policy keeps Ruff non-blocking during the memory campaign.",
+    "refresh_instruction": "Refresh live HEAD/CI and require the latest hard gates to pass before adding the UP-CONCENTRATE raw batch."
   },
   "workstreams": [
     {
@@ -117,7 +117,6 @@
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/horizon-gap-priority-v1.json",
-    "docs/research/lithium-battery-cycle-horizon-v2.md",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/pre2019-batch3-v5.md"
   ],
   "deep_reference_paths": [
@@ -126,6 +125,7 @@
     "docs/development/continuity-architecture.md",
     "docs/development/session-handoff-protocol.md",
     "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
+    "docs/research/lithium-battery-cycle-horizon-v2.md",
     "docs/devlog/2026-08-21-memory-campaign-part2.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
     "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md",
