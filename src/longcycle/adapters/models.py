@@ -63,7 +63,7 @@ class JsonFixtureGateway:
 
     extractor_name = "json_fixture"
     extractor_version = "1.0.0"
-    model_name = None
+    model_name: str | None = None
 
     def __init__(self, *, source_quality: float = 0.9, source_cluster: str | None = None) -> None:
         self.source_quality = source_quality
@@ -142,7 +142,7 @@ class JsonFixtureGateway:
 class NoopModelGateway:
     extractor_name = "noop"
     extractor_version = "1.0.0"
-    model_name = None
+    model_name: str | None = None
 
     async def extract(
         self,
