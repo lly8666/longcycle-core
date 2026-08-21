@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 35,
+  "continuity_sequence": 36,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "0a78d39958178e0894031ec916d4cd5c21399300",
+  "checkpoint_based_on_head_sha": "81fb2b86ba695e80f339c338953342e5a6fdbc6a",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on main to resolve Issue #2, Draft PR #1 and branch design/industry-memory. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and only the bounded active-state files. Refresh live HEAD/CI before mutation.",
@@ -16,34 +16,34 @@
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, using reusable primitives rather than lithium-specific hacks.",
-    "short_term_goal": "Execute the first real archived evidence trajectory for sealed shard UP-CHEMICALS. Blind memory remains frozen at 683 raw / 625 formal / 58 legacy. The archive/evidence path now supports archive-only SourceDocuments, grounded HTML excerpts, pinned PDF page-text artifacts, page-scoped PDF EvidenceFragments and idempotent HTTP source registration. EVT-001 Kwinana has four fixed primary vintages ready for execution; do not broaden discovery instead of archiving them.",
-    "next_big_step": "On a Docker/PostgreSQL-capable runtime, archive the four fixed Kwinana vintages, record claim-scoped fragments with known_time / valid_time / expectation_horizon kept separate, then execute Kemerton and build the first small no-lookahead Reality + Expectation + Outcome replay fixture.",
-    "local_optimization_stop_rule": "Evidence plumbing is now sufficient for the first real task. Do not add more archive/search/orchestration infrastructure unless actual Kwinana execution exposes a concrete blocker. Do not reopen sealed blind memory or treat web discovery as Evidence.",
+    "short_term_goal": "Execute the first real archived evidence trajectory for sealed shard UP-CHEMICALS. Blind memory remains frozen at 683 raw / 625 formal / 58 legacy. The archive/evidence path is implemented; EVT-001 Kwinana archive plan v2 now fixes four required contemporaneous primary vintages and separates an optional later retrospective. The remaining bottleneck is normal runtime execution, not discovery or evidence-plumbing design.",
+    "next_big_step": "In a Docker/PostgreSQL-capable Longcycle runtime, archive the four required Kwinana vintages, ground claim-scoped fragments with known_time / valid-or-effective-time / expectation_horizon kept separate, then execute Kemerton and build the first small no-lookahead Reality + Expectation + Outcome replay fixture.",
+    "local_optimization_stop_rule": "Do not reopen sealed blind memory, do not broaden Kwinana search now that exact required source targets are fixed, and do not add generic archive/orchestration infrastructure unless actual runtime execution exposes a concrete repository defect. Web results and plans remain non-Evidence until normal archive persistence runs.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Completed the first reusable evidence-final execution path and fixed Kwinana archive targets. Added archive-only source persistence, grounded archived-text evidence recording, pinned pypdf 6.15.0 page-text artifacts, page-scoped PDF evidence grounding, a unified record_source_evidence CLI, deterministic HTTP source registration and EVT-001-kwinana-archive-plan-v1.json. CI #582 passed all hard gates at substantive head 0a78d39958178e0894031ec916d4cd5c21399300. After a chat interruption, continuity was revalidated against the live branch: no newer substantive research/code change exists beyond that checkpoint; only handoff state changed. Resume from Kwinana archive execution, not from blind collection or evidence-plumbing design.",
-    "current_task": "Run EVT-001 in the normal Longcycle development/runtime environment rather than adding another side format. Bring up PostgreSQL with compose, run migrations, register Tianqi and CNINFO HTTP sources, archive the four fixed Kwinana source vintages and record only excerpts grounded in the archived bytes/artifacts. Preserve the 2018 publication-time ambiguity and the 2022-11-30 versus 2022-12 Outcome date conflict instead of normalizing them away. If the current execution host still cannot run PostgreSQL/Docker, continue only with work that directly removes that concrete execution blocker or validates the normal path; do not broaden research scope.",
-    "why_now": "The product bottleneck has moved from discovery and evidence plumbing to real source execution. Exact source targets and executable interfaces now exist, so further broad search or unrelated infrastructure work would be local optimization rather than progress toward replay proof.",
-    "done_when": "EVT-001 has at least four persisted SourceDocument versions with immutable digests/blobs, source-located EvidenceFragments, explicit known-time candidates or ambiguity, explicit expectation horizons, and a later Outcome kept separate from earlier guidance. Any unresolved timestamp/date conflict is preserved for reconciliation. Hard CI stays green and the sealed blind atlas remains unchanged.",
+    "last_completed_action": "After the chat interruption, continuity was refreshed and Kwinana's two outstanding timestamp questions were chased only within the sealed UP-CHEMICALS scope. Persisted EVT-001-kwinana-citation-chase-v1.json and EVT-001-kwinana-archive-plan-v2.json. The exact official CNINFO 2022-083 PDF was fixed as a required contemporaneous primary vintage. Its own wording separates commercial-production capability effective/declaration date 2022-11-30 from expected output improvement beginning 2022-12, so the old 2022-11-30 versus 2022-12 item is now a temporal-semantics reconciliation item rather than a presumed contradiction. The 2018 commissioning event date remains supportable as 2018-12-18, while exact first-party public known_time remains unresolved because surviving Tianqi copies have later page timestamps. CI #590 passed Mypy, Pytest, compact-index build and memory-history audit at substantive head 81fb2b86ba695e80f339c338953342e5a6fdbc6a.",
+    "current_task": "Execute EVT-001 archive plan v2 through the normal Longcycle runtime. Required trajectory vintages are: 2018 Tianqi commissioning expectation, 2019 Q1 H2-2019 come-online expectation, 2021 commissioning/ramp revision, and contemporaneous 2022-083 commercial-production declaration plus forward ramp/qualification expectation. Keep the 2025 annual report only as optional retrospective corroboration. The current chat host has no Docker/PostgreSQL/psql or LONGCYCLE_DATABASE_URL, so do not claim actual SourceDocument/Evidence persistence here. Do not broaden search unless a required target fails during real archive execution.",
+    "why_now": "The historical research and source-targeting problem is sufficiently bounded. Longcycle now needs to prove the decisive product behavior: immutable original-source persistence and temporally truthful expectation-to-outcome reconstruction. More broad search would improve a side metric, not the benchmark proof.",
+    "done_when": "All four required EVT-001 v2 vintages are persisted through the normal archive path with immutable source digests/blob locators and source-located EvidenceFragments; exact known_time or explicit ambiguity is stored separately from milestone valid/effective time and expectation horizon; 2018 publication ambiguity remains explicit unless truly resolved; the 2022 day-level declaration and month-level ramp statement are represented without false conflict; hard CI remains green and sealed blind memory is unchanged.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Re-check available execution capabilities in the current host. If Docker/PostgreSQL is available, run the existing compose/migrate/register/archive/evidence commands for EVT-001. If it is still unavailable, inspect the normal archive runtime boundary and make only the smallest reusable change that enables truthful execution/testing without creating benchmark-specific side storage."
+    "next_atomic_action": "On the next Docker/PostgreSQL-capable runtime, use EVT-001-kwinana-archive-plan-v2.json as the execution authority: start compose PostgreSQL/migrations, register en.tianqilithium.com and static.cninfo.com.cn, archive the four required URLs with archive_source_url.py, then ground HTML/PDF excerpts with record_source_evidence.py. Until such a runtime exists, do not add more Kwinana discovery or side evidence storage."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / Kwinana archived evidence execution",
+    "label": "Lithium-battery first benchmark / Kwinana archive plan v2 execution",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json",
       "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-guidance-trajectory.json",
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-archive-plan-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-citation-chase-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-archive-plan-v2.json",
       "src/longcycle/application/source_archive.py",
       "src/longcycle/application/evidence_recording.py",
       "scripts/register_http_source.py",
@@ -78,37 +78,37 @@
     "shard_count": 14,
     "seal_rule": "UP-CHEMICALS is sealed and its blind atlas is frozen. Fresh search is permitted only for its isolated verification/evidence path; all other shards remain search-isolated.",
     "next_research_actions": [
-      "Execute EVT-001 from the fixed archive plan in a configured PostgreSQL/blob runtime.",
-      "Do not broaden Kwinana discovery unless an exact archive target fails and needs bounded replacement discovery.",
-      "Preserve 2018 known-time ambiguity and the Outcome date-granularity conflict for evidence reconciliation.",
-      "Execute EVT-002 Kemerton only after the first Kwinana trajectory proves the persistence/time interface.",
-      "Build the first replay fixture from archived evidence before adding orchestration or more evidence tasks."
+      "Execute EVT-001 Kwinana archive plan v2 in a configured PostgreSQL/blob runtime.",
+      "Treat the four v2 required vintages as the complete current execution set; do not broaden discovery unless an exact target fails.",
+      "Preserve 2018 exact first-party known_time ambiguity rather than backdating a surviving page to its body dateline.",
+      "Represent 2022-11-30 commercial-production effective/declaration date separately from the December-forward ramp expectation.",
+      "Execute EVT-002 Kemerton only after Kwinana proves the persistence/time interface, then build the first evidence-backed replay fixture."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 582,
-    "observed_head_sha": "0a78d39958178e0894031ec916d4cd5c21399300",
-    "conclusion": "CI #582 completed successfully after source registration, PDF parsing/evidence grounding and the Kwinana archive plan. This sequence-35 commit is handoff-only; refresh live CI after any substantive mutation.",
-    "mypy_summary": "Run #582: success.",
-    "pytest_summary": "Run #582: success.",
+    "last_observed_run": 590,
+    "observed_head_sha": "81fb2b86ba695e80f339c338953342e5a6fdbc6a",
+    "conclusion": "Run #590 passed all four hard gates for archive plan v2: Mypy, Pytest, compact-index build and memory-history audit. This sequence-36 commit is handoff-only; refresh live CI after any later substantive mutation.",
+    "mypy_summary": "Run #590: success.",
+    "pytest_summary": "Run #590: success.",
     "ruff_summary": "Ruff remains diagnostic-only during the campaign.",
-    "refresh_instruction": "Refresh live CI after this handoff-only sync; substantive checkpoint 0a78d39958178e0894031ec916d4cd5c21399300 is green."
+    "refresh_instruction": "Substantive checkpoint 81fb2b86ba695e80f339c338953342e5a6fdbc6a is hard-gate green. Refresh live HEAD/CI before later mutation."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "kwinana_archive_execution_runtime_blocked_on_current_host",
-      "summary": "Evidence-final plumbing is implemented and Kwinana primary targets are fixed. The remaining blocker observed in the previous session was environmental: that execution host lacked Docker/PostgreSQL, while the repository itself provides compose-based PostgreSQL/migrations and source-registration/archive/evidence CLIs. Re-check the current host before assuming the blocker still applies.",
+      "status": "kwinana_archive_v2_runtime_blocked_on_current_host",
+      "summary": "Evidence-final plumbing is complete, timestamp semantics have been tightened, and Kwinana's four required contemporaneous source vintages are fixed. The current blocker is environmental only: this chat host has no Docker/PostgreSQL runtime, so actual archive persistence cannot be truthfully performed here.",
       "next_actions": [
-        "Re-check current runtime capabilities, then run the four EVT-001 archive-plan entries if the normal runtime is available.",
-        "Record grounded evidence fragments and preserve temporal conflicts without creating premature Facts/Judgments.",
-        "After Kwinana succeeds, execute Kemerton and then define the first evidence-backed replay fixture."
+        "Run the v2 four-vintage archive/evidence sequence in the next normal Longcycle Docker/PostgreSQL runtime.",
+        "Preserve known-time ambiguity and temporal granularity explicitly in persisted fragments/reconciliation state.",
+        "After Kwinana succeeds, execute Kemerton and define the first evidence-backed replay fixture before broadening evidence work."
       ],
       "blockers": [
-        "Previous chat execution host had no Docker or PostgreSQL executable; confirm whether the current host has the same limitation before choosing the next code change."
+        "Current chat execution host has no Docker, PostgreSQL, psql, podman, nerdctl or configured LONGCYCLE_DATABASE_URL; this is an environment limitation, not a missing repository pathway."
       ]
     }
   ],
@@ -119,20 +119,20 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-guidance-trajectory.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-archive-plan-v1.json"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-citation-chase-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-archive-plan-v2.json"
   ],
   "deep_reference_paths": [],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "What contemporaneous source best arbitrates the 2018-12-18 body dateline versus current Tianqi page timestamps for exact known_time?",
-    "What contemporaneous 2022 primary disclosure arbitrates 2022-11-30 day precision versus the 2024 annual report's 2022-12 commercial-production statement?",
-    "After real Kwinana fragments exist, what smallest reusable trajectory fixture shape best preserves Reality + Expectation + Outcome without lithium-specific prose?"
+    "What contemporaneous source, if any, can assign an exact first-party public known_time to Tianqi's 2018-12-18-datelined commissioning release rather than merely bounding public knowledge by 2018-12-21?",
+    "After real Kwinana fragments exist, what smallest reusable trajectory fixture shape best preserves Reality + Expectation + Outcome without lithium-specific prose?",
+    "Does real archive execution expose any production-runtime defect that the current tests cannot reveal?"
   ],
   "ordered_next_actions": [
-    "Re-check live runtime capabilities and do not mutate blind data.",
-    "Execute the fixed EVT-001 archive plan with the repository's normal registration/archive/evidence commands if PostgreSQL/blob runtime is available.",
-    "If the runtime is unavailable, remove only the concrete execution blocker or validate the normal path more deeply; do not create side evidence storage or broaden search.",
-    "Persist Kwinana evidence fragments and temporal ambiguity/conflict records, then execute EVT-002 Kemerton and build the first small replay fixture."
+    "Do not mutate blind data or broaden Kwinana discovery.",
+    "Execute EVT-001 archive plan v2 with the repository's normal registration/archive/evidence commands in a Docker/PostgreSQL-capable Longcycle runtime.",
+    "Persist the four required Kwinana evidence vintages and temporal ambiguity/granularity semantics without premature Fact/Judgment promotion.",
+    "Then execute EVT-002 Kemerton and build the first small replay fixture before adding more evidence tasks or orchestration."
   ]
 }
