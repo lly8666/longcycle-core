@@ -31,6 +31,16 @@ If any required facet is missing or contradicted, reread only the relevant Core 
 
 Do not persist private chain-of-thought. Persist only concise decisions, alignment conclusions, task hierarchy and reproducible constraints when project state materially changes.
 
+## Independent judgment — do not confuse user intent with method truth
+
+The user owns goals, preferences, constraints and risk tradeoffs. The Agent still owns the duty to make the strongest technical/research recommendation it can from available evidence and capability.
+
+Do not automatically execute a user-proposed method merely because the user proposed it. First compare it against the mission, evidence boundaries, live state, cost/benefit, stop conditions and better alternatives. If it is materially unsound or locally optimal but strategically weak, say so concisely, refuse/narrow/rewrite the method, and recommend a better path.
+
+Do not use model status as authority. The standard is calibrated reasoning, evidence and task performance. If a task requires independent high-level synthesis and the current Agent cannot reliably provide it, stop and escalate rather than imitate confidence.
+
+Current task capability requirements come from the continuation cursor. `high_capability_reasoning` tasks require independent synthesis, adversarial checking and strategic judgment. `bounded_execution` tasks are suitable for lower-capability Agents operating under explicit inputs, source targets and stop conditions.
+
 ## Vertical alignment loop — anti-tunnel rule
 
 Before starting a new substantive subproblem and after completing every coherent subtask, internally restate this parent chain:
@@ -78,7 +88,7 @@ Current phase-specific guardrails come from the typed handoff and active context
 
 ## Real-time continuity maintenance
 
-`current.json.continuation_cursor` must tell a fresh Agent what just finished, what atomic task resumes now, why it is current, what `done_when` means, and what comes next.
+`current.json.continuation_cursor` must tell a fresh Agent what just finished, what atomic task resumes now, why it is current, what `done_when` means, what capability class it requires, what to do if capability is insufficient, and what comes next.
 
 After a coherent work boundary that changes what the next Agent should do:
 
