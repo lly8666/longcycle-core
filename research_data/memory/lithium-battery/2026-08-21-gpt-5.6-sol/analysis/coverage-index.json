@@ -1,8 +1,8 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "ordinary_gap_probes_completed_on_up_hardrock_and_down_nev_unsealed",
-  "total_raw_leads_so_far": 668,
-  "total_formal_typed_leads_so_far": 610,
+  "blind_stage_status": "ordinary_gap_low_novelty_streak_started_on_up_chemicals_unsealed",
+  "total_raw_leads_so_far": 673,
+  "total_formal_typed_leads_so_far": 615,
   "legacy_experimental_raw_leads": {
     "total": 58,
     "files": [
@@ -24,7 +24,7 @@
     {"shard_id":"UP-HARDROCK","lead_count":71,"formal_typed_lead_count":41,"self_gap_batches":4,"status":"high_novelty_ordinary_gap_v6_with_duplicate"},
     {"shard_id":"UP-BRINE","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"UP-CONCENTRATE","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"UP-CHEMICALS","lead_count":66,"formal_typed_lead_count":38,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"UP-CHEMICALS","lead_count":71,"formal_typed_lead_count":43,"self_gap_batches":4,"status":"low_novelty_ordinary_gap_v6_streak_1"},
     {"shard_id":"MID-LFP","lead_count":56,"formal_typed_lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-TERNARY","lead_count":42,"formal_typed_lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-ANODE","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
@@ -37,7 +37,7 @@
     {"shard_id":"LOOP-RECYCLING","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"}
   ],
   "saturation_experiment": {
-    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary novelty-decay measurement has now run on UP-HARDROCK and DOWN-NEV. Each v6 probe produced two new categories, two useful refinements and one duplicate, showing the first repeat signals while remaining materially high novelty; neither shard begins a low-novelty streak",
+    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary novelty-decay probes have now run on UP-HARDROCK, DOWN-NEV and UP-CHEMICALS. The first two remained materially high novelty at 2 new_category / 2 useful_refinement / 1 duplicate. UP-CHEMICALS produced 0 new_category / 2 useful_refinement / 3 duplicate and is the first qualifying low-novelty observation, starting but not completing a seal streak",
     "ordinary_batch2": "14/14 primary shards remained high novelty",
     "pre2019_batch3": [
       {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
@@ -54,9 +54,10 @@
     "pre2019_deferred": ["MID-ANODE","MID-ELECTROLYTE","MID-SEPARATOR","DOWN-OTHER"],
     "ordinary_gap_probes": [
       {"shard_id":"UP-HARDROCK","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0},
-      {"shard_id":"DOWN-NEV","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0}
+      {"shard_id":"DOWN-NEV","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0},
+      {"shard_id":"UP-CHEMICALS","pass_id":"ordinary-gap-batch4-v6","new_category":0,"useful_refinement":2,"duplicate":3,"low_novelty":true,"consecutive_low_novelty_batches":1}
     ],
-    "interpretation": "the campaign has transitioned from blanket expansion into measurable novelty decay. Duplicate observations now appear when the bounded prompt hits already-resolved dimensions, but first-order replay gaps still produce multiple high-importance new dimensions. Re-rank across shards after each probe and do not treat one duplicate per batch as saturation"
+    "interpretation": "the campaign is now measuring genuine novelty decay rather than forcing all-new batches. UP-CHEMICALS has the first low-novelty observation because the bounded conversion probe found no materially new replay category and mostly reactivated already represented qualification, ownership and product-switch constraints. One low-novelty batch is not saturation: do not seal and do not immediately drill the same shard merely to chase a three-batch streak; re-rank first-order gaps first"
   },
   "horizon_revision": {
     "primary_period": ["2015-01-01","2026-12-31"],
@@ -94,14 +95,14 @@
     "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
   ],
   "next_phase": {
-    "goal": "continue matrix-selected ordinary novelty decay across first-order replay bridges without fresh search or shard-count symmetry",
+    "goal": "continue matrix-selected ordinary novelty decay across first-order replay bridges while protecting the first observed low-novelty streak from local over-drilling",
     "actions": [
-      "rebuild deterministic compact indices from all 610 formal v3+ leads",
-      "create the next matrix delta after the DOWN-NEV v6 result and re-rank first-order residual gaps",
-      "treat UP-CHEMICALS conversion as the leading candidate only if mine/concentrate supply and vehicle/battery demand are now sufficiently explicit that conversion remains the largest unresolved bridge",
+      "rebuild deterministic compact indices from all 615 formal v3+ leads",
+      "create a matrix-v4 delta after the UP-CHEMICALS low-novelty result and re-rank first-order residual gaps",
+      "hold UP-CHEMICALS at consecutive_low_novelty_batches=1 until the matrix justifies a later independent repeat; do not run back-to-back batches merely to manufacture a streak",
+      "evaluate BAT-CELL as the leading cross-chain candidate because DOWN-NEV exposed battery-production-versus-installation timing and conversion is now comparatively mature",
       "classify every subsequent ordinary probe output as new_category/useful_refinement/duplicate and preserve duplicates rather than rewriting them as novelty",
-      "track consecutive low-novelty results per shard explicitly; no shard currently has a qualifying low-novelty streak",
-      "perform the full negative-space/gap-matrix review before any seal and require no material uncovered dimension",
+      "perform the full negative-space/gap-matrix review only after a shard reaches three genuine consecutive low-novelty observations; even then seal only if no material uncovered dimension remains",
       "do not begin fresh web self-verification before the referenced shard seals",
       "defer a full low-cost-Agent web dispatcher until there is a sealed-shard evidence workload or a repeated bounded current-source collection bottleneck"
     ]
