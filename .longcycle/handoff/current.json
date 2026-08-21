@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v2",
-  "continuity_sequence": 10,
+  "continuity_sequence": 11,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "f9b39498f5091ad19cb2eff0a96829f5359589ac",
+  "checkpoint_based_on_head_sha": "76b9fc9af4815537802e94bc7e86e3ebb1d358c8",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resolve live branch/PR through issue #2, read the bounded strategy and methodology cores, read this checkpoint for medium/short horizon, refresh live HEAD/CI, then load only the active context needed for the task. Do not preload old industries or devlogs.",
+  "bootstrap_instruction": "From a cold start, discover FRESH_AGENT_BOOTSTRAP.md on the default branch, use issue #2 to resolve the active PR/development branch, then read the bounded Strategy and Method cores, this checkpoint for medium/short horizon, and refresh live HEAD/CI. Preserve mission semantic fidelity; do not preload old industries or devlogs.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md"
@@ -63,13 +63,13 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 300,
-    "observed_head_sha": "a5261a4ad284d57c8f09c135184e796d23d3a74e",
-    "conclusion": "success on the bounded-core v2 code/test/protocol head before the internal drill and external-audit-spec doc commits",
-    "mypy_summary": "Run #300: success, no issues in 55 source files.",
-    "pytest_summary": "Run #300: 132 passed.",
-    "ruff_summary": "Run #300 retained diagnostic-only Ruff findings; lint remains non-blocking.",
-    "refresh_instruction": "Refresh live CI because the internal drill, audit protocol and this checkpoint are newer. The underlying v2 code/tests were hard-gate green in run #300."
+    "last_observed_run": 322,
+    "observed_head_sha": "c15783f03f61089f6fa9e5587b7f2b85b1bcf646",
+    "conclusion": "in_progress when observed after the high-fidelity bounded-core drill commit; live refresh is required because the remediation devlog and this checkpoint are newer",
+    "mypy_summary": "Not yet authoritative for the newest coherent state; refresh live run.",
+    "pytest_summary": "Not yet authoritative for the newest coherent state; refresh live run.",
+    "ruff_summary": "Ruff remains diagnostic-only unless it blocks the main path.",
+    "refresh_instruction": "Fetch live HEAD and newest CI. Verify cold-start bootstrap pointer, high-fidelity Strategy Core semantic contract, Method Core boundedness, active-context exclusion, handoff v2 reconstruction and existing memory tests together."
   },
   "workstreams": [
     {
@@ -77,7 +77,7 @@
       "status": "all_primary_batch2_complete_unsealed_batch3_next",
       "summary": "Active benchmark remains in blind Memory Atlas saturation measurement. No shard is sealed and fresh historical search remains forbidden.",
       "next_actions": [
-        "Return to compact-index driven batch3 novelty-decay work after the external bounded-continuity audit is reviewed.",
+        "Return to compact-index driven batch3 novelty-decay work after the rerun external bounded-continuity audit is reviewed.",
         "Keep active-industry details inside the active context package, not long-term core files."
       ],
       "blockers": [
@@ -86,12 +86,12 @@
     },
     {
       "workstream_id": "session-continuity",
-      "status": "bounded_core_v2_internal_drill_pass_external_fresh_agent_audit_pending",
-      "summary": "Continuity now uses two bounded industry-agnostic cores, a five-file default resume set, dynamic strategic horizon and replaceable active context. Same-model artificial-ignorance drill recovered mission/method/medium/short/next and rejected 10/10 bloat/drift traps.",
+      "status": "genuine_external_audit_found_cold_start_failure_remediated_high_fidelity_rerun_pending",
+      "summary": "The first genuine bounded-continuity audit failed because a zero-context Agent stayed on stale main and wrote its report there; issue #2 was not discoverable from the default branch. A stable FRESH_AGENT_BOOTSTRAP.md now exists on main and the active branch. Strategy Core was also rebalanced from maximal brevity toward bounded high semantic fidelity. An artificial-ignorance drill recovered 10/10 mission facets, 12/12 method facets, 4/4 horizons and rejected 10/10 drift/overcompression traps. A genuine fresh-Agent rerun is still required.",
       "next_actions": [
-        "Run one genuinely fresh Agent using docs/development/fresh-agent-bounded-continuity-audit.md with report-only mutation.",
-        "Review only material continuity failures from that report.",
-        "If safe, stop handoff work and return to the active benchmark main path."
+        "Refresh live CI for the complete cold-start + high-fidelity remediation state.",
+        "Run one genuinely fresh Agent using the strengthened docs/development/fresh-agent-bounded-continuity-audit.md with report-only mutation on the resolved active branch.",
+        "Review only material continuity failures from that report; if safe, stop handoff work and return to the active benchmark main path."
       ],
       "blockers": []
     }
@@ -104,29 +104,30 @@
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json"
   ],
   "deep_reference_paths": [
+    "FRESH_AGENT_BOOTSTRAP.md",
     "AGENTS.md",
     "docs/development/project-constitution.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development-plan.md",
     "docs/development/fresh-agent-bounded-continuity-audit.md",
-    "docs/devlog/2026-08-21-bounded-core-dumb-agent-drill.md",
-    "docs/devlog/2026-08-21-fresh-agent-strategic-audit-report.md"
+    "docs/devlog/2026-08-21-bounded-continuity-cold-start-remediation.md",
+    "docs/devlog/2026-08-21-high-fidelity-bounded-core-dumb-agent-drill.md"
   ],
   "latest_devlogs": [
-    "docs/devlog/2026-08-21-bounded-core-dumb-agent-drill.md",
-    "docs/devlog/2026-08-21-fresh-agent-strategic-audit-report.md",
+    "docs/devlog/2026-08-21-bounded-continuity-cold-start-remediation.md",
+    "docs/devlog/2026-08-21-high-fidelity-bounded-core-dumb-agent-drill.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
   ],
   "unresolved_questions": [
-    "Will a genuinely fresh Agent recover mission/method/medium/short/next from the bounded bootstrap without loading old industry/devlog history?",
+    "Will a genuinely fresh Agent now discover the default-branch bootstrap pointer, switch to the active branch and reconstruct the founding mission with high semantic fidelity without old devlogs?",
     "What quantitative thresholds should define new_category/useful_refinement/duplicate and a low-novelty batch?",
     "Which high-value shards should enter selective batch3 first?",
     "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough?"
   ],
   "ordered_next_actions": [
-    "Run one genuine fresh-Agent bounded-continuity audit with report-only mutation and no prior chat context.",
-    "Review whether it recovered mission, methodology, medium horizon, short horizon and next big step without requiring old industry history.",
-    "Repair only material continuity defects; otherwise stop handoff work.",
-    "Return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
+    "Refresh live HEAD/CI and verify the complete cold-start + high-fidelity bounded-continuity remediation state.",
+    "Run one genuine fresh-Agent bounded-continuity audit from repository name only; it must discover FRESH_AGENT_BOOTSTRAP.md, resolve the active branch and write only its report there.",
+    "Review mission semantic fidelity, context economy and branch-resolution behavior; repair only material continuity defects.",
+    "If the rerun is safe, stop handoff work and return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
   ]
 }
