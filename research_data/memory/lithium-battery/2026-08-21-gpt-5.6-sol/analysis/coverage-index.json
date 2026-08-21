@@ -1,7 +1,7 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "all_primary_shards_have_self_gap_batch2_unsealed",
-  "total_raw_leads_so_far": 600,
+  "blind_stage_status": "pre2019_batch3_started_on_six_priority_shards_unsealed",
+  "total_raw_leads_so_far": 636,
   "search_visibility": "none",
   "state_authority": {
     "raw_counts": "deterministic-derived from blind JSONL and handoff drill",
@@ -11,56 +11,48 @@
   },
   "sealed_shards": [],
   "shards": [
-    {"shard_id":"UP-HARDROCK","lead_count":60,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"UP-HARDROCK","lead_count":66,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"UP-BRINE","lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"UP-CONCENTRATE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"UP-CHEMICALS","lead_count":60,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-LFP","lead_count":50,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-TERNARY","lead_count":36,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"UP-CHEMICALS","lead_count":66,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-LFP","lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-TERNARY","lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-ANODE","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-SEPARATOR","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"MID-ELECTROLYTE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"BAT-CELL","lead_count":52,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"DOWN-NEV","lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"BAT-CELL","lead_count":58,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"DOWN-NEV","lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"DOWN-ESS","lead_count":48,"self_gap_batches":2,"status":"high_novelty_with_repair_overlay"},
     {"shard_id":"DOWN-OTHER","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"LOOP-RECYCLING","lead_count":34,"self_gap_batches":2,"status":"high_novelty"}
   ],
   "saturation_experiment": {
-    "result": "all 14 primary shards have completed batch2 and no shard has shown a low-novelty batch",
-    "strongest_tested_shards": [
-      {"shard_id":"UP-HARDROCK","batch2_new_useful":"6/6"},
-      {"shard_id":"UP-BRINE","batch2_new_useful":"6/6"},
-      {"shard_id":"UP-CONCENTRATE","batch2_new_useful":"6/6"},
-      {"shard_id":"UP-CHEMICALS","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-LFP","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-TERNARY","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-ANODE","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-SEPARATOR","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-ELECTROLYTE","batch2_new_useful":"6/6"},
-      {"shard_id":"BAT-CELL","batch2_new_useful":"6/6"},
-      {"shard_id":"DOWN-NEV","batch2_new_useful":"6/6"},
-      {"shard_id":"DOWN-ESS","batch2_new_useful":"6/6"},
-      {"shard_id":"DOWN-OTHER","batch2_new_useful":"6/6"},
-      {"shard_id":"LOOP-RECYCLING","batch2_new_useful":"6/6"}
+    "result": "all 14 primary shards completed ordinary batch2; six highest-value cycle-forming shards have now also completed a targeted 2015-2018 batch3 and still show no low-novelty batch",
+    "ordinary_batch2": "14/14 primary shards remained high novelty",
+    "pre2019_batch3": [
+      {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
+      {"shard_id":"UP-CHEMICALS","non_duplicate":"6/6"},
+      {"shard_id":"DOWN-NEV","non_duplicate":"6/6"},
+      {"shard_id":"MID-LFP","non_duplicate":"6/6"},
+      {"shard_id":"MID-TERNARY","non_duplicate":"6/6"},
+      {"shard_id":"BAT-CELL","non_duplicate":"6/6"}
     ],
-    "interpretation": "the latent-memory atlas remains materially under-extracted; do not seal any shard"
+    "interpretation": "extending the benchmark to 2015 exposes material causal setup that a 2019-start atlas misses; do not seal these six shards"
   },
-  "recent_batch2_new_dimensions": {
-    "UP-HARDROCK": ["ore-domain/blending variability","DSO vs SC6 product semantics","mining-services constraints","financing-linked offtake","grade plus dry/wet-tonne pricing basis","price-driven mine-plan supply elasticity"],
-    "UP-BRINE": ["aquifer drawdown and well interference","time-varying brine chemistry","weather-driven evaporation throughput","DLE freshwater and reinjection balance","potash/boron co-product economics","shared-aquifer cross-project interaction"],
-    "UP-CONCENTRATE": ["impurity and concentrate-quality specifications","floor/cap and lag structures in long-term pricing","weather/port/shipping constraints","low-grade concentrate product mix","by-product credits","trader ownership and title transfer"],
-    "UP-CHEMICALS": ["carbonate/hydroxide product-switching limits","reagent and energy cost bridges","mother-liquor/rework yield accounting","tolling ownership semantics","delivery and packaging quality constraints","process-stage/grade/owner inventory"],
-    "MID-LFP": ["batch2 remained 6/6 new/useful"],
-    "MID-TERNARY": ["precursor/cathode capacity double-counting","high-voltage mid-nickel expectations","nickel sulfate basis","co-precipitation constraints","wastewater constraints","customer qualification fungibility"],
-    "MID-ANODE": ["natural-graphite conversion yield","coating-pitch cost bridge","fast-charge product grades","continuous graphitization expectations","sodium-ion hard carbon","anode intensity per GWh"],
-    "MID-SEPARATOR": ["coating-material taxonomy","solvent-recovery auxiliary capacity","sqm per GWh drift","dry-process adoption expectations","base-film/coating double count","overseas qualified supply"],
-    "MID-ELECTROLYTE": ["solvent-basket economics","formula/IP customer stickiness","sodium-ion electrolyte semantics","chemistry-dependent additive intensity","finished-electrolyte quality/logistics","electrolyte intensity per GWh"],
-    "BAT-CELL": ["multi-stage inventory","captive/JV supply","dry-electrode expectations","ASP mix effects","qualification funnel","working-capital constraints"],
-    "DOWN-NEV": ["batch2 remained 6/6 new/useful"],
-    "DOWN-ESS": ["batch2 remained 6/6 new/useful with structural repair overlay"],
-    "DOWN-OTHER": ["battery energy per device vintage","industrial-mobility lead-to-lithium substitution","data-center UPS as distinct backup demand","shared cylindrical-cell capacity","market-access certification","AI/robotics demand-conversion assumptions"],
-    "LOOP-RECYCLING": ["generation-to-collection-to-plant conversion","safe transport and preprocessing","process-stage capacity double counting","element-specific recovery definitions","cross-border black-mass policy","direct cathode regeneration expectations"]
+  "horizon_revision": {
+    "primary_period": ["2015-01-01","2026-12-31"],
+    "decision_path": "docs/research/lithium-battery-cycle-horizon-v2.md",
+    "manifest_revision_path": "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
+    "earlier_than_2015": "selective antecedent backfill only",
+    "reason": "2019 truncates the previous upswing, project sanctioning, policy and technology expectations needed to explain 2019-2020 Reality"
+  },
+  "pre2019_new_dimensions": {
+    "UP-HARDROCK": ["brownfield restart supply","pre-production offtake/project finance","top-of-cycle leverage and ramp overlap","DSO-to-concentrate product transition","mine-to-hydroxide linked capex expectations","contemporaneous future-supply pipeline forecasts"],
+    "UP-CHEMICALS": ["Kwinana investment vintage","Kemerton investment vintage","pre-2019 hydroxide-premium expectations","high-price lepidolite/converter capex","converter-side feedstock lockups","2017-2018 grade/spread semantics"],
+    "DOWN-NEV": ["subsidy-fraud/data-quality reset","energy-density subsidy incentives","dual-credit planning constraint","pre-2019 A00 vehicle-mix intensity","2018 Tesla Shanghai expectation vintage","2018 subsidy-phase-down expectations"],
+    "MID-LFP": ["commercial-vehicle first-wave LFP demand","policy-driven ternary substitution expectation","pre-2019 cathode capex reallocation","application-specific LFP counter-consensus","2017-2018 LFP pricing lag","survivor-bias actor gap"],
+    "MID-TERNARY": ["2017-2018 NCM811 expectation vintage","cobalt-price route pressure","pre-2019 ternary capex wave","high-nickel effective-capacity constraints","cobalt sourcing-risk motive","811 commercialization optimism vocabulary"],
+    "BAT-CELL": ["battery whitelist/market-access structure","first-wave GWh overcapacity","pre-2019 survivor-bias actor gap","CATL IPO expectation vintage","foreign-cell re-entry expectations","format-route expectation and stranded specialization"]
   },
   "primary_schema_conclusions": [
     "capacity is a state chain, not one number",
@@ -73,19 +65,20 @@
     "expectations must preserve competing contemporaneous explanations and forecast vintages"
   ],
   "high_priority_bridge_set": [
-    "BRIDGE-CAPACITY-SEMANTICS","BRIDGE-CAPEX-PROJECT-LIFECYCLE","BRIDGE-PRODUCT-SEMANTICS","BRIDGE-CUSTOMER-QUALIFICATION","BRIDGE-ENTITY-ALIASES","BRIDGE-OFFTAKE-NETWORK","BRIDGE-PRICING-CONTRACTS","BRIDGE-MARGIN-TRANSMISSION","BRIDGE-INVENTORY","BRIDGE-MATERIAL-INTENSITY","BRIDGE-METRIC-SEMANTICS","BRIDGE-DEMAND-STOCK-FLOW","BRIDGE-EXPECTATION-VINTAGES","BRIDGE-TRADE-POLICY","BRIDGE-QUALITY-REALIZED-PERFORMANCE","BRIDGE-SUPPLY-RESPONSE","BRIDGE-OWNERSHIP-SEMANTICS","BRIDGE-LOGISTICS-REALIZED-SUPPLY"
+    "BRIDGE-CAPACITY-SEMANTICS","BRIDGE-CAPEX-PROJECT-LIFECYCLE","BRIDGE-PRODUCT-SEMANTICS","BRIDGE-CUSTOMER-QUALIFICATION","BRIDGE-ENTITY-ALIASES","BRIDGE-OFFTAKE-NETWORK","BRIDGE-PRICING-CONTRACTS","BRIDGE-MARGIN-TRANSMISSION","BRIDGE-INVENTORY","BRIDGE-MATERIAL-INTENSITY","BRIDGE-METRIC-SEMANTICS","BRIDGE-DEMAND-STOCK-FLOW","BRIDGE-EXPECTATION-VINTAGES","BRIDGE-TRADE-POLICY","BRIDGE-QUALITY-REALIZED-PERFORMANCE","BRIDGE-SUPPLY-RESPONSE","BRIDGE-OWNERSHIP-SEMANTICS","BRIDGE-LOGISTICS-REALIZED-SUPPLY","BRIDGE-MARKET-ACCESS","BRIDGE-TECHNOLOGY-POLICY","BRIDGE-POLICY-DEMAND","BRIDGE-EXPECTATION-DISTRIBUTION"
   ],
   "high_priority_satellite_set": [
-    "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP"
+    "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
   ],
   "next_phase": {
-    "goal": "measure third-pass novelty decay using deterministic compact shard indices before any seal",
+    "goal": "continue selective batch3 novelty-decay measurement on the 2015-2026 horizon without turning horizon extension into exhaustive calendar backfill",
     "actions": [
-      "generate or rebuild deterministic compact indices for all 14 primary shards",
-      "select high-value shards for batch3 using coverage gaps and compact indices rather than full raw recall",
-      "classify each batch3 lead as new_category/useful_refinement/duplicate",
-      "continue until three consecutive low-novelty batches plus negative-space review are satisfied for a shard",
-      "do not begin fresh web self-verification before the referenced shard seals"
+      "rebuild deterministic compact indices including the new v5 pre-2019 leads",
+      "run targeted 2015-2018 batch3 on the remaining high-value shards only where compact-index negative space is material",
+      "continue ordinary batch3 on selected shards and classify each output as new_category/useful_refinement/duplicate",
+      "do not seal a shard until three consecutive low-novelty batches plus negative-space review are satisfied",
+      "do not begin fresh web self-verification before the referenced shard seals",
+      "defer a full low-cost-Agent web dispatcher until there is a sealed-shard evidence workload or a repeated bounded current-source collection bottleneck"
     ]
   },
   "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed"
