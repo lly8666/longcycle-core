@@ -55,6 +55,18 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         )
         self.assertTrue(report.recovered.ordered_next_actions)
 
+        workstreams = {item.workstream_id: item for item in checkpoint.workstreams}
+        self.assertEqual(workstreams["memory-atlas-active-benchmark"].role, "main_path")
+        self.assertEqual(
+            workstreams["memory-atlas-active-benchmark"].parent_goal_ref,
+            "strategic_horizon.short_term_goal",
+        )
+        self.assertEqual(workstreams["session-continuity"].role, "supporting_quality_gate")
+        self.assertEqual(
+            workstreams["session-continuity"].parent_goal_ref,
+            "strategic_horizon.medium_term_goal",
+        )
+
         campaign = checkpoint.memory_campaign
         self.assertIsNotNone(campaign)
         assert campaign is not None
@@ -73,6 +85,19 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         payload["continuation_cursor"]["parent_workstream_id"] = "missing-workstream"
 
         with self.assertRaisesRegex(ValueError, "declared workstream"):
+            SessionHandoffCheckpoint.model_validate(payload)
+
+    def test_handoff_requires_a_main_path_workstream(self) -> None:
+        current_path = ROOT / ".longcycle" / "handoff" / "current.json"
+        checkpoint = SessionHandoffCheckpoint.model_validate_json(
+            current_path.read_text(encoding="utf-8")
+        )
+        payload = checkpoint.model_dump(mode="json")
+        for workstream in payload["workstreams"]:
+            workstream["role"] = "supporting_quality_gate"
+            workstream["parent_goal_ref"] = "strategic_horizon.medium_term_goal"
+
+        with self.assertRaisesRegex(ValueError, "main-path workstream"):
             SessionHandoffCheckpoint.model_validate(payload)
 
     def test_stale_campaign_checkpoint_is_detected_without_chat_context(self) -> None:
