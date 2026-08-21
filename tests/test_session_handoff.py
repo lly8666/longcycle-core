@@ -9,7 +9,6 @@ from longcycle.application.session_handoff import (
     evaluate_handoff_head,
 )
 
-
 ROOT = Path(__file__).resolve().parents[1]
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
 
@@ -34,7 +33,7 @@ class SessionHandoffContractTest(unittest.TestCase):
         campaign = checkpoint.memory_campaign
 
         self.assertEqual(campaign.campaign_id, "2026-08-21-gpt-5.6-sol")
-        self.assertEqual(campaign.total_raw_leads, 552)
+        self.assertEqual(campaign.total_raw_leads, 570)
         self.assertEqual(campaign.shard_count, 14)
         self.assertEqual(campaign.sealed_shards, ())
         self.assertEqual(campaign.search_visibility, "none")
