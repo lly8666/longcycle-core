@@ -137,6 +137,17 @@ A new or materially improved high-capability model is a new research instrument 
 
 False memories are also retained as historical model-output artifacts after they are identified; they are not silently deleted.
 
+## Research orchestration commitments
+
+These execution choices are part of the product method and must survive session changes even when the current workstream has not reached them yet:
+
+- Historical recovery is **memory-first, evidence-final**: a high-capability model first builds and exhausts a Memory Atlas before claim-scoped evidence collection begins.
+- A shard must seal before fresh search touches it. After sealing, the high-capability model should perform the first self-verification/search pass because it best understands its own vague recollections, aliases and cross-chain associations.
+- Lower-capability agents are evidence engineers, not industry analysts. They receive explicit Memory Leads, source targets, search-depth requirements, contradiction queries and stop conditions; they do not publish cycle conclusions or turn missing search results into falsity.
+- Cross-chain topology should emerge from independently recalled shard triggers. Repeated independent bridge/satellite triggers may promote a topic; one model tangent should not explode the task graph.
+- Current collection is **source-first, archive-now** and follows a maintained source/watchlist discipline rather than retrospective broad search.
+- When a stronger model vintage becomes available, rerun blind memory extraction as a new immutable vintage, diff it against prior atlases and create backfill tasks from novel/refined leads instead of overwriting old model output.
+
 ## Session continuity requirement
 
 User directive:
