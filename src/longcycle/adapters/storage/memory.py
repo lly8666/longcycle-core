@@ -229,12 +229,11 @@ class InMemoryResearchRepository:
             )
             for assertion_id in self.assertions
         }
-        superseded_ids = {
-            self.assertions[successor_id].supersedes_id
-            for successor_id, status in statuses.items()
-            if status == FactStatus.TRUSTED
-            and self.assertions[successor_id].supersedes_id is not None
-        }
+        superseded_ids: set[UUID] = set()
+        for successor_id, status in statuses.items():
+            supersedes_id = self.assertions[successor_id].supersedes_id
+            if status == FactStatus.TRUSTED and supersedes_id is not None:
+                superseded_ids.add(supersedes_id)
         for superseded_id in superseded_ids:
             if statuses.get(superseded_id) == FactStatus.TRUSTED:
                 statuses[superseded_id] = FactStatus.SUPERSEDED
@@ -303,7 +302,11 @@ class InMemoryJobQueue:
                 and job.attempt < job.max_attempts
                 and (
                     job.status in {JobStatus.QUEUED, JobStatus.RETRY}
-                    or (job.status == JobStatus.LEASED and job.lease_expires_at is not None and job.lease_expires_at <= now)
+                    or (
+                        job.status == JobStatus.LEASED
+                        and job.lease_expires_at is not None
+                        and job.lease_expires_at <= now
+                    )
                 )
             ]
             eligible.sort(key=lambda job: (-job.priority, job.available_at, job.created_at))
@@ -326,7 +329,12 @@ class InMemoryJobQueue:
         async with self._lock:
             job = self._owned_job(job_id, worker_id, lease_token)
             self.jobs[job_id] = job.model_copy(
-                update={"status": JobStatus.SUCCEEDED, "lease_owner": None, "lease_token": None, "lease_expires_at": None}
+                update={
+                    "status": JobStatus.SUCCEEDED,
+                    "lease_owner": None,
+                    "lease_token": None,
+                    "lease_expires_at": None,
+                }
             )
 
     async def fail(
