@@ -19,7 +19,7 @@ class SessionHandoffContractTest(unittest.TestCase):
             json.loads(HANDOFF.read_text(encoding="utf-8"))
         )
 
-        self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v3")
+        self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v4")
         self.assertEqual(checkpoint.repository, "lly8666/longcycle-core")
         self.assertEqual(checkpoint.active_branch, "design/industry-memory")
         self.assertEqual(checkpoint.active_pr, 1)
@@ -34,6 +34,14 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertTrue(checkpoint.continuation_cursor.current_task)
         self.assertTrue(checkpoint.continuation_cursor.why_now)
         self.assertTrue(checkpoint.continuation_cursor.done_when)
+        self.assertEqual(
+            checkpoint.continuation_cursor.required_capability,
+            "high_capability_reasoning",
+        )
+        self.assertEqual(
+            checkpoint.continuation_cursor.insufficient_capability_action,
+            "stop_and_escalate",
+        )
         self.assertTrue(checkpoint.continuation_cursor.next_atomic_action)
         self.assertTrue(any(item.role == "main_path" for item in checkpoint.workstreams))
 
