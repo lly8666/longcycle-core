@@ -33,6 +33,26 @@ class HandoffIsolationDrillTest(unittest.TestCase):
             report.recovered.next_big_step,
             checkpoint.strategic_horizon.next_big_step,
         )
+        self.assertEqual(
+            report.recovered.cursor_parent_workstream_id,
+            checkpoint.continuation_cursor.parent_workstream_id,
+        )
+        self.assertEqual(
+            report.recovered.cursor_last_completed_action,
+            checkpoint.continuation_cursor.last_completed_action,
+        )
+        self.assertEqual(
+            report.recovered.cursor_current_task,
+            checkpoint.continuation_cursor.current_task,
+        )
+        self.assertEqual(
+            report.recovered.cursor_done_when,
+            checkpoint.continuation_cursor.done_when,
+        )
+        self.assertEqual(
+            report.recovered.cursor_next_atomic_action,
+            checkpoint.continuation_cursor.next_atomic_action,
+        )
         self.assertTrue(report.recovered.ordered_next_actions)
 
         campaign = checkpoint.memory_campaign
@@ -43,6 +63,17 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         self.assertEqual(report.recovered.search_visibility, campaign.search_visibility)
         self.assertEqual(report.recovered.total_raw_leads, campaign.total_raw_leads)
         self.assertEqual(report.recovered.sealed_shards, campaign.sealed_shards)
+
+    def test_cursor_must_point_to_declared_workstream(self) -> None:
+        current_path = ROOT / ".longcycle" / "handoff" / "current.json"
+        checkpoint = SessionHandoffCheckpoint.model_validate_json(
+            current_path.read_text(encoding="utf-8")
+        )
+        payload = checkpoint.model_dump(mode="json")
+        payload["continuation_cursor"]["parent_workstream_id"] = "missing-workstream"
+
+        with self.assertRaisesRegex(ValueError, "declared workstream"):
+            SessionHandoffCheckpoint.model_validate(payload)
 
     def test_stale_campaign_checkpoint_is_detected_without_chat_context(self) -> None:
         current_path = ROOT / ".longcycle" / "handoff" / "current.json"
