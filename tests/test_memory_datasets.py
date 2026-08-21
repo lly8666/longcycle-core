@@ -14,9 +14,11 @@ MEMORY_DATA = ROOT / "research_data" / "memory"
 
 
 class MemoryDatasetContractTest(unittest.TestCase):
-    def test_all_v3_blind_jsonl_files_pass_typed_candidate_validation(self) -> None:
-        files = sorted(MEMORY_DATA.glob("**/blind/**/*-v3.jsonl"))
-        self.assertTrue(files, "expected at least one v3 memory dataset")
+    def test_all_formal_v3_plus_blind_jsonl_files_pass_typed_candidate_validation(self) -> None:
+        # v1/v2 are intentionally preserved as raw prompt-evolution experiments.
+        # v3+ artifacts are formal campaign data and must satisfy the typed contract.
+        files = sorted(MEMORY_DATA.glob("**/blind/**/*-v[3-9].jsonl"))
+        self.assertTrue(files, "expected at least one formal v3+ memory dataset")
 
         failures: list[str] = []
         total_leads = 0
