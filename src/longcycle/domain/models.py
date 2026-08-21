@@ -54,9 +54,9 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
 
 
-def require_aware_datetime(value: datetime | None, field_name: str) -> datetime | None:
+def require_aware_datetime(value: datetime | None, field_name: str | None) -> datetime | None:
     if value is not None and (value.tzinfo is None or value.utcoffset() is None):
-        raise ValueError(f"{field_name} must include a timezone")
+        raise ValueError(f"{field_name or 'datetime'} must include a timezone")
     return value
 
 
@@ -309,8 +309,16 @@ class TimeRange(DomainModel):
         if isinstance(self.end, datetime):
             require_aware_datetime(self.end, "end")
         if self.start is not None and self.end is not None:
-            start = datetime.combine(self.start, datetime.min.time(), UTC) if isinstance(self.start, date) and not isinstance(self.start, datetime) else self.start
-            end = datetime.combine(self.end, datetime.min.time(), UTC) if isinstance(self.end, date) and not isinstance(self.end, datetime) else self.end
+            start = (
+                datetime.combine(self.start, datetime.min.time(), UTC)
+                if isinstance(self.start, date) and not isinstance(self.start, datetime)
+                else self.start
+            )
+            end = (
+                datetime.combine(self.end, datetime.min.time(), UTC)
+                if isinstance(self.end, date) and not isinstance(self.end, datetime)
+                else self.end
+            )
             if end <= start:
                 raise ValueError("time range end must be greater than start")
         return self
@@ -452,6 +460,7 @@ class FactAssertion(DomainModel):
 
     @property
     def value_fingerprint(self) -> str:
+        payload: dict[str, Any]
         if self.value_type == FactValueKind.NUMERIC:
             payload = {
                 "kind": self.value_type.value,
