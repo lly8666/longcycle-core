@@ -8,28 +8,56 @@ Read in this order:
 
 1. `STRATEGIC_COMPASS.md` — long-term mission;
 2. `METHODOLOGY_CORE.md` — cross-industry method;
-3. `.longcycle/handoff/current.json` — current medium/short horizon and active context;
-4. live Git HEAD / CI;
-5. only the minimal task-specific `resume_read_set`.
+3. independently reconstruct the mission/method in your own words;
+4. `.longcycle/continuity/mission-fidelity.json` — semantic calibration questions and common misreadings;
+5. `.longcycle/handoff/current.json` — current medium/short horizon, continuation cursor and active context;
+6. live Git HEAD / CI;
+7. only the minimal task-specific `resume_read_set`.
 
 Do **not** preload old industries, all devlogs or the full repository.
 
-## Alignment before execution
+## Mission assimilation before execution
 
-Before substantive work, state internally:
+Reading Core files is not enough. Before substantive work:
 
-- final mission;
-- current medium-term goal;
-- current short-term goal;
-- next larger step.
+1. form an independent internal explanation of why Longcycle exists and what terminal capability it must deliver;
+2. distinguish final facts from contemporaneous cognition, and explain why point-in-time/no-lookahead matters;
+3. explain why long comparable history can itself produce analysis;
+4. explain the model/search versus Evidence boundary;
+5. explain why the current industry/task is a proving ground or means rather than the mission;
+6. only then use `mission-fidelity.json` to challenge that interpretation.
 
-A local task that cannot be connected through those levels should be re-ranked instead of deepened automatically.
+If any required facet is missing or contradicted, reread only the relevant Core section and correct the interpretation before acting.
+
+Do not persist private chain-of-thought. Persist only concise decisions, alignment conclusions, task hierarchy and reproducible constraints when project state materially changes.
+
+## Vertical alignment loop — anti-tunnel rule
+
+Before starting a new substantive subproblem and after completing every coherent subtask, internally restate this parent chain:
+
+```text
+atomic task
+↑ short-term milestone
+↑ medium-term capability proof
+↑ terminal mission
+```
+
+Then check:
+
+- is the atomic task still the highest-value unresolved action on the main path?
+- has its `done_when` or stop condition already been met?
+- is scope expanding only because the local problem is interesting or easy to measure?
+- did a new result change the parent task or make the current task obsolete?
+- would stopping now materially harm parent-level progress?
+
+A local task that cannot be connected through those levels, or whose marginal value has collapsed, should be stopped/re-ranked instead of deepened automatically.
 
 ## Stable ownership of information
 
 - `STRATEGIC_COMPASS.md` owns mission and anti-drift direction.
 - `METHODOLOGY_CORE.md` owns distilled cross-industry methods.
-- `.longcycle/handoff/current.json` owns current horizon, workstreams and snapshot state.
+- `.longcycle/continuity/mission-fidelity.json` owns semantic calibration prompts, not answers.
+- `.longcycle/handoff/current.json` owns current horizon, continuation cursor, workstreams and snapshot state.
 - active context owns current industry / benchmark details.
 - live Git/CI owns implementation freshness.
 - devlogs own historical rationale only.
@@ -48,10 +76,29 @@ Follow `METHODOLOGY_CORE.md`: model memory is not Evidence; historical `not_foun
 
 Current phase-specific guardrails come from the typed handoff and active context, not this file.
 
-## Continuity maintenance
+## Real-time continuity maintenance
 
-After a coherent work batch, update the handoff when medium/short goals, active context, blockers, phase, counts or ordered next actions materially change.
+`current.json.continuation_cursor` must tell a fresh Agent what just finished, what atomic task resumes now, why it is current, what `done_when` means, and what comes next.
+
+After a coherent work boundary that changes what the next Agent should do:
+
+1. commit the substantive work;
+2. run the vertical alignment loop;
+3. update the continuation cursor and any materially changed dynamic handoff fields;
+4. set `checkpoint_based_on_head_sha` to the substantive-work commit;
+5. commit the handoff sync;
+6. refresh live CI when correctness state is material.
+
+Do not create checkpoint churn for cosmetic edits that do not change continuation.
 
 If a new user instruction changes mission or methodology, first record it as a pending directive, then update the appropriate Core with auditable rationale. Do not silently redefine strategy from a local implementation preference.
 
-Do not store private model chain-of-thought. Store decisions, evidence, concise rationale and reproducible execution constraints.
+If live HEAD differs from the checkpoint base, reconcile intervening commits before acting; do not assume the snapshot is current.
+
+## Fixed transfer phrase
+
+A zero-context Agent should be able to resume from this single stable user phrase:
+
+> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
+
+The phrase carries no current task facts. Repository state owns the task.
