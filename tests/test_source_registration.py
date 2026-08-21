@@ -42,6 +42,25 @@ class SourceRegistrationTest(unittest.TestCase):
         self.assertEqual(source.rate_limit_per_minute, 12)
         self.assertEqual(source.config["allowed_domains"], ["static.cninfo.com.cn"])
 
+    def test_publisher_identity_can_use_explicit_archival_retrieval_domain(self) -> None:
+        direct = build_http_source_definition(
+            name="Tianqi Lithium first-party web",
+            publisher_domain="en.tianqilithium.com",
+        )
+        archival = build_http_source_definition(
+            name="Tianqi Lithium first-party web",
+            publisher_domain="en.tianqilithium.com",
+            allowed_domains=("web.archive.org", "EN.TIANQILITHIUM.COM."),
+        )
+
+        self.assertEqual(direct.id, archival.id)
+        self.assertEqual(archival.publisher_domain, "en.tianqilithium.com")
+        self.assertEqual(
+            archival.config["allowed_domains"],
+            ["web.archive.org", "en.tianqilithium.com"],
+        )
+        self.assertEqual(archival.syndication_cluster, "publisher-domain:en.tianqilithium.com")
+
     def test_domain_normalization_fails_closed_on_urls_and_local_names(self) -> None:
         for invalid in (
             "https://en.tianqilithium.com",
