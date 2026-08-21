@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -50,12 +52,27 @@ jobs:
           research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol
           .artifacts/memory-compact-indexes
 
+      - name: Audit memory history provenance (hard gate)
+        id: memory_history
+        run: >-
+          python scripts/audit_memory_history.py
+          research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol
+          .artifacts/memory-history-audit.json
+
       - name: Upload memory compact indexes
         if: steps.compact.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: memory-compact-indexes
           path: .artifacts/memory-compact-indexes
+          if-no-files-found: error
+
+      - name: Upload memory history audit
+        if: steps.memory_history.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-history-audit
+          path: .artifacts/memory-history-audit.json
           if-no-files-found: error
 
       - name: Check summary
@@ -65,3 +82,4 @@ jobs:
           echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
           echo "compact=${{ steps.compact.outcome }} (hard gate)"
+          echo "memory_history=${{ steps.memory_history.outcome }} (hard gate)"
