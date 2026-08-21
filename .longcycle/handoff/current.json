@@ -1,19 +1,20 @@
 {
   "schema_version": "longcycle-session-handoff/v1",
-  "continuity_sequence": 6,
-  "checkpoint_generated_at": "2026-08-21T10:42:00+09:00",
+  "continuity_sequence": 7,
+  "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "f670825fe338d9713b042f12ea74ab79c771921b",
+  "checkpoint_based_on_head_sha": "19af561ecf5e607960785a307b9ad6f8d35b0bb2",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Read CONTINUE_HERE.md, locate the active branch through GitHub issue #2 if needed, refresh live PR/branch HEAD and CI, compare live HEAD with checkpoint_based_on_head_sha, inspect commits after the checkpoint when required, run or conceptually reproduce the repository-only handoff isolation drill, then continue ordered_next_actions without asking the user to restate persisted context.",
+  "bootstrap_instruction": "Read CONTINUE_HERE.md, locate the active branch through GitHub issue #2 if needed, refresh live PR/branch HEAD and CI, compare live HEAD with checkpoint_based_on_head_sha using the Git commit graph, inspect commits after the checkpoint when required, distinguish canonical/deterministic-derived/curated/narrative state, then continue ordered_next_actions without asking the user to restate persisted context.",
   "user_directives": [
     "把整个行业相关的最关键和真实的历史保存下来，拉长时间去看，其实不用太多分析也能用简单常识分析出当下的风险与机遇",
     "缺的是人站在当时的判断和预期。",
     "聊天轮次多了以后就会被切断当前聊天对话框，必须开新的，设计套系统如何让新开聊天系统能实时跟上开发进度，保证原汁原味执行我们的计划和任务",
-    "继续任务，同时你有没有办法隔离上下文稍微自测下handoff系统还原度"
+    "把所有思考和开发日志都实时上传到github上。",
+    "高级大模型关于产业链几乎所有内容从记忆里输出来，比哪怕高级agent去互联网搜历史信息更有价值；历史信息让低级agent拿着高级agent的记忆去逐条印证。"
   ],
   "north_star": [
     "历史本身就是分析。",
@@ -29,15 +30,25 @@
     "Reality, Expectation/Judgment and later Outcome remain distinguishable.",
     "valid_time and known_time must not be collapsed.",
     "Comparability semantics are required before corroboration or conflict decisions.",
-    "Current source material should be archived proactively and historical versions must not be overwritten."
+    "Current source material should be archived proactively and historical versions must not be overwritten.",
+    "State authority must distinguish canonical/immutable, deterministic-derived, curated research assessment and narrative state."
   ],
   "forbidden_shortcuts": [
     "Do not start fresh web research on an unsealed blind shard.",
     "Do not convert repeated web syndication or search rank into truth.",
     "Do not overwrite raw model recall to make validation pass.",
     "Do not seal a shard merely because the model says it has nothing else to recall.",
-    "Do not trust stale chat summaries or checkpoint CI status without refreshing live GitHub state.",
+    "Do not trust stale chat summaries, PR prose or checkpoint CI status without refreshing live GitHub state.",
+    "Do not describe curated novelty/gap judgments as deterministic facts merely because they are stored in JSON.",
     "Do not ask the user to reconstruct project context already persisted in the repository."
+  ],
+  "future_phase_commitments": [
+    "Historical recovery remains memory-first and evidence-final.",
+    "After a shard seals, the high-capability model performs the first self-verification/search pass before lower-capability evidence agents are delegated work.",
+    "Lower-capability agents are evidence engineers following explicit source, search-depth, contradiction and stop-condition contracts; they do not publish cycle conclusions.",
+    "Bridge/satellite promotion depends on repeated independent triggers rather than a single shard tangent.",
+    "Current collection remains source-first/archive-now under a maintained source/watchlist discipline.",
+    "A stronger model vintage creates a new immutable Memory Atlas vintage; diff novel/refined leads into historical backfill tasks instead of overwriting prior recall."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
@@ -57,51 +68,49 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 226,
-    "observed_head_sha": "55dde3e58b6f728ca5467cf9387542097a4e2e4e",
-    "conclusion": "success on the 600-lead all-primary-batch2 checkpoint before this devlog/checkpoint refresh",
-    "mypy_summary": "Success: no issues found in 55 source files on run #226.",
-    "pytest_summary": "127 passed on run #226, including repository-only handoff fidelity and compact-index persistence tests.",
-    "ruff_summary": "61 findings on run #226; Ruff remains diagnostic-only during the Memory Campaign.",
-    "refresh_instruction": "Fetch live HEAD and newest CI before quoting current correctness. The only commits after run #226 are milestone documentation and this checkpoint unless live delta reconciliation finds otherwise."
+    "last_observed_run": 236,
+    "observed_head_sha": "69e221e0a70b14d8d5ff54f73346e39579adc17c",
+    "conclusion": "success on the fresh-chat audit report-only head before the handoff-remediation commits",
+    "mypy_summary": "Run #236 succeeded on the report-only head; remediation changes after that run require live refresh.",
+    "pytest_summary": "Run #236 succeeded on the report-only head; the revised provenance contract and checkpoint must be validated by the next live run.",
+    "ruff_summary": "Ruff remains diagnostic-only during the Memory Campaign.",
+    "refresh_instruction": "Fetch live HEAD and newest CI before reporting correctness. Validate the provenance-ordering schema change, future-phase commitments, coverage authority metadata and current checkpoint together."
   },
   "workstreams": [
     {
       "workstream_id": "ci-correctness",
-      "status": "hard_gate_green_on_600_lead_run_226_latest_checkpoint_requires_live_refresh",
-      "summary": "Run #226 validated the 600-lead all-primary-batch2 state: Mypy clean under configured strict gate, 127 Pytest tests passed, repository-only handoff checks remained green. The checkpoint itself must still be treated as a snapshot and live CI refreshed.",
+      "status": "fresh_chat_audit_remediation_requires_live_hard_gate_refresh",
+      "summary": "The fresh-chat audit report commit passed CI #236. Subsequent handoff-remediation changes intentionally altered the typed checkpoint contract, coverage metadata and continuity docs and must be validated on live HEAD before correctness is quoted as current.",
       "next_actions": [
-        "Fetch CI for live HEAD before reporting correctness in a new session.",
+        "Fetch CI for live HEAD and inspect exact Mypy/Pytest outcomes.",
         "Keep repository-only handoff isolation and compact-index reconstruction in the hard gate.",
-        "Remove the narrow temporary Postgres arg-type Mypy override when a safe patch-capable edit path is available."
+        "Keep Ruff diagnostic-only until a separate cleanup decision is made."
       ],
       "blockers": []
     },
     {
       "workstream_id": "memory-atlas-lithium-battery",
       "status": "all_14_primary_shards_batch2_complete_high_novelty_unsealed",
-      "summary": "Blind lithium-battery Memory Atlas has 600 raw leads across 14 primary shards. Every primary shard has completed batch2 and every observed batch2 produced 6/6 new/useful leads. No shard is sealed; fresh historical search remains forbidden.",
+      "summary": "Blind lithium-battery Memory Atlas has 600 raw leads across 14 primary shards. Counts are deterministic-derived; batch2 novelty labels are curated research assessments. No shard is sealed and fresh historical search remains forbidden.",
       "next_actions": [
         "Use compact indices to choose a small set of high-value batch3 shards.",
-        "Measure novelty decay explicitly rather than optimizing for lead volume.",
+        "Define explicit novelty-classification records so batch3 decay is auditable rather than asserted in prose.",
         "Do not begin fresh web self-verification until a shard satisfies the seal rule."
       ],
       "blockers": [
-        "No shard has shown a low-novelty batch yet, so no shard is close to the three-consecutive-low seal criterion."
+        "No shard has shown a low-novelty batch yet under the current curated assessment, so no shard is close to the three-consecutive-low seal criterion."
       ]
     },
     {
       "workstream_id": "session-continuity",
-      "status": "repository_only_isolation_fidelity_1_0_validated_through_600_lead_state",
-      "summary": "The isolation drill previously progressed from 0.9 to 1.0 after catching a real offsetting per-shard count error. Run #226 kept the repository-only reconstruction hard gate green at 600 leads. Fast-changing counts are derived from raw JSONL rather than duplicated in tests.",
+      "status": "fresh_model_audit_high_confidence_safe_resume_with_four_remediation_findings_addressed",
+      "summary": "A genuinely fresh chat recovered the project without user restatement and judged it safe to resume. It found stale PR narrative, stale coverage CI annotation and an impossible hand-authored checkpoint timestamp. Remediation review added a fourth distinction: deterministic fidelity must not be conflated with curated research judgment. The continuity contract now uses Git ordering, explicit state-authority classes and future-phase commitments.",
       "next_actions": [
+        "Validate this remediation under live CI.",
         "Continue live HEAD delta reconciliation before trusting any checkpoint snapshot.",
-        "Keep exact user directives, north-star principles, forbidden shortcuts and ordered next actions in repository state.",
-        "Add a true fresh-model semantic reconstruction benchmark if independent agent spawning becomes available."
+        "Treat future fresh-chat audits as semantic-plan tests in addition to deterministic repository reconstruction."
       ],
-      "blockers": [
-        "Current tools cannot create a genuinely independent model instance with erased conversation context; repository/CI isolation is the strongest available test."
-      ]
+      "blockers": []
     }
   ],
   "resume_read_set": [
@@ -111,7 +120,9 @@
     "docs/development/project-constitution.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development/handoff-isolation-drill.md",
-    "docs/devlog/2026-08-21-session-handoff-isolation-drill.md",
+    "docs/development/fresh-chat-handoff-audit.md",
+    "docs/devlog/2026-08-21-fresh-chat-handoff-audit.md",
+    "docs/devlog/2026-08-21-fresh-chat-handoff-remediation.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "src/longcycle/application/session_handoff.py",
@@ -119,21 +130,24 @@
     "src/longcycle/application/memory_ingest.py",
     "src/longcycle/application/memory_index.py",
     "tests/test_handoff_drill.py",
+    "tests/test_session_handoff.py",
     "tests/test_memory_index_persistence.py",
     ".github/workflows/ci.yml"
   ],
   "latest_devlogs": [
-    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-    "docs/devlog/2026-08-21-session-handoff-isolation-drill.md"
+    "docs/devlog/2026-08-21-fresh-chat-handoff-remediation.md",
+    "docs/devlog/2026-08-21-fresh-chat-handoff-audit.md",
+    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
   ],
   "unresolved_questions": [
     "Which 3-5 shards should enter batch3 first when ranked by importance and unresolved gap density from compact indices?",
     "What quantitative thresholds should define new_category/useful_refinement/duplicate and a low-novelty batch?",
     "Should generated shard-index JSON files be committed, generated on demand, or published as CI artifacts?",
+    "Should semantic handoff audits eventually receive a quantitative rubric in addition to high/medium/low confidence?",
     "When should Ruff cleanup be promoted back from diagnostic debt to a hard gate?"
   ],
   "ordered_next_actions": [
-    "Refresh live HEAD/CI and reconcile any commits after checkpoint_based_on_head_sha.",
+    "Refresh live HEAD/CI and validate the fresh-chat handoff remediation as one coherent state.",
     "Build/rebuild compact indices for all 14 primary shards and derive a batch3 priority ranking from importance plus unresolved gap density.",
     "Define an explicit novelty-classification record for batch3 outputs so saturation is measured rather than asserted.",
     "Run the first selective blind batch3 experiment with search_visibility=none and compare novelty against batch1/batch2.",
