@@ -1,11 +1,11 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
   "blind_stage_status": "all_primary_shards_have_self_gap_batch1_unsealed_batch2_expanding",
-  "total_raw_leads_so_far": 570,
+  "total_raw_leads_so_far": 576,
   "search_visibility": "none",
   "sealed_shards": [],
   "shards": [
-    {"shard_id":"UP-HARDROCK","lead_count":54,"self_gap_batches":1,"status":"high_novelty"},
+    {"shard_id":"UP-HARDROCK","lead_count":60,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"UP-BRINE","lead_count":42,"self_gap_batches":1,"status":"high_novelty"},
     {"shard_id":"UP-CONCENTRATE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
     {"shard_id":"UP-CHEMICALS","lead_count":54,"self_gap_batches":1,"status":"high_novelty"},
@@ -31,11 +31,20 @@
       {"shard_id":"MID-TERNARY","batch2_new_useful":"6/6"},
       {"shard_id":"MID-ANODE","batch2_new_useful":"6/6"},
       {"shard_id":"MID-SEPARATOR","batch2_new_useful":"6/6"},
-      {"shard_id":"MID-ELECTROLYTE","batch2_new_useful":"6/6"}
+      {"shard_id":"MID-ELECTROLYTE","batch2_new_useful":"6/6"},
+      {"shard_id":"UP-HARDROCK","batch2_new_useful":"6/6"}
     ],
     "interpretation": "the latent-memory atlas remains materially under-extracted; do not seal any shard"
   },
   "recent_batch2_new_dimensions": {
+    "UP-HARDROCK": [
+      "ore-domain variability and blending effects on concentrator throughput/recovery",
+      "DSO and low-grade ore versus SC6-equivalent product semantics",
+      "mining-contractor, haul-fleet and skilled-labor constraints",
+      "financing-linked offtake and prepayment rights",
+      "Li2O grade plus dry/wet-tonne and moisture pricing basis",
+      "price-driven cut-off-grade and mine-plan reoptimization as supply elasticity"
+    ],
     "BAT-CELL": [
       "multi-stage inventory from raw materials through cells/modules/packs/OEM",
       "OEM captive and joint-venture supply structure",
@@ -110,7 +119,8 @@
     "BRIDGE-DEMAND-STOCK-FLOW",
     "BRIDGE-EXPECTATION-VINTAGES",
     "BRIDGE-TRADE-POLICY",
-    "BRIDGE-QUALITY-REALIZED-PERFORMANCE"
+    "BRIDGE-QUALITY-REALIZED-PERFORMANCE",
+    "BRIDGE-SUPPLY-RESPONSE"
   ],
   "high_priority_satellite_set": [
     "SAT-LEPIDOLITE",
@@ -127,18 +137,19 @@
     "SAT-BATTERY-SWAP",
     "SAT-RESIDENTIAL-STORAGE",
     "SAT-LONG-DURATION-STORAGE",
-    "SAT-SECOND-LIFE"
+    "SAT-SECOND-LIFE",
+    "SAT-MINING-SERVICES"
   ],
   "next_phase": {
     "goal": "measure novelty decay systematically before any seal",
     "actions": [
       "generate deterministic compact per-shard lead indexes",
-      "run batch2 on remaining high-value shards using compact coverage rather than full raw recall",
+      "run batch2 on the remaining batch1-only shards using compact coverage rather than full raw recall",
       "classify each new lead as new_category/useful_refinement/duplicate",
       "begin batch3 only where novelty remains high",
       "seal only after three consecutive low-novelty batches and complete negative-space gap matrix"
     ]
   },
   "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed",
-  "ci_status": "snapshot only: run #192 found only a coverage per-shard allocation mismatch after total=570 calibration; live CI must be refreshed after this correction"
+  "ci_status": "snapshot only: run #194 validated repository-only handoff fidelity 1.0 at 570 leads; newer compact-index and UP-HARDROCK batch2 commits require live CI refresh"
 }
