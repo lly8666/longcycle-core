@@ -11,6 +11,15 @@ from longcycle.application.session_handoff import (
 
 ROOT = Path(__file__).resolve().parents[1]
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
+COVERAGE = (
+    ROOT
+    / "research_data"
+    / "memory"
+    / "lithium-battery"
+    / "2026-08-21-gpt-5.6-sol"
+    / "analysis"
+    / "coverage-index.json"
+)
 
 
 class SessionHandoffContractTest(unittest.TestCase):
@@ -63,7 +72,7 @@ class SessionHandoffContractTest(unittest.TestCase):
         ):
             self.assertNotIn(duplicated_key, payload)
 
-    def test_current_blind_campaign_cannot_leak_search_across_sessions(self) -> None:
+    def test_pre_search_campaign_preserves_seal_and_search_boundaries(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
             HANDOFF.read_text(encoding="utf-8")
         )
@@ -71,9 +80,13 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertIsNotNone(campaign)
         assert campaign is not None
 
+        coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
+        sealed_from_coverage = tuple(coverage["sealed_shards"])
+
         self.assertGreater(campaign.total_raw_leads, 0)
-        self.assertEqual(campaign.sealed_shards, ())
+        self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
         self.assertEqual(campaign.search_visibility, "none")
+        self.assertIn("self_verification_preparation", campaign.phase)
 
     def test_resume_set_contains_only_small_bootstrap_plus_active_state(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
