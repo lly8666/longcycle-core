@@ -88,7 +88,7 @@ class StrategicCompassContractTest(unittest.TestCase):
             "主动理解 + 自我纠偏 + 防钻牛角尖",
             "当前原子任务",
             "高能力 Agent 的独立判断义务",
-            "用户提出的方法建议不是自动正确的技术结论",
+            "方法建议不是自动正确的技术结论",
             "high_capability_reasoning",
             "bounded_execution",
             "停止并升级给高能力模型",
