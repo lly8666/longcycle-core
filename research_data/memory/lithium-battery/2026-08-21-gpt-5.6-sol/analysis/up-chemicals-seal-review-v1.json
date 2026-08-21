@@ -1,0 +1,111 @@
+{
+  "artifact": "up-chemicals-seal-review-v1",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "shard_id": "UP-CHEMICALS",
+  "review_type": "blind_memory_negative_space_and_saturation_review",
+  "fresh_search_used": false,
+  "evidence_archive_used": false,
+  "neighbor_raw_outputs_used": false,
+  "input_authority": {
+    "compact_index": "GitHub Actions run 514 deterministic memory-compact-indexes artifact",
+    "coverage_state": "repository coverage-index.json",
+    "seal_rule": "docs/research/lithium-battery-memory-exhaustion-manifest.json"
+  },
+  "input_state": {
+    "formal_typed_leads": 53,
+    "legacy_experimental_raw_leads_in_shard": 28,
+    "consecutive_low_novelty_batches": 3,
+    "latest_low_novelty_batches": [
+      {
+        "pass_id": "ordinary-gap-batch4-v6",
+        "new_category": 0,
+        "useful_refinement": 2,
+        "duplicate": 3
+      },
+      {
+        "pass_id": "ordinary-gap-batch5-v6",
+        "new_category": 0,
+        "useful_refinement": 1,
+        "duplicate": 4
+      },
+      {
+        "pass_id": "ordinary-gap-batch6-v6",
+        "new_category": 0,
+        "useful_refinement": 1,
+        "duplicate": 4
+      }
+    ]
+  },
+  "review_lenses": [
+    {
+      "lens": "time_and_transition",
+      "status": "covered_for_first_replay",
+      "assessment": "The compact layer spans the pre-2019 investment setup through the 2019-2020 downcycle and later cycle revisions. The lack of a dedicated 2015 event is not judged a material first-order gap because the conversion-capex and hydroxide-expectation setup is explicitly represented from 2016-2018."
+    },
+    {
+      "lens": "actors_and_survivor_bias",
+      "status": "covered_for_first_replay",
+      "assessment": "The compact index contains 82 distinct actor names or role labels, including Tianqi/Kwinana, Albemarle/Kemerton, Ganfeng, Yahua, regional converters, new entrants, toll processors, price agencies, local regulators and feedstock/customer roles. The shard is not limited to current winners."
+    },
+    {
+      "lens": "project_and_capacity_state",
+      "status": "covered_for_first_replay",
+      "assessment": "Mechanical completion, first product, customer qualification, stable battery-grade output, low utilization, shutdown/care-and-maintenance, restart and multi-train ramp are represented as distinct or reversible states. Nameplate is not treated as effective supply."
+    },
+    {
+      "lens": "metric_and_product_semantics",
+      "status": "covered_for_first_replay",
+      "assessment": "Industrial-grade versus battery-grade carbonate, hydroxide, route-specific recovery/material intensity, WIP/mother-liquor/rework and deliverable-versus-accounting output are represented. A tonne of nominal lithium salt is not assumed semantically interchangeable."
+    },
+    {
+      "lens": "pricing_contract_and_ownership",
+      "status": "covered_for_first_replay",
+      "assessment": "Spot/contract/export/futures bases, grade differences, raw-material contract reset timing, product contract repricing timing, tolling versus self-owned feedstock and merchant-versus-captive ownership are represented."
+    },
+    {
+      "lens": "technology_qualification_and_yield",
+      "status": "covered_for_first_replay",
+      "assessment": "Conversion route, purification/recrystallization, impurity control, batch consistency, product switching limits, customer qualification, yield/recovery and lithium-mica waste constraints are represented."
+    },
+    {
+      "lens": "expectation_vintages_and_revisions",
+      "status": "covered_for_first_replay",
+      "assessment": "The shard preserves 2017-2018 hydroxide-premium/high-nickel expectations, management ramp-guidance revision mechanics, 2019-2021 hydroxide-demand expectations and later revisions rather than rewriting these as final truth."
+    },
+    {
+      "lens": "old_vocabulary_and_searchability",
+      "status": "covered_for_first_replay",
+      "assessment": "Historical search vocabulary includes lithium-salt processing, base lithium salts, causticization, purification, toll processing, mica-to-lithium, ore-to-lithium and brine-to-lithium terms, plus project/company aliases."
+    },
+    {
+      "lens": "failure_and_dead_end",
+      "status": "covered_for_first_replay",
+      "assessment": "Five explicit failure/dead-end leads plus reversible project-state leads cover delayed ramp, qualification failure, capital pressure, under-utilized local projects and announced capacity that never became effective supply."
+    },
+    {
+      "lens": "cross_boundary_and_first_order_bridge",
+      "status": "covered_for_first_replay",
+      "assessment": "The shard explicitly bridges mine/concentrate availability to battery-grade chemical supply through feedstock ownership, conversion yield, qualification, inventory/WIP, product specification and pricing. Remaining questions are primarily claim verification rather than missing blind-memory categories."
+    }
+  ],
+  "required_long_tail_categories": {
+    "forgotten_actors": "present",
+    "failure_dead_end": "present",
+    "old_vocabulary": "present",
+    "mechanism": "present",
+    "negative_space": "reviewed_no_material_first_order_empty_cell"
+  },
+  "verdict": {
+    "seal_eligible": true,
+    "seal_now": true,
+    "reason": "Three consecutive independent low-novelty probes produced no new category, the all-lens negative-space review found no material first-order empty cell for the first replay, and all required long-tail categories are represented.",
+    "important_limit": "Seal freezes the blind-memory atlas for this shard; it does not make any Memory Lead true, publishable or evidence-backed."
+  },
+  "post_seal_policy": {
+    "blind_atlas_mutation": "forbidden_except_explicit_structural_repairs_that_do_not_add_historical content",
+    "fresh_search": "allowed_only_in_a_new_self_verification_run_scoped_to_UP-CHEMICALS",
+    "search_results": "discovery_only_not_fact",
+    "not_found": "must_not_be_interpreted_as_false",
+    "next_stage": "high_capability_self_verification_then_claim_scoped_evidence_tasks_then_original_source_archive"
+  }
+}
