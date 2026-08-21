@@ -8,9 +8,15 @@ ROOT = Path(__file__).resolve().parents[1]
 BOOTSTRAP = ROOT / "FRESH_AGENT_BOOTSTRAP.md"
 COMPASS = ROOT / "STRATEGIC_COMPASS.md"
 METHODS = ROOT / "METHODOLOGY_CORE.md"
+MISSION_CONTRACT = ROOT / ".longcycle" / "continuity" / "mission-fidelity.json"
 CONTINUE = ROOT / "CONTINUE_HERE.md"
 AGENTS = ROOT / "AGENTS.md"
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
+
+TRANSFER_PHRASE = (
+    "接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，"
+    "然后从 continuation cursor 继续；不要让我重复背景。"
+)
 
 
 class StrategicCompassContractTest(unittest.TestCase):
@@ -70,7 +76,7 @@ class StrategicCompassContractTest(unittest.TestCase):
         raw = METHODS.read_bytes()
 
         self.assertLessEqual(len(raw), 12000)
-        self.assertLessEqual(len(text.splitlines()), 200)
+        self.assertLessEqual(len(text.splitlines()), 220)
         for fragment in (
             "Memory-first, Evidence-final",
             "Source-first, Archive-now",
@@ -84,34 +90,67 @@ class StrategicCompassContractTest(unittest.TestCase):
             "Continuity 追求高保真",
             "不追求极限压缩",
             "最小充分上下文",
+            "主动理解 + 自我纠偏 + 防钻牛角尖",
+            "当前原子任务",
         ):
             self.assertIn(fragment, text)
 
-    def test_active_industry_cannot_leak_into_long_term_cores(self) -> None:
+    def test_mission_contract_is_semantic_rubric_not_answer_key(self) -> None:
+        payload = json.loads(MISSION_CONTRACT.read_text(encoding="utf-8"))
+        self.assertEqual(payload["schema_version"], "longcycle-mission-fidelity/v1")
+        self.assertIn("not an answer key", payload["purpose"])
+        self.assertIn("first reconstructed", payload["purpose"])
+        self.assertGreaterEqual(len(payload["required_facets"]), 10)
+        self.assertGreaterEqual(len(payload["common_misreadings"]), 5)
+
+        facet_ids = {item["id"] for item in payload["required_facets"]}
+        self.assertTrue(
+            {
+                "founding_problem",
+                "missing_cognition",
+                "unknown_future_replay",
+                "point_in_time",
+                "history_as_analysis",
+                "evidence_boundary",
+                "cross_industry_destination",
+                "means_vs_ends",
+                "goal_hierarchy",
+            }.issubset(facet_ids)
+        )
+
+    def test_active_industry_cannot_leak_into_long_term_cores_or_contract(self) -> None:
         checkpoint = json.loads(HANDOFF.read_text(encoding="utf-8"))
         terms = checkpoint["active_context"]["core_exclusion_terms"]
-        core_text = (COMPASS.read_text(encoding="utf-8") + METHODS.read_text(encoding="utf-8")).lower()
+        core_text = (
+            COMPASS.read_text(encoding="utf-8")
+            + METHODS.read_text(encoding="utf-8")
+            + MISSION_CONTRACT.read_text(encoding="utf-8")
+        ).lower()
 
         hits = [term for term in terms if term.lower() in core_text]
         self.assertEqual(hits, [])
 
-    def test_bootstrap_reads_bounded_cores_before_dynamic_context(self) -> None:
+    def test_bootstrap_requires_synthesis_before_calibration(self) -> None:
         continue_text = CONTINUE.read_text(encoding="utf-8")
         agents_text = AGENTS.read_text(encoding="utf-8")
 
-        for path in ("STRATEGIC_COMPASS.md", "METHODOLOGY_CORE.md", ".longcycle/handoff/current.json"):
+        for path in (
+            "STRATEGIC_COMPASS.md",
+            "METHODOLOGY_CORE.md",
+            ".longcycle/continuity/mission-fidelity.json",
+            ".longcycle/handoff/current.json",
+        ):
             self.assertIn(path, continue_text)
             self.assertIn(path, agents_text)
 
         self.assertLess(
-            continue_text.index("STRATEGIC_COMPASS.md"),
-            continue_text.index(".longcycle/handoff/current.json"),
+            continue_text.index("先用自己的话"),
+            continue_text.index("mission-fidelity.json"),
         )
-        self.assertLess(
-            continue_text.index("METHODOLOGY_CORE.md"),
-            continue_text.index(".longcycle/handoff/current.json"),
-        )
+        self.assertIn("Vertical Alignment Gate", continue_text)
         self.assertIn("不要默认读取旧 devlog", continue_text)
+        self.assertIn(TRANSFER_PHRASE, continue_text)
+        self.assertIn(TRANSFER_PHRASE, agents_text)
 
 
 if __name__ == "__main__":
