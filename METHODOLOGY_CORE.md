@@ -1,0 +1,133 @@
+# METHODOLOGY CORE — Longcycle 的跨行业方法
+
+> 这是第二个**有界长期核心**。它只保存已经被明确采用、应跨行业继承的方法；不保存任何具体行业历史、公司、项目、阶段数字或当前 TODO。
+
+## M1. 历史恢复：Memory-first, Evidence-final
+
+旧互联网检索天然残缺。历史恢复先允许高能力模型在**不看本轮新搜索结果**的情况下尽量召回可能存在的 actor、旧称、项目、机制、失败案例、合同结构和当时叙事，形成 Memory Leads。
+
+Memory Lead 只是“应该去找什么”的目录，永远不是 Evidence。
+
+```text
+Blind Memory Exhaustion
+→ saturation / seal
+→ high-capability self-verification / search discovery
+→ claim-scoped evidence tasks
+→ original-source archive
+→ Evidence / Assertion / Reconciliation
+```
+
+未 seal 的 blind 单元不得被新搜索结果反向污染；`not_found != false`。
+
+## M2. 当下采集：Source-first, Archive-now
+
+今天仍容易获得的高价值原始资料，应尽快、按版本归档，而不是等几年后再历史抢救。
+
+```text
+source/watchlist
+→ proactive collection
+→ original/version archive
+→ Reality / Judgment extraction
+→ revision tracking
+```
+
+历史恢复与当下采集是两条长期并行路线。
+
+## M3. Evidence 决定可发布历史，模型和搜索只负责发现
+
+- 模型记忆可以挑战档案，但不能成为 Fact/Judgment；
+- 搜索排名、摘要数量、转载数量不能多数投票决定真值；
+- 权威性按 **claim scope** 判断；
+- 同源转载要视为同一 evidence cluster；
+- 权威来源之间若口径仍不可调和，保留冲突，不强行选答案。
+
+## M4. Point-in-time 与时间语义
+
+至少区分：
+
+- 世界中何时发生 / 适用；
+- 信息何时可以被当时观察者知道；
+- 一个 Expectation 在预测哪个未来区间。
+
+任何历史 replay 都必须执行 no-lookahead：后来信息不能偷渡回过去。
+
+历史修订通过新增版本表达，不能把旧预测、旧计划、旧口径覆盖掉。
+
+## M5. 可比性先于数量
+
+长期序列必须先保存真实语义，再谈聚合：产品规格、地理、单位、税费/运费边界、合同/市场基础、统计范围、项目阶段、认证状态、库存位置等都可能改变“同一个数字”的含义。
+
+典型原则：
+
+```text
+capacity != one number
+price != one curve
+inventory != one stock
+sales != demand
+announced != realized
+technology announced != technology adopted
+```
+
+## M6. 保存轨迹，而不是只保存最终答案
+
+项目、技术、资本开支、预期和政策都应保存状态转换、修订、延期、取消、重启和兑现过程。
+
+最终实际结果不能覆盖当初承诺；失败路径也是历史的一部分。
+
+## M7. Agent 分工
+
+高能力模型适合：
+
+- 召回长尾历史线索；
+- 发现跨链关联和 negative space；
+- 在 seal 后先解释自己的模糊记忆并定位可能的原始来源；
+- 处理高价值冲突和任务拆解。
+
+较低能力 Agent 默认是**证据工程执行者**：拿明确 claim、旧称、query family、来源目标、反向查询和 stop condition 深搜，不自由发挥行业结论。
+
+## M8. 用真实 benchmark 拉动抽象
+
+不要为了“平台完整”预先抽象所有行业。先在真实行业中暴露语义、证据和失败模式，再把多次被证明有用的 primitive 抽象出来，并用后续行业验证可迁移性。
+
+**行业事实不进入 Method Core；跨行业反复成立的方法才有资格进入。**
+
+## M9. 模型升级产生新 research vintage
+
+能力或训练资料显著变化的高能力模型，是新的研究工具 vintage。
+
+新 vintage 应重新 blind recall，形成新的不可变 Atlas，再与旧 Atlas diff：known / refined / novel。新增线索用于历史回补，不能覆盖旧模型输出；已证伪的模型记忆也保留为研究 provenance。
+
+## M10. 多 Agent Continuity：有限核心 + 动态状态
+
+跨会话连续性不能靠不断扩大的总结文档。
+
+默认只恢复四类信息：
+
+```text
+STRATEGIC_COMPASS.md     最终使命
+METHODOLOGY_CORE.md      跨行业方法
+current.json             中期目标 / 短期目标 / 当前状态 / next actions
+active context           当前行业或任务所需的局部资料
+```
+
+旧行业、旧 devlog、旧实验默认不加载。需要回溯时再按路径查找。
+
+长期经验进入新 Agent 的唯一正常路径是：
+
+```text
+具体经验
+→ devlog / industry context
+→ 多次验证或明确战略决定
+→ 提炼成跨行业方法
+→ Method Core（替换/压缩，而不是无限追加）
+```
+
+## Method Core 修改门槛
+
+只有以下情况允许增加或改变方法：
+
+1. 用户明确确定新的长期方法；
+2. 一个方法被真实 benchmark 反复证明；
+3. 原方法被真实数据明确证伪或需要收窄。
+
+单一行业技巧、某次 Prompt 细节、当前模型名字、当前工具限制、CI 状态和任务计划都不属于 Method Core。
