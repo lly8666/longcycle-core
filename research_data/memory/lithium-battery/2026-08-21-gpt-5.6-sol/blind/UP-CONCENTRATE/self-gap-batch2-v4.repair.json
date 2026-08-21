@@ -1,0 +1,15 @@
+{
+  "source_file": "self-gap-batch2-v4.jsonl",
+  "repair_policy": "structural_only_no_new_historical_content",
+  "repairs": [
+    {
+      "lead_id": "CONC-G201",
+      "field": "lead_kind",
+      "original": "technical_specification",
+      "repaired": "metric",
+      "reason": "technical_specification is a claim_scope enum, not an allowed MemoryLeadKind; the raw lead already defines concentrate-quality measurement dimensions, so the structural lead-kind repair is metric without changing recalled historical content"
+    }
+  ],
+  "raw_file_must_remain_unchanged": true,
+  "ingestion_rule": "apply repair overlay before typed candidate validation"
+}
