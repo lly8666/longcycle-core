@@ -19,7 +19,7 @@ class SessionHandoffContractTest(unittest.TestCase):
             json.loads(HANDOFF.read_text(encoding="utf-8"))
         )
 
-        self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v2")
+        self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v3")
         self.assertEqual(checkpoint.repository, "lly8666/longcycle-core")
         self.assertEqual(checkpoint.active_branch, "design/industry-memory")
         self.assertEqual(checkpoint.active_pr, 1)
@@ -31,12 +31,21 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertTrue(checkpoint.strategic_horizon.medium_term_goal)
         self.assertTrue(checkpoint.strategic_horizon.short_term_goal)
         self.assertTrue(checkpoint.strategic_horizon.next_big_step)
+        self.assertTrue(checkpoint.continuation_cursor.current_task)
+        self.assertTrue(checkpoint.continuation_cursor.why_now)
+        self.assertTrue(checkpoint.continuation_cursor.done_when)
+        self.assertTrue(checkpoint.continuation_cursor.next_atomic_action)
+        self.assertTrue(any(item.role == "main_path" for item in checkpoint.workstreams))
 
     def test_long_term_cores_are_references_not_checkpoint_copies(self) -> None:
         payload = json.loads(HANDOFF.read_text(encoding="utf-8"))
 
         self.assertEqual(payload["core_refs"]["strategy_path"], "STRATEGIC_COMPASS.md")
         self.assertEqual(payload["core_refs"]["methodology_path"], "METHODOLOGY_CORE.md")
+        self.assertEqual(
+            payload["core_refs"]["mission_fidelity_path"],
+            ".longcycle/continuity/mission-fidelity.json",
+        )
         for duplicated_key in (
             "user_directives",
             "north_star",
@@ -67,6 +76,7 @@ class SessionHandoffContractTest(unittest.TestCase):
         required = {
             "STRATEGIC_COMPASS.md",
             "METHODOLOGY_CORE.md",
+            ".longcycle/continuity/mission-fidelity.json",
             "CONTINUE_HERE.md",
             ".longcycle/handoff/current.json",
         }
@@ -75,6 +85,24 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertFalse(any(path.startswith("docs/devlog/") for path in read_set))
         self.assertNotIn("docs/development/project-constitution.md", read_set)
         self.assertNotIn("docs/development/session-handoff-protocol.md", read_set)
+
+    def test_workstreams_are_explicitly_attached_to_parent_goals(self) -> None:
+        checkpoint = SessionHandoffCheckpoint.model_validate_json(
+            HANDOFF.read_text(encoding="utf-8")
+        )
+        workstreams = {item.workstream_id: item for item in checkpoint.workstreams}
+
+        main_path = workstreams["memory-atlas-active-benchmark"]
+        self.assertEqual(main_path.role, "main_path")
+        self.assertEqual(main_path.parent_goal_ref, "strategic_horizon.short_term_goal")
+
+        support = workstreams["session-continuity"]
+        self.assertEqual(support.role, "supporting_quality_gate")
+        self.assertEqual(support.parent_goal_ref, "strategic_horizon.medium_term_goal")
+        self.assertEqual(
+            checkpoint.continuation_cursor.parent_workstream_id,
+            support.workstream_id,
+        )
 
     def test_live_head_difference_requires_delta_reconciliation(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
