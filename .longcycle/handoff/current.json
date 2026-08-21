@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v2",
-  "continuity_sequence": 9,
+  "continuity_sequence": 10,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "1a255641135b36210988311ce5c1330891d1611d",
+  "checkpoint_based_on_head_sha": "f9b39498f5091ad19cb2eff0a96829f5359589ac",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "Resolve live branch/PR through issue #2, read the bounded strategy and methodology cores, read this checkpoint for medium/short horizon, refresh live HEAD/CI, then load only the active context needed for the task. Do not preload old industries or devlogs.",
@@ -63,13 +63,13 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 276,
-    "observed_head_sha": "d16fb0c48d84e373d78732f15b2b0e9c189b665c",
-    "conclusion": "success before the bounded-core v2 refactor; live refresh required",
-    "mypy_summary": "Run #276: success, no issues in 55 source files before v2 refactor.",
-    "pytest_summary": "Run #276: 130 passed before v2 refactor.",
-    "ruff_summary": "Run #276 had diagnostic-only Ruff findings; lint is not the current main path.",
-    "refresh_instruction": "Fetch live HEAD and latest CI. Validate handoff v2, bounded core budgets, generic active-context drill and existing memory contracts together."
+    "last_observed_run": 300,
+    "observed_head_sha": "a5261a4ad284d57c8f09c135184e796d23d3a74e",
+    "conclusion": "success on the bounded-core v2 code/test/protocol head before the internal drill and external-audit-spec doc commits",
+    "mypy_summary": "Run #300: success, no issues in 55 source files.",
+    "pytest_summary": "Run #300: 132 passed.",
+    "ruff_summary": "Run #300 retained diagnostic-only Ruff findings; lint remains non-blocking.",
+    "refresh_instruction": "Refresh live CI because the internal drill, audit protocol and this checkpoint are newer. The underlying v2 code/tests were hard-gate green in run #300."
   },
   "workstreams": [
     {
@@ -77,7 +77,7 @@
       "status": "all_primary_batch2_complete_unsealed_batch3_next",
       "summary": "Active benchmark remains in blind Memory Atlas saturation measurement. No shard is sealed and fresh historical search remains forbidden.",
       "next_actions": [
-        "Return to compact-index driven batch3 novelty-decay work after continuity refactor is validated.",
+        "Return to compact-index driven batch3 novelty-decay work after the external bounded-continuity audit is reviewed.",
         "Keep active-industry details inside the active context package, not long-term core files."
       ],
       "blockers": [
@@ -86,12 +86,12 @@
     },
     {
       "workstream_id": "session-continuity",
-      "status": "bounded_core_v2_refactor_requires_live_validation",
-      "summary": "Continuity is being normalized into two bounded long-term cores plus dynamic handoff and active context. Stable principles are no longer duplicated inside the checkpoint.",
+      "status": "bounded_core_v2_internal_drill_pass_external_fresh_agent_audit_pending",
+      "summary": "Continuity now uses two bounded industry-agnostic cores, a five-file default resume set, dynamic strategic horizon and replaceable active context. Same-model artificial-ignorance drill recovered mission/method/medium/short/next and rejected 10/10 bloat/drift traps.",
       "next_actions": [
-        "Run repository-only reconstruction and bounded-core contract tests.",
-        "Run one same-model dumb-agent test against the reduced bootstrap context.",
-        "Then use one genuinely fresh Agent for an external bounded-core continuity audit."
+        "Run one genuinely fresh Agent using docs/development/fresh-agent-bounded-continuity-audit.md with report-only mutation.",
+        "Review only material continuity failures from that report.",
+        "If safe, stop handoff work and return to the active benchmark main path."
       ],
       "blockers": []
     }
@@ -108,24 +108,25 @@
     "docs/development/project-constitution.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development-plan.md",
-    "docs/development/fresh-agent-strategic-audit.md",
+    "docs/development/fresh-agent-bounded-continuity-audit.md",
+    "docs/devlog/2026-08-21-bounded-core-dumb-agent-drill.md",
     "docs/devlog/2026-08-21-fresh-agent-strategic-audit-report.md"
   ],
   "latest_devlogs": [
+    "docs/devlog/2026-08-21-bounded-core-dumb-agent-drill.md",
     "docs/devlog/2026-08-21-fresh-agent-strategic-audit-report.md",
-    "docs/devlog/2026-08-21-strategic-compass-dumb-agent-drill.md",
     "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
   ],
   "unresolved_questions": [
+    "Will a genuinely fresh Agent recover mission/method/medium/short/next from the bounded bootstrap without loading old industry/devlog history?",
     "What quantitative thresholds should define new_category/useful_refinement/duplicate and a low-novelty batch?",
     "Which high-value shards should enter selective batch3 first?",
-    "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough?",
-    "When should source-first/archive-now current collection become an active scheduled workstream rather than only a permanent commitment?"
+    "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough?"
   ],
   "ordered_next_actions": [
-    "Validate bounded-core handoff v2 under Mypy/Pytest and repository-only reconstruction.",
-    "Run the same-model dumb-agent bounded-core test and record only real continuity gaps.",
-    "After external fresh-Agent bounded-core audit, stop continuity work unless a blocking defect remains.",
+    "Run one genuine fresh-Agent bounded-continuity audit with report-only mutation and no prior chat context.",
+    "Review whether it recovered mission, methodology, medium horizon, short horizon and next big step without requiring old industry history.",
+    "Repair only material continuity defects; otherwise stop handoff work.",
     "Return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
   ]
 }
