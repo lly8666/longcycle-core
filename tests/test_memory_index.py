@@ -4,6 +4,7 @@ import json
 import unittest
 from datetime import date
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from longcycle.application.memory_index import (
     build_shard_memory_index,
@@ -83,9 +84,11 @@ class MemoryIndexTest(unittest.TestCase):
         self.assertNotIn("recalled_details", first)
         self.assertNotIn("why_search_may_miss_it", first)
 
-    def test_current_campaign_rebuilds_all_shard_indices_from_raw_plus_repairs(self) -> None:
+    def test_current_campaign_rebuilds_all_formal_shard_indices_from_raw_plus_repairs(self) -> None:
         coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
-        expected = {item["shard_id"]: item["lead_count"] for item in coverage["shards"]}
+        expected = {
+            item["shard_id"]: item["formal_typed_lead_count"] for item in coverage["shards"]
+        }
 
         rebuilt: dict[str, int] = {}
         for shard_id, expected_count in expected.items():
@@ -100,7 +103,26 @@ class MemoryIndexTest(unittest.TestCase):
                 self.assertNotIn("suggested_source_types", entry)
 
         self.assertEqual(set(rebuilt), set(expected))
-        self.assertEqual(sum(rebuilt.values()), coverage["total_raw_leads_so_far"])
+        self.assertEqual(sum(rebuilt.values()), coverage["total_formal_typed_leads_so_far"])
+        self.assertEqual(
+            coverage["total_raw_leads_so_far"] - coverage["total_formal_typed_leads_so_far"],
+            coverage["legacy_experimental_raw_leads"]["total"],
+        )
+
+    def test_directory_loader_excludes_legacy_prompt_evolution_jsonl(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            shard_dir = Path(temp_dir)
+            (shard_dir / "legacy-v1.jsonl").write_text('{"not":"typed"}\n', encoding="utf-8")
+            (shard_dir / "legacy-v2.jsonl").write_text('{"still":"legacy"}\n', encoding="utf-8")
+            (shard_dir / "formal-v3.jsonl").write_text(
+                _lead(lead_id="FORMAL").model_dump_json() + "\n",
+                encoding="utf-8",
+            )
+
+            index = build_shard_memory_index_from_directory(shard_dir)
+
+        self.assertEqual(index.lead_count, 1)
+        self.assertEqual(index.entries[0].lead_id, "FORMAL")
 
     def test_rejects_mixed_shards(self) -> None:
         with self.assertRaisesRegex(ValueError, "different shards"):

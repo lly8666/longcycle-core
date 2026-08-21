@@ -2,29 +2,39 @@
   "campaign": "2026-08-21-gpt-5.6-sol",
   "blind_stage_status": "pre2019_batch3_started_on_six_priority_shards_unsealed",
   "total_raw_leads_so_far": 636,
+  "total_formal_typed_leads_so_far": 578,
+  "legacy_experimental_raw_leads": {
+    "total": 58,
+    "files": [
+      {"shard_id":"UP-HARDROCK","file":"timeline-actors-v1.jsonl","lead_count":30,"prompt_version":"recall-v1"},
+      {"shard_id":"UP-CHEMICALS","file":"timeline-mechanisms-v2.jsonl","lead_count":28,"prompt_version":"recall-v2"}
+    ],
+    "policy": "preserved as immutable prompt-evolution experiments; excluded from strict typed compact indexes"
+  },
   "search_visibility": "none",
   "state_authority": {
-    "raw_counts": "deterministic-derived from blind JSONL and handoff drill",
+    "raw_counts": "deterministic-derived from all blind JSONL and handoff drill",
+    "formal_typed_counts": "deterministic-derived from v3+ blind JSONL after explicit repair overlays",
     "novelty_labels": "curated research assessment",
     "bridge_and_satellite_priority": "curated research assessment",
     "ci": "not stored here; refresh live GitHub Actions"
   },
   "sealed_shards": [],
   "shards": [
-    {"shard_id":"UP-HARDROCK","lead_count":66,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"UP-BRINE","lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"UP-CONCENTRATE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"UP-CHEMICALS","lead_count":66,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"MID-LFP","lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"MID-TERNARY","lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"MID-ANODE","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-SEPARATOR","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"MID-ELECTROLYTE","lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"BAT-CELL","lead_count":58,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"DOWN-NEV","lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"DOWN-ESS","lead_count":48,"self_gap_batches":2,"status":"high_novelty_with_repair_overlay"},
-    {"shard_id":"DOWN-OTHER","lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
-    {"shard_id":"LOOP-RECYCLING","lead_count":34,"self_gap_batches":2,"status":"high_novelty"}
+    {"shard_id":"UP-HARDROCK","lead_count":66,"formal_typed_lead_count":36,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"UP-BRINE","lead_count":48,"formal_typed_lead_count":48,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"UP-CONCENTRATE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"UP-CHEMICALS","lead_count":66,"formal_typed_lead_count":38,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-LFP","lead_count":56,"formal_typed_lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-TERNARY","lead_count":42,"formal_typed_lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-ANODE","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"MID-SEPARATOR","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"MID-ELECTROLYTE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"BAT-CELL","lead_count":58,"formal_typed_lead_count":58,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"DOWN-NEV","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"DOWN-ESS","lead_count":48,"formal_typed_lead_count":48,"self_gap_batches":2,"status":"high_novelty_with_repair_overlay"},
+    {"shard_id":"DOWN-OTHER","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"LOOP-RECYCLING","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"}
   ],
   "saturation_experiment": {
     "result": "all 14 primary shards completed ordinary batch2; six highest-value cycle-forming shards have now also completed a targeted 2015-2018 batch3 and still show no low-novelty batch",
@@ -73,7 +83,7 @@
   "next_phase": {
     "goal": "continue selective batch3 novelty-decay measurement on the 2015-2026 horizon without turning horizon extension into exhaustive calendar backfill",
     "actions": [
-      "rebuild deterministic compact indices including the new v5 pre-2019 leads",
+      "rebuild deterministic compact indices from formal v3+ leads, including the new v5 pre-2019 leads",
       "run targeted 2015-2018 batch3 on the remaining high-value shards only where compact-index negative space is material",
       "continue ordinary batch3 on selected shards and classify each output as new_category/useful_refinement/duplicate",
       "do not seal a shard until three consecutive low-novelty batches plus negative-space review are satisfied",

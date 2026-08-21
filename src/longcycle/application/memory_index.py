@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from collections import Counter
 from collections.abc import Iterable
 from datetime import date
@@ -13,6 +14,8 @@ from longcycle.application.memory_ingest import (
     validate_memory_jsonl,
 )
 from longcycle.domain.memory import ClaimScope, MemoryBasis, MemoryLeadKind
+
+_FORMAL_MEMORY_JSONL_VERSION = re.compile(r"-v(?P<version>\d+)\.jsonl$")
 
 
 class CompactMemoryLead(BaseModel):
@@ -70,6 +73,13 @@ def _years_touched(period: tuple[date | None, date | None]) -> tuple[int, ...]:
 def _gap_reason(lead: MemoryLeadCandidate) -> str | None:
     value = lead.recalled_details.get("gap_reason")
     return value if isinstance(value, str) and value.strip() else None
+
+
+def _is_formal_memory_jsonl(path: Path) -> bool:
+    """Return whether a blind JSONL belongs to the typed v3+ campaign contract."""
+
+    match = _FORMAL_MEMORY_JSONL_VERSION.search(path.name)
+    return match is not None and int(match.group("version")) >= 3
 
 
 def build_shard_memory_index(
@@ -156,16 +166,23 @@ def build_shard_memory_index(
 
 
 def load_shard_memory_candidates(shard_dir: Path) -> tuple[MemoryLeadCandidate, ...]:
-    """Load one blind shard deterministically, applying explicit repair overlays first."""
+    """Load formal v3+ blind leads deterministically, applying explicit repairs first.
+
+    v1/v2 JSONL files are intentionally preserved as immutable prompt-evolution experiments.
+    They remain part of raw campaign history but are not valid inputs to the strict typed
+    compact index contract introduced in v3.
+    """
 
     if not shard_dir.is_dir():
         raise FileNotFoundError(shard_dir)
 
     candidates: list[MemoryLeadCandidate] = []
     seen_ids: set[str] = set()
-    jsonl_paths = tuple(sorted(shard_dir.glob("*.jsonl")))
+    jsonl_paths = tuple(
+        sorted(path for path in shard_dir.glob("*.jsonl") if _is_formal_memory_jsonl(path))
+    )
     if not jsonl_paths:
-        raise ValueError(f"blind shard contains no JSONL files: {shard_dir}")
+        raise ValueError(f"blind shard contains no formal v3+ JSONL files: {shard_dir}")
 
     for jsonl_path in jsonl_paths:
         text = jsonl_path.read_text(encoding="utf-8")
@@ -180,8 +197,7 @@ def load_shard_memory_candidates(shard_dir: Path) -> tuple[MemoryLeadCandidate, 
         result = validate_memory_jsonl(text)
         if result.failures:
             details = "; ".join(
-                f"line {failure.line_no}: {failure.reason}"
-                for failure in result.failures
+                f"line {failure.line_no}: {failure.reason}" for failure in result.failures
             )
             raise ValueError(f"invalid memory shard file {jsonl_path.name}: {details}")
 
@@ -195,7 +211,7 @@ def load_shard_memory_candidates(shard_dir: Path) -> tuple[MemoryLeadCandidate, 
 
 
 def build_shard_memory_index_from_directory(shard_dir: Path) -> ShardMemoryIndex:
-    """Rebuild a compact index only from the shard's immutable recall plus repair overlays."""
+    """Rebuild a compact index only from formal immutable recall plus repair overlays."""
 
     return build_shard_memory_index(load_shard_memory_candidates(shard_dir))
 
