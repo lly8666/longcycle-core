@@ -19,17 +19,40 @@ class HandoffCIState(BaseModel):
     refresh_instruction: str
 
 
-class HandoffStrategicHorizon(BaseModel):
-    """The layer above immediate TODOs: where the current work must eventually lead."""
+class HandoffCoreRefs(BaseModel):
+    """Small, slow-changing bootstrap cores. Dynamic state must not be copied here."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    authority: Literal["STRATEGIC_COMPASS.md"]
-    current_big_goal: str = Field(min_length=1)
-    current_phase_purpose: str = Field(min_length=1)
+    strategy_path: Literal["STRATEGIC_COMPASS.md"]
+    methodology_path: Literal["METHODOLOGY_CORE.md"]
+
+
+class HandoffStrategicHorizon(BaseModel):
+    """Dynamic horizon immediately below the long-term mission."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    medium_term_goal: str = Field(min_length=1)
+    short_term_goal: str = Field(min_length=1)
     next_big_step: str = Field(min_length=1)
-    parallel_permanent_track: str = Field(min_length=1)
     local_optimization_stop_rule: str = Field(min_length=1)
+    parallel_permanent_tracks: tuple[str, ...] = ()
+
+
+class HandoffActiveContext(BaseModel):
+    """The current industry / benchmark / task context, intentionally outside long-term cores."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    context_id: str = Field(min_length=1)
+    context_kind: str = Field(min_length=1)
+    label: str = Field(min_length=1)
+    root_path: str = Field(min_length=1)
+    campaign_root: str | None = None
+    coverage_path: str | None = None
+    deep_context_paths: tuple[str, ...] = ()
+    core_exclusion_terms: tuple[str, ...] = ()
 
 
 class HandoffMemoryCampaign(BaseModel):
@@ -69,11 +92,11 @@ class HandoffWorkstream(BaseModel):
 
 
 class SessionHandoffCheckpoint(BaseModel):
-    """Repository-backed continuation state for a fresh chat or development agent."""
+    """Bounded repository-backed continuation state for a fresh session."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["longcycle-session-handoff/v1"]
+    schema_version: Literal["longcycle-session-handoff/v2"]
     continuity_sequence: int = Field(ge=1)
     provenance_ordering: Literal["git_commit_graph"]
     repository: Literal["lly8666/longcycle-core"]
@@ -83,41 +106,47 @@ class SessionHandoffCheckpoint(BaseModel):
     live_refresh_required: Literal[True]
     do_not_ask_user_to_repeat: Literal[True]
     bootstrap_instruction: str = Field(min_length=1)
-    user_directives: tuple[str, ...]
-    north_star: tuple[str, ...]
+    core_refs: HandoffCoreRefs
     strategic_horizon: HandoffStrategicHorizon
-    non_negotiable_invariants: tuple[str, ...]
-    forbidden_shortcuts: tuple[str, ...]
-    future_phase_commitments: tuple[str, ...]
-    memory_campaign: HandoffMemoryCampaign
+    active_context: HandoffActiveContext
+    pending_user_directives: tuple[str, ...] = ()
+    memory_campaign: HandoffMemoryCampaign | None = None
     ci: HandoffCIState
     workstreams: tuple[HandoffWorkstream, ...]
     resume_read_set: tuple[str, ...]
-    latest_devlogs: tuple[str, ...]
+    deep_reference_paths: tuple[str, ...] = ()
+    latest_devlogs: tuple[str, ...] = ()
     unresolved_questions: tuple[str, ...]
     ordered_next_actions: tuple[str, ...]
 
     @model_validator(mode="after")
     def continuation_contract_is_complete(self) -> SessionHandoffCheckpoint:
-        if not self.user_directives:
-            raise ValueError("handoff must preserve at least one explicit user directive")
-        if not self.future_phase_commitments:
-            raise ValueError("handoff must preserve future phase commitments")
         if not self.resume_read_set:
             raise ValueError("handoff must provide a minimal resume read set")
+        if len(self.resume_read_set) > 8:
+            raise ValueError("default resume_read_set must remain bounded at eight files or fewer")
         if not self.ordered_next_actions:
             raise ValueError("handoff must provide ordered next actions")
+
         workstream_ids = [item.workstream_id for item in self.workstreams]
         if len(workstream_ids) != len(set(workstream_ids)):
             raise ValueError("handoff workstream ids must be unique")
+
         required_paths = {
-            "STRATEGIC_COMPASS.md",
+            self.core_refs.strategy_path,
+            self.core_refs.methodology_path,
             "CONTINUE_HERE.md",
-            "docs/development/project-constitution.md",
-            "docs/development/session-handoff-protocol.md",
+            ".longcycle/handoff/current.json",
         }
         if not required_paths.issubset(set(self.resume_read_set)):
-            raise ValueError("resume_read_set is missing mandatory bootstrap files")
+            raise ValueError("resume_read_set is missing bounded bootstrap core files")
+
+        if self.memory_campaign is not None and (
+            self.active_context.campaign_root is None
+            or self.active_context.coverage_path is None
+        ):
+            raise ValueError("memory campaign requires active-context campaign_root and coverage_path")
+
         return self
 
 
