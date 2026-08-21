@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 19,
+  "continuity_sequence": 20,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "9678219ec3aa62c3af78bd0cdc317bab99f09bb4",
+  "checkpoint_based_on_head_sha": "9d26b99d2846f51e6f48fe8962f6adbaf365727c",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve the active branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, verify that the Agent can satisfy the cursor's required_capability, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
+  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch. It must resolve GitHub Issue #2, which points to active Draft PR #1 and branch design/industry-memory. Switch subsequent reads to that branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,8 +16,8 @@
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, and the resulting primitives must be demonstrably reusable rather than industry-specific hacks.",
-    "short_term_goal": "Recover and reconcile the user-confirmed completed lithium benchmark state before generating any new blind research: preserve the currently reachable 636 raw-lead checkpoint exactly, distinguish its 578 formal v3+ typed leads from 58 legacy v1/v2 prompt-evolution records, and locate the reported 1500+ completed state without fabricating or duplicating work.",
-    "next_big_step": "Once the completed benchmark state is recovered and its seals/evidence boundary are verified, resume the evidence-final path: high-capability self-verification/search discovery, claim-scoped evidence tasks, original-source archiving, and the first evidence-backed historical replay slice.",
+    "short_term_goal": "Reconcile the user-confirmed completed lithium benchmark state inside the authoritative design/industry-memory branch before generating replacement research. Preserve the currently proven blind layer exactly at 636 raw leads / 578 formal typed v3+ leads / 58 legacy v1-v2 prompt-evolution records, while identifying what persisted data layer or completion artifact the reported 1500+ total actually describes.",
+    "next_big_step": "Once the completed benchmark state and its exact data-layer semantics are reconciled, verify seal/evidence boundaries and resume the evidence-final path or any genuinely unfinished blind work required by that recovered state. The product proof remains an evidence-backed no-lookahead Reality + Expectation + Outcome replay slice.",
     "local_optimization_stop_rule": "Stop or re-rank local work when it no longer materially improves coverage, evidence traceability, point-in-time replay, a main-path blocker, or continuity correctness. Tooling, lead count, schema elegance, lint, handoff polish and Agent orchestration are never self-justifying objectives.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
@@ -25,27 +25,30 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Repaired the compact-index correctness failure without rewriting sealed blind recall. The live repository has 636 blind JSONL records: 578 formal typed v3+ leads plus 58 immutable legacy prompt-evolution records (30 v1 UP-HARDROCK and 28 v2 UP-CHEMICALS). Compact loading now excludes v1/v2, applies explicit repair overlays to v3+, and coverage records both raw and formal typed counts. Commit 9678219ec3aa62c3af78bd0cdc317bab99f09bb4 passed CI run #434: Ruff, Mypy, Pytest, compact index build and artifact upload all succeeded.",
-    "current_task": "Recover/reconcile the user-confirmed 1500+ completed data state. Current reachable GitHub tree, PR net diff, PR/Issue discussion and indexed search do not contain a verifiable 1500+ checkpoint, so do not relabel 636/578 as 1500+, do not regenerate supposedly completed research from scratch, and do not mutate sealed source to make counts match memory.",
-    "why_now": "The prior handoff was frozen at a 636-era checkpoint and incorrectly conflated all raw JSONL with strict typed compact inputs, which broke Pytest. That defect is fixed and CI is green. The remaining discrepancy is provenance/recovery: the user explicitly states that the real dataset exceeded 1500 records and was completed, while the currently reachable branch contains only the 636-record blind checkpoint and no committed evidence/calibration dataset that proves the larger state.",
-    "done_when": "The missing completed state is located in reachable repository history, another authoritative artifact, or a recoverable external project source and reconciled without hindsight leakage; its data-layer count is named precisely rather than conflated with blind raw leads; repository validation and CI remain green; and no duplicate blind research is generated merely to recreate a remembered total.",
+    "last_completed_action": "Re-ran the fresh-agent handoff from the default branch and proved that the repository itself discovers the active development state: main/FRESH_AGENT_BOOTSTRAP.md -> GitHub Issue #2 -> Draft PR #1 -> branch design/industry-memory. Reconciled the stale checkpoint against live HEAD 9d26b99d2846f51e6f48fe8962f6adbaf365727c. The substantive commit added a full-history blind-memory provenance audit; CI run #440 succeeded. That audit scanned 305 reachable commits and 63 distinct blind trees and found historical maxima of 636 raw / 578 formal typed leads with zero blind candidates exceeding current. This rules out a larger reachable blind tree, but does not identify or disprove another completed data layer on the active branch.",
+    "current_task": "Use design/industry-memory as the authoritative project state and reconcile what the user-confirmed 1500+ completed total refers to. Do not search for a different active branch, do not equate the 636 blind raw count with the whole completed benchmark, and do not regenerate supposedly completed research. Inspect same-branch manifests, campaign records, devlogs and data-layer semantics until the exact completion layer is identified or a concrete missing-artifact boundary is proven.",
+    "why_now": "The user explicitly clarified that the project state is in design/industry-memory and that a correct handoff should discover this branch automatically. The fresh bootstrap does discover it. The remaining discrepancy is therefore not branch discovery and not a larger reachable blind tree; it is a data-layer/completion-state reconciliation problem inside the active branch context.",
+    "done_when": "The 1500+ completed total is tied to an exact persisted artifact or exact data-layer definition in the authoritative project state, its relationship to the 636 raw / 578 formal blind layer is explained without conflation, any legitimate seal/evidence state is reconciled without hindsight leakage, repository validation remains green, and no duplicate blind research is generated merely to recreate a remembered number.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Treat commit 9678219ec3aa62c3af78bd0cdc317bab99f09bb4 as the last verified substantive checkpoint. First exhaust recoverable provenance for the reported 1500+ completed state; only after that reconciliation may the research plan be advanced. Keep search_visibility=none for unrecovered blind shards and never use fresh evidence search to rewrite sealed memory."
+    "next_atomic_action": "Start from the complete design/industry-memory tree and reconcile same-branch completion semantics: inspect lithium memory manifests/audits, campaign devlogs and any derived or persisted benchmark-layer definitions that can explain the user-confirmed 1500+ total. Treat 636/578 only as the proven blind layer. Keep search_visibility=none and never use fresh evidence search to rewrite blind memory."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / completed-state recovery and reconciliation",
+    "label": "Lithium-battery first benchmark / active-branch completion-state reconciliation",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
+      "docs/research/lithium-battery-memory-audits.json",
+      "docs/research/lithium-battery-memory-exhaustion-manifest.json",
       "docs/research/lithium-battery-cycle-horizon-v2.md",
       "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
       "docs/research/lithium-battery-memory-sharding.md",
-      "docs/research/lithium-battery-memory-exhaustion-protocol.md",
-      "docs/research/lithium-battery-collection-plan.md"
+      "docs/research/lithium-battery-collection-plan.md",
+      "docs/devlog/2026-08-21-memory-campaign-part2.md",
+      "docs/devlog/2026-08-21-all-primary-batch2-milestone.md"
     ],
     "core_exclusion_terms": [
       "lithium-battery",
@@ -59,48 +62,53 @@
     ]
   },
   "pending_user_directives": [
-    "User states the real dataset should be 1500+ records and was already completed. Preserve this as an authoritative recovery constraint: do not ask the user to repeat prior work, do not pretend the currently reachable 636 raw / 578 formal typed checkpoint is the completed state, and do not regenerate or mutate sealed memory merely to force the count upward."
+    "User states the real dataset should be 1500+ records and was already completed. Preserve this as an authoritative recovery constraint: do not ask the user to repeat prior work, do not pretend the currently proven 636 raw / 578 formal typed blind checkpoint is the whole completed state, and do not regenerate or mutate sealed memory merely to force the count upward.",
+    "User clarified that the project state is in the design/industry-memory branch and that a correct fresh-agent handoff should discover this branch from the repository rather than requiring the user to provide the link. Treat design/industry-memory as the active authoritative development branch unless a newer explicit repository rendezvous changes it."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
-    "phase": "blind_memory_recovery_reconciliation",
+    "phase": "blind_memory_completion_state_reconciliation",
     "search_visibility": "none",
     "total_raw_leads": 636,
+    "formal_typed_leads": 578,
+    "legacy_experimental_raw_leads": 58,
     "sealed_shards": [],
     "shard_count": 14,
-    "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension; high-value shards must also have no material uncovered 2015-2018 causal-setup dimension. Do not infer missing seals from the stale 636-era tree; recover the completed state first.",
+    "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension; high-value shards must also have no material uncovered 2015-2018 causal-setup dimension. Do not infer missing seals from the 636 blind layer; reconcile the completed-state semantics first.",
     "next_research_actions": [
-      "Do not launch new blind batches until the user-confirmed 1500+ completed state has been recovered or provenance recovery is demonstrably exhausted.",
-      "Preserve the reachable 636 raw records exactly: 578 are formal typed v3+ compact inputs and 58 are immutable v1/v2 prompt-evolution experiments.",
-      "If a larger authoritative state is recovered, reconcile its data-layer semantics and seals before any evidence-final search begins.",
-      "Keep search_visibility=none for blind memory and never backfill sealed recall with hindsight evidence."
+      "Do not launch new blind batches while the user-confirmed 1500+ completed state is being reconciled.",
+      "Preserve the reachable blind layer exactly: 636 raw records, of which 578 are formal typed v3+ compact inputs and 58 are immutable v1/v2 prompt-evolution experiments.",
+      "Use the active design/industry-memory branch to identify the exact persisted layer represented by the 1500+ completion total before deciding whether anything is genuinely missing.",
+      "If a larger authoritative state or different data layer is identified, reconcile its counts, seals, repair overlays and deterministic derivatives before evidence-final search begins.",
+      "Keep search_visibility=none for blind memory and never backfill blind recall with hindsight evidence."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 434,
-    "observed_head_sha": "9678219ec3aa62c3af78bd0cdc317bab99f09bb4",
-    "conclusion": "success on the last verified substantive repair checkpoint; Ruff, Mypy, Pytest, deterministic compact build and artifact upload all passed",
-    "mypy_summary": "Run #434: success.",
-    "pytest_summary": "Run #434: success; the raw-vs-formal typed compact-index regression is repaired.",
-    "ruff_summary": "Run #434: success; Ruff remains diagnostic-only by workflow policy.",
-    "refresh_instruction": "Refresh live HEAD/CI before trusting this snapshot. A handoff-only sync commit is expected after the substantive checkpoint and is valid only if its delta remains confined to handoff-mutable paths."
+    "last_observed_run": 440,
+    "observed_head_sha": "9d26b99d2846f51e6f48fe8962f6adbaf365727c",
+    "conclusion": "success on the latest substantive checkpoint; Mypy, Pytest, compact-index build, full-history memory provenance audit and artifact uploads passed",
+    "mypy_summary": "Run #440: success; no issues found in 57 source files.",
+    "pytest_summary": "Run #440: success; 144 passed.",
+    "ruff_summary": "Run #440: diagnostic-only Ruff reported 63 findings; workflow policy keeps Ruff non-blocking during the memory campaign.",
+    "memory_history_summary": "Run #440: success; scanned 305 reachable commits / 63 distinct blind trees, current and historical max raw=636, formal_typed=578, candidates_exceeding_current=0.",
+    "refresh_instruction": "Refresh live HEAD/CI before trusting this snapshot. A handoff-only sync commit after 9d26b99 is valid only if its delta remains confined to handoff-mutable paths."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "ci_repaired_completed_state_recovery_required",
-      "summary": "The current branch is internally consistent and green at the 636 raw / 578 formal typed checkpoint, but this is not accepted as the completed benchmark because the user confirms a 1500+ completed state. The main path is recovery/reconciliation, not new research generation.",
+      "status": "active_branch_completion_layer_reconciliation",
+      "summary": "The fresh handoff correctly resolves design/industry-memory and the branch is green at the proven blind layer. The user-confirmed 1500+ completion claim must now be reconciled as a data-layer/completion-state question inside this active branch context, not treated as evidence for a different active branch or solved by generating more blind leads.",
       "next_actions": [
-        "Exhaust authoritative recovery paths for the missing 1500+ completed state without altering the reachable sealed raw artifacts.",
-        "When recovered, name its exact data layer and reconcile coverage, seals, compact indices and handoff against it.",
-        "Do not restart blind batch generation or begin fresh historical evidence search merely because the current tree is incomplete."
+        "Identify the exact same-branch artifact or data-layer definition corresponding to the user-confirmed 1500+ completed total.",
+        "Reconcile that layer against the blind 636 raw / 578 formal / 58 legacy split and any legitimate seal/evidence state.",
+        "Only after that reconciliation decide whether the main path is evidence-final work or genuinely unfinished blind work."
       ],
       "blockers": [
-        "The reported 1500+ completed state is not present in the currently reachable branch tree, PR net diff, indexed repository search, PR discussion, or Issue #2 discussion exposed by the current GitHub connector."
+        "The active branch is now correctly resolved, and full Git-history audit rules out a larger reachable blind tree; however, the exact persisted layer represented by the user-confirmed 1500+ completed total is not yet identified."
       ]
     }
   ],
@@ -111,7 +119,8 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "docs/research/lithium-battery-cycle-horizon-v2.md"
+    "docs/research/lithium-battery-memory-audits.json",
+    "docs/research/lithium-battery-memory-exhaustion-manifest.json"
   ],
   "deep_reference_paths": [
     "FRESH_AGENT_BOOTSTRAP.md",
@@ -119,24 +128,26 @@
     "docs/development/continuity-architecture.md",
     "docs/development/session-handoff-protocol.md",
     "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
+    "docs/devlog/2026-08-21-memory-campaign-part2.md",
+    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
     "docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md",
     "docs/devlog/2026-08-21-continuity-v3-judgment-failure-v4-remediation.md"
   ],
   "latest_devlogs": [
-    "docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md",
-    "docs/devlog/2026-08-21-continuity-v3-judgment-failure-v4-remediation.md",
-    "docs/devlog/2026-08-21-continuity-v3-artificial-ignorance-drill.md"
+    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
+    "docs/devlog/2026-08-21-memory-campaign-part2.md",
+    "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md"
   ],
   "unresolved_questions": [
-    "Where is the user-confirmed 1500+ completed state, and what exact layer does that count describe: blind memory, typed/repair-derived records, evidence/calibration records, or another persisted artifact?",
-    "Did the missing completed state include legitimate shard seals or evidence-final work that is absent from the currently reachable branch?",
-    "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough once the completed state is recovered?",
+    "What exact persisted layer does the user-confirmed 1500+ completed total describe: blind memory, typed/repair-derived records, compiled task/audit records, evidence/calibration records, or another benchmark artifact on design/industry-memory?",
+    "Did the completed state include legitimate shard seals or evidence-final work that is not represented by the current blind-layer coverage index?",
+    "What exact replay fixture and acceptance rubric should certify the first benchmark as good enough once the completed state is reconciled?",
     "Deferred bounded-execution orchestration: when a sealed-shard evidence workload or repeated current-source collection bottleneck exists, what is the smallest low-cost-Agent web task interface needed?"
   ],
   "ordered_next_actions": [
-    "Recover the user-confirmed 1500+ completed state from authoritative project provenance before generating any replacement research.",
-    "Reconcile the recovered state's exact data-layer counts, seal status, repair overlays and deterministic compact indices against the green substantive checkpoint.",
-    "Only after recovery/reconciliation, resume the evidence-final or remaining blind main path required by the recovered state; preserve no-lookahead and search-visibility boundaries.",
+    "Reconcile the user-confirmed 1500+ completed total against the full design/industry-memory project state and name its exact data layer without conflating it with blind JSONL counts.",
+    "Reconcile any recovered completion artifact's counts, seal status, repair overlays and deterministic derivatives against the green blind-layer checkpoint.",
+    "Only after completion-state reconciliation, resume the evidence-final or genuinely unfinished blind main path required by the authoritative state; preserve no-lookahead and search-visibility boundaries.",
     "Keep continuity and orchestration work subordinate to the benchmark main path; do not spend further effort polishing handoff unless new substantive state changes."
   ]
 }
