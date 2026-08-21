@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v1",
-  "continuity_sequence": 4,
-  "checkpoint_generated_at": "2026-08-21T10:22:00+09:00",
+  "continuity_sequence": 5,
+  "checkpoint_generated_at": "2026-08-21T10:36:00+09:00",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "5c916c56fb27efddd5d7a7e8235f2e43483047f2",
+  "checkpoint_based_on_head_sha": "9d6f2f7c3355095477fee8dff8472c6b0bb35e00",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "Read CONTINUE_HERE.md, locate the active branch through GitHub issue #2 if needed, refresh live PR/branch HEAD and CI, compare live HEAD with checkpoint_based_on_head_sha, inspect commits after the checkpoint when required, run or conceptually reproduce the repository-only handoff isolation drill, then continue ordered_next_actions without asking the user to restate persisted context.",
@@ -25,7 +25,7 @@
     "Model memory is a search lead, never Evidence, Fact or Judgment.",
     "Blind memory shards must seal before fresh web self-verification can begin.",
     "Historical not_found != false.",
-    "Raw blind-recall artifacts are immutable; schema-only corrections use explicit repair overlays.",
+    "Raw blind-recall artifacts are immutable; schema-only corrections use explicit typed repair overlays.",
     "Reality, Expectation/Judgment and later Outcome remain distinguishable.",
     "valid_time and known_time must not be collapsed.",
     "Comparability semantics are required before corroboration or conflict decisions.",
@@ -44,63 +44,63 @@
     "industry": "lithium-battery",
     "phase": "blind_memory_exhaustion",
     "search_visibility": "none",
-    "total_raw_leads": 576,
+    "total_raw_leads": 600,
     "sealed_shards": [],
     "shard_count": 14,
     "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension.",
     "next_research_actions": [
-      "Use deterministic compact per-shard index generation from typed/repaired blind JSONL; generated indices are replaceable derivatives, not new truth.",
-      "Continue batch2 on the four remaining batch1-only primary shards: UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
-      "Run batch3 only where novelty remains high and measure novelty decay explicitly.",
+      "Rebuild deterministic compact indices for all 14 primary shards from typed/repaired blind JSONL.",
+      "Use compact indices and coverage gaps to choose batch3 shards and explicitly classify novelty decay.",
+      "Do not seal any shard until three consecutive low-novelty batches plus negative-space review are satisfied.",
       "Only after an individual shard seals may high-capability fresh-web self-verification begin."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 194,
-    "observed_head_sha": "d850b51e8208dd5c015db6692fa2548a601a73ee",
-    "conclusion": "success; repository-only handoff isolation fidelity reached 1.0 on the 570-lead checkout",
-    "mypy_summary": "Success: no issues found in 55 source files on run #194.",
-    "pytest_summary": "125 passed on run #194, including repository-only fidelity=1.0 and stale-checkpoint detection.",
-    "ruff_summary": "62 findings on run #194; Ruff remains diagnostic-only during the Memory Campaign.",
-    "refresh_instruction": "Fetch live HEAD and newest CI before quoting current correctness because compact-index code, UP-HARDROCK batch2, the 576-lead calibration and this checkpoint are newer than run #194."
+    "last_observed_run": 214,
+    "observed_head_sha": "d9ef969ef58645512c712bc2e8cb7242dbcf4a8c",
+    "conclusion": "success on the last fully observed 576-lead head; the 600-lead all-primary-batch2 milestone is newer and requires live validation",
+    "mypy_summary": "Success: no issues found in 55 source files on run #214.",
+    "pytest_summary": "127 passed on run #214, including repository-only handoff reconstruction and compact-index persistence.",
+    "ruff_summary": "61 findings on run #214; Ruff remains diagnostic-only during the Memory Campaign.",
+    "refresh_instruction": "Fetch live HEAD and newest CI. Confirm that all four new batch2 files type-validate, the raw-derived total is 600, per-shard coverage agrees, handoff fidelity remains 1.0, and compact-index rebuild succeeds."
   },
   "workstreams": [
     {
       "workstream_id": "ci-correctness",
-      "status": "hard_gate_green_on_run_194_newer_commits_pending_refresh",
-      "summary": "Run #194 passed Mypy and 125 Pytest tests. New compact-index and 576-lead research/checkpoint commits require a live refresh before correctness is reported as current. A narrowly scoped Postgres arg-type Mypy override remains temporary.",
+      "status": "hard_gate_green_on_run_214_600_lead_milestone_pending_refresh",
+      "summary": "Run #214 passed Mypy and 127 Pytest tests. Four new blind batch2 files plus the 600-lead coverage/checkpoint require a new live hard-gate run.",
       "next_actions": [
-        "Fetch CI for the live head and confirm Mypy/Pytest correctness gates including compact-index persistence tests.",
-        "Keep the repository-only isolation drill as a hard correctness check.",
-        "Remove the temporary Postgres arg-type override when a safe patch-capable edit is available."
+        "Fetch CI for live HEAD and inspect exact Mypy/Pytest outcomes rather than continue-on-error step appearance.",
+        "If typed validation finds a structural recall defect, preserve raw and add a typed repair overlay.",
+        "Keep repository-only handoff isolation and compact-index reconstruction in the hard correctness gate."
       ],
       "blockers": []
     },
     {
       "workstream_id": "memory-atlas-lithium-battery",
-      "status": "active_high_novelty_unsealed",
-      "summary": "Blind lithium-battery Memory Atlas has 576 raw leads across 14 primary shards. Ten primary shards now have batch2; every tested batch2 remains 6/6 new useful leads. No shard has met saturation criteria and search visibility remains none.",
+      "status": "all_primary_shards_batch2_high_novelty_unsealed",
+      "summary": "Blind lithium-battery Memory Atlas has 600 raw leads across 14 primary shards. All 14 primary shards have now completed batch2 and every batch2 produced 6/6 new useful structural leads. No shard has met saturation criteria; search visibility remains none.",
       "next_actions": [
-        "Generate/use compact per-shard indices from typed/repaired candidates.",
-        "Continue batch2 on UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
+        "Rebuild compact per-shard indices from typed/repaired candidates.",
+        "Start batch3 selectively using compact-index coverage gaps and measure novelty decay instead of merely adding volume.",
         "Do not begin fresh web self-verification until an individual shard is sealed."
       ],
       "blockers": [
-        "No shard has yet shown three consecutive low-novelty batches."
+        "No shard has yet shown even one low-novelty batch, let alone three consecutive low-novelty batches."
       ]
     },
     {
       "workstream_id": "session-continuity",
-      "status": "repository_only_isolation_drill_validated_1_0",
-      "summary": "CI run #194 validated all ten deterministic repository-only handoff checks and the stale-checkpoint negative test. The drill previously caught an offsetting BAT-CELL/UP-CHEMICALS shard-count error that total-only validation would have missed. Dynamic lead counts were removed from tests so raw JSONL remains the derived count source.",
+      "status": "repository_only_isolation_drill_validated_1_0_and_now_tracking_600",
+      "summary": "Repository-only CI reconstruction previously reached fidelity 1.0 and detected a real offsetting per-shard coverage error. The handoff is now calibrated to the 600-lead all-primary-batch2 milestone and must be revalidated on live CI.",
       "next_actions": [
+        "Confirm raw-derived 600 total and all per-shard counts under the isolation drill.",
         "Continue treating live Git HEAD and CI as authoritative over checkpoint snapshots.",
-        "Keep devlog evidence of the 0.9 -> diagnosis -> 1.0 drill progression.",
-        "Add a fresh-model semantic reconstruction benchmark if a true agent-spawn capability becomes available."
+        "Keep the stale-checkpoint negative test and do not duplicate fast-changing totals inside tests."
       ],
       "blockers": [
-        "Current tools cannot spawn a genuinely independent language model with erased chat context; deterministic CI isolation is the strongest available test."
+        "Current tools cannot spawn a genuinely independent language model with erased chat context; deterministic repository/CI isolation remains the strongest available test."
       ]
     }
   ],
@@ -112,7 +112,6 @@
     "docs/development/session-handoff-protocol.md",
     "docs/development/handoff-isolation-drill.md",
     "docs/devlog/2026-08-21-session-handoff-isolation-drill.md",
-    "docs/devlog/2026-08-21-memory-campaign-part2.md",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "src/longcycle/application/session_handoff.py",
     "src/longcycle/application/handoff_drill.py",
@@ -127,16 +126,16 @@
     "docs/devlog/2026-08-21-memory-campaign-part2.md"
   ],
   "unresolved_questions": [
-    "Will the newest live CI remain green with compact-index persistence tests and the 576-lead checkpoint?",
-    "Which of the four remaining batch1-only primary shards first begins to show novelty decay?",
-    "Should generated shard-index JSON files be committed, generated on demand, or published as CI artifacts once the generation command is finalized?",
+    "Will live CI type-validate all four new batch2 files and reconstruct exactly 600 raw leads?",
+    "Which shards should enter batch3 first when ranked by importance, unresolved gap density and compact-index novelty rather than raw size?",
+    "Should generated shard-index JSON be committed, generated on demand, or published as CI artifacts?",
     "When should Ruff cleanup be promoted back from diagnostic debt to a hard gate?"
   ],
   "ordered_next_actions": [
-    "Fetch the newest CI for live HEAD and verify compact-index persistence tests plus the repository-only handoff drill.",
-    "Continue blind batch2 on UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING with search_visibility=none.",
-    "Use compact-index generation for subsequent novelty-decay prompts and decide the persistence policy for generated shard-index JSON.",
-    "Begin batch3 only for shards that remain high novelty; do not seal until the three-low-batch plus negative-space rule is satisfied.",
-    "Checkpoint again after the next coherent research batch or any change in CI/search phase."
+    "Fetch newest CI for live HEAD and validate the 600-lead all-primary-batch2 milestone, including handoff fidelity and compact-index reconstruction.",
+    "Repair any structural schema defects only through typed overlays without modifying blind raw recall.",
+    "Record a devlog milestone once CI confirms all 14 primary shards have valid batch2 coverage.",
+    "Rank batch3 candidates using compact-index gap density and importance, then run blind novelty-decay batches with search_visibility=none.",
+    "Checkpoint again after the first coherent batch3 experiment or any search-phase transition."
   ]
 }
