@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 32,
+  "continuity_sequence": 33,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "2bb5387447e82c37686a311d90fc77d133ef6e6e",
+  "checkpoint_based_on_head_sha": "1da88fd432dbf2d9acfa47ef3feaccfefefa10a4",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on main to resolve Issue #2, Draft PR #1 and branch design/industry-memory. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and only the bounded active-state files. Refresh live HEAD/CI before mutation.",
@@ -16,31 +16,34 @@
   },
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, using reusable primitives rather than lithium-specific hacks.",
-    "short_term_goal": "Prove the evidence-final transition on the first sealed shard. UP-CHEMICALS blind memory is frozen at 81 raw / 53 formal within the campaign checkpoint of 683 raw / 625 formal / 58 legacy. Run shard-scoped fresh discovery only for UP-CHEMICALS and turn replay-critical leads into exact primary-source targets without promoting search results to facts.",
-    "next_big_step": "Convert self-verification discovery into claim-scoped evidence tasks, archive original sources with valid-time and known-time semantics, then assemble the first no-lookahead Reality + Expectation + Outcome replay slice. The other 13 shards remain search-isolated until independently sealed.",
-    "local_optimization_stop_rule": "Do not reopen sealed blind memory because search finds better wording or later facts. Search is discovery, archived source evidence decides publishable truth, and not_found is not false. Stop broad search that does not improve exact source targeting or replay-critical evidence coverage.",
+    "short_term_goal": "Prove the evidence-final transition on the first sealed shard. UP-CHEMICALS blind memory remains frozen within the 683 raw / 625 formal / 58 legacy campaign checkpoint. Self-verification discovery run 001 has completed six bounded query families and produced three claim-scoped evidence tasks; the next work is to fetch/archive original documents and extract traceable fragments rather than continue broad search.",
+    "next_big_step": "Complete the first archived Kwinana/Kemerton/chemistry-expectation evidence trajectories with valid-time, known-time and expectation-horizon semantics, then assemble the first small no-lookahead Reality + Expectation + Outcome replay fixture and use it to test whether Longcycle's primitives generalize beyond lithium-specific prose.",
+    "local_optimization_stop_rule": "Do not reopen sealed blind memory, do not keep broad-searching after exact primary targets are known, and do not build a general dispatcher before repeated bounded tasks justify it. Search is discovery; archived source fragments decide evidence; not_found is not false.",
     "parallel_permanent_tracks": ["Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."]
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "UP-CHEMICALS passed the ten-lens seal review and became the first sealed shard. coverage and handoff now agree on the seal. A new isolated run manifest, UP-CHEMICALS-SV-001, was created with the sealed 53-lead compact digest and six replay-critical query families. The handoff boundary test was generalized from the obsolete assumption that sealed_shards must always be empty to the real invariant: seal state must match coverage and search visibility must match phase.",
-    "current_task": "Execute the first high-capability self-verification discovery pass for UP-CHEMICALS-SV-001. Search only the six declared query families, prioritize dated primary domains and historical documents, perform contradiction-oriented searches, identify repost/origin relationships, and persist discovery-v1.json outside blind/. Do not modify any sealed Memory Lead.",
-    "why_now": "The blind phase has produced its first legitimate sealed conversion shard. The highest-value next proof is no longer more recall; it is demonstrating that frozen memory can drive precise, auditable evidence discovery without hindsight contaminating the original research vintage.",
-    "done_when": "discovery-v1.json records each of the six query families with refined source targets, candidate URLs, primary-source candidates, contradiction searches, source-origin notes, unresolved questions and a next claim-scoped evidence task. Search outputs remain discovery-only, the blind atlas is unchanged, and hard CI is green.",
+    "last_completed_action": "Completed UP-CHEMICALS-SV-001 discovery across six query families and persisted discovery-v1.json. Primary source targeting now includes dated Kwinana and Kemerton guidance chains, contemporaneous hydroxide/high-nickel expectation plus a 2019 slowdown revision, project-state terminology, and a contract/inventory lag mechanism. Created three bounded claim-scoped evidence tasks: EVT-001 Kwinana trajectory, EVT-002 Kemerton trajectory and EXP-001 hydroxide expectation revision. coverage now explicitly scopes self-verification search to UP-CHEMICALS only.",
+    "current_task": "Validate the mixed-phase discovery/task checkpoint, then execute the first evidence tasks by fetching and archiving exact original-source vintages. Start with Kwinana and Kemerton because their dated primary disclosures can immediately test valid_time versus known_time versus expectation_horizon and project-state normalization. Do not create Facts or Judgments from discovery-only material.",
+    "why_now": "The high-capability discovery problem is no longer the bottleneck: exact primary targets are known. The next product-level proof is whether Longcycle can preserve original documents and extract claim-scoped evidence into replayable expectation-to-outcome trajectories without contaminating the sealed memory vintage.",
+    "done_when": "At least the Kwinana and Kemerton evidence tasks have archived original-source documents or clearly bounded archive blockers, extracted source-located milestone/guidance fragments, preserved publication/known time separately from forecast/valid time, and produced trajectory-ready evidence records. Hard CI remains green and the blind atlas is unchanged.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh CI after the mixed-phase boundary test and handoff sync. Then run fresh web discovery only for UP-CHEMICALS-SV-001 query families SVQ-001 through SVQ-006, favoring primary company/regulatory/government domains and dated historical documents, and persist discovery-v1.json without creating Facts or Judgments."
+    "next_atomic_action": "Require green hard CI for the discovery/task checkpoint. Then inspect the existing archive/evidence pipeline and use the smallest existing interface to persist the first Kwinana primary disclosure from EVT-001 with immutable source digest, locator and time semantics; avoid inventing a parallel archive format if the repository already has one."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / UP-CHEMICALS self-verification run 001",
+    "label": "Lithium-battery first benchmark / first archived evidence tasks",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/up-chemicals-seal-review-v1.json",
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json"
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-guidance-trajectory.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-guidance-trajectory.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EXP-001-hydroxide-expectation-revision.json"
     ],
     "core_exclusion_terms": ["lithium-battery","lithium","锂电","CATL","宁德时代","batch3","2015-2026","2026-08-21-gpt-5.6-sol"]
   },
@@ -51,41 +54,41 @@
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
-    "phase": "sealed_shard_self_verification",
+    "phase": "sealed_shard_evidence_task_execution",
     "search_visibility": "self_verification",
     "total_raw_leads": 683,
     "sealed_shards": ["UP-CHEMICALS"],
     "shard_count": 14,
-    "seal_rule": "UP-CHEMICALS passed three consecutive genuine low-novelty probes plus explicit negative-space and long-tail review. Its blind atlas is frozen; seal does not verify its claims. Other shards remain unsealed.",
+    "seal_rule": "UP-CHEMICALS is sealed and its blind atlas is frozen. Search is permitted only for its isolated self-verification/evidence path; other shards remain unsealed and search-isolated.",
     "next_research_actions": [
-      "Use fresh search only for the isolated UP-CHEMICALS-SV-001 run and only as discovery.",
-      "Execute the six declared query families with primary-domain, reverse-query and citation-origin checks.",
-      "Persist discovery outputs outside blind/ and never rewrite sealed Memory Leads.",
-      "Convert high-value unresolved discoveries into claim-scoped evidence tasks and archive original sources before any Fact/Judgment promotion.",
-      "Keep fresh search forbidden for the other 13 unsealed shards."
+      "Require green hard CI for the discovery/task checkpoint.",
+      "Use the existing archive/evidence interfaces to fetch and persist exact primary source documents for EVT-001 and EVT-002.",
+      "Extract claim-scoped evidence fragments with known_time, valid_time and expectation_horizon kept separate.",
+      "Execute EXP-001 after the project trajectories establish the evidence representation pattern.",
+      "Do not mutate sealed blind Memory Leads and keep search forbidden for all other shards."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 522,
-    "observed_head_sha": "0d682ba669c13c123fecc43f0b767e4826aab2e6",
-    "conclusion": "Run #522 reached green Mypy, Pytest, compact-index build and memory-history audit after replacing the obsolete no-sealed-shards test assumption. The subsequent run-manifest, generalized mixed-phase boundary test and this handoff transition require a fresh live CI check before treating snapshot status as authoritative.",
-    "mypy_summary": "Run #522 hard gate passed before the latest transition commits.",
-    "pytest_summary": "Run #522 hard gate passed after the first seal boundary fix.",
+    "last_observed_run": 538,
+    "observed_head_sha": "1da88fd432dbf2d9acfa47ef3feaccfefefa10a4",
+    "conclusion": "Run #538 was queued at the three-task checkpoint when this handoff was written. Earlier run #527 correctly exposed a coverage/handoff search-visibility mismatch; coverage was then changed to self_verification with an explicit allowed_shards=[UP-CHEMICALS] scope. Refresh #538 before evidence mutation.",
+    "mypy_summary": "Previous hard gate passed; latest run must be refreshed.",
+    "pytest_summary": "Run #527 failed only on the now-fixed coverage/handoff search_visibility mismatch; latest run must confirm the fix.",
     "ruff_summary": "Ruff remains diagnostic-only during the campaign.",
-    "refresh_instruction": "Refresh latest CI and require Mypy, Pytest, compact-index build and memory-history audit to remain green in the shard-scoped self-verification phase."
+    "refresh_instruction": "Require Mypy, Pytest, compact-index build and memory-history audit to be green before the first archive/evidence mutation."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "first_sealed_shard_self_verification_active",
-      "summary": "UP-CHEMICALS is sealed and its blind atlas is frozen. Self-verification run 001 is the only search-enabled scope; the next proof is to produce exact discovery targets and bounded evidence tasks without contaminating memory or unsealed shards.",
+      "status": "first_evidence_tasks_ready",
+      "summary": "The first sealed shard has crossed from blind memory into bounded discovery and now into three explicit evidence tasks. The main path is to archive originals and prove replay time semantics, not to grow lead count or build orchestration infrastructure.",
       "next_actions": [
-        "Refresh hard CI for the mixed-phase transition.",
-        "Execute SVQ-001 through SVQ-006 using fresh search and primary-domain checks.",
-        "Persist discovery-v1.json and create the first claim-scoped evidence tasks."
+        "Refresh hard CI for the discovery/task checkpoint.",
+        "Execute EVT-001 and EVT-002 using the existing archive/evidence path.",
+        "Use the resulting archived fragments to define the first trajectory/replay fixture before broadening evidence work."
       ],
       "blockers": []
     }
@@ -97,20 +100,20 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/up-chemicals-seal-review-v1.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-guidance-trajectory.json"
   ],
   "deep_reference_paths": [],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Which primary historical documents best reconstruct Kwinana and Kemerton expectation-to-outcome trajectories without hindsight?",
-    "Can the 2017-2020 hydroxide-premium/high-nickel expectation be tied to dated original producer or cathode-company materials rather than later retrospectives?",
-    "Which discovery families are sufficiently precise to hand off as low-cost claim-scoped evidence tasks after the high-capability pass?"
+    "What is the smallest existing archive/evidence persistence path that can store these historical web/SEC documents without creating a benchmark-specific side format?",
+    "What exact data shape should represent an expectation revision trajectory before the first replay fixture is declared accepted?",
+    "Which low-cost bounded evidence execution steps can be delegated only after the first manual task proves the interface?"
   ],
   "ordered_next_actions": [
-    "Refresh hard CI for the mixed self-verification phase.",
-    "Run the six UP-CHEMICALS-SV-001 search families with primary and contradiction checks.",
-    "Persist discovery-v1.json outside blind/.",
-    "Create claim-scoped evidence tasks for exact original-source archive work; do not modify sealed memory."
+    "Refresh hard CI at the discovery/task checkpoint.",
+    "Inspect and reuse the existing archive/evidence persistence interface.",
+    "Archive and extract EVT-001 Kwinana, then EVT-002 Kemerton, preserving temporal semantics.",
+    "Build the first small replay fixture from archived evidence before adding more evidence tasks or orchestration."
   ]
 }
