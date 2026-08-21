@@ -1,0 +1,64 @@
+{
+  "artifact": "negative-space-gap-matrix-v5",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "supersedes_for_next_probe_decision": "analysis/negative-space-gap-matrix-v4.json",
+  "purpose": "Re-rank after UP-CHEMICALS reaches two independent low-novelty observations and determine whether a third distinct lens is justified before seal review.",
+  "fresh_search_used": false,
+  "neighbor_raw_outputs_used_for_ranking": false,
+  "campaign_state": {
+    "raw_leads": 678,
+    "formal_typed_leads": 620,
+    "legacy_experimental_raw_leads": 58,
+    "sealed_shards": [],
+    "qualifying_low_novelty_streaks": {"UP-CHEMICALS": 2}
+  },
+  "completed_probe": {
+    "shard_id": "UP-CHEMICALS",
+    "pass_id": "ordinary-gap-batch5-v6",
+    "target_gap": "failure_dead_end_reversible_project_state_and_expectation_revision",
+    "new_category": 0,
+    "useful_refinement": 1,
+    "duplicate": 4,
+    "low_novelty": true,
+    "consecutive_low_novelty_batches": 2,
+    "only_refinement": "post-first-product converter lines can reverse into low-utilization/idle/care-and-maintenance and later restart, so project-state validity must be time-bounded rather than monotonic",
+    "duplicate_dimensions": [
+      "overseas Kwinana/Kemerton ramp and qualification failure",
+      "high-nickel/hydroxide-premium expectation revision",
+      "failed or low-utilization regional converter projects",
+      "feed-constrained nameplate overcapacity"
+    ]
+  },
+  "cross_shard_recheck": {
+    "UP-HARDROCK": "hold; last v6 probe still materially high novelty",
+    "DOWN-NEV": "hold; last v6 probe still materially high novelty",
+    "BAT-CELL": "hold; compact already covers the battery production-to-installation bridge exposed downstream",
+    "MID-LFP": "hold; chemistry bridge is represented and no new replay residual currently demands reopening",
+    "MID-TERNARY": "hold; chemistry bridge is represented and no new replay residual currently demands reopening",
+    "UP-CHEMICALS": "continue once more only because two distinct lenses were low novelty and a third independent lens can test the remaining pricing/contract/inventory/metric negative space before formal seal review"
+  },
+  "next_probe": {
+    "shard_id": "UP-CHEMICALS",
+    "pass_id": "ordinary-gap-batch6-v6",
+    "target_gap": "pricing_contract_inventory_metric_semantics",
+    "prompt": "prompts/ordinary-gap-v6.md",
+    "batch_size_guidance": "3-5 candidates; fewer if recall exhausts",
+    "independence_from_prior_probes": "Do not revisit converter commissioning/qualification as the main target and do not revisit failure/dead-end project states. Audit only whether price basis, contract timing/ownership, inventory layers and material-balance metrics still contain a first-order replay gap.",
+    "likely_already_covered_dimensions_to_treat_as_duplicates_if_reactivated": [
+      "industrial-grade versus battery-grade and carbonate versus hydroxide price/product semantics",
+      "spot versus long-term/export/futures price bases",
+      "self-owned/offtake/spot feedstock economics and tolling ownership",
+      "raw-material/WIP/mother-liquor/finished-product inventory layers",
+      "feed-route material intensity and recovery differences"
+    ],
+    "classification_rule": "Do not protect streak=2. Any materially new first-order category resets the streak to zero. A useful refinement may remain low novelty only if it narrows an existing category rather than opening a missing replay dimension.",
+    "after_probe": "If low novelty, streak may reach three, but do not seal. Create a separate explicit negative-space review artifact covering all gap lenses and only then decide seal eligibility. If not low novelty, reset and re-rank."
+  },
+  "seal_state": {
+    "UP-CHEMICALS": {
+      "consecutive_low_novelty_batches": 2,
+      "negative_space_review_complete": false,
+      "seal_eligible": false
+    }
+  }
+}
