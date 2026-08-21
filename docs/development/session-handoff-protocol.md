@@ -1,242 +1,184 @@
-# Longcycle Session Handoff Protocol
+# Longcycle Session Handoff Protocol v2
 
-## 1. Why this exists
+## 1. 目标
 
-A development conversation can end because a chat window reaches its practical context limit. Longcycle must not depend on one conversation retaining all prior context.
-
-The continuity source of truth is therefore the repository, not chat memory.
-
-A fresh session must recover **two planes** before it acts:
-
-- **strategic plane** — what the user is fundamentally trying to build, what the first real benchmark must prove, what is merely a tool, and what larger phase comes after the current one;
-- **execution plane** — active branch / PR / CI state, current workstream, blockers, counters and exact next actions.
-
-Recovering execution state without strategic direction is an incomplete handoff. It creates an Agent that can resume the last screw being tightened while forgetting what ship is being built.
-
-This protocol preserves decisions and execution state. It does not attempt to preserve private model chain-of-thought. Durable rationale must be written as explicit, reviewable engineering reasoning.
-
-## 2. Five continuity layers
-
-### Layer 0 — Strategic compass
-
-`STRATEGIC_COMPASS.md`
-
-The cross-Agent steering layer. It records the end-state mission, lithium benchmark success criteria, means-vs-ends distinctions, anti-drift rules, major-phase direction and the Strategic Alignment Gate.
-
-It must not duplicate fast-changing counts or CI state.
-
-### Layer A — Constitution
-
-`docs/development/project-constitution.md`
-
-Slow-changing product intent and non-negotiable epistemic rules. It should contain important user directives, including exact quotes where wording matters. It changes only when the project direction actually changes.
-
-### Layer B — Live checkpoint
-
-`.longcycle/handoff/current.json`
-
-Fast-changing, machine-readable state. It contains active workstreams, campaign counters, CI snapshot, pending actions, forbidden shortcuts, future phase commitments and the minimal read set required to resume.
-
-The checkpoint is a **snapshot**, never proof of current repository state and never permission to override the strategic compass.
-
-### Layer C — Append-only rationale/history
-
-`docs/devlog/` and optional `.longcycle/handoff/history/` artifacts.
-
-Use this layer to record what changed, what was observed, why a decision changed and what remains unresolved. Do not rewrite history to make the current plan look inevitable.
-
-### Layer D — Bootstrap entry points
-
-`CONTINUE_HERE.md`, root `AGENTS.md`, and GitHub issue #2.
-
-These provide a stable rendezvous point for a new chat or coding agent.
-
-## 3. Fresh-session bootstrap algorithm
-
-A fresh session receiving a request such as “继续 Longcycle” must execute this order before making substantive changes:
+Longcycle 会经历很多聊天窗口、Agent、模型版本和行业 benchmark。连续性系统的目标不是让未来 Agent “记住所有过去”，而是让它始终准确恢复：
 
 ```text
-1. Use issue #2 / live GitHub to resolve the active PR and branch.
-2. Read STRATEGIC_COMPASS.md.
-3. Read docs/development/project-constitution.md.
-4. Read .longcycle/handoff/current.json.
-5. Read CONTINUE_HERE.md and this protocol.
-6. Fetch live HEAD and compare with checkpoint_based_on_head_sha.
-7. If they differ, inspect/reconcile intervening commits before trusting checkpoint counters or CI.
-8. Fetch the latest CI for the live HEAD / relevant PR merge result.
-9. Read only the checkpoint resume_read_set plus files required for the immediate task.
-10. Pass the Strategic Alignment Gate.
-11. Continue ordered_next_actions only if they still serve the strategic hierarchy.
+长期使命
++ 跨行业方法论
++ 当前中期目标
++ 当前短期目标 / 下一大步
++ 当前任务所需的局部 context
++ live 实现状态
 ```
 
-A fresh session must be able to explain not only “what is next?” but also “why is that next?” and “what larger step follows it?”.
+旧行业流水账、旧 devlog 和旧实验不属于默认记忆。
 
-## 4. Two authority planes
+## 2. 单一职责的五个状态层
 
-Do not use one precedence order for both strategy and implementation state.
+| 层 | 权威文件 | 保存什么 | 绝不保存什么 |
+| --- | --- | --- | --- |
+| Long-term mission | `STRATEGIC_COMPASS.md` | 最终使命、成功标准、防偏航 Gate | 行业、日期、任务、CI、计数 |
+| Method core | `METHODOLOGY_CORE.md` | 已采用的跨行业方法 | 单行业技巧、当前 Prompt、当前工具限制 |
+| Dynamic handoff | `.longcycle/handoff/current.json` | 中期/短期目标、next big step、active context、工作流、快照 | 长期使命和方法论的复制品 |
+| Active context | handoff 指向的当前目录/文件 | 当前行业、benchmark、campaign、数据和局部规则 | 其他旧行业的历史 |
+| History | Git + `docs/devlog/` | 决策过程、失败、旧状态、审计报告 | 默认启动上下文 |
 
-### Strategy / direction precedence
+**同一类信息只能有一个正常权威归属。** 其他文件引用它，不复制它。
+
+## 3. Fresh-session 最小算法
+
+```text
+1. issue #2 → resolve live PR / branch
+2. read STRATEGIC_COMPASS.md
+3. read METHODOLOGY_CORE.md
+4. read current.json
+5. refresh live HEAD / delta / CI
+6. load only current resume_read_set / active context needed by the task
+7. pass the four-question Alignment Gate
+8. execute ordered next actions
+```
+
+默认不读旧 devlog、旧 benchmark、整个 repository 或全部 raw data。
+
+`resume_read_set` 最多 8 个文件；正常目标应更少。
+
+## 4. Four-question Alignment Gate
+
+Agent 必须知道：
+
+1. 最终使命是什么；
+2. 当前中期目标是什么；
+3. 当前短期任务为什么推进中期目标；
+4. 完成后下一大步是什么。
+
+第一题来自 Compass；第 2–4 题来自 handoff。不要把动态答案写回 Compass。
+
+## 5. Core 有硬预算
+
+长期 Core 必须保持小而稳定：
+
+- Compass 有 byte / line CI budget；
+- Method Core 有 byte / line CI budget；
+- active-context exclusion terms 不得出现在两个 Core；
+- 加入一条长期原则时，应优先压缩、合并或替换旧表达，不能无限 append。
+
+如果核心越来越长到“Agent 需要总结核心才能使用”，说明机制失败。
+
+## 6. 经验如何跨行业传递
+
+正常路径只有这一条：
+
+```text
+行业事实 / 局部经验
+→ active context / devlog
+→ 在真实 benchmark 中被验证
+→ 判断是否跨行业成立
+→ 提炼成一句稳定方法
+→ METHODOLOGY_CORE.md
+```
+
+没有经过提炼的旧行业经验不进入下一行业的默认上下文。
+
+Method promotion 需要至少满足一项：
+
+1. 用户明确采用为长期方法；
+2. 多个真实 benchmark 支持；
+3. 单个 benchmark 暴露的是明显跨行业的基础认识论约束，并有可审计理由。
+
+单次实现方便、单个行业术语、某模型的临时能力和某工具限制不能自动升级为长期方法。
+
+## 7. Active context 必须可替换
+
+`current.json.active_context` 描述当前工作环境，并提供：
+
+- context id / kind / label；
+- root path；
+- 当前 campaign / coverage 路径（若适用）；
+- deep context paths；
+- `core_exclusion_terms`。
+
+切换行业或 benchmark 时，正常操作是**替换 active context**，不是把新行业继续追加到 Compass/Method Core/resume set。
+
+旧 context 留在 Git 中，需要时可追溯，但不再自动加载。
+
+## 8. Handoff 本身也不能变成牛角尖
+
+Handoff 的成功指标是：新 Agent 能以很小的 bootstrap context 正确恢复使命、方法、中短期目标和 live 状态，并安全继续工作。
+
+它不是独立产品。除非真实 fresh-session audit 发现阻塞性失真，否则连续性优化不能长期压过主项目。
+
+## 9. Live freshness 与战略权威分开
+
+战略：
 
 ```text
 new explicit user instruction
 > STRATEGIC_COMPASS.md
-> project constitution and durable research commitments
-> current handoff ordered plan
-> devlogs / old chat summaries
+> METHODOLOGY_CORE.md
+> handoff strategic horizon
+> deep references
 ```
 
-A local implementation convenience cannot silently rewrite the mission.
-
-### Implementation / freshness precedence
+实现事实：
 
 ```text
-live GitHub commit graph / HEAD / live CI
-> canonical or deterministic-derived repository artifacts
-> current handoff snapshot
-> curated research assessments
-> PR/README/devlog narrative
-> old chat summaries
+live Git commit graph / HEAD / CI
+> canonical & deterministic-derived artifacts
+> checkpoint snapshot
+> narrative
 ```
 
-A strategic document cannot claim CI is green; a live commit cannot by itself redefine product direction.
+checkpoint 记录 `checkpoint_based_on_head_sha`，并永久要求 live refresh；Git commit graph 决定顺序，不使用手工时间戳作为 provenance authority。
 
-## 5. Strategic Alignment Gate
+## 10. 新用户指令的稳定吸收
 
-Before a fresh session makes substantive changes, and again at major phase transitions or after a long locally focused batch, it must recover from repository evidence:
+如果用户给出新的重要方向：
 
-1. the Longcycle end-state mission;
-2. the first-principles success criterion for the lithium benchmark;
-3. the current phase's position between Memory Atlas and point-in-time Reality/Expectation/Outcome replay;
-4. why the immediate action advances that benchmark rather than only polishing a tool;
-5. whether skipping the action would block the main path;
-6. a more direct alternative, if one exists;
-7. the next larger strategic phase after the immediate work.
+1. 先记录到 `pending_user_directives`（如果不能在同一 coherent batch 内完成归属）；
+2. 判断它属于 mission、method、dynamic horizon 还是 active context；
+3. 只修改对应权威层；
+4. 完成后清空已吸收的 pending directive；
+5. 写 concise devlog 记录改变原因。
 
-If those answers are weak, do not blindly execute the TODO. Re-rank the work using `STRATEGIC_COMPASS.md`.
+不要把同一句用户要求复制到所有层。
 
-## 6. Local-optimum / drift rule
+## 11. Repository-only 自测
 
-A technically valid action is not automatically a strategically valid action.
+CI 的 handoff drill 必须能在不知道聊天历史的情况下：
 
-Strong drift signals include:
+- 从 active context 路径重建当前 campaign（若存在）；
+- 对拍 raw / coverage / checkpoint；
+- 检查 long-term cores 是否包含使命和方法；
+- 检查 active industry/context 词是否泄漏进 Core；
+- 检查 resume set 是否仍然有界；
+- 检查 strategic horizon 是否完整；
+- 人为构造 stale checkpoint 时必须能报错。
 
-- generic platform work running far ahead of needs exposed by the lithium benchmark;
-- Memory Lead volume becoming the objective instead of coverage → saturation → evidence;
-- endless ontology/schema refinement without a real source or replay requirement;
-- CI/lint/handoff refinement consuming the main research roadmap after correctness is already sufficient;
-- deep work on one actor/material that no longer improves whole-cycle replay;
-- historical recovery forgetting current source-first/archive-now collection;
-- lithium-specific implementation being mistaken for the final product.
+Repository-only fidelity 只证明可机械恢复的状态一致，不代表 curated research judgment 自动成为事实。
 
-When a drift signal appears, stop expanding the local task and write/recover the task-to-strategy chain before proceeding.
+## 12. Fresh-Agent 外部测试
 
-## 7. The self-reference and provenance rule
+内部 CI 不能证明新模型真正理解航向。重大 continuity 变更后可用一个完全新会话做 report-only audit：
 
-A committed checkpoint cannot truthfully contain the SHA of the commit that contains itself without a circular reference.
+- 不提供历史聊天；
+- 只给 repository 名和审计任务；
+- 要求它用 bootstrap 恢复使命、方法、中期、短期、next big step；
+- 故意测试它是否会加载无关旧行业或钻入局部最优；
+- 只允许新增审计报告，不允许修代码。
 
-Therefore `current.json` stores:
+报告回来后，由当前会话与 live repository 对拍。
 
-```text
-checkpoint_based_on_head_sha
-live_refresh_required = true
-provenance_ordering = git_commit_graph
-```
+## 13. 机制失效的典型信号
 
-`checkpoint_based_on_head_sha` is the repository HEAD inspected immediately **before** the checkpoint write. A new session must fetch the live HEAD and reconcile every commit after that SHA.
+- Core 每个行业都增加一章；
+- checkpoint 又开始复制 north star / invariants / methods；
+- resume set 超过预算并不断加入 devlog；
+- 新 Agent 必须知道很多旧行业细节才能继续新行业；
+- 不同文件对同一使命或方法有不同版本；
+- Agent 能说出当前 TODO，却不知道中期和下一大步；
+- Agent 为了“完整理解”先加载整个仓库；
+- handoff 优化本身连续占据主路线。
 
-Repository ordering is established by the Git commit graph, not by a manually entered checkpoint timestamp.
-
-## 8. State authority classes
-
-A fresh session must distinguish recovered state instead of presenting all repository text as equally authoritative:
-
-- **canonical / immutable** — Git commit graph, raw blind JSONL, archived original evidence, explicit user directives;
-- **deterministic-derived** — raw lead counts, typed validation/index output, machine-reconstructed coverage, live CI outcomes;
-- **curated research assessment** — novelty labels, gap severity, semantic importance, proposed bridge/satellite promotion;
-- **snapshot** — checkpoint CI observations and similar fast state, always refresh;
-- **narrative** — PR descriptions, README summaries and devlog prose.
-
-Never describe a curated assessment as mechanically proven merely because it is stored in JSON.
-
-## 9. Checkpoint update policy
-
-Update `.longcycle/handoff/current.json` after any meaningful change to project direction, active branch / PR, research phase, search visibility, campaign counts/seals, CI correctness, ordered next actions, blockers, forbidden actions or future phase commitments.
-
-For long repetitive generation, checkpoint after a coherent batch rather than every lead.
-
-The checkpoint `resume_read_set` must include `STRATEGIC_COMPASS.md`; context economy may remove detail, not the steering layer.
-
-## 10. Preserve wording that controls behavior
-
-When a user sentence materially constrains the project, preserve the exact quote in the compass/constitution/checkpoint rather than paraphrasing it away.
-
-Examples include:
-
-> “把整个行业相关的最关键和真实的历史保存下来，拉长时间去看，其实不用太多分析也能用简单常识分析出当下的风险与机遇”
-
-> “缺的是人站在当时的判断和预期。”
-
-> “聊天轮次多了以后就会被切断当前聊天对话框，必须开新的，设计套系统如何让新开聊天系统能实时跟上开发进度，保证原汁原味执行我们的计划和任务”
-
-> “大海航行靠舵手……永远不要偏离航向。”
-
-These are durable product/execution requirements, not decorative quotations.
-
-## 11. Phase-transition re-bootstrap
-
-The minimal read set is intentionally small during routine continuation. That must not erase decisions needed in later phases.
-
-Before crossing a major phase boundary, the active session must re-read `STRATEGIC_COMPASS.md`, the constitution and the relevant phase-specific research contracts.
-
-Durable commitments include:
-
-- blind memory exhaustion precedes fresh search;
-- after a shard seals, the high-capability model performs the first self-verification/search pass before lower-capability evidence agents are delegated work;
-- lower-capability agents follow explicit evidence/search-depth contracts and do not become free-form analysts;
-- current collection remains source-first/archive-now;
-- model-vintage upgrades create a new immutable Memory Atlas vintage and historical backfill diff rather than overwriting old recall;
-- bridge/satellite promotion depends on repeated independent triggers rather than a single shard tangent.
-
-## 12. Handoff must not smuggle model memory into evidence
-
-Session continuity does not weaken Longcycle’s epistemic boundaries.
-
-For the current lithium Memory Atlas campaign:
-
-- blind model memory remains unsourced search leads;
-- fresh web search remains forbidden until the relevant blind shard is sealed;
-- a handoff file cannot promote a Memory Lead into Evidence, Fact or Judgment;
-- historical `not_found != false` still applies;
-- raw model recall artifacts remain immutable; structural repair uses explicit overlays.
-
-## 13. Minimal-resume principle
-
-Do not reload the entire repository or hundreds of raw Memory Lead records into a fresh chat.
-
-Start with `STRATEGIC_COMPASS.md`, the constitution, the checkpoint `resume_read_set`, compact indices and current failure/output files. Expand only when necessary.
-
-## 14. Strategy change rule
-
-A subsequent Agent must not silently mutate the compass because a different architecture feels cleaner.
-
-A strategic change requires at least one of:
-
-1. a newer explicit user directive;
-2. a real benchmark result that falsifies an important assumption;
-3. strong new evidence that the route cannot achieve the stated mission.
-
-The change must be explicit in Git history/devlog, and affected constitution/checkpoint commitments must be updated. Local implementation friction is not sufficient evidence for a strategic pivot.
-
-## 15. Failure modes this protocol is designed to prevent
-
-- a fresh session resumes the exact TODO but forgets what product is being built;
-- stale chat summary says CI is green when current HEAD is red;
-- a fresh session starts web search before blind recall is sealed;
-- a new model treats old Memory Leads as verified history;
-- the user has to explain the project from scratch;
-- repeated broad recall replaces the planned novelty-decay process;
-- a later session silently changes a settled schema or research principle;
-- a chain of agents optimizes crawler/CI/schema/handoff while never reaching historical replay;
-- current.json becomes a manually curated story that disagrees with Git history.
-
-The remedy is: **strategic compass + live repository state + typed checkpoint + append-only rationale + explicit user directives.**
+出现这些信号时，优先做**归属修正和压缩**，而不是再加一份总结。
