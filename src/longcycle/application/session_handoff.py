@@ -97,6 +97,7 @@ class SessionHandoffCheckpoint(BaseModel):
         if len(workstream_ids) != len(set(workstream_ids)):
             raise ValueError("handoff workstream ids must be unique")
         required_paths = {
+            "STRATEGIC_COMPASS.md",
             "CONTINUE_HERE.md",
             "docs/development/project-constitution.md",
             "docs/development/session-handoff-protocol.md",
