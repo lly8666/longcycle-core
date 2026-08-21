@@ -85,6 +85,8 @@ async def _doctor(settings: Settings, check_database: bool) -> dict[str, object]
         try:
             cursor = await connection.execute("SELECT current_database(), current_setting('server_version')")
             row = await cursor.fetchone()
+            if row is None:
+                raise RuntimeError("database doctor query returned no row")
             result["database"] = {"name": row[0], "version": row[1]}
         finally:
             await connection.close()
