@@ -1,0 +1,67 @@
+name: Longcycle bounded PostgreSQL alias repair
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  repair:
+    if: github.event.issue.title == '[longcycle-fix-postgres-fetch-alias-v1]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - name: Apply exact bounded alias repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          path=Path('src/longcycle/adapters/storage/postgres.py')
+          text=path.read_text(encoding='utf-8')
+          alias_decl='evidence.document_fetches fetch'
+          alias_use='fetch.'
+          if text.count(alias_decl) != 2:
+              raise SystemExit(f'unexpected document_fetches fetch count: {text.count(alias_decl)}')
+          if text.count(alias_use) != 14:
+              raise SystemExit(f'unexpected fetch. count: {text.count(alias_use)}')
+          text=text.replace(alias_decl, 'evidence.document_fetches document_fetch')
+          text=text.replace(alias_use, 'document_fetch.')
+          path.write_text(text,encoding='utf-8')
+          PY
+          python -m compileall -q src/longcycle/adapters/storage/postgres.py
+          git diff --check
+          git diff -- src/longcycle/adapters/storage/postgres.py
+
+      - name: Commit repair
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/longcycle/adapters/storage/postgres.py
+          git commit -m 'fix: avoid reserved fetch alias in Postgres repository'
+          git push origin HEAD:${ACTIVE_REF}
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Report repair
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          COMMIT_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --body "POSTGRES_FETCH_ALIAS_REPAIR_PUSHED commit=${COMMIT_SHA}"
