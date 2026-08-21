@@ -2,28 +2,29 @@
 
 ## 1. Why this subsystem exists
 
-Longcycle is expected to survive many chat windows, many Agents, many model vintages and many industry benchmarks. The continuity problem is therefore not ordinary note-taking. A future Agent must be able to recover the correct level of abstraction without replaying the entire project history.
+Longcycle is expected to survive many chat windows, many Agents, many model vintages and many industry benchmarks. The continuity problem is therefore not ordinary note-taking. A future Agent must recover the correct level of abstraction without replaying the entire project history, while a long-running Agent must repeatedly verify that local work still serves the product mission.
 
 The continuity subsystem has four jobs:
 
 1. preserve the founding mission with high semantic fidelity;
 2. preserve distilled cross-industry methodology without accumulating old-industry narrative;
-3. expose a live, typed continuation cursor for the current medium/short/atomic task hierarchy;
-4. repeatedly pull a long-running Agent back up the goal tree so local work does not become the mission by inertia.
+3. expose a live, typed continuation cursor for the current goal/workstream/task hierarchy;
+4. repeatedly pull a long-running Agent back up that hierarchy so local competence does not become strategic tunnel vision.
 
 The target is **minimum sufficient context**, not minimum text and not maximum memory.
 
 ## 2. Core invariants
 
-These invariants should remain stable even when the implementation changes:
+These invariants should remain stable even when implementation details change:
 
 - a zero-context Agent can discover the active development state from the default branch;
 - long-term mission and methodology are bounded, industry-agnostic and slow-changing;
-- current medium/short goals and the atomic resume cursor are dynamic and typed;
+- the Agent must independently synthesize mission meaning before using a calibration rubric;
+- calibration checks semantic coverage and common misreadings, not verbatim phrasing;
+- current medium/short goals, workstream roles and atomic resume state are dynamic and typed;
 - old industries/devlogs remain recoverable but are not default startup memory;
-- a new Agent must synthesize the mission in its own words before using the semantic calibration rubric;
-- calibration checks meaning, not verbatim phrasing;
-- every atomic task must have a visible parent chain to short-term, medium-term and terminal mission;
+- every active atomic task belongs to a declared workstream, and that workstream declares which parent goal it serves;
+- supporting work cannot silently redefine the main product path merely because it owns the current cursor;
 - after a coherent task boundary, the live handoff is synchronized so a new Agent can resume from one fixed transfer phrase;
 - stale checkpoint state fails closed into Git-delta reconciliation rather than guessing;
 - private chain-of-thought is never stored; only decisions, concise rationale, task hierarchy and reproducible constraints are persisted.
@@ -44,7 +45,7 @@ METHODOLOGY_CORE.md
     semantic calibration questions, not answers
         ↓
 .longcycle/handoff/current.json
-    medium goal / short goal / continuation cursor / live snapshot
+    medium goal / short goal / workstreams / continuation cursor / live snapshot
         ↓
 active_context
     current benchmark or task details
@@ -115,57 +116,96 @@ independent interpretation
 → aligned action
 ```
 
-## 6. The vertical alignment loop: anti-tunnel control
+The system therefore does not try to make every Agent reproduce identical wording. It tries to make different Agents converge on the same causal mission and decision boundaries.
+
+## 6. Goal tree and workstream graph
+
+A single linear hierarchy is insufficient once real work has multiple roles. The project may simultaneously have a research main path, a temporary correctness/continuity blocker and a permanent parallel collection track.
+
+The strategic horizon remains simple:
+
+```text
+terminal mission
+    ↓
+medium-term capability proof
+    ↓
+short-term main-path milestone
+```
+
+Execution attaches through typed workstreams:
+
+```text
+                         ┌─ main_path ─────────────→ short-term goal
+atomic task → workstream ├─ supporting_quality_gate → medium/short goal
+                         └─ parallel_track ─────────→ permanent parallel track
+```
+
+Each workstream declares:
+
+- `role`: `main_path`, `supporting_quality_gate` or `parallel_track`;
+- `parent_goal_ref`: the strategic-horizon goal it serves;
+- status, next actions and blockers.
+
+At least one `main_path` must exist. A `parallel_track` must attach to the permanent parallel track. A support workstream may temporarily own the continuation cursor, but this **does not make it the product main path**.
+
+This distinction was added after an artificial-ignorance drill exposed a real flaw: the active continuity task could not honestly be described as a direct child of the current research short-term goal. Making that relationship explicit is safer than forcing every task into a false hierarchy.
+
+## 7. The vertical alignment loop: anti-tunnel control
 
 A long-running Agent can drift even if its first bootstrap was perfect. The dangerous pattern is local competence plus strategic inertia: a subproblem remains interesting, so it keeps expanding after its marginal value has collapsed.
 
-Before opening a substantive subproblem, and again after completing each coherent subtask, the Agent runs this vertical check:
+Before opening a substantive subproblem, and again after completing each coherent subtask, the Agent reconstructs:
 
 ```text
 What atomic task am I doing?
         ↑
-Which workstream / short-term milestone does it advance?
+Which workstream owns it, and what is that workstream's role?
         ↑
-Which medium-term capability proof does that advance?
+Which short/medium/permanent parent goal does that workstream serve?
         ↑
-Which terminal product capability does that prove?
+How does that parent goal advance the terminal mission?
 ```
 
 Then ask:
 
-1. Is this still the highest-value unresolved action on the main path?
-2. Has its done/stop condition already been met?
+1. Is this still the highest-value unresolved action **for the declared workstream role**?
+2. Has the atomic task's `done_when` already been met?
 3. Am I optimizing a tool metric because it is easy to measure?
 4. Did new evidence make the parent task obsolete or lower priority?
-5. If I stop now, what parent-level progress is lost?
-6. Is there a more direct action toward evidence-backed replay or a real blocker?
+5. If I stop now, what parent-level progress is actually lost?
+6. If this is supporting work, has the blocker/quality condition already cleared so I should return to `main_path`?
+7. Is there a more direct action toward evidence-backed replay or a real blocker?
 
-If the parent chain cannot be explained, or marginal value no longer justifies work, stop/re-rank rather than deepen automatically.
+If the parent relation cannot be explained, or marginal value no longer justifies work, stop/re-rank rather than deepen automatically.
 
-## 7. Live continuation cursor
+## 8. Live continuation cursor
 
-`current.json` carries a small execution cursor underneath the strategic horizon. It should identify:
+`current.json` carries a small execution cursor underneath the workstream graph. It identifies:
 
 - parent workstream;
 - last completed coherent action;
 - current atomic task;
 - why this task is current now;
-- the explicit `done_when` condition;
-- next atomic action if the current task is already complete.
+- explicit `done_when` condition;
+- next atomic action if the current task is complete.
 
 This is intentionally smaller than a devlog and more precise than a roadmap.
 
-The cursor lets a new Agent answer three questions immediately:
+The cursor lets a new Agent answer immediately:
 
 ```text
 What just finished?
 What exactly should I do now?
-Why is that the correct next thing relative to the parent goals?
+Why is it correct now?
+What workstream role am I serving?
+What parent goal does that workstream serve?
+What condition ends this task?
+What happens immediately after?
 ```
 
-## 8. Micro-checkpoint lifecycle
+## 9. Micro-checkpoint lifecycle
 
-Real-time handoff means state is synchronized at **coherent task boundaries**, not after every keystroke.
+Real-time handoff means state is synchronized at **coherent task boundaries**, not after every keystroke and not only when the chat is about to end.
 
 Normal lifecycle:
 
@@ -191,13 +231,14 @@ Sync after a unit that changes what the next Agent should do, for example:
 - a research batch finishes;
 - a schema/protocol decision becomes adopted;
 - a blocker is resolved or discovered;
-- the next ordered action changes;
 - a test reveals a new remediation task;
+- `done_when` is reached and the cursor should return to a parent/main-path task;
+- a workstream changes role/status;
 - a phase or active context changes.
 
 Do not create checkpoint noise for cosmetic edits that do not affect continuation.
 
-## 9. Canonical fixed transfer phrase
+## 10. Canonical fixed transfer phrase
 
 The user should not need to compose a new handoff prompt each time.
 
@@ -209,22 +250,25 @@ The phrase deliberately contains no current task facts. Its meaning is stable be
 
 A fresh Agent receiving only this phrase should discover the default-branch bootstrap, resolve the active branch, assimilate/calibrate the mission, refresh live state and resume the cursor.
 
-## 10. Same-Agent operating cadence
+This is the key difference between a static project summary and a live handoff control plane: **the transfer phrase stays constant while the repository cursor moves.**
+
+## 11. Same-Agent operating cadence
 
 The same Agent does not need to reread the full Core after every tiny action. It does need recurring upward checks.
 
-Recommended triggers for the vertical alignment loop:
+Triggers for the vertical alignment loop:
 
 - before starting a new substantive subproblem;
 - after each coherent subtask;
 - after a surprising test/result changes assumptions;
 - before expanding scope beyond the current `done_when`;
 - whenever a local task has accumulated several commits without changing parent-level progress;
-- before writing a new abstraction into long-term architecture.
+- before promoting a local abstraction into long-term architecture;
+- before switching workstreams.
 
 If the Agent cannot reconstruct a mission facet during one of these checks, it runs the mission calibration loop again.
 
-## 11. Authority and freshness
+## 12. Authority and freshness
 
 Two separate planes remain essential.
 
@@ -232,8 +276,8 @@ Strategic authority:
 
 ```text
 new explicit user instruction
-> Strategy Core
-> Method Core
+> STRATEGIC_COMPASS.md
+> METHODOLOGY_CORE.md
 > dynamic strategic horizon
 > deep historical narrative
 ```
@@ -249,7 +293,7 @@ live Git graph / HEAD / CI
 
 Newer code does not silently outrank the mission. Older checkpoint state does not outrank live Git.
 
-## 12. Evolution and maintenance
+## 13. Evolution and maintenance
 
 Continuity itself will evolve. Changes should follow a versioned process rather than accumulate ad hoc rules.
 
@@ -265,40 +309,40 @@ For a material protocol change:
 8. record the failure and remediation in devlog;
 9. stop continuity work once safe continuation is restored and return to the product main path.
 
-Do not improve handoff indefinitely because continuity is technically interesting.
+A future Agent improving continuity should first read this document and `session-handoff-protocol.md`, then change the smallest layer that owns the observed failure. It should not add another overlapping "master summary" merely because modifying the existing model is harder.
 
-## 13. Test pyramid
+## 14. Test pyramid
 
 ### Level 1 — static contracts
 
-Check bounded Core size, no active-industry leakage, required paths, mission semantic contract shape, cursor completeness and resume-set bound.
+Check bounded Core size, no active-industry leakage, required paths, mission semantic contract shape, workstream-role validity, cursor completeness and resume-set bound.
 
 ### Level 2 — repository-only reconstruction
 
-Rebuild current state without chat history and verify deterministic campaign/context facts against raw/canonical artifacts.
+Rebuild current state without chat history and verify deterministic campaign/context facts and the continuation cursor against typed/canonical artifacts.
 
 ### Level 3 — artificial-ignorance drill
 
-Constrain an Agent to the bounded bootstrap and challenge it with drift traps, mission omissions and stale state.
+Constrain an Agent to the bounded bootstrap and challenge it with drift traps, mission omissions, false workstream hierarchy and stale state.
 
-### Level 4 — genuine fresh-Agent audit
+### Level 4 — genuine fresh-Agent transfer
 
-Use a separate fresh session from the repository name/fixed phrase only. Require report-only output so the audit cannot repair what it is measuring.
+Use a separate fresh session from the repository name/fixed phrase only. Require bounded/report-only output when auditing so the test cannot repair what it is measuring.
 
-## 14. Known limits and future improvements
+## 15. Known limits and future improvements
 
 Potential future work, only when real failures justify it:
 
 - a small CLI validator that checks handoff readiness and cursor completeness before transfer;
 - automated generation of a checkpoint skeleton from live Git/workstream state;
-- richer task-graph relationships when multiple parallel workstreams become genuinely active;
+- richer DAG relationships if multiple genuinely interdependent main-path workstreams emerge;
 - cross-model mission-fidelity comparison to detect model-specific misinterpretation;
 - automated stale-rendezvous checks for issue #2 and active PR lifecycle transitions;
 - explicit handoff migration tooling when `current.json` schema versions change.
 
 These are optional improvements, not reasons to delay the main product path.
 
-## 15. Failure signatures
+## 16. Failure signatures
 
 Continuity is drifting if any of the following becomes normal:
 
@@ -306,6 +350,7 @@ Continuity is drifting if any of the following becomes normal:
 - the Agent can quote slogans but cannot explain causal purpose;
 - the mission contract contains full canonical answers and encourages copying;
 - the same Agent works for many commits without rechecking parent goals;
+- supporting infrastructure becomes the apparent main product milestone merely because it owns the cursor;
 - `current.json` says what the phase is but not what atomic action resumes now;
 - checkpoints update only at chat termination instead of coherent work boundaries;
 - a fixed transfer phrase requires the user to append current task facts;
