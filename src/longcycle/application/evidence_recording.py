@@ -34,7 +34,6 @@ class _VisibleTextParser(HTMLParser):
 @dataclass(frozen=True, slots=True)
 class RecordedEvidenceResult:
     fragment: EvidenceFragment
-    was_new_fragment: bool
 
 
 class ArchivedEvidenceRecorder:
@@ -109,16 +108,8 @@ class ArchivedEvidenceRecorder:
             (fragment,),
             content,
         )
-
-        evidence_store = getattr(self.repository, "evidence", None)
-        was_new_fragment = not (
-            isinstance(evidence_store, dict) and fragment.id in evidence_store
-        )
         await self.repository.save_evidence((fragment,))
-        return RecordedEvidenceResult(
-            fragment=fragment,
-            was_new_fragment=was_new_fragment,
-        )
+        return RecordedEvidenceResult(fragment=fragment)
 
     @staticmethod
     def _normalized_visible_text(document: SourceDocument, content: bytes) -> str:
