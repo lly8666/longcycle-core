@@ -1,0 +1,84 @@
+{
+  "artifact": "negative-space-gap-matrix-v4",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "supersedes_for_next_probe_decision": "analysis/negative-space-gap-matrix-v3.json",
+  "purpose": "Re-rank after the first genuine low-novelty batch and decide whether to widen to BAT-CELL or independently test persistence of UP-CHEMICALS saturation.",
+  "fresh_search_used": false,
+  "neighbor_raw_outputs_used_for_ranking": false,
+  "campaign_state": {
+    "raw_leads": 673,
+    "formal_typed_leads": 615,
+    "legacy_experimental_raw_leads": 58,
+    "sealed_shards": [],
+    "qualifying_low_novelty_streaks": {
+      "UP-CHEMICALS": 1
+    },
+    "interpretation": "UP-CHEMICALS ordinary-gap-batch4-v6 is the first low-novelty observation: zero new categories, two useful refinements and three duplicates. It is not seal-eligible. The next decision must distinguish genuine saturation confirmation from mechanically opening another shard."
+  },
+  "completed_probe": {
+    "shard_id": "UP-CHEMICALS",
+    "pass_id": "ordinary-gap-batch4-v6",
+    "target_gap": "nameplate_conversion_to_battery_grade_realized_supply",
+    "new_category": 0,
+    "useful_refinement": 2,
+    "duplicate": 3,
+    "low_novelty": true,
+    "consecutive_low_novelty_batches": 1,
+    "refinements": [
+      "converter train-level ramp-guidance revisions as dated expectation vintages",
+      "feed-to-WIP-to-finished-delivery material balance as a point-in-time reconciliation chain"
+    ],
+    "duplicate_dimensions": [
+      "first product versus stable customer-qualified battery-grade output",
+      "captive/tolling/merchant feed and product ownership",
+      "carbonate/hydroxide and technical/battery-grade product-switch constraints"
+    ]
+  },
+  "cross_shard_recheck": {
+    "BAT-CELL": {
+      "decision": "hold_no_probe",
+      "reason": "The deterministic compact layer already separates battery production/sales/installed/export GWh, multi-stage cell inventory, formation/aging constraints, yield, customer nomination-to-SOP, dedicated/captive capacity and vehicle-installation timing. DOWN-NEV's new demand bridge therefore does not currently expose a first-order BAT-CELL negative-space cell."
+    },
+    "UP-HARDROCK": {
+      "decision": "hold_after_high_information_probe",
+      "reason": "Its v6 result remained high information at two new categories, two refinements and one duplicate; immediate return would be local drilling before more mature shards are tested for saturation."
+    },
+    "DOWN-NEV": {
+      "decision": "hold_after_high_information_probe",
+      "reason": "Its v6 result also remained high information and already made the battery-production/installation/material-intensity bridge explicit."
+    },
+    "UP-CHEMICALS": {
+      "decision": "run_one_independent_saturation_probe",
+      "reason": "It is the only shard with a qualifying low-novelty observation. A second probe is justified only because it changes lens: test failure/dead-end paths, reversible project states and expectation revisions rather than repeating the conversion-realization dimensions just audited. This measures whether low novelty persists across independent negative-space lenses."
+    }
+  },
+  "next_probe": {
+    "shard_id": "UP-CHEMICALS",
+    "pass_id": "ordinary-gap-batch5-v6",
+    "target_gap": "failure_dead_end_reversible_project_state_and_expectation_revision",
+    "prompt": "prompts/ordinary-gap-v6.md",
+    "batch_size_guidance": "3-5 candidates; fewer if recall exhausts",
+    "inputs_allowed": [
+      "current UP-CHEMICALS deterministic compact index including batch4-v6",
+      "this matrix-v4 decision",
+      "prompts/ordinary-gap-v6.md",
+      "fixed campaign horizon/schema/methodology"
+    ],
+    "inputs_forbidden": [
+      "fresh web/search results",
+      "neighboring shard raw leads",
+      "evidence archive material",
+      "later outcomes used to manufacture hindsight precision"
+    ],
+    "classification_rule": "Preserve duplicates. If any materially new first-order replay category appears, classify it new_category and reset consecutive_low_novelty_batches to zero. Do not protect the streak.",
+    "low_novelty_rule": "A second low-novelty result may advance UP-CHEMICALS to streak=2 only if it contains no materially new replay category and the remaining outputs are refinements or duplicates.",
+    "after_probe": "Re-rank again. Do not auto-run a third batch merely because streak=2; the third probe must use another independently justified negative-space lens before a seal review can even be considered."
+  },
+  "seal_state": {
+    "UP-CHEMICALS": {
+      "consecutive_low_novelty_batches": 1,
+      "negative_space_review_complete": false,
+      "seal_eligible": false
+    }
+  }
+}
