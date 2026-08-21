@@ -1,8 +1,8 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "pre2019_batch3_started_on_seven_priority_shards_unsealed",
-  "total_raw_leads_so_far": 642,
-  "total_formal_typed_leads_so_far": 584,
+  "blind_stage_status": "pre2019_batch3_started_on_eight_priority_shards_unsealed",
+  "total_raw_leads_so_far": 647,
+  "total_formal_typed_leads_so_far": 589,
   "legacy_experimental_raw_leads": {
     "total": 58,
     "files": [
@@ -23,7 +23,7 @@
   "shards": [
     {"shard_id":"UP-HARDROCK","lead_count":66,"formal_typed_lead_count":36,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"UP-BRINE","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"UP-CONCENTRATE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"},
+    {"shard_id":"UP-CONCENTRATE","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"UP-CHEMICALS","lead_count":66,"formal_typed_lead_count":38,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-LFP","lead_count":56,"formal_typed_lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-TERNARY","lead_count":42,"formal_typed_lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
@@ -37,7 +37,7 @@
     {"shard_id":"LOOP-RECYCLING","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty"}
   ],
   "saturation_experiment": {
-    "result": "all 14 primary shards completed ordinary batch2; seven high-value cycle-forming shards have now also completed a targeted 2015-2018 batch3 and still show no low-novelty batch",
+    "result": "all 14 primary shards completed ordinary batch2; eight high-value cycle-forming shards have now also completed a targeted 2015-2018 batch3 and still show no low-novelty batch",
     "ordinary_batch2": "14/14 primary shards remained high novelty",
     "pre2019_batch3": [
       {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
@@ -46,9 +46,10 @@
       {"shard_id":"MID-LFP","non_duplicate":"6/6"},
       {"shard_id":"MID-TERNARY","non_duplicate":"6/6"},
       {"shard_id":"BAT-CELL","non_duplicate":"6/6"},
-      {"shard_id":"UP-BRINE","non_duplicate":"6/6"}
+      {"shard_id":"UP-BRINE","non_duplicate":"6/6"},
+      {"shard_id":"UP-CONCENTRATE","non_duplicate":"5/5"}
     ],
-    "interpretation": "extending the benchmark to 2015 continues to expose material causal setup that a 2019-start atlas misses; do not seal these seven shards"
+    "interpretation": "extending the benchmark to 2015 continues to expose material causal setup that a 2019-start atlas misses; UP-BRINE and UP-CONCENTRATE both retained high marginal novelty, satisfying the prior conditional to test DOWN-ESS next"
   },
   "horizon_revision": {
     "primary_period": ["2015-01-01","2026-12-31"],
@@ -60,6 +61,7 @@
   "pre2019_new_dimensions": {
     "UP-HARDROCK": ["brownfield restart supply","pre-production offtake/project finance","top-of-cycle leverage and ramp overlap","DSO-to-concentrate product transition","mine-to-hydroxide linked capex expectations","contemporaneous future-supply pipeline forecasts"],
     "UP-BRINE": ["Atacama 2016-2018 contract reset","Olaroz original commercial ramp","Cauchari-Olaroz pre-2019 ownership/finance chain","Argentina pre-2019 project-pipeline expectation vintage","Qinghai pre-2019 salt-lake technology/capex wave","pre-downturn brine cost/supply forecast assumptions"],
+    "UP-CONCENTRATE": ["pre-production offtake/prepayment as project finance","Mt Marion early product-grade mix and plant-upgrade semantics","Wodgina pre-concentrator DSO transition","pre-2019 captive-versus-merchant concentrate market structure","2017-2018 project-by-project concentrate supply expectation vintage"],
     "UP-CHEMICALS": ["Kwinana investment vintage","Kemerton investment vintage","pre-2019 hydroxide-premium expectations","high-price lepidolite/converter capex","converter-side feedstock lockups","2017-2018 grade/spread semantics"],
     "DOWN-NEV": ["subsidy-fraud/data-quality reset","energy-density subsidy incentives","dual-credit planning constraint","pre-2019 A00 vehicle-mix intensity","2018 Tesla Shanghai expectation vintage","2018 subsidy-phase-down expectations"],
     "MID-LFP": ["commercial-vehicle first-wave LFP demand","policy-driven ternary substitution expectation","pre-2019 cathode capex reallocation","application-specific LFP counter-consensus","2017-2018 LFP pricing lag","survivor-bias actor gap"],
@@ -85,8 +87,9 @@
   "next_phase": {
     "goal": "continue selective batch3 novelty-decay measurement on the 2015-2026 horizon without turning horizon extension into exhaustive calendar backfill",
     "actions": [
-      "rebuild deterministic compact indices from formal v3+ leads, including the new UP-BRINE v5 pre-2019 leads",
-      "run targeted 2015-2018 batch3 next on UP-CONCENTRATE, then evaluate whether upstream novelty remains healthy enough to justify DOWN-ESS",
+      "rebuild deterministic compact indices from formal v3+ leads, including the new UP-BRINE and UP-CONCENTRATE v5 pre-2019 leads",
+      "run one targeted 2015-2018 batch3 on DOWN-ESS because both ranked upstream probes retained high marginal novelty",
+      "after DOWN-ESS, reassess whether LOOP-RECYCLING has enough marginal causal value to justify a targeted pass rather than advancing it by quota",
       "continue ordinary batch3 on selected shards and classify each output as new_category/useful_refinement/duplicate",
       "do not seal a shard until three consecutive low-novelty batches plus negative-space review are satisfied",
       "do not begin fresh web self-verification before the referenced shard seals",
