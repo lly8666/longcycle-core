@@ -6,10 +6,12 @@ import json
 from pathlib import Path
 from uuid import UUID
 
+from longcycle.adapters.parsers import PdfTextParser
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
 from longcycle.adapters.storage.s3 import S3ArchiveStore
 from longcycle.application.evidence_recording import ArchivedEvidenceRecorder
+from longcycle.application.parsing import ArtifactPipeline
 from longcycle.config import Settings
 from longcycle.ports.archive import ArchiveStore
 
@@ -25,7 +27,8 @@ def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
             "Persist one excerpt as EvidenceFragment only after proving it exists in an "
-            "already archived source version. No Fact or Judgment is created."
+            "already archived source version. PDFs are first converted into a versioned "
+            "page-text artifact. No Fact or Judgment is created."
         )
     )
     parser.add_argument("--source-id", type=UUID, required=True)
@@ -34,6 +37,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--external-id")
     parser.add_argument("--excerpt", required=True)
     parser.add_argument("--occurrence", type=int)
+    parser.add_argument(
+        "--page",
+        type=int,
+        help="one-based page number; required for application/pdf and forbidden otherwise",
+    )
     return parser
 
 
@@ -62,6 +70,8 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
         )
     if args.occurrence is not None and args.occurrence < 0:
         raise ValueError("--occurrence must be non-negative")
+    if args.page is not None and args.page < 1:
+        raise ValueError("--page must be one-based and positive")
 
     archive, bucket_name = _archive_store(settings)
     repository = PostgresResearchRepository(settings.database_url, bucket_name=bucket_name)
@@ -78,14 +88,47 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
                 "and use its canonical URL and content digest"
             )
 
-        result = await ArchivedEvidenceRecorder(
-            repository=repository,
-            archive=archive,
-        ).record_excerpt(
-            document=document,
-            excerpt=args.excerpt,
-            occurrence=args.occurrence,
-        )
+        recorder = ArchivedEvidenceRecorder(repository=repository, archive=archive)
+        media_type = document.content_type.split(";", 1)[0].strip().lower()
+        artifact_payload: dict[str, object] | None = None
+        if media_type == "application/pdf":
+            if args.page is None:
+                raise ValueError("--page is required when recording evidence from a PDF")
+            source_bytes = await archive.get(document.blob_key)
+            artifacts = await ArtifactPipeline(
+                repository=repository,
+                archive=archive,
+            ).parse(
+                document=document,
+                content=source_bytes,
+                parser=PdfTextParser(),
+            )
+            artifact = artifacts[0]
+            result = await recorder.record_pdf_page_excerpt(
+                document=document,
+                artifact=artifact,
+                page=args.page,
+                excerpt=args.excerpt,
+                occurrence=args.occurrence,
+            )
+            artifact_payload = {
+                "artifact_id": str(artifact.id),
+                "artifact_type": artifact.artifact_type,
+                "artifact_sha256": artifact.content_sha256,
+                "artifact_blob_key": artifact.blob_key,
+                "parser_name": artifact.producer_name,
+                "parser_version": artifact.producer_version,
+                "page": args.page,
+            }
+        else:
+            if args.page is not None:
+                raise ValueError("--page is only valid for application/pdf sources")
+            result = await recorder.record_excerpt(
+                document=document,
+                excerpt=args.excerpt,
+                occurrence=args.occurrence,
+            )
+
         fragment = result.fragment
         return {
             "document_id": str(document.id),
@@ -93,6 +136,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
             "content_sha256": document.content_sha256,
             "published_at": document.published_at.isoformat() if document.published_at else None,
             "first_known_at": document.first_known_at.isoformat(),
+            "artifact": artifact_payload,
             "evidence_fragment_id": str(fragment.id),
             "evidence_locator": fragment.locator,
             "fragment_sha256": fragment.fragment_sha256,
