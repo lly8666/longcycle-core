@@ -15,7 +15,10 @@ WEIGHTS = {
 
 
 def quality_score(components: QualityComponents) -> float:
-    weighted = sum(getattr(components, name) * weight for name, weight in WEIGHTS.items())
+    weighted = sum(
+        float(getattr(components, name)) * weight
+        for name, weight in WEIGHTS.items()
+    )
     return round(max(0.0, min(1.0, weighted - components.conflict_penalty)), 4)
 
 
