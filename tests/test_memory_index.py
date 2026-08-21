@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+import json
 import unittest
 from datetime import date
+from pathlib import Path
 
-from longcycle.application.memory_index import build_shard_memory_index
+from longcycle.application.memory_index import (
+    build_shard_memory_index,
+    build_shard_memory_index_from_directory,
+)
 from longcycle.application.memory_ingest import MemoryLeadCandidate
 from longcycle.domain.memory import (
     ClaimScope,
@@ -12,6 +17,17 @@ from longcycle.domain.memory import (
     MemoryLeadKind,
     PrecisionRisk,
 )
+
+ROOT = Path(__file__).resolve().parents[1]
+CAMPAIGN = (
+    ROOT
+    / "research_data"
+    / "memory"
+    / "lithium-battery"
+    / "2026-08-21-gpt-5.6-sol"
+)
+COVERAGE = CAMPAIGN / "analysis" / "coverage-index.json"
+BLIND = CAMPAIGN / "blind"
 
 
 def _lead(*, lead_id: str, shard_id: str = "MID-LFP") -> MemoryLeadCandidate:
@@ -66,6 +82,25 @@ class MemoryIndexTest(unittest.TestCase):
         self.assertNotIn("suggested_queries", first)
         self.assertNotIn("recalled_details", first)
         self.assertNotIn("why_search_may_miss_it", first)
+
+    def test_current_campaign_rebuilds_all_shard_indices_from_raw_plus_repairs(self) -> None:
+        coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
+        expected = {item["shard_id"]: item["lead_count"] for item in coverage["shards"]}
+
+        rebuilt: dict[str, int] = {}
+        for shard_id, expected_count in expected.items():
+            index = build_shard_memory_index_from_directory(BLIND / shard_id)
+            rebuilt[shard_id] = index.lead_count
+            self.assertEqual(index.lead_count, expected_count, shard_id)
+
+            dumped = index.model_dump(mode="json")
+            for entry in dumped["entries"]:
+                self.assertNotIn("suggested_queries", entry)
+                self.assertNotIn("disconfirmation_queries", entry)
+                self.assertNotIn("suggested_source_types", entry)
+
+        self.assertEqual(set(rebuilt), set(expected))
+        self.assertEqual(sum(rebuilt.values()), coverage["total_raw_leads_so_far"])
 
     def test_rejects_mixed_shards(self) -> None:
         with self.assertRaisesRegex(ValueError, "different shards"):
