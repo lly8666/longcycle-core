@@ -1,6 +1,6 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "up_chemicals_sealed_self_verification_ready",
+  "blind_stage_status": "up_chemicals_sealed_self_verification_active",
   "total_raw_leads_so_far": 683,
   "total_formal_typed_leads_so_far": 625,
   "legacy_experimental_raw_leads": {
@@ -11,7 +11,13 @@
     ],
     "policy": "preserved as immutable prompt-evolution experiments; excluded from strict typed compact indexes"
   },
-  "search_visibility": "none",
+  "search_visibility": "self_verification",
+  "search_scope": {
+    "allowed_shards": ["UP-CHEMICALS"],
+    "forbidden_unsealed_shards": true,
+    "active_run": "UP-CHEMICALS-SV-001",
+    "blind_mutation_from_search": "forbidden"
+  },
   "state_authority": {
     "raw_counts": "deterministic-derived from all blind JSONL and handoff drill",
     "formal_typed_counts": "deterministic-derived from v3+ blind JSONL after explicit repair overlays",
@@ -105,15 +111,15 @@
     "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
   ],
   "next_phase": {
-    "goal": "start a new UP-CHEMICALS self-verification run without mutating the sealed blind atlas",
+    "goal": "execute UP-CHEMICALS-SV-001 self-verification discovery without mutating the sealed blind atlas",
     "actions": [
-      "create a new self-verification run manifest scoped only to UP-CHEMICALS and record the sealed blind checkpoint it consumes",
-      "use high-capability fresh search to refine fuzzy Memory Leads into exact companies, projects, dated documents and historical names",
-      "prioritize claim-scoped primary sources and identify repost chains versus independent source clusters",
-      "write discovery outputs outside blind/ and never convert search snippets directly into Fact or Judgment",
-      "turn unresolved high-value claims into bounded evidence task packets and archive original sources before publication",
+      "execute the six declared query families using high-capability fresh search scoped only to UP-CHEMICALS",
+      "prioritize dated primary company, regulatory and government sources and run contradiction-oriented queries",
+      "persist discovery-v1.json outside blind/ with candidate source targets and unresolved questions, never Facts or Judgments",
+      "turn precise high-value discoveries into bounded claim-scoped evidence task packets",
+      "archive original source documents before any publishable assertion",
       "keep fresh search forbidden for every unsealed shard"
     ]
   },
-  "self_verification_policy": "fresh search is now permitted only in a new run scoped to sealed shard UP-CHEMICALS; the sealed blind atlas is immutable and all unsealed shards remain search_visibility=none"
+  "self_verification_policy": "fresh search is permitted only for active run UP-CHEMICALS-SV-001 on sealed shard UP-CHEMICALS; the sealed blind atlas is immutable and all 13 unsealed shards remain search_visibility=none"
 }
