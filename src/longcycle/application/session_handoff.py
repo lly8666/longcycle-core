@@ -19,6 +19,19 @@ class HandoffCIState(BaseModel):
     refresh_instruction: str
 
 
+class HandoffStrategicHorizon(BaseModel):
+    """The layer above immediate TODOs: where the current work must eventually lead."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    authority: Literal["STRATEGIC_COMPASS.md"]
+    current_big_goal: str = Field(min_length=1)
+    current_phase_purpose: str = Field(min_length=1)
+    next_big_step: str = Field(min_length=1)
+    parallel_permanent_track: str = Field(min_length=1)
+    local_optimization_stop_rule: str = Field(min_length=1)
+
+
 class HandoffMemoryCampaign(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -72,6 +85,7 @@ class SessionHandoffCheckpoint(BaseModel):
     bootstrap_instruction: str = Field(min_length=1)
     user_directives: tuple[str, ...]
     north_star: tuple[str, ...]
+    strategic_horizon: HandoffStrategicHorizon
     non_negotiable_invariants: tuple[str, ...]
     forbidden_shortcuts: tuple[str, ...]
     future_phase_commitments: tuple[str, ...]
