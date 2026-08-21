@@ -1,0 +1,38 @@
+{
+  "schema_version": "longcycle-claim-scoped-evidence-task/v1",
+  "task_id": "EXP-001-HYDROXIDE-EXPECTATION-REVISION",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "task_kind": "expectation_revision_chain",
+  "claim_family": "high nickel cathodes and lithium hydroxide demand expectation",
+  "question": "What did contemporaneous 2018-2020 sources expect about high-nickel cathode adoption and lithium-hydroxide demand, and how was that expectation revised when adoption progressed more slowly than expected?",
+  "why_replay_critical": "This is the Expectation side of the conversion cycle. A later history can easily make high-nickel-to-hydroxide demand look inevitable; the replay must preserve both the original bullish thesis and the contemporaneous slowdown/counter-scenario.",
+  "candidate_primary_or_origin_urls": [
+    "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm",
+    "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/livent03311910q.htm",
+    "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+    "https://www.sec.gov/Archives/edgar/data/909037/000114420419044002/tv529099_6k.htm",
+    "https://about.bnef.com/insights/clean-transport/will-the-real-lithium-demand-please-stand-up-challenging-the-1mt-by-2025-orthodoxy/"
+  ],
+  "required_time_semantics": {
+    "known_time": "filing/publication date of each expectation statement",
+    "valid_time": "market conditions or adoption period the statement describes",
+    "expectation_horizon": "future chemistry/lithium-demand period forecast by the source",
+    "revision_link": "newer expectation must point back to the older expectation it revises without deleting either"
+  },
+  "required_outputs": [
+    "archive Livent/FMC 2018 annual expectation, Livent 2019 Q1 slowdown revision and Livent 2019 annual expectation",
+    "archive the SQM 2019 scenario source and preserve its conservative/optimistic alternatives rather than selecting one ex post",
+    "archive the named BloombergNEF origin analysis if used to support an external forecast statement",
+    "extract the reason given at each vintage: high-nickel adoption, performance requirement, slower transition, carbonate substitution or market uncertainty",
+    "avoid numeric forecast claims unless the exact underlying dated table is archived",
+    "represent expectation disagreement/revision as first-class trajectory data"
+  ],
+  "forbidden": [
+    "rewrite 2018 optimism using knowledge of later LFP resurgence",
+    "call the hydroxide thesis an industry consensus merely because several later pages repeat it",
+    "treat BloombergNEF as primary evidence for Livent management belief or vice versa",
+    "interpret failure to locate a forecast table as contradiction"
+  ],
+  "done_when": "At least three dated expectation vintages and one explicit contemporaneous negative revision/counter-scenario are archived, with source clusters separated and no later outcome used to overwrite earlier belief states."
+}
