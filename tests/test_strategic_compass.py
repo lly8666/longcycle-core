@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+BOOTSTRAP = ROOT / "FRESH_AGENT_BOOTSTRAP.md"
 COMPASS = ROOT / "STRATEGIC_COMPASS.md"
 METHODS = ROOT / "METHODOLOGY_CORE.md"
 CONTINUE = ROOT / "CONTINUE_HERE.md"
@@ -13,6 +14,26 @@ HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
 
 
 class StrategicCompassContractTest(unittest.TestCase):
+    def test_default_branch_bootstrap_redirects_before_state_inference(self) -> None:
+        text = BOOTSTRAP.read_text(encoding="utf-8")
+
+        for fragment in (
+            "do not assume the default `main` branch is the active development state",
+            "issue **#2",
+            "active PR / development branch",
+            "CONTINUE_HERE.md",
+            "resolved active development branch",
+        ):
+            self.assertIn(fragment, text)
+
+        for forbidden in (
+            "600",
+            "batch3",
+            "lithium-battery",
+            "design/industry-memory",
+        ):
+            self.assertNotIn(forbidden, text)
+
     def test_compass_is_bounded_but_high_fidelity(self) -> None:
         text = COMPASS.read_text(encoding="utf-8")
         raw = COMPASS.read_bytes()
