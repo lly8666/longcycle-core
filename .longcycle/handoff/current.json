@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v3",
-  "continuity_sequence": 12,
+  "continuity_sequence": 13,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "4460560dbff52a92bb43ae3754ba1ef6125c4510",
+  "checkpoint_based_on_head_sha": "93153df5c0bf42911d5426122ef70b3b8a810b95",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve the active branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
@@ -25,10 +25,10 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "session-continuity",
-    "last_completed_action": "Implemented continuity v3: think-first mission assimilation, semantic calibration contract, Vertical Alignment Loop, typed continuation cursor, fixed zero-context transfer phrase, protocol/architecture documentation, and repository regression contracts.",
+    "last_completed_action": "Implemented continuity v3 and added typed workstream-to-parent-goal roles after the anti-tunnel drill exposed that support work must not be falsely presented as direct short-term research work.",
     "current_task": "Validate continuity v3 with repository-only checks, live CI, and an artificial-ignorance anti-tunnel drill before asking for another genuine fresh-Agent transfer test.",
-    "why_now": "The user asked for a system that makes new Agents actively understand and self-correct the mission, gives long-running Agents repeated parent-goal checks, and lets a fixed phrase resume the exact current task. These semantics should be validated before returning to the research main path.",
-    "done_when": "Repository-only reconstruction and hard CI pass, and an artificial-ignorance drill shows that a bounded Agent can independently reconstruct then calibrate mission semantics, recover medium/short/current task hierarchy, reject tunnel-vision traps, and resume from the fixed phrase/cursor without old devlogs or old industries.",
+    "why_now": "The user asked for a system that makes new Agents actively understand and self-correct the mission, gives long-running Agents repeated parent-goal checks, and lets a fixed phrase resume the exact current task. The continuity workstream is explicitly a supporting quality gate for the medium-term end-to-end proof, not the research main path itself.",
+    "done_when": "Repository-only reconstruction and hard CI pass, and an artificial-ignorance drill shows that a bounded Agent can independently reconstruct then calibrate mission semantics, distinguish main-path from supporting workstreams, recover medium/short/current task hierarchy, reject tunnel-vision traps, and resume from the fixed phrase/cursor without old devlogs or old industries.",
     "next_atomic_action": "If internal validation passes, perform one genuine fresh-Agent transfer audit using only the canonical fixed phrase; repair only material continuity failures, otherwise stop continuity work and return to selective blind batch3 novelty-decay research."
   },
   "active_context": {
@@ -78,13 +78,15 @@
     "mypy_summary": "Run #328: success, no issues in 55 source files.",
     "pytest_summary": "Run #328: 133 passed.",
     "ruff_summary": "Run #328 retained 61 diagnostic-only Ruff findings; lint remains non-blocking.",
-    "refresh_instruction": "Refresh live CI for continuity v3 schema, mission semantic contract, continuation cursor, protocol/docs and new regression tests."
+    "refresh_instruction": "Refresh live CI for continuity v3 schema, mission semantic contract, continuation cursor, workstream goal roles, protocol/docs and regression tests."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
+      "role": "main_path",
+      "parent_goal_ref": "strategic_horizon.short_term_goal",
       "status": "all_primary_batch2_complete_unsealed_batch3_next",
-      "summary": "Active benchmark remains in blind Memory Atlas saturation measurement. No shard is sealed and fresh historical search remains forbidden.",
+      "summary": "Active benchmark remains the research main path: blind Memory Atlas saturation measurement before any fresh historical search.",
       "next_actions": [
         "Return to compact-index driven batch3 novelty-decay work after continuity v3 receives one real fresh-Agent transfer validation.",
         "Keep active-industry details inside the active context package, not long-term core files."
@@ -95,11 +97,13 @@
     },
     {
       "workstream_id": "session-continuity",
+      "role": "supporting_quality_gate",
+      "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "v3_internal_validation_next",
-      "summary": "The latest genuine fresh-Agent audit passed cold-start discovery and mission fidelity. Continuity v3 now adds think-first semantic calibration, recurring Vertical Alignment anti-tunnel checks, a typed atomic continuation cursor, micro-checkpoint rules and one canonical zero-context transfer phrase.",
+      "summary": "Continuity is a temporary supporting quality gate for safe multi-Agent execution of the medium-term end-to-end product proof; it must stop once bounded reliable transfer is validated.",
       "next_actions": [
         "Run repository-only validation and live CI for v3.",
-        "Run one artificial-ignorance drill focused on think-then-calibrate, vertical parent-goal recovery and fixed-phrase cursor resumption.",
+        "Run one artificial-ignorance drill focused on think-then-calibrate, workstream role/parent-goal recovery and fixed-phrase cursor resumption.",
         "If internal validation passes, run one genuine fresh-Agent transfer test using only the canonical phrase.",
         "Repair only material failures; otherwise stop continuity work and return to the active research main path."
       ],
@@ -137,7 +141,7 @@
   ],
   "ordered_next_actions": [
     "Validate continuity v3 through repository-only drill and live CI.",
-    "Run an artificial-ignorance anti-tunnel drill against mission synthesis/calibration, parent-goal tracing and fixed-phrase cursor recovery.",
+    "Run an artificial-ignorance anti-tunnel drill against mission synthesis/calibration, workstream role/parent-goal tracing and fixed-phrase cursor recovery.",
     "If those pass, run one genuine fresh-Agent transfer test using only the canonical phrase.",
     "Repair only material continuity defects; otherwise stop handoff work and return to compact-index driven selective blind batch3 novelty-decay work with search_visibility=none."
   ]
