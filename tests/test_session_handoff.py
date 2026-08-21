@@ -40,13 +40,14 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertEqual(campaign.sealed_shards, ())
         self.assertEqual(campaign.search_visibility, "none")
 
-    def test_resume_set_contains_live_state_and_research_guardrails(self) -> None:
+    def test_resume_set_contains_strategy_live_state_and_research_guardrails(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
             HANDOFF.read_text(encoding="utf-8")
         )
         read_set = set(checkpoint.resume_read_set)
 
         required = {
+            "STRATEGIC_COMPASS.md",
             "CONTINUE_HERE.md",
             "AGENTS.md",
             ".longcycle/handoff/current.json",
