@@ -1,67 +1,57 @@
-# CONTINUE HERE — Longcycle Development Handoff
+# CONTINUE HERE — Longcycle Fresh-Session Bootstrap
 
-If this is a fresh chat/session and the user says “继续 Longcycle”, “继续处理”, or otherwise asks to resume this project, **do not ask them to reconstruct prior context**.
+Fresh session 不需要重读项目历史，也不要让用户重新解释。
 
-Use GitHub as the continuity source of truth — but recover **direction before task state**.
+## 只做这五步
 
-## Mandatory bootstrap
+1. 通过 GitHub issue #2 找到 live PR / branch。
+2. 先读 `STRATEGIC_COMPASS.md` 和 `METHODOLOGY_CORE.md`。
+3. 再读 `.longcycle/handoff/current.json`，获得**当前中期目标、短期目标、下一大步、active context 和 ordered actions**。
+4. 刷新 live HEAD / commit delta / CI；checkpoint 中的 CI 只是快照。
+5. 只加载 `resume_read_set` 中当前任务需要的文件，然后执行仍符合航向的 next action。
 
-1. Confirm repository: `lly8666/longcycle-core` and resolve the active PR/branch through GitHub issue #2 when needed.
-2. Read `STRATEGIC_COMPASS.md` **before reading the current TODO as an execution instruction**.
-3. Read `docs/development/project-constitution.md`.
-4. Read `.longcycle/handoff/current.json`.
-5. Read `docs/development/session-handoff-protocol.md`.
-6. Fetch the live state of the active PR/branch and compare HEAD with `checkpoint_based_on_head_sha`.
-7. If HEAD moved, inspect/reconcile the delta before trusting checkpoint counters or CI state.
-8. Fetch the latest CI for the live HEAD / active PR. CI recorded in the checkpoint is only a snapshot.
-9. Read only the checkpoint `resume_read_set` needed for the immediate work.
-10. Pass the **Strategic Alignment Gate** below before making substantive changes.
-11. Continue `ordered_next_actions` only if they still serve the strategic hierarchy and have not been superseded by a newer user instruction or repository change.
+**不要默认读取旧 devlog、旧行业包、全部 raw data 或整个仓库。** 需要追溯理由时，再按 `deep_reference_paths` 定向展开。
 
-## Strategic Alignment Gate
+## 四问 Alignment Gate
 
-Before substantive work, be able to state from repository evidence:
+开始重要工作前必须能回答：
 
-1. Longcycle's end-state mission.
-2. What the lithium benchmark must prove before generic platform expansion is justified.
-3. Where the current phase sits in the chain from Memory Atlas to Evidence to Reality/Expectation/Outcome replay.
-4. Why the immediate next action advances that benchmark rather than merely optimizing a tool.
-5. What the next **larger** strategic step is after the current batch.
+1. Longcycle 最终使命是什么？
+2. 当前中期大目标是什么？
+3. 当前短期任务为什么推进中期目标？
+4. 完成当前任务后，下一大步是什么？
 
-If these cannot be answered, do not blindly execute the TODO. Re-read `STRATEGIC_COMPASS.md` and re-rank the work.
+第 2–4 题来自 live handoff，不允许写进长期 Compass。
 
-## Current non-negotiable research guardrail
+## 两种权威不要混淆
 
-The lithium-battery Memory Atlas is in blind memory exhaustion. **Do not perform fresh web self-verification for an unsealed shard.** Model memory remains a search lead, never Evidence.
-
-## Two precedence planes
-
-Do not mix strategy authority with implementation freshness.
-
-### Direction / strategy
+**战略方向：**
 
 ```text
 new explicit user instruction
 > STRATEGIC_COMPASS.md
-> project constitution / durable commitments
-> current handoff ordered plan
-> devlogs / old chat summaries
+> METHODOLOGY_CORE.md
+> current handoff strategic horizon
+> deep references / old narrative
 ```
 
-### Live implementation state
+**实现新鲜度：**
 
 ```text
-live GitHub HEAD / commit graph / live CI
-> canonical or deterministic repository artifacts
-> current handoff checkpoint snapshot
-> PR/README/devlog narrative
-> old chat summaries
+live Git HEAD / CI / canonical artifacts
+> deterministic-derived state
+> checkpoint snapshot
+> narrative
 ```
 
-A technically fresh commit cannot silently redefine product direction; a strategic document cannot override live CI or current file contents about implementation facts.
+## Core 纪律
 
-## Why checkpoint HEAD will normally differ
+- `STRATEGIC_COMPASS.md`：只存使命和防偏航原则；
+- `METHODOLOGY_CORE.md`：只存跨行业方法；
+- `current.json`：只存中短期状态；
+- active context：只存当前行业/任务细节；
+- devlog：只存历史，不属于默认启动上下文。
 
-`current.json` cannot contain the SHA of the commit that contains itself without circularity. It records the HEAD inspected immediately before its write. A small delta is expected; inspect it rather than treating it as an error.
+具体行业经验只有在被提炼成跨行业方法后，才允许进入 Method Core。
 
-For the full protocol, read `docs/development/session-handoff-protocol.md`.
+如果任务是修改 handoff 机制本身，再读 `docs/development/session-handoff-protocol.md`。否则不要为了“理解得更完整”主动加载全部历史。
