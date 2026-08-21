@@ -1,0 +1,219 @@
+{
+  "schema_version": "longcycle-self-verification-discovery/v1",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "status": "discovery_complete_evidence_not_archived",
+  "epistemic_boundary": {
+    "sealed_blind_atlas_mutated": false,
+    "search_results_are_evidence": false,
+    "candidate_urls_are_evidence": false,
+    "facts_or_judgments_created": false,
+    "not_found_means_false": false,
+    "allowed_search_scope": ["UP-CHEMICALS"]
+  },
+  "search_progress": {
+    "query_family_count": 6,
+    "source_type_count": 4,
+    "source_types": [
+      "issuer_news_and_earnings_release",
+      "SEC_annual_quarterly_and_transaction_filings",
+      "issuer_investor_presentation_or_6K",
+      "named_industry_forecast_origin"
+    ],
+    "primary_domain_checked": true,
+    "reverse_query_done": true,
+    "citation_chase_required": true,
+    "citation_chase_done": true,
+    "verification_depth_target_satisfied_for_discovery": true,
+    "note": "The citation chase followed Livent's named BloombergNEF demand/chemistry framing to a dated BloombergNEF lithium-demand analysis. Quantitative claims that require the exact paywalled forecast remain evidence-task scope rather than being promoted here."
+  },
+  "families": [
+    {
+      "family_id": "SVQ-001-KWINANA-GUIDANCE",
+      "lead_ids": ["CH-I001", "CH-J001", "CH-K002"],
+      "refined_summary": "Primary Tianqi disclosures expose a dated expectation-revision chain suitable for point-in-time replay: in December 2018 Stage One commissioning was described as starting at year-end and Stage Two was expected to commission at end-2019; in 2019 Q1 Tianqi still expected Phase One to gradually come online in H2 2019; by 2021 the stated target had shifted to qualified product by end-2021 and nameplate ramp by Q4 2022. A later Tianqi retrospective records Phase One commercial production on 30 November 2022. These are discovery targets, not yet archived evidence.",
+      "candidate_urls": [
+        "https://en.tianqilithium.com/content/details17_41.html",
+        "https://en.tianqilithium.com/content/details17_259.html",
+        "https://en.tianqilithium.com/content/details17_725.html",
+        "https://en.tianqilithium.com/content/details17_700.html",
+        "https://en.tianqilithium.com/content/details17_1137.html"
+      ],
+      "possible_primary_sources": [
+        "Tianqi Lithium 18 December 2018 Kwinana commissioning release",
+        "Tianqi Lithium 2019 Q1 results release",
+        "Tianqi Lithium 1H 2021 results release",
+        "Tianqi Lithium July 2021 IGO transaction release",
+        "Tianqi later project retrospective for Outcome only"
+      ],
+      "source_origin_or_repost_relationships": [
+        "Tianqi's English pages details17_41 and details17_991 are duplicate/republication paths for the same 18 December 2018 release; do not count them as independent evidence.",
+        "2019 Q1, 2021 results and 2021 transaction releases are separate corporate disclosure vintages and should be archived separately.",
+        "The later retrospective is an Outcome source and must not be used to rewrite what was known in 2018-2019."
+      ],
+      "reverse_search_result": "The 2019 Q1 primary release itself provides the contemporaneous optimistic counterpoint to the later delay narrative by stating that Phase One would gradually come online in H2 2019.",
+      "supporting_evidence_test": "Archived dated primary documents must show successive management targets for commissioning, qualified product, ramp or commercial production, with publication/known time preserved separately from the project milestone being forecast.",
+      "contradicting_evidence_test": "A dated primary disclosure showing that stable qualified commercial output was achieved materially earlier than the remembered delay path, or that the cited target was never management guidance, would contradict or narrow the lead.",
+      "unresolved_questions": [
+        "Which exchange-filed Tianqi reports contain the same Kwinana guidance with formal filing timestamps?",
+        "What exact definition did Tianqi use for commissioning, qualified product, nameplate and commercial production at each vintage?"
+      ],
+      "next_evidence_task": "Archive the five dated Tianqi disclosure vintages, extract claim-scoped project-state/guidance fragments, and build a valid-time/known-time Kwinana expectation-to-outcome trajectory."
+    },
+    {
+      "family_id": "SVQ-002-KEMERTON-GUIDANCE",
+      "lead_ids": ["CH-I002", "CH-J001", "CH-K002"],
+      "refined_summary": "Albemarle primary disclosures provide a similarly useful Kemerton revision chain. January and May 2019 releases described staged commissioning during 2021 and said the project remained on target; a 2019 transaction filing included target commissioning dates for Train 1 and Train 2; by the 2020 annual filing construction was expected late 2021 followed by roughly six months of commissioning and qualification, with sales beginning in 2022. Later filings distinguish mechanical completion, commissioning, first product and customer qualification.",
+      "candidate_urls": [
+        "https://investors.albemarle.com/news-and-events/news/news-details/2019/ALBEMARLE-BEGINS-EARTHWORKS-AT-KEMERTON-PROJECT-REMAINS-ON-TARGET-IN-WESTERN-AUSTRALIA-EXPANSIONS-01-02-2019/default.aspx",
+        "https://www.albemarle.com/au/en/news/albemarle-continues-deliver-year-over-year-revenue-growth",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591319000078/exhibit1020630201910q.htm",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591321000147/a2q21earningsreleaseex991.htm",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591322000017/a4q21earningsreleaseex991.htm",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591322000101/a1q22earningsreleaseex991.htm"
+      ],
+      "possible_primary_sources": [
+        "Albemarle January 2019 earthworks/on-target release",
+        "Albemarle May 2019 Q1 release",
+        "2019 SEC-filed transaction schedule with Kemerton commissioning obligations",
+        "Albemarle 2020 Form 10-K",
+        "2021-2022 SEC-filed earnings releases"
+      ],
+      "source_origin_or_repost_relationships": [
+        "Company news releases and SEC-filed exhibits can repeat the same management disclosure; archive the most authoritative original filing/release and record duplicates as the same source cluster.",
+        "The transaction schedule is contract language rather than an earnings-release restatement and should be treated as a distinct primary source type."
+      ],
+      "reverse_search_result": "January and May 2019 Albemarle releases explicitly described the project as on target with staged commissioning in 2021, preserving the optimistic contemporaneous expectation before later qualification/sales timing moved outward.",
+      "supporting_evidence_test": "Primary dated disclosures must establish the planned commissioning/startup schedule and later changes, while distinguishing construction completion, commissioning, qualification, first product and sales.",
+      "contradicting_evidence_test": "Primary evidence that the initial guidance already anticipated the later 2022 sales/qualification timing, or that the apparent delay is only a terminology mismatch, would narrow the revision claim.",
+      "unresolved_questions": [
+        "How should the 2018 investor-presentation target be reconciled with the 2019 transaction schedule and later 50/60 kt capacity descriptions?",
+        "Which document first moved expected commercial sales from 2021 commissioning to 2022?"
+      ],
+      "next_evidence_task": "Archive the 2019 release, transaction filing, 2020 10-K and selected 2021-2022 filings; extract a state-normalized Kemerton expectation trajectory."
+    },
+    {
+      "family_id": "SVQ-003-HYDROXIDE-EXPECTATION-VINTAGE",
+      "lead_ids": ["CH-I003", "CH-K003", "CHC-013"],
+      "refined_summary": "The high-nickel-to-hydroxide thesis is visible in contemporaneous producer disclosures rather than only in hindsight. Livent's 2018 filing said growing high-nickel cathode use supported demand for battery-grade lithium hydroxide. Its 2019 Q1 filing then recorded an important revision: the high-nickel transition was slower than anticipated and some customers were using lower-cost carbonate or lower-performance hydroxide. Livent's 2019 annual filing still expected higher-nickel adoption to increase hydroxide need, while an SQM 2019 investor filing presented conservative and optimistic LiOH scenarios rather than one certain path. BloombergNEF's dated 2019 lithium-demand analysis also described lack of consensus over hydroxide/carbonate split and linked faster hydroxide growth to higher-nickel adoption.",
+      "candidate_urls": [
+        "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm",
+        "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/livent03311910q.htm",
+        "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+        "https://www.sec.gov/Archives/edgar/data/909037/000114420419044002/tv529099_6k.htm",
+        "https://about.bnef.com/insights/clean-transport/will-the-real-lithium-demand-please-stand-up-challenging-the-1mt-by-2025-orthodoxy/"
+      ],
+      "possible_primary_sources": [
+        "Livent/FMC 2018 annual filing",
+        "Livent 2019 Q1 Form 10-Q",
+        "Livent 2019 Form 10-K",
+        "SQM 2019 investor presentation filed on Form 6-K",
+        "BloombergNEF dated forecast-origin analysis for citation chase"
+      ],
+      "source_origin_or_repost_relationships": [
+        "Livent 2018 and 2019 annual filings repeat part of the corporate thesis but are separate expectation vintages.",
+        "The 2019 Q1 Livent filing is especially valuable because it records a contemporaneous negative revision rather than a later retrospective.",
+        "BloombergNEF is an external forecast-origin source, not independent primary evidence for Livent management belief; keep the two source clusters separate."
+      ],
+      "reverse_search_result": "Livent's 2019 Q1 filing explicitly says the transition to higher-nickel chemistries progressed more slowly than anticipated and that some customers used lower-cost carbonate, providing a direct contradiction/revision to an overly linear hydroxide-adoption story.",
+      "citation_chase_result": "Livent's 2019 annual filing named BloombergNEF forecasts; the bounded pass followed this to a dated BloombergNEF lithium-demand analysis that explicitly says hydroxide/carbonate split lacked market consensus and ties faster hydroxide growth to higher-nickel adoption. Exact paywalled forecast tables remain for archive/evidence work if a numeric claim is needed.",
+      "supporting_evidence_test": "Dated producer or cathode-chain materials must state the contemporaneous expected link between chemistry mix and lithium chemical form, including the reasoning and forecast horizon.",
+      "contradicting_evidence_test": "Dated contemporaneous disclosures showing delayed high-nickel adoption, carbonate substitution, LFP resilience or a materially different hydroxide demand path must be preserved alongside supporting expectations.",
+      "unresolved_questions": [
+        "Which contemporaneous cathode-maker or battery-maker primary source independently stated the LiOH requirement for high-nickel routes?",
+        "What exact forecast vintage should be used for a replay snapshot: 2018 year-end, 2019 Q1 revision, or both as a revision chain?"
+      ],
+      "next_evidence_task": "Archive Livent 2018 10-K, 2019 Q1 10-Q, 2019 10-K and SQM 2019 6-K; extract the expectation/revision chain without collapsing competing scenarios."
+    },
+    {
+      "family_id": "SVQ-004-RAMP-STATE-CHAIN",
+      "lead_ids": ["CH-J001", "CH-J003", "CH-K001"],
+      "refined_summary": "The discovery pass found strong primary examples proving that conversion capacity must be modeled as a state chain rather than a binary on/off field. Kemerton disclosures separately mention construction completion, commissioning, qualification, first product and later customer qualification. Kwinana disclosures separately use commissioning, qualified product, ramp to nameplate and commercial production. These terms should remain distinct until archived evidence establishes exact dates and definitions.",
+      "candidate_urls": [
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591322000017/a4q21earningsreleaseex991.htm",
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591322000101/a1q22earningsreleaseex991.htm",
+        "https://en.tianqilithium.com/content/details17_725.html",
+        "https://en.tianqilithium.com/content/details17_1137.html"
+      ],
+      "possible_primary_sources": [
+        "Albemarle 2020 annual filing and 2021-2022 SEC-filed earnings releases",
+        "Tianqi 2021 results and later project-status disclosure"
+      ],
+      "source_origin_or_repost_relationships": [
+        "Multiple Albemarle earnings releases are sequential status vintages, not independent corroboration of one date.",
+        "Later Tianqi retrospective is Outcome context only and cannot be substituted for contemporaneous guidance."
+      ],
+      "reverse_search_result": "A bounded reverse search did not identify a strong 2019-2020 primary counterexample where first product, battery-grade qualification and stable commercial output were explicitly simultaneous. This is an unresolved search outcome, not evidence that no such case exists.",
+      "supporting_evidence_test": "Archive documents must contain explicit milestone language and dates that can be normalized into project-state transitions without inferring equivalence between mechanical completion, first product, qualification and commercial production.",
+      "contradicting_evidence_test": "A primary document defining two of these milestones as operationally identical for a specific plant would require project-specific normalization rather than a universal state sequence.",
+      "unresolved_questions": [
+        "Which milestone should count as effective supply for a given claim: first saleable product, customer qualification, or stable run-rate?",
+        "Can customer qualification be observed directly from customer/producer sources or only inferred from sales?"
+      ],
+      "next_evidence_task": "Archive the milestone-bearing Kwinana/Kemerton documents and build a reusable project-state vocabulary with source-defined labels preserved."
+    },
+    {
+      "family_id": "SVQ-005-EFFECTIVE-SUPPLY-VS-NAMEPLATE",
+      "lead_ids": ["CH-G002", "CH-K004", "CH-K005", "CHC-015", "CHC-016"],
+      "refined_summary": "Primary discovery targets show several ways nominal chemical capacity can fail to become effective supply: Kemerton's construction was followed by commissioning and qualification; Kwinana's 2018-2019 expected startup moved to a 2021-2022 qualification/ramp path; Livent's 2019 annual filing paused hydroxide expansion amid oversupply and slower market transition. A reverse example also exists: FMC reported a China lithium-hydroxide capacity expansion completed on time and under budget, so delay must not be assumed for every project.",
+      "candidate_urls": [
+        "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+        "https://en.tianqilithium.com/content/details17_259.html",
+        "https://en.tianqilithium.com/content/details17_725.html",
+        "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+        "https://www.sec.gov/Archives/edgar/data/37785/000130817918000126/lfmc2018_defa14a.htm"
+      ],
+      "possible_primary_sources": [
+        "project owner filings/status releases",
+        "annual filings documenting paused/changed capex",
+        "FMC 2018 proxy statement for a reverse on-time expansion example"
+      ],
+      "source_origin_or_repost_relationships": [
+        "Project-owner guidance vintages must be grouped by project rather than treated as independent proof of a general mechanism.",
+        "The FMC China expansion is a reverse/counterexample and should not be mixed into Kwinana/Kemerton source clusters."
+      ],
+      "reverse_search_result": "FMC's 2018 filing states that a lithium-hydroxide production expansion in China was opened on time and under budget, showing that nameplate-to-output delay is a contingent project risk rather than a universal rule.",
+      "supporting_evidence_test": "For each project, archived evidence must show announced/nameplate capacity and the later state that constrained saleable battery-grade output: construction, feedstock, yield, qualification, utilization, economics or cancellation.",
+      "contradicting_evidence_test": "Projects with timely commissioning and qualified output near announced capacity must be retained as counterexamples to avoid a failure-only dataset.",
+      "unresolved_questions": [
+        "Which project-specific output measure best captures effective supply in 2019-2020?",
+        "How much of the apparent effective-supply gap is physical versus contractual/captive allocation?"
+      ],
+      "next_evidence_task": "Build a small project comparison packet with at least two delayed/qualified examples and one on-time counterexample, each tied to archived primary documents."
+    },
+    {
+      "family_id": "SVQ-006-CONTRACT-VINTAGE-MARGIN",
+      "lead_ids": ["CH-I005", "CH-L001", "CHC-011"],
+      "refined_summary": "A primary Livent 2019 filing gives a direct mechanism for why same-day spot spreads cannot be treated as converter margins: the company says most products are sold under long-term contracts that are often fixed or formula-priced and may not permit higher raw-material costs to be passed through immediately or at all. The same filing states inventory is carried on FIFO and separates raw materials, semi-finished goods and finished goods. This is a strong generic chemical-converter mechanism, but project/company-specific 2019-2020 lithium contract formulas still need claim-scoped evidence before any numeric margin reconstruction.",
+      "candidate_urls": [
+        "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+        "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000049/livent09301910q.htm"
+      ],
+      "possible_primary_sources": [
+        "Livent 2019 Form 10-K risk-factor and inventory-accounting disclosures",
+        "Livent 2019 quarterly filings for agreed customer pricing/payment timing",
+        "future task-specific offtake/supply agreements if an exact formula-margin claim is selected"
+      ],
+      "source_origin_or_repost_relationships": [
+        "The 2019 10-K contains both contract-lag and FIFO inventory disclosures in one issuer source cluster; these are complementary fragments, not independent corroboration.",
+        "Quarterly filings may repeat accounting policy and should be deduplicated by disclosure origin."
+      ],
+      "reverse_search_result": "The bounded 2019-2020 pass did not find a strong primary example showing near-immediate spot pass-through for a comparable lithium converter. Later index-linked/variable-pricing structures exist but should not be projected backward. Absence in this pass is unresolved, not false.",
+      "supporting_evidence_test": "A publishable margin-timing claim requires archived contract or issuer disclosure showing raw-material pricing basis/reset, product pricing basis/reset, inventory accounting/holding period and the period in which costs/revenue were recognized.",
+      "contradicting_evidence_test": "Evidence of fully contemporaneous index-linked purchase and sale pricing with negligible inventory lag would contradict the claimed vintage mismatch for that specific business/period.",
+      "unresolved_questions": [
+        "Can a 2019-2020 primary lithium offtake or feedstock agreement expose an exact pricing formula without relying on redacted commercial terms?",
+        "Which converter has sufficiently disclosed inventory and contract structure for a defensible cycle-margin replay?"
+      ],
+      "next_evidence_task": "Archive Livent 2019 10-K contract and inventory fragments first; separately search claim-scoped filed contracts for an exact lithium-specific reset formula before attempting numeric margin reconstruction."
+    }
+  ],
+  "cross_family_conclusions_for_task_routing_only": [
+    "Kwinana and Kemerton are high-value first replay anchors because multiple primary disclosure vintages can preserve Expectation revisions and later Outcome without hindsight substitution.",
+    "The hydroxide/high-nickel thesis should be stored as a revision chain, not a single consensus statement: 2018 optimism, 2019 slower-than-expected transition, and continuing longer-run hydroxide expectations coexist.",
+    "Project-state and contract-vintage semantics are now precise enough to define evidence tasks, but no discovery result is a publishable Fact or Judgment until original documents are fetched, archived and claim-scoped."
+  ],
+  "next_stage": "create_bounded_claim_scoped_evidence_tasks"
+}
