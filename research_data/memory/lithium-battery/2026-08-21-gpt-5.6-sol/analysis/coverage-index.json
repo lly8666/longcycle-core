@@ -1,6 +1,6 @@
 {
   "campaign": "2026-08-21-gpt-5.6-sol",
-  "blind_stage_status": "up_chemicals_low_novelty_streak_3_pending_negative_space_review",
+  "blind_stage_status": "up_chemicals_sealed_self_verification_ready",
   "total_raw_leads_so_far": 683,
   "total_formal_typed_leads_so_far": 625,
   "legacy_experimental_raw_leads": {
@@ -19,12 +19,12 @@
     "bridge_and_satellite_priority": "curated research assessment",
     "ci": "not stored here; refresh live GitHub Actions"
   },
-  "sealed_shards": [],
+  "sealed_shards": ["UP-CHEMICALS"],
   "shards": [
     {"shard_id":"UP-HARDROCK","lead_count":71,"formal_typed_lead_count":41,"self_gap_batches":4,"status":"high_novelty_ordinary_gap_v6_with_duplicate"},
     {"shard_id":"UP-BRINE","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"UP-CONCENTRATE","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
-    {"shard_id":"UP-CHEMICALS","lead_count":81,"formal_typed_lead_count":53,"self_gap_batches":6,"status":"low_novelty_ordinary_gap_v6_streak_3_pending_review"},
+    {"shard_id":"UP-CHEMICALS","lead_count":81,"formal_typed_lead_count":53,"self_gap_batches":6,"status":"sealed_after_streak_3_and_negative_space_review"},
     {"shard_id":"MID-LFP","lead_count":56,"formal_typed_lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-TERNARY","lead_count":42,"formal_typed_lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
     {"shard_id":"MID-ANODE","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
@@ -37,7 +37,7 @@
     {"shard_id":"LOOP-RECYCLING","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"}
   ],
   "saturation_experiment": {
-    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary probes have run on UP-HARDROCK, DOWN-NEV and UP-CHEMICALS. UP-CHEMICALS has now completed three independently targeted consecutive low-novelty probes: batch4 0 new / 2 refinement / 3 duplicate, batch5 0 new / 1 refinement / 4 duplicate, batch6 0 new / 1 refinement / 4 duplicate. This satisfies the novelty-streak prerequisite but does not seal the shard until a separate explicit negative-space review finds no material uncovered dimension",
+    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary probes then measured novelty decay. UP-CHEMICALS completed three independent consecutive low-novelty probes and passed a separate all-lens negative-space review, becoming the first legitimately sealed shard. Other shards remain unsealed and fresh search remains forbidden for them.",
     "ordinary_batch2": "14/14 primary shards remained high novelty",
     "pre2019_batch3": [
       {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
@@ -59,7 +59,15 @@
       {"shard_id":"UP-CHEMICALS","pass_id":"ordinary-gap-batch5-v6","new_category":0,"useful_refinement":1,"duplicate":4,"low_novelty":true,"consecutive_low_novelty_batches":2},
       {"shard_id":"UP-CHEMICALS","pass_id":"ordinary-gap-batch6-v6","new_category":0,"useful_refinement":1,"duplicate":4,"low_novelty":true,"consecutive_low_novelty_batches":3}
     ],
-    "interpretation": "UP-CHEMICALS now satisfies the three-low-novelty prerequisite across conversion-realization, failure/reversible-state and pricing/contract/inventory/metric lenses. Batch6 added only input-cost-versus-product-price contract-vintage timing as a refinement; grade/market price basis, inventory layers, tolling ownership and route/recovery metrics were duplicates. Do not seal from this streak alone: rebuild the deterministic compact and perform an explicit all-lens negative-space review first"
+    "seal_reviews": [
+      {
+        "shard_id": "UP-CHEMICALS",
+        "artifact": "analysis/up-chemicals-seal-review-v1.json",
+        "verdict": "sealed",
+        "reason": "three consecutive low-novelty probes plus explicit ten-lens review found no material first-order empty cell and all required long-tail categories were represented"
+      }
+    ],
+    "interpretation": "The first seal demonstrates that the campaign can stop based on measured information decay rather than arbitrary lead count. A sealed blind atlas is frozen as a historical research vintage; it is not evidence and its claims are not publishable until verified."
   },
   "horizon_revision": {
     "primary_period": ["2015-01-01","2026-12-31"],
@@ -97,15 +105,15 @@
     "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
   ],
   "next_phase": {
-    "goal": "perform explicit UP-CHEMICALS negative-space seal review after deterministic validation of the three-low-novelty checkpoint",
+    "goal": "start a new UP-CHEMICALS self-verification run without mutating the sealed blind atlas",
     "actions": [
-      "rebuild deterministic compact indices from all 625 formal v3+ leads and validate UP-CHEMICALS at 53 formal leads",
-      "audit UP-CHEMICALS explicitly across time, actor, project, metric, pricing/contract, technology, expectation, terminology, failure and cross-boundary gap lenses",
-      "treat deliberate non-first-order long-tail omissions as non-blocking only when the replay impact is documented; do not equate actor count with coverage",
-      "if any material first-order empty cell is found, do not seal and reset/re-rank as needed",
-      "only if all material cells are covered may UP-CHEMICALS seal; fresh self-verification/search then becomes allowed for that shard only while blind search remains forbidden for unsealed shards",
-      "defer full low-cost-Agent web orchestration until a sealed-shard evidence workload exists"
+      "create a new self-verification run manifest scoped only to UP-CHEMICALS and record the sealed blind checkpoint it consumes",
+      "use high-capability fresh search to refine fuzzy Memory Leads into exact companies, projects, dated documents and historical names",
+      "prioritize claim-scoped primary sources and identify repost chains versus independent source clusters",
+      "write discovery outputs outside blind/ and never convert search snippets directly into Fact or Judgment",
+      "turn unresolved high-value claims into bounded evidence task packets and archive original sources before publication",
+      "keep fresh search forbidden for every unsealed shard"
     ]
   },
-  "self_verification_policy": "fresh web search remains forbidden until the referenced shard is sealed"
+  "self_verification_policy": "fresh search is now permitted only in a new run scoped to sealed shard UP-CHEMICALS; the sealed blind atlas is immutable and all unsealed shards remain search_visibility=none"
 }
