@@ -1,0 +1,40 @@
+{
+  "schema_version": "longcycle-claim-scoped-evidence-task/v1",
+  "task_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "task_kind": "expectation_to_outcome_trajectory",
+  "claim_family": "Kemerton construction commissioning qualification sales guidance",
+  "question": "How did Albemarle's dated expectations for Kemerton construction, commissioning, qualification and sales change from the 2019 project launch through later startup disclosures?",
+  "why_replay_critical": "Kemerton is a clean case where construction/nameplate, commissioning, qualification and marketable supply were separated in primary disclosures. It can test whether Longcycle's capacity-state primitive works on a second company rather than only Kwinana.",
+  "candidate_primary_urls": [
+    "https://investors.albemarle.com/news-and-events/news/news-details/2019/ALBEMARLE-BEGINS-EARTHWORKS-AT-KEMERTON-PROJECT-REMAINS-ON-TARGET-IN-WESTERN-AUSTRALIA-EXPANSIONS-01-02-2019/default.aspx",
+    "https://www.albemarle.com/au/en/news/albemarle-continues-deliver-year-over-year-revenue-growth",
+    "https://www.sec.gov/Archives/edgar/data/915913/000091591319000078/exhibit1020630201910q.htm",
+    "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+    "https://www.sec.gov/Archives/edgar/data/915913/000091591321000147/a2q21earningsreleaseex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/915913/000091591322000017/a4q21earningsreleaseex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/915913/000091591322000101/a1q22earningsreleaseex991.htm"
+  ],
+  "required_time_semantics": {
+    "known_time": "publication or SEC filing timestamp",
+    "valid_time": "construction/commissioning/qualification/production period described",
+    "expectation_horizon": "future milestone targeted at that disclosure vintage",
+    "outcome": "later first product or qualified commercial status, never backfilled into prior guidance"
+  },
+  "required_outputs": [
+    "archive at least one 2019 project-launch disclosure, the SEC transaction schedule, the 2020 annual filing, and later startup-status filings",
+    "extract claim-scoped fragments for construction completion, commissioning, qualification, first product and sales",
+    "reconcile 50 kt versus 60 kt capacity descriptions by scope/ownership/vintage rather than silently choosing one",
+    "preserve contract-language target dates separately from management guidance",
+    "record delay/revision causes only when explicitly stated by primary source",
+    "produce a normalized project-state trajectory that retains source wording"
+  ],
+  "forbidden": [
+    "edit sealed blind memory",
+    "collapse mechanical completion, commissioning, qualification and sales into one production date",
+    "count company release and SEC-filed copy of the same disclosure as independent sources",
+    "turn unarchived discovery pages into facts"
+  ],
+  "done_when": "The archived primary-source chain shows the 2019 expectation, the contractual/management milestone schedule, the later revision toward late-2021 plus qualification, and subsequent startup states with explicit known-time and expectation-horizon fields."
+}
