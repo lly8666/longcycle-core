@@ -27,6 +27,8 @@
 
 > 证明、反驳或暂时无法验证一个具体历史 lead，并尽可能找到当时的 primary source。
 
+核心逻辑必须显式遵守：`not_found != false`。历史资料暂时搜不到，只能表示未找到，不能自动解释为命题不存在或为假。
+
 ### 2.2 Current Collection
 
 目标：
