@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Iterable
 from urllib.parse import urlsplit
 
 from longcycle.domain.enums import QualityGrade, SourceKind
@@ -27,6 +28,7 @@ def build_http_source_definition(
     kind: SourceKind = SourceKind.COMPANY,
     quality_grade: QualityGrade = QualityGrade.A,
     rate_limit_per_minute: int = 30,
+    allowed_domains: Iterable[str] | None = None,
 ) -> SourceDefinition:
     normalized_name = " ".join(name.split())
     if not normalized_name:
@@ -34,6 +36,15 @@ def build_http_source_definition(
     domain = normalize_publisher_domain(publisher_domain)
     if rate_limit_per_minute < 1:
         raise ValueError("rate_limit_per_minute must be positive")
+
+    if allowed_domains is None:
+        normalized_allowed_domains = (domain,)
+    else:
+        normalized_allowed_domains = tuple(
+            dict.fromkeys(normalize_publisher_domain(item) for item in allowed_domains)
+        )
+        if not normalized_allowed_domains:
+            raise ValueError("allowed_domains must contain at least one domain when supplied")
 
     source_id = stable_uuid_exact(
         "http-source-connector-v1",
@@ -51,7 +62,7 @@ def build_http_source_definition(
         rate_limit_per_minute=rate_limit_per_minute,
         config={
             "urls": [],
-            "allowed_domains": [domain],
+            "allowed_domains": list(normalized_allowed_domains),
             "user_agent": "LongcycleCollector/0.1",
         },
         syndication_cluster=f"publisher-domain:{domain}",
