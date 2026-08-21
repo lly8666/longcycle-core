@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from typing import Literal
 
@@ -101,3 +102,44 @@ class SessionHandoffCheckpoint(BaseModel):
         if not required_paths.issubset(set(self.resume_read_set)):
             raise ValueError("resume_read_set is missing mandatory bootstrap files")
         return self
+
+
+class HandoffHeadDecision(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    status: Literal["checkpoint_base_matches_live_head", "delta_reconciliation_required"]
+    checkpoint_based_on_head_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
+    live_head_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
+    requires_delta_reconciliation: bool
+    reason: str
+
+
+def evaluate_handoff_head(
+    checkpoint: SessionHandoffCheckpoint,
+    *,
+    live_head_sha: str,
+) -> HandoffHeadDecision:
+    """Tell a fresh session whether it must inspect commits after the checkpoint base."""
+
+    if re.fullmatch(r"[0-9a-f]{40}", live_head_sha) is None:
+        raise ValueError("live_head_sha must be a lowercase 40-character Git SHA")
+
+    if checkpoint.checkpoint_based_on_head_sha == live_head_sha:
+        return HandoffHeadDecision(
+            status="checkpoint_base_matches_live_head",
+            checkpoint_based_on_head_sha=checkpoint.checkpoint_based_on_head_sha,
+            live_head_sha=live_head_sha,
+            requires_delta_reconciliation=False,
+            reason="live HEAD is exactly the repository state used to build the checkpoint",
+        )
+
+    return HandoffHeadDecision(
+        status="delta_reconciliation_required",
+        checkpoint_based_on_head_sha=checkpoint.checkpoint_based_on_head_sha,
+        live_head_sha=live_head_sha,
+        requires_delta_reconciliation=True,
+        reason=(
+            "live HEAD differs from the checkpoint base; inspect intervening commits and refresh CI "
+            "before trusting snapshot state"
+        ),
+    )
