@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 import json
-from pathlib import Path
+from typing import Any
 from uuid import UUID
 
 from longcycle.adapters.parsers import PdfTextParser
@@ -21,6 +21,18 @@ def _sha256(value: str) -> str:
     if len(normalized) != 64 or any(character not in "0123456789abcdef" for character in normalized):
         raise argparse.ArgumentTypeError("content sha256 must be 64 lowercase hexadecimal characters")
     return normalized
+
+
+def _claim_context(value: str | None) -> dict[str, Any] | None:
+    if value is None:
+        return None
+    try:
+        parsed = json.loads(value)
+    except json.JSONDecodeError as exc:
+        raise argparse.ArgumentTypeError("--claim-context-json must be valid JSON") from exc
+    if not isinstance(parsed, dict) or not parsed:
+        raise argparse.ArgumentTypeError("--claim-context-json must be a non-empty JSON object")
+    return parsed
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -41,6 +53,13 @@ def _parser() -> argparse.ArgumentParser:
         "--page",
         type=int,
         help="one-based page number; required for application/pdf and forbidden otherwise",
+    )
+    parser.add_argument(
+        "--claim-context-json",
+        help=(
+            "optional non-empty JSON object for claim-scoped evidence annotation such as "
+            "known-time precision, valid/effective time and expectation horizon"
+        ),
     )
     return parser
 
@@ -72,6 +91,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
         raise ValueError("--occurrence must be non-negative")
     if args.page is not None and args.page < 1:
         raise ValueError("--page must be one-based and positive")
+    claim_context = _claim_context(args.claim_context_json)
 
     archive, bucket_name = _archive_store(settings)
     repository = PostgresResearchRepository(settings.database_url, bucket_name=bucket_name)
@@ -110,6 +130,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
                 page=args.page,
                 excerpt=args.excerpt,
                 occurrence=args.occurrence,
+                claim_context=claim_context,
             )
             artifact_payload = {
                 "artifact_id": str(artifact.id),
@@ -127,6 +148,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
                 document=document,
                 excerpt=args.excerpt,
                 occurrence=args.occurrence,
+                claim_context=claim_context,
             )
 
         fragment = result.fragment
@@ -140,6 +162,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object]:
             "evidence_fragment_id": str(fragment.id),
             "evidence_locator": fragment.locator,
             "fragment_sha256": fragment.fragment_sha256,
+            "claim_context": claim_context,
             "evidence_created": True,
             "assertions_created": False,
             "judgments_created": False,
