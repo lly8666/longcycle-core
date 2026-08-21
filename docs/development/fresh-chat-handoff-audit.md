@@ -2,7 +2,7 @@
 
 This protocol is for a genuinely new chat/session that has no access to the previous conversation.
 
-The purpose is to measure whether Longcycle's repository-backed handoff is sufficient for a fresh agent to reconstruct the project's intent, constraints, live execution state, and next action without the user restating any of them.
+The purpose is to measure whether Longcycle's repository-backed handoff is sufficient for a fresh agent to reconstruct the project's intent, constraints, live execution state, future phase commitments and next action without the user restating any of them.
 
 ## Input boundary
 
@@ -36,8 +36,20 @@ The report should reconstruct, from repository evidence rather than user hints:
 6. current lithium-battery Memory Campaign phase, raw-lead count, shard count, sealed-shard state, and search visibility;
 7. latest coherent milestone already completed;
 8. ordered next actions the prior session intended to execute;
-9. inconsistencies, stale fields, missing context, or places where the agent had to infer rather than recover;
-10. a concise assessment of whether it could safely continue development without asking the user to restate project context.
+9. future phase commitments that are not immediate next actions but must survive until their phase is reached;
+10. inconsistencies, stale fields, missing context, or places where the agent had to infer rather than recover;
+11. a concise assessment of whether it could safely continue development without asking the user to restate project context.
+
+## State authority classification
+
+For every important recovered conclusion, distinguish which authority class supports it:
+
+- **canonical / immutable** — Git commit graph, raw blind JSONL, archived original evidence, explicit user directives;
+- **deterministic-derived** — raw counts, typed validation/index output, machine-reconstructed coverage, live CI outcome;
+- **curated research assessment** — novelty labels, gap severity, semantic importance, bridge/satellite promotion and similar research judgments;
+- **narrative** — PR body, README and devlog prose.
+
+Do not describe a curated research assessment as mechanically verified merely because it appears in JSON or because a CI test confirms the file is internally consistent. Do not let narrative state override canonical or deterministic-derived state.
 
 ## Evidence trail
 
@@ -46,17 +58,22 @@ The report must name the repository resources it actually used, in the order use
 - checkpoint snapshot state;
 - live GitHub state;
 - state derived directly from canonical/immutable artifacts;
+- deterministic-derived state;
+- curated research assessment;
+- narrative state;
 - inference made by the fresh agent.
 
 Do not silently reconcile contradictions. Record both sides and explain which source the handoff protocol says is authoritative.
 
 ## Audit verdict
 
-End with four explicit fields:
+End with six explicit fields:
 
+- `deterministic_state_fidelity`: high / medium / low
+- `semantic_plan_recovery_confidence`: high / medium / low
 - `reconstruction_confidence`: high / medium / low
 - `safe_to_resume_without_user_restatement`: yes / no
 - `handoff_defects_found`: count plus short names
 - `operations_performed`: must state that the report file was the only mutation
 
-A high-quality report is not one that says everything is healthy. It is one that accurately reconstructs the state and surfaces real drift when present.
+A high-quality report is not one that says everything is healthy. It is one that accurately reconstructs the state, distinguishes machine facts from research judgment, recovers future phase commitments, and surfaces real drift when present.
