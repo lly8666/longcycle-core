@@ -4,6 +4,7 @@ import hashlib
 import json
 from dataclasses import dataclass
 from html.parser import HTMLParser
+from typing import Any
 
 from longcycle.domain.models import DocumentArtifact, EvidenceFragment, SourceDocument
 from longcycle.ports.archive import ArchiveStore
@@ -45,6 +46,10 @@ class ArchivedEvidenceRecorder:
     source bytes. Binary sources such as PDF must first produce a persisted parser
     artifact; excerpts are then checked against one explicit page in that immutable
     artifact. Neither path creates FactAssertions or Judgments.
+
+    Optional ``claim_context`` is evidence annotation, not a promoted fact. It is used
+    to preserve distinctions such as known-time precision, valid/effective time and
+    expectation horizon while the task is still at the grounded EvidenceFragment stage.
     """
 
     def __init__(
@@ -62,8 +67,10 @@ class ArchivedEvidenceRecorder:
         document: SourceDocument,
         excerpt: str,
         occurrence: int | None = None,
+        claim_context: dict[str, Any] | None = None,
     ) -> RecordedEvidenceResult:
         normalized_excerpt = self._validated_excerpt(excerpt, occurrence)
+        normalized_context = self._validated_claim_context(claim_context)
         content = await self._verified_archived_bytes(
             key=document.blob_key,
             expected_sha256=document.content_sha256,
@@ -78,10 +85,14 @@ class ArchivedEvidenceRecorder:
         del selected
         end = start + len(normalized_excerpt)
         locator = f"visible-text:{start}:{end}"
+        structured_payload = (
+            {"claim_context": normalized_context} if normalized_context is not None else None
+        )
         fragment = EvidenceFragment.create(
             document_id=document.id,
             locator=locator,
             excerpt=excerpt,
+            structured_payload=structured_payload,
         )
 
         CollectionPipeline._validate_textual_grounding(
@@ -100,8 +111,10 @@ class ArchivedEvidenceRecorder:
         page: int,
         excerpt: str,
         occurrence: int | None = None,
+        claim_context: dict[str, Any] | None = None,
     ) -> RecordedEvidenceResult:
         normalized_excerpt = self._validated_excerpt(excerpt, occurrence)
+        normalized_context = self._validated_claim_context(claim_context)
         if page < 1:
             raise ValueError("page must be one-based and positive")
         if artifact.document_id != document.id:
@@ -120,12 +133,15 @@ class ArchivedEvidenceRecorder:
             length_message="archived parser artifact length does not match metadata",
         )
         try:
-            payload = json.loads(artifact_bytes.decode("utf-8"))
+            artifact_payload = json.loads(artifact_bytes.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise ValueError("pdf-text-pages artifact is not valid UTF-8 JSON") from exc
-        if not isinstance(payload, dict) or payload.get("schema_version") != "longcycle-pdf-text/v1":
+        if (
+            not isinstance(artifact_payload, dict)
+            or artifact_payload.get("schema_version") != "longcycle-pdf-text/v1"
+        ):
             raise ValueError("unexpected pdf-text-pages artifact schema")
-        pages = payload.get("pages")
+        pages = artifact_payload.get("pages")
         if not isinstance(pages, list):
             raise ValueError("pdf-text-pages artifact has no pages array")
         page_entry = next(
@@ -146,17 +162,20 @@ class ArchivedEvidenceRecorder:
         selected, _ = self._select_occurrence(corpus, normalized_excerpt, occurrence)
         page_index = pages.index(page_entry)
         locator = f"$.pages[{page_index}].text"
+        structured_payload: dict[str, Any] = {
+            "page": page,
+            "occurrence": selected,
+            "parser_name": artifact.producer_name,
+            "parser_version": artifact.producer_version,
+        }
+        if normalized_context is not None:
+            structured_payload["claim_context"] = normalized_context
         fragment = EvidenceFragment.create(
             document_id=document.id,
             artifact_id=artifact.id,
             locator=locator,
             excerpt=excerpt,
-            structured_payload={
-                "page": page,
-                "occurrence": selected,
-                "parser_name": artifact.producer_name,
-                "parser_version": artifact.producer_version,
-            },
+            structured_payload=structured_payload,
         )
         await self.repository.save_evidence((fragment,))
         return RecordedEvidenceResult(fragment=fragment)
@@ -188,6 +207,26 @@ class ArchivedEvidenceRecorder:
         if occurrence is not None and occurrence < 0:
             raise ValueError("occurrence must be non-negative")
         return normalized_excerpt
+
+    @staticmethod
+    def _validated_claim_context(
+        claim_context: dict[str, Any] | None,
+    ) -> dict[str, Any] | None:
+        if claim_context is None:
+            return None
+        if not isinstance(claim_context, dict) or not claim_context:
+            raise ValueError("claim_context must be a non-empty JSON object")
+        # Round-trip through canonical JSON-compatible values so the fragment identity
+        # cannot depend on mutable Python objects or non-JSON serialization behavior.
+        try:
+            normalized = json.loads(
+                json.dumps(claim_context, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+            )
+        except (TypeError, ValueError) as exc:
+            raise ValueError("claim_context must contain only JSON-compatible values") from exc
+        if not isinstance(normalized, dict) or not normalized:
+            raise ValueError("claim_context must be a non-empty JSON object")
+        return normalized
 
     @staticmethod
     def _select_occurrence(
