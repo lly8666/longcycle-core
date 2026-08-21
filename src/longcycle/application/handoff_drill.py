@@ -8,7 +8,6 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from longcycle.application.session_handoff import SessionHandoffCheckpoint
 
-
 _CAMPAIGN_RELATIVE_ROOT = Path(
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol"
 )
@@ -114,6 +113,15 @@ def audit_repository_handoff(
             raise ValueError("coverage shard row has invalid shard_id/lead_count")
         coverage_counts[shard_id] = lead_count
 
+    shard_mismatches = {
+        shard_id: {
+            "coverage": coverage_counts.get(shard_id),
+            "raw": raw_counts.get(shard_id),
+        }
+        for shard_id in sorted(set(coverage_counts) | set(raw_counts))
+        if coverage_counts.get(shard_id) != raw_counts.get(shard_id)
+    }
+
     continue_here = (root / "CONTINUE_HERE.md").read_text(encoding="utf-8")
     constitution = (root / "docs" / "development" / "project-constitution.md").read_text(
         encoding="utf-8"
@@ -141,8 +149,11 @@ def audit_repository_handoff(
         ),
         HandoffDrillCheck(
             name="coverage_shard_counts_match_raw",
-            passed=coverage_counts == raw_counts,
-            detail=f"coverage_shards={len(coverage_counts)}, raw_shards={len(raw_counts)}",
+            passed=not shard_mismatches,
+            detail=(
+                "mismatches="
+                + json.dumps(shard_mismatches, ensure_ascii=False, sort_keys=True)
+            ),
         ),
         HandoffDrillCheck(
             name="checkpoint_shard_count_matches_raw",
