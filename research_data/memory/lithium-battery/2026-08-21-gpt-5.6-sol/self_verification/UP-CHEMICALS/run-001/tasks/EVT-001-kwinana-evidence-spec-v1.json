@@ -1,0 +1,318 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v1",
+  "task_id": "EVT-001-KWINANA-EVIDENCE-V1",
+  "status": "candidate_spec_runtime_grounding_required",
+  "evidence_policy": {
+    "blind_memory_mutation": "forbidden",
+    "fresh_discovery": "forbidden_except_failed-fixed-target-recovery-already-completed",
+    "search_or_plan_material_is_evidence": false,
+    "fact_or_judgment_promotion": false,
+    "all_fragments_must_ground_against_archived_bytes_or_persisted_parser_artifact": true
+  },
+  "sources": [
+    {
+      "key": "tianqi",
+      "name": "Tianqi Lithium first-party web",
+      "publisher_domain": "en.tianqilithium.com",
+      "allowed_domains": [
+        "en.tianqilithium.com",
+        "web.archive.org"
+      ],
+      "kind": "company",
+      "quality_grade": "A"
+    },
+    {
+      "key": "cninfo",
+      "name": "CNINFO issuer exchange archive",
+      "publisher_domain": "static.cninfo.com.cn",
+      "allowed_domains": [
+        "static.cninfo.com.cn"
+      ],
+      "kind": "exchange",
+      "quality_grade": "A"
+    }
+  ],
+  "documents": [
+    {
+      "key": "2018",
+      "vintage_id": "KWINANA-2018-COMMISSIONING-EXPECTATION",
+      "source_key": "tianqi",
+      "retrieval_url": "https://web.archive.org/web/20190504211034id_/https://en.tianqilithium.com/content/details17_41.html",
+      "original_source_url": "https://en.tianqilithium.com/content/details17_41.html",
+      "external_id": "kwinana-2018-commissioning-expectation-wayback-20190504211034",
+      "title": "Tianqi Lithium Moves to Kwinana to Commence Commissioning",
+      "published_at": null,
+      "first_known_at": "2018-12-21T23:59:59Z",
+      "expected_sha256": "c4cb66b3eeb789340c1771091f1a1bf0f7a085c351d59f0381af4d0f9a64ce5b",
+      "retrieval_provenance": {
+        "mode": "internet_archive_capture_of_primary",
+        "capture_timestamp": "2019-05-04T21:10:34Z",
+        "cdx_digest": "5BQ5FV7VL4UMAUY3FVQRNKVVOHN7TUWZ",
+        "body_dateline": "2018-12-18",
+        "surviving_site_page_timestamp": "2019-02-18",
+        "exact_first_party_publication_time": "unresolved",
+        "public_known_upper_bound_basis": "contemporaneous_local_report_2018-12-21"
+      }
+    },
+    {
+      "key": "2019",
+      "vintage_id": "KWINANA-2019Q1-COME-ONLINE-EXPECTATION",
+      "source_key": "tianqi",
+      "retrieval_url": "https://web.archive.org/web/20190504211029id_/https://en.tianqilithium.com/content/details17_259.html",
+      "original_source_url": "https://en.tianqilithium.com/content/details17_259.html",
+      "external_id": "kwinana-2019q1-come-online-expectation-wayback-20190504211029",
+      "title": "Tianqi Lithium Announces 2019 Q1 Results",
+      "published_at": "2019-04-30T00:00:00Z",
+      "first_known_at": "2019-04-30T23:59:59Z",
+      "expected_sha256": "caa60e12484b0b4f7e1025acdb48a70cb874924e8139673b0e84996b4d9f8526",
+      "retrieval_provenance": {
+        "mode": "internet_archive_capture_of_primary",
+        "capture_timestamp": "2019-05-04T21:10:29Z",
+        "cdx_digest": "PKWRUN4UP2RKSU7TZFFTEO7PYLGEHNCN",
+        "source_page_date": "2019-04-30"
+      }
+    },
+    {
+      "key": "2021",
+      "vintage_id": "KWINANA-2021-COMMISSIONING-REVISION",
+      "source_key": "tianqi",
+      "retrieval_url": "https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF",
+      "original_source_url": "https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF",
+      "external_id": "kwinana-2021-commissioning-revision",
+      "title": "Kwinana 2021 commissioning revision",
+      "published_at": "2021-08-23T00:00:00Z",
+      "first_known_at": "2021-08-23T23:59:59Z",
+      "expected_sha256": "aae71640b46ccdba4c396142796ad34c86b4c66dbe0073870b8c4439848892f5",
+      "retrieval_provenance": {
+        "mode": "direct_primary"
+      }
+    },
+    {
+      "key": "2022",
+      "vintage_id": "KWINANA-2022-COMMERCIAL-PRODUCTION-DECLARATION",
+      "source_key": "cninfo",
+      "retrieval_url": "https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF",
+      "original_source_url": "https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF",
+      "external_id": "kwinana-2022-083-commercial-production-declaration",
+      "title": "Tianqi Lithium announcement 2022-083 Kwinana commercial production",
+      "published_at": "2022-12-03T00:00:00Z",
+      "first_known_at": "2022-12-03T23:59:59Z",
+      "expected_sha256": "b2d0acd1f51ee398185148cea596de4496b353a4e6893cb76b9dd273b48f0783",
+      "retrieval_provenance": {
+        "mode": "direct_exchange_primary",
+        "announcement_number": "2022-083"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2018-stage-commissioning-expectation",
+      "document_key": "2018",
+      "excerpt": "Stage One commissioning will commence at the end of this year, while Stage Two, currently under construction, is expected to be commissioned at the end of 2019.",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2018-12-21T23:59:59Z",
+          "precision": "day",
+          "basis": "contemporaneous_public_report",
+          "exact_first_party_publication_time": "unresolved"
+        },
+        "source_dateline": {
+          "value": "2018-12-18",
+          "precision": "day",
+          "role": "body_dateline_not_exact_known_time"
+        },
+        "surviving_site_page_timestamp": {
+          "value": "2019-02-18",
+          "precision": "day",
+          "role": "later_site_timestamp_not_backdated_known_time"
+        },
+        "expectation_horizon": [
+          {
+            "subject": "Stage One commissioning",
+            "target": "2018-year-end",
+            "precision": "year-end"
+          },
+          {
+            "subject": "Stage Two commissioning",
+            "target": "2019-year-end",
+            "precision": "year-end"
+          }
+        ],
+        "original_source_url": "https://en.tianqilithium.com/content/details17_41.html",
+        "retrieval_capture_timestamp": "2019-05-04T21:10:34Z"
+      }
+    },
+    {
+      "fragment_key": "2019-h2-come-online-expectation",
+      "document_key": "2019",
+      "excerpt": "In the second half of 2019, the second chemical-grade lithium concentrate plant of Talison (CGP2) and Phase One of Kwinana battery-grade lithium hydroxide plant will gradually come online to meet ever-increasing customer demand.",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2019-04-30T23:59:59Z",
+          "precision": "day",
+          "basis": "first_party_source_page_date"
+        },
+        "expectation_horizon": {
+          "subject": "Kwinana Phase One come-online",
+          "from": "2019-07-01",
+          "to": "2019-12-31",
+          "precision": "half-year"
+        },
+        "original_source_url": "https://en.tianqilithium.com/content/details17_259.html",
+        "retrieval_capture_timestamp": "2019-05-04T21:10:29Z"
+      }
+    },
+    {
+      "fragment_key": "2021-full-line-expectation",
+      "document_key": "2021",
+      "page": 2,
+      "excerpt": "力争 2021 年底实现项目全线贯通并投入运行",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2021-08-23T23:59:59Z",
+          "precision": "day",
+          "basis": "primary_announcement_date"
+        },
+        "expectation_horizon": {
+          "subject": "full-line operation",
+          "target": "2021-12-31",
+          "precision": "year-end"
+        }
+      }
+    },
+    {
+      "fragment_key": "2021-design-capacity-expectation",
+      "document_key": "2021",
+      "page": 2,
+      "excerpt": "并争取在 2022 年第四季度达到设计产能。",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2021-08-23T23:59:59Z",
+          "precision": "day",
+          "basis": "primary_announcement_date"
+        },
+        "expectation_horizon": {
+          "subject": "design-capacity ramp",
+          "from": "2022-10-01",
+          "to": "2022-12-31",
+          "precision": "quarter"
+        }
+      }
+    },
+    {
+      "fragment_key": "2021-production-timing-uncertainty",
+      "document_key": "2021",
+      "page": 2,
+      "excerpt": "项目投产时间尚存在不确定性",
+      "claim_context": {
+        "claim_role": "risk_caveat",
+        "known_time": {
+          "upper_bound": "2021-08-23T23:59:59Z",
+          "precision": "day",
+          "basis": "primary_announcement_date"
+        },
+        "applies_to": [
+          "2021-full-line-expectation",
+          "2021-design-capacity-expectation"
+        ]
+      }
+    },
+    {
+      "fragment_key": "2022-continuous-production-capability",
+      "document_key": "2022",
+      "page": 1,
+      "excerpt": "目前该工厂已具备连续生产运行能力。",
+      "claim_context": {
+        "claim_role": "project_status",
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "valid_effective_time": {
+          "as_of": "2022-12-03",
+          "precision": "day",
+          "onset": "unspecified"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022-december-ramp-expectation-part-1",
+      "document_key": "2022",
+      "page": 1,
+      "excerpt": "根据 TLK 管理层的合理预计，该项目产",
+      "claim_context": {
+        "claim_role": "expectation",
+        "continuation_group": "2022-december-ramp-expectation",
+        "continuation_part": 1,
+        "continuation_parts": 2,
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "expectation_horizon": {
+          "from": "2022-12-01",
+          "precision": "month"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022-december-ramp-expectation-part-2",
+      "document_key": "2022",
+      "page": 2,
+      "excerpt": "量有望自 2022 年 12 月起得到稳定提升。",
+      "claim_context": {
+        "claim_role": "expectation",
+        "continuation_group": "2022-december-ramp-expectation",
+        "continuation_part": 2,
+        "continuation_parts": 2,
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "expectation_horizon": {
+          "from": "2022-12-01",
+          "precision": "month"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022-commercial-production-declaration",
+      "document_key": "2022",
+      "page": 2,
+      "excerpt": "基于上述因素，公司判断一期氢氧化锂项目于 2022 年 11 月 30 日起达到商业化生产的能力。",
+      "claim_context": {
+        "claim_role": "management_reality_declaration",
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "valid_effective_time": {
+          "from": "2022-11-30",
+          "precision": "day",
+          "basis": "management_declaration"
+        },
+        "expectation_horizon": null
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 4,
+    "required_fragments": 9,
+    "raw_blob_digest_must_match_spec": true,
+    "evidence_fragment_must_reference_archived_document": true,
+    "pdf_fragment_must_reference_persisted_pdf_text_artifact": true,
+    "known_time_and_valid_effective_time_must_not_be_conflated": true,
+    "commercial_declaration_day_and_ramp_expectation_month_must_not_be_conflated": true,
+    "blind_memory_counts_must_not_change": true,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
