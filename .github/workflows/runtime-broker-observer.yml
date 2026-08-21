@@ -1,0 +1,79 @@
+name: Longcycle runtime broker observer
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+jobs:
+  observe:
+    if: github.event.issue.title == '[longcycle-kwinana-real-archive-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Announce event receipt
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --body "RUNTIME_BROKER_EVENT_RECEIVED observer_run=${GITHUB_RUN_ID} default_head=${GITHUB_SHA}"
+
+      - name: Find and follow broker run
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          broker_id=''
+          for _ in $(seq 1 30); do
+            broker_id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow runtime-broker.yml --event issues --limit 10 \
+              --json databaseId,createdAt --jq 'sort_by(.createdAt) | reverse | .[0].databaseId // empty')"
+            [ -n "$broker_id" ] && break
+            sleep 2
+          done
+          if [ -z "$broker_id" ]; then
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body 'RUNTIME_BROKER_RUN_NOT_FOUND'
+            exit 1
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "RUNTIME_BROKER_RUN_FOUND run_id=${broker_id}"
+
+          for _ in $(seq 1 180); do
+            status="$(gh run view "$broker_id" --repo "$GITHUB_REPOSITORY" --json status --jq .status)"
+            [ "$status" = completed ] && break
+            sleep 3
+          done
+          status="$(gh run view "$broker_id" --repo "$GITHUB_REPOSITORY" --json status --jq .status)"
+          conclusion="$(gh run view "$broker_id" --repo "$GITHUB_REPOSITORY" --json conclusion --jq .conclusion)"
+          url="$(gh run view "$broker_id" --repo "$GITHUB_REPOSITORY" --json url --jq .url)"
+          if [ "$status" != completed ]; then
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "RUNTIME_BROKER_TIMEOUT run_id=${broker_id} url=${url}"
+            exit 1
+          fi
+          if [ "$conclusion" = success ]; then
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "RUNTIME_BROKER_SUCCESS run_id=${broker_id} url=${url}"
+            exit 0
+          fi
+          gh run view "$broker_id" --repo "$GITHUB_REPOSITORY" --log-failed > broker-failed.log 2>&1 || true
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('broker-failed.log')
+          text=p.read_text(errors='replace') if p.exists() else 'no failed log available'
+          Path('broker-failed-tail.txt').write_text(text[-12000:],encoding='utf-8')
+          PY
+          {
+            echo "RUNTIME_BROKER_FAILED run_id=${broker_id} conclusion=${conclusion} url=${url}"
+            echo
+            echo '```text'
+            cat broker-failed-tail.txt
+            echo '```'
+          } > observer-report.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file observer-report.md
+          exit 1
