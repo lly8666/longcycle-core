@@ -1,0 +1,87 @@
+name: Tianqi archive capture probe
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  probe:
+    if: github.event.issue.title == '[longcycle-tianqi-wayback-probe-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Query and verify archived captures of exact primary URLs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, subprocess, urllib.parse
+          from pathlib import Path
+
+          targets = {
+              '2018': {
+                  'url': 'https://en.tianqilithium.com/content/details17_41.html',
+                  'phrase': 'Stage One commissioning will commence at the end of this year',
+              },
+              '2019': {
+                  'url': 'https://en.tianqilithium.com/content/details17_259.html',
+                  'phrase': 'Phase One of Kwinana battery-grade lithium hydroxide plant will gradually come online',
+              },
+          }
+          lines=['# Tianqi archived-primary capture probe','']
+          results={}
+          for year,t in targets.items():
+              encoded=urllib.parse.quote(t['url'], safe='')
+              cdx=(
+                  'https://web.archive.org/cdx/search/cdx?url='+encoded+
+                  '&output=json&filter=statuscode:200&fl=timestamp,original,digest,statuscode,mimetype&collapse=digest'
+              )
+              proc=subprocess.run(['curl','-fsSL','--connect-timeout','15','--max-time','60',cdx],capture_output=True,text=True)
+              lines += [f'## {year}', '', f'- CDX rc: {proc.returncode}']
+              if proc.returncode != 0:
+                  lines.append(f'- CDX stderr: `{proc.stderr[-1000:]}`')
+                  results[year]={'cdx_rc':proc.returncode}
+                  continue
+              try:
+                  rows=json.loads(proc.stdout)
+              except Exception as exc:
+                  lines.append(f'- CDX parse error: `{exc}`')
+                  lines.append(f'- CDX body: `{proc.stdout[:1000]}`')
+                  results[year]={'cdx_parse_error':str(exc)}
+                  continue
+              captures=rows[1:] if isinstance(rows,list) and rows else []
+              lines.append(f'- unique 200 captures: {len(captures)}')
+              if not captures:
+                  results[year]={'captures':[]}
+                  continue
+              for row in captures[:3]:
+                  lines.append(f'- capture `{row[0]}` digest `{row[2]}` mime `{row[4]}`')
+              chosen=captures[0]
+              ts=chosen[0]
+              replay=f'https://web.archive.org/web/{ts}id_/{t["url"]}'
+              body=Path(f'{year}.html')
+              fetch=subprocess.run(['curl','-fsSL','--connect-timeout','15','--max-time','60',replay,'-o',str(body)],capture_output=True,text=True)
+              lines.append(f'- earliest replay rc: {fetch.returncode} url `{replay}`')
+              if fetch.returncode == 0:
+                  import hashlib
+                  b=body.read_bytes(); text=b.decode('utf-8','replace')
+                  digest=hashlib.sha256(b).hexdigest()
+                  phrase_ok=t['phrase'].lower() in ' '.join(text.split()).lower()
+                  lines.append(f'- replay bytes: {len(b)} sha256 `{digest}` expected-phrase={str(phrase_ok).lower()}')
+                  results[year]={'captures':captures,'chosen':chosen,'replay_url':replay,'bytes':len(b),'sha256':digest,'phrase_ok':phrase_ok}
+              else:
+                  lines.append(f'- replay stderr: `{fetch.stderr[-1000:]}`')
+                  results[year]={'captures':captures,'chosen':chosen,'replay_rc':fetch.returncode}
+              lines.append('')
+          Path('wayback-results.json').write_text(json.dumps(results,ensure_ascii=False,indent=2),encoding='utf-8')
+          Path('report.md').write_text('\n'.join(lines),encoding='utf-8')
+          PY
+          cat report.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file report.md
