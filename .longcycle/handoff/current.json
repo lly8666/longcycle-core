@@ -1,55 +1,49 @@
 {
   "schema_version": "longcycle-session-handoff/v4",
-  "continuity_sequence": 25,
+  "continuity_sequence": 26,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "da325f5606a6fdbbe194c1b80de328d37408c082",
+  "checkpoint_based_on_head_sha": "35d8b96da4ba054805a378c5c69af2a98d6c9f61",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch. It must resolve GitHub Issue #2, which points to active Draft PR #1 and branch design/industry-memory. Switch subsequent reads to that branch, read Strategy and Method Core, independently reconstruct the mission before using mission-fidelity.json for semantic calibration, then read this checkpoint and its continuation cursor, refresh live HEAD/CI, and load only the task-specific active context needed. Do not preload old industries or devlogs.",
+  "bootstrap_instruction": "From a cold start, use FRESH_AGENT_BOOTSTRAP.md on the default branch to resolve Issue #2, Draft PR #1 and branch design/industry-memory. On that branch read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and only the bounded active-state files below. Refresh live HEAD/CI before mutation.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
     "mission_fidelity_path": ".longcycle/continuity/mission-fidelity.json"
   },
   "strategic_horizon": {
-    "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, and the resulting primitives must be demonstrably reusable rather than industry-specific hacks.",
-    "short_term_goal": "Transition the lithium blind-memory campaign from selective 2015-2018 horizon widening into explicit negative-space and novelty-decay measurement. Preserve the 658 raw / 600 formal / 58 legacy checkpoint, stop symmetric pre-2019 widening, and select further blind work only when it improves first-order replay coverage or establishes legitimate seal conditions.",
-    "next_big_step": "After selected ordinary blind passes and explicit negative-space review produce legitimately sealed shards, begin high-capability self-verification/search discovery for those shards, then convert unresolved claims into claim-scoped evidence tasks and archive original sources for the first no-lookahead Reality + Expectation + Outcome replay slice.",
-    "local_optimization_stop_rule": "Stop or re-rank local work when it no longer materially improves coverage, evidence traceability, point-in-time replay, a main-path blocker, or continuity correctness. Tooling, lead count, schema elegance, lint, handoff polish and Agent orchestration are never self-justifying objectives.",
+    "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support no-lookahead Reality + Expectation + Outcome replay across a meaningful cycle, using reusable primitives rather than lithium-specific hacks.",
+    "short_term_goal": "Measure blind-memory novelty decay on matrix-selected first-order replay gaps. Preserve the 663 raw / 605 formal typed / 58 legacy checkpoint, keep search visibility at none, and stop symmetric shard expansion. The next selected gap is DOWN-NEV vehicle-activity-to-battery/material-demand translation.",
+    "next_big_step": "After genuine low-novelty streaks and explicit negative-space review legitimately seal a shard, begin fresh high-capability self-verification/search discovery for that sealed shard, then create claim-scoped evidence tasks and archive original sources for no-lookahead replay.",
+    "local_optimization_stop_rule": "Stop or re-rank when work no longer materially improves first-order replay coverage, evidence traceability, a seal condition or a main-path blocker. Lead count, shard symmetry, tooling and handoff polish are never objectives by themselves.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's recovery gap."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "memory-atlas-active-benchmark",
-    "last_completed_action": "Completed the old horizon-gap queue through its conditional LOOP-RECYCLING probe without fresh search. UP-BRINE, UP-CONCENTRATE and DOWN-ESS met the healthy-novelty condition, so LOOP-RECYCLING was run narrowly for secondary-supply/scrap-economics bridges and added five immutable leads: three new_category, two useful_refinement, zero duplicates. A brittle DOWN-ESS persistence test that froze the old fixture count at 48 was repaired to test the actual overlay/index invariant rather than a research-data total; CI #466 then passed all hard gates. Coverage is reconciled to 658 raw / 600 formal typed / 58 legacy experimental records. Ten selected shards have targeted pre-2019 batch3 results; four lower-priority shards remain deliberately deferred.",
-    "current_task": "Stop pre-2019 widening and create an explicit negative-space/gap-matrix preparation artifact across all 14 shards. The matrix must distinguish deliberate horizon deferral from real missing causal dimensions, record that no shard currently has a qualifying low-novelty streak, and rank the next ordinary blind probes by replay information gain rather than equal shard counts.",
-    "why_now": "The targeted horizon experiment has done its job: every selected pre-2019 pass remained high novelty, but the old priority artifact explicitly ranked four remaining shards as defer. Continuing horizon expansion would convert a causal-information-gain experiment into symmetric calendar backfill. The next uncertainty is where ordinary blind recall is still materially incomplete and how to measure the eventual path to seal audibly.",
-    "done_when": "A bounded, repository-backed negative-space/gap-matrix artifact covers all 14 shards, names the evaluation lenses and current low-novelty streak for each shard, distinguishes pre-2019 defer from true coverage gaps, selects the next one or few ordinary batch3 probes with reasons, and leaves search_visibility=none. Repository validation remains green.",
+    "last_completed_action": "Created matrix-driven ordinary-gap-v6 and ran one bounded UP-HARDROCK effective-supply probe with no fresh search. It produced five raw leads: two new_category, two useful_refinement and one explicit duplicate. Coverage reconciled to 663 raw / 605 formal typed / 58 legacy. Added negative-space-gap-matrix-v2, which holds UP-HARDROCK after the productive probe and re-ranks DOWN-NEV as the next one-probe target.",
+    "current_task": "Validate the reconciled 663/605 checkpoint, then run exactly one DOWN-NEV ordinary v6 blind probe targeting the translation from reported vehicle activity to contemporaneous battery GWh and lithium-material demand. Do not collect generic policy headlines and do not auto-run UP-CHEMICALS afterward.",
+    "why_now": "UP-HARDROCK now has explicit customer-acceptable supply, material-balance and ramp-guidance dimensions, so another immediate supply probe has lower cross-shard information gain. The largest first-order replay asymmetry is demand: production/wholesale/retail/registration/export/inventory and vehicle/battery mix cannot be treated as one lithium-demand number.",
+    "done_when": "DOWN-NEV's bounded v6 output is committed and honestly classified as new_category/useful_refinement/duplicate, coverage and handoff agree with deterministic raw/formal counts, hard CI gates are green, and the matrix is re-ranked before any further raw mutation.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Using only current compact-index summaries, coverage-index, the completed horizon-gap decision, and the fixed methodology, build analysis/negative-space-gap-matrix-v1.json. Do not generate new raw leads in the same action. Rank missing dimensions by their ability to change point-in-time replay of the 2019-2020 cycle and record zero qualifying low-novelty streaks for all shards until observed otherwise."
+    "next_atomic_action": "Refresh CI for the 663/605 checkpoint. If hard gates pass, load only the DOWN-NEV deterministic compact index, analysis/negative-space-gap-matrix-v2.json and prompts/ordinary-gap-v6.md; run one small blind demand-translation probe with search_visibility=none and preserve duplicates as duplicates."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / negative-space and novelty-decay transition",
+    "label": "Lithium-battery first benchmark / matrix-driven blind novelty decay",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "docs/research/lithium-battery-memory-audits.json",
-      "docs/research/lithium-battery-memory-exhaustion-manifest.json",
-      "docs/research/lithium-battery-cycle-horizon-v2.md",
-      "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
-      "docs/research/lithium-battery-memory-sharding.md",
-      "docs/research/lithium-battery-collection-plan.md",
-      "docs/devlog/2026-08-21-memory-campaign-part2.md",
-      "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-      "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md"
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v2.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md",
+      "docs/research/lithium-battery-cycle-horizon-v2.md"
     ],
     "core_exclusion_terms": [
       "lithium-battery",
@@ -63,48 +57,46 @@
     ]
   },
   "pending_user_directives": [
-    "Treat the repository-derived collection state as authoritative for the blind-memory campaign and ignore the earlier 1500+ discrepancy for current execution. Continue from the prior Agent's development/research plan instead of pausing for further recovery work.",
-    "Continue the prior Agent's line of development while exercising independent high-capability judgment; do not follow local task ordering mechanically when evidence or parent-goal alignment indicates a better move.",
-    "The project state is in the design/industry-memory branch and a correct fresh-agent handoff should discover this branch from the repository rather than requiring the user to provide the link."
+    "Treat the repository-derived collection state as authoritative for the blind-memory campaign and continue the established development line while exercising independent high-capability judgment.",
+    "Do not mechanically follow local ordering when information gain or the parent replay goal indicates a better move; the current Agent is responsible for stop/go and re-ranking decisions."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
-    "phase": "blind_memory_negative_space_preparation",
+    "phase": "blind_memory_matrix_driven_novelty_decay",
     "search_visibility": "none",
-    "total_raw_leads": 658,
+    "total_raw_leads": 663,
     "sealed_shards": [],
     "shard_count": 14,
-    "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension; high-value shards must also have no material uncovered 2015-2018 causal-setup dimension.",
+    "seal_rule": "Seal eligibility requires three consecutive low-novelty batches plus explicit negative-space review with no material uncovered dimension; a high-novelty latest batch resets the shard streak to zero.",
     "next_research_actions": [
-      "Preserve the current blind layer exactly at 658 raw records: 600 formal typed v3+ compact inputs plus 58 immutable v1/v2 prompt-evolution experiments.",
-      "Stop blanket pre-2019 widening; MID-ANODE, MID-ELECTROLYTE, MID-SEPARATOR and DOWN-OTHER remain deliberate horizon deferrals unless a new first-order negative-space signal emerges.",
-      "Build the explicit negative-space/gap matrix and use it to choose selected ordinary batch3 probes.",
-      "Track consecutive low-novelty batches explicitly; none currently qualify because every observed ordinary batch2 and selected pre-2019 batch3 remained high novelty.",
-      "Keep search_visibility=none for blind memory and never backfill blind recall with hindsight evidence."
+      "Require green hard CI gates against 663 raw / 605 formal typed before the next raw mutation.",
+      "Run exactly one DOWN-NEV v6 probe for vehicle-activity-to-battery/material-demand translation using only same-shard compact state and matrix v2.",
+      "Classify duplicates honestly and re-rank before any UP-CHEMICALS or other probe.",
+      "Keep fresh search forbidden until an individual shard legitimately seals."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 466,
-    "observed_head_sha": "42f3f57e19a945db0f80b64b39f64115d8c0ac02",
-    "conclusion": "Run #466 succeeded after decoupling the DOWN-ESS repair-overlay persistence test from a hard-coded fixture count. Mypy, Pytest, compact-index build and full-history memory provenance audit all passed. LOOP-RECYCLING raw and coverage commits were added afterward, so refresh live CI and require green hard gates against the reconciled 658/600 state before any new raw mutation.",
-    "mypy_summary": "Run #466: success; no issues found in 57 source files.",
-    "pytest_summary": "Run #466: success; 144 tests passed before the subsequent LOOP-RECYCLING data commits.",
-    "ruff_summary": "Run #466: diagnostic-only Ruff remains non-blocking during the memory campaign.",
-    "refresh_instruction": "Refresh live HEAD/CI and require the latest hard gates to pass against 658 raw / 600 formal typed before any new raw batch."
+    "last_observed_run": 474,
+    "observed_head_sha": "99858cf52ab11ba1859a0cc12903200d75d56bf3",
+    "conclusion": "CI #474 succeeded on the 658/600 matrix-v1 checkpoint. The subsequent v6 prompt, UP-HARDROCK raw probe, coverage reconciliation and matrix-v2 commits require a fresh hard-gate run before the next raw mutation.",
+    "mypy_summary": "Run #474: success.",
+    "pytest_summary": "Run #474: success.",
+    "ruff_summary": "Ruff remains diagnostic-only during the memory campaign.",
+    "refresh_instruction": "Refresh live HEAD/CI and require Mypy, Pytest, compact-index build and memory-history audit to pass against 663/605 before running DOWN-NEV."
   },
   "workstreams": [
     {
       "workstream_id": "memory-atlas-active-benchmark",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "negative_space_preparation",
-      "summary": "Selective pre-2019 widening is complete on ten cycle-forming shards; four lower-priority shards remain intentionally deferred. All selected passes remained high novelty, so no shard is near seal by novelty criterion. The main path now shifts to an explicit gap matrix and selected ordinary novelty-decay probes rather than more horizon equalization.",
+      "status": "matrix_driven_ordinary_novelty_decay",
+      "summary": "Selective pre-2019 widening is closed. The first ordinary v6 probe on UP-HARDROCK introduced the campaign's first duplicate signal while remaining materially high novelty. Matrix v2 now moves the single next probe to DOWN-NEV demand translation.",
       "next_actions": [
-        "Create the all-shard negative-space/gap-matrix preparation artifact without new raw mutation.",
-        "Use the matrix to select the next ordinary blind probe(s) that maximize first-order replay information gain.",
-        "Only after genuine low-novelty streaks and negative-space review should any shard seal and enter self-verification/evidence work."
+        "Validate the reconciled 663/605 checkpoint with hard CI gates.",
+        "Run one bounded DOWN-NEV ordinary-gap-v6 probe and classify novelty honestly.",
+        "Re-rank the matrix after that one probe before any further raw work."
       ],
       "blockers": []
     }
@@ -116,37 +108,20 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/horizon-gap-priority-v1.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/pre2019-batch3-v5.md"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/negative-space-gap-matrix-v2.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/prompts/ordinary-gap-v6.md"
   ],
-  "deep_reference_paths": [
-    "FRESH_AGENT_BOOTSTRAP.md",
-    "AGENTS.md",
-    "docs/development/continuity-architecture.md",
-    "docs/development/session-handoff-protocol.md",
-    "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
-    "docs/research/lithium-battery-cycle-horizon-v2.md",
-    "docs/devlog/2026-08-21-memory-campaign-part2.md",
-    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-    "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md",
-    "docs/devlog/2026-08-21-fresh-agent-judgment-continuity-v4-report.md"
-  ],
-  "latest_devlogs": [
-    "docs/devlog/2026-08-21-horizon-gap-and-compact-boundary.md",
-    "docs/devlog/2026-08-21-all-primary-batch2-milestone.md",
-    "docs/devlog/2026-08-21-memory-campaign-part2.md"
-  ],
+  "deep_reference_paths": [],
+  "latest_devlogs": [],
   "unresolved_questions": [
-    "Which ordinary blind probe has the highest next information gain after the selective pre-2019 widening experiment: upstream supply, conversion/chemistry, demand, or a cross-shard expectation/negative-space pass?",
-    "What exact negative-space/gap-matrix rubric should govern no-material-gap judgments and future seal decisions?",
-    "What exact replay fixture and acceptance rubric should certify the first lithium benchmark as good enough once sealed evidence work begins?",
-    "Deferred bounded-execution orchestration: when a sealed-shard evidence workload or repeated current-source collection bottleneck exists, what is the smallest low-cost-Agent web task interface needed?"
+    "Does one demand-translation probe materially reduce the largest 2019-2020 replay asymmetry, or does it expose a cell/chemistry bridge instead?",
+    "After DOWN-NEV, is UP-CHEMICALS still the highest first-order residual gap?",
+    "Which shard first produces a genuine low-novelty batch and therefore begins a qualifying seal streak?"
   ],
   "ordered_next_actions": [
-    "Require green hard CI gates against the reconciled 658/600 state.",
-    "Create analysis/negative-space-gap-matrix-v1.json from compact summaries, coverage and the completed horizon decision; no fresh search and no raw mutation.",
-    "Select one or a small number of ordinary batch3 probes from the matrix and define their stop/novelty measurement before generating them.",
-    "When genuine low-novelty streaks emerge, perform the full negative-space review before any seal; only sealed shards may enter fresh self-verification/evidence search.",
-    "Keep continuity and orchestration work subordinate to the benchmark main path."
+    "Require green hard CI gates at 663/605.",
+    "Run one DOWN-NEV ordinary-gap-v6 blind demand-translation probe; no fresh search.",
+    "Reconcile deterministic counts and update the matrix from the observed novelty mix.",
+    "Do not auto-run the next shard and do not seal from pass count alone."
   ]
 }
