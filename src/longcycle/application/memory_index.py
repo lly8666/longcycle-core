@@ -3,10 +3,15 @@ from __future__ import annotations
 from collections import Counter
 from collections.abc import Iterable
 from datetime import date
+from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from longcycle.application.memory_ingest import MemoryLeadCandidate
+from longcycle.application.memory_ingest import (
+    MemoryLeadCandidate,
+    apply_memory_repair_overlay,
+    validate_memory_jsonl,
+)
 from longcycle.domain.memory import ClaimScope, MemoryBasis, MemoryLeadKind
 
 
@@ -148,3 +153,58 @@ def build_shard_memory_index(
         year_counts=_sorted_counts(year_counts),
         entries=tuple(entries),
     )
+
+
+def load_shard_memory_candidates(shard_dir: Path) -> tuple[MemoryLeadCandidate, ...]:
+    """Load one blind shard deterministically, applying explicit repair overlays first."""
+
+    if not shard_dir.is_dir():
+        raise FileNotFoundError(shard_dir)
+
+    candidates: list[MemoryLeadCandidate] = []
+    seen_ids: set[str] = set()
+    jsonl_paths = tuple(sorted(shard_dir.glob("*.jsonl")))
+    if not jsonl_paths:
+        raise ValueError(f"blind shard contains no JSONL files: {shard_dir}")
+
+    for jsonl_path in jsonl_paths:
+        text = jsonl_path.read_text(encoding="utf-8")
+        repair_path = jsonl_path.with_suffix(".repair.json")
+        if repair_path.is_file():
+            text = apply_memory_repair_overlay(
+                text,
+                repair_path.read_text(encoding="utf-8"),
+                source_file=jsonl_path.name,
+            )
+
+        result = validate_memory_jsonl(text)
+        if result.failures:
+            details = "; ".join(
+                f"line {failure.line_no}: {failure.reason}"
+                for failure in result.failures
+            )
+            raise ValueError(f"invalid memory shard file {jsonl_path.name}: {details}")
+
+        for candidate in result.accepted:
+            if candidate.lead_id in seen_ids:
+                raise ValueError(f"duplicate Memory Lead id in shard: {candidate.lead_id}")
+            seen_ids.add(candidate.lead_id)
+            candidates.append(candidate)
+
+    return tuple(candidates)
+
+
+def build_shard_memory_index_from_directory(shard_dir: Path) -> ShardMemoryIndex:
+    """Rebuild a compact index only from the shard's immutable recall plus repair overlays."""
+
+    return build_shard_memory_index(load_shard_memory_candidates(shard_dir))
+
+
+def write_shard_memory_index(shard_dir: Path, output_path: Path) -> ShardMemoryIndex:
+    """Persist a replaceable deterministic JSON derivative; raw recall remains authoritative."""
+
+    index = build_shard_memory_index_from_directory(shard_dir)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = index.model_dump_json(indent=2) + "\n"
+    output_path.write_text(payload, encoding="utf-8")
+    return index
