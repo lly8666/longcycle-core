@@ -82,26 +82,37 @@ Do not store private chain-of-thought. Persist only concise alignment conclusion
 
 ## 6. Vertical Alignment Gate
 
-Run before a new substantive subproblem and after every coherent subtask:
+Run before a new substantive subproblem and after every coherent subtask.
+
+A simple main-path task follows:
 
 ```text
 atomic task
+↑ main-path workstream
 ↑ short-term milestone
 ↑ medium-term capability proof
 ↑ terminal mission
 ```
 
+Not every legitimate task is main-path work. A task may be a temporary `supporting_quality_gate` or a permanent `parallel_track`. Therefore each workstream also declares:
+
+- `role`: `main_path`, `supporting_quality_gate` or `parallel_track`;
+- `parent_goal_ref`: the strategic horizon goal it serves.
+
+This prevents a support task from silently redefining the current product milestone merely because it is the active cursor.
+
 Then ask:
 
-1. Is this still a high-value main-path action?
+1. Is this still a high-value action relative to the workstream's declared role and parent goal?
 2. Is `done_when` already satisfied?
 3. Is local scope growing only because the problem is interesting/easy to optimize?
 4. Did new evidence change or obsolete the parent task?
 5. Would stopping now materially reduce parent-level progress?
+6. If this is a support workstream, has the quality/blocker condition already been cleared so the Agent should return to `main_path`?
 
 If the task cannot be connected upward or marginal value has collapsed, stop/re-rank instead of deepening automatically.
 
-## 7. Continuation cursor contract
+## 7. Continuation cursor and workstream contract
 
 `current.json.continuation_cursor` must contain:
 
@@ -112,12 +123,16 @@ If the task cannot be connected upward or marginal value has collapsed, stop/re-
 - `done_when`;
 - `next_atomic_action`.
 
+Every active workstream must declare its `role` and `parent_goal_ref`; at least one `main_path` workstream must exist.
+
 The cursor is not a devlog. It answers only:
 
 ```text
 what just finished?
 what should resume now?
 why is it current?
+what role does its workstream play?
+which parent goal does that workstream serve?
 what ends it?
 what comes immediately after?
 ```
@@ -208,6 +223,7 @@ CI should verify at minimum:
 - mission semantic contract exists and contains no current-industry data;
 - bootstrap order requires first-pass synthesis before semantic calibration;
 - typed strategic horizon and continuation cursor are complete;
+- workstream roles and parent-goal references are valid, with at least one main path;
 - resume set is bounded;
 - campaign/context paths derive from active context rather than a hard-coded industry;
 - raw/canonical campaign state agrees with checkpoint where applicable;
