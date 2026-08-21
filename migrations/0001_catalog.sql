@@ -239,7 +239,7 @@ CREATE TABLE core.unit_conversion_versions (
     from_unit text NOT NULL REFERENCES core.units(code),
     to_unit text NOT NULL REFERENCES core.units(code),
     multiplier numeric(40, 18) NOT NULL,
-    offset numeric(40, 18) NOT NULL DEFAULT 0,
+    additive_offset numeric(40, 18) NOT NULL DEFAULT 0,
     valid_from date,
     valid_to date,
     source_assertion_id uuid,
