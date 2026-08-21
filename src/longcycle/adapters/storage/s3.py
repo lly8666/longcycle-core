@@ -13,7 +13,7 @@ class S3ArchiveStore:
     def __init__(self, *, bucket: str, endpoint_url: str | None = None, client: Any | None = None) -> None:
         if client is None:
             try:
-                import boto3
+                import boto3  # type: ignore[import-untyped]
             except ImportError as exc:  # pragma: no cover - optional dependency
                 raise RuntimeError("install longcycle-core[s3] to use S3ArchiveStore") from exc
             client = boto3.client("s3", endpoint_url=endpoint_url)
