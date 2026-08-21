@@ -22,8 +22,10 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertEqual(checkpoint.repository, "lly8666/longcycle-core")
         self.assertEqual(checkpoint.active_branch, "design/industry-memory")
         self.assertEqual(checkpoint.active_pr, 1)
+        self.assertEqual(checkpoint.provenance_ordering, "git_commit_graph")
         self.assertTrue(checkpoint.live_refresh_required)
         self.assertTrue(checkpoint.do_not_ask_user_to_repeat)
+        self.assertTrue(checkpoint.future_phase_commitments)
         self.assertEqual(checkpoint.ci.authority, "snapshot_not_authoritative")
 
     def test_blind_lithium_campaign_cannot_leak_search_across_sessions(self) -> None:
