@@ -13,18 +13,28 @@ HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
 
 
 class StrategicCompassContractTest(unittest.TestCase):
-    def test_compass_is_small_and_preserves_only_terminal_direction(self) -> None:
+    def test_compass_is_bounded_but_high_fidelity(self) -> None:
         text = COMPASS.read_text(encoding="utf-8")
         raw = COMPASS.read_bytes()
 
-        self.assertLessEqual(len(raw), 6500)
-        self.assertLessEqual(len(text.splitlines()), 100)
+        # A ceiling prevents unbounded accumulation; it is not a brevity target.
+        self.assertLessEqual(len(raw), 14000)
+        self.assertLessEqual(len(text.splitlines()), 165)
+
+        # Preserve the causal founding logic, not only slogan keywords.
         for fragment in (
+            "把整个行业相关的最关键和真实的历史保存下来",
+            "缺的是人站在当时的判断和预期",
             "历史本身就是分析",
+            "认知过程",
             "Reality",
-            "Expectation",
+            "Expectation / Judgment",
             "Outcome",
-            "point-in-time",
+            "把已经发生过的未来，重新变回当时仍然未知的未来",
+            "point-in-time replay",
+            "hindsight database",
+            "简单因果和常识",
+            "迁移到不同产业",
             "中期",
             "短期",
             "Strategic Alignment Gate",
@@ -36,8 +46,8 @@ class StrategicCompassContractTest(unittest.TestCase):
         text = METHODS.read_text(encoding="utf-8")
         raw = METHODS.read_bytes()
 
-        self.assertLessEqual(len(raw), 9000)
-        self.assertLessEqual(len(text.splitlines()), 170)
+        self.assertLessEqual(len(raw), 12000)
+        self.assertLessEqual(len(text.splitlines()), 200)
         for fragment in (
             "Memory-first, Evidence-final",
             "Source-first, Archive-now",
@@ -48,6 +58,7 @@ class StrategicCompassContractTest(unittest.TestCase):
             "Agent 分工",
             "模型升级产生新 research vintage",
             "有限核心 + 动态状态",
+            "高保真优先于极限压缩",
         ):
             self.assertIn(fragment, text)
 
