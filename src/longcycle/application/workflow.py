@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import hashlib
 from collections.abc import Awaitable, Callable
-from typing import Any
+from typing import Any, cast
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from longcycle.domain.enums import JobStage
 from longcycle.domain.models import CollectionJob, canonical_json, stable_uuid
+from longcycle.ports.checkpoint import CheckpointStore
 from longcycle.ports.events import EventSink
 from longcycle.ports.repository import JobQueue
 
@@ -40,7 +41,7 @@ class PipelineDispatcher:
         self,
         *,
         queue: JobQueue,
-        checkpoint_store: Any,
+        checkpoint_store: CheckpointStore,
         handlers: dict[JobStage, tuple[str, StageHandler]],
         event_sink: EventSink | None = None,
     ) -> None:
@@ -73,15 +74,16 @@ class PipelineDispatcher:
         )
         if checkpoint is None:
             result = await handler(job)
-            result = await self.checkpoint_store.save(
+            saved = await self.checkpoint_store.save(
                 job_id=job.id,
                 stage=job.stage.value,
                 input_hash=input_hash,
                 producer_version=producer_version,
                 result=result,
             )
+            result = cast(StageResult, saved)
         else:
-            result = checkpoint
+            result = cast(StageResult, checkpoint)
 
         # Fan-out is deliberately replayed when a checkpoint is found. A worker
         # can fail after saving the stage result but before all child jobs have
