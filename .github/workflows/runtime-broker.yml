@@ -1,0 +1,271 @@
+name: Longcycle bounded runtime broker
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  kwinana-real-archive-v1:
+    if: github.event_name == 'workflow_dispatch' || github.event.issue.title == '[longcycle-kwinana-real-archive-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Check out active Longcycle branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install exact repository runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[postgres]'
+          python - <<'PY'
+          import pypdf
+          print('ACTIVE_HEAD_CHECKED_OUT')
+          print('PYPDF_VERSION', pypdf.__version__)
+          PY
+          git rev-parse HEAD | tee /tmp/active-head.txt
+
+      - name: Apply normal Longcycle migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p probe/review
+          longcycle --json db upgrade | tee probe/migrations.json
+          longcycle --json doctor --check-database | tee probe/doctor.json
+
+      - name: Register the two required primary-source connectors
+        id: sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/register_http_source.py \
+            --name 'Tianqi Lithium first-party web' \
+            --publisher-domain en.tianqilithium.com \
+            --kind company --quality-grade A | tee probe/source-tianqi.json
+          python scripts/register_http_source.py \
+            --name 'CNINFO issuer exchange archive' \
+            --publisher-domain static.cninfo.com.cn \
+            --kind exchange --quality-grade A | tee probe/source-cninfo.json
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          for key,path in [('tianqi','probe/source-tianqi.json'),('cninfo','probe/source-cninfo.json')]:
+              d=json.load(open(path))['result']
+              print(f'{key}_id={d["source_id"]}')
+          PY
+
+      - name: Archive all four fixed EVT-001 v2 targets
+        id: archive
+        shell: bash
+        env:
+          TIANQI_ID: ${{ steps.sources.outputs.tianqi_id }}
+          CNINFO_ID: ${{ steps.sources.outputs.cninfo_id }}
+        run: |
+          set -u
+          : > probe/archive-status.tsv
+          run_one() {
+            label="$1"; shift
+            set +e
+            python scripts/archive_source_url.py "$@" > "probe/archive-${label}.json" 2> "probe/archive-${label}.stderr"
+            rc=$?
+            set -e
+            printf '%s\t%s\n' "$label" "$rc" >> probe/archive-status.tsv
+            echo "ARCHIVE_${label}_RC=${rc}"
+            cat "probe/archive-${label}.json" || true
+            cat "probe/archive-${label}.stderr" || true
+          }
+          set -e
+          run_one 2018 \
+            --source-id "$TIANQI_ID" \
+            --url 'https://en.tianqilithium.com/content/details17_41.html' \
+            --title 'Kwinana 2018 commissioning expectation' \
+            --first-known-at '2018-12-21T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2018-COMMISSIONING-EXPECTATION'
+          run_one 2019 \
+            --source-id "$TIANQI_ID" \
+            --url 'https://en.tianqilithium.com/content/details17_259.html' \
+            --title 'Kwinana 2019Q1 come-online expectation' \
+            --published-at '2019-04-30T00:00:00Z' \
+            --first-known-at '2019-04-30T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2019Q1-COME-ONLINE-EXPECTATION'
+          run_one 2021 \
+            --source-id "$TIANQI_ID" \
+            --url 'https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF' \
+            --title 'Kwinana 2021 commissioning revision' \
+            --published-at '2021-08-23T00:00:00Z' \
+            --first-known-at '2021-08-23T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2021-COMMISSIONING-REVISION'
+          run_one 2022 \
+            --source-id "$CNINFO_ID" \
+            --url 'https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF' \
+            --title 'Kwinana 2022 commercial production declaration' \
+            --published-at '2022-12-03T00:00:00Z' \
+            --first-known-at '2022-12-03T23:59:59Z' \
+            --evidence-task-id 'KWINANA-2022-COMMERCIAL-PRODUCTION-DECLARATION'
+
+      - name: Derive exact review text only from successfully archived bytes
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, io, json
+          from html.parser import HTMLParser
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          root=Path('.longcycle/action-blobs')
+          out=Path('probe/review'); out.mkdir(parents=True,exist_ok=True)
+
+          class Visible(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True); self.parts=[]; self.hidden=0
+              def handle_starttag(self,tag,attrs):
+                  if tag.lower() in {'script','style','noscript'}: self.hidden += 1
+              def handle_endtag(self,tag):
+                  if tag.lower() in {'script','style','noscript'} and self.hidden: self.hidden -= 1
+              def handle_data(self,data):
+                  if not self.hidden: self.parts.append(data)
+
+          def load(year):
+              p=Path(f'probe/archive-{year}.json')
+              try: d=json.load(open(p))
+              except Exception: return None,None
+              if not d.get('ok'): return None,None
+              r=d['result']; b=(root/r['blob_key']).read_bytes()
+              assert hashlib.sha256(b).hexdigest()==r['content_sha256']
+              assert len(b)==r['byte_length']
+              return r,b
+
+          for year in ('2018','2019'):
+              r,b=load(year)
+              if r is None: continue
+              v=Visible(); v.feed(b.decode('utf-8',errors='replace'))
+              text=' '.join(' '.join(v.parts).split())
+              (out/f'{year}-visible.txt').write_text(text,encoding='utf-8')
+
+          for year,pages in [('2021',[2]),('2022',[1,2])]:
+              r,b=load(year)
+              if r is None: continue
+              reader=PdfReader(io.BytesIO(b),strict=False)
+              for page in pages:
+                  text=' '.join((reader.pages[page-1].extract_text() or '').split())
+                  (out/f'{year}-page-{page}.txt').write_text(text,encoding='utf-8')
+          PY
+
+      - name: Export compact persistence facts and build human review report
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          import psycopg
+          from psycopg.rows import dict_row
+
+          dsn=os.environ['LONGCYCLE_DATABASE_URL']
+          with psycopg.connect(dsn,row_factory=dict_row) as c:
+              tables={}
+              for name in ['evidence.publishers','evidence.source_connectors','evidence.content_blobs','evidence.documents','evidence.document_fetches','evidence.document_versions','evidence.artifacts','evidence.evidence_fragments']:
+                  tables[name]=c.execute(f'SELECT count(*) AS n FROM {name}').fetchone()['n']
+              rows=c.execute('''
+                SELECT d.canonical_url, v.id AS document_version_id, b.sha256, b.byte_length,
+                       f.published_at, f.first_known_at, f.retrieved_at
+                FROM evidence.document_versions v
+                JOIN evidence.documents d ON d.id=v.document_id
+                JOIN evidence.content_blobs b ON b.id=v.content_blob_id
+                JOIN evidence.document_fetches f ON f.id=v.first_fetch_id
+                ORDER BY f.first_known_at
+              ''').fetchall()
+          payload={'table_counts':tables,'documents':[dict(r) for r in rows]}
+          Path('probe/persistence.json').write_text(json.dumps(payload,default=str,indent=2,ensure_ascii=False),encoding='utf-8')
+          PY
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          status={k:int(v) for k,v in (line.rstrip('\n').split('\t') for line in open('probe/archive-status.tsv'))}
+          persistence=json.load(open('probe/persistence.json'))
+          lines=['# Kwinana real archive probe v1','',f'Active branch HEAD: `{Path("/tmp/active-head.txt").read_text().strip()}`','', '## Archive status','']
+          for y in ('2018','2019','2021','2022'):
+              lines.append(f'- {y}: '+('PASS' if status.get(y)==0 else f'FAIL rc={status.get(y)}'))
+              p=Path(f'probe/archive-{y}.json')
+              try:
+                  d=json.load(open(p))
+                  if d.get('ok'):
+                      r=d['result']; lines.append(f'  - sha256 `{r["content_sha256"]}`; bytes {r["byte_length"]}; canonical `{r["canonical_url"]}`')
+                  else: lines.append(f'  - {d.get("error")}')
+              except Exception:
+                  err=Path(f'probe/archive-{y}.stderr').read_text(errors='replace')[-1500:]
+                  lines.append('  - stderr: `'+err.replace('`','\'')+'`')
+          lines += ['', '## Persisted normal-path rows','', '```json', json.dumps(persistence,indent=2,ensure_ascii=False), '```', '', '## Exact review material from archived bytes','']
+          for p in sorted(Path('probe/review').glob('*.txt')):
+              text=p.read_text(encoding='utf-8',errors='replace')
+              lines += [f'### {p.name}','',text[:12000],'']
+          Path('probe/report.md').write_text('\n'.join(lines),encoding='utf-8')
+          PY
+          sed -n '1,500p' probe/report.md
+
+      - name: Upload full probe artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kwinana-real-archive-v1
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            probe/
+            .longcycle/action-blobs/
+
+      - name: Comment result back to trigger issue
+        if: always() && github.event_name == 'issues'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" --body-file probe/report.md
+
+      - name: Enforce all four required archives
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(wc -l < probe/archive-status.tsv)" -eq 4
+          awk -F '\t' '$2 != 0 {bad=1} END {exit bad}' probe/archive-status.tsv
