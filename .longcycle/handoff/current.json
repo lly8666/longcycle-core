@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v1",
-  "continuity_sequence": 3,
-  "checkpoint_generated_at": "2026-08-21T10:08:00+09:00",
+  "continuity_sequence": 4,
+  "checkpoint_generated_at": "2026-08-21T10:22:00+09:00",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "da8ab2a58977f8694ea227866b8e57ae453be98a",
+  "checkpoint_based_on_head_sha": "5c916c56fb27efddd5d7a7e8235f2e43483047f2",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "Read CONTINUE_HERE.md, locate the active branch through GitHub issue #2 if needed, refresh live PR/branch HEAD and CI, compare live HEAD with checkpoint_based_on_head_sha, inspect commits after the checkpoint when required, run or conceptually reproduce the repository-only handoff isolation drill, then continue ordered_next_actions without asking the user to restate persisted context.",
@@ -44,35 +44,35 @@
     "industry": "lithium-battery",
     "phase": "blind_memory_exhaustion",
     "search_visibility": "none",
-    "total_raw_leads": 570,
+    "total_raw_leads": 576,
     "sealed_shards": [],
     "shard_count": 14,
     "seal_rule": "A shard may seal only after three consecutive low-novelty batches plus a negative-space/gap-matrix review with no material uncovered dimension.",
     "next_research_actions": [
-      "Persist deterministic compact per-shard lead indices and use them instead of reloading all raw JSONL for later self-gap batches.",
-      "Continue batch2 on the five primary shards that still have only one self-gap batch: UP-HARDROCK, UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
+      "Use deterministic compact per-shard index generation from typed/repaired blind JSONL; generated indices are replaceable derivatives, not new truth.",
+      "Continue batch2 on the four remaining batch1-only primary shards: UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
       "Run batch3 only where novelty remains high and measure novelty decay explicitly.",
       "Only after an individual shard seals may high-capability fresh-web self-verification begin."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 176,
-    "observed_head_sha": "5deb874f0b415ef7097601c1389d0e0285b3c967",
-    "conclusion": "success on the last fully observed head before electrolyte batch2, isolation-drill and checkpoint calibration commits",
-    "mypy_summary": "The run completed the Mypy hard gate successfully; fetch the newest live run before quoting current correctness.",
-    "pytest_summary": "The run completed the Pytest hard gate successfully; the new isolation-drill tests are newer and require a live CI refresh.",
-    "ruff_summary": "Ruff remains diagnostic-only during the Memory Campaign and is tracked as cleanup debt.",
-    "refresh_instruction": "Fetch live HEAD and the newest CI run. In particular, confirm tests/test_handoff_drill.py passes and that repository-only fidelity is 1.0 after the 570-lead calibration."
+    "last_observed_run": 194,
+    "observed_head_sha": "d850b51e8208dd5c015db6692fa2548a601a73ee",
+    "conclusion": "success; repository-only handoff isolation fidelity reached 1.0 on the 570-lead checkout",
+    "mypy_summary": "Success: no issues found in 55 source files on run #194.",
+    "pytest_summary": "125 passed on run #194, including repository-only fidelity=1.0 and stale-checkpoint detection.",
+    "ruff_summary": "62 findings on run #194; Ruff remains diagnostic-only during the Memory Campaign.",
+    "refresh_instruction": "Fetch live HEAD and newest CI before quoting current correctness because compact-index code, UP-HARDROCK batch2, the 576-lead calibration and this checkpoint are newer than run #194."
   },
   "workstreams": [
     {
       "workstream_id": "ci-correctness",
-      "status": "hard_gate_green_on_last_observed_head_newer_commits_pending_refresh",
-      "summary": "Mypy and Pytest hard gates were green on run #176. Newer research, handoff-isolation and calibration commits require a live refresh before correctness is reported as current. A narrowly scoped Postgres arg-type Mypy override remains temporary.",
+      "status": "hard_gate_green_on_run_194_newer_commits_pending_refresh",
+      "summary": "Run #194 passed Mypy and 125 Pytest tests. New compact-index and 576-lead research/checkpoint commits require a live refresh before correctness is reported as current. A narrowly scoped Postgres arg-type Mypy override remains temporary.",
       "next_actions": [
-        "Fetch CI for the live head and confirm Mypy/Pytest correctness gates.",
-        "Confirm the new handoff isolation drill passes under CI.",
+        "Fetch CI for the live head and confirm Mypy/Pytest correctness gates including compact-index persistence tests.",
+        "Keep the repository-only isolation drill as a hard correctness check.",
         "Remove the temporary Postgres arg-type override when a safe patch-capable edit is available."
       ],
       "blockers": []
@@ -80,10 +80,10 @@
     {
       "workstream_id": "memory-atlas-lithium-battery",
       "status": "active_high_novelty_unsealed",
-      "summary": "Blind lithium-battery Memory Atlas has 570 raw leads across 14 primary shards; MID-ANODE, MID-SEPARATOR and MID-ELECTROLYTE batch2 each added 6/6 new useful structural leads. No shard has met saturation criteria and search visibility remains none.",
+      "summary": "Blind lithium-battery Memory Atlas has 576 raw leads across 14 primary shards. Ten primary shards now have batch2; every tested batch2 remains 6/6 new useful leads. No shard has met saturation criteria and search visibility remains none.",
       "next_actions": [
-        "Persist compact per-shard indices from typed/repaired candidates.",
-        "Continue batch2 on UP-HARDROCK, UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
+        "Generate/use compact per-shard indices from typed/repaired candidates.",
+        "Continue batch2 on UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING.",
         "Do not begin fresh web self-verification until an individual shard is sealed."
       ],
       "blockers": [
@@ -92,14 +92,16 @@
     },
     {
       "workstream_id": "session-continuity",
-      "status": "v3_repository_only_isolation_drill_added_pending_live_ci",
-      "summary": "Fresh sessions have a branch-independent rendezvous issue, stable bootstrap files, project constitution, typed checkpoint, live-HEAD delta detection and a repository-only isolation drill that reconstructs campaign state from files without chat history and detects stale checkpoints.",
+      "status": "repository_only_isolation_drill_validated_1_0",
+      "summary": "CI run #194 validated all ten deterministic repository-only handoff checks and the stale-checkpoint negative test. The drill previously caught an offsetting BAT-CELL/UP-CHEMICALS shard-count error that total-only validation would have missed. Dynamic lead counts were removed from tests so raw JSONL remains the derived count source.",
       "next_actions": [
-        "Confirm repository-only handoff fidelity reaches 1.0 in CI after the 570-lead calibration.",
-        "Verify the deliberately stale checkpoint fixture is detected without chat context.",
-        "Continue treating live Git HEAD and CI as authoritative over all checkpoint snapshots."
+        "Continue treating live Git HEAD and CI as authoritative over checkpoint snapshots.",
+        "Keep devlog evidence of the 0.9 -> diagnosis -> 1.0 drill progression.",
+        "Add a fresh-model semantic reconstruction benchmark if a true agent-spawn capability becomes available."
       ],
-      "blockers": []
+      "blockers": [
+        "Current tools cannot spawn a genuinely independent language model with erased chat context; deterministic CI isolation is the strongest available test."
+      ]
     }
   ],
   "resume_read_set": [
@@ -109,6 +111,7 @@
     "docs/development/project-constitution.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development/handoff-isolation-drill.md",
+    "docs/devlog/2026-08-21-session-handoff-isolation-drill.md",
     "docs/devlog/2026-08-21-memory-campaign-part2.md",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "src/longcycle/application/session_handoff.py",
@@ -116,22 +119,24 @@
     "src/longcycle/application/memory_ingest.py",
     "src/longcycle/application/memory_index.py",
     "tests/test_handoff_drill.py",
+    "tests/test_memory_index_persistence.py",
     ".github/workflows/ci.yml"
   ],
   "latest_devlogs": [
+    "docs/devlog/2026-08-21-session-handoff-isolation-drill.md",
     "docs/devlog/2026-08-21-memory-campaign-part2.md"
   ],
   "unresolved_questions": [
-    "Will the repository-only handoff isolation drill reach fidelity_score=1.0 on the live CI checkout after calibration?",
-    "Which of the five remaining batch1-only primary shards first begins to show novelty decay?",
-    "What is the best deterministic persistence format/location for generated per-shard compact indices without duplicating raw recall?",
+    "Will the newest live CI remain green with compact-index persistence tests and the 576-lead checkpoint?",
+    "Which of the four remaining batch1-only primary shards first begins to show novelty decay?",
+    "Should generated shard-index JSON files be committed, generated on demand, or published as CI artifacts once the generation command is finalized?",
     "When should Ruff cleanup be promoted back from diagnostic debt to a hard gate?"
   ],
   "ordered_next_actions": [
-    "Fetch the newest CI for the live head and verify the repository-only handoff isolation drill plus existing hard correctness gates.",
-    "If the drill is green, record the measured restoration result and any remaining live-only limitations in the development log/checkpoint.",
-    "Persist compact per-shard Memory Atlas indices and use them for subsequent blind novelty-decay batches.",
-    "Continue batch2 on UP-HARDROCK, UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING with search_visibility=none.",
+    "Fetch the newest CI for live HEAD and verify compact-index persistence tests plus the repository-only handoff drill.",
+    "Continue blind batch2 on UP-BRINE, UP-CHEMICALS, DOWN-OTHER and LOOP-RECYCLING with search_visibility=none.",
+    "Use compact-index generation for subsequent novelty-decay prompts and decide the persistence policy for generated shard-index JSON.",
+    "Begin batch3 only for shards that remain high novelty; do not seal until the three-low-batch plus negative-space rule is satisfied.",
     "Checkpoint again after the next coherent research batch or any change in CI/search phase."
   ]
 }
