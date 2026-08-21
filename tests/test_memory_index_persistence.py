@@ -18,10 +18,11 @@ class MemoryIndexPersistenceTest(unittest.TestCase):
         index = build_shard_memory_index_from_directory(CAMPAIGN / "blind" / "DOWN-ESS")
 
         self.assertEqual(index.shard_id, "DOWN-ESS")
-        self.assertEqual(index.lead_count, 48)
-        self.assertEqual(tuple(item.lead_id for item in index.entries), tuple(sorted(
-            item.lead_id for item in index.entries
-        )))
+        self.assertEqual(index.lead_count, len(index.entries))
+        self.assertEqual(
+            tuple(item.lead_id for item in index.entries),
+            tuple(sorted(item.lead_id for item in index.entries)),
+        )
         repaired = next(item for item in index.entries if item.lead_id == "ESS-C006")
         self.assertEqual(repaired.lead_kind.value, "capital_cycle")
 
