@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import re
-from datetime import datetime
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -63,7 +62,7 @@ class SessionHandoffCheckpoint(BaseModel):
 
     schema_version: Literal["longcycle-session-handoff/v1"]
     continuity_sequence: int = Field(ge=1)
-    checkpoint_generated_at: datetime
+    provenance_ordering: Literal["git_commit_graph"]
     repository: Literal["lly8666/longcycle-core"]
     active_branch: str = Field(min_length=1)
     active_pr: int | None = Field(default=None, ge=1)
@@ -75,6 +74,7 @@ class SessionHandoffCheckpoint(BaseModel):
     north_star: tuple[str, ...]
     non_negotiable_invariants: tuple[str, ...]
     forbidden_shortcuts: tuple[str, ...]
+    future_phase_commitments: tuple[str, ...]
     memory_campaign: HandoffMemoryCampaign
     ci: HandoffCIState
     workstreams: tuple[HandoffWorkstream, ...]
@@ -87,6 +87,8 @@ class SessionHandoffCheckpoint(BaseModel):
     def continuation_contract_is_complete(self) -> SessionHandoffCheckpoint:
         if not self.user_directives:
             raise ValueError("handoff must preserve at least one explicit user directive")
+        if not self.future_phase_commitments:
+            raise ValueError("handoff must preserve future phase commitments")
         if not self.resume_read_set:
             raise ValueError("handoff must provide a minimal resume read set")
         if not self.ordered_next_actions:
