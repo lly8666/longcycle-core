@@ -160,6 +160,13 @@ jobs:
           assert outcome.timing_delta_value is None
           assert outcome.timing_delta_unit is None
 
+          judgments_payload = json.load(open('probe/kwinana-judgments.json', encoding='utf-8'))
+          has_caveat = any(
+              item.get('metadata', {}).get('caveat_semantics')
+              for item in judgments_payload['judgments']
+          )
+          assert has_caveat
+
           payload = {
               'schema_version': 'longcycle-kwinana-typed-replay-proof/v1',
               'before_2022': before_2022.model_dump(mode='json'),
@@ -167,10 +174,7 @@ jobs:
               'disclosed': disclosed.model_dump(mode='json'),
               'verification': {
                   'effective_time_does_not_leak_before_known_time': True,
-                  'risk_caveat_survives_judgment_projection': any(
-                      item.metadata.get('caveat_semantics')
-                      for item in json.load(open('probe/kwinana-judgments.json'))['judgments']
-                  ),
+                  'risk_caveat_survives_judgment_projection': True,
                   'related_milestone_is_indeterminate': True,
                   'related_milestone_has_no_timing_delta': True,
                   'typed_duckdb_round_trip': True,
