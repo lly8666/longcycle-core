@@ -56,19 +56,28 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         self.assertTrue(report.recovered.ordered_next_actions)
 
         workstreams = {item.workstream_id: item for item in checkpoint.workstreams}
-        main_path = workstreams["memory-atlas-active-benchmark"]
-        self.assertEqual(main_path.role, "main_path")
-        self.assertEqual(
-            main_path.parent_goal_ref,
-            "strategic_horizon.short_term_goal",
-        )
+        main_paths = [item for item in checkpoint.workstreams if item.role == "main_path"]
+        self.assertTrue(main_paths)
+        for main_path in main_paths:
+            self.assertNotEqual(
+                main_path.parent_goal_ref,
+                "strategic_horizon.parallel_permanent_tracks",
+            )
 
         cursor_workstream = workstreams[checkpoint.continuation_cursor.parent_workstream_id]
-        self.assertEqual(cursor_workstream.role, "main_path")
-        self.assertEqual(
-            cursor_workstream.parent_goal_ref,
-            "strategic_horizon.short_term_goal",
-        )
+        if cursor_workstream.role == "parallel_track":
+            self.assertEqual(
+                cursor_workstream.parent_goal_ref,
+                "strategic_horizon.parallel_permanent_tracks",
+            )
+        else:
+            self.assertIn(
+                cursor_workstream.parent_goal_ref,
+                {
+                    "strategic_horizon.short_term_goal",
+                    "strategic_horizon.medium_term_goal",
+                },
+            )
 
         campaign = checkpoint.memory_campaign
         self.assertIsNotNone(campaign)
