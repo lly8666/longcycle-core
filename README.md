@@ -214,6 +214,8 @@ Old Model Memory Atlas
 - deterministic memory-vs-evidence adjudication；
 - blind/gap prompt isolation；
 - memory-campaign saturation 与 verification-depth application primitives；
+- repo-owned `research-orchestration/v1`：验证 immutable source pack/material hash、应用显式 repair overlay、执行 Grounded Evidence，并可选执行 Reality projection；
+- `longcycle research run` 研究执行入口，以及成功/失败均可落盘的 machine-readable orchestration receipt；
 - 锂电采集协议、工作包、Memory Exhaustion Manifest、Current Watchlist 和机器回传 Schema。
 
 尚未实现：
@@ -231,6 +233,29 @@ Old Model Memory Atlas
 - Outbox relay 和真实 telemetry。
 
 `JsonFixtureGateway` 仍是离线黄金测试适配器，不是生产模型。
+
+## 研究执行入口
+
+当 repo 中已经有经过审查的 `longcycle-research-orchestration/v1` spec，且对应的 immutable source pack 已由外层 adapter 从 GitHub Release（或其他明确 transport）恢复到本地后，可以通过统一 CLI 执行：
+
+```bash
+longcycle --json research run \
+  path/to/research-orchestration.json \
+  --source-pack path/to/restored-source-pack.zip \
+  --work-dir .longcycle/run-work \
+  --output .longcycle/run-receipt.json
+```
+
+执行边界保持刻意简单：
+
+- transport restore 不是 epistemic execution；CLI 不会把“从哪里下载到”偷换成 source authority；
+- CLI 会重新验证 source-pack filename、outer SHA-256，以及 Evidence spec 实际引用的每份 material SHA-256；
+- repair 只能通过 repo-owned、带 `from` guard 的显式 overlay 发生，不能借 repair 改 claim context、locator 或 acceptance；
+- Grounded Evidence 仍不会自动升级为 Fact/Judgment；可选 Reality 仍走现有 reconciliation；
+- sealed/immutable path 在执行前后做 digest guard；
+- 成功输出 `longcycle-research-orchestration-execution/v1` receipt；失败也会尽力把 `ok=false` 的 machine-readable receipt 写到 `--output`，然后 CLI 非零退出。
+
+默认会先运行数据库 migration。只有调用方已经明确完成 migration 时才应使用 `--skip-db-upgrade`。
 
 ## 研究 Agent 的最低要求
 
@@ -258,25 +283,3 @@ Old Model Memory Atlas
 - [模型更新后的历史回补](docs/research/model-refresh-backfill.md)
 - [Claim-scoped 来源权威策略](docs/research/source-authority-policy.md)
 - [锂电 Memory Exhaustion Manifest](docs/research/lithium-battery-memory-exhaustion-manifest.json)
-- [锂电 Current Source Watchlist](docs/research/lithium-battery-current-watchlist.json)
-- [锂电低成本 Agent 工作包](docs/research/lithium-battery-work-packages.json)
-- [Agent 文档回传 Schema](docs/research/agent-document-record.schema.json)
-
-## 当前下一步
-
-1. 先用高级模型跑锂电 2019–2026 Memory Exhaustion Campaign，生成并封存第一版 Memory Atlas；
-2. 让高级模型对 atlas 中高价值 lead 自己做第一轮 primary-source 定位；
-3. 将剩余 lead 编译成严格 verification task packet，交给低成本 Agent 深挖；
-4. 同时启动锂电 Current source watchlist，从今天开始主动保存未来历史；
-5. 用第一批真实材料反推 judgment extraction、项目实体语义和来源 authority profile；
-6. 以后每次高能力模型知识版本显著更新，重新跑 benchmark manifest，自动产生历史 backfill diff。
-
-最终验收问题：
-
-> **站在任意历史日期，只使用当时能知道的资料，我们能否理解当时为什么形成那些决策和预期；站在今天，我们是否还能看见这段历史中那些后来被搜索引擎、叙事和结果掩盖掉的关键机制？**
-
-## 当前验证边界
-
-离线测试覆盖现有事实采集、归一/调和、队列/worker、Memory Lead authority adjudication、blind/gap prompt isolation、Memory Campaign saturation 和低成本 Agent minimum search depth 规则。
-
-真实 PostgreSQL/S3 集成测试仍是上线前关键工作；当前仓库也还没有 CI workflow 对这些新提交给出线上测试结果。
