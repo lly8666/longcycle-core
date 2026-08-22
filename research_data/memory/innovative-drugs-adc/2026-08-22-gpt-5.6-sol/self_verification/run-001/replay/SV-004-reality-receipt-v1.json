@@ -1,0 +1,73 @@
+{
+  "schema_version": "longcycle-grounded-reality-receipt/v1",
+  "task_id": "ADC-SV-004-RC48-REALITY-V1",
+  "source_evidence_task_id": "ADC-SV-004-RC48-GROUNDED-EVIDENCE-V1",
+  "projection_spec": "replay/SV-004-reality-projection-v1.json",
+  "execution": {
+    "active_head": "bba0e1637103bca1b65a059de85b9232adb822d1",
+    "workflow_run_id": 32584999064,
+    "workflow_artifact_id": 9478808578,
+    "workflow_artifact_sha256": "069c29e9e2f05f67622308cc8d65fadc697be6e8319ec9a95b983d5c2815246f",
+    "generated_drive_file_id": "1WwMAW7_ToQgnNYnTm_aVHEL6gMoBDqeP",
+    "generated_drive_file_name": "longcycle-adc-sv004-reality-run32584999064.zip",
+    "result": "pass"
+  },
+  "verification": {
+    "fact_count": 8,
+    "canonical_reality_count": 8,
+    "all_reconciled_accept": true,
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "known_time_required_only_for_projection_cited_fragments": true,
+    "valid_time_semantics_preserved": true,
+    "observation_semantics_preserved": true
+  },
+  "canonical_reality": [
+    {"predicate_code":"regulatory.china_gastric_approval","value_text":"approved","valid_from":"2021-06-09T00:00:00Z","market_known_at":"2021-06-11T00:00:00Z"},
+    {"predicate_code":"rights.remegen_retained_territory","value_text":"Asia excluding Japan and Singapore","observed_at":"2021-08-09T00:00:00Z","market_known_at":"2021-08-10T00:00:00Z"},
+    {"predicate_code":"development.announced_global_lead","value_text":"Seagen","observed_at":"2021-08-09T00:00:00Z","market_known_at":"2021-08-10T00:00:00Z"},
+    {"predicate_code":"regulatory.china_urothelial_approval","value_text":"approved","valid_from":"2021-12-31T00:00:00Z","market_known_at":"2023-11-23T00:00:00Z"},
+    {"predicate_code":"collaboration.pfizer_group_counterparty","value_text":"RemeGen Co., Ltd.","observed_at":"2025-02-27T00:00:00Z","market_known_at":"2025-02-28T00:00:00Z"},
+    {"predicate_code":"collaboration.current_global_counterparty","value_text":"Pfizer","observed_at":"2026-08-22T16:00:00Z","market_known_at":"2026-08-22T16:00:00Z"},
+    {"predicate_code":"trial.collaborator","value_text":"RemeGen Co., Ltd.","observed_at":"2026-08-22T16:00:00Z","market_known_at":"2026-08-22T16:00:00Z"},
+    {"predicate_code":"trial.lead_sponsor","value_text":"Seagen, a wholly owned subsidiary of Pfizer","observed_at":"2026-08-22T16:00:00Z","market_known_at":"2026-08-22T16:00:00Z"}
+  ],
+  "no_lookahead": {
+    "urothelial_approval_valid_time": "2021-12-31T00:00:00Z",
+    "urothelial_approval_current_grounded_known_time": "2023-11-23T00:00:00Z",
+    "rule": "The later recap proves the earlier valid-time state but cannot make that state replay-visible before this source's conservative known-time. Earlier visibility requires separately grounded earlier Evidence.",
+    "passed": true
+  },
+  "role_identity_result": {
+    "generic_partner_collapse_avoided": true,
+    "separate_predicates": [
+      "rights.remegen_retained_territory",
+      "development.announced_global_lead",
+      "collaboration.pfizer_group_counterparty",
+      "collaboration.current_global_counterparty",
+      "trial.lead_sponsor",
+      "trial.collaborator"
+    ],
+    "legal_party_substitution_inferred_from_parent_acquisition": false,
+    "trial_sponsor_inferred_from_parent_company": false
+  },
+  "architecture_result": {
+    "new_schema_required": false,
+    "new_relation_subsystem_required": false,
+    "reality_executor_change_required": false,
+    "existing_primitives_sufficient": [
+      "claim-scoped Evidence",
+      "namespaced Reality predicates",
+      "subject identity",
+      "unknown-onset Reality with source-supported observation time",
+      "period-valid Reality with independent known-time",
+      "metadata boundaries for role semantics and authority scope"
+    ],
+    "deliberate_non_change": "The bounded Reality projection currently emits text-valued counterparties even though the lower Fact model can represent normalized entity references. This RC48 pilot remains truthful and queryable because distinct role predicates preserve the relevant semantics. Do not expand the executor merely to normalize counterparties unless a later trajectory demonstrates an actual identity/reconciliation failure rather than a representational preference."
+  },
+  "deferred_pressure_reference": "../../analysis/first-pair-outcome-polarity-pressure-v1.json",
+  "deferred_pressure_rule": "The separate non-direct Outcome implication-polarity pressure remains known and intentionally deferred. RC48 does not satisfy its promote-to-schema gate.",
+  "sealed_blind_memory_mutated": false,
+  "next_research_direction": "Stop local optimization on RC48 role identity. Move to SV-003 Enhertu if a third ADC trajectory is needed, prioritizing indication/biomarker/readout-state pressure rather than adding role/schema machinery that RC48 did not require."
+}
