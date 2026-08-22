@@ -1,0 +1,93 @@
+{
+  "schema_version": "longcycle-bounded-trajectory-plan/v1",
+  "task_id": "EVT-003-HYDROXIDE-EXPECTATION-REVISION-V1",
+  "source_discovery_family": "SVQ-003-HYDROXIDE-EXPECTATION-VINTAGE",
+  "lead_ids": [
+    "CH-I003",
+    "CH-K003",
+    "CHC-013"
+  ],
+  "workstream": "first-end-to-end-reality-judgment-outcome-replay",
+  "role": "main_path",
+  "vertical_alignment": {
+    "decision": "broaden semantic trajectory inside the already sealed UP-CHEMICALS shard rather than continue local Kwinana schema refinement",
+    "why": [
+      "Kemerton and Kwinana already prove project-milestone Reality/Judgment/Outcome replay, temporal precision, semantic Outcome comparability and unknown-onset state-as-of Reality.",
+      "Only UP-CHEMICALS is currently sealed for fresh historical verification, so moving to an unsealed shard would violate the campaign seal boundary.",
+      "The hydroxide expectation vintage adds a different analytical primitive: an industry thesis, an explicit negative revision, later persistence of the thesis, and contemporaneous competing scenarios.",
+      "The benchmark exposed that Judgment rationales and revision relations were persisted but absent from typed point-in-time replay; that reusable defect is fixed before executing this trajectory."
+    ],
+    "prerequisite_substantive_sha": "99d87559ddc2ba40139a6251a8819dc5bb9fab39",
+    "prerequisite_gate": {
+      "run_id": 32560356530,
+      "result": "pass",
+      "postgres_epistemic_smoke": "pass",
+      "mypy": "success: no issues found in 74 source files",
+      "pytest": "220 passed"
+    }
+  },
+  "research_question": "How did the contemporaneous high-nickel-cathode -> battery-grade lithium-hydroxide demand thesis change across 2018-2019, what mechanisms or caveats drove revisions, and what competing scenarios were knowable at each historical cutoff?",
+  "candidate_sources": [
+    {
+      "source_key": "livent-2018-10k",
+      "url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm",
+      "expected_role": "initial producer thesis",
+      "target_claim": "growing high-nickel cathode use supports demand for battery-grade lithium hydroxide"
+    },
+    {
+      "source_key": "livent-2019-q1-10q",
+      "url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/livent03311910q.htm",
+      "expected_role": "explicit negative revision",
+      "target_claim": "the high-nickel transition progressed more slowly than anticipated and some customers used lower-cost carbonate or lower-performance hydroxide"
+    },
+    {
+      "source_key": "livent-2019-10k",
+      "url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+      "expected_role": "later producer expectation vintage",
+      "target_claim": "higher-nickel adoption was still expected to increase lithium-hydroxide need"
+    },
+    {
+      "source_key": "sqm-2019-6k",
+      "url": "https://www.sec.gov/Archives/edgar/data/909037/000114420419044002/tv529099_6k.htm",
+      "expected_role": "contemporaneous competing scenarios",
+      "target_claim": "conservative and optimistic lithium-hydroxide demand scenarios coexist rather than one certain path"
+    },
+    {
+      "source_key": "bnef-2019-lithium-demand",
+      "url": "https://about.bnef.com/insights/clean-transport/will-the-real-lithium-demand-please-stand-up-challenging-the-1mt-by-2025-orthodoxy/",
+      "expected_role": "independent contemporaneous context",
+      "target_claim": "the market lacked consensus on hydroxide/carbonate split and faster hydroxide growth depended on higher-nickel adoption"
+    }
+  ],
+  "execution_order": [
+    "Archive exact original source bytes and establish conservative first-known times; use SEC filing timestamps/filing dates as availability bounds where supported.",
+    "Extract only claim-scoped Evidence fragments for the hydroxide-demand thesis, revision mechanism/caveats and competing scenarios; do not expand into broad lithium market research.",
+    "Persist each contemporaneous thesis/scenario as immutable Judgment assertions with source-supported target precision and explicit rationale/caveat Evidence.",
+    "Represent the 2019 Livent negative update with a typed JudgmentRelation REVISES edge to the earlier Livent thesis when the claim identity is sufficiently aligned; otherwise preserve them as distinct Judgments and document why no revision edge is asserted.",
+    "Use JudgmentRationale records for source-backed mechanisms/conditions such as slower high-nickel adoption and substitution toward carbonate/lower-performance hydroxide.",
+    "Seal a typed PostgreSQL -> DuckDB replay and prove that pre-2019 cutoffs cannot see the later revision/rationales/relations or competing scenarios.",
+    "Only after the contemporaneous cognition chain is stable, identify the smallest source-backed later Reality/Outcome needed to evaluate a specific forecast. Do not manufacture an Outcome merely to complete the three-layer shape."
+  ],
+  "acceptance": {
+    "minimum": [
+      "At least two distinct historical expectation vintages are archived from original or authoritative contemporaneous sources.",
+      "At least one source-backed rationale or caveat survives typed PostgreSQL and sealed DuckDB replay.",
+      "At least one typed revision relation survives replay if the source semantics justify it.",
+      "Competing scenarios remain separate Judgments rather than being collapsed into one hindsight consensus.",
+      "Knowledge cutoffs hide every rationale/revision/scenario until its conservative known-time.",
+      "No new lithium-specific branch appears in generic replay code.",
+      "Existing Kemerton direct Outcome, Kwinana related-milestone Outcome and Kwinana state-as-of Reality regressions remain green."
+    ],
+    "stop_rule": "If original evidence does not support a clean revision identity or later Outcome, preserve the ambiguity explicitly and stop rather than infer a false relation or result."
+  },
+  "search_boundary": {
+    "allowed": "claim-scoped retrieval/chasing needed to recover or verify the listed SVQ-003 sources inside sealed UP-CHEMICALS",
+    "forbidden": [
+      "fresh search in any unsealed shard",
+      "broadening into unrelated lithium history",
+      "mutating sealed blind-memory artifacts",
+      "treating discovery snippets or model memory as Evidence"
+    ]
+  },
+  "status": "ready_for_grounded_evidence_execution"
+}
