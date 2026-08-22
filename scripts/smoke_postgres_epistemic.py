@@ -22,6 +22,7 @@ from longcycle.application.source_registration import build_http_source_definiti
 from longcycle.domain.epistemic import MemorySubjectRef
 from longcycle.domain.enums import (
     EntityType,
+    FactEvidenceRole,
     FactValueKind,
     JudgmentEvidenceRole,
     JudgmentKind,
@@ -42,6 +43,7 @@ from longcycle.domain.models import (
     ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     RawPayload,
     SourceDocument,
@@ -131,6 +133,12 @@ async def main() -> None:
             known_at=AUG_KNOWN,
             text="The production line achieved first product in July 2022.",
         )
+        aug_context_evidence = EvidenceFragment.create(
+            aug_document.id,
+            "text:context:first-product-month",
+            "July 2022",
+        )
+        await research.save_evidence((aug_context_evidence,))
 
         may_run_id = stable_uuid_exact("epistemic-smoke", "may-extraction")
         await research.save_extraction(
@@ -166,7 +174,16 @@ async def main() -> None:
             known_at=AUG_KNOWN,
             source_id=source.id,
             document_id=aug_document.id,
-            evidence_fragment_id=aug_evidence.id,
+            evidence=(
+                FactEvidenceRef(
+                    evidence_fragment_id=aug_evidence.id,
+                    evidence_role=FactEvidenceRole.SUPPORTING,
+                ),
+                FactEvidenceRef(
+                    evidence_fragment_id=aug_context_evidence.id,
+                    evidence_role=FactEvidenceRole.CONTEXT,
+                ),
+            ),
             extraction_run_id=aug_run_id,
             extractor_name="epistemic-smoke",
             extractor_version="1.0.0",
@@ -187,7 +204,7 @@ async def main() -> None:
                 extractor_name="epistemic-smoke",
                 extractor_version="1.0.0",
                 schema_version="epistemic-smoke/v1",
-                evidence=(aug_evidence,),
+                evidence=(aug_evidence, aug_context_evidence),
                 candidates=(fact,),
             )
         )
@@ -254,6 +271,11 @@ async def main() -> None:
             raise AssertionError("canonical month precision was lost")
         if canonical.valid_time.source_text != "July 2022":
             raise AssertionError("canonical source time text was lost")
+        expected_fact_evidence = {aug_evidence.id, aug_context_evidence.id}
+        if set(canonical.evidence_fragment_ids) != expected_fact_evidence:
+            raise AssertionError(
+                "canonical Reality did not preserve all selected Fact evidence fragments"
+            )
     finally:
         await reader.close()
 
@@ -308,6 +330,8 @@ async def main() -> None:
         raise AssertionError("portable replay leaked future state")
     if (len(portable_at.reality), len(portable_at.judgments), len(portable_at.outcomes)) != (1, 1, 1):
         raise AssertionError("portable replay does not match PostgreSQL typed memory")
+    if set(portable_at.reality[0].evidence_fragment_ids) != expected_fact_evidence:
+        raise AssertionError("portable Reality lost multi-fragment Fact provenance")
     if not manifest["typed_round_trip"]:
         raise AssertionError("portable memory did not round-trip")
 
