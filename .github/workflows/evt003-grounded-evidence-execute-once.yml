@@ -11,14 +11,14 @@ permissions:
 
 env:
   ACTIVE_REF: design/industry-memory
-  EXPECTED_HEAD: 1cc5aa9a68feed56f02afef25be4f91ba1ceb116
+  EXPECTED_HEAD: 64b92038dfaca0aebf5dbe98f9171872c8628540
   ACQUISITION_RUN_ID: '32568791877'
   ACQUISITION_ARTIFACT: evt003-approved-redistributor-32568791877
   SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-grounded-evidence-spec-v2.json
 
 jobs:
   execute:
-    if: github.event.issue.title == '[longcycle-evt003-grounded-evidence-execute-v1]'
+    if: github.event.issue.title == '[longcycle-evt003-grounded-evidence-execute-v2]'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
