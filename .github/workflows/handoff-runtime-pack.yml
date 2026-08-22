@@ -72,10 +72,13 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          RUN_ID: ${{ github.run_id }}
         run: |
           set -euo pipefail
           {
             echo '# Longcycle DuckDB offline runtime v1'
+            echo
+            echo "- workflow run: \`$RUN_ID\`"
             echo
             echo '```json'
             cat runtime/manifest.json
