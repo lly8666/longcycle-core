@@ -4,23 +4,40 @@ import asyncio
 import unittest
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
-from uuid import uuid4
+from uuid import UUID, uuid4
 
+from longcycle.adapters.storage.memory import InMemoryResearchRepository
+from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.quality import quality_score
 from longcycle.application.reconciliation import Reconciler
-from longcycle.application.pipeline import CollectionPipeline
-from longcycle.adapters.storage.memory import InMemoryResearchRepository
-from longcycle.domain.enums import Decision, EntityType, FactStatus, MarketBasis, ValidTimeKind
+from longcycle.domain.enums import (
+    Decision,
+    EntityType,
+    FactEvidenceRole,
+    FactStatus,
+    MarketBasis,
+    ValidTimeKind,
+)
 from longcycle.domain.models import (
     EvidenceFragment,
     ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     ReconciliationResult,
     SourceDocument,
     TimeRange,
 )
+
+
+def supporting_evidence(fragment_id: UUID | None = None) -> tuple[FactEvidenceRef, ...]:
+    return (
+        FactEvidenceRef(
+            evidence_fragment_id=fragment_id or uuid4(),
+            evidence_role=FactEvidenceRole.SUPPORTING,
+        ),
+    )
 
 
 def assertion(
@@ -46,7 +63,7 @@ def assertion(
         valid_time=TimeRange(start=datetime(2025, 1, 1, tzinfo=UTC)),
         source_id=source_id,
         document_id=uuid4(),
-        evidence_fragment_id=uuid4(),
+        evidence=supporting_evidence(),
         extraction_run_id=uuid4(),
         extractor_name="test",
         extractor_version="1",
@@ -87,7 +104,9 @@ class QualityAndReconciliationTest(unittest.TestCase):
         self.assertEqual(result.status, FactStatus.TRUSTED)
 
     def test_conflicting_value_is_preserved_for_review(self) -> None:
-        existing = assertion(number="100", cluster="primary-a").model_copy(update={"status": FactStatus.TRUSTED})
+        existing = assertion(number="100", cluster="primary-a").model_copy(
+            update={"status": FactStatus.TRUSTED}
+        )
         candidate = existing.model_copy(
             update={
                 "id": uuid4(),
@@ -96,7 +115,7 @@ class QualityAndReconciliationTest(unittest.TestCase):
                 "source_id": uuid4(),
                 "source_cluster": "primary-b",
                 "document_id": uuid4(),
-                "evidence_fragment_id": uuid4(),
+                "evidence": supporting_evidence(),
             }
         )
         result = Reconciler().reconcile(candidate, [existing])
@@ -281,7 +300,7 @@ class RepositoryReconciliationContractTest(unittest.IsolatedAsyncioTestCase):
         original = assertion(number="100").model_copy(
             update={
                 "document_id": document_id,
-                "evidence_fragment_id": fragment.id,
+                "evidence": supporting_evidence(fragment.id),
                 "extraction_run_id": run_id,
             }
         )
@@ -384,7 +403,7 @@ class RepositoryReconciliationContractTest(unittest.IsolatedAsyncioTestCase):
                 "source_id": uuid4(),
                 "source_cluster": "source-b",
                 "document_id": uuid4(),
-                "evidence_fragment_id": uuid4(),
+                "evidence": supporting_evidence(),
             }
         )
         await repository.append_assertions((first, second))
