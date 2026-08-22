@@ -3,7 +3,7 @@
   "run_id": "ADC-SV-001",
   "campaign_id": "ADC-20260822-GPT56SOL-001",
   "industry": "innovative-drugs-adc",
-  "stage": "high_model_self_verification_search_discovery",
+  "stage": "delegated_claim_scoped_evidence_recovery_and_archive",
   "source_visibility": "self_verification",
   "sealed_blind_commit": "8d5654017cbf7d2b8adc7511cf60f29514c6ee63",
   "handoff_compatible_projection_commit": "342d37c678240a978d55483a151a7cd224c0eacf",
@@ -19,15 +19,32 @@
     "tasks/SV-003-enhertu.json",
     "tasks/SV-004-disitamab-vedotin-rc48.json"
   ],
+  "grounded_evidence": {
+    "completed_tasks": ["SV-001"],
+    "active_task": "SV-002",
+    "sv001_spec": "evidence/SV-001-grounded-evidence-spec-v1.json",
+    "sv001_receipt": "evidence/SV-001-grounded-evidence-receipt-v1.json",
+    "sv001_source_release_asset": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
+    "sv001_execution_run_id": 32580391735,
+    "sv001_generated_drive_file_id": "1R3EaC_SVIX_TvfCuBJ36r5n5MzM_4wzv",
+    "sv001_acceptance": {
+      "document_versions": 4,
+      "evidence_fragments": 8,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    },
+    "sv001_causal_boundary": "The 2019 scoring explanation is grounded as contemporaneous Judgment/context; the stronger claim that an assay/scoring fix caused later success remains unpromoted."
+  },
   "hard_boundaries": [
     "Search results and candidate URLs are discovery material, not Evidence.",
     "The sealed blind archive may not be rewritten, deleted, corrected in place, or retroactively improved.",
     "Any discrepancy with blind memory must be recorded in this run or a later repair/verification artifact.",
     "Candidate sources become Longcycle Evidence only after normal fetch/archive/locator persistence and claim-scoped authority review.",
     "Same-upstream corporate reposts or filings must not be counted as independent evidence merely because URLs differ.",
+    "A verifiable complete original PDF may be acquired through a stable redistributor, but retrieval host and upstream document identity must remain distinct.",
     "not_found is not contradiction."
   ],
-  "status": "first_discovery_wave_complete_evidence_archive_not_started",
-  "next_stage": "delegated_claim_scoped_evidence_recovery_and_archive",
-  "next_stage_goal": "Archive the strongest primary/authoritative sources for each trajectory, preserve known-time and valid-time precision, then build Reality/Judgment/Outcome replay without hindsight leakage."
+  "status": "sv001_grounded_evidence_complete_sv002_next",
+  "next_stage": "continue_delegated_claim_scoped_evidence_recovery",
+  "next_stage_goal": "Ground SV-002 Rova-T acquisition-time expectation, TAHOE randomized failure, accounting impairment and MERU termination, preserving known-time and claim scope; then compare the first success/revision and failure/termination trajectories before changing generic schema."
 }
