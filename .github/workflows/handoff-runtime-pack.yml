@@ -9,14 +9,14 @@ permissions:
   issues: write
 
 jobs:
-  duckdb-offline-runtime-v1:
-    if: github.event.issue.title == '[longcycle-handoff-runtime-pack-v1]'
+  duckdb-offline-runtime-py313-v1:
+    if: github.event.issue.title == '[longcycle-handoff-runtime-pack-py313-v1]'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
 
       - name: Download immutable offline DuckDB runtime
         shell: bash
@@ -25,7 +25,7 @@ jobs:
           mkdir -p runtime/wheelhouse
           python -m pip download --only-binary=:all: --no-deps 'duckdb==1.5.5' -d runtime/wheelhouse
           python - <<'PY'
-          import hashlib, json
+          import hashlib, json, platform, sys
           from pathlib import Path
 
           wheels = sorted(Path('runtime/wheelhouse').glob('duckdb-1.5.5-*.whl'))
@@ -36,12 +36,16 @@ jobs:
               'schema_version': 'longcycle-offline-runtime-pack/v1',
               'runtime': 'duckdb-python',
               'version': '1.5.5',
+              'python_major_minor': f'{sys.version_info.major}.{sys.version_info.minor}',
+              'architecture': platform.machine(),
               'wheel_name': wheel.name,
               'wheel_bytes': wheel.stat().st_size,
               'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(),
               'install': 'python -m pip install --no-index --no-deps <wheel>',
-              'purpose': 'Open Longcycle portable DuckDB evidence/research bundles in a network-restricted sandbox.',
+              'purpose': 'Open Longcycle portable DuckDB evidence/research bundles in the current network-restricted ChatGPT sandbox class.',
           }
+          if 'cp313' not in wheel.name:
+              raise SystemExit(f'expected a CPython 3.13 wheel, got {wheel.name}')
           Path('runtime/manifest.json').write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
           print(json.dumps(payload, indent=2))
           PY
@@ -62,7 +66,7 @@ jobs:
       - name: Upload offline runtime pack
         uses: actions/upload-artifact@v4
         with:
-          name: longcycle-duckdb-offline-runtime-v1
+          name: longcycle-duckdb-offline-runtime-py313-v1
           if-no-files-found: error
           retention-days: 30
           path: runtime/
@@ -76,7 +80,7 @@ jobs:
         run: |
           set -euo pipefail
           {
-            echo '# Longcycle DuckDB offline runtime v1'
+            echo '# Longcycle DuckDB offline runtime py313 v1'
             echo
             echo "- workflow run: \`$RUN_ID\`"
             echo
