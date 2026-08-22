@@ -64,7 +64,7 @@ def seal_industrial_memory(
     path: Path,
     timeline: IndustrialMemoryTimeline,
 ) -> dict[str, Any]:
-    """Write one immutable, portable generation from a validated typed timeline."""
+    """Write one immutable portable generation from a validated typed timeline."""
 
     duckdb = _duckdb()
     if path.exists():
@@ -85,9 +85,9 @@ def seal_industrial_memory(
                 value_payload JSON,
                 unit_code VARCHAR,
                 valid_time_kind VARCHAR NOT NULL,
-                valid_at TIMESTAMPTZ,
-                valid_from TIMESTAMPTZ,
-                valid_to TIMESTAMPTZ,
+                valid_time_at TIMESTAMPTZ,
+                valid_time_from TIMESTAMPTZ,
+                valid_time_to TIMESTAMPTZ,
                 valid_time_precision VARCHAR NOT NULL,
                 valid_time_text VARCHAR,
                 known_at TIMESTAMPTZ NOT NULL,
@@ -131,13 +131,14 @@ def seal_industrial_memory(
                 topic_code VARCHAR NOT NULL,
                 judgment_kind VARCHAR NOT NULL,
                 target_time_kind VARCHAR NOT NULL,
-                target_at TIMESTAMPTZ,
-                target_from TIMESTAMPTZ,
-                target_to TIMESTAMPTZ,
-                target_precision VARCHAR NOT NULL,
-                target_text VARCHAR,
+                target_time_at TIMESTAMPTZ,
+                target_time_from TIMESTAMPTZ,
+                target_time_to TIMESTAMPTZ,
+                target_time_precision VARCHAR NOT NULL,
+                target_time_text VARCHAR,
                 value_kind VARCHAR NOT NULL,
                 value_text VARCHAR,
+                value_payload JSON,
                 summary VARCHAR NOT NULL,
                 known_at TIMESTAMPTZ NOT NULL,
                 evidence_fragment_ids JSON NOT NULL
@@ -147,7 +148,7 @@ def seal_industrial_memory(
         for item in timeline.judgments:
             subject_key, entity_id, industry_id = _subject_values(item.subject)
             connection.execute(
-                "INSERT INTO judgment_memory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                "INSERT INTO judgment_memory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [
                     str(item.judgment_id),
                     item.judgment_key,
@@ -160,6 +161,7 @@ def seal_industrial_memory(
                     *_extent_values(item.target_time),
                     item.value_kind,
                     item.value_text,
+                    item.value_payload,
                     item.summary,
                     item.known_at,
                     _json([str(value) for value in item.evidence_fragment_ids]),
@@ -177,12 +179,12 @@ def seal_industrial_memory(
                 canonical_fact_version_id VARCHAR,
                 outcome_evidence_fragment_id VARCHAR,
                 evaluation_status VARCHAR NOT NULL,
-                occurrence_kind VARCHAR NOT NULL,
-                occurrence_at TIMESTAMPTZ,
-                occurrence_from TIMESTAMPTZ,
-                occurrence_to TIMESTAMPTZ,
-                occurrence_precision VARCHAR NOT NULL,
-                occurrence_text VARCHAR,
+                occurrence_time_kind VARCHAR NOT NULL,
+                occurrence_time_at TIMESTAMPTZ,
+                occurrence_time_from TIMESTAMPTZ,
+                occurrence_time_to TIMESTAMPTZ,
+                occurrence_time_precision VARCHAR NOT NULL,
+                occurrence_time_text VARCHAR,
                 known_at TIMESTAMPTZ NOT NULL,
                 timing_relation VARCHAR NOT NULL,
                 timing_delta_value DECIMAL(38, 12),
@@ -226,7 +228,10 @@ def seal_industrial_memory(
 
     reader = DuckDBEpistemicMemoryReader(path)
     all_subjects = sorted(
-        {item.subject.key: item.subject for item in (*timeline.reality, *timeline.judgments, *timeline.outcomes)}.values(),
+        {
+            item.subject.key: item.subject
+            for item in (*timeline.reality, *timeline.judgments, *timeline.outcomes)
+        }.values(),
         key=lambda item: item.key,
     )
     round_trip = reader._timeline_sync(all_subjects)
@@ -254,7 +259,10 @@ class DuckDBEpistemicMemoryReader:
         self.path = path
 
     @staticmethod
-    def _where(subjects: Sequence[MemorySubjectRef], cutoff: datetime | None) -> tuple[str, list[Any]]:
+    def _where(
+        subjects: Sequence[MemorySubjectRef],
+        cutoff: datetime | None,
+    ) -> tuple[str, list[Any]]:
         if not subjects:
             raise ValueError("at least one memory subject is required")
         keys = [item.key for item in subjects]
@@ -352,7 +360,9 @@ class DuckDBEpistemicMemoryReader:
             known_at=row["known_at"],
             confidence=row["confidence"],
             publication_status=row["publication_status"],
-            evidence_fragment_ids=tuple(UUID(value) for value in json.loads(row["evidence_fragment_ids"])),
+            evidence_fragment_ids=tuple(
+                UUID(value) for value in json.loads(row["evidence_fragment_ids"])
+            ),
         )
 
     @classmethod
@@ -367,9 +377,12 @@ class DuckDBEpistemicMemoryReader:
             target_time=cls._extent(row, "target_time"),
             value_kind=row["value_kind"],
             value_text=row["value_text"],
+            value_payload=row["value_payload"],
             summary=row["summary"],
             known_at=row["known_at"],
-            evidence_fragment_ids=tuple(UUID(value) for value in json.loads(row["evidence_fragment_ids"])),
+            evidence_fragment_ids=tuple(
+                UUID(value) for value in json.loads(row["evidence_fragment_ids"])
+            ),
         )
 
     @classmethod
@@ -380,13 +393,17 @@ class DuckDBEpistemicMemoryReader:
             judgment_id=UUID(row["judgment_id"]),
             subject=_subject_from_values(row["subject_entity_id"], row["subject_industry_node_id"]),
             canonical_fact_version_id=(
-                UUID(row["canonical_fact_version_id"]) if row["canonical_fact_version_id"] else None
+                UUID(row["canonical_fact_version_id"])
+                if row["canonical_fact_version_id"]
+                else None
             ),
             outcome_evidence_fragment_id=(
-                UUID(row["outcome_evidence_fragment_id"]) if row["outcome_evidence_fragment_id"] else None
+                UUID(row["outcome_evidence_fragment_id"])
+                if row["outcome_evidence_fragment_id"]
+                else None
             ),
             evaluation_status=row["evaluation_status"],
-            occurrence_time=cls._extent(row, "occurrence"),
+            occurrence_time=cls._extent(row, "occurrence_time"),
             known_at=row["known_at"],
             timing_relation=row["timing_relation"],
             timing_delta_value=Decimal(delta) if delta is not None else None,
