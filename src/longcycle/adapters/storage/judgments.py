@@ -227,14 +227,30 @@ class PostgresJudgmentRepository(PostgresSupport):
     async def append_relations(self, relations: Sequence[JudgmentRelation]) -> None:
         async with self.connection() as connection:
             for relation in relations:
-                cursor = await connection.execute(
+                existing_cursor = await connection.execute(
+                    """
+                    SELECT reason_summary
+                    FROM research.judgment_relations
+                    WHERE from_judgment_id = %s
+                      AND to_judgment_id = %s
+                      AND relation_type = %s
+                    """,
+                    (
+                        relation.from_judgment_id,
+                        relation.to_judgment_id,
+                        relation.relation_type.value,
+                    ),
+                )
+                existing = await existing_cursor.fetchone()
+                if existing is not None:
+                    if existing["reason_summary"] != relation.reason_summary:
+                        raise ValueError("judgment relation key already maps to different content")
+                    continue
+                await connection.execute(
                     """
                     INSERT INTO research.judgment_relations (
                         from_judgment_id, to_judgment_id, relation_type, reason_summary
                     ) VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (from_judgment_id, to_judgment_id, relation_type)
-                    DO UPDATE SET from_judgment_id = research.judgment_relations.from_judgment_id
-                    RETURNING reason_summary
                     """,
                     (
                         relation.from_judgment_id,
@@ -243,6 +259,3 @@ class PostgresJudgmentRepository(PostgresSupport):
                         relation.reason_summary,
                     ),
                 )
-                stored = await cursor.fetchone()
-                if stored is None or stored["reason_summary"] != relation.reason_summary:
-                    raise ValueError("judgment relation key already maps to different content")
