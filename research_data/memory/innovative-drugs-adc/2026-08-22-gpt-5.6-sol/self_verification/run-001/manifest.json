@@ -3,7 +3,7 @@
   "run_id": "ADC-SV-001",
   "campaign_id": "ADC-20260822-GPT56SOL-001",
   "industry": "innovative-drugs-adc",
-  "stage": "rc48_source_pack_acquired_json_grounding_next",
+  "stage": "rc48_grounded_and_role_reality_complete_enhertu_next",
   "source_visibility": "self_verification",
   "sealed_blind_commit": "8d5654017cbf7d2b8adc7511cf60f29514c6ee63",
   "handoff_compatible_projection_commit": "342d37c678240a978d55483a151a7cd224c0eacf",
@@ -20,43 +20,45 @@
     "tasks/SV-004-disitamab-vedotin-rc48.json"
   ],
   "grounded_evidence": {
-    "completed_tasks": ["SV-001", "SV-002"],
-    "active_task": "SV-004",
+    "completed_tasks": ["SV-001", "SV-002", "SV-004"],
+    "active_task": "SV-003",
     "sv001_spec": "evidence/SV-001-grounded-evidence-spec-v1.json",
     "sv001_receipt": "evidence/SV-001-grounded-evidence-receipt-v1.json",
     "sv001_source_release_asset": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
     "sv001_execution_run_id": 32580391735,
     "sv001_generated_drive_file_id": "1R3EaC_SVIX_TvfCuBJ36r5n5MzM_4wzv",
-    "sv001_acceptance": {
-      "document_versions": 4,
-      "evidence_fragments": 8,
-      "fact_assertions_created": 0,
-      "judgment_assertions_created": 0
-    },
+    "sv001_acceptance": {"document_versions":4,"evidence_fragments":8,"fact_assertions_created":0,"judgment_assertions_created":0},
     "sv001_causal_boundary": "The 2019 scoring explanation is grounded as contemporaneous Judgment/context; the stronger claim that an assay/scoring fix caused later success remains unpromoted.",
     "sv002_spec": "evidence/SV-002-grounded-evidence-spec-v1.json",
     "sv002_receipt": "evidence/SV-002-grounded-evidence-receipt-v1.json",
     "sv002_source_release_asset": "longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip",
     "sv002_execution_run_id": 32581003171,
     "sv002_generated_drive_file_id": "1Hcv0fsDqQqoyhFAUoCHm5BBfVPDlVEUC",
-    "sv002_acceptance": {
-      "document_versions": 5,
-      "evidence_fragments": 9,
-      "fact_assertions_created": 0,
-      "judgment_assertions_created": 0
-    },
+    "sv002_acceptance": {"document_versions":5,"evidence_fragments":9,"fact_assertions_created":0,"judgment_assertions_created":0},
     "sv002_accounting_boundary": "The approximately $4B estimated net impact, 2018 $5.1B intangible impairment and 2019 $1.0B remaining-value impairment are distinct claim scopes/vintages and must not be collapsed.",
     "sv004_source_release_asset": "longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip",
     "sv004_source_release_sha256": "51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a",
     "sv004_acquisition_run_id": 32582552363,
-    "sv004_acquisition_status": "six_of_six_source_identities_passed_grounding_not_yet_executed",
-    "sv004_next_capability": "Ground the ClinicalTrials.gov application/json source through the existing canonical-json parser with a JSON Pointer locator and expected structured value; do not coerce JSON into visible-text Evidence."
+    "sv004_spec": "evidence/SV-004-grounded-evidence-spec-v1.json",
+    "sv004_receipt": "evidence/SV-004-grounded-evidence-receipt-v1.json",
+    "sv004_execution_run_id": 32584787738,
+    "sv004_generated_drive_file_id": "1jpbUUBjYLjiAyO8M8uCCflZHcc0eqkUQ",
+    "sv004_acceptance": {"document_versions":6,"evidence_fragments":8,"fact_assertions_created":0,"judgment_assertions_created":0},
+    "sv004_json_grounding": "ClinicalTrials.gov application/json is grounded through canonical-json parser artifacts plus exact JSON Pointer/value locators; JSON is never coerced into visible text.",
+    "sv004_metadata_correction": "RemeGen news id 1731 archived page says Release date 2023.11.22; the older acquisition transport metadata 2023-09-12 is non-authoritative and does not control Evidence known-time."
   },
   "replay": {
     "first_grounded_pair_receipt": "replay/ADC-first-pair-replay-receipt-v1.json",
     "successful_run_id": 32581980862,
     "no_lookahead_passed": true,
-    "schema_change_required_by_replay": false
+    "schema_change_required_by_replay": false,
+    "sv004_reality_projection": "replay/SV-004-reality-projection-v1.json",
+    "sv004_reality_receipt": "replay/SV-004-reality-receipt-v1.json",
+    "sv004_reality_run_id": 32584999064,
+    "sv004_reality_drive_file_id": "1WwMAW7_ToQgnNYnTm_aVHEL6gMoBDqeP",
+    "sv004_canonical_reality_count": 8,
+    "sv004_role_pressure_new_schema_required": false,
+    "sv004_no_lookahead_boundary": "urothelial approval valid_from 2021-12-31 remains market_known_at 2023-11-23 under the currently grounded later recap"
   },
   "deferred_design_pressure": {
     "pressure_id": "non_direct_outcome_implication_polarity",
@@ -66,6 +68,15 @@
     "agent_rule": "When a later trajectory reproduces this pressure, read the pressure artifact before proposing a schema change. Preserve semantic_relation and evaluation_status as-is; do not overload either field. Reopen migration consideration only when the artifact's promote_to_schema_when gate is independently satisfied.",
     "current_decision": "do_not_add_migration_0026"
   },
+  "architecture_decisions": {
+    "sv004_role_identity": {
+      "status": "existing_primitives_sufficient",
+      "new_schema_required": false,
+      "new_relation_subsystem_required": false,
+      "reality_executor_change_required": false,
+      "decision": "Keep territory rights, announced development lead, Pfizer group collaboration, current Pfizer cooperation, Seagen trial lead sponsor and RemeGen trial collaborator as separate namespaced Reality predicates. Do not expand the bounded Reality executor merely to normalize text counterparties to entity ids unless a later trajectory proves an actual identity/reconciliation failure."
+    }
+  },
   "hard_boundaries": [
     "Search results and candidate URLs are discovery material, not Evidence.",
     "The sealed blind archive may not be rewritten, deleted, corrected in place, or retroactively improved.",
@@ -74,9 +85,10 @@
     "Same-upstream corporate reposts or filings must not be counted as independent evidence merely because URLs differ.",
     "A verifiable complete original PDF may be acquired through a stable redistributor, but retrieval host and upstream document identity must remain distinct.",
     "Grounded Evidence execution may not auto-promote FactAssertions or Judgments.",
+    "Do not collapse parent company, legal licensee, trial sponsor, collaborator or territory holder into a generic partner identity.",
     "not_found is not contradiction."
   ],
-  "status": "first_pair_replay_complete_rc48_source_pack_ready",
-  "next_stage": "rc48_json_grounding_and_claim_scoped_evidence",
-  "next_stage_goal": "Add only the missing generic JSON grounding capability, then ground the six-source SV-004 RC48 pack and test whether existing generic entity/relation semantics preserve originator, licensee, parent-company, trial-sponsor, collaborator, territory and regulatory-state distinctions without adding pharma-specific schema."
+  "status": "sv001_sv002_sv004_grounded_rc48_role_pressure_closed",
+  "next_stage": "sv003_enhertu_bounded_evidence_recovery",
+  "next_stage_goal": "Ground the minimum Enhertu trajectory needed to pressure indication/biomarker/readout and safety-state semantics: March 2019 collaboration/Japan rights, initial December 2019 U.S. approval, DESTINY-Breast04 HER2-low population/readout, August 2022 U.S. HER2-low approval, and a dated label/primary source that preserves ILD/pneumonitis safety state. Do not collapse all Enhertu outcomes into a single product success row."
 }
