@@ -7,7 +7,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from longcycle.application.historical_replay import ReplayEvidence, build_replay_snapshot
+from longcycle.application.historical_replay import (
+    ReplayEvidence,
+    build_replay_frame,
+    build_replay_snapshot,
+    build_replay_transition,
+)
 
 
 def parse_instant(value: str) -> datetime:
@@ -89,13 +94,36 @@ def main() -> int:
     )
     parser.add_argument("--database", required=True, type=Path)
     parser.add_argument("--cutoff", required=True, type=parse_instant)
+    parser.add_argument(
+        "--mode",
+        choices=("snapshot", "frame", "transition"),
+        default="snapshot",
+    )
+    parser.add_argument(
+        "--previous-cutoff",
+        type=parse_instant,
+        help="Required only for transition mode; must be earlier than --cutoff.",
+    )
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
 
     evidence = read_visible_evidence(args.database, args.cutoff)
-    snapshot = build_replay_snapshot(evidence, knowledge_cutoff=args.cutoff)
-    payload = snapshot.model_dump_json(indent=2)
+    current = build_replay_snapshot(evidence, knowledge_cutoff=args.cutoff)
 
+    if args.mode == "snapshot":
+        result = current
+    elif args.mode == "frame":
+        result = build_replay_frame(current)
+    else:
+        if args.previous_cutoff is None:
+            parser.error("--previous-cutoff is required for transition mode")
+        previous = build_replay_snapshot(
+            evidence,
+            knowledge_cutoff=args.previous_cutoff,
+        )
+        result = build_replay_transition(previous, current)
+
+    payload = result.model_dump_json(indent=2)
     if args.output is None:
         print(payload)
     else:
