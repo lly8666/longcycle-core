@@ -16,6 +16,7 @@ from longcycle.domain.enums import (
     JudgmentRelationType,
     JudgmentTargetTimeKind,
     JudgmentValueKind,
+    TemporalPrecision,
 )
 from longcycle.domain.models import DomainModel, canonical_json, require_aware_datetime
 
@@ -44,6 +45,8 @@ class JudgmentAssertion(DomainModel):
     target_at: datetime | None = None
     target_from: datetime | None = None
     target_to: datetime | None = None
+    target_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    target_text: str | None = None
     value_kind: JudgmentValueKind
     value_numeric: Decimal | None = None
     value_low: Decimal | None = None
@@ -112,6 +115,14 @@ class JudgmentAssertion(DomainModel):
             raise ValueError("timeless/unknown judgment target cannot carry target timestamps")
         if self.target_from is not None and self.target_to is not None and self.target_to <= self.target_from:
             raise ValueError("judgment target_to must be after target_from")
+        if self.target_precision == TemporalPrecision.APPROXIMATE and not self.target_text:
+            raise ValueError("approximate judgment target must preserve the source target text")
+        if (
+            self.target_time_kind == JudgmentTargetTimeKind.UNKNOWN
+            and self.target_precision != TemporalPrecision.UNKNOWN
+            and not self.target_text
+        ):
+            raise ValueError("non-unknown precision on an unbounded target requires source target text")
 
     def _validate_value(self) -> None:
         values = {
