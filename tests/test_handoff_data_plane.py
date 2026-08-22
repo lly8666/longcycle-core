@@ -47,13 +47,22 @@ class HandoffDataPlaneTest(unittest.TestCase):
             source_pack.sha256,
             "610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef",
         )
+        self.assertFalse(source_pack.required_for_current_task)
 
         evt003 = assets["evt003-judgment-replay-run32569365809"]
         evt004 = assets["evt004-contract-margin-replay-run32570715478"]
+        evt005 = assets["evt005-fmc-grounded-evidence-run32575153279"]
         self.assertEqual(evt003.transport, "google_drive")
         self.assertEqual(evt003.google_drive_file_id, "1BNbUKcB35-wExdLijs-eVbfPOpgVHN4b")
         self.assertEqual(evt004.transport, "google_drive")
         self.assertEqual(evt004.google_drive_file_id, "1RTvDPBH0xGkdTTtAn_MVZGFxNOfrLd0N")
+        self.assertEqual(evt005.transport, "google_drive")
+        self.assertEqual(evt005.google_drive_file_id, "1htAUh-LvmtIHFFMrD7CzPRL4S9ssGBD8")
+        self.assertEqual(
+            evt005.sha256,
+            "c9802f5023426f1b49157229d228cbd66b606788aa2d101a8e1a00d5e68e53df",
+        )
+        self.assertIn("no externally acquired source payloads", evt005.content_summary)
 
         for asset in manifest.assets:
             if asset.role == "raw_source_acquisition_cache":
