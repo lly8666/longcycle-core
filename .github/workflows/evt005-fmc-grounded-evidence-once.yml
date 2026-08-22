@@ -9,15 +9,15 @@ permissions:
   issues: write
 
 env:
-  EXPECTED_HEAD: 9c122a3148995f94237d11a2d6dbb1a66bc995a4
+  EXPECTED_HEAD: b8b40d462a4f32eae43cffd9405d20826276657e
   RELEASE_TAG: longcycle-dev-binary-cache
   RELEASE_ASSET: longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip
   RELEASE_ASSET_SHA256: 610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef
-  SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-005-fmc-grounded-evidence-spec-v2.json
+  SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-005-fmc-grounded-evidence-spec-v3.json
 
 jobs:
   execute:
-    if: github.event.issue.title == '[longcycle-evt005-fmc-grounded-evidence-v1]'
+    if: github.event.issue.title == '[longcycle-evt005-fmc-grounded-evidence-v2]'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
@@ -79,9 +79,9 @@ jobs:
           assert payload['ok'] is True, payload
           result = payload['result']
           assert len(result['documents']) == 2, result
-          assert len(result['fragments']) == 4, result
+          assert len(result['fragments']) == 5, result
           assert result['acceptance']['persisted_document_versions'] == 2, result
-          assert result['acceptance']['persisted_evidence_fragments'] == 4, result
+          assert result['acceptance']['persisted_evidence_fragments'] == 5, result
           assert result['acceptance']['fact_assertions_created'] == 0, result
           assert result['acceptance']['judgment_assertions_created'] == 0, result
 
@@ -98,6 +98,7 @@ jobs:
           assert keys == {
               '2017-china-hydroxide-9kt-capacity',
               '2017-china-hydroxide-ahead-and-qualified',
+              '2017-china-hydroxide-commercial-production',
               '2018q1-china-hydroxide-ebitda-driver',
               '2018q1-china-hydroxide-higher-volume',
           }, keys
