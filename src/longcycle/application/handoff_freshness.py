@@ -7,6 +7,7 @@ from dataclasses import dataclass
 HANDOFF_MUTABLE_PATHS = frozenset(
     {
         ".longcycle/handoff/current.json",
+        ".longcycle/handoff/data-plane.json",
         "docs/devlog/2026-08-21-memory-campaign-part3.md",
     }
 )
@@ -32,7 +33,7 @@ def classify_handoff_delta(
     """Partition changed paths without weakening the frozen-checkpoint contract.
 
     A checked-in handoff may lag the commit that contains the substantive work by
-    one synchronization commit.  Any path outside ``mutable_paths`` means the
+    one synchronization commit. Any path outside ``mutable_paths`` means the
     checkpoint is stale and must be regenerated from a newer substantive base.
     """
 
