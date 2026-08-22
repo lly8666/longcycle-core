@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections import defaultdict
 from datetime import datetime
 from typing import Any
-from uuid import UUID
 
 from longcycle.domain.epistemic import (
     JudgmentMemoryRecord,
