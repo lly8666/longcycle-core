@@ -1,0 +1,60 @@
+name: Refactor Fact provenance once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  refactor:
+    if: github.event.issue.title == '[longcycle-refactor-fact-provenance-v1]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Apply bounded refactor
+        run: |
+          set -euo pipefail
+          python scripts/_refactor_fact_provenance_once.py
+          rm scripts/_refactor_fact_provenance_once.py
+          python -m pip install -e '.[dev,postgres,duckdb]'
+          python -m compileall -q src scripts tests
+          mypy src
+          git diff --check
+
+      - name: Commit and push active branch
+        run: |
+          set -euo pipefail
+          git config user.name longcycle-refactor
+          git config user.email actions@users.noreply.github.com
+          git add src scripts tests migrations
+          git commit -m 'refactor: make Fact provenance multi-fragment'
+          git push origin HEAD:${ACTIVE_REF}
+
+      - name: Report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          if git diff --quiet HEAD^ HEAD 2>/dev/null; then
+            status='FACT_PROVENANCE_REFACTOR_NO_COMMIT'
+          else
+            status='FACT_PROVENANCE_REFACTOR_PASS'
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$status"
