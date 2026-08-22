@@ -1,0 +1,78 @@
+{
+  "schema_version": "longcycle-benchmark-task-plan/v1",
+  "task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN",
+  "shard_id": "UP-CHEMICALS",
+  "sealed_scope_only": true,
+  "selection": {
+    "chosen_family": "SVQ-006-CONTRACT-VINTAGE-MARGIN",
+    "ranked_candidates": [
+      {
+        "family_id": "SVQ-006-CONTRACT-VINTAGE-MARGIN",
+        "rank": 1,
+        "reason": "Most semantically orthogonal to Kwinana project-state and Livent expectation-vintage work. Forces contract pricing/reset, raw-material cost pass-through, inventory accounting/holding-period, revenue/cost timing and margin-vintage semantics."
+      },
+      {
+        "family_id": "SVQ-005-EFFECTIVE-SUPPLY-VS-NAMEPLATE",
+        "rank": 2,
+        "reason": "High industrial value but overlaps Kwinana ramp/qualification/state-chain semantics already proven."
+      },
+      {
+        "family_id": "SVQ-002-KEMERTON-GUIDANCE",
+        "rank": 3,
+        "reason": "Strong primary-source trajectory but mostly repeats project guidance/state normalization already exercised by Kwinana."
+      }
+    ]
+  },
+  "research_question": "What contemporaneous source-backed mechanisms make same-day lithium spot spreads an invalid proxy for Livent/converter realized margin in the 2019 cycle, and what temporal dimensions must a defensible margin reconstruction preserve?",
+  "minimum_publishable_claim": "For the grounded 2019 Livent context, same-day spot input/output prices must not be presented as realized converter margin because product pricing can be governed by long-term fixed/formula contracts with delayed or absent cost pass-through, while inventory and revenue/cost recognition introduce separate vintages.",
+  "source_targets": [
+    {
+      "priority": 1,
+      "document": "Livent 2019 Form 10-K",
+      "upstream_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+      "redistribution_candidate": "https://www.annualreports.com/HostedData/AnnualReportArchive/l/NYSE_LTHM_2019.pdf",
+      "required_fragments": [
+        "long-term contracts for most products are often fixed or formula-based and may not permit increased costs to be passed through immediately or at all",
+        "2019 inventory categories and FIFO accounting / matching of cost of sales with related revenues"
+      ]
+    },
+    {
+      "priority": 2,
+      "document": "Livent third-quarter 2019 issuer results release",
+      "upstream_identity": "Livent issuer release dated 2019-11-05",
+      "redistribution_candidate": "https://ir.arcadiumlithium.com/investors/news/news-details/2019/Livent-Releases-Third-Quarter-2019-Results-11-05-2019/",
+      "required_fragments": [
+        "decision to carry up to 4,000 metric tons of hydroxide inventory into 2020 to meet higher customer commitments",
+        "favorable product/customer mix and lower third-party carbonate costs affected EBITDA"
+      ]
+    }
+  ],
+  "temporal_dimensions_to_preserve": [
+    "source known-time",
+    "contract-price basis and reset period",
+    "raw-material cost basis and reset period",
+    "inventory acquisition/production vintage",
+    "inventory accounting method",
+    "sale/delivery/revenue-recognition period",
+    "reported cost-of-sales period"
+  ],
+  "numeric_reconstruction_gate": {
+    "default": "do_not_attempt",
+    "upgrade_only_if": "A claim-scoped filed contract or issuer disclosure exposes sufficiently exact lithium-specific purchase and/or sale pricing/reset formula plus the relevant volume/inventory timing.",
+    "reason": "A numeric spread reconstructed from unmatched spot series would create false precision and violate the benchmark's purpose."
+  },
+  "acceptance": [
+    "Archive exact source bytes through an approved direct or authoritative-redistributor lane with SHA-256 and honest retrieval provenance.",
+    "Persist claim-scoped Evidence for contract pass-through and inventory-vintage mechanisms without automatic Fact/Judgment promotion.",
+    "Represent the resulting industrial-memory semantics without treating accounting policy as a timeless universal rule.",
+    "Demonstrate point-in-time visibility using source-supported known-times.",
+    "Do not search any unsealed shard or mutate sealed blind-memory artifacts.",
+    "Do not build generic margin infrastructure unless this real trajectory exposes a concrete missing primitive."
+  ],
+  "initial_discovery_result": {
+    "sec_2019_10k_contract_risk": "Confirmed: Livent states it enters long-term contracts for most products, often fixed or formula-based, and may be unable to pass increased costs through immediately or at all.",
+    "sec_2019_10k_inventory": "Confirmed: 2019 filing reports finished/semi-finished/raw-material inventory and a FIFO accounting change intended to improve matching of cost of sales with related revenues.",
+    "q3_2019_inventory_build": "Confirmed in issuer results redistribution: Livent revised guidance to carry up to 4,000 metric tons of hydroxide inventory into 2020 to meet higher customer commitments.",
+    "exact_contract_formula": "Not yet established; remains optional numeric-upgrade research and is not required for the minimum publishable nonnumeric benchmark."
+  }
+}
