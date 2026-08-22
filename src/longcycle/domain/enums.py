@@ -52,6 +52,13 @@ class FactValueKind(StrEnum):
     JSON = "json"
 
 
+class FactEvidenceRole(StrEnum):
+    SUPPORTING = "supporting"
+    CONTEXT = "context"
+    CAVEAT = "caveat"
+    CONTRADICTING = "contradicting"
+
+
 class JudgmentKind(StrEnum):
     FORECAST = "forecast"
     TARGET = "target"
