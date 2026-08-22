@@ -147,10 +147,11 @@ def test_revision_family_rejects_cross_subject_semantic_drift() -> None:
 
 
 def test_revision_family_rejects_reverse_time_relation() -> None:
+    spec = context_spec().model_copy(update={"rationales": ()})
     judgments = (judgment(key="earlier", known_day=3), judgment(key="later", known_day=2))
     with pytest.raises(ValueError, match="earlier cognition"):
         build_grounded_judgment_context(
-            context_spec(), judgments, (evidence(key="later-context", known_day=2),)
+            spec, judgments, (evidence(key="later-context", known_day=2),)
         )
 
 
