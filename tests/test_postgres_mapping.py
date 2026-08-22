@@ -6,7 +6,7 @@ from decimal import Decimal
 from uuid import uuid4
 
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
-from longcycle.domain.enums import FactStatus, FactValueKind, QualityGrade, SourceKind
+from longcycle.domain.enums import FactEvidenceRole, FactStatus, FactValueKind, QualityGrade, SourceKind
 from longcycle.domain.models import FactDimensions
 
 
@@ -35,9 +35,10 @@ class PostgresMappingTest(unittest.TestCase):
         self.assertEqual(first.syndication_cluster, f"publisher:{publisher_id}")
         self.assertEqual(first.syndication_cluster, second.syndication_cluster)
 
-    def test_assertion_roundtrip_preserves_raw_value_and_supersession(self) -> None:
+    def test_assertion_roundtrip_preserves_raw_value_supersession_and_evidence(self) -> None:
         industry_id = uuid4()
         supersedes_id = uuid4()
+        evidence_id = uuid4()
         dimensions = FactDimensions()
         row = {
             "id": uuid4(),
@@ -64,7 +65,12 @@ class PostgresMappingTest(unittest.TestCase):
             "first_known_at": datetime(2026, 2, 2, tzinfo=UTC),
             "source_connector_id": uuid4(),
             "document_version_id": uuid4(),
-            "evidence_fragment_id": uuid4(),
+            "evidence_refs": [
+                {
+                    "evidence_fragment_id": evidence_id,
+                    "evidence_role": FactEvidenceRole.SUPPORTING.value,
+                }
+            ],
             "extraction_run_id": uuid4(),
             "extractor_name": "test",
             "extractor_version": "1",
@@ -90,6 +96,8 @@ class PostgresMappingTest(unittest.TestCase):
         self.assertEqual(restored.value, "2.5 万吨")
         self.assertEqual(restored.normalized_number, Decimal("25000"))
         self.assertEqual(restored.supersedes_id, supersedes_id)
+        self.assertEqual(restored.evidence[0].evidence_fragment_id, evidence_id)
+        self.assertEqual(restored.evidence[0].evidence_role, FactEvidenceRole.SUPPORTING)
 
 
 if __name__ == "__main__":
