@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from enum import StrEnum
 from typing import Any
 from uuid import UUID
@@ -31,6 +32,33 @@ class AuthorityClass(StrEnum):
     REPUTABLE_SECONDARY = "reputable_secondary"
     SECONDARY = "secondary"
     DISCOVERY_ONLY = "discovery_only"
+
+
+class AuthorityBasis(StrEnum):
+    LEGAL_MANDATE = "legal_mandate"
+    OFFICIAL_RECORD = "official_record"
+    DIRECT_SPEAKER_RECORD = "direct_speaker_record"
+    PUBLISHED_METHODOLOGY = "published_methodology"
+    VERBATIM_OFFICIAL_REDISTRIBUTION = "verbatim_official_redistribution"
+    EDITORIAL_VERIFICATION = "editorial_verification"
+    SECONDARY_CITATION = "secondary_citation"
+    UNKNOWN = "unknown"
+
+
+class SourceAuthorityProfile(DomainModel):
+    claim_scope: ClaimScope
+    authority_class: AuthorityClass
+    authority_basis: AuthorityBasis
+    rationale: str = Field(min_length=1)
+    valid_from: date | None = None
+    valid_to: date | None = None
+
+    @model_validator(mode="after")
+    def valid_window(self) -> SourceAuthorityProfile:
+        if self.valid_from is not None and self.valid_to is not None:
+            if self.valid_to <= self.valid_from:
+                raise ValueError("authority profile valid_to must be after valid_from")
+        return self
 
 
 class MemoryLeadKind(StrEnum):
