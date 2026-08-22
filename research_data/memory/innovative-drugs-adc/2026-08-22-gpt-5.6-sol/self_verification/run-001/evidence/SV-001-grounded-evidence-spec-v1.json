@@ -1,0 +1,359 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "ADC-SV-001-MIRVETUXIMAB-GROUNDED-EVIDENCE-V1",
+  "acquisition_provenance": {
+    "control_issue": 85,
+    "workflow_run_id": 32579952518,
+    "source_head_sha": "1dd132f60b1148d54b6e24c4d866ebaab6ab619f",
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset_file_name": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
+    "release_asset_size_bytes": 780911,
+    "release_asset_sha256": "1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b",
+    "policy": "Externally acquired immutable bytes remain in GitHub Release. This spec materializes only the exact SHA-pinned source files needed for normal Evidence execution."
+  },
+  "epistemic_guardrails": [
+    "This spec creates EvidenceFragments only; it does not promote Facts or Judgments.",
+    "The ESMO presentation's scoring interpretation is contemporaneous sponsor/investigator Judgment, not proof that an assay change caused later success.",
+    "ADCReview is a retrieval host for the original ESMO presentation PDF, not an independent corroborating authority.",
+    "Same-origin ImmunoGen/ESMO material remains one corporate/investigator evidence cluster when assessing independence.",
+    "Known-time bounds are conservative no-lookahead eligibility bounds and do not assert exact publication timestamps."
+  ],
+  "sources": [
+    {
+      "key": "immunogen-successor-archive",
+      "name": "ImmunoGen historical press release via AbbVie successor archive",
+      "publisher_domain": "news.abbvie.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "The archived payload is the contemporaneous ImmunoGen issuer release, now hosted in AbbVie's successor corporate archive."
+        }
+      ]
+    },
+    {
+      "key": "esmo-original-pdf-redistributor",
+      "name": "ADCReview mirror of original ESMO 2019 FORWARD I presentation PDF",
+      "publisher_domain": "adcreview.com",
+      "kind": "research",
+      "quality_grade": "B",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "The retrieved bytes are a complete original ESMO presentation identified by title, investigators, sponsor, trial identifier and contemporaneous SEC cross-reference; ADCReview is recorded only as the retrieval host."
+        }
+      ]
+    },
+    {
+      "key": "fda-official-record",
+      "name": "U.S. Food and Drug Administration oncology approval records",
+      "publisher_domain": "fda.gov",
+      "kind": "regulator",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "other",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "FDA approval notifications are the regulator's official record for U.S. approval state, labeled population, companion diagnostic and confirmatory evidence basis."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "forward1-topline-2019",
+      "vintage_id": "SV001-2019-03-FORWARD1-FAILURE",
+      "source_key": "immunogen-successor-archive",
+      "retrieval_url": "https://news.abbvie.com/2019-03-01-ImmunoGen-Announces-Top-Line-Results-from-Phase-3-FORWARD-I-Study-of-Mirvetuximab-Soravtansine-in-Ovarian-Cancer",
+      "original_source_url": "https://news.abbvie.com/2019-03-01-ImmunoGen-Announces-Top-Line-Results-from-Phase-3-FORWARD-I-Study-of-Mirvetuximab-Soravtansine-in-Ovarian-Cancer",
+      "external_id": "2019-03-01-FORWARD-I-top-line",
+      "title": "ImmunoGen Announces Top-Line Results from Phase 3 FORWARD I Study of Mirvetuximab Soravtansine in Ovarian Cancer",
+      "published_at": null,
+      "first_known_at": "2019-03-02T00:00:00Z",
+      "expected_sha256": "b62ba1e6aaee74aeb2cff6b36864ae65547035eaae8c6dcd37631ad125b0e469",
+      "material_path": "immunogen-forward1-2019-03-01.html",
+      "content_type": "text/html",
+      "retrieval_provenance": {
+        "mode": "github_release_sha_pinned_external_acquisition",
+        "transport_is_not_source_authority": true,
+        "retrieval_host": "news.abbvie.com",
+        "published_date_only": "2019-03-01",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "upstream_announcement": {
+          "issuer": "ImmunoGen, Inc.",
+          "system": "ImmunoGen issuer press release / AbbVie successor archive",
+          "external_id": "2019-03-01-FORWARD-I-top-line",
+          "title": "ImmunoGen Announces Top-Line Results from Phase 3 FORWARD I Study of Mirvetuximab Soravtansine in Ovarian Cancer",
+          "original_url": "https://news.abbvie.com/2019-03-01-ImmunoGen-Announces-Top-Line-Results-from-Phase-3-FORWARD-I-Study-of-Mirvetuximab-Soravtansine-in-Ovarian-Cancer"
+        },
+        "source_cluster": "immunogen-forward1-origin"
+      }
+    },
+    {
+      "key": "forward1-esmo-scoring-2019",
+      "vintage_id": "SV001-2019-09-ESMO-FORWARD1-REVISION",
+      "source_key": "esmo-original-pdf-redistributor",
+      "retrieval_url": "https://www.adcreview.com/wp-content/uploads/2020/05/ESMO_2019_FORWARD-I-Oral_Final.pdf",
+      "original_source_url": null,
+      "external_id": "NCT02631876-ESMO2019-FORWARD-I",
+      "title": "FORWARD I (GOG 3011): A Phase III study of mirvetuximab soravtansine versus chemotherapy in platinum-resistant ovarian cancer",
+      "published_at": null,
+      "first_known_at": "2019-10-01T00:00:00Z",
+      "expected_sha256": "ef2651869d97a57f39e4d47967f954ef68393a7a1a95a088032e9a9985ab6893",
+      "material_path": "esmo-forward1-scoring-2019-09-30.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "mode": "github_release_sha_pinned_external_acquisition",
+        "transport_is_not_source_authority": true,
+        "retrieval_host": "www.adcreview.com",
+        "published_date_only": "2019-09-30",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "upstream_announcement": {
+          "issuer": "ImmunoGen, Inc. / FORWARD I investigators",
+          "system": "ESMO 2019 oral presentation",
+          "external_id": "NCT02631876-ESMO2019-FORWARD-I",
+          "title": "FORWARD I (GOG 3011): A Phase III study of mirvetuximab soravtansine versus chemotherapy in platinum-resistant ovarian cancer"
+        },
+        "cross_reference_urls": [
+          "https://www.sec.gov/Archives/edgar/data/855654/000155837019008729/imgn-20190929ex993a7ed95.htm"
+        ],
+        "source_cluster": "immunogen-forward1-origin"
+      }
+    },
+    {
+      "key": "fda-accelerated-2022",
+      "vintage_id": "SV001-2022-11-FDA-ACCELERATED",
+      "source_key": "fda-official-record",
+      "retrieval_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant",
+      "original_source_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant",
+      "external_id": "2022-11-14-elahere-accelerated",
+      "title": "FDA grants accelerated approval to mirvetuximab soravtansine-gynx",
+      "published_at": null,
+      "first_known_at": "2022-11-15T00:00:00Z",
+      "expected_sha256": "ce6bf9af5c2ca81442ebfde0b31de49e75439fdb7c998776b2c3819794a2b8b9",
+      "material_path": "fda-elahere-accelerated-2022-11-14.html",
+      "content_type": "text/html",
+      "retrieval_provenance": {
+        "mode": "github_release_sha_pinned_external_acquisition",
+        "transport_is_not_source_authority": true,
+        "retrieval_host": "www.fda.gov",
+        "published_date_only": "2022-11-14",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "upstream_announcement": {
+          "issuer": "U.S. Food and Drug Administration",
+          "system": "FDA oncology approval notification",
+          "external_id": "2022-11-14-elahere-accelerated",
+          "title": "FDA grants accelerated approval to mirvetuximab soravtansine-gynx",
+          "original_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant"
+        },
+        "source_cluster": "fda-official-record"
+      }
+    },
+    {
+      "key": "fda-regular-2024",
+      "vintage_id": "SV001-2024-03-FDA-REGULAR",
+      "source_key": "fda-official-record",
+      "retrieval_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant-epithelial-ovarian",
+      "original_source_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant-epithelial-ovarian",
+      "external_id": "2024-03-22-elahere-regular",
+      "title": "FDA approves mirvetuximab soravtansine-gynx for FRalpha positive platinum-resistant ovarian cancer",
+      "published_at": null,
+      "first_known_at": "2024-03-23T00:00:00Z",
+      "expected_sha256": "e94caeb4b8f0329874969e00bcd6c4f4aa39d47462925835bd981ba4f9a203f5",
+      "material_path": "fda-elahere-regular-2024-03-22.html",
+      "content_type": "text/html",
+      "retrieval_provenance": {
+        "mode": "github_release_sha_pinned_external_acquisition",
+        "transport_is_not_source_authority": true,
+        "retrieval_host": "www.fda.gov",
+        "published_date_only": "2024-03-22",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "upstream_announcement": {
+          "issuer": "U.S. Food and Drug Administration",
+          "system": "FDA oncology approval notification",
+          "external_id": "2024-03-22-elahere-regular",
+          "title": "FDA approves mirvetuximab soravtansine-gynx for FRalpha positive platinum-resistant ovarian cancer",
+          "original_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant-epithelial-ovarian"
+        },
+        "source_cluster": "fda-official-record"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "forward1-primary-pfs-failed",
+      "document_key": "forward1-topline-2019",
+      "excerpt": "did not meet its primary endpoint of progression-free survival (PFS) in either the entire study population or in the pre-specified subset",
+      "claim_context": {
+        "claim_id": "SV001-C01",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_primary_endpoint_result",
+        "stance": "supports",
+        "source_cluster": "immunogen-forward1-origin",
+        "known_time": {
+          "upper_bound": "2019-03-02T00:00:00Z",
+          "precision": "day",
+          "basis": "publication-date-only; conservative next-day UTC upper bound"
+        },
+        "valid_time": {
+          "source_text": "March 01, 2019",
+          "precision": "day"
+        }
+      }
+    },
+    {
+      "fragment_key": "forward1-scoring-exploratory-interpretation",
+      "document_key": "forward1-esmo-scoring-2019",
+      "page": 10,
+      "excerpt": "change in scoring method from PS2+ to 10X introduced",
+      "claim_context": {
+        "claim_id": "SV001-C02",
+        "epistemic_layer": "judgment",
+        "claim_role": "contemporaneous_exploratory_interpretation",
+        "stance": "supports",
+        "source_cluster": "immunogen-forward1-origin",
+        "causal_boundary": "Supports that the scoring change was a contemporaneous explanatory hypothesis; does not establish that reverting scoring caused later clinical success.",
+        "known_time": {
+          "upper_bound": "2019-10-01T00:00:00Z",
+          "precision": "day",
+          "basis": "ESMO presentation date only; conservative next-day UTC upper bound"
+        }
+      }
+    },
+    {
+      "fragment_key": "mirasol-design-supported",
+      "document_key": "forward1-esmo-scoring-2019",
+      "page": 15,
+      "excerpt": "Data support the design of MIRASOL",
+      "claim_context": {
+        "claim_id": "SV001-C03",
+        "epistemic_layer": "judgment",
+        "claim_role": "forward_development_commitment",
+        "stance": "supports",
+        "source_cluster": "immunogen-forward1-origin",
+        "target": "next phase III trial using PS2+ high selection",
+        "known_time": {
+          "upper_bound": "2019-10-01T00:00:00Z",
+          "precision": "day",
+          "basis": "ESMO presentation date only; conservative next-day UTC upper bound"
+        }
+      }
+    },
+    {
+      "fragment_key": "fda-accelerated-approval-state",
+      "document_key": "fda-accelerated-2022",
+      "excerpt": "granted accelerated approval to mirvetuximab soravtansine-gynx",
+      "claim_context": {
+        "claim_id": "SV001-C04",
+        "epistemic_layer": "reality",
+        "claim_role": "regulatory_approval_state",
+        "stance": "supports",
+        "source_cluster": "fda-official-record",
+        "known_time": {
+          "upper_bound": "2022-11-15T00:00:00Z",
+          "precision": "day",
+          "basis": "FDA publication date only; conservative next-day UTC upper bound"
+        }
+      }
+    },
+    {
+      "fragment_key": "fda-folr1-companion-diagnostic",
+      "document_key": "fda-accelerated-2022",
+      "excerpt": "FDA also approved the VENTANA FOLR1 (FOLR-2.1) RxDx Assay",
+      "claim_context": {
+        "claim_id": "SV001-C05",
+        "epistemic_layer": "reality",
+        "claim_role": "companion_diagnostic_approval_state",
+        "stance": "supports",
+        "source_cluster": "fda-official-record",
+        "known_time": {
+          "upper_bound": "2022-11-15T00:00:00Z",
+          "precision": "day",
+          "basis": "FDA publication date only; conservative next-day UTC upper bound"
+        }
+      }
+    },
+    {
+      "fragment_key": "fda-regular-approval-state",
+      "document_key": "fda-regular-2024",
+      "excerpt": "Food and Drug Administration approved mirvetuximab soravtansine-gynx",
+      "claim_context": {
+        "claim_id": "SV001-C06",
+        "epistemic_layer": "reality",
+        "claim_role": "regulatory_approval_state",
+        "stance": "supports",
+        "source_cluster": "fda-official-record",
+        "known_time": {
+          "upper_bound": "2024-03-23T00:00:00Z",
+          "precision": "day",
+          "basis": "FDA publication date only; conservative next-day UTC upper bound"
+        }
+      }
+    },
+    {
+      "fragment_key": "fda-mirasol-confirmatory-basis",
+      "document_key": "fda-regular-2024",
+      "excerpt": "Study 0416 (MIRASOL, NCT04209855)",
+      "claim_context": {
+        "claim_id": "SV001-C07",
+        "epistemic_layer": "reality",
+        "claim_role": "confirmatory_trial_identity",
+        "stance": "supports",
+        "source_cluster": "fda-official-record",
+        "known_time": {
+          "upper_bound": "2024-03-23T00:00:00Z",
+          "precision": "day",
+          "basis": "FDA publication date only; conservative next-day UTC upper bound"
+        }
+      }
+    },
+    {
+      "fragment_key": "fda-postmarketing-requirement-satisfied",
+      "document_key": "fda-regular-2024",
+      "excerpt": "results from this trial satisfy the post-marketing requirement",
+      "claim_context": {
+        "claim_id": "SV001-C08",
+        "epistemic_layer": "reality",
+        "claim_role": "accelerated_approval_confirmatory_obligation",
+        "stance": "supports",
+        "source_cluster": "fda-official-record",
+        "known_time": {
+          "upper_bound": "2024-03-23T00:00:00Z",
+          "precision": "day",
+          "basis": "FDA publication date only; conservative next-day UTC upper bound"
+        }
+      }
+    }
+  ],
+  "contradiction_checks": [
+    {
+      "claim_id": "SV001-C01",
+      "would_contradict": "A claim-scoped contemporaneous source showing FORWARD I met its prespecified PFS primary endpoint under the trial statistical plan."
+    },
+    {
+      "claim_id": "SV001-C02",
+      "would_contradict_or_narrow": "A contemporaneous protocol or analytical record showing no material scoring/selection change, or showing the scoring explanation only emerged after later success."
+    },
+    {
+      "claim_id": "SV001-CAUSAL-HYPOTHESIS",
+      "status": "not_promoted",
+      "hypothesis": "The biomarker scoring fix caused later registrational success.",
+      "reason": "The archived 2019 material supports a contemporaneous scoring/selection interpretation and MIRASOL design choice, but later trials also changed population, design and evidence maturity."
+    }
+  ],
+  "acceptance": {
+    "required_documents": 4,
+    "required_fragments": 8,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
