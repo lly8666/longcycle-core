@@ -35,7 +35,13 @@ class HandoffDataPlaneTest(unittest.TestCase):
         assets = {asset.asset_id: asset for asset in manifest.assets}
 
         capsule = assets["kemerton-grounded-run28-capsule"]
-        runtime = assets["duckdb-offline-runtime-py313-v1"]
+        runtimes = [
+            asset
+            for asset in manifest.assets
+            if asset.role == "offline_runtime" and asset.required_for_current_task
+        ]
+        self.assertEqual(len(runtimes), 1)
+        runtime = runtimes[0]
 
         self.assertTrue(capsule.required_for_current_task)
         self.assertEqual(capsule.transport, "google_drive")
@@ -46,17 +52,26 @@ class HandoffDataPlaneTest(unittest.TestCase):
             "98f01c54bcb5b3ded7c8e28974182f7aae8f6d1c32308b887df1091584a02a7e",
         )
 
-        self.assertTrue(runtime.required_for_current_task)
         runtime_components = {component.path: component for component in runtime.components}
-        wheel = next(
+        duckdb_wheel = next(
             component
             for path, component in runtime_components.items()
             if path.startswith("wheelhouse/duckdb-1.5.5-cp313-cp313-")
         )
+        timezone_dependency = next(
+            component
+            for path, component in runtime_components.items()
+            if path.startswith("wheelhouse/pytz-")
+        )
         self.assertEqual(
-            wheel.sha256,
+            duckdb_wheel.sha256,
             "078e6a60dd8eedde5832f45422ca5c4a6b8c837aeabd8a56ca0b7d933f588053",
         )
+        self.assertEqual(
+            timezone_dependency.sha256,
+            "5ddf76296dd8c44c26eb8f4b6f35488f3ccbf6fbbd7adee0b7262d43f0ec2f00",
+        )
+        self.assertIn("TIMESTAMPTZ", runtime.content_summary)
 
     def test_manifest_does_not_treat_drive_as_database_authority(self) -> None:
         manifest = self._manifest()
