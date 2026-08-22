@@ -39,7 +39,10 @@ jobs:
             python -m pip install -e '.[dev,postgres,duckdb,s3]'
             python -m compileall -q src scripts tests
             mypy src
-            pytest -q tests/test_reality_projection.py tests/test_epistemic_memory.py
+            pytest -q \
+              tests/test_reality_projection.py \
+              tests/test_epistemic_memory.py \
+              tests/test_quality_and_reconciliation.py
             git diff --check
           } 2>&1 | tee /tmp/state-as-of-patch.log
 
