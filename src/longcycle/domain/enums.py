@@ -149,6 +149,13 @@ class JudgmentOutcomeStatus(StrEnum):
     NOT_REALIZED = "not_realized"
     NOT_YET_EVALUABLE = "not_yet_evaluable"
     INVALIDATED = "invalidated"
+    INDETERMINATE = "indeterminate"
+
+
+class OutcomeSemanticRelation(StrEnum):
+    DIRECT_MATCH = "direct_match"
+    RELATED_MILESTONE = "related_milestone"
+    NOT_COMPARABLE = "not_comparable"
 
 
 class OutcomeTimingRelation(StrEnum):
