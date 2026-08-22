@@ -3,7 +3,7 @@
   "run_id": "ADC-SV-001",
   "campaign_id": "ADC-20260822-GPT56SOL-001",
   "industry": "innovative-drugs-adc",
-  "stage": "delegated_claim_scoped_evidence_recovery_and_archive",
+  "stage": "grounded_pair_ready_for_no_lookahead_replay",
   "source_visibility": "self_verification",
   "sealed_blind_commit": "8d5654017cbf7d2b8adc7511cf60f29514c6ee63",
   "handoff_compatible_projection_commit": "342d37c678240a978d55483a151a7cd224c0eacf",
@@ -20,8 +20,8 @@
     "tasks/SV-004-disitamab-vedotin-rc48.json"
   ],
   "grounded_evidence": {
-    "completed_tasks": ["SV-001"],
-    "active_task": "SV-002",
+    "completed_tasks": ["SV-001", "SV-002"],
+    "active_task": null,
     "sv001_spec": "evidence/SV-001-grounded-evidence-spec-v1.json",
     "sv001_receipt": "evidence/SV-001-grounded-evidence-receipt-v1.json",
     "sv001_source_release_asset": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
@@ -33,7 +33,19 @@
       "fact_assertions_created": 0,
       "judgment_assertions_created": 0
     },
-    "sv001_causal_boundary": "The 2019 scoring explanation is grounded as contemporaneous Judgment/context; the stronger claim that an assay/scoring fix caused later success remains unpromoted."
+    "sv001_causal_boundary": "The 2019 scoring explanation is grounded as contemporaneous Judgment/context; the stronger claim that an assay/scoring fix caused later success remains unpromoted.",
+    "sv002_spec": "evidence/SV-002-grounded-evidence-spec-v1.json",
+    "sv002_receipt": "evidence/SV-002-grounded-evidence-receipt-v1.json",
+    "sv002_source_release_asset": "longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip",
+    "sv002_execution_run_id": 32581003171,
+    "sv002_generated_drive_file_id": "1Hcv0fsDqQqoyhFAUoCHm5BBfVPDlVEUC",
+    "sv002_acceptance": {
+      "document_versions": 5,
+      "evidence_fragments": 9,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    },
+    "sv002_accounting_boundary": "The approximately $4B estimated net impact, 2018 $5.1B intangible impairment and 2019 $1.0B remaining-value impairment are distinct claim scopes/vintages and must not be collapsed."
   },
   "hard_boundaries": [
     "Search results and candidate URLs are discovery material, not Evidence.",
@@ -42,9 +54,10 @@
     "Candidate sources become Longcycle Evidence only after normal fetch/archive/locator persistence and claim-scoped authority review.",
     "Same-upstream corporate reposts or filings must not be counted as independent evidence merely because URLs differ.",
     "A verifiable complete original PDF may be acquired through a stable redistributor, but retrieval host and upstream document identity must remain distinct.",
+    "Grounded Evidence execution may not auto-promote FactAssertions or Judgments.",
     "not_found is not contradiction."
   ],
-  "status": "sv001_grounded_evidence_complete_sv002_next",
-  "next_stage": "continue_delegated_claim_scoped_evidence_recovery",
-  "next_stage_goal": "Ground SV-002 Rova-T acquisition-time expectation, TAHOE randomized failure, accounting impairment and MERU termination, preserving known-time and claim scope; then compare the first success/revision and failure/termination trajectories before changing generic schema."
+  "status": "first_grounded_pair_complete_replay_next",
+  "next_stage": "no_lookahead_reality_judgment_outcome_replay",
+  "next_stage_goal": "Use SV-001 mirvetuximab and SV-002 Rova-T as opposite evidence-grounded trajectories to test whether existing generic Reality/Judgment/Outcome, temporal, identity and relation primitives preserve historical cognition and later state changes without hindsight collapse. Add schema only if this replay proves a generic representation defect."
 }
