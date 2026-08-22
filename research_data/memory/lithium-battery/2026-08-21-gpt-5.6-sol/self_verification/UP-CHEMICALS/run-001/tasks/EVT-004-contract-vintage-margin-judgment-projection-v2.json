@@ -1,0 +1,38 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN-JUDGMENT-V2",
+  "source_evidence_task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN-EVIDENCE-V2",
+  "allowed_claim_roles": ["management_commitment"],
+  "subjects": [
+    {
+      "id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+      "entity_type": "legal_entity",
+      "canonical_name": "Livent Corporation"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2019q3-hydroxide-inventory-carry-into-2020",
+      "evidence_refs": [
+        {
+          "fragment_key": "2019q3-hydroxide-inventory-carry-plan",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+      "speaker_name_text": "Livent management",
+      "topic_code": "inventory.hydroxide_carryover",
+      "judgment_kind": "commitment",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "into 2020",
+      "value_kind": "text",
+      "value_text": "carry up to 4,000 metric tons of hydroxide inventory into 2020",
+      "summary": "Management decided to carry up to 4,000 metric tons of hydroxide inventory into 2020.",
+      "metadata": {
+        "semantic_guard": "The source says up to 4,000 metric tons and into 2020; no exact carry volume, inventory date or 2020 end date is manufactured.",
+        "margin_semantics": "Inventory deliberately carried across the year boundary means production/cost vintage and later sale/revenue vintage can differ."
+      }
+    }
+  ]
+}
