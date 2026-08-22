@@ -4,6 +4,11 @@ from collections.abc import Sequence
 from typing import Protocol
 from uuid import UUID
 
+from longcycle.domain.judgments import (
+    JudgmentAssertion,
+    JudgmentRationale,
+    JudgmentRelation,
+)
 from longcycle.domain.models import (
     CollectionJob,
     DocumentArtifact,
@@ -58,6 +63,12 @@ class ResearchRepository(Protocol):
     async def complete_processing(self, run_id: UUID) -> None: ...
 
     async def append_assertions(self, assertions: Sequence[FactAssertion]) -> None: ...
+
+    async def append_judgments(self, judgments: Sequence[JudgmentAssertion]) -> None: ...
+
+    async def append_judgment_rationales(self, rationales: Sequence[JudgmentRationale]) -> None: ...
+
+    async def append_judgment_relations(self, relations: Sequence[JudgmentRelation]) -> None: ...
 
     async def reconcile_assertion(
         self,
