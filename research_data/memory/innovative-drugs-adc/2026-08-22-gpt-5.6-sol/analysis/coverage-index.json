@@ -35,12 +35,14 @@
   "handoff_shard_projection": {"purpose":"Deterministic one-lead-per-line identity projection for repository handoff audit; adds no new memory.","pattern":"blind/<shard_id>/sealed-leads-v1.jsonl"},
   "post_seal_state": {
     "run_id":"ADC-SV-001",
-    "stage":"delegated_claim_scoped_evidence_recovery_and_archive",
+    "stage":"grounded_pair_ready_for_no_lookahead_replay",
     "first_wave":"complete",
-    "evidence_archive":"sv001_grounded_complete_sv002_next",
-    "grounded_tasks":["SV-001"],
-    "active_evidence_task":"SV-002",
+    "evidence_archive":"sv001_sv002_grounded_complete",
+    "grounded_tasks":["SV-001","SV-002"],
+    "active_evidence_task":null,
     "sv001_receipt":"research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-001-grounded-evidence-receipt-v1.json",
+    "sv002_receipt":"research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-002-grounded-evidence-receipt-v1.json",
+    "next_stage":"no_lookahead_reality_judgment_outcome_replay",
     "manifest":"research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/manifest.json"
   }
 }
