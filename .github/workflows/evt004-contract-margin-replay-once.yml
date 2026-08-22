@@ -1,0 +1,210 @@
+name: Execute EVT-004 contract-vintage margin replay once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 068a726dd6b060a1368565205b684bc8715e8ecf
+  ACQUISITION_RUN_ID: '32570106526'
+  ACQUISITION_ARTIFACT: evt004-contract-margin-32570106526
+  EVIDENCE_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-004-contract-vintage-margin-grounded-evidence-spec-v2.json
+  REALITY_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-004-contract-vintage-margin-reality-projection-v1.json
+  JUDGMENT_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-004-contract-vintage-margin-judgment-projection-v2.json
+  CONTEXT_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-004-contract-vintage-margin-judgment-context-v1.json
+  SUBJECT_ID: 6e0d564d-cf78-5b58-8ca2-42f8f5999b04
+
+jobs:
+  replay:
+    if: github.event.issue.title == '[longcycle-evt004-contract-margin-replay-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/evt004-replay-blobs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Download and verify source payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p material replay
+          gh run download "$ACQUISITION_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "$ACQUISITION_ARTIFACT" --dir material
+          test "$(sha256sum material/livent-2019-10k-annualreports.pdf | awk '{print $1}')" = 'bef71d35e435a41ed0143800c26d156ebd588e7d11a603dfec23a4dd9f5b6629'
+          test "$(sha256sum material/livent-2019q3-prnewswire.html | awk '{print $1}')" = '9d8687f57f1a7577a94a7e32e1943686ce180ebba2562e5d51e9b8afc5bd1efa'
+
+      - name: Execute Evidence Reality Judgment and context
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/evt004-replay.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$EVIDENCE_SPEC" --material-root material --output replay/evidence.json
+          python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" replay/evidence.json --output replay/reality.json
+          python scripts/execute_grounded_judgment_persistence.py "$JUDGMENT_SPEC" replay/evidence.json --output replay/judgment.json
+          python scripts/execute_grounded_judgment_context.py "$CONTEXT_SPEC" replay/judgment.json replay/evidence.json --output replay/context.json
+          python scripts/export_integrated_replay_duckdb.py replay/evt004-memory.duckdb --subject-id "$SUBJECT_ID" --manifest-output replay/duckdb-manifest.json
+          python - <<'PY'
+          import asyncio
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+
+          SUBJECT = MemorySubjectRef(entity_id=UUID('6e0d564d-cf78-5b58-8ca2-42f8f5999b04'))
+          reader = DuckDBEpistemicMemoryReader(Path('replay/evt004-memory.duckdb'))
+
+          async def snapshot(value: str):
+              return await reader.snapshot((SUBJECT,), knowledge_cutoff=datetime.fromisoformat(value.replace('Z', '+00:00')))
+
+          async def main():
+              effective_day = await snapshot('2019-10-01T23:59:59Z')
+              pre_q3 = await snapshot('2019-11-05T22:00:58Z')
+              q3 = await snapshot('2019-11-05T22:00:59Z')
+              pre_10k = await snapshot('2020-02-28T20:33:58Z')
+              after_10k = await snapshot('2020-02-28T20:33:59Z')
+
+              assert len(effective_day.reality) == 0
+              assert len(effective_day.judgments) == 0
+              assert len(pre_q3.reality) == 0
+              assert len(pre_q3.judgments) == 0
+              assert len(q3.reality) == 0
+              assert len(q3.judgments) == 1
+              assert len(q3.judgment_rationales) == 1
+              assert len(q3.judgment_relations) == 0
+              assert len(pre_10k.reality) == 0
+              assert len(pre_10k.judgments) == 1
+              assert len(after_10k.reality) == 3
+              assert len(after_10k.judgments) == 1
+              assert len(after_10k.judgment_rationales) == 1
+              assert len(after_10k.judgment_relations) == 0
+              assert len(after_10k.outcomes) == 0
+
+              predicates = {row.predicate_code: row for row in after_10k.reality}
+              assert set(predicates) == {
+                  'commercial.contract_pricing_structure',
+                  'commercial.cost_pass_through_constraint',
+                  'inventory.accounting_method',
+              }
+              fifo = predicates['inventory.accounting_method']
+              assert fifo.valid_time.start.isoformat() == '2019-10-01T00:00:00+00:00'
+              assert fifo.known_at.isoformat() == '2020-02-28T20:33:59+00:00'
+              assert fifo.valid_time.precision.value == 'day'
+              assert fifo.valid_time.source_text == 'On October 1, 2019'
+
+              judgment = after_10k.judgments[0]
+              assert judgment.topic_code == 'inventory.hydroxide_carryover'
+              assert judgment.known_at.isoformat() == '2019-11-05T22:00:59+00:00'
+              assert judgment.target_time.kind == 'unknown'
+              assert judgment.target_time.source_text == 'into 2020'
+
+              payload = {
+                  'schema_version': 'longcycle-evt004-contract-margin-replay/v1',
+                  'subject_id': str(SUBJECT.entity_id),
+                  'snapshots': {
+                      'fifo_effective_day_before_known': {
+                          'cutoff': '2019-10-01T23:59:59Z',
+                          'reality': len(effective_day.reality),
+                          'judgments': len(effective_day.judgments),
+                      },
+                      'before_q3_release': {
+                          'cutoff': '2019-11-05T22:00:58Z',
+                          'reality': len(pre_q3.reality),
+                          'judgments': len(pre_q3.judgments),
+                      },
+                      'at_q3_known_time': {
+                          'cutoff': '2019-11-05T22:00:59Z',
+                          'reality': len(q3.reality),
+                          'judgments': len(q3.judgments),
+                          'rationales': len(q3.judgment_rationales),
+                      },
+                      'before_10k_known_time': {
+                          'cutoff': '2020-02-28T20:33:58Z',
+                          'reality': len(pre_10k.reality),
+                          'judgments': len(pre_10k.judgments),
+                      },
+                      'at_10k_known_time': {
+                          'cutoff': '2020-02-28T20:33:59Z',
+                          'reality': len(after_10k.reality),
+                          'judgments': len(after_10k.judgments),
+                          'rationales': len(after_10k.judgment_rationales),
+                          'outcomes': len(after_10k.outcomes),
+                      },
+                  },
+                  'fifo_valid_from': fifo.valid_time.start.isoformat(),
+                  'fifo_known_at': fifo.known_at.isoformat(),
+                  'same_day_spot_margin_proxy_supported': False,
+                  'numeric_margin_reconstruction_attempted': False,
+              }
+              Path('replay/replay-check.json').write_text(json.dumps(payload, indent=2) + '\n')
+              print(json.dumps(payload, indent=2))
+
+          asyncio.run(main())
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+
+      - name: Upload replay receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evt004-contract-margin-replay-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            replay/
+            /tmp/evt004-replay.log
+
+      - name: Report replay result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="EVT004_CONTRACT_MARGIN_REPLAY_PASS head=$EXPECTED_HEAD acquisition_run=$ACQUISITION_RUN_ID run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/evt004-replay.log 2>/dev/null || true)"
+            body=$(printf 'EVT004_CONTRACT_MARGIN_REPLAY_FAIL head=%s acquisition_run=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ACQUISITION_RUN_ID" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
