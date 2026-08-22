@@ -48,6 +48,10 @@ jobs:
       - name: Install
         run: python -m pip install -e ".[dev,postgres,s3,duckdb]"
 
+      - name: Repair memory audit (hard gate)
+        id: repair_memory
+        run: python scripts/repair_memory.py audit
+
       - name: PostgreSQL migrations (hard gate)
         id: migrations
         run: longcycle --json db upgrade
@@ -122,6 +126,7 @@ jobs:
       - name: Check summary
         if: always()
         run: |
+          echo "repair_memory=${{ steps.repair_memory.outcome }} (hard gate)"
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
