@@ -25,6 +25,7 @@ class ClaimScope(StrEnum):
 
 class AuthorityClass(StrEnum):
     AUTHORITATIVE_PRIMARY = "authoritative_primary"
+    AUTHORITATIVE_REDISTRIBUTOR = "authoritative_redistributor"
     PRIMARY_SELF_STATEMENT = "primary_self_statement"
     METHODOLOGICAL_PRIMARY = "methodological_primary"
     REPUTABLE_SECONDARY = "reputable_secondary"
