@@ -1,0 +1,54 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "ADC-SV-004-RC48-GROUNDED-EVIDENCE-V1",
+  "spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-004-grounded-evidence-spec-v1.json",
+  "source_acquisition": {
+    "release_tag": "longcycle-dev-binary-cache",
+    "asset": "longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip",
+    "asset_sha256": "51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a",
+    "acquisition_run_id": 32582552363,
+    "source_identity_count": 6
+  },
+  "execution": {
+    "active_head": "62c1e3266225532aee387e2816f4e3b1b42459a4",
+    "workflow_run_id": 32584787738,
+    "workflow_artifact_id": 9478754657,
+    "workflow_artifact_sha256": "17c996d80cd19f3ddf0ad591aa67ac03358f08edcb972511916dc7d9d543f89d",
+    "generated_drive_file_id": "1jpbUUBjYLjiAyO8M8uCCflZHcc0eqkUQ",
+    "generated_drive_file_name": "longcycle-adc-sv004-grounded-evidence-run32584787738.zip",
+    "result": "pass"
+  },
+  "acceptance": {
+    "persisted_document_versions": 6,
+    "persisted_evidence_fragments": 8,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "documents": [
+    {"key":"joint-license-release-2021","document_id":"83dee0db-df71-5e5e-a15a-071988b68048","sha256":"1bd5859896df5f1374a0fbf366e58d160141709f7bb064241185abf377d24950","first_known_at":"2021-08-10T00:00:00Z"},
+    {"key":"gastric-approval-2021","document_id":"cc568c3f-28b3-5bf0-b1c2-2f63a8d95482","sha256":"7adcbc89b08556eaa25dafb1757f2226a5c4b6bbc66d559f92478f79324b650a","first_known_at":"2021-06-11T00:00:00Z"},
+    {"key":"urothelial-approval-recap-2023","document_id":"813d5fb7-c79e-51c2-a62b-f144bc45b8f9","sha256":"df25a64aa86b22a6850374e361339aca1389a7ccc01f4325c68f86965c8becbc","first_known_at":"2023-11-23T00:00:00Z","valid_event_date":"2021-12-31"},
+    {"key":"pfizer-2024-10k","document_id":"1b353cc9-7259-5742-bc8d-1db1461e035c","sha256":"152c8fe1e5a40805949e1519abb979b086c0268d85cd1c3ed05b64d78acc75bc","first_known_at":"2025-02-28T00:00:00Z"},
+    {"key":"remegen-current-pipeline","document_id":"ac0de03a-0a40-53f8-920c-d67704f2eb36","sha256":"73d89e0a3a7f39bf67302d311d369f8a30775b9f1562b027c996ae82da843d1a","first_known_at":"2026-08-22T16:00:00Z"},
+    {"key":"clinicaltrials-nct05911295","document_id":"17422ed3-4bf9-59d3-b839-1d2cc7a80a3e","sha256":"aadb6d74d774d7f895ac32c27937f6c4f22f774d9fe47b35c2c937123d77f6e3","first_known_at":"2026-08-22T16:00:00Z","canonical_json_artifact_id":"9c0c73b8-663f-501b-b4fb-256a83523c32","canonical_json_artifact_sha256":"9917eff7fe10ac311167eaab499122e06fa2c9b717a287ed9e6e74d50cd59fcc"}
+  ],
+  "fragments": [
+    {"key":"announced-remegen-retained-territory","evidence_fragment_id":"f04e2f23-64fc-57c5-863e-04b3a0afaf63","locator":"$.pages[1].text","claim_role":"announced_rights_allocation"},
+    {"key":"announced-global-development-allocation","evidence_fragment_id":"44958521-1c0c-58eb-b3e7-dc4a5f21644e","locator":"$.pages[1].text","claim_role":"announced_development_role_allocation"},
+    {"key":"china-gastric-approval-2021","evidence_fragment_id":"8dfcd633-836e-5181-a351-4a09ec278419","locator":"visible-text:2593:3047","claim_role":"regulatory_approval_state"},
+    {"key":"china-urothelial-approval-2021-later-recap","evidence_fragment_id":"f29d9e1a-148f-5e4f-b8d1-353c2c290be4","locator":"visible-text:3704:3851","claim_role":"regulatory_approval_state_later_recap"},
+    {"key":"pfizer-2024-collaboration-state","evidence_fragment_id":"7b48071d-3da0-55a4-ad85-b48cc3bf53fd","locator":"$.pages[46].text","claim_role":"pfizer_group_collaboration_state"},
+    {"key":"remegen-current-global-pfizer-cooperation","evidence_fragment_id":"35d422d0-07c9-564e-b603-c8f37e96eeff","locator":"visible-text:5145:5230","claim_role":"current_pipeline_cooperation_state"},
+    {"key":"nct05911295-lead-sponsor","evidence_fragment_id":"407cacde-0123-52ba-bfb2-997dadb21db4","locator":"json-pointer:/protocolSection/sponsorCollaboratorsModule/leadSponsor/name","claim_role":"trial_lead_sponsor"},
+    {"key":"nct05911295-collaborator-remegen","evidence_fragment_id":"e557cad6-6d1d-5022-ba84-3b272509c2dc","locator":"json-pointer:/protocolSection/sponsorCollaboratorsModule/collaborators/0/name","claim_role":"trial_collaborator"}
+  ],
+  "epistemic_results": {
+    "json_evidence_grounded_structurally": true,
+    "json_was_not_coerced_to_visible_text": true,
+    "urothelial_valid_time_and_known_time_separated": true,
+    "acquisition_metadata_date_correction": "RemeGen news id 1731 transport metadata said 2023-09-12, but archived source content says Release date 2023.11.22. Grounded Evidence uses conservative known-time upper bound 2023-11-23 and preserves approval occurrence date 2021-12-31.",
+    "role_identity_boundary": "Announced territory rights, global development lead, Pfizer consolidated collaboration, Seagen trial lead sponsor and RemeGen trial collaborator remain distinct claim scopes. Pfizer ownership of Seagen is not treated as automatic legal-party substitution."
+  },
+  "sealed_blind_memory_mutated": false,
+  "next": "Project only the role/regulatory facts needed for RC48 identity pressure through the existing Reality executor. Use separate namespaced predicates rather than a generic partner label; do not change schema or the bounded executor merely to normalize counterparties to entity ids in this pilot."
+}
