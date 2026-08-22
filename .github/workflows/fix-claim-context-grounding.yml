@@ -16,6 +16,14 @@ jobs:
     if: github.event.issue.title == '[longcycle-fix-claim-context-grounding-v1]'
     runs-on: ubuntu-24.04
     steps:
+      - name: Announce received repair event
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: >-
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY"
+          --body "CLAIM_CONTEXT_GROUNDING_REPAIR_RECEIVED run_id=${GITHUB_RUN_ID}"
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ env.ACTIVE_REF }}
