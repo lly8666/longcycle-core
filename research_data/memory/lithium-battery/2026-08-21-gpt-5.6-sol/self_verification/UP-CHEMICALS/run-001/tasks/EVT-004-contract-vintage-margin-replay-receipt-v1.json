@@ -1,0 +1,164 @@
+{
+  "schema_version": "longcycle-benchmark-replay-receipt/v1",
+  "task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN",
+  "trajectory_family": "SVQ-006-CONTRACT-VINTAGE-MARGIN",
+  "sealed_shard": "UP-CHEMICALS",
+  "implementation_head": "068a726dd6b060a1368565205b684bc8715e8ecf",
+  "acquisition": {
+    "run_id": 32570106526,
+    "github_artifact_id": 9475107860,
+    "github_artifact_sha256": "f0c31409be382d39456aaa6021576e8b07521d7e723f40d6f1969b40d32319b9",
+    "drive_cache": {
+      "file_id": "1lKMX5x34mXBF3KKO5KGzQnk6XAuUja7E",
+      "file_name": "longcycle-evt004-contract-margin-acquisition-run32570106526.zip",
+      "role": "bounded handoff/cache copy; not terminal archive"
+    },
+    "documents": [
+      {
+        "key": "livent-2019-10k",
+        "retrieval_host": "annualreports.com",
+        "upstream_system": "SEC EDGAR",
+        "upstream_external_id": "0001742924-20-000012",
+        "raw_sha256": "bef71d35e435a41ed0143800c26d156ebd588e7d11a603dfec23a4dd9f5b6629",
+        "raw_bytes": 7584431,
+        "document_id": "5143d97a-6c63-5ba9-8f77-827a191ff210",
+        "content_addressed_blob_key": "raw/sha256/be/bef71d35e435a41ed0143800c26d156ebd588e7d11a603dfec23a4dd9f5b6629"
+      },
+      {
+        "key": "livent-2019q3-results-release",
+        "retrieval_host": "prnewswire.com",
+        "upstream_system": "Livent issuer results release",
+        "upstream_external_id": "2019-11-05-Q3-results",
+        "raw_sha256": "9d8687f57f1a7577a94a7e32e1943686ce180ebba2562e5d51e9b8afc5bd1efa",
+        "raw_bytes": 345374,
+        "document_id": "3155e065-46fe-58df-8a60-08d44cd5a1bc"
+      }
+    ]
+  },
+  "grounded_evidence": {
+    "run_id": 32570502122,
+    "required_documents": 2,
+    "persisted_documents": 2,
+    "required_fragments": 7,
+    "persisted_fragments": 7,
+    "fact_assertions_created_by_evidence_executor": 0,
+    "judgment_assertions_created_by_evidence_executor": 0,
+    "evidence_fragment_ids": {
+      "2019-contract-fixed-formula-pricing": "56808f50-21a0-5c9a-8730-66479a37f908",
+      "2019-contract-cost-pass-through-lag": "afc685c9-f273-5428-b798-87d51ef16c66",
+      "2019-fifo-accounting-change": "05e50f10-fdcc-5c4f-b41c-d8cdf741c2a7",
+      "2019-fifo-revenue-cost-matching-rationale": "3d882525-ffc3-51c2-8021-0b7d1828f405",
+      "2019q3-ebitda-mix-feedstock-cost-driver": "5accd2d0-49f9-5103-912d-548ca7e9033b",
+      "2019q3-hydroxide-inventory-carry-plan": "12b60953-59db-5c14-a49d-3747c254544a",
+      "2019q3-higher-customer-commitments-rationale": "78ceed69-3898-5f1c-9dd3-26bc25032443"
+    },
+    "parser_lineage": {
+      "2019_10k_pdf_artifact_id": "08d8f90a-b5ee-5d97-b870-7baa5c330e5e",
+      "2019_10k_pdf_artifact_sha256": "7825b31947bd654a00a3ca6be0aa755adcfcd90e6d31658644bcf7dd4117dc3b",
+      "html_parser_digest_policy": "Parser-artifact digest belongs to the official archive parser lineage and is not required to equal acquisition-side visible-text normalization."
+    }
+  },
+  "typed_memory": {
+    "subject_entity_id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+    "subject": "Livent Corporation",
+    "reality": [
+      {
+        "predicate_code": "commercial.contract_pricing_structure",
+        "assertion_id": "1d157ac7-14af-538f-9b88-8a2b20185e1f",
+        "canonical_fact_version_id": "72b15c84-7c35-5207-9e67-0318de107421",
+        "valid_time_kind": "unknown",
+        "observed_at": "2020-02-28T00:00:00Z",
+        "observed_at_precision": "day",
+        "known_at": "2020-02-28T20:33:59Z"
+      },
+      {
+        "predicate_code": "commercial.cost_pass_through_constraint",
+        "assertion_id": "0b40c56e-5eb4-52cc-89bb-93cce5e41a27",
+        "canonical_fact_version_id": "300358c6-ebc9-5d7a-aeb6-5b85a9a23101",
+        "valid_time_kind": "unknown",
+        "observed_at": "2020-02-28T00:00:00Z",
+        "observed_at_precision": "day",
+        "known_at": "2020-02-28T20:33:59Z"
+      },
+      {
+        "predicate_code": "inventory.accounting_method",
+        "assertion_id": "73a59eff-376b-5409-90b9-a8d41fd0a77d",
+        "canonical_fact_version_id": "b76aa2bd-0f60-5372-b5a6-f530bf2ce51b",
+        "valid_time_kind": "period",
+        "valid_from": "2019-10-01T00:00:00Z",
+        "valid_time_precision": "day",
+        "valid_time_text": "On October 1, 2019",
+        "known_at": "2020-02-28T20:33:59Z"
+      }
+    ],
+    "judgment": {
+      "judgment_id": "42e88767-ad4f-592f-9d70-4d409ed841a4",
+      "judgment_key": "2019q3-hydroxide-inventory-carry-into-2020",
+      "judgment_kind": "commitment",
+      "topic_code": "inventory.hydroxide_carryover",
+      "target_time_kind": "unknown",
+      "target_text": "into 2020",
+      "value_text": "carry up to 4,000 metric tons of hydroxide inventory into 2020",
+      "known_at": "2019-11-05T22:00:59Z"
+    },
+    "judgment_rationale": {
+      "rationale_id": "677c8434-7761-52c3-a862-fd529e998699",
+      "judgment_id": "42e88767-ad4f-592f-9d70-4d409ed841a4",
+      "rationale_kind": "premise",
+      "evidence_fragment_id": "78ceed69-3898-5f1c-9dd3-26bc25032443",
+      "summary": "Management said the inventory carry was intended to meet higher customer commitments."
+    },
+    "judgment_relations": 0,
+    "outcomes": 0
+  },
+  "replay": {
+    "run_id": 32570715478,
+    "github_artifact_id": 9475245274,
+    "github_artifact_sha256": "9f09929101a9645dce011b316ea7e379ca73b025cdde9f9bb72bb0e319580b01",
+    "drive_cache": {
+      "file_id": "1GsrKCwRk6gEybhYvb0RN7pCUS5Szw67J",
+      "file_name": "longcycle-evt004-contract-margin-replay-run32570715478.zip",
+      "role": "bounded handoff/cache copy; not terminal archive"
+    },
+    "sealed_duckdb": {
+      "sha256": "13f889eb03c866ab4072bfd078d6d70d7a895cafafba7e0fa117dc0d1fb87d66",
+      "bytes": 2895872,
+      "typed_round_trip": true,
+      "counts": {
+        "reality": 3,
+        "judgments": 1,
+        "rationales": 1,
+        "relations": 0,
+        "outcomes": 0
+      }
+    },
+    "snapshots": {
+      "2019-10-01T23:59:59Z": {"reality": 0, "judgments": 0},
+      "2019-11-05T22:00:58Z": {"reality": 0, "judgments": 0},
+      "2019-11-05T22:00:59Z": {"reality": 0, "judgments": 1, "rationales": 1},
+      "2020-02-28T20:33:58Z": {"reality": 0, "judgments": 1},
+      "2020-02-28T20:33:59Z": {"reality": 3, "judgments": 1, "rationales": 1, "outcomes": 0}
+    }
+  },
+  "semantic_conclusion": {
+    "publishable": "For this grounded Livent trajectory, same-day lithium spot input/output spreads are not a defensible proxy for realized converter margin. Product pricing can be contract-vintage dependent, increased costs may not pass through immediately or at all, inventory can deliberately cross reporting periods, and inventory accounting/revenue-cost matching determines which cost vintage reaches reported cost of sales.",
+    "numeric_margin_reconstruction_attempted": false,
+    "why_not_numeric": "No sufficiently exact lithium-specific purchase/sale contract formula, reset schedule and matched inventory/sales timing were grounded. A synthetic spot-spread margin would add false precision.",
+    "accounting_caveat": "FIFO is effective from 2019-10-01 but is only replay-visible from 2020-02-28 under the currently grounded evidence. Valid/effective time does not override known-time/no-lookahead eligibility.",
+    "management_explanation_scope": "The Q3 favorable product/customer mix and lower third-party carbonate-cost explanation remains management Evidence and is not promoted to objective causal Reality."
+  },
+  "architecture_result": {
+    "new_schema_required": false,
+    "new_generic_margin_engine_required": false,
+    "existing_primitives_sufficient": [
+      "claim-scoped Evidence",
+      "unknown-onset Reality with observation axis",
+      "period-valid Reality with independent known-time",
+      "immutable Judgment/Commitment",
+      "source-backed Judgment rationale",
+      "typed PostgreSQL to sealed DuckDB no-lookahead replay"
+    ]
+  },
+  "blind_memory_unchanged": true,
+  "unsealed_shards_searched": false
+}
