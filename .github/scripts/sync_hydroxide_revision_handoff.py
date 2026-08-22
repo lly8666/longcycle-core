@@ -1,0 +1,178 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+
+path = Path('.longcycle/handoff/current.json')
+data = json.loads(path.read_text(encoding='utf-8'))
+
+data['continuity_sequence'] = 41
+data['checkpoint_based_on_head_sha'] = 'b6a964a43a2abee86d8c429a5763c153d0380f93'
+
+horizon = data['strategic_horizon']
+horizon['short_term_goal'] = (
+    'Prove a semantically orthogonal historical cognition trajectory inside the sealed '
+    'UP-CHEMICALS benchmark: preserve how the high-nickel -> lithium-hydroxide demand '
+    'thesis was stated, revised, caveated and competed with alternative scenarios across '
+    '2018-2019, with source-backed rationale/revision context surviving no-lookahead '
+    'PostgreSQL -> sealed DuckDB replay.'
+)
+horizon['next_big_step'] = (
+    'Execute EVT-003-HYDROXIDE-EXPECTATION-REVISION-V1 from the already discovered '
+    'SVQ-003 source set. Archive the bounded Livent/SQM originals, extract claim-scoped '
+    'Evidence, persist immutable Judgment vintages plus justified rationales/relations, '
+    'and prove point-in-time replay before deciding whether a later Reality/Outcome is '
+    'source-supported enough to add.'
+)
+horizon['local_optimization_stop_rule'] = (
+    'Kwinana state-as-of Reality and typed Judgment rationale/revision replay are now '
+    'proven reusable primitives. Do not add more generic temporal, database, handoff, '
+    'agent or archive infrastructure unless EVT-003 exposes a concrete repeated defect. '
+    'Do not enter unsealed shards. Preserve raw/archive bytes outside SQL, PostgreSQL for '
+    'transactional writes, DuckDB for portable typed replay, and evidence-final authority.'
+)
+
+cursor = data['continuation_cursor']
+cursor['last_completed_action'] = (
+    'Completed the Kwinana unknown-onset state-as-of forcing case and the subsequent '
+    'Vertical Alignment Gate. Fixed-SHA run 32559454857 proved canonical Reality with '
+    'valid_time=unknown, day-precision observed_at and separate known_at; durable receipt '
+    'EVT-001-kwinana-state-as-of-replay-receipt-v1.json is committed. The alignment gate '
+    'then found that persisted Judgment rationales and revision relations were absent from '
+    'the storage-neutral replay model. Commit 99d87559... adds typed rationale/relation '
+    'records to PostgreSQL -> industrial timeline -> sealed DuckDB replay; PostgreSQL 17 '
+    'epistemic smoke, Mypy (74 files) and full Pytest (220 passed) succeeded in run '
+    '32560356530. A bounded next trajectory plan is committed as '
+    'EVT-003-hydroxide-expectation-revision-plan-v1.json at substantive checkpoint '
+    'b6a964a4....'
+)
+cursor['current_task'] = (
+    'Execute the bounded SVQ-003 hydroxide expectation-vintage trajectory. Recover only '
+    'the listed Livent 2018 10-K, Livent 2019 Q1 10-Q, Livent 2019 10-K, SQM 2019 6-K '
+    'and optional dated BNEF context needed for the target claims; archive originals, '
+    'extract claim-scoped Evidence, then persist point-in-time Judgment vintages with '
+    'source-backed rationale/caveat and a REVISES edge only where claim identity truly '
+    'supports it.'
+)
+cursor['why_now'] = (
+    'Two project trajectories already prove Reality/Judgment/Outcome timing and semantic '
+    'comparability, and Kwinana now proves unknown-onset state truth. The highest-value '
+    'next mission gap is historical cognition itself: whether Longcycle can replay not '
+    'just what an actor believed, but why the belief changed and which competing scenarios '
+    'were simultaneously knowable, without hindsight collapse.'
+)
+cursor['done_when'] = (
+    'Original/authoritative contemporaneous evidence supports at least two hydroxide-demand '
+    'expectation vintages; source-backed rationale/caveat survives typed PostgreSQL and '
+    'sealed DuckDB replay; a typed revision relation survives only if semantic identity is '
+    'actually justified; competing scenarios remain distinct; pre-publication knowledge '
+    'cutoffs hide later cognition; Kemerton direct Outcome, Kwinana related-milestone '
+    'Outcome and Kwinana state-as-of Reality regressions remain green. If no clean later '
+    'Outcome is supportable, preserve that ambiguity instead of manufacturing one.'
+)
+cursor['required_capability'] = 'high_capability_reasoning'
+cursor['insufficient_capability_action'] = 'stop_and_escalate'
+cursor['next_atomic_action'] = (
+    'Read EVT-003-hydroxide-expectation-revision-plan-v1.json and the SVQ-003 entry in '
+    'discovery-v1.json. Starting with the Livent 2018 10-K and 2019 Q1 10-Q, retrieve and '
+    'archive the exact authoritative filing bytes, establish conservative known-time from '
+    'filing metadata, and draft a grounded Evidence spec for only the high-nickel -> '
+    'hydroxide thesis and its slower-than-anticipated revision. Do not broaden source scope '
+    'unless a listed source requires claim-scoped citation chasing.'
+)
+
+ctx = data['active_context']
+ctx['label'] = (
+    'Lithium-battery first benchmark / hydroxide expectation vintage and Judgment revision replay'
+)
+ctx['deep_context_paths'] = [
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-expectation-revision-plan-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-state-as-of-replay-receipt-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-typed-trajectory-receipt-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-reality-execution-receipt-v1.json',
+]
+
+campaign = data['memory_campaign']
+campaign['phase'] = (
+    'sealed_shard_two_project_replay_state_as_of_and_judgment_context_proven_'
+    'hydroxide_revision_next'
+)
+campaign['next_research_actions'] = [
+    'Execute EVT-003 hydroxide expectation-vintage evidence recovery inside sealed UP-CHEMICALS.',
+    'Preserve Livent expectation revisions and SQM competing scenarios as point-in-time cognition rather than hindsight consensus.',
+    'Use typed Judgment rationales/relations only when source semantics justify them; ambiguity is an allowed result.',
+    'After the cognition chain passes replay, add a later Reality/Outcome only if a specific forecast has source-backed comparability.',
+    'Do not enter fresh historical search in unsealed shards or mutate sealed blind-memory artifacts.',
+]
+
+ci = data['ci']
+ci['last_observed_run'] = 32560356530
+ci['observed_head_sha'] = '99d87559ddc2ba40139a6251a8819dc5bb9fab39'
+ci['conclusion'] = (
+    'Judgment-context bounded gate run 32560356530 succeeded on substantive code SHA '
+    '99d87559...: PostgreSQL 17 migrations through 0024, POSTGRES_EPISTEMIC_MEMORY_SMOKE_PASS '
+    'including rationale + REVISES replay, Mypy with no issues in 74 source files, and '
+    'full Pytest 220 passed. Subsequent commits b32742d... and b6a964a... are repository '
+    'receipt/task-plan state, not generic code changes. Fresh sessions must still refresh live HEAD/CI.'
+)
+ci['mypy_summary'] = 'Run 32560356530: Mypy hard gate succeeded, 74 source files.'
+ci['pytest_summary'] = 'Run 32560356530: full Pytest hard gate succeeded, 220 passed.'
+ci['refresh_instruction'] = (
+    'Fetch active PR #1 and live design/industry-memory HEAD. Compare checkpoint base '
+    'b6a964a43a2abee86d8c429a5763c153d0380f93 to live HEAD. If every later changed path is '
+    'handoff-mutable only, continue from EVT-003. If any substantive path changed, inspect '
+    'and reconcile those commits before research execution.'
+)
+
+main = next(
+    item
+    for item in data['workstreams']
+    if item['workstream_id'] == 'first-end-to-end-reality-judgment-outcome-replay'
+)
+main['status'] = 'project_replay_and_state_semantics_proven_hydroxide_cognition_revision_next'
+main['summary'] = (
+    'Kemerton and Kwinana prove project-level Reality/Judgment/Outcome replay, caveat '
+    'provenance, semantic Outcome comparability and unknown-onset state-as-of Reality. '
+    'Typed replay now also preserves Judgment rationales and revision/dependency relations. '
+    'The main path moves to the hydroxide expectation vintage to prove historical cognition '
+    'revision and contemporaneous competing scenarios before broadening the benchmark.'
+)
+main['next_actions'] = [
+    'Archive and extract the bounded SVQ-003 Livent/SQM hydroxide expectation evidence.',
+    'Persist immutable Judgment vintages with source-backed rationales/caveats and justified revision relations.',
+    'Seal PostgreSQL -> DuckDB point-in-time replay and prove no-lookahead for the revision graph and competing scenarios.',
+    'Then decide whether a specific later Reality/Outcome is sufficiently comparable or whether ambiguity is the truthful stopping point.',
+]
+main['blockers'] = []
+
+data['resume_read_set'] = [
+    'STRATEGIC_COMPASS.md',
+    'METHODOLOGY_CORE.md',
+    '.longcycle/continuity/mission-fidelity.json',
+    'CONTINUE_HERE.md',
+    '.longcycle/handoff/current.json',
+    '.longcycle/handoff/data-plane.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-expectation-revision-plan-v1.json',
+]
+data['deep_reference_paths'] = [
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-state-as-of-replay-receipt-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-typed-trajectory-receipt-v1.json',
+    'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-reality-execution-receipt-v1.json',
+    '.longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json',
+    '.longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json',
+    '.longcycle/repair-memory/invariants/RI-0004-fact-provenance-multi-fragment.json',
+    'docs/development/storage-runtime-boundary.md',
+    'docs/development/session-handoff-protocol.md',
+]
+data['unresolved_questions'] = [
+    'Do the Livent 2018 and 2019 Q1 statements refer to a sufficiently identical thesis/forecast object to justify a formal REVISES relation, or should they remain separate Judgment vintages with only narrative linkage?',
+    'What exact SEC filing acceptance/availability timestamps should bound known-time for each Livent/SQM source without manufacturing earlier knowledge?',
+    'Which source-backed mechanisms belong in JudgmentRationale versus caveat Evidence only?',
+    'Is there a later Reality sufficiently predicate- and horizon-comparable to evaluate one hydroxide-demand expectation, or should EVT-003 stop at a truthful cognition-history replay?',
+]
+
+path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+print('HANDOFF_HYDROXIDE_REVISION_SYNC_APPLIED')
