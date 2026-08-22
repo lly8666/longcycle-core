@@ -14,7 +14,7 @@ env:
 
 jobs:
   acquire:
-    if: github.event.issue.title == '[longcycle-evt004-contract-margin-acquire-v1]'
+    if: github.event.issue.title == '[longcycle-evt004-contract-margin-acquire-v2]'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -41,6 +41,7 @@ jobs:
           import io
           import json
           import re
+          import subprocess
           import urllib.request
           from html import unescape
           from pathlib import Path
@@ -66,11 +67,11 @@ jobs:
                   ],
               },
               {
-                  'key': 'livent-2019q3-issuer-release',
-                  'url': 'https://ir.arcadiumlithium.com/investors/news/news-details/2019/Livent-Releases-Third-Quarter-2019-Results-11-05-2019/',
+                  'key': 'livent-2019q3-prnewswire',
+                  'url': 'https://www.prnewswire.com/news-releases/livent-releases-third-quarter-2019-results-300952280.html',
                   'kind': 'html',
-                  'upstream_system': 'Livent issuer investor relations',
-                  'upstream_external_id': '2019-11-05-Q3-results',
+                  'upstream_system': 'Livent issuer release / PR Newswire',
+                  'upstream_external_id': '300952280',
                   'upstream_title': 'Livent Releases Third Quarter 2019 Results',
                   'required_phrases': [
                       'Livent Releases Third Quarter 2019 Results',
@@ -103,48 +104,57 @@ jobs:
               return ' '.join(' '.join((page.extract_text() or '').split()) for page in reader.pages)
 
           rows = []
+          success_count = 0
           for item in ITEMS:
-              raw, final_url, status, headers = fetch(item['url'])
-              if status != 200:
-                  raise ValueError(f"unexpected HTTP {status} for {item['key']}")
-              text = pdf_text(raw) if item['kind'] == 'pdf' else html_text(raw)
-              lowered = text.lower()
-              missing = [phrase for phrase in item['required_phrases'] if phrase.lower() not in lowered]
-              if missing:
-                  raise ValueError(f"semantic identity/claim phrases missing for {item['key']}: {missing}")
-              suffix = '.pdf' if item['kind'] == 'pdf' else '.html'
-              raw_path = Path('acquired') / f"{item['key']}{suffix}"
-              raw_path.write_bytes(raw)
-              text_path = Path('acquired') / f"{item['key']}-visible.txt"
-              text_path.write_text(text, encoding='utf-8')
-              rows.append({
+              base = {
                   'key': item['key'],
-                  'ok': True,
                   'requested_url': item['url'],
-                  'final_url': final_url,
-                  'status': status,
-                  'content_type': headers.get('Content-Type') or headers.get('content-type'),
-                  'raw_sha256': hashlib.sha256(raw).hexdigest(),
-                  'raw_bytes': len(raw),
-                  'visible_text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
-                  'visible_text_bytes': len(text.encode('utf-8')),
                   'upstream_announcement': {
                       'issuer': 'Livent Corporation',
                       'system': item['upstream_system'],
                       'external_id': item['upstream_external_id'],
                       'title': item['upstream_title'],
                   },
-                  'verified_phrases': item['required_phrases'],
-              })
+              }
+              try:
+                  raw, final_url, status, headers = fetch(item['url'])
+                  if status != 200:
+                      raise ValueError(f'unexpected HTTP {status}')
+                  text = pdf_text(raw) if item['kind'] == 'pdf' else html_text(raw)
+                  lowered = text.lower()
+                  missing = [phrase for phrase in item['required_phrases'] if phrase.lower() not in lowered]
+                  if missing:
+                      raise ValueError(f'semantic identity/claim phrases missing: {missing}')
+                  suffix = '.pdf' if item['kind'] == 'pdf' else '.html'
+                  (Path('acquired') / f"{item['key']}{suffix}").write_bytes(raw)
+                  (Path('acquired') / f"{item['key']}-visible.txt").write_text(text, encoding='utf-8')
+                  rows.append({
+                      **base,
+                      'ok': True,
+                      'final_url': final_url,
+                      'status': status,
+                      'content_type': headers.get('Content-Type') or headers.get('content-type'),
+                      'raw_sha256': hashlib.sha256(raw).hexdigest(),
+                      'raw_bytes': len(raw),
+                      'visible_text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                      'visible_text_bytes': len(text.encode('utf-8')),
+                      'verified_phrases': item['required_phrases'],
+                  })
+                  success_count += 1
+              except Exception as exc:
+                  rows.append({**base, 'ok': False, 'error': f'{type(exc).__name__}: {exc}'})
 
           payload = {
               'schema_version': 'longcycle-approved-redistributor-acquisition/v1',
               'task_id': 'EVT-004-CONTRACT-VINTAGE-MARGIN',
-              'active_head_sha': Path('.git/HEAD').read_text(errors='ignore').strip(),
+              'active_head_sha': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'success_count': success_count,
               'rows': rows,
           }
           Path('acquired/acquisition.json').write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
           print(json.dumps(payload, indent=2))
+          if success_count != len(ITEMS):
+              raise SystemExit(f'expected {len(ITEMS)} successful acquisitions, got {success_count}')
           PY
 
       - name: Upload acquired source bytes
@@ -164,9 +174,9 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
         run: |
           set -euo pipefail
-          if [[ -f acquired/acquisition.json ]]; then
+          if [[ -f acquired/acquisition.json ]] && [[ "$(python -c 'import json; print(json.load(open("acquired/acquisition.json"))["success_count"])')" == "2" ]]; then
             body=$(printf 'EVT004_CONTRACT_MARGIN_ACQUIRE_PASS head=%s run_id=%s\n\n```json\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$(cat acquired/acquisition.json)")
           else
-            body="EVT004_CONTRACT_MARGIN_ACQUIRE_FAIL head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID"
+            body=$(printf 'EVT004_CONTRACT_MARGIN_ACQUIRE_FAIL head=%s run_id=%s\n\n```json\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$(cat acquired/acquisition.json 2>/dev/null || echo '{}')")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
