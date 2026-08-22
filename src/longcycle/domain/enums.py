@@ -71,6 +71,22 @@ class JudgmentTargetTimeKind(StrEnum):
     UNKNOWN = "unknown"
 
 
+class TemporalPrecision(StrEnum):
+    INSTANT = "instant"
+    SECOND = "second"
+    MINUTE = "minute"
+    HOUR = "hour"
+    DAY = "day"
+    WEEK = "week"
+    MONTH = "month"
+    QUARTER = "quarter"
+    HALF_YEAR = "half_year"
+    YEAR = "year"
+    RANGE = "range"
+    APPROXIMATE = "approximate"
+    UNKNOWN = "unknown"
+
+
 class JudgmentValueKind(StrEnum):
     NUMERIC = "numeric"
     NUMERIC_RANGE = "numeric_range"
