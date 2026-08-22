@@ -90,7 +90,7 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
     """Typed industrial-memory read model over the transactional PostgreSQL adapter.
 
     Application/replay code depends on this boundary, not on the physical research.*
-    tables.  PostgreSQL remains free to evolve or be replaced without leaking schema
+    tables. PostgreSQL remains free to evolve or be replaced without leaking schema
     joins into scripts and product logic.
     """
 
@@ -133,8 +133,6 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
             judgments=tuple(self._judgment_record(row) for row in judgment_rows),
             outcomes=tuple(self._outcome_record(row) for row in outcome_rows),
         )
-        # SQL already filters before materialization.  The domain constructor is a
-        # second fail-closed no-lookahead guard.
         return snapshot_from_timeline(timeline, knowledge_cutoff=checked)
 
     @staticmethod
@@ -294,6 +292,7 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
             target_time=_judgment_target(row),
             value_kind=row["value_kind"],
             value_text=row["value_text"],
+            value_payload=_value_payload(row),
             summary=row["summary"],
             known_at=row["first_known_at"],
             evidence_fragment_ids=tuple(row["evidence_fragment_ids"]),
