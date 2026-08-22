@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 from typing import Any
+from uuid import UUID
 
 from longcycle.adapters.storage.outcomes import PostgresOutcomeRepository
 from longcycle.application.outcome_evaluation import evaluate_realized_outcome
@@ -62,7 +63,7 @@ async def _execute(
         occurrence_text=canonical.get("valid_time_text"),
         first_known_at=canonical["market_known_at"],
     )
-    evaluation = evaluate_realized_outcome(
+    base_evaluation = evaluate_realized_outcome(
         judgment,
         observation,
         explanation=(
@@ -71,7 +72,13 @@ async def _execute(
             "Timing comparison uses only the common source-supported temporal precision."
         ),
         evaluated_at=observation.first_known_at,
-    ).model_copy(update={"canonical_fact_version_id": canonical["id"]})
+    )
+    evaluation = base_evaluation.__class__.model_validate(
+        {
+            **base_evaluation.model_dump(mode="python"),
+            "canonical_fact_version_id": UUID(str(canonical["id"])),
+        }
+    )
 
     repository = PostgresOutcomeRepository(dsn)
     try:
