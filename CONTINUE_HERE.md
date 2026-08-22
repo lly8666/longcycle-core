@@ -12,140 +12,137 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 
 ## Fresh-session 正常流程
 
-1. 通过 GitHub issue #2 找到 live PR / branch。
-2. 先读 `STRATEGIC_COMPASS.md` 和 `METHODOLOGY_CORE.md`。
-3. **不要立刻照抄 Core。** 先用自己的话内部重建项目为什么存在、核心认知缺口、point-in-time 意义、Evidence 边界、跨行业终局和工具/目标区别。
-4. 再读 `.longcycle/continuity/mission-fidelity.json` 做 semantic calibration；遗漏哪一项，只定向重读对应 Core 段落并纠偏。
-5. 再读 `.longcycle/handoff/current.json`，获得当前中期目标、短期目标、continuation cursor、active context、ordered actions，以及 `.longcycle/handoff/data-plane.json` 的位置。
-6. 刷新 live HEAD / commit delta / CI；checkpoint 中的 CI 只是快照。
-7. 只加载 `resume_read_set` 中当前任务需要的文件，通过 Vertical Alignment Gate 后，从 cursor 的当前/下一原子动作继续。
-8. 在修改可识别的代码路径前，先用 `.longcycle/repair-memory/active-index.json` 或 `python scripts/repair_memory.py relevant <paths...>` 查该路径是否有 active repair invariant；只读匹配卡片，不预加载全部维修历史。
-9. 如果当前 cursor 需要二进制研究状态，再按 `.longcycle/handoff/data-plane.json` **只恢复 required_for_current_task 的资产**。先验外层 SHA-256，再验内部组件 SHA-256；运行时不兼容或资产缺失时 fail closed，不能靠文件名/网盘元数据猜。
+1. 先读 GitHub issue #2，只把它当 rendezvous：找到 active PR / branch / handoff 路径，不从 issue 正文推断 live task。
+2. 刷新 active PR 的 live HEAD。
+3. 读 `STRATEGIC_COMPASS.md` 和 `METHODOLOGY_CORE.md`，先用自己的话重建项目为什么存在、为什么要保存 Reality + contemporaneous Judgment + Outcome、为什么 point-in-time/no-lookahead 是第一性边界、Evidence 与模型记忆如何分工、为什么跨行业 benchmark 只是手段。
+4. 再读 `.longcycle/continuity/mission-fidelity.json` 校准。遗漏哪一项，只定向重读对应 Core；不要把 rubric 当答案模板。
+5. 读 `.longcycle/handoff/current.json`，获取当前中期目标、短期目标、continuation cursor、active context、ordered actions 与 `.longcycle/handoff/data-plane.json` 路径。
+6. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不相同，先检查 intervening commits；handoff-only commit 可以在确认无 substantive drift 后继续，不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
+7. 刷新 live CI。checkpoint 内 CI 永远只是 snapshot。
+8. 只读 `resume_read_set` 中当前任务需要的文件；旧行业、旧 devlog、全部 raw data、全部 Repair Memory 默认不加载。
+9. 修改已知代码路径前，才用 `.longcycle/repair-memory/active-index.json` 或 `python scripts/repair_memory.py relevant <paths...>` 做 path-scoped invariant lookup。
+10. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
 
-**不要默认读取旧 devlog、旧行业包、全部 raw data、全部 repair cards、整个网盘目录或整个仓库。** 需要追溯理由时，再按 `deep_reference_paths`、Repair Memory 匹配卡片或 Git history 定向展开。
-
-## Control plane 与 data plane
-
-Handoff 分两层，权威不能混：
+## Handoff 的两层权威
 
 ```text
-Git / current.json / receipts
-    = 控制面：使命、当前状态、下一步、资产身份和校验值
+Git / current.json / receipts / data-plane manifest
+    = control plane
+    = 使命、状态、任务、资产身份、transport、SHA、恢复规则
 
-Google Drive binary assets
-    = 数据面：当前沙盒需要的大字节传输
+GitHub Release + Google Drive
+    = development data plane transports
+    = 不改变 Evidence/source authority，也不替代数据库语义
 ```
 
-当前环境下，大文件可经 `sandbox ↔ Google Drive` 人工 relay。Drive 只是有容量约束的 handoff transport/cache，不是证据真值数据库，也不是最终长期 archive。
+### 1. GitHub Release：外部获得的原始来源
 
-Fresh Agent 必须遵守：
+开发期内，**externally acquired immutable source payloads** 放 GitHub Release，例如：
 
-- 仓库 manifest 中的 Drive file id + SHA-256 才定义要取哪个对象；分享链接、文件名、修改时间都不是完整性依据。
-- 先恢复控制面，再判断当前任务是否真的需要数据包；不要每次 handoff 搬整个多行业数据库。
-- DuckDB pack 默认 read-only，用于 portable evidence/research replay。
-- 原始 HTML/PDF/artifact bytes 仍保持 content-addressed identity；不能因为 DuckDB 可查询就丢原始证据。
-- PostgreSQL 不作为 session handoff 二进制搬运。需要 transaction/lease/outbox/write semantics 时，在 GitHub Action 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
-- 沙盒没有兼容 DuckDB 时，先恢复 manifest 指定的 offline runtime asset，在隔离 venv 中安装并验版本；ABI 不匹配则停止并生成新 runtime pack，禁止强装。
-- Required asset 缺失、SHA 不匹配或内部 component digest 不匹配时，按 `stop_and_report_integrity_blocker` 处理，不从聊天记忆重造。
-
-## Repair Memory Gate
-
-Repair Memory 解决的不是“现在做到哪”，而是“过去为什么修过这个边界、未来为什么不能无意改回去”。
-
-```text
-.longcycle/repair-memory/active-index.json
-    = 小型路由索引，只告诉 Agent 哪些 invariant 可能与当前路径有关
-
-.longcycle/repair-memory/invariants/*.json
-    = 当前仍有效的短小 repair invariant
-
-测试 / type / schema / runtime guard
-    = 真正阻止回归的执行层
-
-Git history
-    = 冷的维修演化历史
-```
+- PDF / HTML / filing / formal announcement bytes；
+- 含这些 raw source bytes 的 source-acquisition pack。
 
 规则：
 
-- 修改明确路径前先做 path-scoped lookup；调查未知 bug 时可用 `python scripts/repair_memory.py query <terms...>`。
-- 不要把所有卡片塞进 session context。
-- 普通 bug 只需要 code + regression test；只有重复风险、非直观架构边界、时间/证据/来源/权威完整性等高价值维修才晋升成 invariant。
-- 同一 root cause 再次维修时优先更新已有 invariant，不新增第二篇维修故事。
-- 卡片只保存当前结论，不追加 chronological history；过去版本由 Git 保留。
-- 真正架构变化可以改 invariant，但必须满足其 `revisit_when`，并同时更新对应 guard。
+- Release asset 必须唯一命名、不可静默覆盖；
+- manifest 保存 Release tag、filename、outer SHA-256；receipt 再保存需要的 raw document hash / upstream identity；
+- Release 只是 transport/cache，不让转载站自动变成原始发行人，也不改变 claim-scoped authority；
+- 需要重新 grounding 时，只恢复当前任务所需 source pack，验 hash 后进入正常 archive/parser/Evidence 路径；不要把整个历史 source 库搬进 session。
 
-完整规则见 `docs/development/repair-memory.md`。
+### 2. Google Drive：Longcycle 自己生成的二进制状态
+
+**Longcycle-generated binary state** 放 Google Drive，例如：
+
+- DuckDB replay materialization；
+- generated execution / reconciliation output；
+- generated database snapshot（如果确实需要）；
+- offline runtime pack。
+
+规则：
+
+- manifest 中的 Drive file id + SHA-256 才定义对象；文件名、分享链接、修改时间都不是完整性依据；
+- DuckDB/replay 默认 read-only；
+- generated capsule 不能伪装成原始 Evidence archive；真正需要原始 source bytes 时，从 Release 单独恢复；
+- Drive 是 portable generated-state relay，不是 live PostgreSQL authority，也不是终局 archive。
+
+### 3. PostgreSQL 不做 session 搬运
+
+不要把 live PostgreSQL cluster 放 Release 或 Drive 当 session state。需要 transaction / lease / outbox / write semantics 时，在 GitHub Actions 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
+
+如果未来确有 handoff 用的**生成型 DB snapshot**，它属于 Drive，且必须明确是 snapshot，不是 live authority。
+
+### 4. Fail closed
+
+Required asset 缺失、outer SHA 不匹配、内部 component digest 不匹配、runtime ABI 不兼容时，按 `stop_and_report_integrity_blocker` 处理；不能从聊天记忆、文件名或旧网盘对象猜。
+
+## 产品成功标准：研究员理解，而不是 Agent 跑分
+
+Longcycle 的 benchmark 用来**打脸架构**，不是训练 Agent 应试。
+
+真正的验收问题是：一个有基本研究能力、但刚进入该行业的研究员，能否快速获得一个可辩护的行业心智模型，包括：
+
+- 行业/技术/价值链结构；
+- 关键对象不能如何混淆；
+- 关键变量、参与者和历史分叉；
+- 当时可知的 Reality、Expectation/Judgment、争议和理由；
+- 后来的 Outcome；
+- 每个高影响结论能追到什么 Evidence；
+- 哪些地方仍然未知、冲突或不可比。
+
+如果 Agent benchmark 更漂亮、自动任务完成率更高，但研究员仍必须自己从一堆 raw documents 重建行业结构，属于产品失败。
 
 ## Mission Calibration Gate
 
-Agent 的第一遍理解必须先自己生成，再拿 semantic contract 校准。
+开始实质工作前必须能解释，而不是背关键词：
 
-通过标准不是“出现了几个关键词”，而是能用自己的话解释关键因果。发现缺口时，先纠偏再执行，不要把错误理解带进具体任务。
-
-不要持久化私有思维链。需要记录时，只保存简洁的 alignment 结论、任务层级、决策和可复现约束。
+1. 为什么“保存长期、真实、可比较的行业历史”比又写一份当前报告更重要？
+2. 为什么只保存最终事实会产生 hindsight，必须单独保存 contemporaneous cognition？
+3. 为什么 later-known information 不能进入过去的 replay？
+4. 为什么模型记忆和搜索只能发现线索，publishable truth 要受 archived claim-scoped Evidence 控制？
+5. 为什么当前行业只是 cross-industry proving ground？
+6. 为什么 researcher understanding 比 crawler/Agent/schema/benchmark 指标更接近产品终局？
 
 ## Vertical Alignment Gate
 
-开始新的实质子问题、完成一个 coherent 子任务、准备扩大范围或遇到改变假设的新结果时，都重新向上检查：
-
-1. 我现在具体在做什么原子任务？
-2. 它推进哪个短期里程碑？
-3. 这个短期里程碑推进哪个中期能力证明？
-4. 这个中期目标如何服务 Longcycle 最终使命？
-5. 当前任务的 `done_when` 是否已经满足？继续投入的边际价值还高吗？
-
-如果只能说出当前 TODO，却无法连接父目标，或者任务已经达到 stop/done 条件，就应该停止或重排，而不是继续钻深。
-
-## 实时 handoff 边界
-
-完成一个会改变“下一 Agent 应该做什么”的 coherent 小任务后：
+开始新的 substantive 子问题、完成 coherent 子任务、准备扩大范围或新结果改变假设时，向上检查：
 
 ```text
-完成实质工作并 commit
-→ Vertical Alignment Gate
-→ 如二进制 required pack 发生变化，先生成/验证/relay 新 immutable asset，再更新 data-plane.json
-→ 更新 current.json 的 continuation cursor / 动态状态
-→ checkpoint_based_on_head_sha 指向最后一个实质工作 commit
+当前原子任务
+↑ 短期里程碑
+↑ 中期能力证明
+↑ Longcycle 最终使命
+```
+
+如果当前任务已经达到 done/stop condition，或者继续投入只是让局部 benchmark 更好看，停止或重排。
+
+## Handoff 更新纪律
+
+完成一个会改变“下一 Agent 应做什么”的 coherent session 后：
+
+```text
+完成 substantive work 并 commit
+→ 如有新的 resume-relevant binary asset，先上传正确 transport 并验证 hash
+→ 更新 data-plane.json
+→ 更新 durable receipt / active context
+→ 更新 current.json continuation cursor / workstreams / ordered actions
+→ checkpoint_based_on_head_sha 指向最后一个 substantive/control-plane commit（不要求指向 current.json 自己的 commit）
 → commit handoff sync
+→ 刷新 live CI
+→ 用 bounded cold-start rehearsal 验证 fresh Agent 能恢复任务
 ```
 
-`.longcycle/handoff/current.json` 与 `.longcycle/handoff/data-plane.json` 都属于 live handoff mutable state。二进制文件本身不进 Git。
-
-如果会话在同步前意外结束，新 Agent 必须根据 live HEAD 与 checkpoint base 的差异检查 intervening commits，再决定如何恢复，不能猜。
-
-## 两种权威不要混淆
-
-**战略方向：**
-
-```text
-new explicit user instruction
-> STRATEGIC_COMPASS.md
-> METHODOLOGY_CORE.md
-> current handoff strategic horizon
-> deep references / old narrative
-```
-
-**实现与数据新鲜度：**
-
-```text
-live Git HEAD / CI / canonical receipts + verified asset SHA
-> deterministic-derived state
-> checkpoint snapshot
-> narrative / Drive metadata
-```
+因此 live HEAD 通常可能比 `checkpoint_based_on_head_sha` 多一个 handoff-only commit。Fresh Agent 应比较 commit delta 并确认其性质，而不是把这个正常形态误判为丢失状态。
 
 ## Core 纪律
 
-- `STRATEGIC_COMPASS.md`：只存使命和防偏航原则；
-- `METHODOLOGY_CORE.md`：只存跨行业方法；
-- `.longcycle/continuity/mission-fidelity.json`：只存使命语义检查问题/误读，不存标准答案；
-- `.longcycle/handoff/current.json`：只存中短期状态和实时 continuation cursor；
-- `.longcycle/handoff/data-plane.json`：只存外部二进制资产 identity / transport / integrity / restore contract；
-- `.longcycle/repair-memory/`：只存高复发风险维修的当前 invariant + 小型路由索引，不存流水账；
-- active context：只存当前行业/任务细节；
-- devlog：只存历史，不属于默认启动上下文。
+- `STRATEGIC_COMPASS.md`：最终使命、真正成功标准、防偏航；
+- `METHODOLOGY_CORE.md`：跨行业方法；
+- `.longcycle/continuity/mission-fidelity.json`：语义校准问题，不存答案；
+- `.longcycle/handoff/current.json`：中短期 live cursor；
+- `.longcycle/handoff/data-plane.json`：resume-relevant binary identity / transport / integrity / restore contract；
+- receipts：已完成 benchmark / source / replay / exit 等可审计结果；
+- `.longcycle/repair-memory/`：高复发风险 invariant；
+- active context：当前行业/任务；
+- devlog / old industry：按需追溯，不属于默认启动上下文。
 
-具体行业经验只有在被提炼成跨行业方法后，才允许进入 Method Core。
-
-如果任务是修改 handoff 机制本身，再读 `docs/development/session-handoff-protocol.md` 和 `docs/development/continuity-architecture.md`。如果任务是在修改历史上高风险边界，再只读 Repair Memory 中路径匹配的卡片。否则不要为了“理解得更完整”主动加载全部历史。
+如果任务本身是在修改 handoff 机制，再定向读 `docs/development/session-handoff-protocol.md` 与 `docs/development/continuity-architecture.md`；不要因此预加载整个开发历史。
