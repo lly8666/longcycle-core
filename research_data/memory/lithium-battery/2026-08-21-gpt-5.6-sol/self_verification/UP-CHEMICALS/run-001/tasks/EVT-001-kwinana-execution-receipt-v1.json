@@ -1,0 +1,412 @@
+{
+  "schema_version": "longcycle-grounded-evidence-execution-receipt/v1",
+  "task_id": "EVT-001-KWINANA-EVIDENCE-V1",
+  "status": "complete",
+  "runtime": {
+    "broker_issue": 19,
+    "workflow_run_id": 32539600335,
+    "workflow_run_conclusion": "success",
+    "active_branch": "design/industry-memory",
+    "executed_head_sha": "d60b11bdfa610944292514a529132738db03eaa5",
+    "postgres_version": "17",
+    "duckdb_version": "1.5.5",
+    "pypdf_version": "6.15.0"
+  },
+  "epistemic_acceptance": {
+    "documents_persisted": 4,
+    "artifacts_persisted": 2,
+    "evidence_fragments_persisted": 9,
+    "fact_assertions_created": 0,
+    "judgments_created": 0,
+    "blind_memory_mutated": false,
+    "raw_source_bytes_embedded_in_duckdb": false
+  },
+  "documents": [
+    {
+      "document_key": "2018",
+      "document_id": "d0d526b1-1cac-5ec7-9ac5-d8d8c3e76750",
+      "source_id": "6cced3be-3c45-5943-828f-ce0cdaab961a",
+      "canonical_retrieval_url": "https://web.archive.org/web/20190504211034id_/https://en.tianqilithium.com/content/details17_41.html",
+      "original_source_url": "https://en.tianqilithium.com/content/details17_41.html",
+      "content_sha256": "c4cb66b3eeb789340c1771091f1a1bf0f7a085c351d59f0381af4d0f9a64ce5b",
+      "blob_key": "raw/sha256/c4/c4cb66b3eeb789340c1771091f1a1bf0f7a085c351d59f0381af4d0f9a64ce5b",
+      "byte_length": 24367,
+      "content_type": "text/html",
+      "published_at": null,
+      "first_known_at": "2018-12-21T23:59:59+00:00",
+      "retrieval_provenance": {
+        "mode": "internet_archive_capture_of_primary",
+        "capture_timestamp": "2019-05-04T21:10:34Z",
+        "cdx_digest": "5BQ5FV7VL4UMAUY3FVQRNKVVOHN7TUWZ",
+        "body_dateline": "2018-12-18",
+        "surviving_site_page_timestamp": "2019-02-18",
+        "exact_first_party_publication_time": "unresolved",
+        "public_known_upper_bound_basis": "contemporaneous_local_report_2018-12-21"
+      }
+    },
+    {
+      "document_key": "2019",
+      "document_id": "85ddc5c5-eed2-5fee-add0-901bc8fb191f",
+      "source_id": "6cced3be-3c45-5943-828f-ce0cdaab961a",
+      "canonical_retrieval_url": "https://web.archive.org/web/20190504211029id_/https://en.tianqilithium.com/content/details17_259.html",
+      "original_source_url": "https://en.tianqilithium.com/content/details17_259.html",
+      "content_sha256": "caa60e12484b0b4f7e1025acdb48a70cb874924e8139673b0e84996b4d9f8526",
+      "blob_key": "raw/sha256/ca/caa60e12484b0b4f7e1025acdb48a70cb874924e8139673b0e84996b4d9f8526",
+      "byte_length": 24440,
+      "content_type": "text/html",
+      "published_at": "2019-04-30T00:00:00+00:00",
+      "first_known_at": "2019-04-30T23:59:59+00:00",
+      "retrieval_provenance": {
+        "mode": "internet_archive_capture_of_primary",
+        "capture_timestamp": "2019-05-04T21:10:29Z",
+        "cdx_digest": "PKWRUN4UP2RKSU7TZFFTEO7PYLGEHNCN",
+        "source_page_date": "2019-04-30"
+      }
+    },
+    {
+      "document_key": "2021",
+      "document_id": "9f6d4db7-b4b3-5286-958a-03c486ded12a",
+      "source_id": "6cced3be-3c45-5943-828f-ce0cdaab961a",
+      "canonical_retrieval_url": "https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF",
+      "original_source_url": "https://en.tianqilithium.com/Upload/File/202108/20210823131546_9777.PDF",
+      "content_sha256": "aae71640b46ccdba4c396142796ad34c86b4c66dbe0073870b8c4439848892f5",
+      "blob_key": "raw/sha256/aa/aae71640b46ccdba4c396142796ad34c86b4c66dbe0073870b8c4439848892f5",
+      "byte_length": 89460,
+      "content_type": "application/pdf",
+      "published_at": "2021-08-23T00:00:00+00:00",
+      "first_known_at": "2021-08-23T23:59:59+00:00",
+      "retrieval_provenance": {
+        "mode": "direct_primary"
+      }
+    },
+    {
+      "document_key": "2022",
+      "document_id": "fdcf8fdc-e18e-596c-b03f-ff68183d1386",
+      "source_id": "4e06c7f2-2e95-594c-85a8-f0612a0d2e8b",
+      "canonical_retrieval_url": "https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF",
+      "original_source_url": "https://static.cninfo.com.cn/finalpage/2022-12-03/1215267523.PDF",
+      "content_sha256": "b2d0acd1f51ee398185148cea596de4496b353a4e6893cb76b9dd273b48f0783",
+      "blob_key": "raw/sha256/b2/b2d0acd1f51ee398185148cea596de4496b353a4e6893cb76b9dd273b48f0783",
+      "byte_length": 204323,
+      "content_type": "application/pdf",
+      "published_at": "2022-12-03T00:00:00+00:00",
+      "first_known_at": "2022-12-03T23:59:59+00:00",
+      "retrieval_provenance": {
+        "mode": "direct_exchange_primary",
+        "announcement_number": "2022-083"
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "document_key": "2021",
+      "artifact_id": "7ed3ce2f-af08-5c10-aa73-31bb2a4cdc57",
+      "artifact_sha256": "82f5fa4e324e5618959ffedd5cf879722e545aa82310a1a0ffce5637de1912f2",
+      "artifact_blob_key": "raw/sha256/82/82f5fa4e324e5618959ffedd5cf879722e545aa82310a1a0ffce5637de1912f2",
+      "parser_name": "pypdf-text",
+      "parser_version": "1.0.0+pypdf-6.15.0"
+    },
+    {
+      "document_key": "2022",
+      "artifact_id": "6ae56b7a-37dc-5901-9f2e-c93b321fb14a",
+      "artifact_sha256": "bcce4762ed103268534af7ae862380cbe57102e9d4ef6641449b3f03ade6a76c",
+      "artifact_blob_key": "raw/sha256/bc/bcce4762ed103268534af7ae862380cbe57102e9d4ef6641449b3f03ade6a76c",
+      "parser_name": "pypdf-text",
+      "parser_version": "1.0.0+pypdf-6.15.0"
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2018-stage-commissioning-expectation",
+      "evidence_fragment_id": "533efd5b-4ba5-5c1c-ab85-ac926f8bd70b",
+      "document_id": "d0d526b1-1cac-5ec7-9ac5-d8d8c3e76750",
+      "artifact_id": null,
+      "locator": "visible-text:1387:1547",
+      "fragment_sha256": "a9d87906ed456314651247376138280a9d605126a8e130b2b0a71e6ac2e9513f",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2018-12-21T23:59:59Z",
+          "precision": "day",
+          "basis": "contemporaneous_public_report",
+          "exact_first_party_publication_time": "unresolved"
+        },
+        "source_dateline": {
+          "value": "2018-12-18",
+          "precision": "day",
+          "role": "body_dateline_not_exact_known_time"
+        },
+        "surviving_site_page_timestamp": {
+          "value": "2019-02-18",
+          "precision": "day",
+          "role": "later_site_timestamp_not_backdated_known_time"
+        },
+        "expectation_horizon": [
+          {
+            "subject": "Stage One commissioning",
+            "target": "2018-year-end",
+            "precision": "year-end"
+          },
+          {
+            "subject": "Stage Two commissioning",
+            "target": "2019-year-end",
+            "precision": "year-end"
+          }
+        ],
+        "original_source_url": "https://en.tianqilithium.com/content/details17_41.html",
+        "retrieval_capture_timestamp": "2019-05-04T21:10:34Z"
+      }
+    },
+    {
+      "fragment_key": "2019-h2-come-online-expectation",
+      "evidence_fragment_id": "e33afc81-5f20-5af7-a9b8-982f507f75cf",
+      "document_id": "85ddc5c5-eed2-5fee-add0-901bc8fb191f",
+      "artifact_id": null,
+      "locator": "visible-text:2106:2334",
+      "fragment_sha256": "a5c654df72fbbd3fc743580545b4fb231fc6fd230d23b59f479d844e931e3ca2",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2019-04-30T23:59:59Z",
+          "precision": "day",
+          "basis": "first_party_source_page_date"
+        },
+        "expectation_horizon": {
+          "subject": "Kwinana Phase One come-online",
+          "from": "2019-07-01",
+          "to": "2019-12-31",
+          "precision": "half-year"
+        },
+        "original_source_url": "https://en.tianqilithium.com/content/details17_259.html",
+        "retrieval_capture_timestamp": "2019-05-04T21:10:29Z"
+      }
+    },
+    {
+      "fragment_key": "2021-full-line-expectation",
+      "evidence_fragment_id": "9f7a66c9-1088-5557-aa8a-72531709265e",
+      "document_id": "9f6d4db7-b4b3-5286-958a-03c486ded12a",
+      "artifact_id": "7ed3ce2f-af08-5c10-aa73-31bb2a4cdc57",
+      "locator": "$.pages[1].text",
+      "fragment_sha256": "b360e8fcd92d9a784a7d2b9beee378c6ee1ea2f40c8bf3066cfcd4ac1e130623",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2021-08-23T23:59:59Z",
+          "precision": "day",
+          "basis": "primary_announcement_date"
+        },
+        "expectation_horizon": {
+          "subject": "full-line operation",
+          "target": "2021-12-31",
+          "precision": "year-end"
+        }
+      }
+    },
+    {
+      "fragment_key": "2021-design-capacity-expectation",
+      "evidence_fragment_id": "b7861ddc-934f-5e93-bdbd-0f0aea1d37b6",
+      "document_id": "9f6d4db7-b4b3-5286-958a-03c486ded12a",
+      "artifact_id": "7ed3ce2f-af08-5c10-aa73-31bb2a4cdc57",
+      "locator": "$.pages[1].text",
+      "fragment_sha256": "1b91529a25c129bf65f46dd6171c7cd1641e9a368c4444ddf99f8677f22425ee",
+      "claim_context": {
+        "claim_role": "expectation",
+        "known_time": {
+          "upper_bound": "2021-08-23T23:59:59Z",
+          "precision": "day",
+          "basis": "primary_announcement_date"
+        },
+        "expectation_horizon": {
+          "subject": "design-capacity ramp",
+          "from": "2022-10-01",
+          "to": "2022-12-31",
+          "precision": "quarter"
+        }
+      }
+    },
+    {
+      "fragment_key": "2021-production-timing-uncertainty",
+      "evidence_fragment_id": "97f8afc8-6d60-5bd6-93a6-8bf71eae05f2",
+      "document_id": "9f6d4db7-b4b3-5286-958a-03c486ded12a",
+      "artifact_id": "7ed3ce2f-af08-5c10-aa73-31bb2a4cdc57",
+      "locator": "$.pages[1].text",
+      "fragment_sha256": "678dfe15da535be32b4a88014c5950390a536f37cd2454e2e79b7cdacbd0e8d2",
+      "claim_context": {
+        "claim_role": "risk_caveat",
+        "known_time": {
+          "upper_bound": "2021-08-23T23:59:59Z",
+          "precision": "day",
+          "basis": "primary_announcement_date"
+        },
+        "applies_to": [
+          "2021-full-line-expectation",
+          "2021-design-capacity-expectation"
+        ]
+      }
+    },
+    {
+      "fragment_key": "2022-continuous-production-capability",
+      "evidence_fragment_id": "fd56e1f7-a9d4-5f24-bb3b-eeed1e5ae0f6",
+      "document_id": "fdcf8fdc-e18e-596c-b03f-ff68183d1386",
+      "artifact_id": "6ae56b7a-37dc-5901-9f2e-c93b321fb14a",
+      "locator": "$.pages[0].text",
+      "fragment_sha256": "147c4861e711ab38aa11e874fe3f8ac62890c391e93ed781af5f6ee900999919",
+      "claim_context": {
+        "claim_role": "project_status",
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "valid_effective_time": {
+          "as_of": "2022-12-03",
+          "precision": "day",
+          "onset": "unspecified"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022-december-ramp-expectation-part-1",
+      "evidence_fragment_id": "899b229b-9bfd-559f-8265-107bfde2cddd",
+      "document_id": "fdcf8fdc-e18e-596c-b03f-ff68183d1386",
+      "artifact_id": "6ae56b7a-37dc-5901-9f2e-c93b321fb14a",
+      "locator": "$.pages[0].text",
+      "fragment_sha256": "c668eeae31a4667a9cebec756e3dfa1cea6b58644b414d07e9468525b383db94",
+      "claim_context": {
+        "claim_role": "expectation",
+        "continuation_group": "2022-december-ramp-expectation",
+        "continuation_part": 1,
+        "continuation_parts": 2,
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "expectation_horizon": {
+          "from": "2022-12-01",
+          "precision": "month"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022-december-ramp-expectation-part-2",
+      "evidence_fragment_id": "011cc82b-5a26-5716-bc4d-75a1a2a89dad",
+      "document_id": "fdcf8fdc-e18e-596c-b03f-ff68183d1386",
+      "artifact_id": "6ae56b7a-37dc-5901-9f2e-c93b321fb14a",
+      "locator": "$.pages[1].text",
+      "fragment_sha256": "e9aad677199865b3e8392ed3e2a4d31b4d7cdcfe2f2efb52a98d75ce5d532fef",
+      "claim_context": {
+        "claim_role": "expectation",
+        "continuation_group": "2022-december-ramp-expectation",
+        "continuation_part": 2,
+        "continuation_parts": 2,
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "expectation_horizon": {
+          "from": "2022-12-01",
+          "precision": "month"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022-commercial-production-declaration",
+      "evidence_fragment_id": "ed9cf375-c5e9-5af5-8204-03569fb5f1c3",
+      "document_id": "fdcf8fdc-e18e-596c-b03f-ff68183d1386",
+      "artifact_id": "6ae56b7a-37dc-5901-9f2e-c93b321fb14a",
+      "locator": "$.pages[1].text",
+      "fragment_sha256": "0043d242a2b890128ca45f7833d416d2f2b92a6fec460c0d3543dded0434ade1",
+      "claim_context": {
+        "claim_role": "management_reality_declaration",
+        "known_time": {
+          "upper_bound": "2022-12-03T23:59:59Z",
+          "precision": "day",
+          "basis": "exchange_announcement_date"
+        },
+        "valid_effective_time": {
+          "from": "2022-11-30",
+          "precision": "day",
+          "basis": "management_declaration"
+        },
+        "expectation_horizon": null
+      }
+    }
+  ],
+  "portable_duckdb": {
+    "file_bytes": 2633728,
+    "file_sha256": "99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec",
+    "producer_version": "1.5.5",
+    "canonical_tables": {
+      "evidence.publishers": {
+        "row_count": 2,
+        "canonical_sha256": "c74149b9123eb8192e1deab1823cb73bb88138a3768a36698baa32cc0d653579"
+      },
+      "evidence.source_connectors": {
+        "row_count": 2,
+        "canonical_sha256": "9b0966bbc93dd5a5af19ffbde45c9a688b9cfaa7b00a0dbdaefd8e4608c64aca"
+      },
+      "evidence.content_blobs": {
+        "row_count": 6,
+        "canonical_sha256": "9b6fe6084ae65ff40844fbcb41130e7d8485e654ecca6a6d8b107c1d5ce8e8df"
+      },
+      "evidence.documents": {
+        "row_count": 4,
+        "canonical_sha256": "917b756484d0a55584612728963b447f1e6947d11a0e406dc79090447078ae3b"
+      },
+      "evidence.document_fetches": {
+        "row_count": 4,
+        "canonical_sha256": "b640c67b73d06209482d441d53f3094a04e06bff8185711a8f2ba18ba86d4848"
+      },
+      "evidence.document_versions": {
+        "row_count": 4,
+        "canonical_sha256": "341f793b8415afa60bb554d7803d27e991692be593b9dd26238e0d6e50acb8f2"
+      },
+      "evidence.artifacts": {
+        "row_count": 2,
+        "canonical_sha256": "2b01da8afcb989dc2e010a390f6b2a5783bb5e66a3a54314cb13b693ba5ac9eb"
+      },
+      "evidence.evidence_fragments": {
+        "row_count": 9,
+        "canonical_sha256": "7fcf8b8055bde166b5290fb59da0734b6ac42fe6fa488a2d4d1de8875e3d9108"
+      }
+    },
+    "document_index_rows": 4,
+    "evidence_index_rows": 9,
+    "page_text_rows": 5,
+    "verification": {
+      "read_only_open_seconds": 0.010141405999988251,
+      "point_in_time_query_seconds": 0.0009043139999960204,
+      "evidence_known_by_2021_year_end": 5,
+      "claim_role_counts": {
+        "expectation": 6,
+        "management_reality_declaration": 1,
+        "project_status": 1,
+        "risk_caveat": 1
+      },
+      "counts": {
+        "canonical_rows": 33,
+        "documents": 4,
+        "evidence": 9,
+        "page_text": 5
+      },
+      "broken_document_refs": 0,
+      "broken_artifact_refs": 0
+    }
+  },
+  "ci": {
+    "run_id": 32539591949,
+    "run_number": 639,
+    "conclusion": "success",
+    "hard_gates": [
+      "PostgreSQL migrations",
+      "PostgreSQL repository smoke",
+      "Mypy",
+      "Pytest",
+      "Build memory compact indexes",
+      "Audit memory history provenance"
+    ]
+  },
+  "next": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY"
+}
