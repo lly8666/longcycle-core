@@ -75,6 +75,21 @@ class MemoryAuditTest(unittest.TestCase):
         self.assertEqual(result.contradicting_evidence_ids, (evidence.evidence_fragment_id,))
         self.assertFalse(result.lead_may_publish_as_fact)
 
+    def test_authoritative_redistributor_can_resolve_exact_announcement_claim(self) -> None:
+        evidence = self.assessment(
+            stance=EvidenceStance.SUPPORTS,
+            authority=AuthorityClass.AUTHORITATIVE_REDISTRIBUTOR,
+            scope=ClaimScope.LEGAL_DISCLOSURE,
+            cluster="upstream-filing:0001742924-19-000025",
+        )
+        result = adjudicate_memory_lead(
+            self.make_lead(scope=ClaimScope.LEGAL_DISCLOSURE),
+            [evidence],
+        )
+        self.assertEqual(result.disposition, MemoryAuditDisposition.PRIMARY_SUPPORTS_LEAD)
+        self.assertIn("claim_scoped_authoritative_evidence_supports_memory", result.reason_codes)
+        self.assertEqual(result.supporting_evidence_ids, (evidence.evidence_fragment_id,))
+
     def test_primary_sources_that_disagree_create_conflict(self) -> None:
         supporting = self.assessment(
             stance=EvidenceStance.SUPPORTS,
