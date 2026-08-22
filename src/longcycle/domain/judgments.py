@@ -12,13 +12,16 @@ from longcycle.domain.enums import (
     JudgmentDirection,
     JudgmentEvidenceRole,
     JudgmentKind,
+    JudgmentOutcomeStatus,
     JudgmentRationaleKind,
     JudgmentRelationType,
     JudgmentTargetTimeKind,
     JudgmentValueKind,
+    OutcomeTimingRelation,
+    TemporalDeltaUnit,
     TemporalPrecision,
 )
-from longcycle.domain.models import DomainModel, canonical_json, require_aware_datetime
+from longcycle.domain.models import DomainModel, canonical_json, require_aware_datetime, utc_now
 
 
 class JudgmentEvidenceRef(DomainModel):
@@ -188,4 +191,86 @@ class JudgmentRelation(DomainModel):
     def does_not_self_link(self) -> JudgmentRelation:
         if self.from_judgment_id == self.to_judgment_id:
             raise ValueError("judgment relation cannot link an assertion to itself")
+        return self
+
+
+class OutcomeObservation(DomainModel):
+    """Evidence-backed realized outcome time with source-supported precision."""
+
+    evidence_fragment_id: UUID
+    occurrence_from: datetime | None = None
+    occurrence_to: datetime | None = None
+    occurrence_precision: TemporalPrecision
+    occurrence_text: str | None = None
+    first_known_at: datetime
+
+    @field_validator("occurrence_from", "occurrence_to", "first_known_at")
+    @classmethod
+    def outcome_times_are_aware(
+        cls,
+        value: datetime | None,
+        info: ValidationInfo,
+    ) -> datetime | None:
+        return require_aware_datetime(value, info.field_name)
+
+    @model_validator(mode="after")
+    def preserves_source_precision(self) -> OutcomeObservation:
+        if (
+            self.occurrence_from is not None
+            and self.occurrence_to is not None
+            and self.occurrence_to <= self.occurrence_from
+        ):
+            raise ValueError("outcome occurrence_to must be after occurrence_from")
+        if self.occurrence_precision == TemporalPrecision.APPROXIMATE and not self.occurrence_text:
+            raise ValueError("approximate outcome must preserve source occurrence text")
+        return self
+
+
+class JudgmentOutcomeEvaluation(DomainModel):
+    """Later evaluation kept separate from the original immutable Judgment."""
+
+    id: UUID = Field(default_factory=uuid4)
+    judgment_id: UUID
+    canonical_fact_version_id: UUID | None = None
+    outcome_evidence_fragment_id: UUID | None = None
+    evaluation_status: JudgmentOutcomeStatus
+    outcome_from: datetime | None = None
+    outcome_to: datetime | None = None
+    outcome_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    outcome_text: str | None = None
+    outcome_first_known_at: datetime | None = None
+    timing_relation: OutcomeTimingRelation = OutcomeTimingRelation.NOT_COMPARABLE
+    timing_delta_value: Decimal | None = None
+    timing_delta_unit: TemporalDeltaUnit | None = None
+    numeric_error: Decimal | None = None
+    relative_error: float | None = None
+    direction_correct: bool | None = None
+    explanation: str | None = None
+    evaluator_name: str = Field(min_length=1)
+    evaluator_version: str = Field(min_length=1)
+    evaluated_at: datetime = Field(default_factory=utc_now)
+
+    @field_validator("outcome_from", "outcome_to", "outcome_first_known_at", "evaluated_at")
+    @classmethod
+    def evaluation_times_are_aware(
+        cls,
+        value: datetime | None,
+        info: ValidationInfo,
+    ) -> datetime | None:
+        return require_aware_datetime(value, info.field_name)
+
+    @model_validator(mode="after")
+    def timing_fields_are_consistent(self) -> JudgmentOutcomeEvaluation:
+        if (
+            self.outcome_from is not None
+            and self.outcome_to is not None
+            and self.outcome_to <= self.outcome_from
+        ):
+            raise ValueError("outcome_to must be after outcome_from")
+        if (self.timing_delta_value is None) != (self.timing_delta_unit is None):
+            raise ValueError("timing delta value and unit must be supplied together")
+        if self.timing_relation == OutcomeTimingRelation.NOT_COMPARABLE and self.timing_delta_value is not None:
+            raise ValueError("non-comparable timing cannot carry a synthetic delta")
+        if self.outcome_precision == TemporalPrecision.APPROXIMATE and not self.outcome_text:
+            raise ValueError("approximate outcome must preserve source occurrence text")
         return self
