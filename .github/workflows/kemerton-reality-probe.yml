@@ -1,4 +1,4 @@
-name: Kemerton canonical Reality probe
+name: Kemerton integrated epistemic probe
 
 on:
   issues:
@@ -11,11 +11,12 @@ permissions:
 env:
   ACTIVE_REF: design/industry-memory
   EVIDENCE_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-evidence-spec-v2.json
+  JUDGMENT_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-projection-v1.json
   REALITY_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-reality-projection-v1.json
 
 jobs:
-  reality:
-    if: github.event.issue.title == '[longcycle-kemerton-reality-v1]'
+  integrated:
+    if: github.event.issue.title == '[longcycle-kemerton-integrated-v1]'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     services:
@@ -44,7 +45,7 @@ jobs:
         with:
           python-version: "3.11"
           cache: pip
-      - name: Run real grounded Reality path
+      - name: Run real Evidence -> Judgment -> Reality -> Outcome path
         shell: bash
         run: |
           set -euo pipefail
@@ -56,10 +57,19 @@ jobs:
           python scripts/execute_grounded_evidence_spec.py "$EVIDENCE_SPEC" \
             --output probe/grounded-evidence-execution.json \
             > probe/evidence.stdout 2> probe/evidence.stderr
+          python scripts/execute_grounded_judgment_persistence.py "$JUDGMENT_SPEC" \
+            probe/grounded-evidence-execution.json \
+            --output probe/judgment-persistence.json \
+            > probe/judgment.stdout 2> probe/judgment.stderr
           python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" \
             probe/grounded-evidence-execution.json \
             --output probe/reality-execution.json \
             > probe/reality.stdout 2> probe/reality.stderr
+          python scripts/execute_grounded_outcome_evaluation.py \
+            probe/judgment-persistence.json probe/reality-execution.json \
+            --judgment-key 2022q1-kemerton1-first-product-may \
+            --output probe/outcome-execution.json \
+            > probe/outcome.stdout 2> probe/outcome.stderr
           test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
       - name: Build report
         if: always()
@@ -74,30 +84,41 @@ jobs:
               return item.read_text(encoding='utf-8', errors='replace').strip() if item.exists() else default
 
           lines = [
-              '# Kemerton canonical Reality probe', '',
+              '# Kemerton integrated epistemic probe', '',
               f'- workflow run: `{read("probe/run-id.txt")}`',
               f'- active branch HEAD: `{read("probe/active-head.txt")}`',
           ]
-          path = Path('probe/reality-execution.json')
-          if path.exists():
-              payload = json.loads(path.read_text(encoding='utf-8'))
-              verification = payload['verification']
+          jpath = Path('probe/judgment-persistence.json')
+          rpath = Path('probe/reality-execution.json')
+          opath = Path('probe/outcome-execution.json')
+          if jpath.exists() and rpath.exists() and opath.exists():
+              judgment = json.loads(jpath.read_text(encoding='utf-8'))
+              reality = json.loads(rpath.read_text(encoding='utf-8'))
+              outcome = json.loads(opath.read_text(encoding='utf-8'))
               lines += [
-                  f'- task: `{payload["task_id"]}`',
-                  f'- FactAssertions: {verification["fact_count"]}',
-                  f'- canonical Reality rows: {verification["canonical_reality_count"]}',
-                  f'- all reconciled ACCEPT: {verification["all_reconciled_accept"]}',
-                  f'- precision preserved: {verification["valid_time_precision_preserved"]}',
-                  '', '## Canonical Reality', ''
+                  f'- persisted Judgments: {judgment["verification"]["judgment_count"]}',
+                  f'- Judgment evidence links: {judgment["verification"]["evidence_link_count"]}',
+                  f'- canonical Reality rows: {reality["verification"]["canonical_reality_count"]}',
+                  f'- Outcome persisted: {outcome["verification"]["postgres_persistence_completed"]}',
+                  '', '## Boundary result', ''
               ]
-              for row in payload['canonical_reality']:
-                  lines.append(
-                      f'- `{row["predicate_code"]}` = `{row["value_text"]}`; '
-                      f'valid `{row["valid_time_text"]}` precision=`{row["valid_time_precision"]}`; '
-                      f'known `{row["market_known_at"]}`'
-                  )
+              canonical = reality['canonical_reality'][0]
+              evaluation = outcome['evaluation']
+              lines += [
+                  f'- Reality: `{canonical["predicate_code"]}` = `{canonical["value_text"]}`; '
+                  f'valid `{canonical["valid_time_text"]}` precision=`{canonical["valid_time_precision"]}`; '
+                  f'known `{canonical["market_known_at"]}`',
+                  f'- Outcome: `{evaluation["evaluation_status"]}`; relation=`{evaluation["timing_relation"]}`; '
+                  f'delta=`{evaluation["timing_delta_value"]} {evaluation["timing_delta_unit"]}`; '
+                  f'known=`{evaluation["outcome_first_known_at"]}`',
+                  '- original Judgment remains immutable; Outcome is a separate append-only row',
+              ]
           else:
-              lines += ['', '## Failure', '', '```text', read('probe/reality.stderr', read('probe/evidence.stderr', 'no output'))[-8000:], '```']
+              lines += ['', '## Failure', '']
+              for path in ('probe/judgment.stderr', 'probe/reality.stderr', 'probe/outcome.stderr', 'probe/evidence.stderr'):
+                  value = read(path, '')
+                  if value:
+                      lines += [f'### {path}', '```text', value[-8000:], '```']
           Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
           cat probe/report.md
@@ -105,7 +126,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kemerton-reality-v1-${{ github.run_id }}
+          name: kemerton-integrated-v1-${{ github.run_id }}
           retention-days: 30
           include-hidden-files: true
           if-no-files-found: error
