@@ -3,7 +3,7 @@
   "run_id": "ADC-SV-001",
   "campaign_id": "ADC-20260822-GPT56SOL-001",
   "industry": "innovative-drugs-adc",
-  "stage": "rc48_grounded_and_role_reality_complete_enhertu_next",
+  "stage": "enhertu_source_acquired_grounding_next",
   "source_visibility": "self_verification",
   "sealed_blind_commit": "8d5654017cbf7d2b8adc7511cf60f29514c6ee63",
   "handoff_compatible_projection_commit": "342d37c678240a978d55483a151a7cd224c0eacf",
@@ -36,6 +36,12 @@
     "sv002_generated_drive_file_id": "1Hcv0fsDqQqoyhFAUoCHm5BBfVPDlVEUC",
     "sv002_acceptance": {"document_versions":5,"evidence_fragments":9,"fact_assertions_created":0,"judgment_assertions_created":0},
     "sv002_accounting_boundary": "The approximately $4B estimated net impact, 2018 $5.1B intangible impairment and 2019 $1.0B remaining-value impairment are distinct claim scopes/vintages and must not be collapsed.",
+    "sv003_source_release_asset": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+    "sv003_source_release_sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
+    "sv003_source_release_size_bytes": 2942940,
+    "sv003_acquisition_run_id": 32586650020,
+    "sv003_source_identity_count": 7,
+    "sv003_acquisition_boundary": "The source pack preserves four Daiichi Sankyo original PDFs, the ClinicalTrials.gov NCT03734029 JSON record, and two official DailyMed/NLM historical SPL archive ZIPs. DailyMed archive-member text was used only for acquisition identity checks; derived visible text is not publishable Evidence and no SPL/XML parser is being added for this pilot.",
     "sv004_source_release_asset": "longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip",
     "sv004_source_release_sha256": "51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a",
     "sv004_acquisition_run_id": 32582552363,
@@ -88,7 +94,7 @@
     "Do not collapse parent company, legal licensee, trial sponsor, collaborator or territory holder into a generic partner identity.",
     "not_found is not contradiction."
   ],
-  "status": "sv001_sv002_sv004_grounded_rc48_role_pressure_closed",
-  "next_stage": "sv003_enhertu_bounded_evidence_recovery",
-  "next_stage_goal": "Ground the minimum Enhertu trajectory needed to pressure indication/biomarker/readout and safety-state semantics: March 2019 collaboration/Japan rights, initial December 2019 U.S. approval, DESTINY-Breast04 HER2-low population/readout, August 2022 U.S. HER2-low approval, and a dated label/primary source that preserves ILD/pneumonitis safety state. Do not collapse all Enhertu outcomes into a single product success row."
+  "status": "sv001_sv002_sv004_grounded_sv003_sources_acquired",
+  "next_stage": "sv003_enhertu_grounded_evidence",
+  "next_stage_goal": "Ground the minimum Enhertu trajectory from the durable seven-source pack: March 2019 collaboration/Japan rights and manufacturing, initial December 2019 U.S. accelerated-approval branch and contemporaneous ILD safety state, DESTINY-Breast04 trial identity/HER2-low definition/topline readout, and August 2022 U.S. HER2-low approval plus contemporaneous safety state. Keep the two DailyMed SPL archives as original label vintages without adding a new XML parser solely for this pilot."
 }
