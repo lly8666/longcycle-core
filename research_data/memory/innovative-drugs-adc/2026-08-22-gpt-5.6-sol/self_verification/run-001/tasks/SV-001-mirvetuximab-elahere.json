@@ -1,0 +1,26 @@
+{
+  "schema_version": "longcycle-self-verification-task/v1",
+  "task_id": "SV-001",
+  "rank": 1,
+  "trajectory": "mirvetuximab soravtansine-gynx / Elahere / ImmunoGen -> AbbVie",
+  "blind_lead_ids": ["ASSET-TRIAL-006", "FAILURE-REV-007", "REG-COMM-004", "RIGHTS-BD-012"],
+  "authority_class": "post_seal_search_discovery_not_evidence",
+  "refined_summary": "Search discovery confirms a high-value revision trajectory: FORWARD I reported on 2019-03-01 that it did not meet its primary PFS endpoint; later development concentrated on FRalpha-high disease using PS2+ scoring, FDA granted accelerated approval on 2022-11-14 with an FDA-approved FOLR1 companion diagnostic, FDA converted the indication to regular approval on 2024-03-22 based on MIRASOL, and AbbVie completed its ImmunoGen acquisition on 2024-02-12. The tempting causal story that 'fixing the assay caused success' remains a hypothesis: later studies also changed population/design and must be compared explicitly.",
+  "blind_memory_discrepancies": [],
+  "candidate_urls": [
+    "https://news.abbvie.com/2019-03-01-ImmunoGen-Announces-Top-Line-Results-from-Phase-3-FORWARD-I-Study-of-Mirvetuximab-Soravtansine-in-Ovarian-Cancer",
+    "https://www.sec.gov/Archives/edgar/data/855654/000155837019008729/imgn-20190929ex993a7ed95.htm",
+    "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant",
+    "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant-epithelial-ovarian",
+    "https://news.abbvie.com/2024-02-12-AbbVie-Completes-Acquisition-of-ImmunoGen",
+    "https://clinicaltrials.gov/study/NCT04209855",
+    "https://clinicaltrials.gov/study/NCT02631876"
+  ],
+  "possible_primary_source_types": ["FDA approval/label and companion-diagnostic records", "ImmunoGen contemporaneous press/SEC filings", "ClinicalTrials.gov trial records/protocols", "AbbVie acquisition filing/press release"],
+  "source_origin_notes": ["The 2019 ImmunoGen release is now hosted on AbbVie's news archive after acquisition; treat corporate archive/reposts as one upstream corporate-origin cluster.", "FDA approval pages are regulator-origin and independent of sponsor press material.", "ClinicalTrials.gov records are authoritative registry records but many fields are sponsor-submitted and should not be treated as independent corroboration of sponsor claims."],
+  "refined_queries": ["FORWARD I mirvetuximab 2019 primary endpoint PFS", "FORWARD I 10X scoring PS2+ rescoring 34%", "SORAYA FOLR1 PS2+ 75% protocol", "MIRASOL NCT04209855 PFS OS", "FDA Elahere 2022 accelerated approval companion diagnostic", "FDA Elahere 2024 regular approval MIRASOL", "ImmunoGen AbbVie acquisition completion 2024", "FORWARD I retrospective rescore limitations assay versus population statistical design"],
+  "what_counts_as_support": ["A contemporaneous FORWARD I source showing the failed primary endpoint and the then-current interpretation.", "A dated sponsor/SEC/protocol source documenting the scoring-method change and intended FRalpha-high selection before later success was known.", "Regulator/trial records establishing the 2022 accelerated and 2024 regular approval states and their evidence bases."],
+  "what_counts_as_contradiction": ["Evidence that FORWARD I actually met its prespecified primary endpoint.", "Evidence that later registrational trials used materially the same biomarker selection and population as FORWARD I, undermining the remembered selection-revision arc.", "Evidence that the assay/scoring explanation appeared only retrospectively and was not a contemporaneous development rationale; if so, classify it as later explanation rather than historical Judgment."],
+  "unresolved_questions": ["Exactly when did ImmunoGen publicly commit to PS2+ >=75% as the registrational population?", "Which changes besides assay/scoring—line of therapy, prior bevacizumab, statistical design, sample size—must be separated from biomarker refinement?", "What contemporaneous analyst/company expectations existed immediately after FORWARD I failure and before SORAYA/MIRASOL success?"],
+  "delegated_evidence_instructions": "Archive claim-scoped originals for FORWARD I failure, scoring-method revision, SORAYA/MIRASOL design and readouts, 2022/2024 FDA states, and AbbVie acquisition. Build snapshots at 2019 failure, post-revision pre-success, 2022 accelerated approval, and 2024 regular approval/acquisition. Keep later causal explanations out of earlier Judgment unless they were actually knowable then."
+}
