@@ -1,0 +1,152 @@
+name: Execute ADC SV-001 mirvetuximab grounded evidence once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: 75c0168c51a156fa904e0513638eac8ad5660f04
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip
+  RELEASE_ASSET_SHA256: 1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b
+  SPEC_PATH: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-001-grounded-evidence-spec-v1.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-adc-sv001-grounded-evidence-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-sv001-blobs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.EXPECTED_HEAD }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Restore source pack from development Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+          test "$(sha256sum material/immunogen-forward1-2019-03-01.html | awk '{print $1}')" = 'b62ba1e6aaee74aeb2cff6b36864ae65547035eaae8c6dcd37631ad125b0e469'
+          test "$(sha256sum material/esmo-forward1-scoring-2019-09-30.pdf | awk '{print $1}')" = 'ef2651869d97a57f39e4d47967f954ef68393a7a1a95a088032e9a9985ab6893'
+          test "$(sha256sum material/fda-elahere-accelerated-2022-11-14.html | awk '{print $1}')" = 'ce6bf9af5c2ca81442ebfde0b31de49e75439fdb7c998776b2c3819794a2b8b9'
+          test "$(sha256sum material/fda-elahere-regular-2024-03-22.html | awk '{print $1}')" = 'e94caeb4b8f0329874969e00bcd6c4f4aa39d47462925835bd981ba4f9a203f5'
+
+      - name: Execute normal Grounded Evidence v2 path
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv001-evidence.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output adc-sv001-evidence-execution.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('adc-sv001-evidence-execution.json').read_text())
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 4, result
+          assert len(result['fragments']) == 8, result
+          assert result['acceptance']['persisted_document_versions'] == 4, result
+          assert result['acceptance']['persisted_evidence_fragments'] == 8, result
+          assert result['acceptance']['fact_assertions_created'] == 0, result
+          assert result['acceptance']['judgment_assertions_created'] == 0, result
+
+          documents = {row['document_key']: row for row in result['documents']}
+          expected = {
+              'forward1-topline-2019': 'b62ba1e6aaee74aeb2cff6b36864ae65547035eaae8c6dcd37631ad125b0e469',
+              'forward1-esmo-scoring-2019': 'ef2651869d97a57f39e4d47967f954ef68393a7a1a95a088032e9a9985ab6893',
+              'fda-accelerated-2022': 'ce6bf9af5c2ca81442ebfde0b31de49e75439fdb7c998776b2c3819794a2b8b9',
+              'fda-regular-2024': 'e94caeb4b8f0329874969e00bcd6c4f4aa39d47462925835bd981ba4f9a203f5',
+          }
+          for key, digest in expected.items():
+              assert documents[key]['content_sha256'] == digest, documents[key]
+              assert documents[key]['transport_plugin'] == 'materialized_file', documents[key]
+
+          esmo_profiles = documents['forward1-esmo-scoring-2019']['source_authority_profiles']
+          assert any(p['authority_class'] == 'authoritative_redistributor' for p in esmo_profiles), esmo_profiles
+          press_profiles = documents['forward1-topline-2019']['source_authority_profiles']
+          assert any(p['authority_class'] == 'primary_self_statement' for p in press_profiles), press_profiles
+          for key in ('fda-accelerated-2022', 'fda-regular-2024'):
+              profiles = documents[key]['source_authority_profiles']
+              assert any(p['authority_class'] == 'authoritative_primary' for p in profiles), profiles
+
+          keys = {row['fragment_key'] for row in result['fragments']}
+          assert keys == {
+              'forward1-primary-pfs-failed',
+              'forward1-scoring-exploratory-interpretation',
+              'mirasol-design-supported',
+              'fda-accelerated-approval-state',
+              'fda-folr1-companion-diagnostic',
+              'fda-regular-approval-state',
+              'fda-mirasol-confirmatory-basis',
+              'fda-postmarketing-requirement-satisfied',
+          }, keys
+          print('ADC_SV001_GROUNDED_EVIDENCE_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+
+      - name: Upload generated execution relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-sv001-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            adc-sv001-evidence-execution.json
+            /tmp/adc-sv001-evidence.log
+
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_SV001_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/adc-sv001-evidence.log 2>/dev/null || true)"
+            body=$(printf 'ADC_SV001_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
