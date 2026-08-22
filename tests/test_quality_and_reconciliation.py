@@ -16,6 +16,7 @@ from longcycle.domain.enums import (
     FactEvidenceRole,
     FactStatus,
     MarketBasis,
+    TemporalPrecision,
     ValidTimeKind,
 )
 from longcycle.domain.models import (
@@ -102,6 +103,58 @@ class QualityAndReconciliationTest(unittest.TestCase):
         result = Reconciler().reconcile(assertion(), [])
         self.assertEqual(result.decision, Decision.ACCEPT)
         self.assertEqual(result.status, FactStatus.TRUSTED)
+
+    def test_unknown_valid_time_without_typed_observation_requires_review(self) -> None:
+        candidate = assertion().model_copy(
+            update={
+                "valid_time_kind": ValidTimeKind.UNKNOWN,
+                "valid_time": TimeRange(),
+                "valid_time_precision": TemporalPrecision.UNKNOWN,
+            }
+        )
+
+        result = Reconciler().reconcile(candidate, [])
+
+        self.assertEqual(result.decision, Decision.REVIEW)
+        self.assertIn("unknown_valid_time", result.reason_codes)
+
+    def test_unknown_onset_with_typed_observation_can_use_quality_gate(self) -> None:
+        candidate = assertion().model_copy(
+            update={
+                "valid_time_kind": ValidTimeKind.UNKNOWN,
+                "valid_time": TimeRange(),
+                "valid_time_precision": TemporalPrecision.UNKNOWN,
+                "observed_at": datetime(2025, 1, 2, tzinfo=UTC),
+                "observed_at_precision": TemporalPrecision.DAY,
+                "observed_at_text": "as of 2025-01-02",
+                "known_at": datetime(2025, 1, 3, tzinfo=UTC),
+            }
+        )
+
+        result = Reconciler().reconcile(candidate, [])
+
+        self.assertEqual(result.decision, Decision.ACCEPT)
+        self.assertEqual(result.status, FactStatus.TRUSTED)
+        self.assertIn("source_supported_unknown_onset", result.reason_codes)
+        self.assertIn("quality_gate_passed", result.reason_codes)
+
+    def test_unknown_onset_observed_after_known_time_requires_review(self) -> None:
+        candidate = assertion().model_copy(
+            update={
+                "valid_time_kind": ValidTimeKind.UNKNOWN,
+                "valid_time": TimeRange(),
+                "valid_time_precision": TemporalPrecision.UNKNOWN,
+                "observed_at": datetime(2025, 1, 4, tzinfo=UTC),
+                "observed_at_precision": TemporalPrecision.DAY,
+                "observed_at_text": "as of 2025-01-04",
+                "known_at": datetime(2025, 1, 3, tzinfo=UTC),
+            }
+        )
+
+        result = Reconciler().reconcile(candidate, [])
+
+        self.assertEqual(result.decision, Decision.REVIEW)
+        self.assertIn("unknown_valid_time", result.reason_codes)
 
     def test_conflicting_value_is_preserved_for_review(self) -> None:
         existing = assertion(number="100", cluster="primary-a").model_copy(

@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from dataclasses import dataclass
 from decimal import Decimal
 
-from longcycle.domain.enums import Decision, FactStatus, ValidTimeKind
+from longcycle.domain.enums import Decision, FactStatus, TemporalPrecision, ValidTimeKind
 from longcycle.domain.models import FactAssertion, ReconciliationResult
 
 from .quality import QualityGate, quality_score
@@ -30,7 +30,7 @@ class ReconciliationPolicy:
 
 class Reconciler:
     evaluator_name = "rule_reconciler"
-    evaluator_version = "2.0.0"
+    evaluator_version = "2.1.0"
 
     def __init__(
         self,
@@ -48,7 +48,19 @@ class Reconciler:
         score = quality_score(candidate.quality)
         if not candidate.dimensions_complete:
             return self._review(candidate, score, "incomplete_dimensions")
-        if candidate.valid_time_kind == ValidTimeKind.UNKNOWN:
+        source_supported_unknown_onset = (
+            candidate.valid_time_kind == ValidTimeKind.UNKNOWN
+            and candidate.valid_time.start is None
+            and candidate.valid_time.end is None
+            and candidate.valid_time_precision == TemporalPrecision.UNKNOWN
+            and candidate.observed_at is not None
+            and candidate.observed_at_precision != TemporalPrecision.UNKNOWN
+            and candidate.observed_at <= candidate.known_at
+        )
+        if (
+            candidate.valid_time_kind == ValidTimeKind.UNKNOWN
+            and not source_supported_unknown_onset
+        ):
             return self._review(candidate, score, "unknown_valid_time")
 
         supersession_issue = self._supersession_issue(candidate, existing)
@@ -89,6 +101,8 @@ class Reconciler:
             for item in (*matching, candidate)
         }
         reasons: list[str] = []
+        if source_supported_unknown_onset:
+            reasons.append("source_supported_unknown_onset")
         if candidate.supersedes_id is not None:
             reasons.append("explicit_supersession")
 
