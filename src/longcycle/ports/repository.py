@@ -64,12 +64,6 @@ class ResearchRepository(Protocol):
 
     async def append_assertions(self, assertions: Sequence[FactAssertion]) -> None: ...
 
-    async def append_judgments(self, judgments: Sequence[JudgmentAssertion]) -> None: ...
-
-    async def append_judgment_rationales(self, rationales: Sequence[JudgmentRationale]) -> None: ...
-
-    async def append_judgment_relations(self, relations: Sequence[JudgmentRelation]) -> None: ...
-
     async def reconcile_assertion(
         self,
         candidate: FactAssertion,
@@ -79,6 +73,16 @@ class ResearchRepository(Protocol):
         ...
 
     async def enqueue_review(self, item: ReviewItem) -> None: ...
+
+
+class JudgmentRepository(Protocol):
+    """Append-only storage boundary for contemporaneous cognition and revisions."""
+
+    async def append_judgments(self, judgments: Sequence[JudgmentAssertion]) -> None: ...
+
+    async def append_rationales(self, rationales: Sequence[JudgmentRationale]) -> None: ...
+
+    async def append_relations(self, relations: Sequence[JudgmentRelation]) -> None: ...
 
 
 class JobQueue(Protocol):
