@@ -1,0 +1,59 @@
+{
+  "schema_version": "longcycle-sec-source-anchor-receipt/v1",
+  "task_id": "EVT-003-Q1-SEC-SOURCE-ANCHOR-V1",
+  "status": "source_semantics_and_known_time_anchor_strengthened_bytes_still_pending",
+  "scope": "Bounded source-transport discovery after materialized transport became runtime-proven. No broadening beyond the locked Livent 2019 Q1 cognition trajectory.",
+  "findings": {
+    "q1_10q": {
+      "cik": "0001742924",
+      "accession": "0001742924-19-000025",
+      "primary_document": "livent03311910q.htm",
+      "canonical_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/livent03311910q.htm",
+      "source_role": "formal quarterly-report Business Outlook corroboration",
+      "source_supported_claim": "The transition to higher nickel chemistries in EV batteries had progressed at a slower pace than anticipated, delaying growth in Livent lithium hydroxide sales; during the delayed transition some customers were satisfying lithium needs through lower-cost lithium carbonate or lower-performance lithium hydroxide.",
+      "claim_location": "Business Outlook, Form 10-Q page 31 in the SEC-rendered filing",
+      "raw_bytes_archived": false,
+      "raw_sha256_locked": false,
+      "exact_sec_acceptance_timestamp_recovered": false,
+      "timestamp_policy": "Do not invent an exact acceptance second for the 10-Q. Use a separately source-supported conservative availability bound unless exact filing metadata is recovered with the bytes."
+    },
+    "q1_8k": {
+      "cik": "0001742924",
+      "accession": "0001742924-19-000021",
+      "form": "8-K",
+      "filing_date": "2019-05-07",
+      "accepted_at_sec_et_text": "2019-05-07 16:56:37",
+      "period_of_report": "2019-05-07",
+      "primary_document": "livent0331198k.htm",
+      "exhibit_99_1": "liventex991033119.htm",
+      "canonical_index_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000021/0001742924-19-000021-index.htm",
+      "documents": 3,
+      "items": [
+        "Item 2.02: Results of Operations and Financial Condition",
+        "Item 9.01: Financial Statements and Exhibits"
+      ],
+      "source_role": "preferred precise same-day known-time anchor and contemporaneous results-disclosure source once exact bytes are acquired",
+      "raw_bytes_archived": false,
+      "raw_sha256_locked": false
+    }
+  },
+  "trajectory_source_strategy": {
+    "decision": "When bytes become available, prefer the May 7 Livent 8-K / Exhibit 99.1 as the precise known-time anchor for the Q1 cognition update and retain the Q1 10-Q Business Outlook as formal same-period corroboration. Do not assign the 8-K acceptance second to the 10-Q itself unless the 10-Q filing metadata independently supports it.",
+    "reason": "The product mission separates information availability from semantic/valid time. The 8-K has an explicit SEC acceptance timestamp and is a direct issuer results disclosure; the 10-Q independently contains the slower-than-anticipated transition language. Keeping their timestamps and document identities separate is more truthful than synthesizing one pseudo-precise timestamp.",
+    "revision_relation_policy": "The new source anchors strengthen the case for a contemporaneous negative pace revision, but no Judgment or REVISES relation is persisted until exact archived bytes and claim-scoped Evidence exist."
+  },
+  "transport_discovery": {
+    "bounded_search_result": "No new first-party or strongly verified same-content byte mirror for the locked 2019 Q1 10-Q was recovered in this pass.",
+    "direct_sec_archive_download_from_current_container": "failed",
+    "github_hosted_sec_download": "HTTP 403 from prior probe",
+    "third_party_sources_seen": [
+      "SECInfo mirrors",
+      "news/earnings-call reproductions"
+    ],
+    "authority_decision": "Do not accept these as canonical byte truth solely to bypass SEC transport blocking.",
+    "next_transport": "approved acquisition/manual relay environment -> immediate raw SHA-256 -> bounded material root -> grounded Evidence v2"
+  },
+  "new_architecture_required": false,
+  "next_atomic_action": "Acquire the actual Livent Q1 source payloads, prioritizing the May 7 8-K Exhibit 99.1 and the locked 10-Q, in an environment that can retrieve SEC/issuer bytes. Hash each payload immediately and keep document-specific known-time metadata separate. Then run the already-proven materialized grounded Evidence v2 path.",
+  "stop_rule": "Do not broaden mirror hunting or add source infrastructure after this bounded search. The remaining requirement is external/approved byte acquisition, not another architecture primitive."
+}
