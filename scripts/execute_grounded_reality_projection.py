@@ -170,14 +170,17 @@ async def _persist(
     results: list[dict[str, Any]] = []
     try:
         for fact in facts:
-            evidence_row = persisted[str(fact.evidence_fragment_id)]
+            cited = tuple(persisted[str(link.evidence_fragment_id)] for link in fact.evidence)
+            cited_document_ids = {fragment.document_id for fragment in cited}
+            if cited_document_ids != {fact.document_id}:
+                raise ValueError("Reality Fact evidence must all belong to the Fact extraction document")
             extraction = ExtractionEnvelope(
                 run_id=fact.extraction_run_id,
                 document_id=fact.document_id,
                 extractor_name=fact.extractor_name,
                 extractor_version=fact.extractor_version,
                 schema_version="longcycle-reality-projection/v1",
-                evidence=(evidence_row,),
+                evidence=cited,
                 candidates=(fact,),
             )
             await repository.save_extraction(extraction)
@@ -201,7 +204,7 @@ async def _persist(
             """
             SELECT canonical.id, canonical.fact_key_id, key.predicate_code,
                    canonical.value_kind, canonical.value_text,
-                   canonical.valid_from, canonical.valid_to,
+                   canonical.valid_time_kind, canonical.valid_from, canonical.valid_to,
                    canonical.valid_time_precision, canonical.valid_time_text,
                    canonical.market_known_at, canonical.confidence,
                    canonical.publication_status
@@ -219,6 +222,13 @@ async def _persist(
 
     if len(canonical_rows) != len(results):
         raise RuntimeError("canonical Reality row count does not match accepted grounded facts")
+    all_fact_evidence_ids = {
+        str(ref["evidence_fragment_id"])
+        for item in results
+        for ref in item["fact"]["evidence"]
+    }
+    if not all_fact_evidence_ids.issubset(persisted):
+        raise RuntimeError("grounded Reality result contains evidence not present in persisted execution")
     return {
         "schema_version": "longcycle-grounded-reality-execution/v1",
         "task_id": spec.task_id,
@@ -231,8 +241,10 @@ async def _persist(
             "all_reconciled_accept": True,
             "all_fact_evidence_ids_persisted": True,
             "all_known_times_derived_from_grounded_evidence": True,
-            "valid_time_precision_preserved": all(
-                row["valid_time_precision"] != "unknown" for row in canonical_rows
+            "valid_time_semantics_preserved": all(
+                row["valid_time_kind"] in {"period", "timeless", "unknown"}
+                and row["valid_time_precision"] != "unknown"
+                for row in canonical_rows
             ),
         },
     }
