@@ -12,6 +12,7 @@ from psycopg.rows import dict_row
 
 from longcycle.adapters.storage.judgments import PostgresJudgmentRepository
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
+from longcycle.application.grounded_projection_inputs import select_projection_execution_fragments
 from longcycle.application.judgment_projection import (
     GroundedJudgmentProjectionSpec,
     GroundedProjectionEvidence,
@@ -43,9 +44,13 @@ def _load_execution(path: Path) -> dict[str, Any]:
 def _load_inputs(
     dsn: str,
     execution: dict[str, Any],
+    required_fragment_keys: set[str],
 ) -> tuple[tuple[GroundedProjectionEvidence, ...], dict[str, EvidenceFragment]]:
     documents = {str(row["document_id"]): row for row in execution["documents"]}
-    execution_fragments = {str(row["evidence_fragment_id"]): row for row in execution["fragments"]}
+    execution_fragments = select_projection_execution_fragments(
+        execution,
+        sorted(required_fragment_keys),
+    )
     ids = list(execution_fragments)
     with psycopg.connect(dsn, row_factory=dict_row) as connection:
         rows = connection.execute(
@@ -59,7 +64,7 @@ def _load_inputs(
         ).fetchall()
     by_id = {str(row["id"]): row for row in rows}
     if set(by_id) != set(ids):
-        raise ValueError("grounded execution references unavailable persisted evidence")
+        raise ValueError("grounded projection references unavailable persisted evidence")
 
     projected: list[GroundedProjectionEvidence] = []
     persisted: dict[str, EvidenceFragment] = {}
@@ -84,6 +89,9 @@ def _load_inputs(
         known = context.get("known_time")
         if not isinstance(known, dict) or not known.get("upper_bound"):
             raise ValueError("grounded Judgment evidence lacks conservative known-time bound")
+        claim_role = context.get("claim_role")
+        if not isinstance(claim_role, str) or not claim_role:
+            raise ValueError("grounded Judgment evidence has no claim role")
         document = documents[str(row["document_version_id"])]
         projected.append(
             GroundedProjectionEvidence(
@@ -91,7 +99,7 @@ def _load_inputs(
                 evidence_fragment_id=row["id"],
                 document_version_id=row["document_version_id"],
                 source_connector_id=document["source_id"],
-                claim_role=context["claim_role"],
+                claim_role=claim_role,
                 known_time_upper_bound=known["upper_bound"],
                 source_published_at=document.get("published_at"),
                 excerpt=row["excerpt"] or "[structured evidence]",
@@ -137,7 +145,12 @@ async def _execute(
 ) -> dict[str, Any]:
     if execution["task_id"] != spec.source_evidence_task_id:
         raise ValueError("Judgment projection source task does not match grounded evidence execution")
-    evidence, persisted = _load_inputs(dsn, execution)
+    required_fragment_keys = {
+        ref.fragment_key
+        for judgment in spec.judgments
+        for ref in judgment.evidence_refs
+    }
+    evidence, persisted = _load_inputs(dsn, execution, required_fragment_keys)
     judgments = build_grounded_judgments(spec, evidence)
     _ensure_subjects(dsn, spec)
 
@@ -202,6 +215,7 @@ async def _execute(
             "idempotent_reappend_passed": True,
             "all_first_known_times_derived_from_grounded_evidence": True,
             "target_precision_preserved": True,
+            "known_time_required_only_for_projection_cited_fragments": True,
         },
     }
 
