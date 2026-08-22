@@ -14,15 +14,6 @@ from longcycle.application.session_handoff import (
 
 ROOT = Path(__file__).resolve().parents[1]
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
-COVERAGE = (
-    ROOT
-    / "research_data"
-    / "memory"
-    / "lithium-battery"
-    / "2026-08-21-gpt-5.6-sol"
-    / "analysis"
-    / "coverage-index.json"
-)
 
 
 class SessionHandoffContractTest(unittest.TestCase):
@@ -90,7 +81,11 @@ class SessionHandoffContractTest(unittest.TestCase):
             self.assertIsNone(checkpoint.active_context.campaign_root)
             self.assertIsNone(checkpoint.active_context.coverage_path)
         else:
-            coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
+            self.assertIsNotNone(checkpoint.active_context.campaign_root)
+            self.assertIsNotNone(checkpoint.active_context.coverage_path)
+            coverage_path = ROOT / checkpoint.active_context.coverage_path
+            self.assertTrue(coverage_path.is_file())
+            coverage = json.loads(coverage_path.read_text(encoding="utf-8"))
             sealed_from_coverage = tuple(coverage["sealed_shards"])
             self.assertGreater(campaign.total_raw_leads, 0)
             self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
