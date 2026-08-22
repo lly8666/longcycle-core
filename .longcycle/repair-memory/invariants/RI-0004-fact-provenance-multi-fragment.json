@@ -1,0 +1,60 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0004",
+  "status": "active",
+  "kind": "data",
+  "severity": "critical",
+  "title": "Fact provenance is multi-fragment but single-source-assertion scoped",
+  "scope": [
+    "migrations/0022_fact_evidence_roles.sql",
+    "src/longcycle/domain/enums.py",
+    "src/longcycle/domain/models.py",
+    "src/longcycle/adapters/storage/postgres.py",
+    "src/longcycle/application/pipeline.py",
+    "src/longcycle/application/reality_projection.py",
+    "scripts/smoke_postgres_epistemic.py"
+  ],
+  "tags": [
+    "fact",
+    "evidence",
+    "provenance",
+    "multi-fragment",
+    "source-boundary"
+  ],
+  "failure_signature": "FactAssertion collapses back to one evidence_fragment_id, loses evidence roles during persistence/reload, or combines fragments from different source documents into one assertion and thereby blurs source quality/known-time lineage.",
+  "root_cause": "The domain model lagged behind the existing assertion_evidence many-to-many table, while Judgment already modeled explicit evidence refs. A single-fragment field made provenance asymmetric and tempted callers to treat corroboration across sources as one claim.",
+  "invariant": "FactAssertion owns one or more typed FactEvidenceRef values, including at least one supporting fragment. Roles survive persistence/reload. All fragments on one FactAssertion belong to that assertion's extraction document; independent-source corroboration remains separate assertions so source and known-time semantics stay attributable.",
+  "anti_regression": [
+    "Do not reintroduce evidence_fragment_id as the FactAssertion domain/output contract; the current legacy input bridge is migration-only and may be removed.",
+    "Do not flatten evidence roles when loading assertions from PostgreSQL.",
+    "Do not merge evidence from multiple source documents into one FactAssertion to simulate corroboration."
+  ],
+  "guards": [
+    {
+      "kind": "type",
+      "path": "src/longcycle/domain/models.py",
+      "contains": "FactAssertion requires at least one supporting evidence fragment",
+      "description": "Domain validation requires non-empty unique evidence refs with a supporting role."
+    },
+    {
+      "kind": "schema",
+      "path": "migrations/0022_fact_evidence_roles.sql",
+      "contains": "evidence_role IN ('supporting', 'context', 'caveat', 'contradicting')",
+      "description": "Database constrains the same explicit Fact evidence roles."
+    },
+    {
+      "kind": "runtime",
+      "path": "src/longcycle/adapters/storage/postgres.py",
+      "contains": "FactAssertion evidence must exist on its extraction document",
+      "description": "PostgreSQL write path rejects fragments outside the assertion extraction document."
+    }
+  ],
+  "revisit_when": "Revisit only if provenance is replaced by a richer claim graph that preserves fragment roles, source/document attribution and known-time independently; a convenience single-evidence API is not sufficient.",
+  "origin_refs": [
+    "migration:0022",
+    "issue:#40",
+    "issue:#41",
+    "commit:dd8bdf3039cf20116cbd797711d779ddadf51e02"
+  ],
+  "supersedes": []
+}
