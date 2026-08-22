@@ -331,6 +331,8 @@ class CollectionPipeline:
         document: SourceDocument,
         evidence: Sequence[object],
         content: bytes | None,
+        *,
+        allow_claim_context_annotation: bool = False,
     ) -> None:
         media_type = document.content_type.split(";", 1)[0].strip().lower()
         if content is None or media_type not in {
@@ -396,7 +398,18 @@ class CollectionPipeline:
                 ):
                     raise ValueError("structured evidence is not grounded at its JSON locator")
                 continue
-            if structured_payload is not None and getattr(fragment, "artifact_id", None) is None:
+            annotation_only = (
+                allow_claim_context_annotation
+                and isinstance(structured_payload, dict)
+                and set(structured_payload) == {"claim_context"}
+                and isinstance(structured_payload.get("claim_context"), dict)
+                and bool(structured_payload["claim_context"])
+            )
+            if (
+                structured_payload is not None
+                and getattr(fragment, "artifact_id", None) is None
+                and not annotation_only
+            ):
                 raise ValueError(
                     "structured evidence requires JSON or a persisted parser artifact"
                 )

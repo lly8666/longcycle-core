@@ -99,6 +99,7 @@ class ArchivedEvidenceRecorder:
             document,
             (fragment,),
             content,
+            allow_claim_context_annotation=True,
         )
         await self.repository.save_evidence((fragment,))
         return RecordedEvidenceResult(fragment=fragment)
