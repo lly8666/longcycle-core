@@ -52,6 +52,74 @@ class FactValueKind(StrEnum):
     JSON = "json"
 
 
+class JudgmentKind(StrEnum):
+    FORECAST = "forecast"
+    TARGET = "target"
+    GUIDANCE = "guidance"
+    SCENARIO = "scenario"
+    PROBABILITY = "probability"
+    RISK = "risk"
+    THESIS = "thesis"
+    COMMITMENT = "commitment"
+    CONSENSUS_STATEMENT = "consensus_statement"
+
+
+class JudgmentTargetTimeKind(StrEnum):
+    INSTANT = "instant"
+    PERIOD = "period"
+    TIMELESS = "timeless"
+    UNKNOWN = "unknown"
+
+
+class JudgmentValueKind(StrEnum):
+    NUMERIC = "numeric"
+    NUMERIC_RANGE = "numeric_range"
+    TEXT = "text"
+    BOOLEAN = "boolean"
+    DATE = "date"
+    ENTITY = "entity"
+    JSON = "json"
+    DIRECTION = "direction"
+
+
+class JudgmentDirection(StrEnum):
+    UP = "up"
+    DOWN = "down"
+    FLAT = "flat"
+    POSITIVE = "positive"
+    NEGATIVE = "negative"
+    MIXED = "mixed"
+    UNCERTAIN = "uncertain"
+
+
+class JudgmentEvidenceRole(StrEnum):
+    STATEMENT = "statement"
+    RATIONALE = "rationale"
+    CONDITION = "condition"
+    CAVEAT = "caveat"
+    CONTEXT = "context"
+
+
+class JudgmentRationaleKind(StrEnum):
+    PREMISE = "premise"
+    MECHANISM = "mechanism"
+    CONDITION = "condition"
+    RISK = "risk"
+    CAVEAT = "caveat"
+    COUNTERARGUMENT = "counterargument"
+
+
+class JudgmentRelationType(StrEnum):
+    REVISES = "revises"
+    REAFFIRMS = "reaffirms"
+    WITHDRAWS = "withdraws"
+    NARROWS = "narrows"
+    WIDENS = "widens"
+    DEPENDS_ON = "depends_on"
+    SUPPORTS = "supports"
+    CONTRADICTS = "contradicts"
+
+
 class JobStage(StrEnum):
     DISCOVER = "discover"
     FETCH = "fetch"
