@@ -13,7 +13,7 @@ env:
 
 jobs:
   refactor:
-    if: github.event.issue.title == '[longcycle-refactor-fact-provenance-v1]'
+    if: github.event.issue.title == '[longcycle-refactor-fact-provenance-v2]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -28,16 +28,24 @@ jobs:
           cache: pip
 
       - name: Apply bounded refactor
+        id: apply
+        shell: bash
         run: |
-          set -euo pipefail
-          python scripts/_refactor_fact_provenance_once.py
-          rm scripts/_refactor_fact_provenance_once.py
-          python -m pip install -e '.[dev,postgres,duckdb]'
-          python -m compileall -q src scripts tests
-          mypy src
-          git diff --check
+          set -o pipefail
+          {
+            set -euo pipefail
+            python scripts/_refactor_fact_provenance_once.py
+            rm scripts/_refactor_fact_provenance_once.py
+            python -m pip install -e '.[dev,postgres,duckdb]'
+            python -m compileall -q src scripts tests
+            mypy src
+            git diff --check
+          } 2>&1 | tee /tmp/fact-provenance-refactor.log
 
       - name: Commit and push active branch
+        id: push
+        if: steps.apply.outcome == 'success'
+        shell: bash
         run: |
           set -euo pipefail
           git config user.name longcycle-refactor
@@ -45,16 +53,23 @@ jobs:
           git add src scripts tests migrations
           git commit -m 'refactor: make Fact provenance multi-fragment'
           git push origin HEAD:${ACTIVE_REF}
+          git rev-parse HEAD | tee /tmp/fact-provenance-pushed-sha.txt
 
-      - name: Report
+      - name: Report actual result
         if: always()
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
         run: |
-          if git diff --quiet HEAD^ HEAD 2>/dev/null; then
-            status='FACT_PROVENANCE_REFACTOR_NO_COMMIT'
+          set -euo pipefail
+          if [[ "$APPLY_OUTCOME" == success && "$PUSH_OUTCOME" == success ]]; then
+            sha="$(cat /tmp/fact-provenance-pushed-sha.txt)"
+            body="FACT_PROVENANCE_REFACTOR_PASS pushed_sha=$sha"
           else
-            status='FACT_PROVENANCE_REFACTOR_PASS'
+            tail_text="$(tail -n 120 /tmp/fact-provenance-refactor.log 2>/dev/null || true)"
+            body=$(printf 'FACT_PROVENANCE_REFACTOR_FAIL apply=%s push=%s\n\n```text\n%s\n```' "$APPLY_OUTCOME" "$PUSH_OUTCOME" "$tail_text")
           fi
-          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$status"
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
