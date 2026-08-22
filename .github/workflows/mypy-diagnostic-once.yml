@@ -1,0 +1,52 @@
+name: One-shot mypy diagnostic
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  diagnose:
+    if: >-
+      github.event.issue.title == '[longcycle-mypy-diagnostic-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EXPECTED_HEAD: cc71e4e7853c4c70b91ac344ec5f4a19bdf4b644
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.EXPECTED_HEAD }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Run project mypy and report exact errors
+        id: gate
+        shell: bash
+        run: |
+          set +e
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD" || exit 97
+          python -m pip install -e '.[dev,postgres,duckdb,s3]' >/tmp/install.log 2>&1
+          mypy src tests scripts > /tmp/mypy.log 2>&1
+          status=$?
+          cat /tmp/mypy.log
+          exit "$status"
+      - name: Report diagnostic
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          errors="$(grep -E '(^|: )error:' /tmp/mypy.log 2>/dev/null || true)"
+          tail_text="$(tail -n 80 /tmp/mypy.log 2>/dev/null || true)"
+          body=$(printf 'MYPY_DIAGNOSTIC head=%s outcome=%s run_id=%s\n\nErrors:\n```text\n%s\n```\n\nTail:\n```text\n%s\n```' "$EXPECTED_HEAD" "$GATE_OUTCOME" "$GITHUB_RUN_ID" "$errors" "$tail_text")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
