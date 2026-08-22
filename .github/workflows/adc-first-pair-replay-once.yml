@@ -1,0 +1,244 @@
+name: Execute ADC first grounded pair replay once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 1a8c18880f10506bebb220426b3324cb9bc3cceb
+  RELEASE_TAG: longcycle-dev-binary-cache
+  SV001_ASSET: longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip
+  SV001_ASSET_SHA256: 1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b
+  SV002_ASSET: longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip
+  SV002_ASSET_SHA256: a244ed59d467b2aea8a693f02fa96034ef410f64fc80e777ef69daef226b304d
+  ROOT: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001
+  MIRV_SUBJECT: 66335cc8-4632-577c-86d4-42b9a2ef0484
+  ROVAT_SUBJECT: 7caaf8e0-efb4-5037-bebc-367f90054251
+
+jobs:
+  replay:
+    if: github.event.issue.title == '[longcycle-adc-first-pair-replay-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-first-pair-blobs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Restore immutable ADC source packs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack/sv001 source-pack/sv002 material/sv001 material/sv002
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$SV001_ASSET" --dir source-pack/sv001
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$SV002_ASSET" --dir source-pack/sv002
+          test "$(sha256sum "source-pack/sv001/$SV001_ASSET" | awk '{print $1}')" = "$SV001_ASSET_SHA256"
+          test "$(sha256sum "source-pack/sv002/$SV002_ASSET" | awk '{print $1}')" = "$SV002_ASSET_SHA256"
+          unzip -q "source-pack/sv001/$SV001_ASSET" -d material/sv001
+          unzip -q "source-pack/sv002/$SV002_ASSET" -d material/sv002
+
+      - name: Execute grounded pair and no-lookahead replay
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-first-pair-replay.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          mkdir -p execution
+
+          python scripts/execute_grounded_evidence_spec.py \
+            "$ROOT/evidence/SV-001-grounded-evidence-spec-v1.json" \
+            --material-root material/sv001 \
+            --output execution/sv001-evidence.json
+          python scripts/execute_grounded_evidence_spec.py \
+            "$ROOT/evidence/SV-002-grounded-evidence-spec-v1.json" \
+            --material-root material/sv002 \
+            --output execution/sv002-evidence.json
+
+          python scripts/execute_grounded_judgment_persistence.py \
+            "$ROOT/replay/SV-001-judgment-projection-v1.json" \
+            execution/sv001-evidence.json \
+            --output execution/sv001-judgments.json
+          python scripts/execute_grounded_reality_projection.py \
+            "$ROOT/replay/SV-001-reality-projection-v1.json" \
+            execution/sv001-evidence.json \
+            --output execution/sv001-reality.json
+
+          python scripts/execute_grounded_judgment_persistence.py \
+            "$ROOT/replay/SV-002-judgment-projection-v1.json" \
+            execution/sv002-evidence.json \
+            --output execution/sv002-judgments.json
+          python scripts/execute_grounded_reality_projection.py \
+            "$ROOT/replay/SV-002-reality-projection-v1.json" \
+            execution/sv002-evidence.json \
+            --output execution/sv002-reality.json
+
+          python scripts/execute_grounded_outcome_evaluation.py \
+            execution/sv001-judgments.json execution/sv001-reality.json \
+            --judgment-key 2019-mirasol-development-commitment \
+            --reality-fact-key 2022-us-accelerated-approval \
+            --semantic-relation related_milestone \
+            --output execution/sv001-outcome.json
+          python scripts/execute_grounded_outcome_evaluation.py \
+            execution/sv002-judgments.json execution/sv002-reality.json \
+            --judgment-key 2016-rova-t-peak-revenue-thesis \
+            --reality-fact-key 2019-rova-t-program-terminated \
+            --semantic-relation related_milestone \
+            --output execution/sv002-outcome.json
+
+          python scripts/export_integrated_replay_duckdb.py \
+            execution/adc-first-pair-memory.duckdb \
+            --subject-id "$MIRV_SUBJECT" \
+            --subject-id "$ROVAT_SUBJECT" \
+            --manifest-output execution/replay-manifest.json
+
+          python - <<'PY'
+          import asyncio
+          import json
+          from datetime import UTC, datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+
+          path = Path('execution/adc-first-pair-memory.duckdb')
+          reader = DuckDBEpistemicMemoryReader(path)
+          mirv = MemorySubjectRef(entity_id=UUID('66335cc8-4632-577c-86d4-42b9a2ef0484'))
+          rovat = MemorySubjectRef(entity_id=UUID('7caaf8e0-efb4-5037-bebc-367f90054251'))
+
+          async def snap(subject, value):
+              return await reader.snapshot((subject,), knowledge_cutoff=value)
+
+          def at(y, m, d, hh=0, mm=0, ss=0):
+              return datetime(y, m, d, hh, mm, ss, tzinfo=UTC)
+
+          mirv_before = asyncio.run(snap(mirv, at(2019, 3, 1, 23, 59, 59)))
+          mirv_failure = asyncio.run(snap(mirv, at(2019, 3, 2)))
+          mirv_pre_revision = asyncio.run(snap(mirv, at(2019, 9, 30, 23, 59, 59)))
+          mirv_revision = asyncio.run(snap(mirv, at(2019, 10, 1)))
+          mirv_accel = asyncio.run(snap(mirv, at(2022, 11, 15)))
+          mirv_regular = asyncio.run(snap(mirv, at(2024, 3, 23)))
+
+          assert len(mirv_before.reality) == 0 and len(mirv_before.judgments) == 0, mirv_before
+          assert len(mirv_failure.reality) == 1 and len(mirv_failure.judgments) == 0, mirv_failure
+          assert len(mirv_pre_revision.reality) == 1 and len(mirv_pre_revision.judgments) == 0, mirv_pre_revision
+          assert len(mirv_revision.reality) == 1 and len(mirv_revision.judgments) == 2, mirv_revision
+          assert len(mirv_accel.reality) == 2 and len(mirv_accel.judgments) == 2, mirv_accel
+          assert len(mirv_accel.outcomes) == 1, mirv_accel
+          assert len(mirv_regular.reality) == 3 and len(mirv_regular.judgments) == 2, mirv_regular
+
+          rovat_before = asyncio.run(snap(rovat, at(2016, 4, 28, 23, 59, 59)))
+          rovat_acq = asyncio.run(snap(rovat, at(2016, 4, 29)))
+          rovat_tahoe = asyncio.run(snap(rovat, at(2018, 12, 6)))
+          rovat_impairment_est = asyncio.run(snap(rovat, at(2019, 1, 5)))
+          rovat_term = asyncio.run(snap(rovat, at(2019, 8, 30)))
+          rovat_pre_10k = asyncio.run(snap(rovat, at(2020, 2, 21, 23, 59, 59)))
+          rovat_10k = asyncio.run(snap(rovat, at(2020, 2, 22)))
+
+          assert len(rovat_before.reality) == 0 and len(rovat_before.judgments) == 0, rovat_before
+          assert len(rovat_acq.reality) == 0 and len(rovat_acq.judgments) == 1, rovat_acq
+          assert len(rovat_tahoe.reality) == 1 and len(rovat_tahoe.judgments) == 1, rovat_tahoe
+          assert len(rovat_impairment_est.reality) == 2, rovat_impairment_est
+          assert len(rovat_term.reality) == 3 and len(rovat_term.judgments) == 1, rovat_term
+          assert len(rovat_term.outcomes) == 1, rovat_term
+          assert len(rovat_pre_10k.reality) == 3, rovat_pre_10k
+          assert len(rovat_10k.reality) == 5, rovat_10k
+
+          sv001_outcome = json.loads(Path('execution/sv001-outcome.json').read_text())
+          sv002_outcome = json.loads(Path('execution/sv002-outcome.json').read_text())
+          assert sv001_outcome['persisted_row']['evaluation_status'] == 'indeterminate'
+          assert sv002_outcome['persisted_row']['evaluation_status'] == 'indeterminate'
+          assert sv001_outcome['semantic_relation'] == 'related_milestone'
+          assert sv002_outcome['semantic_relation'] == 'related_milestone'
+
+          receipt = {
+              'schema_version': 'longcycle-adc-first-pair-replay-pressure/v1',
+              'subjects': {
+                  'mirvetuximab': str(mirv.entity_id),
+                  'rova_t': str(rovat.entity_id),
+              },
+              'no_lookahead': {
+                  'mirvetuximab_failure_before_revision': True,
+                  'mirvetuximab_revision_before_approval': True,
+                  'rova_t_expectation_before_randomized_failure': True,
+                  'rova_t_2018_2019_impairment_valid_time_does_not_leak_before_2020_known_time': True,
+              },
+              'generic_model_result': {
+                  'reality_judgment_separation_passed': True,
+                  'known_time_valid_time_separation_passed': True,
+                  'related_milestone_conservatism_passed': True,
+                  'pressure_candidate': 'non_direct_outcome_polarity',
+                  'pressure_detail': 'Both later supportive approval and later disconfirming program termination are correctly non-direct milestones and therefore both persist as indeterminate related_milestone outcomes. The generic model preserves truth and chronology but does not yet encode whether a non-direct later Reality supports or undermines the earlier Judgment.',
+                  'schema_change_required_by_this_run': False,
+                  'next_test': 'Assess whether a generic outcome stance/polarity dimension is needed for researcher-facing replay without weakening semantic comparability.'
+              }
+          }
+          Path('execution/pressure-assessment.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+
+      - name: Upload generated replay capsule
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-first-pair-replay-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 0
+          path: |
+            execution/
+            /tmp/adc-first-pair-replay.log
+
+      - name: Report replay result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_FIRST_PAIR_REPLAY_PASS head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/adc-first-pair-replay.log 2>/dev/null || true)"
+            body=$(printf 'ADC_FIRST_PAIR_REPLAY_FAIL head=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
