@@ -1,0 +1,332 @@
+name: Acquire ADC SV-003 Enhertu trajectory sources once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 115b8c108c220f70fd18629af30d82d193c63285
+  RELEASE_TAG: longcycle-dev-binary-cache
+
+jobs:
+  acquire:
+    if: github.event.issue.title == '[longcycle-adc-sv003-enhertu-acquire-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install PDF extraction support
+        run: python -m pip install 'pypdf==6.15.0'
+      - name: Acquire and semantically verify SV-003 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p acquired
+          python - <<'PY'
+          import hashlib
+          import io
+          import json
+          import re
+          import urllib.request
+          from html import unescape
+          from pathlib import Path
+          from urllib.parse import urlsplit
+
+          from pypdf import PdfReader
+
+          UA = 'LongcycleCollector/0.2 lly8666@users.noreply.github.com'
+          ITEMS = [
+              {
+                  'key': 'daiichi-astrazeneca-enhertu-collaboration-2019',
+                  'url': 'https://www.daiichisankyo.com/files/news/pressrelease/pdf/006988/190329_886_E.pdf',
+                  'retrieval_role': 'primary_joint_deal_statement',
+                  'upstream_system': 'Daiichi Sankyo issuer press release',
+                  'upstream_external_id': 'ONP/19/0013',
+                  'upstream_title': 'Daiichi Sankyo and AstraZeneca Announce Global Development and Commercialization Collaboration for DS-8201',
+                  'published_date': '2019-03-29',
+                  'original_url': 'https://www.daiichisankyo.com/media/press_release/detail/index_3199.html',
+                  'required_phrases': [
+                      'global development and commercialization',
+                      'exclusive rights',
+                      'Japan',
+                      'manufacturing',
+                      'HER2 low',
+                  ],
+              },
+              {
+                  'key': 'fda-enhertu-initial-approval-letter-2019',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/appletter/2019/761139Orig1s000ltr.pdf',
+                  'retrieval_role': 'primary_regulator_action_letter',
+                  'upstream_system': 'U.S. FDA BLA action letter',
+                  'upstream_external_id': 'BLA-761139-Orig1-s000',
+                  'upstream_title': 'ENHERTU BLA Accelerated Approval',
+                  'published_date': '2019-12-20',
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/appletter/2019/761139Orig1s000ltr.pdf',
+                  'required_phrases': [
+                      'accelerated approval',
+                      'HER2-positive breast cancer',
+                      'two or more prior anti-HER2-based regimens',
+                      'confirmatory trial',
+                  ],
+              },
+              {
+                  'key': 'fda-enhertu-label-2019',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/761139s000lbl.pdf',
+                  'retrieval_role': 'primary_regulator_label_vintage',
+                  'upstream_system': 'U.S. FDA approved labeling',
+                  'upstream_external_id': 'BLA-761139-s000-label-2019-12',
+                  'upstream_title': 'ENHERTU Prescribing Information Revised 12/2019',
+                  'published_date': '2019-12-20',
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2019/761139s000lbl.pdf',
+                  'required_phrases': [
+                      'INTERSTITIAL LUNG DISEASE',
+                      'fatal cases',
+                      'Revised: 12/2019',
+                      'accelerated approval',
+                  ],
+              },
+              {
+                  'key': 'clinicaltrials-destiny-breast04-current',
+                  'url': 'https://clinicaltrials.gov/api/v2/studies/NCT03734029',
+                  'retrieval_role': 'authoritative_registry_current',
+                  'upstream_system': 'ClinicalTrials.gov API',
+                  'upstream_external_id': 'NCT03734029',
+                  'upstream_title': 'DESTINY-Breast04 / NCT03734029 registry record',
+                  'published_date': None,
+                  'original_url': 'https://clinicaltrials.gov/study/NCT03734029',
+                  'required_phrases': [
+                      'NCT03734029',
+                      'DESTINY-Breast04',
+                      'HER2-low',
+                      'Daiichi Sankyo',
+                      'Phase 3',
+                  ],
+              },
+              {
+                  'key': 'astrazeneca-destiny-breast04-high-level-readout-2022-02-21',
+                  'url': 'https://www.astrazeneca.com/media-centre/press-releases/2022/enhertu-improves-pfs-and-os-in-her2-low-bc.html',
+                  'retrieval_role': 'primary_trial_sponsor_readout',
+                  'upstream_system': 'AstraZeneca issuer press release',
+                  'upstream_external_id': '2022-02-21-DESTINY-Breast04-high-level-readout',
+                  'upstream_title': 'Enhertu significantly improved both progression-free and overall survival in DESTINY-Breast04',
+                  'published_date': '2022-02-21',
+                  'original_url': 'https://www.astrazeneca.com/media-centre/press-releases/2022/enhertu-improves-pfs-and-os-in-her2-low-bc.html',
+                  'required_phrases': [
+                      'DESTINY-Breast04',
+                      'progression-free survival',
+                      'overall survival',
+                      'IHC 1+',
+                      'IHC 2+',
+                      'interstitial lung disease',
+                  ],
+              },
+              {
+                  'key': 'fda-enhertu-her2-low-approval-letter-2022',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/appletter/2022/761139Orig1s022ltr.pdf',
+                  'retrieval_role': 'primary_regulator_action_letter',
+                  'upstream_system': 'U.S. FDA BLA supplement action letter',
+                  'upstream_external_id': 'BLA-761139-S-022',
+                  'upstream_title': 'ENHERTU BLA 761139/S-022 Corrected Supplement Approval',
+                  'published_date': '2022-08-05',
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/appletter/2022/761139Orig1s022ltr.pdf',
+                  'required_phrases': [
+                      'regular approval',
+                      'HER2 low',
+                      'IHC 1+',
+                      'IHC 2+/ISH-',
+                      'August 5, 2022',
+                  ],
+              },
+              {
+                  'key': 'fda-enhertu-label-2022-s022',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/761139s022lbl.pdf',
+                  'retrieval_role': 'primary_regulator_label_vintage',
+                  'upstream_system': 'U.S. FDA approved labeling',
+                  'upstream_external_id': 'BLA-761139-S-022-label',
+                  'upstream_title': 'ENHERTU Prescribing Information Revised 08/2022',
+                  'published_date': '2022-08-05',
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2022/761139s022lbl.pdf',
+                  'required_phrases': [
+                      'HER2-Low Metastatic Breast Cancer',
+                      'IHC 1+',
+                      'IHC 2+/ISH-',
+                      'INTERSTITIAL LUNG DISEASE',
+                      'Revised: 08/2022',
+                      'DESTINY-Breast04',
+                  ],
+              },
+          ]
+
+          def fetch(url):
+              req = urllib.request.Request(
+                  url,
+                  headers={
+                      'User-Agent': UA,
+                      'Accept': 'text/html,application/xhtml+xml,application/pdf,application/json,*/*;q=0.8',
+                      'Accept-Language': 'en-US,en;q=0.8',
+                  },
+              )
+              with urllib.request.urlopen(req, timeout=120) as response:
+                  return response.read(), response.geturl(), response.status, dict(response.headers.items())
+
+          def html_text(raw):
+              decoded = raw.decode('utf-8', errors='replace')
+              decoded = re.sub(r'(?is)<(script|style|noscript).*?>.*?</\\1>', ' ', decoded)
+              return ' '.join(unescape(re.sub(r'<[^>]+>', ' ', decoded)).split())
+
+          def pdf_text(raw):
+              return ' '.join(
+                  ' '.join((page.extract_text() or '').split())
+                  for page in PdfReader(io.BytesIO(raw), strict=False).pages
+              )
+
+          rows = []
+          for item in ITEMS:
+              base = {
+                  'key': item['key'],
+                  'requested_url': item['url'],
+                  'retrieval_role': item['retrieval_role'],
+                  'upstream_document_identity': {
+                      'system': item['upstream_system'],
+                      'external_id': item['upstream_external_id'],
+                      'title': item['upstream_title'],
+                      'published_date': item['published_date'],
+                      'original_url': item['original_url'],
+                  },
+              }
+              try:
+                  raw, final_url, status, headers = fetch(item['url'])
+                  if status != 200:
+                      raise ValueError(f'unexpected HTTP {status}')
+                  content_type = (headers.get('Content-Type') or headers.get('content-type') or '').lower()
+                  is_pdf = raw.startswith(b'%PDF') or 'application/pdf' in content_type
+                  is_json = 'application/json' in content_type or 'clinicaltrials.gov/api/v2/' in item['url']
+                  if is_pdf:
+                      text, suffix, normalized_type = pdf_text(raw), '.pdf', 'application/pdf'
+                  elif is_json:
+                      obj = json.loads(raw.decode('utf-8'))
+                      text = json.dumps(obj, ensure_ascii=False, sort_keys=True)
+                      suffix, normalized_type = '.json', 'application/json'
+                  else:
+                      text, suffix = html_text(raw), '.html'
+                      normalized_type = headers.get('Content-Type') or 'text/html'
+                  normalized = text.casefold()
+                  missing = [phrase for phrase in item['required_phrases'] if phrase.casefold() not in normalized]
+                  if missing:
+                      raise ValueError(f'semantic identity/claim phrases missing: {missing}')
+                  raw_path = Path('acquired') / f"{item['key']}{suffix}"
+                  raw_path.write_bytes(raw)
+                  text_path = Path('acquired') / f"{item['key']}-visible.txt"
+                  text_path.write_text(text, encoding='utf-8')
+                  rows.append(
+                      {
+                          **base,
+                          'ok': True,
+                          'final_url': final_url,
+                          'retrieval_host': urlsplit(final_url).hostname,
+                          'status': status,
+                          'content_type': normalized_type,
+                          'archived_file': raw_path.name,
+                          'raw_sha256': hashlib.sha256(raw).hexdigest(),
+                          'raw_bytes': len(raw),
+                          'visible_text_file': text_path.name,
+                          'visible_text_sha256_acquisition_only': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                          'visible_text_bytes': len(text.encode('utf-8')),
+                          'verified_phrases': item['required_phrases'],
+                      }
+                  )
+              except Exception as exc:
+                  rows.append({**base, 'ok': False, 'error': f'{type(exc).__name__}: {exc}'})
+
+          payload = {
+              'schema_version': 'longcycle-approved-source-acquisition/v2',
+              'task_id': 'ADC-SV-003-ENHERTU-TRAJECTORY',
+              'active_head_sha': '115b8c108c220f70fd18629af30d82d193c63285',
+              'source_role': 'candidate primary/authoritative payload acquisition for later claim-scoped Evidence recording',
+              'trajectory_pressure': 'preserve indication x biomarker x trial/readout x safety vintage; do not collapse Enhertu into one product-level success state',
+              'source_cluster_note': 'same collaboration or same regulator application family does not become independent corroboration merely because multiple documents exist',
+              'success_count': sum(1 for row in rows if row['ok']),
+              'item_count': len(ITEMS),
+              'rows': rows,
+          }
+          Path('acquired/acquisition.json').write_text(
+              json.dumps(payload, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(payload, indent=2, ensure_ascii=False))
+          if payload['success_count'] != len(ITEMS):
+              raise SystemExit('not all SV-003 source payloads passed acquisition/semantic verification')
+          PY
+      - name: Build deterministic immutable acquisition pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import zipfile
+          from pathlib import Path
+
+          out = Path(f"longcycle-adc-sv003-enhertu-acquisition-v1-run{os.environ['GITHUB_RUN_ID']}.zip")
+          epoch = (2026, 8, 23, 0, 0, 0)
+          with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(Path('acquired').rglob('*')):
+                  if path.is_file():
+                      info = zipfile.ZipInfo(str(path.relative_to('acquired')), date_time=epoch)
+                      info.compress_type = zipfile.ZIP_DEFLATED
+                      info.external_attr = 0o644 << 16
+                      zf.writestr(info, path.read_bytes())
+          Path('release-asset.json').write_text(
+              json.dumps(
+                  {
+                      'file_name': out.name,
+                      'size_bytes': out.stat().st_size,
+                      'sha256': hashlib.sha256(out.read_bytes()).hexdigest(),
+                  },
+                  indent=2,
+              ) + '\n'
+          )
+          print(Path('release-asset.json').read_text())
+          PY
+      - name: Upload to shared development Release and download-back verify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          name="$(python -c 'import json; print(json.load(open("release-asset.json"))["file_name"])')"
+          expected="$(python -c 'import json; print(json.load(open("release-asset.json"))["sha256"])')"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | grep -Fxq "$name"; then
+            exit 1
+          fi
+          gh release upload "$RELEASE_TAG" "$name" --repo "$GITHUB_REPOSITORY"
+          mkdir -p verify
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir verify
+          test "$(sha256sum "verify/$name" | awk '{print $1}')" = "$expected"
+      - name: Report acquisition result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f acquired/acquisition.json && -f release-asset.json ]]; then
+            body=$(printf 'ADC_SV003_ACQUIRE_V1_PASS head=%s run_id=%s release=%s\n\n```json\n%s\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$RELEASE_TAG" "$(cat acquired/acquisition.json)" "$(cat release-asset.json)")
+          else
+            body="ADC_SV003_ACQUIRE_V1_FAIL head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
