@@ -11,11 +11,13 @@ permissions:
 
 env:
   ACTIVE_REF: design/industry-memory
-  SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-evidence-spec-v1.json
 
 jobs:
-  kwinana-grounded-evidence-v1:
-    if: github.event_name == 'workflow_dispatch' || github.event.issue.title == '[longcycle-kwinana-real-archive-v1]'
+  grounded-evidence-v1:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.event.issue.title == '[longcycle-kwinana-real-archive-v1]' ||
+      github.event.issue.title == '[longcycle-kemerton-grounded-v1]'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     services:
@@ -38,6 +40,24 @@ jobs:
       LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
       PYTHONUNBUFFERED: "1"
     steps:
+      - name: Select bounded grounded-evidence task
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == "workflow_dispatch" || "$ISSUE_TITLE" == "[longcycle-kwinana-real-archive-v1]" ]]; then
+            echo 'RUN_LABEL=kwinana' >> "$GITHUB_ENV"
+            echo 'SPEC_PATH=research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-evidence-spec-v1.json' >> "$GITHUB_ENV"
+          elif [[ "$ISSUE_TITLE" == "[longcycle-kemerton-grounded-v1]" ]]; then
+            echo 'RUN_LABEL=kemerton' >> "$GITHUB_ENV"
+            echo 'SPEC_PATH=research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-evidence-spec-v1.json' >> "$GITHUB_ENV"
+          else
+            echo 'unsupported grounded-evidence trigger' >&2
+            exit 2
+          fi
+
       - name: Check out active Longcycle branch
         uses: actions/checkout@v4
         with:
@@ -53,10 +73,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -m pip install --upgrade pip
           python -m pip install -e '.[postgres,duckdb]'
           mkdir -p probe
           git rev-parse HEAD | tee probe/active-head.txt
+          printf '%s\n' "$RUN_LABEL" > probe/run-label.txt
+          printf '%s\n' "$SPEC_PATH" > probe/spec-path.txt
           python - <<'PY'
           import duckdb, pypdf
           print('DUCKDB_VERSION', duckdb.__version__)
@@ -70,7 +91,7 @@ jobs:
           longcycle --json db upgrade | tee probe/migrations.json
           longcycle --json doctor --check-database | tee probe/doctor.json
 
-      - name: Execute four-document nine-fragment grounded evidence spec
+      - name: Execute grounded evidence spec
         shell: bash
         run: |
           set -euo pipefail
@@ -83,7 +104,7 @@ jobs:
           set -euo pipefail
           python scripts/export_portable_evidence_duckdb.py \
             probe/grounded-evidence-execution.json \
-            probe/kwinana-evidence.duckdb \
+            "probe/${RUN_LABEL}-evidence.duckdb" \
             --manifest-output probe/duckdb-export.json
 
       - name: Enforce sealed blind-memory immutability
@@ -92,61 +113,69 @@ jobs:
           set -euo pipefail
           test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
 
-      - name: Build compact human review report
+      - name: Build compact grounded-evidence report
         if: always()
         shell: bash
         run: |
-          set -euo pipefail
           python - <<'PY'
           import json
           from pathlib import Path
-          execution_path=Path('probe/grounded-evidence-execution.json')
-          duck_path=Path('probe/duckdb-export.json')
-          lines=['# Kwinana grounded evidence + DuckDB bundle v1','']
+
+          label = Path('probe/run-label.txt').read_text().strip() if Path('probe/run-label.txt').exists() else 'unknown'
+          execution_path = Path('probe/grounded-evidence-execution.json')
+          duck_path = Path('probe/duckdb-export.json')
+          lines = [f'# {label.title()} grounded evidence + DuckDB bundle v1', '']
           if Path('probe/active-head.txt').exists():
-              lines += [f'Active branch HEAD: `{Path("probe/active-head.txt").read_text().strip()}`','']
+              lines += [f'Active branch HEAD: `{Path("probe/active-head.txt").read_text().strip()}`', '']
           if execution_path.exists():
-              payload=json.load(open(execution_path,encoding='utf-8'))
-              result=payload.get('result',{})
-              lines += ['## Grounded evidence','']
-              lines.append(f'- documents: {len(result.get("documents", []))}')
-              lines.append(f'- artifacts: {len(result.get("artifacts", []))}')
-              lines.append(f'- evidence fragments: {len(result.get("fragments", []))}')
-              acceptance=result.get('acceptance',{})
-              lines.append(f'- FactAssertions created: {acceptance.get("fact_assertions_created")}')
-              lines.append(f'- Judgments created: {acceptance.get("judgment_assertions_created")}')
-              lines.append('')
-              for row in result.get('documents',[]):
-                  lines.append(f'- `{row["document_key"]}` sha256 `{row["content_sha256"]}` bytes={row["byte_length"]}')
-              lines += ['', '### Evidence locators','']
-              for row in result.get('fragments',[]):
-                  lines.append(f'- `{row["fragment_key"]}` → `{row["locator"]}` / `{row["fragment_sha256"]}`')
+              payload = json.loads(execution_path.read_text(encoding='utf-8'))
+              if payload.get('ok'):
+                  result = payload['result']
+                  acceptance = result['acceptance']
+                  lines += [
+                      f'- task: `{result["task_id"]}`',
+                      f'- documents: {len(result["documents"])}',
+                      f'- artifacts: {len(result["artifacts"])}',
+                      f'- evidence fragments: {len(result["fragments"])}',
+                      f'- FactAssertions created: {acceptance["fact_assertions_created"]}',
+                      f'- Judgments created: {acceptance["judgment_assertions_created"]}',
+                      '',
+                  ]
+                  for row in result['documents']:
+                      lines.append(f'- `{row["document_key"]}` sha256 `{row["content_sha256"]}` bytes={row["byte_length"]}')
+                  lines += ['', '### Evidence locators', '']
+                  for row in result['fragments']:
+                      lines.append(f'- `{row["fragment_key"]}` → `{row["locator"]}` / `{row["fragment_sha256"]}`')
+              else:
+                  lines.append(f'- execution failed: `{payload.get("error")}`')
           else:
-              lines += ['## Grounded evidence','', '- execution output missing; inspect job logs','']
+              lines.append('- execution output missing; inspect job logs')
           if duck_path.exists():
-              payload=json.load(open(duck_path,encoding='utf-8'))
-              lines += ['', '## Portable DuckDB bundle','']
-              lines.append(f'- DuckDB: {payload.get("duckdb_version")}')
-              lines.append(f'- file bytes: {payload.get("file_bytes")}')
-              lines.append(f'- file sha256: `{payload.get("file_sha256")}`')
-              verification=payload.get('verification',{})
-              lines.append(f'- read-only open seconds: {verification.get("read_only_open_seconds")}')
-              lines.append(f'- point-in-time query seconds: {verification.get("point_in_time_query_seconds")}')
-              lines.append(f'- known by 2021 year-end: {verification.get("evidence_known_by_2021_year_end")} fragments')
-              lines.append(f'- broken document refs: {verification.get("broken_document_refs")}')
-              lines.append(f'- broken artifact refs: {verification.get("broken_artifact_refs")}')
-              lines.append(f'- claim roles: `{json.dumps(verification.get("claim_role_counts",{}),ensure_ascii=False,sort_keys=True)}`')
-          else:
-              lines += ['', '## Portable DuckDB bundle','', '- export output missing; inspect job logs','']
-          Path('probe/report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+              payload = json.loads(duck_path.read_text(encoding='utf-8'))
+              verification = payload.get('verification', {})
+              lines += [
+                  '',
+                  '## Portable DuckDB bundle',
+                  '',
+                  f'- DuckDB: {payload.get("duckdb_version")}',
+                  f'- file bytes: {payload.get("file_bytes")}',
+                  f'- file sha256: `{payload.get("file_sha256")}`',
+                  f'- read-only open seconds: {verification.get("read_only_open_seconds")}',
+                  f'- point-in-time query seconds: {verification.get("point_in_time_query_seconds")}',
+                  f'- evidence known by 2021-12-31: {verification.get("evidence_known_by_2021_year_end")}',
+                  f'- broken document refs: {verification.get("broken_document_refs")}',
+                  f'- broken artifact refs: {verification.get("broken_artifact_refs")}',
+                  f'- claim roles: `{json.dumps(verification.get("claim_role_counts", {}), ensure_ascii=False, sort_keys=True)}`',
+              ]
+          Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
           cat probe/report.md
 
-      - name: Upload benchmark artifacts
+      - name: Upload grounded evidence transport artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kwinana-grounded-evidence-duckdb-v1
+          name: grounded-evidence-v1-${{ github.run_id }}
           if-no-files-found: error
           retention-days: 30
           include-hidden-files: true
@@ -229,22 +258,22 @@ jobs:
           set -euo pipefail
           test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
 
-      - name: Build compact Kemerton report
+      - name: Build compact Kemerton archive report
         if: always()
         shell: bash
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          execution=Path('probe/kemerton-archive-execution.json')
-          lines=['# Kemerton archive execution v1','']
+          execution = Path('probe/kemerton-archive-execution.json')
+          lines = ['# Kemerton archive execution v1', '']
           if Path('probe/active-head.txt').exists():
-              lines += [f'Active branch HEAD: `{Path("probe/active-head.txt").read_text().strip()}`','']
+              lines += [f'Active branch HEAD: `{Path("probe/active-head.txt").read_text().strip()}`', '']
           if execution.exists():
-              payload=json.loads(execution.read_text(encoding='utf-8'))
+              payload = json.loads(execution.read_text(encoding='utf-8'))
               if payload.get('ok'):
-                  result=payload['result']
-                  acceptance=result['acceptance']
+                  result = payload['result']
+                  acceptance = result['acceptance']
                   lines += [
                       f'- archived vintages: {acceptance["archived_vintages"]}',
                       f'- FactAssertions created: {acceptance["fact_assertions_created"]}',
@@ -260,7 +289,7 @@ jobs:
                   lines.append(f'- execution failed: `{payload.get("error")}`')
           else:
               lines.append('- execution output missing; inspect job logs')
-          Path('probe/report.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
+          Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
           cat probe/report.md
 
@@ -268,7 +297,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: kemerton-archive-v1
+          name: kemerton-archive-v1-${{ github.run_id }}
           if-no-files-found: error
           retention-days: 30
           include-hidden-files: true
