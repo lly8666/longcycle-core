@@ -1,0 +1,149 @@
+name: Acquire EVT-003 approved redistributor bytes once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  acquire:
+    if: github.event.issue.title == '[longcycle-evt003-approved-redistributor-acquire-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Acquire approved redistribution payloads
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p acquired
+          git rev-parse HEAD > acquired/active-head.txt
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          import urllib.request
+          from html import unescape
+          from pathlib import Path
+
+          USER_AGENT = 'Mozilla/5.0 (compatible; LongcycleCollector/0.1; +https://github.com/lly8666/longcycle-core)'
+          ITEMS = [
+              {
+                  'key': 'livent-2018-10k-annualreports',
+                  'url': 'https://www.annualreports.com/HostedData/AnnualReportArchive/l/NYSE_LTHM_2018.pdf',
+                  'content_type_hint': 'application/pdf',
+                  'upstream_system': 'SEC EDGAR',
+                  'upstream_external_id': '0001742924-19-000013',
+                  'upstream_title': 'Livent Corporation 2018 Form 10-K',
+                  'required_ascii': [b'LIVENT', b'FORM 10-K'],
+              },
+              {
+                  'key': 'livent-2019q1-prnewswire',
+                  'url': 'https://www.prnewswire.com/news-releases/livent-corporation-announces-first-quarter-2019-results-300845632.html',
+                  'content_type_hint': 'text/html',
+                  'upstream_system': 'Livent issuer release / PR Newswire',
+                  'upstream_external_id': '300845632',
+                  'upstream_title': 'Livent Corporation Announces First Quarter 2019 Results',
+                  'required_ascii': [b'Livent', b'First Quarter 2019 Results'],
+              },
+          ]
+
+          def fetch(url):
+              request = urllib.request.Request(
+                  url,
+                  headers={
+                      'User-Agent': USER_AGENT,
+                      'Accept': '*/*',
+                      'Accept-Language': 'en-US,en;q=0.8',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=45) as response:
+                  return response.read(), response.geturl(), response.status, dict(response.headers.items())
+
+          rows = []
+          for item in ITEMS:
+              raw, final_url, status, headers = fetch(item['url'])
+              if status != 200:
+                  raise SystemExit(f"unexpected HTTP {status} for {item['key']}")
+              for needle in item['required_ascii']:
+                  if needle.lower() not in raw.lower():
+                      raise SystemExit(f"identity marker {needle!r} missing from {item['key']}")
+              suffix = '.pdf' if item['content_type_hint'] == 'application/pdf' else '.html'
+              output = Path('acquired') / f"{item['key']}{suffix}"
+              output.write_bytes(raw)
+              text = ''
+              claim_markers = {}
+              if suffix == '.html':
+                  decoded = raw.decode('utf-8', errors='replace')
+                  text = unescape(re.sub(r'<[^>]+>', ' ', decoded))
+                  text = ' '.join(text.split())
+                  (Path('acquired') / f"{item['key']}-visible.txt").write_text(text, encoding='utf-8')
+                  lowered = text.lower()
+                  claim_markers = {
+                      'slower_pace': 'slower pace' in lowered,
+                      'higher_nickel': 'higher nickel' in lowered,
+                      'lithium_hydroxide': 'lithium hydroxide' in lowered,
+                      'anticipated': 'anticipated' in lowered,
+                  }
+              rows.append({
+                  'key': item['key'],
+                  'requested_url': item['url'],
+                  'final_url': final_url,
+                  'status': status,
+                  'content_type': headers.get('Content-Type') or headers.get('content-type') or item['content_type_hint'],
+                  'raw_sha256': hashlib.sha256(raw).hexdigest(),
+                  'raw_bytes': len(raw),
+                  'upstream_announcement': {
+                      'issuer': 'Livent Corporation',
+                      'system': item['upstream_system'],
+                      'external_id': item['upstream_external_id'],
+                      'title': item['upstream_title'],
+                  },
+                  'claim_markers': claim_markers,
+              })
+
+          payload = {
+              'schema_version': 'longcycle-approved-redistributor-acquisition/v1',
+              'active_head_sha': Path('acquired/active-head.txt').read_text().strip(),
+              'rows': rows,
+          }
+          Path('acquired/acquisition.json').write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Upload acquired source bytes
+        uses: actions/upload-artifact@v4
+        with:
+          name: evt003-approved-redistributor-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: acquired/
+
+      - name: Report acquisition result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f acquired/acquisition.json ]]; then
+            body=$(printf 'EVT003_APPROVED_REDISTRIBUTOR_ACQUIRE_PASS run_id=%s\n\n```json\n%s\n```' "$GITHUB_RUN_ID" "$(cat acquired/acquisition.json)")
+          else
+            body="EVT003_APPROVED_REDISTRIBUTOR_ACQUIRE_FAIL run_id=$GITHUB_RUN_ID"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
