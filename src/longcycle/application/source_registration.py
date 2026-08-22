@@ -37,6 +37,7 @@ def build_http_source_definition(
     if rate_limit_per_minute < 1:
         raise ValueError("rate_limit_per_minute must be positive")
 
+    normalized_allowed_domains: tuple[str, ...]
     if allowed_domains is None:
         normalized_allowed_domains = (domain,)
     else:
