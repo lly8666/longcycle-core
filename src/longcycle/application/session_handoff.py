@@ -129,7 +129,7 @@ class SessionHandoffCheckpoint(BaseModel):
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["longcycle-session-handoff/v4"]
+    schema_version: Literal["longcycle-session-handoff/v5"]
     continuity_sequence: int = Field(ge=1)
     provenance_ordering: Literal["git_commit_graph"]
     repository: Literal["lly8666/longcycle-core"]
@@ -140,6 +140,7 @@ class SessionHandoffCheckpoint(BaseModel):
     do_not_ask_user_to_repeat: Literal[True]
     bootstrap_instruction: str = Field(min_length=1)
     core_refs: HandoffCoreRefs
+    data_plane_manifest_path: Literal[".longcycle/handoff/data-plane.json"]
     strategic_horizon: HandoffStrategicHorizon
     continuation_cursor: HandoffContinuationCursor
     active_context: HandoffActiveContext
@@ -176,9 +177,10 @@ class SessionHandoffCheckpoint(BaseModel):
             self.core_refs.mission_fidelity_path,
             "CONTINUE_HERE.md",
             ".longcycle/handoff/current.json",
+            self.data_plane_manifest_path,
         }
         if not required_paths.issubset(set(self.resume_read_set)):
-            raise ValueError("resume_read_set is missing bounded bootstrap core files")
+            raise ValueError("resume_read_set is missing bounded bootstrap/data-plane files")
 
         if self.memory_campaign is not None and (
             self.active_context.campaign_root is None
