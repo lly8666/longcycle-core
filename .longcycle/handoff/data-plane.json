@@ -2,7 +2,7 @@
   "schema_version": "longcycle-handoff-data-plane/v1",
   "transport_mode": "sandbox_google_drive_manual_relay",
   "google_drive_folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
-  "capacity_policy": "Google Drive is a bounded handoff transport/cache under the current user constraint (~15 GB), not the terminal archive. Keep only active/recent immutable packs there; do not copy a monolithic multi-industry database on every handoff.",
+  "capacity_policy": "Google Drive is a bounded handoff transport/cache under the current user constraint (~15 GB), not the terminal archive. Keep only active/recent immutable packs there; do not copy a monolithic multi-industry database on every handoff. No authoritative or unreconstructable research state may exist only in a sandbox: sandbox-only files are permitted only when they are disposable caches, failed attempts, superseded intermediates, or byte-identical copies of state already persisted in Git/Drive/another durable authority.",
   "postgres_policy": "Do not transport a PostgreSQL cluster as session state. PostgreSQL remains the transactional write/ops engine and is rebuilt in an Action or other service-capable runtime when writes/leases/outbox semantics are required. Durable handoff truth is immutable source/archive bytes plus reconciled portable research packs and repository receipts.",
   "duckdb_policy": "DuckDB is the portable read/replay materialization. A fresh sandbox restores only the packs required by the current cursor, verifies outer and inner SHA-256, installs the pinned offline runtime only when the sandbox lacks a compatible DuckDB, and opens packs read-only.",
   "missing_required_asset_action": "stop_and_report_integrity_blocker",
@@ -39,6 +39,38 @@
         }
       ],
       "restore_instruction": "Fetch this Drive file id into the sandbox, verify the ZIP SHA-256 before extraction, verify each required component SHA-256, then open probe/kemerton-evidence.duckdb read-only. If compatible DuckDB is absent, first restore asset duckdb-offline-runtime-py313-v1. Do not treat Drive metadata or filenames as integrity evidence."
+    },
+    {
+      "asset_id": "kwinana-grounded-run19-capsule",
+      "role": "research_evidence_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "google_drive_file_id": "18PeEW9lPEXYDo1Rc42yYvGPJ7dSyXnm1",
+      "file_name": "longcycle-kwinana-grounded-run19.zip",
+      "size_bytes": 337920,
+      "sha256": "1f2ec083a79532a2283562973a31e6af3941ad8bf6e72c108692bab19a368c13",
+      "content_summary": "EVT-001 Kwinana successful grounded-evidence Action capsule: 4 archived primary-source documents, 2 deterministic PDF text artifacts, 9 EvidenceFragments, execution/verification manifests, 6 content-addressed source/artifact blobs and the reconciled portable DuckDB bundle. FactAssertions=0 and Judgments=0. Mirrored from the successful GitHub Actions artifact to Drive and independently downloaded back with matching ZIP/component SHA-256.",
+      "components": [
+        {
+          "path": "probe/kwinana-evidence.duckdb",
+          "role": "portable research/evidence replay database",
+          "size_bytes": 2633728,
+          "sha256": "99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec"
+        },
+        {
+          "path": "probe/grounded-evidence-execution.json",
+          "role": "machine execution receipt with document/artifact/fragment identities",
+          "size_bytes": 13788,
+          "sha256": "367b3132b3c1a9c96a7e51e07752d58b3bb3cd02e74526a9aa82e68fb26da7f7"
+        },
+        {
+          "path": "probe/duckdb-export.json",
+          "role": "DuckDB reconciliation and canonical-table manifest",
+          "size_bytes": 2458,
+          "sha256": "22c937ee5eb4c19a49fff345160d53bcc847a425dbf97aaf48940bce596df475"
+        }
+      ],
+      "restore_instruction": "Restore only when the current cursor needs Kwinana binary evidence/replay state. Fetch by Drive file id, verify ZIP and required component SHA-256 values, then open probe/kwinana-evidence.duckdb read-only with a compatible DuckDB runtime. The repository execution receipt remains the textual control-plane authority for task completion; this capsule preserves the underlying archived bytes and portable database across sandbox loss."
     },
     {
       "asset_id": "duckdb-offline-runtime-py313-v1",
