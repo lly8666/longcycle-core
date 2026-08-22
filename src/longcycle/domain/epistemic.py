@@ -87,6 +87,7 @@ class CanonicalRealityRecord(DomainModel):
     value_payload: str | None = None
     unit_code: str | None = None
     valid_time: TemporalExtent
+    observed_time: TemporalExtent | None = None
     known_at: datetime
     confidence: float = Field(ge=0, le=1)
     publication_status: str = "trusted"
@@ -105,6 +106,8 @@ class CanonicalRealityRecord(DomainModel):
             raise ValueError("canonical Reality must retain at least one evidence fragment")
         if len(set(self.evidence_fragment_ids)) != len(self.evidence_fragment_ids):
             raise ValueError("canonical Reality evidence references must be unique")
+        if self.observed_time is not None and self.observed_time.kind != "instant":
+            raise ValueError("canonical Reality observed_time must be an instant extent")
         return self
 
 

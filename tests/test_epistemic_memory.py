@@ -65,6 +65,12 @@ def _timeline() -> IndustrialMemoryTimeline:
             precision=TemporalPrecision.MONTH,
             source_text="July 2022",
         ),
+        observed_time=TemporalExtent(
+            kind="instant",
+            at=datetime(2022, 8, 3, tzinfo=UTC),
+            precision=TemporalPrecision.DAY,
+            source_text="as of 2022-08-03",
+        ),
         known_at=OUTCOME_KNOWN,
         confidence=0.95,
         evidence_fragment_ids=(OUTCOME_EVIDENCE_ID,),
@@ -125,5 +131,8 @@ async def test_duckdb_memory_round_trip_and_no_lookahead(tmp_path) -> None:
     assert at.reality[0].valid_time.kind == "period"
     assert at.reality[0].valid_time.precision == TemporalPrecision.MONTH
     assert at.reality[0].valid_time.source_text == "July 2022"
+    assert at.reality[0].observed_time is not None
+    assert at.reality[0].observed_time.precision == TemporalPrecision.DAY
+    assert at.reality[0].observed_time.source_text == "as of 2022-08-03"
     assert at.outcomes[0].timing_delta_value == Decimal("2")
     assert at.outcomes[0].timing_delta_unit == "calendar_months"

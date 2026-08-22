@@ -63,6 +63,17 @@ def _reality_time(row: dict[str, Any]) -> TemporalExtent:
     )
 
 
+def _reality_observed_time(row: dict[str, Any]) -> TemporalExtent | None:
+    if row["observed_at"] is None:
+        return None
+    return TemporalExtent(
+        kind="instant",
+        at=row["observed_at"],
+        precision=TemporalPrecision(row["observed_at_precision"]),
+        source_text=row["observed_at_text"],
+    )
+
+
 def _judgment_target(row: dict[str, Any]) -> TemporalExtent:
     kind = row["target_time_kind"]
     return TemporalExtent(
@@ -155,6 +166,8 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
                    canonical.valid_time_kind,
                    canonical.valid_from, canonical.valid_to,
                    canonical.valid_time_precision, canonical.valid_time_text,
+                   canonical.observed_at, canonical.observed_at_precision,
+                   canonical.observed_at_text,
                    canonical.market_known_at, canonical.confidence,
                    canonical.publication_status,
                    array_agg(DISTINCT evidence_link.evidence_fragment_id
@@ -274,6 +287,7 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
             value_payload=_value_payload(row),
             unit_code=row["unit_code"],
             valid_time=_reality_time(row),
+            observed_time=_reality_observed_time(row),
             known_at=row["market_known_at"],
             confidence=row["confidence"],
             publication_status=row["publication_status"],

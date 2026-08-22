@@ -57,18 +57,21 @@ class GroundedRealityProjectionItem(DomainModel):
     subject_entity_id: UUID
     predicate_code: str = Field(min_length=3, pattern=r"^[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
     value_text: str = Field(min_length=1)
-    valid_time_kind: Literal[ValidTimeKind.PERIOD] = ValidTimeKind.PERIOD
+    valid_time_kind: Literal[ValidTimeKind.PERIOD, ValidTimeKind.UNKNOWN] = ValidTimeKind.PERIOD
     valid_from: datetime | None = None
     valid_to: datetime | None = None
     valid_time_precision: TemporalPrecision
     valid_time_text: str | None = None
+    observed_at: datetime | None = None
+    observed_at_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    observed_at_text: str | None = None
     statistical_scope: str = Field(default="project milestone", min_length=1)
     extraction_confidence: float = Field(default=1.0, ge=0, le=1)
     source_quality: float = Field(default=1.0, ge=0, le=1)
     corroboration: float = Field(default=0.8, ge=0, le=1)
     metadata: dict[str, Any] = Field(default_factory=dict)
 
-    @field_validator("valid_from", "valid_to")
+    @field_validator("valid_from", "valid_to", "observed_at")
     @classmethod
     def valid_times_are_aware(
         cls,
@@ -78,13 +81,38 @@ class GroundedRealityProjectionItem(DomainModel):
         return require_aware_datetime(value, info.field_name)
 
     @model_validator(mode="after")
-    def has_valid_period(self) -> GroundedRealityProjectionItem:
-        if self.valid_from is None and self.valid_to is None:
-            raise ValueError("Reality projection period requires at least one valid-time bound")
-        if self.valid_from is not None and self.valid_to is not None and self.valid_to <= self.valid_from:
-            raise ValueError("Reality projection valid_to must be after valid_from")
+    def has_truthful_temporal_shape(self) -> GroundedRealityProjectionItem:
+        if self.valid_time_kind == ValidTimeKind.PERIOD:
+            if self.valid_from is None and self.valid_to is None:
+                raise ValueError("Reality projection period requires at least one valid-time bound")
+            if (
+                self.valid_from is not None
+                and self.valid_to is not None
+                and self.valid_to <= self.valid_from
+            ):
+                raise ValueError("Reality projection valid_to must be after valid_from")
+        else:
+            if self.valid_from is not None or self.valid_to is not None:
+                raise ValueError("unknown-onset Reality cannot carry valid-time bounds")
+            if self.valid_time_precision != TemporalPrecision.UNKNOWN:
+                raise ValueError("unknown-onset Reality cannot claim valid-time precision")
+            if self.observed_at is None:
+                raise ValueError("unknown-onset Reality requires a source-supported observed_at")
+            if self.observed_at_precision == TemporalPrecision.UNKNOWN:
+                raise ValueError("unknown-onset Reality requires observed-at source precision")
         if self.valid_time_precision == TemporalPrecision.APPROXIMATE and not self.valid_time_text:
             raise ValueError("approximate Reality projection must preserve source time text")
+        if self.observed_at is None:
+            if (
+                self.observed_at_precision != TemporalPrecision.UNKNOWN
+                or self.observed_at_text is not None
+            ):
+                raise ValueError("observed-at precision/text requires observed_at")
+        elif (
+            self.observed_at_precision == TemporalPrecision.APPROXIMATE
+            and not self.observed_at_text
+        ):
+            raise ValueError("approximate observed-at time must preserve source time text")
         return self
 
 
@@ -162,10 +190,13 @@ def build_grounded_reality_facts(
                 value_type=FactValueKind.TEXT,
                 dimensions=FactDimensions(statistical_scope=item.statistical_scope),
                 dimensions_complete=True,
-                valid_time_kind=ValidTimeKind.PERIOD,
+                valid_time_kind=item.valid_time_kind,
                 valid_time=TimeRange(start=item.valid_from, end=item.valid_to),
                 valid_time_precision=item.valid_time_precision,
                 valid_time_text=item.valid_time_text,
+                observed_at=item.observed_at,
+                observed_at_precision=item.observed_at_precision,
+                observed_at_text=item.observed_at_text,
                 source_published_at=cited.source_published_at,
                 known_at=cited.known_time_upper_bound,
                 source_id=cited.source_connector_id,

@@ -99,6 +99,9 @@ def seal_industrial_memory(
                 valid_time_to TIMESTAMPTZ,
                 valid_time_precision VARCHAR NOT NULL,
                 valid_time_text VARCHAR,
+                observed_at TIMESTAMPTZ,
+                observed_at_precision VARCHAR NOT NULL,
+                observed_at_text VARCHAR,
                 known_at TIMESTAMPTZ NOT NULL,
                 confidence DOUBLE NOT NULL,
                 publication_status VARCHAR NOT NULL,
@@ -111,7 +114,7 @@ def seal_industrial_memory(
             connection.execute(
                 """
                 INSERT INTO reality_memory
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [
                     str(reality_item.canonical_fact_version_id),
@@ -124,6 +127,21 @@ def seal_industrial_memory(
                     reality_item.value_payload,
                     reality_item.unit_code,
                     *_extent_values(reality_item.valid_time),
+                    (
+                        reality_item.observed_time.at
+                        if reality_item.observed_time is not None
+                        else None
+                    ),
+                    (
+                        reality_item.observed_time.precision.value
+                        if reality_item.observed_time is not None
+                        else TemporalPrecision.UNKNOWN.value
+                    ),
+                    (
+                        reality_item.observed_time.source_text
+                        if reality_item.observed_time is not None
+                        else None
+                    ),
                     reality_item.known_at,
                     reality_item.confidence,
                     reality_item.publication_status,
@@ -415,6 +433,16 @@ class DuckDBEpistemicMemoryReader:
             value_payload=row["value_payload"],
             unit_code=row["unit_code"],
             valid_time=cls._extent(row, "valid_time"),
+            observed_time=(
+                TemporalExtent(
+                    kind="instant",
+                    at=row["observed_at"],
+                    precision=TemporalPrecision(row["observed_at_precision"]),
+                    source_text=row["observed_at_text"],
+                )
+                if row["observed_at"] is not None
+                else None
+            ),
             known_at=row["known_at"],
             confidence=row["confidence"],
             publication_status=row["publication_status"],

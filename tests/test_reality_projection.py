@@ -12,7 +12,12 @@ from longcycle.application.reality_projection import (
     RealityProjectionSubject,
     build_grounded_reality_facts,
 )
-from longcycle.domain.enums import EntityType, FactEvidenceRole, TemporalPrecision
+from longcycle.domain.enums import (
+    EntityType,
+    FactEvidenceRole,
+    TemporalPrecision,
+    ValidTimeKind,
+)
 from longcycle.domain.models import FactEvidenceRef
 
 
@@ -102,3 +107,55 @@ def test_reality_projection_requires_source_supported_bounds() -> None:
             valid_time_precision=TemporalPrecision.MONTH,
             valid_time_text="July 2022",
         )
+
+
+def test_unknown_onset_reality_uses_observation_without_fabricating_valid_from() -> None:
+    subject = RealityProjectionSubject(
+        id=UUID(int=20),
+        entity_type=EntityType.PRODUCTION_LINE,
+        canonical_name="Kwinana Train 1",
+    )
+    observed_day = datetime(2022, 12, 3, tzinfo=UTC)
+    known_upper_bound = datetime(2022, 12, 3, 23, 59, 59, tzinfo=UTC)
+    evidence = GroundedRealityEvidence(
+        fragment_key="continuous-production",
+        evidence_fragment_id=UUID(int=21),
+        document_version_id=UUID(int=22),
+        source_connector_id=UUID(int=23),
+        claim_role="project_status",
+        known_time_upper_bound=known_upper_bound,
+        source_published_at=observed_day,
+        excerpt="The plant currently has continuous-production operating capability.",
+    )
+    spec = GroundedRealityProjectionSpec(
+        schema_version="longcycle-reality-projection-spec/v1",
+        task_id="kwinana-state-as-of-test",
+        source_evidence_task_id="kwinana-evidence-test",
+        allowed_claim_roles=("project_status",),
+        subjects=(subject,),
+        facts=(
+            GroundedRealityProjectionItem(
+                fact_key="continuous-production-as-of",
+                evidence_fragment_key=evidence.fragment_key,
+                subject_entity_id=subject.id,
+                predicate_code="project.continuous_production_capability",
+                value_text="had continuous-production operating capability",
+                valid_time_kind=ValidTimeKind.UNKNOWN,
+                valid_time_precision=TemporalPrecision.UNKNOWN,
+                observed_at=observed_day,
+                observed_at_precision=TemporalPrecision.DAY,
+                observed_at_text="as of 2022-12-03",
+            ),
+        ),
+    )
+
+    fact = build_grounded_reality_facts(spec, (evidence,))[0]
+
+    assert fact.valid_time_kind == ValidTimeKind.UNKNOWN
+    assert fact.valid_time.start is None
+    assert fact.valid_time.end is None
+    assert fact.valid_time_precision == TemporalPrecision.UNKNOWN
+    assert fact.observed_at == observed_day
+    assert fact.observed_at_precision == TemporalPrecision.DAY
+    assert fact.observed_at_text == "as of 2022-12-03"
+    assert fact.known_at == known_upper_bound

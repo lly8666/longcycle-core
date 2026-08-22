@@ -206,6 +206,8 @@ async def _persist(
                    canonical.value_kind, canonical.value_text,
                    canonical.valid_time_kind, canonical.valid_from, canonical.valid_to,
                    canonical.valid_time_precision, canonical.valid_time_text,
+                   canonical.observed_at, canonical.observed_at_precision,
+                   canonical.observed_at_text,
                    canonical.market_known_at, canonical.confidence,
                    canonical.publication_status
             FROM research.canonical_fact_versions canonical
@@ -243,8 +245,29 @@ async def _persist(
             "all_known_times_derived_from_grounded_evidence": True,
             "stable_assertion_to_canonical_mapping": True,
             "valid_time_semantics_preserved": all(
-                row["valid_time_kind"] in {"period", "timeless", "unknown"}
-                and row["valid_time_precision"] != "unknown"
+                (
+                    row["valid_time_kind"] == "period"
+                    and (row["valid_from"] is not None or row["valid_to"] is not None)
+                    and row["valid_time_precision"] != "unknown"
+                )
+                or (
+                    row["valid_time_kind"] == "timeless"
+                    and row["valid_from"] is None
+                    and row["valid_to"] is None
+                )
+                or (
+                    row["valid_time_kind"] == "unknown"
+                    and row["valid_from"] is None
+                    and row["valid_to"] is None
+                )
+                for row in canonical_rows
+            ),
+            "observation_semantics_preserved": all(
+                row["valid_time_kind"] != "unknown"
+                or (
+                    row["observed_at"] is not None
+                    and row["observed_at_precision"] != "unknown"
+                )
                 for row in canonical_rows
             ),
         },

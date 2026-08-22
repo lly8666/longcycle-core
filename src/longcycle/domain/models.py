@@ -417,6 +417,8 @@ class FactAssertion(DomainModel):
     valid_time_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
     valid_time_text: str | None = None
     observed_at: datetime | None = None
+    observed_at_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    observed_at_text: str | None = None
     source_published_at: datetime | None = None
     known_at: datetime = Field(default_factory=utc_now)
     source_id: UUID
@@ -485,6 +487,32 @@ class FactAssertion(DomainModel):
             metadata[text_key] = source_text
         else:
             metadata.pop(text_key, None)
+
+        observed_precision_key = "_longcycle_observed_at_precision"
+        observed_text_key = "_longcycle_observed_at_text"
+        if "observed_at_precision" not in payload and observed_precision_key in metadata:
+            payload["observed_at_precision"] = metadata[observed_precision_key]
+        if "observed_at_text" not in payload and observed_text_key in metadata:
+            payload["observed_at_text"] = metadata[observed_text_key]
+        if payload.get("observed_at") is not None:
+            observed_precision = payload.get(
+                "observed_at_precision",
+                TemporalPrecision.UNKNOWN,
+            )
+            observed_precision_value = (
+                observed_precision.value
+                if isinstance(observed_precision, TemporalPrecision)
+                else str(observed_precision)
+            )
+            metadata[observed_precision_key] = observed_precision_value
+            observed_text = payload.get("observed_at_text")
+            if observed_text is not None:
+                metadata[observed_text_key] = observed_text
+            else:
+                metadata.pop(observed_text_key, None)
+        else:
+            metadata.pop(observed_precision_key, None)
+            metadata.pop(observed_text_key, None)
         payload["metadata"] = metadata
         return payload
 
@@ -511,6 +539,17 @@ class FactAssertion(DomainModel):
             self.valid_time.start is None and self.valid_time.end is None
         ):
             raise ValueError("period fact valid time requires a start and/or end bound")
+        if self.observed_at is None:
+            if (
+                self.observed_at_precision != TemporalPrecision.UNKNOWN
+                or self.observed_at_text is not None
+            ):
+                raise ValueError("observed-at precision/text requires observed_at")
+        elif (
+            self.observed_at_precision == TemporalPrecision.APPROXIMATE
+            and not self.observed_at_text
+        ):
+            raise ValueError("approximate observed-at time must preserve the source time text")
         if not self.evidence:
             raise ValueError("FactAssertion requires at least one EvidenceFragment reference")
         evidence_ids = [item.evidence_fragment_id for item in self.evidence]
