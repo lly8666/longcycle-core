@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from pathlib import Path
 
@@ -7,6 +8,10 @@ from longcycle.application.handoff_drill import audit_repository_handoff
 from longcycle.application.session_handoff import HandoffMemoryCampaign, SessionHandoffCheckpoint
 
 ROOT = Path(__file__).resolve().parents[1]
+LITHIUM_ROOT = (
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol"
+)
+LITHIUM_COVERAGE = f"{LITHIUM_ROOT}/analysis/coverage-index.json"
 
 
 class HandoffIsolationDrillTest(unittest.TestCase):
@@ -80,13 +85,21 @@ class HandoffIsolationDrillTest(unittest.TestCase):
             )
 
         campaign = checkpoint.memory_campaign
-        self.assertIsNotNone(campaign)
-        assert campaign is not None
-        self.assertEqual(report.recovered.campaign_id, campaign.campaign_id)
-        self.assertEqual(report.recovered.phase, campaign.phase)
-        self.assertEqual(report.recovered.search_visibility, campaign.search_visibility)
-        self.assertEqual(report.recovered.total_raw_leads, campaign.total_raw_leads)
-        self.assertEqual(report.recovered.sealed_shards, campaign.sealed_shards)
+        if campaign is None:
+            self.assertIsNone(report.recovered.campaign_id)
+            self.assertIsNone(report.recovered.phase)
+            self.assertIsNone(report.recovered.search_visibility)
+            self.assertIsNone(report.recovered.total_raw_leads)
+            self.assertIsNone(report.recovered.shard_count)
+            self.assertEqual(report.recovered.sealed_shards, ())
+            self.assertIsNone(checkpoint.active_context.campaign_root)
+            self.assertIsNone(checkpoint.active_context.coverage_path)
+        else:
+            self.assertEqual(report.recovered.campaign_id, campaign.campaign_id)
+            self.assertEqual(report.recovered.phase, campaign.phase)
+            self.assertEqual(report.recovered.search_visibility, campaign.search_visibility)
+            self.assertEqual(report.recovered.total_raw_leads, campaign.total_raw_leads)
+            self.assertEqual(report.recovered.sealed_shards, campaign.sealed_shards)
 
     def test_cursor_must_point_to_declared_workstream(self) -> None:
         current_path = ROOT / ".longcycle" / "handoff" / "current.json"
@@ -117,24 +130,41 @@ class HandoffIsolationDrillTest(unittest.TestCase):
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
             current_path.read_text(encoding="utf-8")
         )
-        campaign = checkpoint.memory_campaign
-        self.assertIsNotNone(campaign)
-        assert campaign is not None
+        coverage = json.loads((ROOT / LITHIUM_COVERAGE).read_text(encoding="utf-8"))
+        total_raw = int(coverage["total_raw_leads_so_far"])
+        sealed_shards = tuple(coverage["sealed_shards"])
+        shard_count = len(coverage["shards"])
 
-        stale_campaign = HandoffMemoryCampaign.model_validate(
-            {
-                **campaign.model_dump(mode="python"),
-                "total_raw_leads": campaign.total_raw_leads - 1,
+        stale_campaign = HandoffMemoryCampaign(
+            campaign_id="synthetic-stale-lithium-drill",
+            industry="lithium-battery",
+            phase="self_verification",
+            search_visibility="self_verification",
+            total_raw_leads=total_raw - 1,
+            sealed_shards=sealed_shards,
+            shard_count=shard_count,
+            seal_rule="Synthetic fixture: compare checkpoint total to immutable blind files.",
+            next_research_actions=("Synthetic stale-campaign drill only.",),
+        )
+        lithium_context = checkpoint.active_context.model_copy(
+            update={
+                "campaign_root": LITHIUM_ROOT,
+                "coverage_path": LITHIUM_COVERAGE,
             }
         )
-        stale_checkpoint = checkpoint.model_copy(update={"memory_campaign": stale_campaign})
+        stale_checkpoint = checkpoint.model_copy(
+            update={
+                "active_context": lithium_context,
+                "memory_campaign": stale_campaign,
+            }
+        )
 
         report = audit_repository_handoff(ROOT, checkpoint_override=stale_checkpoint)
         failures = {item.name for item in report.failed_checks}
 
         self.assertLess(report.fidelity_score, 1.0)
         self.assertIn("checkpoint_total_matches_raw", failures)
-        self.assertEqual(report.recovered.total_raw_leads, campaign.total_raw_leads)
+        self.assertEqual(report.recovered.total_raw_leads, total_raw)
 
 
 if __name__ == "__main__":
