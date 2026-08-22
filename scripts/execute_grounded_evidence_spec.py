@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from longcycle.adapters.parsers import HtmlVisibleTextParser, PdfTextParser
+from longcycle.adapters.parsers import CanonicalJsonParser, HtmlVisibleTextParser, PdfTextParser
 from longcycle.adapters.sources.http import HttpDocumentSource
 from longcycle.adapters.sources.materialized import MaterializedDocumentSource
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
@@ -368,7 +368,6 @@ async def _record_fragments(
             raise ValueError(f"fragment {fragment_key} references unknown document")
         document = documents[document_key]
         document_spec = spec_by_key[document_key]
-        excerpt = str(row["excerpt"])
         claim_context = row.get("claim_context")
         if not isinstance(claim_context, dict) or not claim_context:
             raise ValueError(f"fragment {fragment_key} must carry non-empty claim_context")
@@ -376,6 +375,9 @@ async def _record_fragments(
         media_type = document.content_type.split(";", 1)[0].strip().lower()
         expected_visible = document_spec.get("expected_visible_text_sha256")
         if media_type == "application/pdf":
+            excerpt = row.get("excerpt")
+            if not isinstance(excerpt, str) or not excerpt.strip():
+                raise ValueError(f"PDF fragment {fragment_key} must define a nonblank excerpt")
             page = row.get("page")
             if not isinstance(page, int) or page < 1:
                 raise ValueError(f"PDF fragment {fragment_key} must define one-based page")
@@ -399,6 +401,9 @@ async def _record_fragments(
         elif media_type in {"text/html", "application/xhtml+xml"} and isinstance(
             expected_visible, str
         ):
+            excerpt = row.get("excerpt")
+            if not isinstance(excerpt, str) or not excerpt.strip():
+                raise ValueError(f"HTML fragment {fragment_key} must define a nonblank excerpt")
             if row.get("page") is not None:
                 raise ValueError(f"HTML fragment {fragment_key} cannot define page")
             artifact = artifacts.get(document_key)
@@ -418,7 +423,36 @@ async def _record_fragments(
                 occurrence=row.get("occurrence"),
                 claim_context=claim_context,
             )
+        elif media_type == "application/json":
+            if row.get("page") is not None or row.get("occurrence") is not None:
+                raise ValueError(
+                    f"JSON fragment {fragment_key} cannot define page or text occurrence"
+                )
+            json_pointer = row.get("json_pointer")
+            if not isinstance(json_pointer, str):
+                raise ValueError(f"JSON fragment {fragment_key} must define json_pointer")
+            if "expected_value" not in row:
+                raise ValueError(f"JSON fragment {fragment_key} must define expected_value")
+            artifact = artifacts.get(document_key)
+            if artifact is None:
+                artifact = await _artifact_for_document(
+                    repository=repository,
+                    archive=archive,
+                    document=document,
+                    parser=CanonicalJsonParser(),
+                )
+                artifacts[document_key] = artifact
+            recorded = await recorder.record_json_pointer_value(
+                document=document,
+                artifact=artifact,
+                json_pointer=json_pointer,
+                expected_value=row["expected_value"],
+                claim_context=claim_context,
+            )
         else:
+            excerpt = row.get("excerpt")
+            if not isinstance(excerpt, str) or not excerpt.strip():
+                raise ValueError(f"text fragment {fragment_key} must define a nonblank excerpt")
             if row.get("page") is not None:
                 raise ValueError(f"non-PDF fragment {fragment_key} cannot define page")
             recorded = await recorder.record_excerpt(
