@@ -1,0 +1,144 @@
+name: Execute ADC SV-003 Enhertu Reality once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: 9ef84f2af155cc6269e03b2d68d027fab3240ee5
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip
+  RELEASE_ASSET_SHA256: 21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692
+  EVIDENCE_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-grounded-evidence-spec-v1.json
+  EVIDENCE_REPAIR: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-grounded-evidence-spec-repair-v1.json
+  REALITY_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-reality-projection-v1.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-adc-sv003-enhertu-reality-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-sv003-reality-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.EXPECTED_HEAD }}', fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Restore immutable source pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+          test "$(sha256sum material/daiichi-astrazeneca-enhertu-collaboration-2019.pdf | awk '{print $1}')" = 'ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e'
+          test "$(sha256sum material/daiichi-enhertu-us-initial-approval-2019.pdf | awk '{print $1}')" = '212c16146526acfa03976ca8b16744a3702ec3f512c475ab256baf774aa37d0d'
+          test "$(sha256sum material/clinicaltrials-destiny-breast04-current.json | awk '{print $1}')" = '6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b'
+          test "$(sha256sum material/daiichi-destiny-breast04-high-level-readout-2022-02-21.pdf | awk '{print $1}')" = 'a50b03f980a3d8286ac57322e0bb13182875f687940973d6b8064976f0e83191'
+          test "$(sha256sum material/daiichi-enhertu-us-her2-low-approval-2022.pdf | awk '{print $1}')" = 'cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947'
+      - name: Materialize audited corrected Evidence spec
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          spec_path=Path('${{ env.EVIDENCE_SPEC }}')
+          repair_path=Path('${{ env.EVIDENCE_REPAIR }}')
+          spec=json.loads(spec_path.read_text())
+          repair=json.loads(repair_path.read_text())
+          assert repair['base_spec_path']==str(spec_path)
+          assert repair['acceptance_unchanged']==spec['acceptance']
+          fragments={row['fragment_key']:row for row in spec['fragments']}
+          for row in repair['repairs']:
+              fragment=fragments[row['fragment_key']]
+              assert fragment[row['field']]==row['from'],(row,fragment[row['field']])
+              fragment[row['field']]=row['to']
+          out=Path('/tmp/SV-003-grounded-evidence-spec-corrected.json')
+          out.write_text(json.dumps(spec,indent=2,ensure_ascii=False)+'\n')
+          PY
+      - name: Execute grounded Evidence then Reality projection
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv003-reality.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py /tmp/SV-003-grounded-evidence-spec-corrected.json --material-root material --output adc-sv003-evidence-execution.json
+          python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" adc-sv003-evidence-execution.json --output adc-sv003-reality-execution.json
+          python - <<'PY'
+          import json
+          e=json.load(open('adc-sv003-evidence-execution.json')); assert e['ok'] is True,e
+          r=json.load(open('adc-sv003-reality-execution.json'))
+          v=r['verification']
+          assert v['fact_count']==10,r
+          assert v['canonical_reality_count']==10,r
+          assert v['all_reconciled_accept'] is True,r
+          assert v['all_known_times_derived_from_grounded_evidence'] is True,r
+          assert v['valid_time_semantics_preserved'] is True,r
+          assert v['observation_semantics_preserved'] is True,r
+          rows={x['predicate_code']:x for x in r['canonical_reality']}
+          assert rows['rights.japan_exclusive_holder']['value_text']=='Daiichi Sankyo',rows['rights.japan_exclusive_holder']
+          assert rows['safety.ild_pneumonitis_boxed_warning']['valid_from'].startswith('2019-12-20'),rows['safety.ild_pneumonitis_boxed_warning']
+          assert rows['safety.ild_pneumonitis_boxed_warning']['market_known_at'].startswith('2019-12-24'),rows['safety.ild_pneumonitis_boxed_warning']
+          assert rows['trial.destiny_breast04_topline_status']['valid_from'].startswith('2022-02-21'),rows['trial.destiny_breast04_topline_status']
+          assert rows['trial.destiny_breast04_topline_status']['market_known_at'].startswith('2022-02-22'),rows['trial.destiny_breast04_topline_status']
+          assert rows['trial.her2_low_biomarker_definition']['valid_time_kind']=='unknown',rows['trial.her2_low_biomarker_definition']
+          assert rows['trial.her2_low_biomarker_definition']['observed_at'].startswith('2022-02-21'),rows['trial.her2_low_biomarker_definition']
+          assert rows['regulatory.us_her2_low_approval_scope']['valid_from'].startswith('2022-08-05'),rows['regulatory.us_her2_low_approval_scope']
+          assert rows['regulatory.us_her2_low_approval_scope']['market_known_at'].startswith('2022-08-06'),rows['regulatory.us_her2_low_approval_scope']
+          assert rows['trial.lead_sponsor']['value_text']=='Daiichi Sankyo',rows['trial.lead_sponsor']
+          assert rows['trial.lead_sponsor']['observed_at'].startswith('2026-08-22 18:00:00'),rows['trial.lead_sponsor']
+          assert rows['regulatory.us_her2_positive_initial_pathway']['value_text'].startswith('accelerated approval'),rows['regulatory.us_her2_positive_initial_pathway']
+          print('ADC_SV003_REALITY_TEMPORAL_BRANCHING_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+      - name: Upload generated Reality relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-sv003-reality-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            adc-sv003-evidence-execution.json
+            adc-sv003-reality-execution.json
+            /tmp/adc-sv003-reality.log
+            /tmp/SV-003-grounded-evidence-spec-corrected.json
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.gate.outcome }}'}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_SV003_REALITY_PASS head=$EXPECTED_HEAD source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/adc-sv003-reality.log 2>/dev/null || true)"
+            body=$(printf 'ADC_SV003_REALITY_FAIL head=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
