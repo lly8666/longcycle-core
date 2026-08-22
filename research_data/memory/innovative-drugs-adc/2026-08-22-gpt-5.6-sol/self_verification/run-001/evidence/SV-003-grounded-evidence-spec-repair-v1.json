@@ -1,0 +1,28 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec-repair/v1",
+  "task_id": "ADC-SV-003-ENHERTU-GROUNDED-EVIDENCE-V1",
+  "base_spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-grounded-evidence-spec-v1.json",
+  "repair_reason": "The first Grounded Evidence execution failed closed because the current ClinicalTrials.gov JSON exact-value gate did not match the guessed legacy sponsor display string. Issue #99 probed the already archived, hash-pinned NCT03734029 JSON directly and established the current canonical pointer value without weakening exact equality.",
+  "probe": {
+    "issue_number": 99,
+    "workflow_run_id": 32587261940,
+    "source_document_sha256": "6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b",
+    "json_pointer": "/protocolSection/sponsorCollaboratorsModule/leadSponsor/name",
+    "observed_value": "Daiichi Sankyo"
+  },
+  "repairs": [
+    {
+      "fragment_key": "destiny-breast04-registry-lead-sponsor",
+      "field": "expected_value",
+      "from": "Daiichi Sankyo, Inc.",
+      "to": "Daiichi Sankyo",
+      "epistemic_effect": "Corrects only the expected exact value for the 2026 current registry snapshot. It does not backdate the current sponsor display value to 2018 or 2022 and does not alter any PDF claim, source authority, fragment count, or Fact/Judgment promotion boundary."
+    }
+  ],
+  "acceptance_unchanged": {
+    "required_documents": 5,
+    "required_fragments": 10,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
