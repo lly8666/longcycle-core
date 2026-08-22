@@ -18,6 +18,7 @@ from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
 from longcycle.application.pipeline import CollectionPipeline
+from longcycle.application.research_orchestration import execute_research_orchestration_receipt
 from longcycle.application.scheduling import SchedulePolicy
 from longcycle.config import Settings
 from longcycle.database import MigrationRunner
@@ -50,6 +51,28 @@ def _parser() -> argparse.ArgumentParser:
     source = subparsers.add_parser("source", help="source plugin operations")
     source_sub = source.add_subparsers(dest="source_command", required=True)
     source_sub.add_parser("plugins", help="list installed source plugins")
+
+    research = subparsers.add_parser("research", help="research execution operations")
+    research_sub = research.add_subparsers(dest="research_command", required=True)
+    research_run = research_sub.add_parser(
+        "run",
+        help="execute one repository-owned fail-closed research orchestration spec",
+    )
+    research_run.add_argument("spec", type=Path)
+    research_run.add_argument("--source-pack", type=Path, required=True)
+    research_run.add_argument("--work-dir", type=Path, required=True)
+    research_run.add_argument("--output", type=Path, required=True)
+    research_run.add_argument(
+        "--repo-root",
+        type=Path,
+        default=Path.cwd(),
+        help="repository root used to resolve repo-owned Evidence/Reality/repair specs",
+    )
+    research_run.add_argument(
+        "--skip-db-upgrade",
+        action="store_true",
+        help="skip database migration when PostgreSQL has already been upgraded",
+    )
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
     schedule.add_argument("--industry-id", type=UUID, required=True)
@@ -170,6 +193,22 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         registry.register("http_document", HttpDocumentSource)
         registry.load_entry_points()
         return list(registry.names)
+    if args.command == "research" and args.research_command == "run":
+        payload = execute_research_orchestration_receipt(
+            repo_root=args.repo_root,
+            spec_path=args.spec,
+            source_pack_path=args.source_pack,
+            work_dir=args.work_dir,
+            output_path=args.output,
+            skip_db_upgrade=bool(args.skip_db_upgrade),
+        )
+        if payload.get("ok") is not True:
+            error = payload.get("error")
+            raise RuntimeError(error if isinstance(error, str) else "research orchestration failed")
+        result = payload.get("result")
+        if not isinstance(result, dict):
+            raise RuntimeError("research orchestration returned no result object")
+        return result
     if args.command == "schedule":
         collection_policy = CollectionPolicy(
             industry_id=args.industry_id,
