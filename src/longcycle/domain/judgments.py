@@ -17,6 +17,7 @@ from longcycle.domain.enums import (
     JudgmentRelationType,
     JudgmentTargetTimeKind,
     JudgmentValueKind,
+    OutcomeSemanticRelation,
     OutcomeTimingRelation,
     TemporalDeltaUnit,
     TemporalPrecision,
@@ -234,6 +235,7 @@ class JudgmentOutcomeEvaluation(DomainModel):
     canonical_fact_version_id: UUID | None = None
     outcome_evidence_fragment_id: UUID | None = None
     evaluation_status: JudgmentOutcomeStatus
+    semantic_relation: OutcomeSemanticRelation = OutcomeSemanticRelation.DIRECT_MATCH
     outcome_from: datetime | None = None
     outcome_to: datetime | None = None
     outcome_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
@@ -273,4 +275,11 @@ class JudgmentOutcomeEvaluation(DomainModel):
             raise ValueError("non-comparable timing cannot carry a synthetic delta")
         if self.outcome_precision == TemporalPrecision.APPROXIMATE and not self.outcome_text:
             raise ValueError("approximate outcome must preserve source occurrence text")
+        if self.semantic_relation != OutcomeSemanticRelation.DIRECT_MATCH:
+            if self.evaluation_status != JudgmentOutcomeStatus.INDETERMINATE:
+                raise ValueError("non-direct outcome semantics require indeterminate evaluation status")
+            if self.timing_relation != OutcomeTimingRelation.NOT_COMPARABLE:
+                raise ValueError("non-direct outcome semantics cannot carry a timing comparison")
+            if self.timing_delta_value is not None:
+                raise ValueError("non-direct outcome semantics cannot carry a timing delta")
         return self
