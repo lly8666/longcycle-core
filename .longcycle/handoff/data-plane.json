@@ -34,14 +34,7 @@
       "size_bytes": 23170,
       "sha256": "208314238b4fc43587108a61aaf5377457acb6fd55a493a91f356aa93ef88177",
       "content_summary": "Longcycle-generated EVT-003 Judgment/context outputs and sealed cognition-replay DuckDB; no external source bytes are required from this generated capsule.",
-      "components": [
-        {
-          "path": "execution/evt003-memory.duckdb",
-          "role": "sealed typed cognition replay database",
-          "size_bytes": 2109440,
-          "sha256": "f340c47223bcfdc49d379bf038a8dbf89836569e137d71b096662f959604e336"
-        }
-      ],
+      "components": [{"path":"execution/evt003-memory.duckdb","role":"sealed typed cognition replay database","size_bytes":2109440,"sha256":"f340c47223bcfdc49d379bf038a8dbf89836569e137d71b096662f959604e336"}],
       "restore_instruction": "Restore from Google Drive file id 1BNbUKcB35-wExdLijs-eVbfPOpgVHN4b, verify the ZIP SHA-256 and sealed DuckDB SHA-256, then use read-only."
     },
     {
@@ -69,14 +62,7 @@
       "size_bytes": 30219,
       "sha256": "9f09929101a9645dce011b316ea7e379ca73b025cdde9f9bb72bb0e319580b01",
       "content_summary": "Longcycle-generated EVT-004 Evidence/Reality/Judgment execution outputs, no-lookahead checks and sealed typed-memory DuckDB.",
-      "components": [
-        {
-          "path": "replay/evt004-memory.duckdb",
-          "role": "sealed typed contract/inventory replay database",
-          "size_bytes": 2895872,
-          "sha256": "13f889eb03c866ab4072bfd078d6d70d7a895cafafba7e0fa117dc0d1fb87d66"
-        }
-      ],
+      "components": [{"path":"replay/evt004-memory.duckdb","role":"sealed typed contract/inventory replay database","size_bytes":2895872,"sha256":"13f889eb03c866ab4072bfd078d6d70d7a895cafafba7e0fa117dc0d1fb87d66"}],
       "restore_instruction": "Restore from Google Drive file id 1RTvDPBH0xGkdTTtAn_MVZGFxNOfrLd0N, verify the ZIP and DuckDB SHA-256 values, then use read-only."
     },
     {
@@ -124,16 +110,44 @@
     {
       "asset_id": "adc-sv001-grounded-evidence-run32580391735",
       "role": "research_evidence_capsule",
-      "required_for_current_task": false,
+      "required_for_current_task": true,
       "transport": "google_drive",
       "release_tag": null,
       "google_drive_file_id": "1R3EaC_SVIX_TvfCuBJ36r5n5MzM_4wzv",
       "file_name": "adc-sv001-grounded-evidence-32580391735.zip",
       "size_bytes": 50084,
       "sha256": "129e4bb8c8966d1001fccd47d85d5aea3b7852aa81e64e688acf6ce9ac34b2b0",
-      "content_summary": "Longcycle-generated ADC SV-001 grounded-Evidence execution JSON and diagnostic log. The execution persisted four document versions and eight claim-scoped EvidenceFragments with zero Fact/Judgment promotion; no external source payloads are contained in this Drive relay.",
+      "content_summary": "Longcycle-generated ADC SV-001 grounded-Evidence execution JSON and diagnostic log. Four document versions and eight claim-scoped EvidenceFragments were persisted with zero Fact/Judgment promotion.",
       "components": [],
-      "restore_instruction": "Restore from Google Drive file id 1R3EaC_SVIX_TvfCuBJ36r5n5MzM_4wzv for SV-001 execution inspection, verify outer SHA-256 129e4bb8c8966d1001fccd47d85d5aea3b7852aa81e64e688acf6ce9ac34b2b0, and treat the repository receipt plus source Release identities as the control-plane authority."
+      "restore_instruction": "Restore from Google Drive file id 1R3EaC_SVIX_TvfCuBJ36r5n5MzM_4wzv for the first-pair replay, verify outer SHA-256, and re-ground against the separate Release source pack only when source bytes are required."
+    },
+    {
+      "asset_id": "adc-sv002-rova-t-acquisition-run32580691882",
+      "role": "raw_source_acquisition_cache",
+      "required_for_current_task": false,
+      "transport": "github_release",
+      "release_tag": "longcycle-dev-binary-cache",
+      "google_drive_file_id": null,
+      "file_name": "longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip",
+      "size_bytes": 2139635,
+      "sha256": "a244ed59d467b2aea8a693f02fa96034ef410f64fc80e777ef69daef226b304d",
+      "content_summary": "Externally acquired ADC SV-002 Rova-T source pack: 2016 acquisition thesis, 2018 TAHOE halt, 2019 impairment 8-K, MERU termination and 2019 Form 10-K impairment accounting; all payloads hash-pinned and semantically verified.",
+      "components": [],
+      "restore_instruction": "Download from Release tag longcycle-dev-binary-cache only when SV-002 needs re-grounding, verify outer SHA-256 plus document hashes in the durable receipt, preserve issuer/SEC identity and accounting scope, then discard the local source copy."
+    },
+    {
+      "asset_id": "adc-sv002-grounded-evidence-run32581003171",
+      "role": "research_evidence_capsule",
+      "required_for_current_task": true,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1Hcv0fsDqQqoyhFAUoCHm5BBfVPDlVEUC",
+      "file_name": "adc-sv002-grounded-evidence-32581003171.zip",
+      "size_bytes": 49727,
+      "sha256": "74ae4dc74d577a0bc404365d115f92a4413b9f4bb21966af434304b9c831c602",
+      "content_summary": "Longcycle-generated ADC SV-002 grounded-Evidence execution JSON and diagnostic log. Five document versions and nine claim-scoped EvidenceFragments were persisted with zero Fact/Judgment promotion; accounting measures remain separated by scope/vintage.",
+      "components": [],
+      "restore_instruction": "Restore from Google Drive file id 1Hcv0fsDqQqoyhFAUoCHm5BBfVPDlVEUC for the first-pair replay, verify outer SHA-256, and re-ground against the separate Release source pack only when source bytes are required."
     }
   ]
 }
