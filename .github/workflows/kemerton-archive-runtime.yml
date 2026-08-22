@@ -1,0 +1,134 @@
+name: Longcycle Kemerton archive runtime
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  PLAN_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-archive-plan-v1.json
+
+jobs:
+  kemerton-archive-v1:
+    if: github.event.issue.title == '[longcycle-kemerton-archive-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - name: Check out active Longcycle branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install archive runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install -e '.[postgres]'
+          mkdir -p probe
+          git rev-parse HEAD | tee probe/active-head.txt
+
+      - name: Apply normal Longcycle migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          longcycle --json db upgrade | tee probe/migrations.json
+          longcycle --json doctor --check-database | tee probe/doctor.json
+
+      - name: Execute bounded Kemerton archive plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/execute_archive_plan.py "$PLAN_PATH" \
+            --output probe/kemerton-archive-execution.json
+
+      - name: Enforce sealed blind-memory immutability
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+
+      - name: Build review report
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          output = Path('probe/kemerton-archive-execution.json')
+          lines = ['# Kemerton archive execution v1', '']
+          if Path('probe/active-head.txt').exists():
+              lines.append(f'Active branch HEAD: `{Path("probe/active-head.txt").read_text().strip()}`')
+              lines.append('')
+          if output.exists():
+              payload = json.loads(output.read_text(encoding='utf-8'))
+              if payload.get('ok'):
+                  result = payload['result']
+                  acceptance = result['acceptance']
+                  lines.append(f'- archived vintages: {acceptance["archived_vintages"]}')
+                  lines.append(f'- FactAssertions created: {acceptance["fact_assertions_created"]}')
+                  lines.append(f'- Judgments created: {acceptance["judgment_assertions_created"]}')
+                  lines.append('')
+                  for row in result['documents']:
+                      lines.append(
+                          f'- `{row["vintage_id"]}` sha256 `{row["content_sha256"]}` '
+                          f'bytes={row["byte_length"]} type={row["content_type"]}'
+                      )
+              else:
+                  lines.append(f'- execution failed: `{payload.get("error")}`')
+          else:
+              lines.append('- execution output missing; inspect job logs')
+          Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+          cat probe/report.md
+
+      - name: Upload archive transport artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kemerton-archive-v1
+          if-no-files-found: error
+          retention-days: 30
+          include-hidden-files: true
+          path: |
+            probe/
+            .longcycle/action-blobs/
+
+      - name: Comment result back to trigger issue
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md
