@@ -1,0 +1,124 @@
+name: Execute EVT-003 grounded evidence once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 1cc5aa9a68feed56f02afef25be4f91ba1ceb116
+  ACQUISITION_RUN_ID: '32568791877'
+  ACQUISITION_ARTIFACT: evt003-approved-redistributor-32568791877
+  SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-grounded-evidence-spec-v2.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-evt003-grounded-evidence-execute-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/evt003-blobs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Download SHA-pinned acquisition artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p material
+          gh run download "$ACQUISITION_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "$ACQUISITION_ARTIFACT" --dir material
+          test "$(sha256sum material/livent-2018-10k-annualreports.pdf | awk '{print $1}')" = '1be8c5a50e6bc58cc2f44066d4c4e79296b2cc84a9bcdd321805691a3133a010'
+          test "$(sha256sum material/livent-2019q1-prnewswire.html | awk '{print $1}')" = '900981045b451644c9f44a450a46f5f011e77927523c22c6b03b3d6ad801de25'
+
+      - name: Execute normal grounded Evidence v2 path
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/evt003-evidence.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output evt003-evidence-execution.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('evt003-evidence-execution.json').read_text())
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 2, result
+          assert len(result['fragments']) == 3, result
+          assert result['acceptance']['persisted_document_versions'] == 2, result
+          assert result['acceptance']['persisted_evidence_fragments'] == 3, result
+          assert result['acceptance']['fact_assertions_created'] == 0, result
+          assert result['acceptance']['judgment_assertions_created'] == 0, result
+          expected = {
+              'livent-2018-10k': '1be8c5a50e6bc58cc2f44066d4c4e79296b2cc84a9bcdd321805691a3133a010',
+              'livent-2019q1-results-release': '900981045b451644c9f44a450a46f5f011e77927523c22c6b03b3d6ad801de25',
+          }
+          for row in result['documents']:
+              assert row['content_sha256'] == expected[row['document_key']], row
+              profiles = row['source_authority_profiles']
+              assert any(p['authority_class'] == 'authoritative_redistributor' for p in profiles), row
+          print('EVT003_GROUNDED_EVIDENCE_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+
+      - name: Upload execution receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evt003-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            evt003-evidence-execution.json
+            /tmp/evt003-evidence.log
+
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="EVT003_GROUNDED_EVIDENCE_EXECUTE_PASS head=$EXPECTED_HEAD acquisition_run=$ACQUISITION_RUN_ID run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/evt003-evidence.log 2>/dev/null || true)"
+            body=$(printf 'EVT003_GROUNDED_EVIDENCE_EXECUTE_FAIL head=%s acquisition_run=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ACQUISITION_RUN_ID" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
