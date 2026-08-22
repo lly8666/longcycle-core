@@ -16,11 +16,36 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 2. 先读 `STRATEGIC_COMPASS.md` 和 `METHODOLOGY_CORE.md`。
 3. **不要立刻照抄 Core。** 先用自己的话内部重建项目为什么存在、核心认知缺口、point-in-time 意义、Evidence 边界、跨行业终局和工具/目标区别。
 4. 再读 `.longcycle/continuity/mission-fidelity.json` 做 semantic calibration；遗漏哪一项，只定向重读对应 Core 段落并纠偏。
-5. 再读 `.longcycle/handoff/current.json`，获得**当前中期目标、短期目标、下一大步、continuation cursor、active context 和 ordered actions**。
+5. 再读 `.longcycle/handoff/current.json`，获得当前中期目标、短期目标、continuation cursor、active context、ordered actions，以及 `.longcycle/handoff/data-plane.json` 的位置。
 6. 刷新 live HEAD / commit delta / CI；checkpoint 中的 CI 只是快照。
 7. 只加载 `resume_read_set` 中当前任务需要的文件，通过 Vertical Alignment Gate 后，从 cursor 的当前/下一原子动作继续。
+8. 如果当前 cursor 需要二进制研究状态，再按 `.longcycle/handoff/data-plane.json` **只恢复 required_for_current_task 的资产**。先验外层 SHA-256，再验内部组件 SHA-256；运行时不兼容或资产缺失时 fail closed，不能靠文件名/网盘元数据猜。
 
-**不要默认读取旧 devlog、旧行业包、全部 raw data 或整个仓库。** 需要追溯理由时，再按 `deep_reference_paths` 定向展开。
+**不要默认读取旧 devlog、旧行业包、全部 raw data、整个网盘目录或整个仓库。** 需要追溯理由时，再按 `deep_reference_paths` 定向展开。
+
+## Control plane 与 data plane
+
+Handoff 分两层，权威不能混：
+
+```text
+Git / current.json / receipts
+    = 控制面：使命、当前状态、下一步、资产身份和校验值
+
+Google Drive binary assets
+    = 数据面：当前沙盒需要的大字节传输
+```
+
+当前环境下，大文件可经 `sandbox ↔ Google Drive` 人工 relay。Drive 只是有容量约束的 handoff transport/cache，不是证据真值数据库，也不是最终长期 archive。
+
+Fresh Agent 必须遵守：
+
+- 仓库 manifest 中的 Drive file id + SHA-256 才定义要取哪个对象；分享链接、文件名、修改时间都不是完整性依据。
+- 先恢复控制面，再判断当前任务是否真的需要数据包；不要每次 handoff 搬整个多行业数据库。
+- DuckDB pack 默认 read-only，用于 portable evidence/research replay。
+- 原始 HTML/PDF/artifact bytes 仍保持 content-addressed identity；不能因为 DuckDB 可查询就丢原始证据。
+- PostgreSQL 不作为 session handoff 二进制搬运。需要 transaction/lease/outbox/write semantics 时，在 GitHub Action 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
+- 沙盒没有兼容 DuckDB 时，先恢复 manifest 指定的 offline runtime asset，在隔离 venv 中安装并验版本；ABI 不匹配则停止并生成新 runtime pack，禁止强装。
+- Required asset 缺失、SHA 不匹配或内部 component digest 不匹配时，按 `stop_and_report_integrity_blocker` 处理，不从聊天记忆重造。
 
 ## Mission Calibration Gate
 
@@ -49,10 +74,13 @@ Agent 的第一遍理解必须先自己生成，再拿 semantic contract 校准�
 ```text
 完成实质工作并 commit
 → Vertical Alignment Gate
+→ 如二进制 required pack 发生变化，先生成/验证/relay 新 immutable asset，再更新 data-plane.json
 → 更新 current.json 的 continuation cursor / 动态状态
-→ checkpoint_based_on_head_sha 指向该实质工作 commit
+→ checkpoint_based_on_head_sha 指向最后一个实质工作 commit
 → commit handoff sync
 ```
+
+`.longcycle/handoff/current.json` 与 `.longcycle/handoff/data-plane.json` 都属于 live handoff mutable state。二进制文件本身不进 Git。
 
 如果会话在同步前意外结束，新 Agent 必须根据 live HEAD 与 checkpoint base 的差异检查 intervening commits，再决定如何恢复，不能猜。
 
@@ -68,13 +96,13 @@ new explicit user instruction
 > deep references / old narrative
 ```
 
-**实现新鲜度：**
+**实现与数据新鲜度：**
 
 ```text
-live Git HEAD / CI / canonical artifacts
+live Git HEAD / CI / canonical receipts + verified asset SHA
 > deterministic-derived state
 > checkpoint snapshot
-> narrative
+> narrative / Drive metadata
 ```
 
 ## Core 纪律
@@ -82,7 +110,8 @@ live Git HEAD / CI / canonical artifacts
 - `STRATEGIC_COMPASS.md`：只存使命和防偏航原则；
 - `METHODOLOGY_CORE.md`：只存跨行业方法；
 - `.longcycle/continuity/mission-fidelity.json`：只存使命语义检查问题/误读，不存标准答案；
-- `current.json`：只存中短期状态和实时 continuation cursor；
+- `.longcycle/handoff/current.json`：只存中短期状态和实时 continuation cursor；
+- `.longcycle/handoff/data-plane.json`：只存外部二进制资产 identity / transport / integrity / restore contract；
 - active context：只存当前行业/任务细节；
 - devlog：只存历史，不属于默认启动上下文。
 
