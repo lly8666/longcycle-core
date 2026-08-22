@@ -1,0 +1,125 @@
+name: Execute ADC SV-003 Enhertu grounded evidence once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: e1f0066666a19c9a83d14c6d6b87ae42aa4d89d4
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip
+  RELEASE_ASSET_SHA256: 21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692
+  SPEC_PATH: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-grounded-evidence-spec-v1.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-adc-sv003-enhertu-grounded-evidence-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-sv003-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.EXPECTED_HEAD }}', fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Restore source pack from development Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+          test "$(sha256sum material/daiichi-astrazeneca-enhertu-collaboration-2019.pdf | awk '{print $1}')" = 'ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e'
+          test "$(sha256sum material/daiichi-enhertu-us-initial-approval-2019.pdf | awk '{print $1}')" = '212c16146526acfa03976ca8b16744a3702ec3f512c475ab256baf774aa37d0d'
+          test "$(sha256sum material/clinicaltrials-destiny-breast04-current.json | awk '{print $1}')" = '6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b'
+          test "$(sha256sum material/daiichi-destiny-breast04-high-level-readout-2022-02-21.pdf | awk '{print $1}')" = 'a50b03f980a3d8286ac57322e0bb13182875f687940973d6b8064976f0e83191'
+          test "$(sha256sum material/daiichi-enhertu-us-her2-low-approval-2022.pdf | awk '{print $1}')" = 'cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947'
+      - name: Execute normal Grounded Evidence v2 path
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv003-evidence.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output adc-sv003-evidence-execution.json
+          python - <<'PY'
+          import json
+          p=json.load(open('adc-sv003-evidence-execution.json')); assert p['ok'] is True,p; r=p['result']
+          assert len(r['documents'])==5,r; assert len(r['fragments'])==10,r
+          assert r['acceptance']['persisted_document_versions']==5,r
+          assert r['acceptance']['persisted_evidence_fragments']==10,r
+          assert r['acceptance']['fact_assertions_created']==0,r
+          assert r['acceptance']['judgment_assertions_created']==0,r
+          docs={x['document_key']:x for x in r['documents']}
+          expected={
+            'collaboration-2019':'ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e',
+            'initial-us-approval-2019':'212c16146526acfa03976ca8b16744a3702ec3f512c475ab256baf774aa37d0d',
+            'clinicaltrials-destiny-breast04-current':'6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b',
+            'destiny-breast04-readout-2022':'a50b03f980a3d8286ac57322e0bb13182875f687940973d6b8064976f0e83191',
+            'her2-low-us-approval-2022':'cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947',
+          }
+          for k,d in expected.items(): assert docs[k]['content_sha256']==d and docs[k]['transport_plugin']=='materialized_file',docs[k]
+          fragments={x['fragment_key']:x for x in r['fragments']}
+          expected_keys={
+            'collaboration-japan-exclusive-rights','collaboration-daiichi-manufacturing',
+            'initial-us-approval-indication-2019','initial-us-accelerated-approval-pathway-2019',
+            'initial-us-ild-boxed-warning-2019','destiny-breast04-registry-nct-id',
+            'destiny-breast04-registry-lead-sponsor','destiny-breast04-positive-topline-2022',
+            'destiny-breast04-her2-low-definition-2022','her2-low-us-approval-and-safety-2022'
+          }
+          assert set(fragments)==expected_keys,fragments
+          assert fragments['destiny-breast04-registry-nct-id']['locator']=='json-pointer:/protocolSection/identificationModule/nctId',fragments['destiny-breast04-registry-nct-id']
+          assert fragments['destiny-breast04-registry-lead-sponsor']['locator']=='json-pointer:/protocolSection/sponsorCollaboratorsModule/leadSponsor/name',fragments['destiny-breast04-registry-lead-sponsor']
+          artifacts={x['document_key']:x for x in r['artifacts']}
+          assert artifacts['clinicaltrials-destiny-breast04-current']['artifact_type']=='canonical-json',artifacts['clinicaltrials-destiny-breast04-current']
+          assert artifacts['clinicaltrials-destiny-breast04-current']['parser_name']=='canonical-json',artifacts['clinicaltrials-destiny-breast04-current']
+          print('ADC_SV003_GROUNDED_EVIDENCE_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+      - name: Upload generated execution relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-sv003-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            adc-sv003-evidence-execution.json
+            /tmp/adc-sv003-evidence.log
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.gate.outcome }}'}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_SV003_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/adc-sv003-evidence.log 2>/dev/null || true)"
+            body=$(printf 'ADC_SV003_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
