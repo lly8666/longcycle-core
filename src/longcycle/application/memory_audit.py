@@ -12,9 +12,10 @@ from longcycle.domain.memory import (
 )
 
 
-_PRIMARY_CLASSES = frozenset(
+_AUTHORITATIVE_CLASSES = frozenset(
     {
         AuthorityClass.AUTHORITATIVE_PRIMARY,
+        AuthorityClass.AUTHORITATIVE_REDISTRIBUTOR,
         AuthorityClass.PRIMARY_SELF_STATEMENT,
         AuthorityClass.METHODOLOGICAL_PRIMARY,
     }
@@ -37,6 +38,10 @@ def adjudicate_memory_lead(
     This function resolves only the *research lead*. It never promotes model memory into
     a FactAssertion or JudgmentAssertion. Evidence must enter those pipelines separately.
     Search snippets and discovery-only pages are intentionally non-decisive.
+
+    A claim-scoped authoritative redistributor can be decisive when it preserves the
+    underlying official disclosure. The legacy PRIMARY_* disposition names are retained
+    for storage compatibility; reason codes describe the broader authoritative contract.
     """
 
     if not assessments:
@@ -52,37 +57,46 @@ def adjudicate_memory_lead(
             reason_codes=("evidence_does_not_prove_same_claim_scope",),
         )
 
-    primary_support = [
+    authoritative_support = [
         item
         for item in scoped
-        if item.authority_class in _PRIMARY_CLASSES and item.stance == EvidenceStance.SUPPORTS
+        if item.authority_class in _AUTHORITATIVE_CLASSES and item.stance == EvidenceStance.SUPPORTS
     ]
-    primary_contradict = [
+    authoritative_contradict = [
         item
         for item in scoped
-        if item.authority_class in _PRIMARY_CLASSES and item.stance == EvidenceStance.CONTRADICTS
+        if item.authority_class in _AUTHORITATIVE_CLASSES
+        and item.stance == EvidenceStance.CONTRADICTS
     ]
 
-    if primary_support and primary_contradict:
+    if authoritative_support and authoritative_contradict:
         return MemoryAuditResult(
             disposition=MemoryAuditDisposition.AUTHORITATIVE_CONFLICT,
-            reason_codes=("claim_scoped_primary_sources_disagree", "manual_review_required"),
-            supporting_evidence_ids=tuple(item.evidence_fragment_id for item in primary_support),
-            contradicting_evidence_ids=tuple(item.evidence_fragment_id for item in primary_contradict),
+            reason_codes=("claim_scoped_authoritative_sources_disagree", "manual_review_required"),
+            supporting_evidence_ids=tuple(
+                item.evidence_fragment_id for item in authoritative_support
+            ),
+            contradicting_evidence_ids=tuple(
+                item.evidence_fragment_id for item in authoritative_contradict
+            ),
         )
 
-    if primary_contradict:
+    if authoritative_contradict:
         return MemoryAuditResult(
             disposition=MemoryAuditDisposition.PRIMARY_CONTRADICTS_LEAD,
-            reason_codes=("claim_scoped_primary_evidence_contradicts_memory",),
-            contradicting_evidence_ids=tuple(item.evidence_fragment_id for item in primary_contradict),
+            reason_codes=("claim_scoped_authoritative_evidence_contradicts_memory",),
+            contradicting_evidence_ids=tuple(
+                item.evidence_fragment_id for item in authoritative_contradict
+            ),
         )
 
-    if primary_support:
+    if authoritative_support:
         return MemoryAuditResult(
             disposition=MemoryAuditDisposition.PRIMARY_SUPPORTS_LEAD,
-            reason_codes=("claim_scoped_primary_evidence_supports_memory",),
-            supporting_evidence_ids=tuple(item.evidence_fragment_id for item in primary_support),
+            reason_codes=("claim_scoped_authoritative_evidence_supports_memory",),
+            supporting_evidence_ids=tuple(
+                item.evidence_fragment_id for item in authoritative_support
+            ),
         )
 
     secondary_support = [
@@ -99,9 +113,11 @@ def adjudicate_memory_lead(
     if secondary_support and secondary_contradict:
         return MemoryAuditResult(
             disposition=MemoryAuditDisposition.SEEK_PRIMARY,
-            reason_codes=("secondary_sources_disagree", "do_not_majority_vote",),
+            reason_codes=("secondary_sources_disagree", "do_not_majority_vote"),
             supporting_evidence_ids=tuple(item.evidence_fragment_id for item in secondary_support),
-            contradicting_evidence_ids=tuple(item.evidence_fragment_id for item in secondary_contradict),
+            contradicting_evidence_ids=tuple(
+                item.evidence_fragment_id for item in secondary_contradict
+            ),
         )
 
     if secondary_contradict:
@@ -111,7 +127,9 @@ def adjudicate_memory_lead(
                 "memory_conflicts_with_secondary_only",
                 "retain_lead_and_search_for_claim_scoped_primary",
             ),
-            contradicting_evidence_ids=tuple(item.evidence_fragment_id for item in secondary_contradict),
+            contradicting_evidence_ids=tuple(
+                item.evidence_fragment_id for item in secondary_contradict
+            ),
         )
 
     if secondary_support:
