@@ -113,6 +113,7 @@ class JudgmentMemoryRecord(DomainModel):
     target_time: TemporalExtent
     value_kind: str = Field(min_length=1)
     value_text: str | None = None
+    value_payload: str | None = None
     summary: str = Field(min_length=1)
     known_at: datetime
     evidence_fragment_ids: tuple[UUID, ...]
