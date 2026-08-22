@@ -41,6 +41,8 @@ source/watchlist
 - 同源转载要视为同一 evidence cluster；
 - 权威来源之间若口径仍不可调和，保留冲突，不强行选答案。
 
+**原始 PDF 的可接受性由文档身份决定，不由下载域名决定。** 国内外大型、稳定、可追溯的网站，只要转载或镜像的是可核验的完整原始 PDF，而不是摘要、编辑改写或二次加工，就可以作为 `authoritative_redistributor` acquisition lane。必须能够把实际归档 bytes 可靠映射回上游文档身份，并同时保存实际 retrieval host、上游 issuer/authority、标题、发布日期或保守 known-time、文档号/filing/accession/公告号（若有）、原始 URL（若可得）和内容 hash。转载站只承担获取与保存通道；claim authority 仍继承自被核验的上游原始文档。同一原始 PDF 出现在多个网站仍只算一个 evidence cluster，不能伪装成多份独立证据。
+
 对于**上市公司正式公告、法定披露、定期报告和公告附件**，不要求只能从发行人、交易所或监管机构的原始服务器下载 bytes。大型、稳定、可追溯的财经公告库若保存的是可识别的正式公告原文或完整文档，可以作为 `authoritative_redistributor` 使用；例如新浪财经、腾讯财经、同花顺、雪球、东方财富等，此列表不是封闭白名单。成立条件是：能够保留或可靠映射上游公告身份（发行人/监管或交易所体系、公告号或 filing/accession、标题、发布日期/可知时间、原始 URL 等），并且实际归档内容是公告本身而不是媒体摘要、编辑报道或二次解读。
 
 使用 authoritative redistributor 时必须同时保存**实际 retrieval host** 与 **upstream announcement identity**。不得为了保持“primary source”外观，把从财经网站取得的 bytes 伪记成从监管/公司官网直接取得；同一上游公告被多个财经网站转载时仍属于同一 evidence cluster，不能伪装成多份独立 corroboration。若财经页面只是摘要、机器提取字段或新闻稿解读，则仍按其真实 claim scope 和 secondary 权威级别处理。
