@@ -9,7 +9,7 @@ permissions:
   issues: write
 
 env:
-  EXPECTED_HEAD: 4cebe594400a066b50c8114c6303bb927733f146
+  EXPECTED_HEAD: a692c765060e12eece380fa0957a9d69dfc23f65
   RELEASE_TAG: longcycle-dev-binary-cache
   RELEASE_ASSET: longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip
   RELEASE_ASSET_SHA256: 610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef
@@ -69,56 +69,6 @@ jobs:
           set -euo pipefail
           exec > >(tee /tmp/evt005-fmc-evidence.log) 2>&1
           python -m pip install -e '.[dev,postgres,duckdb,s3]'
-          python - <<'PY'
-          import asyncio
-          import hashlib
-          import json
-          import os
-          from pathlib import Path
-
-          from longcycle.adapters.parsers import HtmlVisibleTextParser, PdfTextParser
-
-          spec = json.loads(Path(os.environ['SPEC_PATH']).read_text())
-          docs = {row['key']: row for row in spec['documents']}
-          parsed = {}
-          for key, row in docs.items():
-              raw = (Path('material') / row['material_path']).read_bytes()
-              if row['content_type'].split(';', 1)[0] == 'application/pdf':
-                  output = asyncio.run(PdfTextParser().parse(None, raw))[0]
-                  payload = json.loads(output.content)
-                  parsed[key] = {page['page']: page['text'] for page in payload['pages']}
-              else:
-                  output = asyncio.run(HtmlVisibleTextParser().parse(None, raw))[0]
-                  parsed[key] = output.content.decode('utf-8')
-                  print('HTML_CANONICAL_VISIBLE_SHA', hashlib.sha256(output.content).hexdigest())
-
-          for fragment in spec['fragments']:
-              key = fragment['fragment_key']
-              doc_key = fragment['document_key']
-              excerpt = fragment['excerpt']
-              if 'page' in fragment:
-                  text = parsed[doc_key][fragment['page']]
-              else:
-                  text = parsed[doc_key]
-              found = excerpt in text
-              print('FRAGMENT_PREFLIGHT', key, 'FOUND' if found else 'MISSING')
-              if not found:
-                  needle = ' '.join(excerpt.split()[:7])
-                  pos = text.find(needle)
-                  if pos < 0:
-                      tokens = excerpt.split()
-                      for width in range(min(6, len(tokens)), 1, -1):
-                          needle = ' '.join(tokens[:width])
-                          pos = text.find(needle)
-                          if pos >= 0:
-                              break
-                  print('TARGET', repr(excerpt))
-                  print('NEEDLE', repr(needle), 'POS', pos)
-                  if pos >= 0:
-                      print('CONTEXT', repr(text[max(0, pos-160):pos+len(excerpt)+240]))
-                  elif 'page' in fragment:
-                      print('PAGE_TEXT', repr(text[:5000]))
-          PY
           longcycle --json db upgrade
           python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output evt005-fmc-evidence-execution.json
           python - <<'PY'
@@ -181,7 +131,7 @@ jobs:
           if [[ "$GATE_OUTCOME" == success ]]; then
             body="EVT005_FMC_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
           else
-            tail_text="$(tail -n 300 /tmp/evt005-fmc-evidence.log 2>/dev/null || true)"
+            tail_text="$(tail -n 220 /tmp/evt005-fmc-evidence.log 2>/dev/null || true)"
             body=$(printf 'EVT005_FMC_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
