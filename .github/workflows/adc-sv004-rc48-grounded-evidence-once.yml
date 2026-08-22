@@ -1,0 +1,126 @@
+name: Execute ADC SV-004 RC48 grounded evidence once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: 62c1e3266225532aee387e2816f4e3b1b42459a4
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip
+  RELEASE_ASSET_SHA256: 51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a
+  SPEC_PATH: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-004-grounded-evidence-spec-v1.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-adc-sv004-rc48-grounded-evidence-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-sv004-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.EXPECTED_HEAD }}', fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Restore source pack from development Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+          test "$(sha256sum material/remegen-seagen-joint-license-release-2021.pdf | awk '{print $1}')" = '1bd5859896df5f1374a0fbf366e58d160141709f7bb064241185abf377d24950'
+          test "$(sha256sum material/remegen-gastric-approval-2021-06-09.html | awk '{print $1}')" = '7adcbc89b08556eaa25dafb1757f2226a5c4b6bbc66d559f92478f79324b650a'
+          test "$(sha256sum material/remegen-urothelial-approval-date.html | awk '{print $1}')" = 'df25a64aa86b22a6850374e361339aca1389a7ccc01f4325c68f86965c8becbc'
+          test "$(sha256sum material/pfizer-2024-10k-disitamab-collaboration.pdf | awk '{print $1}')" = '152c8fe1e5a40805949e1519abb979b086c0268d85cd1c3ed05b64d78acc75bc'
+          test "$(sha256sum material/remegen-current-pipeline-pfizer-cooperation.html | awk '{print $1}')" = '73d89e0a3a7f39bf67302d311d369f8a30775b9f1562b027c996ae82da843d1a'
+          test "$(sha256sum material/clinicaltrials-sgndv001-current-sponsor.json | awk '{print $1}')" = 'aadb6d74d774d7f895ac32c27937f6c4f22f774d9fe47b35c2c937123d77f6e3'
+      - name: Execute normal Grounded Evidence v2 path
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv004-evidence.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output adc-sv004-evidence-execution.json
+          python - <<'PY'
+          import json
+          p=json.load(open('adc-sv004-evidence-execution.json')); assert p['ok'] is True,p; r=p['result']
+          assert len(r['documents'])==6,r; assert len(r['fragments'])==8,r
+          assert r['acceptance']['persisted_document_versions']==6,r
+          assert r['acceptance']['persisted_evidence_fragments']==8,r
+          assert r['acceptance']['fact_assertions_created']==0,r
+          assert r['acceptance']['judgment_assertions_created']==0,r
+          docs={x['document_key']:x for x in r['documents']}
+          expected={
+            'joint-license-release-2021':'1bd5859896df5f1374a0fbf366e58d160141709f7bb064241185abf377d24950',
+            'gastric-approval-2021':'7adcbc89b08556eaa25dafb1757f2226a5c4b6bbc66d559f92478f79324b650a',
+            'urothelial-approval-recap-2023':'df25a64aa86b22a6850374e361339aca1389a7ccc01f4325c68f86965c8becbc',
+            'pfizer-2024-10k':'152c8fe1e5a40805949e1519abb979b086c0268d85cd1c3ed05b64d78acc75bc',
+            'remegen-current-pipeline':'73d89e0a3a7f39bf67302d311d369f8a30775b9f1562b027c996ae82da843d1a',
+            'clinicaltrials-nct05911295':'aadb6d74d774d7f895ac32c27937f6c4f22f774d9fe47b35c2c937123d77f6e3',
+          }
+          for k,d in expected.items(): assert docs[k]['content_sha256']==d and docs[k]['transport_plugin']=='materialized_file',docs[k]
+          fragments={x['fragment_key']:x for x in r['fragments']}
+          expected_keys={
+            'announced-remegen-retained-territory','announced-global-development-allocation',
+            'china-gastric-approval-2021','china-urothelial-approval-2021-later-recap',
+            'pfizer-2024-collaboration-state','remegen-current-global-pfizer-cooperation',
+            'nct05911295-lead-sponsor','nct05911295-collaborator-remegen'
+          }
+          assert set(fragments)==expected_keys,fragments
+          assert fragments['nct05911295-lead-sponsor']['locator']=='json-pointer:/protocolSection/sponsorCollaboratorsModule/leadSponsor/name',fragments['nct05911295-lead-sponsor']
+          assert fragments['nct05911295-collaborator-remegen']['locator']=='json-pointer:/protocolSection/sponsorCollaboratorsModule/collaborators/0/name',fragments['nct05911295-collaborator-remegen']
+          artifacts={x['document_key']:x for x in r['artifacts']}
+          assert artifacts['clinicaltrials-nct05911295']['artifact_type']=='canonical-json',artifacts['clinicaltrials-nct05911295']
+          assert artifacts['clinicaltrials-nct05911295']['parser_name']=='canonical-json',artifacts['clinicaltrials-nct05911295']
+          print('ADC_SV004_GROUNDED_EVIDENCE_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+      - name: Upload generated execution relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-sv004-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            adc-sv004-evidence-execution.json
+            /tmp/adc-sv004-evidence.log
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.gate.outcome }}'}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_SV004_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/adc-sv004-evidence.log 2>/dev/null || true)"
+            body=$(printf 'ADC_SV004_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
