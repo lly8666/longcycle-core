@@ -64,6 +64,10 @@ jobs:
         id: replay
         run: python scripts/smoke_no_lookahead_replay.py
 
+      - name: No-lookahead Judgment replay smoke (hard gate)
+        id: judgment_replay
+        run: python scripts/smoke_no_lookahead_judgment_replay.py
+
       - name: Ruff (diagnostic during memory campaign)
         id: ruff
         continue-on-error: true
@@ -114,6 +118,7 @@ jobs:
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
           echo "replay=${{ steps.replay.outcome }} (hard gate)"
+          echo "judgment_replay=${{ steps.judgment_replay.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
           echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
