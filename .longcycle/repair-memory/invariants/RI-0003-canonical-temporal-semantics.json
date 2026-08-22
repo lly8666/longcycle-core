@@ -1,0 +1,52 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0003",
+  "status": "active",
+  "kind": "data",
+  "severity": "critical",
+  "title": "Canonical Reality preserves valid-time kind and source precision",
+  "scope": [
+    "migrations/0020_fact_valid_time_precision.sql",
+    "migrations/0021_canonical_valid_time_kind.sql",
+    "src/longcycle/domain/epistemic.py",
+    "src/longcycle/adapters/storage/postgres_epistemic.py",
+    "src/longcycle/adapters/storage/duckdb_epistemic.py",
+    "scripts/smoke_postgres_epistemic.py"
+  ],
+  "tags": [
+    "reality",
+    "valid-time",
+    "temporal-precision",
+    "no-lookahead",
+    "canonical-fact"
+  ],
+  "failure_signature": "A timeless Fact and an unknown-time Fact become indistinguishable at the canonical/read layer, or a month/quarter/range source is silently represented as a more precise occurrence than the source supports.",
+  "root_cause": "Canonical Fact storage originally preserved nullable bounds and later precision text but not the semantic valid_time_kind; consumers could then infer semantics from NULL bounds or invent precision during replay.",
+  "invariant": "Canonical Reality must carry valid_time_kind, bounds, precision and source time text as first-class inherited semantics. NULL bounds never determine timeless versus unknown, and replay must not manufacture a finer occurrence precision than the supporting source/assertion.",
+  "anti_regression": [
+    "Do not infer timeless/unknown from `valid_from IS NULL AND valid_to IS NULL`.",
+    "Do not coerce month/quarter/range evidence into a fake exact day for convenience.",
+    "Do not let PostgreSQL and DuckDB drop different parts of the temporal extent."
+  ],
+  "guards": [
+    {
+      "kind": "schema",
+      "path": "migrations/0021_canonical_valid_time_kind.sql",
+      "contains": "ADD COLUMN valid_time_kind text NOT NULL DEFAULT 'unknown'",
+      "description": "Canonical Fact schema stores valid-time kind explicitly."
+    },
+    {
+      "kind": "test",
+      "path": "scripts/smoke_postgres_epistemic.py",
+      "contains": "canonical valid-time kind was lost",
+      "description": "Integrated hard gate checks kind, month precision and source time text on canonical Reality."
+    }
+  ],
+  "revisit_when": "Only revisit if TemporalExtent is deliberately replaced by an equally explicit model that can distinguish period/timeless/unknown and round-trip source-supported precision without inference from missing bounds.",
+  "origin_refs": [
+    "migration:0020",
+    "migration:0021",
+    "benchmark:kemerton-july-2022"
+  ],
+  "supersedes": []
+}
