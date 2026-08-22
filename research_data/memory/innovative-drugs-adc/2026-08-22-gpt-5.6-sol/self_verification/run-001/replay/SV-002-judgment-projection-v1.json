@@ -1,0 +1,40 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "ADC-SV-002-ROVA-T-JUDGMENTS-V1",
+  "source_evidence_task_id": "ADC-SV-002-ROVA-T-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "acquisition_time_commercial_expectation"
+  ],
+  "subjects": [
+    {
+      "id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "entity_type": "product",
+      "canonical_name": "rovalpituzumab tesirine"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2016-rova-t-peak-revenue-thesis",
+      "evidence_refs": [
+        {
+          "fragment_key": "acquisition-peak-revenue-expectation",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "speaker_name_text": "AbbVie management",
+      "topic_code": "commercial.peak_revenue_opportunity",
+      "judgment_kind": "forecast",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "future peak commercial opportunity after development and approval",
+      "value_kind": "text",
+      "value_text": "Rova-T represented a multi-billion-dollar peak revenue opportunity.",
+      "summary": "At the 2016 Stemcentrx acquisition, AbbVie publicly attached a multi-billion-dollar peak-revenue expectation to Rova-T before the later randomized failures were knowable.",
+      "metadata": {
+        "hindsight_guard": "TAHOE, impairment and MERU evidence are excluded from this Judgment projection and must only enter later Reality/Outcome layers.",
+        "target_guard": "The source does not provide an exact peak year, probability or revenue amount beyond multi-billion-dollar scale."
+      }
+    }
+  ]
+}
