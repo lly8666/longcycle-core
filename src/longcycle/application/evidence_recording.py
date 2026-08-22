@@ -6,7 +6,12 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from typing import Any
 
-from longcycle.domain.models import DocumentArtifact, EvidenceFragment, SourceDocument
+from longcycle.domain.models import (
+    DocumentArtifact,
+    EvidenceFragment,
+    SourceDocument,
+    canonical_json,
+)
 from longcycle.ports.archive import ArchiveStore
 from longcycle.ports.repository import ResearchRepository
 
@@ -46,8 +51,9 @@ class ArchivedEvidenceRecorder:
     source bytes. Transport-volatile HTML can instead be grounded against a persisted,
     deterministic ``html-visible-text`` artifact. Binary sources such as PDF must first
     produce a persisted parser artifact; excerpts are then checked against one explicit
-    page in that immutable artifact. None of these paths creates FactAssertions or
-    Judgments.
+    page in that immutable artifact. Structured JSON is grounded against a persisted
+    ``canonical-json`` artifact by RFC 6901 JSON Pointer and exact canonical value.
+    None of these paths creates FactAssertions or Judgments.
 
     Optional ``claim_context`` is evidence annotation, not a promoted fact. It is used
     to preserve distinctions such as known-time precision, valid/effective time and
@@ -236,6 +242,61 @@ class ArchivedEvidenceRecorder:
         await self.repository.save_evidence((fragment,))
         return RecordedEvidenceResult(fragment=fragment)
 
+    async def record_json_pointer_value(
+        self,
+        *,
+        document: SourceDocument,
+        artifact: DocumentArtifact,
+        json_pointer: str,
+        expected_value: Any,
+        claim_context: dict[str, Any] | None = None,
+    ) -> RecordedEvidenceResult:
+        """Ground structured JSON evidence to one exact value in a canonical JSON artifact."""
+
+        normalized_context = self._validated_claim_context(claim_context)
+        if artifact.document_id != document.id:
+            raise ValueError("parser artifact belongs to a different source document")
+        if artifact.artifact_type != "canonical-json":
+            raise ValueError("JSON evidence requires a canonical-json parser artifact")
+        if artifact.content_type.split(";", 1)[0].strip().lower() != "application/json":
+            raise ValueError("canonical-json artifact must be application/json")
+
+        artifact_bytes = await self._verified_archived_bytes(
+            key=artifact.blob_key,
+            expected_sha256=artifact.content_sha256,
+            expected_length=artifact.byte_length,
+            missing_message="JSON parser artifact blob is missing from the archive",
+            digest_message="archived JSON parser artifact does not match artifact digest",
+            length_message="archived JSON parser artifact length does not match metadata",
+        )
+        try:
+            payload = json.loads(artifact_bytes.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ValueError("canonical-json artifact is not valid UTF-8 JSON") from exc
+
+        selected = self._resolve_json_pointer(payload, json_pointer)
+        if canonical_json(selected) != canonical_json(expected_value):
+            raise ValueError("JSON Pointer value does not match expected structured value")
+
+        structured_payload: dict[str, Any] = {
+            "json_pointer": json_pointer,
+            "value": selected,
+            "parser_name": artifact.producer_name,
+            "parser_version": artifact.producer_version,
+        }
+        if normalized_context is not None:
+            structured_payload["claim_context"] = normalized_context
+        excerpt = selected if isinstance(selected, str) and selected.strip() else None
+        fragment = EvidenceFragment.create(
+            document_id=document.id,
+            artifact_id=artifact.id,
+            locator=f"json-pointer:{json_pointer}",
+            excerpt=excerpt,
+            structured_payload=structured_payload,
+        )
+        await self.repository.save_evidence((fragment,))
+        return RecordedEvidenceResult(fragment=fragment)
+
     async def _verified_archived_bytes(
         self,
         *,
@@ -281,6 +342,35 @@ class ArchivedEvidenceRecorder:
         if not isinstance(normalized, dict) or not normalized:
             raise ValueError("claim_context must be a non-empty JSON object")
         return normalized
+
+    @staticmethod
+    def _resolve_json_pointer(payload: Any, json_pointer: str) -> Any:
+        if json_pointer == "":
+            return payload
+        if not json_pointer.startswith("/"):
+            raise ValueError("JSON Pointer must be empty or start with '/'")
+
+        current = payload
+        for raw_token in json_pointer[1:].split("/"):
+            remainder = raw_token.replace("~1", "").replace("~0", "")
+            if "~" in remainder:
+                raise ValueError("JSON Pointer contains an invalid escape sequence")
+            token = raw_token.replace("~1", "/").replace("~0", "~")
+            if isinstance(current, dict):
+                if token not in current:
+                    raise ValueError(f"JSON Pointer object member does not exist: {token!r}")
+                current = current[token]
+                continue
+            if isinstance(current, list):
+                if not token.isdigit():
+                    raise ValueError(f"JSON Pointer array token is not an index: {token!r}")
+                index = int(token)
+                if index >= len(current):
+                    raise ValueError(f"JSON Pointer array index is out of range: {index}")
+                current = current[index]
+                continue
+            raise ValueError("JSON Pointer traverses through a scalar value")
+        return current
 
     @staticmethod
     def _select_occurrence(
