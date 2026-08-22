@@ -13,7 +13,7 @@ env:
 
 jobs:
   refactor:
-    if: github.event.issue.title == '[longcycle-refactor-fact-provenance-v2]'
+    if: github.event.issue.title == '[longcycle-refactor-fact-provenance-v3]'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -35,8 +35,10 @@ jobs:
           {
             set -euo pipefail
             python scripts/_refactor_fact_provenance_once.py
+            python scripts/_refactor_fact_provenance_fix_once.py
             rm scripts/_refactor_fact_provenance_once.py
-            python -m pip install -e '.[dev,postgres,duckdb]'
+            rm scripts/_refactor_fact_provenance_fix_once.py
+            python -m pip install -e '.[dev,postgres,duckdb,s3]'
             python -m compileall -q src scripts tests
             mypy src
             git diff --check
@@ -69,7 +71,7 @@ jobs:
             sha="$(cat /tmp/fact-provenance-pushed-sha.txt)"
             body="FACT_PROVENANCE_REFACTOR_PASS pushed_sha=$sha"
           else
-            tail_text="$(tail -n 120 /tmp/fact-provenance-refactor.log 2>/dev/null || true)"
+            tail_text="$(tail -n 160 /tmp/fact-provenance-refactor.log 2>/dev/null || true)"
             body=$(printf 'FACT_PROVENANCE_REFACTOR_FAIL apply=%s push=%s\n\n```text\n%s\n```' "$APPLY_OUTCOME" "$PUSH_OUTCOME" "$tail_text")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
