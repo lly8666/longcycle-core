@@ -10,16 +10,27 @@ from uuid import UUID
 import duckdb
 
 
-def run_replay(database: Path, cutoff: str) -> dict[str, object]:
+def run_replay(
+    database: Path,
+    cutoff: str,
+    *,
+    mode: str = "snapshot",
+    previous_cutoff: str | None = None,
+) -> dict[str, object]:
+    command = [
+        sys.executable,
+        "scripts/replay_portable_evidence.py",
+        "--database",
+        str(database),
+        "--cutoff",
+        cutoff,
+        "--mode",
+        mode,
+    ]
+    if previous_cutoff is not None:
+        command.extend(["--previous-cutoff", previous_cutoff])
     completed = subprocess.run(
-        [
-            sys.executable,
-            "scripts/replay_portable_evidence.py",
-            "--database",
-            str(database),
-            "--cutoff",
-            cutoff,
-        ],
+        command,
         check=True,
         capture_output=True,
         text=True,
@@ -86,6 +97,13 @@ def main() -> int:
 
         before = run_replay(database, "2022-08-03T16:27:48Z")
         at = run_replay(database, "2022-08-03T16:27:49Z")
+        frame = run_replay(database, "2022-08-03T16:27:49Z", mode="frame")
+        transition = run_replay(
+            database,
+            "2022-08-03T16:27:49Z",
+            mode="transition",
+            previous_cutoff="2022-08-03T16:27:48Z",
+        )
 
         before_evidence = before.get("evidence")
         at_evidence = at.get("evidence")
@@ -101,6 +119,27 @@ def main() -> int:
             raise AssertionError("future outcome leaked into pre-disclosure replay")
         if "hidden" in before or "future" in before:
             raise AssertionError("public replay exposed future-state metadata")
+
+        frame_groups = frame.get("role_groups")
+        if not isinstance(frame_groups, list):
+            raise TypeError("replay frame role_groups must be a JSON array")
+        if [group["claim_role"] for group in frame_groups] != [
+            "management_expectation_revision",
+            "outcome_milestone",
+        ]:
+            raise AssertionError(frame_groups)
+
+        transition_groups = transition.get("new_evidence_groups")
+        if not isinstance(transition_groups, list) or len(transition_groups) != 1:
+            raise TypeError("replay transition must contain exactly one new role group")
+        transition_keys = [
+            item["fragment_key"]
+            for item in transition_groups[0]["evidence"]
+        ]
+        if transition_keys != ["first-product-outcome"]:
+            raise AssertionError(transition_keys)
+        if "first-product-expectation" in json.dumps(transition):
+            raise AssertionError("transition leaked retained evidence instead of only new evidence")
 
     print("NO_LOOKAHEAD_REPLAY_SMOKE_PASS")
     return 0
