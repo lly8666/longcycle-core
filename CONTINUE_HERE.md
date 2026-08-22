@@ -19,9 +19,10 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 5. 再读 `.longcycle/handoff/current.json`，获得当前中期目标、短期目标、continuation cursor、active context、ordered actions，以及 `.longcycle/handoff/data-plane.json` 的位置。
 6. 刷新 live HEAD / commit delta / CI；checkpoint 中的 CI 只是快照。
 7. 只加载 `resume_read_set` 中当前任务需要的文件，通过 Vertical Alignment Gate 后，从 cursor 的当前/下一原子动作继续。
-8. 如果当前 cursor 需要二进制研究状态，再按 `.longcycle/handoff/data-plane.json` **只恢复 required_for_current_task 的资产**。先验外层 SHA-256，再验内部组件 SHA-256；运行时不兼容或资产缺失时 fail closed，不能靠文件名/网盘元数据猜。
+8. 在修改可识别的代码路径前，先用 `.longcycle/repair-memory/active-index.json` 或 `python scripts/repair_memory.py relevant <paths...>` 查该路径是否有 active repair invariant；只读匹配卡片，不预加载全部维修历史。
+9. 如果当前 cursor 需要二进制研究状态，再按 `.longcycle/handoff/data-plane.json` **只恢复 required_for_current_task 的资产**。先验外层 SHA-256，再验内部组件 SHA-256；运行时不兼容或资产缺失时 fail closed，不能靠文件名/网盘元数据猜。
 
-**不要默认读取旧 devlog、旧行业包、全部 raw data、整个网盘目录或整个仓库。** 需要追溯理由时，再按 `deep_reference_paths` 定向展开。
+**不要默认读取旧 devlog、旧行业包、全部 raw data、全部 repair cards、整个网盘目录或整个仓库。** 需要追溯理由时，再按 `deep_reference_paths`、Repair Memory 匹配卡片或 Git history 定向展开。
 
 ## Control plane 与 data plane
 
@@ -46,6 +47,35 @@ Fresh Agent 必须遵守：
 - PostgreSQL 不作为 session handoff 二进制搬运。需要 transaction/lease/outbox/write semantics 时，在 GitHub Action 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
 - 沙盒没有兼容 DuckDB 时，先恢复 manifest 指定的 offline runtime asset，在隔离 venv 中安装并验版本；ABI 不匹配则停止并生成新 runtime pack，禁止强装。
 - Required asset 缺失、SHA 不匹配或内部 component digest 不匹配时，按 `stop_and_report_integrity_blocker` 处理，不从聊天记忆重造。
+
+## Repair Memory Gate
+
+Repair Memory 解决的不是“现在做到哪”，而是“过去为什么修过这个边界、未来为什么不能无意改回去”。
+
+```text
+.longcycle/repair-memory/active-index.json
+    = 小型路由索引，只告诉 Agent 哪些 invariant 可能与当前路径有关
+
+.longcycle/repair-memory/invariants/*.json
+    = 当前仍有效的短小 repair invariant
+
+测试 / type / schema / runtime guard
+    = 真正阻止回归的执行层
+
+Git history
+    = 冷的维修演化历史
+```
+
+规则：
+
+- 修改明确路径前先做 path-scoped lookup；调查未知 bug 时可用 `python scripts/repair_memory.py query <terms...>`。
+- 不要把所有卡片塞进 session context。
+- 普通 bug 只需要 code + regression test；只有重复风险、非直观架构边界、时间/证据/来源/权威完整性等高价值维修才晋升成 invariant。
+- 同一 root cause 再次维修时优先更新已有 invariant，不新增第二篇维修故事。
+- 卡片只保存当前结论，不追加 chronological history；过去版本由 Git 保留。
+- 真正架构变化可以改 invariant，但必须满足其 `revisit_when`，并同时更新对应 guard。
+
+完整规则见 `docs/development/repair-memory.md`。
 
 ## Mission Calibration Gate
 
@@ -112,9 +142,10 @@ live Git HEAD / CI / canonical receipts + verified asset SHA
 - `.longcycle/continuity/mission-fidelity.json`：只存使命语义检查问题/误读，不存标准答案；
 - `.longcycle/handoff/current.json`：只存中短期状态和实时 continuation cursor；
 - `.longcycle/handoff/data-plane.json`：只存外部二进制资产 identity / transport / integrity / restore contract；
+- `.longcycle/repair-memory/`：只存高复发风险维修的当前 invariant + 小型路由索引，不存流水账；
 - active context：只存当前行业/任务细节；
 - devlog：只存历史，不属于默认启动上下文。
 
 具体行业经验只有在被提炼成跨行业方法后，才允许进入 Method Core。
 
-如果任务是修改 handoff 机制本身，再读 `docs/development/session-handoff-protocol.md` 和 `docs/development/continuity-architecture.md`。否则不要为了“理解得更完整”主动加载全部历史。
+如果任务是修改 handoff 机制本身，再读 `docs/development/session-handoff-protocol.md` 和 `docs/development/continuity-architecture.md`。如果任务是在修改历史上高风险边界，再只读 Repair Memory 中路径匹配的卡片。否则不要为了“理解得更完整”主动加载全部历史。
