@@ -17,7 +17,7 @@ env:
 
 jobs:
   execute:
-    if: github.event.issue.title == '[longcycle-adc-sv003-enhertu-grounded-evidence-v1]'
+    if: github.event.issue.title == '[longcycle-adc-sv003-enhertu-grounded-evidence-pointer-probe]'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
@@ -54,6 +54,12 @@ jobs:
           test "$(sha256sum material/clinicaltrials-destiny-breast04-current.json | awk '{print $1}')" = '6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b'
           test "$(sha256sum material/daiichi-destiny-breast04-high-level-readout-2022-02-21.pdf | awk '{print $1}')" = 'a50b03f980a3d8286ac57322e0bb13182875f687940973d6b8064976f0e83191'
           test "$(sha256sum material/daiichi-enhertu-us-her2-low-approval-2022.pdf | awk '{print $1}')" = 'cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947'
+          python - <<'PY'
+          import json
+          p=json.load(open('material/clinicaltrials-destiny-breast04-current.json'))
+          print('SV003_CT_NCT_ID='+repr(p['protocolSection']['identificationModule']['nctId']))
+          print('SV003_CT_LEAD_SPONSOR='+repr(p['protocolSection']['sponsorCollaboratorsModule']['leadSponsor']['name']))
+          PY
       - name: Execute normal Grounded Evidence v2 path
         id: gate
         shell: bash
@@ -116,10 +122,20 @@ jobs:
         env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.gate.outcome }}'}
         run: |
           set -euo pipefail
+          pointer_text="$(python - <<'PY'
+          import json
+          from pathlib import Path
+          path=Path('material/clinicaltrials-destiny-breast04-current.json')
+          if path.exists():
+              p=json.load(open(path))
+              print('nctId='+repr(p['protocolSection']['identificationModule']['nctId']))
+              print('leadSponsor='+repr(p['protocolSection']['sponsorCollaboratorsModule']['leadSponsor']['name']))
+          PY
+          )"
           if [[ "$GATE_OUTCOME" == success ]]; then
-            body="ADC_SV003_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+            body=$(printf 'ADC_SV003_GROUNDED_EVIDENCE_PASS head=%s source_release=%s source_asset=%s run_id=%s\n%s' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$pointer_text")
           else
             tail_text="$(tail -n 220 /tmp/adc-sv003-evidence.log 2>/dev/null || true)"
-            body=$(printf 'ADC_SV003_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+            body=$(printf 'ADC_SV003_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$pointer_text" "$tail_text")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
