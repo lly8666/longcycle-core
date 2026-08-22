@@ -1,0 +1,129 @@
+name: Prepare generated Drive assets once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+jobs:
+  prepare:
+    if: github.event.issue.title == '[longcycle-prepare-generated-drive-assets-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Recover historical mixed artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p source-zips extract/kwinana extract/kemerton out
+          gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/9466558674/zip" > source-zips/kwinana.zip
+          gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/9467394803/zip" > source-zips/kemerton.zip
+          test "$(sha256sum source-zips/kwinana.zip | awk '{print $1}')" = '1f2ec083a79532a2283562973a31e6af3941ad8bf6e72c108692bab19a368c13'
+          test "$(sha256sum source-zips/kemerton.zip | awk '{print $1}')" = 'a568232b15b77696ce0a271b74fd32fb7066fb37476a58288bff68e59a00558f'
+          unzip -q source-zips/kwinana.zip -d extract/kwinana
+          unzip -q source-zips/kemerton.zip -d extract/kemerton
+
+      - name: Build generated-only research packs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import zipfile
+          from pathlib import Path
+
+          epoch = (2026, 8, 22, 0, 0, 0)
+          specs = [
+              ('kwinana', Path('extract/kwinana/probe'), Path('out/longcycle-kwinana-generated-run19.zip')),
+              ('kemerton', Path('extract/kemerton/probe'), Path('out/longcycle-kemerton-generated-run28.zip')),
+          ]
+          rows = []
+          for key, root, out in specs:
+              with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+                  for path in sorted(root.rglob('*')):
+                      if not path.is_file():
+                          continue
+                      info = zipfile.ZipInfo(str(path.relative_to(root)), date_time=epoch)
+                      info.compress_type = zipfile.ZIP_DEFLATED
+                      info.external_attr = 0o644 << 16
+                      zf.writestr(info, path.read_bytes())
+              raw = out.read_bytes()
+              rows.append({'key': key, 'file_name': out.name, 'size_bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
+          Path('out/generated-packs.json').write_text(json.dumps(rows, indent=2) + '\n')
+          print(Path('out/generated-packs.json').read_text())
+          PY
+
+      - name: Build pinned sandbox replay runtime for Drive
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p runtime/wheelhouse
+          python -m pip download --disable-pip-version-check --no-deps --dest runtime/wheelhouse duckdb==1.5.5 pytz==2025.2
+          test "$(sha256sum runtime/wheelhouse/duckdb-1.5.5-cp313-cp313-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl | awk '{print $1}')" = '078e6a60dd8eedde5832f45422ca5c4a6b8c837aeabd8a56ca0b7d933f588053'
+          test "$(sha256sum runtime/wheelhouse/pytz-2025.2-py2.py3-none-any.whl | awk '{print $1}')" = '5ddf76296dd8c44c26eb8f4b6f35488f3ccbf6fbbd7adee0b7262d43f0ec2f00'
+          python - <<'PY'
+          import hashlib
+          import json
+          import zipfile
+          from pathlib import Path
+          root = Path('runtime')
+          manifest = {
+              'schema_version': 'longcycle-offline-runtime-drive/v1',
+              'python_abi': 'cp313-x86_64-linux',
+              'duckdb_version': '1.5.5',
+              'pytz_version': '2025.2',
+              'role': 'generated sandbox replay runtime',
+              'components': [],
+          }
+          for path in sorted((root / 'wheelhouse').iterdir()):
+              raw = path.read_bytes()
+              manifest['components'].append({'path': str(path.relative_to(root)), 'size_bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()})
+          (root / 'manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+          out = Path('out/longcycle-duckdb-offline-runtime-py313-v4-drive.zip')
+          epoch = (2026, 8, 22, 0, 0, 0)
+          with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(root.rglob('*')):
+                  if not path.is_file():
+                      continue
+                  info = zipfile.ZipInfo(str(path.relative_to(root)), date_time=epoch)
+                  info.compress_type = zipfile.ZIP_DEFLATED
+                  info.external_attr = 0o644 << 16
+                  zf.writestr(info, path.read_bytes())
+          print(json.dumps({'file_name': out.name, 'size_bytes': out.stat().st_size, 'sha256': hashlib.sha256(out.read_bytes()).hexdigest()}, indent=2))
+          PY
+
+      - name: Upload generated-only artifacts for connector relay to Drive
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-drive-assets-${{ github.run_id }}
+          path: |
+            out/longcycle-kwinana-generated-run19.zip
+            out/longcycle-kemerton-generated-run28.zip
+            out/longcycle-duckdb-offline-runtime-py313-v4-drive.zip
+            out/generated-packs.json
+          retention-days: 7
+          compression-level: 0
+
+      - name: Report
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          runtime_sha="$(sha256sum out/longcycle-duckdb-offline-runtime-py313-v4-drive.zip | awk '{print $1}')"
+          body=$(printf 'GENERATED_DRIVE_ASSETS_PREPARED run_id=%s runtime_sha=%s\n\n```json\n%s\n```' "$GITHUB_RUN_ID" "$runtime_sha" "$(cat out/generated-packs.json)")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
