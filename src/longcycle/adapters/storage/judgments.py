@@ -108,6 +108,7 @@ class PostgresJudgmentRepository(PostgresSupport):
                             subject_industry_node_id, topic_code, predicate_code,
                             comparability_hash, dimensions_complete, judgment_kind,
                             target_time_kind, target_at, target_from, target_to,
+                            target_precision, target_text,
                             value_kind, value_numeric, value_low, value_high,
                             value_text, value_boolean, value_date, value_entity_id,
                             value_json, direction, unit_code, expressed_probability,
@@ -118,7 +119,7 @@ class PostgresJudgmentRepository(PostgresSupport):
                             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
                             %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
-                            %s, %s, %s, %s, %s, %s, %s
+                            %s, %s, %s, %s, %s, %s, %s, %s, %s
                         )
                         """,
                         (
@@ -138,6 +139,8 @@ class PostgresJudgmentRepository(PostgresSupport):
                             judgment.target_at,
                             judgment.target_from,
                             judgment.target_to,
+                            judgment.target_precision.value,
+                            judgment.target_text,
                             judgment.value_kind.value,
                             judgment.value_numeric,
                             judgment.value_low,
