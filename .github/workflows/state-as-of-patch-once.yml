@@ -1,0 +1,76 @@
+name: Patch state-as-of Reality once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  patch:
+    if: github.event.issue.title == '[longcycle-state-as-of-v1]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Apply bounded state-as-of patch
+        id: apply
+        shell: bash
+        run: |
+          set -o pipefail
+          {
+            set -euo pipefail
+            python scripts/_patch_state_as_of_once.py
+            rm scripts/_patch_state_as_of_once.py
+            python -m pip install -e '.[dev,postgres,duckdb,s3]'
+            python -m compileall -q src scripts tests
+            mypy src
+            pytest -q tests/test_reality_projection.py tests/test_epistemic_memory.py
+            git diff --check
+          } 2>&1 | tee /tmp/state-as-of-patch.log
+
+      - name: Commit and push active branch
+        id: push
+        if: steps.apply.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name longcycle-state-as-of
+          git config user.email actions@users.noreply.github.com
+          git add .github/workflows src scripts tests migrations research_data
+          git commit -m 'feat: preserve unknown-onset state-as-of Reality'
+          git push origin HEAD:${ACTIVE_REF}
+          git rev-parse HEAD | tee /tmp/state-as-of-pushed-sha.txt
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$APPLY_OUTCOME" == success && "$PUSH_OUTCOME" == success ]]; then
+            sha="$(cat /tmp/state-as-of-pushed-sha.txt)"
+            body="STATE_AS_OF_PATCH_PASS pushed_sha=$sha"
+          else
+            tail_text="$(tail -n 200 /tmp/state-as-of-patch.log 2>/dev/null || true)"
+            body=$(printf 'STATE_AS_OF_PATCH_FAIL apply=%s push=%s\n\n```text\n%s\n```' "$APPLY_OUTCOME" "$PUSH_OUTCOME" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
