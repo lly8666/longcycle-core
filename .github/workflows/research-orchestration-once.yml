@@ -118,7 +118,7 @@ jobs:
           mkdir -p source-pack
           gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$SOURCE_FILE" --dir source-pack
           test "$(sha256sum "source-pack/$SOURCE_FILE" | awk '{print $1}')" = "$SOURCE_SHA256"
-      - name: Execute generic fail-closed orchestration
+      - name: Execute researcher-facing fail-closed orchestration
         id: gate
         shell: bash
         env:
@@ -128,7 +128,7 @@ jobs:
           set -euo pipefail
           exec > >(tee /tmp/research-orchestration.log) 2>&1
           python -m pip install -e '.[dev,postgres,duckdb,s3]'
-          python scripts/execute_research_orchestration.py \
+          longcycle --json research run \
             "$ORCHESTRATION_SPEC" \
             --source-pack "source-pack/$SOURCE_FILE" \
             --work-dir work \
@@ -141,7 +141,7 @@ jobs:
           assert payload['schema_version'] == 'longcycle-research-orchestration-execution/v1', payload
           assert payload['evidence']['acceptance']['fact_assertions_created'] == 0, payload
           assert payload['evidence']['acceptance']['judgment_assertions_created'] == 0, payload
-          print('RESEARCH_ORCHESTRATION_GENERIC_GATE_PASS')
+          print('RESEARCH_ORCHESTRATION_CLI_GATE_PASS')
           PY
       - name: Upload generated execution relay
         if: always()
@@ -168,9 +168,9 @@ jobs:
         run: |
           set -euo pipefail
           if [[ "$GATE_OUTCOME" == success ]]; then
-            body="RESEARCH_ORCHESTRATION_V1_PASS head=$EXPECTED_HEAD spec=$ORCHESTRATION_SPEC run_id=$GITHUB_RUN_ID"
+            body="RESEARCH_ORCHESTRATION_V1_PASS head=$EXPECTED_HEAD spec=$ORCHESTRATION_SPEC run_id=$GITHUB_RUN_ID entrypoint=longcycle-research-run"
           else
             tail_text="$(tail -n 220 /tmp/research-orchestration.log 2>/dev/null || true)"
-            body=$(printf 'RESEARCH_ORCHESTRATION_V1_FAIL head=%s spec=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ORCHESTRATION_SPEC" "$GITHUB_RUN_ID" "$tail_text")
+            body=$(printf 'RESEARCH_ORCHESTRATION_V1_FAIL head=%s spec=%s run_id=%s entrypoint=longcycle-research-run\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ORCHESTRATION_SPEC" "$GITHUB_RUN_ID" "$tail_text")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
