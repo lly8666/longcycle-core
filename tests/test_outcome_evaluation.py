@@ -3,13 +3,16 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from uuid import UUID
 
-from longcycle.application.outcome_evaluation import evaluate_realized_outcome
+import pytest
+
+from longcycle.application.outcome_evaluation import evaluate_outcome, evaluate_realized_outcome
 from longcycle.domain.enums import (
     JudgmentEvidenceRole,
     JudgmentKind,
     JudgmentOutcomeStatus,
     JudgmentTargetTimeKind,
     JudgmentValueKind,
+    OutcomeSemanticRelation,
     OutcomeTimingRelation,
     TemporalDeltaUnit,
     TemporalPrecision,
@@ -68,6 +71,7 @@ def test_may_expectation_vs_july_outcome_uses_calendar_months_not_fake_days() ->
     )
 
     assert evaluation.evaluation_status == JudgmentOutcomeStatus.REALIZED
+    assert evaluation.semantic_relation == OutcomeSemanticRelation.DIRECT_MATCH
     assert evaluation.timing_relation == OutcomeTimingRelation.AFTER_TARGET_WINDOW
     assert evaluation.timing_delta_value == 2
     assert evaluation.timing_delta_unit == TemporalDeltaUnit.CALENDAR_MONTHS
@@ -93,6 +97,34 @@ def test_approximate_target_is_not_forced_into_numeric_timing_error() -> None:
         evaluated_at=datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC),
     )
 
+    assert evaluation.semantic_relation == OutcomeSemanticRelation.DIRECT_MATCH
     assert evaluation.timing_relation == OutcomeTimingRelation.NOT_COMPARABLE
     assert evaluation.timing_delta_value is None
     assert evaluation.timing_delta_unit is None
+
+
+def test_related_milestone_is_historical_outcome_context_not_realization() -> None:
+    evaluation = evaluate_outcome(
+        may_first_product_judgment(),
+        july_first_product_outcome(),
+        semantic_relation=OutcomeSemanticRelation.RELATED_MILESTONE,
+        explanation="A later commercial-production milestone is related but not the same target.",
+        evaluated_at=datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC),
+    )
+
+    assert evaluation.evaluation_status == JudgmentOutcomeStatus.INDETERMINATE
+    assert evaluation.semantic_relation == OutcomeSemanticRelation.RELATED_MILESTONE
+    assert evaluation.timing_relation == OutcomeTimingRelation.NOT_COMPARABLE
+    assert evaluation.timing_delta_value is None
+    assert evaluation.timing_delta_unit is None
+
+
+def test_non_direct_semantics_cannot_claim_realization() -> None:
+    with pytest.raises(ValueError, match="cannot claim a realized/not-realized status"):
+        evaluate_outcome(
+            may_first_product_judgment(),
+            july_first_product_outcome(),
+            semantic_relation=OutcomeSemanticRelation.RELATED_MILESTONE,
+            evaluation_status=JudgmentOutcomeStatus.REALIZED,
+            explanation="invalid",
+        )
