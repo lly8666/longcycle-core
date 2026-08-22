@@ -1,0 +1,193 @@
+name: Normalize development binary storage once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  actions: read
+  issues: write
+
+env:
+  RELEASE_TAG: longcycle-dev-binary-cache
+
+jobs:
+  normalize:
+    if: github.event.issue.title == '[longcycle-normalize-dev-binary-storage-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recover legacy mixed research artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p input/kwinana input/kemerton source-packs verify
+          gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/9466558674/zip" > input/kwinana.zip
+          gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/9467394803/zip" > input/kemerton.zip
+          test "$(sha256sum input/kwinana.zip | awk '{print $1}')" = '1f2ec083a79532a2283562973a31e6af3941ad8bf6e72c108692bab19a368c13'
+          test "$(sha256sum input/kemerton.zip | awk '{print $1}')" = 'a568232b15b77696ce0a271b74fd32fb7066fb37476a58288bff68e59a00558f'
+          unzip -q input/kwinana.zip -d input/kwinana
+          unzip -q input/kemerton.zip -d input/kemerton
+
+      - name: Build source-only immutable packs from document blob identities
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import shutil
+          import zipfile
+          from pathlib import Path
+
+          epoch = (2026, 8, 22, 0, 0, 0)
+          cases = [
+              ('kwinana', Path('input/kwinana'), Path('source-packs/longcycle-kwinana-source-pack-v1.zip')),
+              ('kemerton', Path('input/kemerton'), Path('source-packs/longcycle-kemerton-source-pack-v1.zip')),
+          ]
+          results = []
+          for key, root, out in cases:
+              receipt = json.loads((root / 'probe/grounded-evidence-execution.json').read_text())
+              docs = receipt.get('documents') or []
+              if not docs:
+                  raise SystemExit(f'{key}: no documents in execution receipt')
+              stage = Path('source-packs') / f'{key}-stage'
+              if stage.exists():
+                  shutil.rmtree(stage)
+              stage.mkdir(parents=True)
+              manifest_docs = []
+              for doc in docs:
+                  blob_key = doc['blob_key']
+                  expected = doc['content_sha256']
+                  src = root / '.longcycle/action-blobs' / blob_key
+                  if not src.is_file():
+                      raise SystemExit(f'{key}: missing source blob {blob_key}')
+                  raw = src.read_bytes()
+                  actual = hashlib.sha256(raw).hexdigest()
+                  if actual != expected:
+                      raise SystemExit(f'{key}: sha mismatch {blob_key}: {actual} != {expected}')
+                  dest = stage / blob_key
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  dest.write_bytes(raw)
+                  manifest_docs.append({
+                      'document_key': doc.get('document_key'),
+                      'document_id': doc.get('document_id'),
+                      'source_id': doc.get('source_id'),
+                      'content_sha256': expected,
+                      'blob_key': blob_key,
+                      'byte_length': len(raw),
+                      'content_type': doc.get('content_type'),
+                      'canonical_retrieval_url': doc.get('canonical_retrieval_url'),
+                      'original_source_url': (doc.get('retrieval_provenance') or {}).get('original_source_url') or doc.get('original_source_url'),
+                      'published_at': doc.get('published_at'),
+                      'first_known_at': doc.get('first_known_at'),
+                  })
+              manifest = {
+                  'schema_version': 'longcycle-dev-source-pack/v1',
+                  'case': key,
+                  'role': 'external_source_bytes_only',
+                  'generated_state_included': False,
+                  'document_count': len(manifest_docs),
+                  'documents': manifest_docs,
+              }
+              (stage / 'manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+              with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+                  for path in sorted(stage.rglob('*')):
+                      if not path.is_file():
+                          continue
+                      info = zipfile.ZipInfo(str(path.relative_to(stage)), date_time=epoch)
+                      info.compress_type = zipfile.ZIP_DEFLATED
+                      info.external_attr = 0o644 << 16
+                      zf.writestr(info, path.read_bytes())
+              raw = out.read_bytes()
+              results.append({
+                  'case': key,
+                  'file_name': out.name,
+                  'size_bytes': len(raw),
+                  'sha256': hashlib.sha256(raw).hexdigest(),
+                  'document_count': len(manifest_docs),
+              })
+          Path('source-packs/result.json').write_text(json.dumps(results, indent=2) + '\n')
+          print(Path('source-packs/result.json').read_text())
+          PY
+
+      - name: Upload source-only packs to Release and download-back verify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null
+          existing="$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+          for asset in source-packs/longcycle-*-source-pack-v1.zip; do
+            name="$(basename "$asset")"
+            if grep -Fxq "$name" <<<"$existing"; then
+              echo "refusing to overwrite existing source asset $name" >&2
+              exit 1
+            fi
+            gh release upload "$RELEASE_TAG" "$asset" --repo "$GITHUB_REPOSITORY"
+            gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir verify
+            test "$(sha256sum "verify/$name" | awk '{print $1}')" = "$(sha256sum "$asset" | awk '{print $1}')"
+          done
+
+      - name: Delete generated-only and legacy mixed assets from Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          remove_if_present() {
+            local name="$1"
+            if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | grep -Fxq "$name"; then
+              gh release delete-asset "$RELEASE_TAG" "$name" --repo "$GITHUB_REPOSITORY" --yes
+            fi
+          }
+          remove_if_present longcycle-kwinana-grounded-run19.zip
+          remove_if_present longcycle-kemerton-grounded-run28.zip
+          remove_if_present longcycle-evt003-judgment-replay-run32569365809.zip
+          remove_if_present longcycle-evt004-contract-margin-replay-run32570715478.zip
+          remove_if_present longcycle-duckdb-offline-runtime-py313-v3-release.zip
+
+      - name: Verify final Release boundary
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          assets="$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | sort)"
+          printf '%s\n' "$assets" | tee source-packs/final-release-assets.txt
+          for forbidden in \
+            longcycle-kwinana-grounded-run19.zip \
+            longcycle-kemerton-grounded-run28.zip \
+            longcycle-evt003-judgment-replay-run32569365809.zip \
+            longcycle-evt004-contract-margin-replay-run32570715478.zip \
+            longcycle-duckdb-offline-runtime-py313-v3-release.zip; do
+            if grep -Fxq "$forbidden" <<<"$assets"; then
+              echo "forbidden generated/mixed asset remains: $forbidden" >&2
+              exit 1
+            fi
+          done
+          grep -Fxq longcycle-kwinana-source-pack-v1.zip <<<"$assets"
+          grep -Fxq longcycle-kemerton-source-pack-v1.zip <<<"$assets"
+          grep -Fxq longcycle-evt003-approved-redistributor-acquisition-run32568791877.zip <<<"$assets"
+          grep -Fxq longcycle-evt004-contract-margin-acquisition-run32570106526.zip <<<"$assets"
+
+      - name: Report normalization
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f source-packs/result.json && -f source-packs/final-release-assets.txt ]]; then
+            body=$(printf 'DEV_BINARY_STORAGE_NORMALIZE_PASS run_id=%s release=%s\n\n```json\n%s\n```\n\nFinal Release assets:\n```text\n%s\n```' "$GITHUB_RUN_ID" "$RELEASE_TAG" "$(cat source-packs/result.json)" "$(cat source-packs/final-release-assets.txt)")
+          else
+            body="DEV_BINARY_STORAGE_NORMALIZE_FAIL run_id=$GITHUB_RUN_ID release=$RELEASE_TAG"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
