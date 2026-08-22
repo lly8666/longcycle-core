@@ -1,0 +1,177 @@
+name: Execute EVT-003 Judgment replay once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: a9e66d87e092ba344e4c059f7fa133b1e8ac5d28
+  ACQUISITION_RUN_ID: '32568791877'
+  ACQUISITION_ARTIFACT: evt003-approved-redistributor-32568791877
+  EVIDENCE_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-grounded-evidence-spec-v2.json
+  JUDGMENT_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-judgment-projection-v2.json
+  CONTEXT_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-judgment-context-v1.json
+  SUBJECT_ID: a6a75821-7ba6-532c-863c-1e656135cea9
+
+jobs:
+  replay:
+    if: github.event.issue.title == '[longcycle-evt003-judgment-replay-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/evt003-replay-blobs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Acquire exact source payloads from prior successful run
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p material
+          gh run download "$ACQUISITION_RUN_ID" --repo "$GITHUB_REPOSITORY" --name "$ACQUISITION_ARTIFACT" --dir material
+          test "$(sha256sum material/livent-2018-10k-annualreports.pdf | awk '{print $1}')" = '1be8c5a50e6bc58cc2f44066d4c4e79296b2cc84a9bcdd321805691a3133a010'
+          test "$(sha256sum material/livent-2019q1-prnewswire.html | awk '{print $1}')" = '900981045b451644c9f44a450a46f5f011e77927523c22c6b03b3d6ad801de25'
+
+      - name: Execute Evidence, Judgment, context and sealed replay
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/evt003-judgment-replay.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          mkdir -p execution
+          python scripts/execute_grounded_evidence_spec.py "$EVIDENCE_SPEC" --material-root material --output execution/evidence.json
+          python scripts/execute_grounded_judgment_persistence.py "$JUDGMENT_SPEC" execution/evidence.json --output execution/judgments.json
+          python scripts/execute_grounded_judgment_context.py "$CONTEXT_SPEC" execution/judgments.json execution/evidence.json --output execution/context.json
+          python scripts/export_integrated_replay_duckdb.py execution/evt003-memory.duckdb --subject-id "$SUBJECT_ID" --manifest-output execution/replay-manifest.json
+          python - <<'PY'
+          import asyncio
+          import json
+          from datetime import UTC, datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+
+          path = Path('execution/evt003-memory.duckdb')
+          reader = DuckDBEpistemicMemoryReader(path)
+          subject = MemorySubjectRef(entity_id=UUID('a6a75821-7ba6-532c-863c-1e656135cea9'))
+
+          async def snapshot(at):
+              return await reader.snapshot((subject,), knowledge_cutoff=at)
+
+          before = asyncio.run(snapshot(datetime(2019, 2, 28, 21, 12, 58, tzinfo=UTC)))
+          middle = asyncio.run(snapshot(datetime(2019, 5, 7, 20, 30, 58, tzinfo=UTC)))
+          after = asyncio.run(snapshot(datetime(2019, 5, 7, 20, 30, 59, tzinfo=UTC)))
+
+          assert len(before.judgments) == 0, before
+          assert len(before.judgment_rationales) == 0, before
+          assert len(middle.judgments) == 1, middle
+          assert middle.judgments[0].judgment_key == '2018-structural-high-nickel-hydroxide-thesis', middle
+          assert len(middle.judgment_rationales) == 0, middle
+          assert len(after.judgments) == 2, after
+          keys = {item.judgment_key for item in after.judgments}
+          assert keys == {
+              '2018-structural-high-nickel-hydroxide-thesis',
+              '2019q1-high-nickel-hydroxide-demand-timing',
+          }, after
+          assert len(after.judgment_rationales) == 1, after
+          assert len(after.judgment_relations) == 0, after
+          assert len(after.outcomes) == 0, after
+          by_key = {item.judgment_key: item for item in after.judgments}
+          rationale = after.judgment_rationales[0]
+          assert rationale.judgment_id == by_key['2019q1-high-nickel-hydroxide-demand-timing'].judgment_id
+          receipt = {
+              'schema_version': 'longcycle-evt003-cognition-replay-assertion/v1',
+              'cutoffs': {
+                  'before_2018_known_time': {
+                      'at': '2019-02-28T21:12:58Z',
+                      'judgments': len(before.judgments),
+                      'rationales': len(before.judgment_rationales),
+                  },
+                  'after_2018_before_2019': {
+                      'at': '2019-05-07T20:30:58Z',
+                      'judgment_keys': [item.judgment_key for item in middle.judgments],
+                      'rationales': len(middle.judgment_rationales),
+                  },
+                  'after_2019_revision': {
+                      'at': '2019-05-07T20:30:59Z',
+                      'judgment_keys': sorted(keys),
+                      'rationales': len(after.judgment_rationales),
+                      'relations': len(after.judgment_relations),
+                      'outcomes': len(after.outcomes),
+                  },
+              },
+              'semantic_decision': {
+                  'formal_revision_relation_created': False,
+                  'reason': '2018 grounded object is a structural demand thesis; 2019 grounded object is a near-term timing/strength forecast, so same-granularity revision identity is not established.'
+              },
+              'no_lookahead_passed': True,
+          }
+          Path('execution/cognition-replay.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt, indent=2))
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+
+      - name: Upload replay receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evt003-judgment-replay-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            execution/
+            /tmp/evt003-judgment-replay.log
+
+      - name: Report replay result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="EVT003_JUDGMENT_REPLAY_PASS head=$EXPECTED_HEAD acquisition_run=$ACQUISITION_RUN_ID run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 240 /tmp/evt003-judgment-replay.log 2>/dev/null || true)"
+            body=$(printf 'EVT003_JUDGMENT_REPLAY_FAIL head=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
