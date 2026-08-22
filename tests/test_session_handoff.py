@@ -4,7 +4,10 @@ import json
 import unittest
 from pathlib import Path
 
+from pydantic import ValidationError
+
 from longcycle.application.session_handoff import (
+    HandoffMemoryCampaign,
     SessionHandoffCheckpoint,
     evaluate_handoff_head,
 )
@@ -77,37 +80,47 @@ class SessionHandoffContractTest(unittest.TestCase):
         ):
             self.assertNotIn(duplicated_key, payload)
 
-    def test_campaign_preserves_seal_and_search_boundaries(self) -> None:
+    def test_pre_campaign_state_is_explicit_and_campaign_guards_still_hold(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
             HANDOFF.read_text(encoding="utf-8")
         )
         campaign = checkpoint.memory_campaign
-        self.assertIsNotNone(campaign)
-        assert campaign is not None
 
-        coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
-        sealed_from_coverage = tuple(coverage["sealed_shards"])
-
-        self.assertGreater(campaign.total_raw_leads, 0)
-        self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
-        self.assertEqual(campaign.search_visibility, coverage["search_visibility"])
-
-        if campaign.search_visibility == "none":
-            self.assertTrue(
-                campaign.phase.startswith("blind")
-                or "self_verification_preparation" in campaign.phase
-            )
-            self.assertNotIn("search_scope", coverage)
+        if campaign is None:
+            self.assertIsNone(checkpoint.active_context.campaign_root)
+            self.assertIsNone(checkpoint.active_context.coverage_path)
         else:
-            self.assertEqual(campaign.search_visibility, "self_verification")
-            self.assertTrue(campaign.sealed_shards)
-            search_scope = coverage["search_scope"]
-            self.assertEqual(
-                tuple(search_scope["allowed_shards"]),
-                campaign.sealed_shards,
+            coverage = json.loads(COVERAGE.read_text(encoding="utf-8"))
+            sealed_from_coverage = tuple(coverage["sealed_shards"])
+            self.assertGreater(campaign.total_raw_leads, 0)
+            self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
+            self.assertEqual(campaign.search_visibility, coverage["search_visibility"])
+
+        blind_campaign = HandoffMemoryCampaign(
+            campaign_id="synthetic-blind-contract",
+            industry="synthetic-industry",
+            phase="blind_recall",
+            search_visibility="none",
+            total_raw_leads=0,
+            sealed_shards=(),
+            shard_count=1,
+            seal_rule="Synthetic test fixture.",
+            next_research_actions=("Continue bounded blind recall.",),
+        )
+        self.assertEqual(blind_campaign.search_visibility, "none")
+
+        with self.assertRaisesRegex(ValidationError, "blind memory phase cannot expose fresh search"):
+            HandoffMemoryCampaign(
+                campaign_id="synthetic-invalid-blind-contract",
+                industry="synthetic-industry",
+                phase="blind_recall",
+                search_visibility="self_verification",
+                total_raw_leads=0,
+                sealed_shards=(),
+                shard_count=1,
+                seal_rule="Synthetic test fixture.",
+                next_research_actions=("This must fail.",),
             )
-            self.assertTrue(search_scope["forbidden_unsealed_shards"])
-            self.assertEqual(search_scope["blind_mutation_from_search"], "forbidden")
 
     def test_resume_set_contains_only_small_bootstrap_plus_active_state(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
