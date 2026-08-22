@@ -8,6 +8,8 @@ import sys
 import tempfile
 from pathlib import Path
 
+import psycopg
+
 
 TEXT = "Materialized filing says demand growth was slower than anticipated."
 HTML = f"<html><body>{TEXT}</body></html>".encode()
@@ -16,7 +18,8 @@ VISIBLE_SHA256 = hashlib.sha256(TEXT.encode()).hexdigest()
 
 
 def main() -> None:
-    if not os.environ.get("LONGCYCLE_DATABASE_URL"):
+    database_url = os.environ.get("LONGCYCLE_DATABASE_URL")
+    if not database_url:
         raise RuntimeError("LONGCYCLE_DATABASE_URL is required")
 
     with tempfile.TemporaryDirectory(prefix="longcycle-materialized-smoke-") as temporary:
@@ -27,31 +30,46 @@ def main() -> None:
         material_path = material_root / "filing.htm"
         material_path.write_bytes(HTML)
 
-        source_url = "https://www.sec.gov/Archives/edgar/data/0/materialized-smoke.htm"
+        retrieval_url = (
+            "https://www.prnewswire.com/news-releases/materialized-smoke-results-300000000.html"
+        )
+        upstream_url = "https://www.sec.gov/Archives/edgar/data/0/materialized-smoke.htm"
+        upstream_accession = "0000000000-19-000001"
         spec = {
             "schema_version": "longcycle-grounded-evidence-spec/v2",
-            "task_id": "MATERIALIZED-GROUNDED-EVIDENCE-SMOKE-V1",
+            "task_id": "MATERIALIZED-GROUNDED-EVIDENCE-SMOKE-V2",
             "sources": [
                 {
-                    "key": "regulator",
-                    "name": "Materialized grounded evidence smoke regulator",
-                    "publisher_domain": "sec.gov",
-                    "kind": "regulator",
+                    "key": "announcement-redistributor",
+                    "name": "Materialized formal announcement redistributor smoke",
+                    "publisher_domain": "prnewswire.com",
+                    "kind": "company",
                     "quality_grade": "A",
                     "transport": "materialized",
+                    "authority_profiles": [
+                        {
+                            "claim_scope": "legal_disclosure",
+                            "authority_class": "authoritative_redistributor",
+                            "authority_basis": "verbatim_official_redistribution",
+                            "rationale": (
+                                "Connector preserves issuer-supplied formal announcement bodies "
+                                "with upstream filing identity."
+                            ),
+                        }
+                    ],
                 }
             ],
             "documents": [
                 {
                     "key": "filing",
                     "vintage_id": "MATERIALIZED-SMOKE-2019Q1",
-                    "source_key": "regulator",
-                    "retrieval_url": source_url,
-                    "original_source_url": source_url,
-                    "external_id": "materialized-smoke-2019q1",
-                    "title": "Materialized grounded evidence smoke filing",
-                    "published_at": "2019-05-07T00:00:00Z",
-                    "first_known_at": "2019-05-07T23:59:59Z",
+                    "source_key": "announcement-redistributor",
+                    "retrieval_url": retrieval_url,
+                    "original_source_url": upstream_url,
+                    "external_id": upstream_accession,
+                    "title": "Example Corporation Announces First Quarter Results",
+                    "published_at": "2019-05-07T20:30:00Z",
+                    "first_known_at": "2019-05-07T20:30:59Z",
                     "expected_sha256": RAW_SHA256,
                     "expected_visible_text_sha256": VISIBLE_SHA256,
                     "material_path": "filing.htm",
@@ -59,6 +77,13 @@ def main() -> None:
                     "retrieval_provenance": {
                         "mode": "externally_acquired_sha_pinned_fixture",
                         "transport_is_not_source_authority": True,
+                        "upstream_announcement": {
+                            "issuer": "Example Corporation",
+                            "system": "SEC EDGAR",
+                            "external_id": upstream_accession,
+                            "title": "Example Corporation Announces First Quarter Results",
+                            "original_url": upstream_url,
+                        },
                     },
                 }
             ],
@@ -70,9 +95,9 @@ def main() -> None:
                     "claim_context": {
                         "claim_role": "management_expectation",
                         "known_time": {
-                            "upper_bound": "2019-05-07T23:59:59Z",
-                            "precision": "day",
-                            "basis": "source_availability_fixture",
+                            "upper_bound": "2019-05-07T20:30:59Z",
+                            "precision": "minute",
+                            "basis": "authoritative_redistributor_publication_time",
                         },
                     },
                 }
@@ -125,8 +150,13 @@ def main() -> None:
             raise AssertionError("materialized execution lost v2 spec identity")
         if document["transport_plugin"] != "materialized_file":
             raise AssertionError("materialized transport identity was not preserved")
-        if document["canonical_retrieval_url"] != source_url:
-            raise AssertionError("canonical source URL was replaced by transport path")
+        if document["canonical_retrieval_url"] != retrieval_url:
+            raise AssertionError("redistributor retrieval URL was replaced by upstream identity")
+        if document["original_source_url"] != upstream_url:
+            raise AssertionError("upstream original URL was not preserved separately")
+        profiles = document["source_authority_profiles"]
+        if len(profiles) != 1 or profiles[0]["authority_class"] != "authoritative_redistributor":
+            raise AssertionError("redistributor authority profile was not returned by execution")
         if document["content_sha256"] != RAW_SHA256:
             raise AssertionError("raw materialized bytes were not hash preserved")
         if artifact["artifact_type"] != "html-visible-text":
@@ -139,6 +169,22 @@ def main() -> None:
             raise AssertionError("materialized Evidence execution promoted a FactAssertion")
         if acceptance["judgment_assertions_created"] != 0:
             raise AssertionError("materialized Evidence execution promoted a Judgment")
+
+        with psycopg.connect(database_url) as connection:
+            row = connection.execute(
+                """
+                SELECT authority_class, authority_basis, claim_scope
+                FROM evidence.source_authority_profiles
+                WHERE source_connector_id = %s
+                """,
+                (document["source_id"],),
+            ).fetchone()
+        if row != (
+            "authoritative_redistributor",
+            "verbatim_official_redistribution",
+            "legal_disclosure",
+        ):
+            raise AssertionError(f"source authority profile was not persisted correctly: {row}")
 
         archived = blob_root / document["blob_key"]
         if archived.read_bytes() != HTML:
