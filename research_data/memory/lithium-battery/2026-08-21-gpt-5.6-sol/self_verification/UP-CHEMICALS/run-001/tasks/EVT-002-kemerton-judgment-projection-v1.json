@@ -1,0 +1,152 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v1",
+  "task_id": "EVT-002-KEMERTON-JUDGMENTS-V1",
+  "source_evidence_task_id": "EVT-002-KEMERTON-EVIDENCE-V2",
+  "allowed_claim_roles": [
+    "management_expectation",
+    "management_expectation_revision"
+  ],
+  "subjects": [
+    {
+      "id": "38b886e5-610a-552a-9a05-560274723fee",
+      "entity_type": "project",
+      "canonical_name": "Kemerton lithium hydroxide project"
+    },
+    {
+      "id": "ba9bcc13-482f-548d-a450-9d9089012778",
+      "entity_type": "production_line",
+      "canonical_name": "Kemerton I conversion plant"
+    },
+    {
+      "id": "e9e0c787-d7f5-5fc7-829b-a278c4ea1478",
+      "entity_type": "production_line",
+      "canonical_name": "Kemerton II conversion plant"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2019-staged-commissioning-2021",
+      "evidence_fragment_keys": ["2019-launch-staged-commissioning"],
+      "subject_entity_id": "38b886e5-610a-552a-9a05-560274723fee",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.commissioning_start",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2021-01-01T00:00:00Z",
+      "target_to": "2022-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "during the course of 2021",
+      "value_kind": "text",
+      "value_text": "commissioning expected to start in stages during the course of 2021",
+      "summary": "Management expected staged commissioning to start during 2021.",
+      "metadata": {
+        "range_semantics": "calendar-period half-open bounds used only to encode source-stated year precision"
+      }
+    },
+    {
+      "judgment_key": "2020-construction-completion-late-2021",
+      "evidence_fragment_keys": ["2020-10k-late2021-plus-qualification"],
+      "subject_entity_id": "38b886e5-610a-552a-9a05-560274723fee",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.construction_completion",
+      "judgment_kind": "guidance",
+      "target_time_kind": "unknown",
+      "target_precision": "approximate",
+      "target_text": "late 2021",
+      "value_kind": "text",
+      "value_text": "construction expected to be completed in late 2021",
+      "summary": "Management expected construction completion in late 2021.",
+      "metadata": {
+        "semantic_guard": "Do not manufacture exact bounds for the source phrase late 2021; the same source separately states a six-month commissioning and qualification process afterward."
+      }
+    },
+    {
+      "judgment_key": "2020-producing-sales-2022",
+      "evidence_fragment_keys": ["2020-10k-sales-2022"],
+      "subject_entity_id": "38b886e5-610a-552a-9a05-560274723fee",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.sales_start",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2022-01-01T00:00:00Z",
+      "target_to": "2023-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "in 2022",
+      "value_kind": "text",
+      "value_text": "Kemerton expected to begin producing sales in 2022",
+      "summary": "Management expected Kemerton to begin producing sales during 2022.",
+      "metadata": {
+        "semantic_guard": "sales start is distinct from construction completion, commissioning, qualification, first product and commercial production"
+      }
+    },
+    {
+      "judgment_key": "2021q2-kemerton2-completion-by-q1-2022",
+      "evidence_fragment_keys": ["2021q2-kemerton2-delay"],
+      "subject_entity_id": "e9e0c787-d7f5-5fc7-829b-a278c4ea1478",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.construction_completion",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_to": "2022-04-01T00:00:00Z",
+      "target_precision": "quarter",
+      "target_text": "by the end of the first quarter 2022",
+      "value_kind": "text",
+      "value_text": "Kemerton II construction completion expected by the end of the first quarter 2022",
+      "summary": "Management moved Kemerton II construction completion to no later than the end of Q1 2022.",
+      "metadata": {
+        "range_semantics": "open lower bound preserves the source's by-end-of-quarter wording instead of inventing a start date"
+      }
+    },
+    {
+      "judgment_key": "2021q2-commercial-production-2022",
+      "evidence_fragment_keys": ["2021q2-commercial-production-after-qualification"],
+      "subject_entity_id": "38b886e5-610a-552a-9a05-560274723fee",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.commercial_production",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2022-01-01T00:00:00Z",
+      "target_to": "2023-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "in 2022",
+      "value_kind": "text",
+      "value_text": "commercial production expected in 2022 after approximately six months of commissioning and qualification",
+      "summary": "Management expected commercial production during 2022 after about six months of commissioning and qualification.",
+      "metadata": {
+        "precondition": "approximately six month commissioning and qualification period"
+      }
+    },
+    {
+      "judgment_key": "2022q1-kemerton1-first-product-may",
+      "evidence_fragment_keys": ["2022q1-first-product-may-expectation"],
+      "subject_entity_id": "ba9bcc13-482f-548d-a450-9d9089012778",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.first_product_timing",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2022-05-01T00:00:00Z",
+      "target_to": "2022-06-01T00:00:00Z",
+      "target_precision": "month",
+      "target_text": "May 2022",
+      "value_kind": "text",
+      "value_text": "Kemerton I expected to achieve first product in May 2022",
+      "summary": "Management expected Kemerton I first product during May 2022."
+    },
+    {
+      "judgment_key": "2022q1-kemerton2-mechanical-completion-h2",
+      "evidence_fragment_keys": ["2022q1-kemerton2-mechanical-h2"],
+      "subject_entity_id": "e9e0c787-d7f5-5fc7-829b-a278c4ea1478",
+      "speaker_name_text": "Albemarle management",
+      "topic_code": "project.mechanical_completion",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2022-07-01T00:00:00Z",
+      "target_to": "2023-01-01T00:00:00Z",
+      "target_precision": "half_year",
+      "target_text": "the second half of 2022",
+      "value_kind": "text",
+      "value_text": "Kemerton II remained on track for mechanical completion in the second half of 2022",
+      "summary": "Management expected Kemerton II mechanical completion during H2 2022."
+    }
+  ]
+}
