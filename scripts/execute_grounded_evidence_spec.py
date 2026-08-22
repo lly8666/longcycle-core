@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from longcycle.adapters.parsers import PdfTextParser
+from longcycle.adapters.parsers import HtmlVisibleTextParser, PdfTextParser
 from longcycle.adapters.sources.http import HttpDocumentSource
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
@@ -19,8 +19,14 @@ from longcycle.application.source_archive import DocumentArchiver
 from longcycle.application.source_registration import build_http_source_definition
 from longcycle.config import Settings
 from longcycle.domain.enums import QualityGrade, SourceKind
-from longcycle.domain.models import DiscoveryItem, DocumentArtifact, SourceDefinition, SourceDocument
+from longcycle.domain.models import (
+    DiscoveryItem,
+    DocumentArtifact,
+    SourceDefinition,
+    SourceDocument,
+)
 from longcycle.ports.archive import ArchiveStore
+from longcycle.ports.parser import DocumentParser
 from longcycle.ports.source import FetchContext
 
 
@@ -55,7 +61,9 @@ def _load_spec(path: Path) -> dict[str, Any]:
     if not isinstance(payload, dict):
         raise ValueError("grounded evidence spec must be a JSON object")
     if payload.get("schema_version") != SCHEMA_VERSION:
-        raise ValueError(f"unsupported grounded evidence spec schema: {payload.get('schema_version')!r}")
+        raise ValueError(
+            f"unsupported grounded evidence spec schema: {payload.get('schema_version')!r}"
+        )
     sources = payload.get("sources")
     documents = payload.get("documents")
     fragments = payload.get("fragments")
@@ -74,6 +82,17 @@ def _load_spec(path: Path) -> dict[str, Any]:
         raise ValueError("acceptance.required_fragments does not match fragments")
     if acceptance.get("facts_created") != 0 or acceptance.get("judgments_created") != 0:
         raise ValueError("grounded evidence executor only supports zero Fact/Judgment promotion")
+    for row in documents:
+        if not isinstance(row, dict):
+            raise ValueError("grounded evidence document specs must be objects")
+        raw_digest = row.get("expected_sha256")
+        text_digest = row.get("expected_visible_text_sha256")
+        raw_ok = isinstance(raw_digest, str) and bool(raw_digest)
+        text_ok = isinstance(text_digest, str) and bool(text_digest)
+        if not raw_ok and not text_ok:
+            raise ValueError(
+                f"document {row.get('key')!r} must pin raw SHA or visible-text artifact SHA"
+            )
     return payload
 
 
@@ -99,7 +118,10 @@ async def _research_row_counts(repository: PostgresResearchRepository) -> dict[s
         ).fetchone()
     if fact_row is None or judgment_row is None:
         raise RuntimeError("research count query returned no row")
-    return {"fact_assertions": int(fact_row["n"]), "judgment_assertions": int(judgment_row["n"])}
+    return {
+        "fact_assertions": int(fact_row["n"]),
+        "judgment_assertions": int(judgment_row["n"]),
+    }
 
 
 async def _register_sources(
@@ -159,23 +181,55 @@ async def _archive_documents(
             url=str(row["retrieval_url"]),
             title_hint=str(row["title"]),
             published_at_hint=_aware_datetime(row.get("published_at")),
-            discovered_at=_aware_datetime(row.get("first_known_at")) or datetime.now().astimezone(),
+            discovered_at=_aware_datetime(row.get("first_known_at"))
+            or datetime.now().astimezone(),
             metadata=metadata,
         )
         result = await archiver.archive_document(
             plugin=plugin,
             item=item,
-            fetch_context=FetchContext(source=persisted_source, maximum_bytes=50 * 1024 * 1024),
+            fetch_context=FetchContext(
+                source=persisted_source,
+                maximum_bytes=50 * 1024 * 1024,
+            ),
         )
         document = result.document
-        expected_sha256 = str(row["expected_sha256"])
-        if document.content_sha256 != expected_sha256:
-            raise ValueError(
-                f"document {key} digest mismatch: expected {expected_sha256}, "
-                f"got {document.content_sha256}"
-            )
+        expected_raw = row.get("expected_sha256")
+        if isinstance(expected_raw, str) and expected_raw:
+            if document.content_sha256 != expected_raw:
+                raise ValueError(
+                    f"document {key} digest mismatch: expected {expected_raw}, "
+                    f"got {document.content_sha256}"
+                )
         archived[key] = document
     return archived
+
+
+async def _artifact_for_document(
+    *,
+    repository: PostgresResearchRepository,
+    archive: ArchiveStore,
+    document: SourceDocument,
+    parser: DocumentParser,
+    expected_sha256: str | None = None,
+) -> DocumentArtifact:
+    source_bytes = await archive.get(document.blob_key)
+    parsed = await ArtifactPipeline(repository=repository, archive=archive).parse(
+        document=document,
+        content=source_bytes,
+        parser=parser,
+    )
+    if len(parsed) != 1:
+        raise RuntimeError(
+            f"expected one {parser.parser_name} artifact for document {document.id}"
+        )
+    artifact = parsed[0]
+    if expected_sha256 is not None and artifact.content_sha256 != expected_sha256:
+        raise ValueError(
+            f"document {document.id} parser artifact digest mismatch: "
+            f"expected {expected_sha256}, got {artifact.content_sha256}"
+        )
+    return artifact
 
 
 async def _record_fragments(
@@ -183,11 +237,13 @@ async def _record_fragments(
     repository: PostgresResearchRepository,
     archive: ArchiveStore,
     documents: dict[str, SourceDocument],
+    document_specs: list[dict[str, Any]],
     fragment_specs: list[dict[str, Any]],
 ) -> tuple[list[dict[str, Any]], dict[str, DocumentArtifact]]:
     recorder = ArchivedEvidenceRecorder(repository=repository, archive=archive)
     artifacts: dict[str, DocumentArtifact] = {}
     fragment_results: list[dict[str, Any]] = []
+    spec_by_key = {str(row["key"]): row for row in document_specs}
 
     for row in fragment_specs:
         fragment_key = row.get("fragment_key")
@@ -197,32 +253,53 @@ async def _record_fragments(
         if not isinstance(document_key, str) or document_key not in documents:
             raise ValueError(f"fragment {fragment_key} references unknown document")
         document = documents[document_key]
+        document_spec = spec_by_key[document_key]
         excerpt = str(row["excerpt"])
         claim_context = row.get("claim_context")
         if not isinstance(claim_context, dict) or not claim_context:
             raise ValueError(f"fragment {fragment_key} must carry non-empty claim_context")
 
         media_type = document.content_type.split(";", 1)[0].strip().lower()
+        expected_visible = document_spec.get("expected_visible_text_sha256")
         if media_type == "application/pdf":
             page = row.get("page")
             if not isinstance(page, int) or page < 1:
                 raise ValueError(f"PDF fragment {fragment_key} must define one-based page")
             artifact = artifacts.get(document_key)
             if artifact is None:
-                source_bytes = await archive.get(document.blob_key)
-                parsed = await ArtifactPipeline(repository=repository, archive=archive).parse(
+                artifact = await _artifact_for_document(
+                    repository=repository,
+                    archive=archive,
                     document=document,
-                    content=source_bytes,
                     parser=PdfTextParser(),
                 )
-                if len(parsed) != 1:
-                    raise RuntimeError(f"expected one PDF text artifact for document {document_key}")
-                artifact = parsed[0]
                 artifacts[document_key] = artifact
             recorded = await recorder.record_pdf_page_excerpt(
                 document=document,
                 artifact=artifact,
                 page=page,
+                excerpt=excerpt,
+                occurrence=row.get("occurrence"),
+                claim_context=claim_context,
+            )
+        elif media_type in {"text/html", "application/xhtml+xml"} and isinstance(
+            expected_visible, str
+        ):
+            if row.get("page") is not None:
+                raise ValueError(f"HTML fragment {fragment_key} cannot define page")
+            artifact = artifacts.get(document_key)
+            if artifact is None:
+                artifact = await _artifact_for_document(
+                    repository=repository,
+                    archive=archive,
+                    document=document,
+                    parser=HtmlVisibleTextParser(),
+                    expected_sha256=expected_visible,
+                )
+                artifacts[document_key] = artifact
+            recorded = await recorder.record_html_visible_text_excerpt(
+                document=document,
+                artifact=artifact,
                 excerpt=excerpt,
                 occurrence=row.get("occurrence"),
                 claim_context=claim_context,
@@ -287,11 +364,13 @@ async def _verify_persistence(
     judgment_delta = after_counts["judgment_assertions"] - before_counts["judgment_assertions"]
     if persisted_documents != expected_document_count:
         raise ValueError(
-            f"expected {expected_document_count} persisted document versions, got {persisted_documents}"
+            f"expected {expected_document_count} persisted document versions, "
+            f"got {persisted_documents}"
         )
     if persisted_fragments != expected_fragment_count:
         raise ValueError(
-            f"expected {expected_fragment_count} persisted evidence fragments, got {persisted_fragments}"
+            f"expected {expected_fragment_count} persisted evidence fragments, "
+            f"got {persisted_fragments}"
         )
     if fact_delta != 0 or judgment_delta != 0:
         raise ValueError(
@@ -320,7 +399,11 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
         source_specs = spec["sources"]
         document_specs = spec["documents"]
         fragment_specs = spec["fragments"]
-        if not isinstance(source_specs, list) or not isinstance(document_specs, list) or not isinstance(fragment_specs, list):
+        if (
+            not isinstance(source_specs, list)
+            or not isinstance(document_specs, list)
+            or not isinstance(fragment_specs, list)
+        ):
             raise ValueError("spec source/document/fragment collections must be lists")
         sources = await _register_sources(registry=registry, source_specs=source_specs)
         documents = await _archive_documents(
@@ -334,6 +417,7 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
             repository=repository,
             archive=archive,
             documents=documents,
+            document_specs=document_specs,
             fragment_specs=fragment_specs,
         )
         acceptance = spec["acceptance"]
@@ -362,9 +446,12 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
                     "blob_key": document.blob_key,
                     "byte_length": document.byte_length,
                     "content_type": document.content_type,
-                    "published_at": document.published_at.isoformat() if document.published_at else None,
+                    "published_at": (
+                        document.published_at.isoformat() if document.published_at else None
+                    ),
                     "first_known_at": document.first_known_at.isoformat(),
                     "retrieval_provenance": row.get("retrieval_provenance") or {},
+                    "expected_visible_text_sha256": row.get("expected_visible_text_sha256"),
                 }
             )
         return {
@@ -376,6 +463,7 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
                 {
                     "document_key": key,
                     "artifact_id": str(artifact.id),
+                    "artifact_type": artifact.artifact_type,
                     "artifact_sha256": artifact.content_sha256,
                     "artifact_blob_key": artifact.blob_key,
                     "parser_name": artifact.producer_name,
@@ -395,10 +483,17 @@ def main() -> None:
     args = _parser().parse_args()
     try:
         result = asyncio.run(_run(args))
+        payload = {"ok": True, "result": result}
     except Exception as exc:
-        print(json.dumps({"ok": False, "error": f"{type(exc).__name__}: {exc}"}, ensure_ascii=False))
+        payload = {"ok": False, "error": f"{type(exc).__name__}: {exc}"}
+        if args.output is not None:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(
+                json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+        print(json.dumps(payload, ensure_ascii=False))
         raise SystemExit(1) from exc
-    payload = {"ok": True, "result": result}
     rendered = json.dumps(payload, ensure_ascii=False, indent=2)
     if args.output is not None:
         args.output.parent.mkdir(parents=True, exist_ok=True)
