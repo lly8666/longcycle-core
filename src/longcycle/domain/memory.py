@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Any
 from uuid import UUID
 
-from pydantic import Field
+from pydantic import Field, model_validator
 
 from .models import DomainModel
 
@@ -94,6 +95,22 @@ class MemoryAuditDisposition(StrEnum):
     SCOPE_MISMATCH = "scope_mismatch"
 
 
+class DirectSourceSearchStatus(StrEnum):
+    NOT_ATTEMPTED = "not_attempted"
+    ONGOING = "ongoing"
+    EXHAUSTED_NOT_FOUND = "exhausted_not_found"
+    BLOCKED_CLOSED_SOURCE = "blocked_closed_source"
+    PARTIALLY_RECOVERED = "partially_recovered"
+
+
+class MemoryHypothesisDisposition(StrEnum):
+    UNRESOLVED = "unresolved"
+    INDIRECTLY_CORROBORATED = "indirectly_corroborated"
+    INDIRECTLY_CONTRADICTED = "indirectly_contradicted"
+    MIXED = "mixed"
+    INSUFFICIENT_BASIS = "insufficient_basis"
+
+
 class MemoryLead(DomainModel):
     id: UUID
     kind: MemoryLeadKind
@@ -144,4 +161,55 @@ class MemoryAuditResult(DomainModel):
     @property
     def lead_may_publish_as_fact(self) -> bool:
         """A memory lead itself is never publishable, regardless of audit outcome."""
+        return False
+
+
+class MemoryHypothesisAssessment(DomainModel):
+    """Research-only inference when direct claim evidence remains unavailable.
+
+    It preserves potentially important industrial memory without silently converting
+    model recall or logical consistency into publishable history.
+    """
+
+    id: UUID
+    lead_id: UUID
+    disposition: MemoryHypothesisDisposition
+    direct_source_search_status: DirectSourceSearchStatus
+    inference_confidence: float = Field(ge=0, le=1)
+    reasoning_summary: str = Field(min_length=1)
+    supporting_evidence_ids: tuple[UUID, ...] = ()
+    contradicting_evidence_ids: tuple[UUID, ...] = ()
+    supporting_lead_ids: tuple[UUID, ...] = ()
+    alternative_explanations: tuple[str, ...] = ()
+    falsification_conditions: tuple[str, ...] = ()
+    search_receipt: dict[str, Any] = Field(default_factory=dict)
+    assessor_name: str = Field(min_length=1)
+    assessor_version: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def preserves_research_only_boundary(self) -> MemoryHypothesisAssessment:
+        if self.lead_id in self.supporting_lead_ids:
+            raise ValueError("a memory hypothesis cannot cite itself as supporting memory")
+        if set(self.supporting_evidence_ids) & set(self.contradicting_evidence_ids):
+            raise ValueError("one evidence fragment cannot be both supporting and contradicting")
+        if self.disposition == MemoryHypothesisDisposition.INDIRECTLY_CORROBORATED:
+            if self.direct_source_search_status not in {
+                DirectSourceSearchStatus.EXHAUSTED_NOT_FOUND,
+                DirectSourceSearchStatus.BLOCKED_CLOSED_SOURCE,
+                DirectSourceSearchStatus.PARTIALLY_RECOVERED,
+            }:
+                raise ValueError("indirect corroboration requires a bounded direct-source search outcome")
+            if not self.supporting_evidence_ids:
+                raise ValueError("indirect corroboration requires archived indirect evidence")
+            if not self.alternative_explanations:
+                raise ValueError("indirect corroboration must preserve alternative explanations")
+            if not self.falsification_conditions:
+                raise ValueError("indirect corroboration must state falsification conditions")
+            if not self.search_receipt:
+                raise ValueError("indirect corroboration requires a search receipt")
+        return self
+
+    @property
+    def may_publish_as_fact(self) -> bool:
+        """Indirect corroboration is research context, never a Fact/Judgment authority shortcut."""
         return False
