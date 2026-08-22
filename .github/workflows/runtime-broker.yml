@@ -27,8 +27,7 @@ jobs:
           POSTGRES_USER: longcycle
           POSTGRES_PASSWORD: longcycle
           POSTGRES_DB: longcycle
-        ports:
-          - 5432:5432
+        ports: ["5432:5432"]
         options: >-
           --health-cmd="pg_isready -U longcycle -d longcycle"
           --health-interval=5s
@@ -52,13 +51,13 @@ jobs:
             echo 'SPEC_PATH=research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-evidence-spec-v1.json' >> "$GITHUB_ENV"
           elif [[ "$ISSUE_TITLE" == "[longcycle-kemerton-grounded-v1]" ]]; then
             echo 'RUN_LABEL=kemerton' >> "$GITHUB_ENV"
-            echo 'SPEC_PATH=research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-evidence-spec-v1.json' >> "$GITHUB_ENV"
+            echo 'SPEC_PATH=research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-evidence-spec-v2.json' >> "$GITHUB_ENV"
           else
             echo 'unsupported grounded-evidence trigger' >&2
             exit 2
           fi
 
-      - name: Check out active Longcycle branch
+      - name: Check out active branch
         uses: actions/checkout@v4
         with:
           ref: ${{ env.ACTIVE_REF }}
@@ -69,47 +68,42 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      - name: Install exact benchmark runtime
+      - name: Install runtime
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p probe
-          git rev-parse HEAD | tee probe/active-head.txt
+          git rev-parse HEAD > probe/active-head.txt
           printf '%s\n' "$GITHUB_RUN_ID" > probe/run-id.txt
           printf '%s\n' "$RUN_LABEL" > probe/run-label.txt
           printf '%s\n' "$SPEC_PATH" > probe/spec-path.txt
           python -m pip install -e '.[postgres,duckdb]'
-          python - <<'PY'
-          import duckdb, pypdf
-          print('DUCKDB_VERSION', duckdb.__version__)
-          print('PYPDF_VERSION', pypdf.__version__)
-          PY
 
-      - name: Apply normal Longcycle migrations
+      - name: Migrate database
         shell: bash
         run: |
           set -uo pipefail
           if ! longcycle --json db upgrade > probe/migrations.json 2> probe/migrations.stderr; then
-            printf 'stage=migrations\n' > probe/runtime-stage-error.txt
+            echo 'stage=migrations' > probe/runtime-stage-error.txt
             exit 1
           fi
           if ! longcycle --json doctor --check-database > probe/doctor.json 2> probe/doctor.stderr; then
-            printf 'stage=database-doctor\n' > probe/runtime-stage-error.txt
+            echo 'stage=database-doctor' > probe/runtime-stage-error.txt
             exit 1
           fi
 
-      - name: Execute grounded evidence spec
+      - name: Execute grounded evidence
         shell: bash
         run: |
           set -uo pipefail
           if ! python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" \
             --output probe/grounded-evidence-execution.json \
             > probe/execution.stdout 2> probe/execution.stderr; then
-            printf 'stage=grounded-evidence-execution\n' > probe/runtime-stage-error.txt
+            echo 'stage=grounded-evidence-execution' > probe/runtime-stage-error.txt
             exit 1
           fi
 
-      - name: Export and verify portable DuckDB evidence bundle
+      - name: Export portable DuckDB
         shell: bash
         run: |
           set -uo pipefail
@@ -118,20 +112,20 @@ jobs:
             "probe/${RUN_LABEL}-evidence.duckdb" \
             --manifest-output probe/duckdb-export.json \
             > probe/duckdb.stdout 2> probe/duckdb.stderr; then
-            printf 'stage=duckdb-export\n' > probe/runtime-stage-error.txt
+            echo 'stage=duckdb-export' > probe/runtime-stage-error.txt
             exit 1
           fi
 
-      - name: Enforce sealed blind-memory immutability
+      - name: Enforce blind-memory immutability
         shell: bash
         run: |
           set -euo pipefail
           if [[ -n "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)" ]]; then
-            printf 'stage=blind-memory-immutability\n' > probe/runtime-stage-error.txt
+            echo 'stage=blind-memory-immutability' > probe/runtime-stage-error.txt
             exit 1
           fi
 
-      - name: Build compact grounded-evidence report
+      - name: Build report
         if: always()
         shell: bash
         run: |
@@ -139,31 +133,23 @@ jobs:
           import json
           from pathlib import Path
 
-          def text(path: str, default: str = 'unknown') -> str:
-              p = Path(path)
-              return p.read_text(encoding='utf-8', errors='replace').strip() if p.exists() else default
+          def read(path: str, default: str = 'unknown') -> str:
+              item = Path(path)
+              return item.read_text(encoding='utf-8', errors='replace').strip() if item.exists() else default
 
-          label = text('probe/run-label.txt')
           lines = [
-              f'# {label.title()} grounded evidence + DuckDB bundle v1',
+              f'# {read("probe/run-label.txt").title()} grounded evidence + DuckDB bundle v1',
               '',
-              f'- workflow run: `{text("probe/run-id.txt")}`',
-              f'- active branch HEAD: `{text("probe/active-head.txt")}`',
+              f'- workflow run: `{read("probe/run-id.txt")}`',
+              f'- active branch HEAD: `{read("probe/active-head.txt")}`',
+              f'- spec: `{read("probe/spec-path.txt")}`',
           ]
-          stage_error = Path('probe/runtime-stage-error.txt')
-          if stage_error.exists():
-              lines += ['', f'- runtime failure: `{text("probe/runtime-stage-error.txt")}`']
-              for candidate in (
-                  'probe/migrations.stderr',
-                  'probe/doctor.stderr',
-                  'probe/execution.stderr',
-                  'probe/execution.stdout',
-                  'probe/duckdb.stderr',
-                  'probe/duckdb.stdout',
-              ):
-                  value = text(candidate, '')
+          if Path('probe/runtime-stage-error.txt').exists():
+              lines += ['', f'- runtime failure: `{read("probe/runtime-stage-error.txt")}`']
+              for path in ('probe/execution.stdout', 'probe/execution.stderr', 'probe/duckdb.stdout', 'probe/duckdb.stderr', 'probe/migrations.stderr', 'probe/doctor.stderr'):
+                  value = read(path, '')
                   if value:
-                      lines += ['', f'### {candidate}', '', '```text', value[-6000:], '```']
+                      lines += ['', f'### {path}', '', '```text', value[-6000:], '```']
           execution_path = Path('probe/grounded-evidence-execution.json')
           if execution_path.exists():
               payload = json.loads(execution_path.read_text(encoding='utf-8'))
@@ -181,12 +167,13 @@ jobs:
                       '',
                   ]
                   for row in result['documents']:
-                      lines.append(f'- `{row["document_key"]}` sha256 `{row["content_sha256"]}` bytes={row["byte_length"]}')
+                      lines.append(f'- `{row["document_key"]}` raw sha256 `{row["content_sha256"]}` bytes={row["byte_length"]}')
+                  lines += ['', '### Grounding artifacts', '']
+                  for row in result['artifacts']:
+                      lines.append(f'- `{row["document_key"]}` `{row["artifact_type"]}` sha256 `{row["artifact_sha256"]}`')
                   lines += ['', '### Evidence locators', '']
                   for row in result['fragments']:
                       lines.append(f'- `{row["fragment_key"]}` → `{row["locator"]}` / `{row["fragment_sha256"]}`')
-              elif not stage_error.exists():
-                  lines += ['', f'- execution failed: `{payload.get("error")}`']
           duck_path = Path('probe/duckdb-export.json')
           if duck_path.exists():
               payload = json.loads(duck_path.read_text(encoding='utf-8'))
@@ -200,7 +187,6 @@ jobs:
                   f'- file sha256: `{payload.get("file_sha256")}`',
                   f'- read-only open seconds: {verification.get("read_only_open_seconds")}',
                   f'- point-in-time query seconds: {verification.get("point_in_time_query_seconds")}',
-                  f'- evidence known by 2021-12-31: {verification.get("evidence_known_by_2021_year_end")}',
                   f'- broken document refs: {verification.get("broken_document_refs")}',
                   f'- broken artifact refs: {verification.get("broken_artifact_refs")}',
                   f'- claim roles: `{json.dumps(verification.get("claim_role_counts", {}), ensure_ascii=False, sort_keys=True)}`',
@@ -209,7 +195,7 @@ jobs:
           PY
           cat probe/report.md
 
-      - name: Upload grounded evidence transport artifact
+      - name: Upload transport artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -221,15 +207,13 @@ jobs:
             probe/
             .longcycle/action-blobs/
 
-      - name: Comment result back to trigger issue
+      - name: Comment report
         if: always() && github.event_name == 'issues'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-        run: |
-          set -euo pipefail
-          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md
+        run: gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md
 
   kemerton-archive-v1:
     if: github.event_name == 'issues' && github.event.issue.title == '[longcycle-kemerton-archive-v1]'
@@ -242,8 +226,7 @@ jobs:
           POSTGRES_USER: longcycle
           POSTGRES_PASSWORD: longcycle
           POSTGRES_DB: longcycle
-        ports:
-          - 5432:5432
+        ports: ["5432:5432"]
         options: >-
           --health-cmd="pg_isready -U longcycle -d longcycle"
           --health-interval=5s
@@ -254,86 +237,51 @@ jobs:
       LONGCYCLE_BLOB_BACKEND: filesystem
       LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
       PLAN_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-archive-plan-v1.json
-      PYTHONUNBUFFERED: "1"
     steps:
-      - name: Check out active Longcycle branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ env.ACTIVE_REF }}
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
-
-      - name: Install archive runtime
+      - name: Execute archive plan
         shell: bash
         run: |
           set -euo pipefail
           python -m pip install -e '.[postgres]'
           mkdir -p probe
-          git rev-parse HEAD | tee probe/active-head.txt
+          git rev-parse HEAD > probe/active-head.txt
           printf '%s\n' "$GITHUB_RUN_ID" > probe/run-id.txt
-
-      - name: Apply normal Longcycle migrations
-        shell: bash
-        run: |
-          set -euo pipefail
-          longcycle --json db upgrade | tee probe/migrations.json
-          longcycle --json doctor --check-database | tee probe/doctor.json
-
-      - name: Execute bounded Kemerton archive plan
-        shell: bash
-        run: |
-          set -euo pipefail
-          python scripts/execute_archive_plan.py "$PLAN_PATH" \
-            --output probe/kemerton-archive-execution.json
-
-      - name: Enforce sealed blind-memory immutability
-        if: success()
-        shell: bash
-        run: |
-          set -euo pipefail
+          longcycle --json db upgrade > probe/migrations.json
+          python scripts/execute_archive_plan.py "$PLAN_PATH" --output probe/kemerton-archive-execution.json
           test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
-
-      - name: Build compact Kemerton archive report
+      - name: Build archive report
         if: always()
         shell: bash
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          execution = Path('probe/kemerton-archive-execution.json')
           run_id = Path('probe/run-id.txt').read_text().strip() if Path('probe/run-id.txt').exists() else 'unknown'
-          lines = ['# Kemerton archive execution v1', '', f'- workflow run: `{run_id}`']
-          if Path('probe/active-head.txt').exists():
-              lines += [f'- active branch HEAD: `{Path("probe/active-head.txt").read_text().strip()}`', '']
-          if execution.exists():
-              payload = json.loads(execution.read_text(encoding='utf-8'))
+          head = Path('probe/active-head.txt').read_text().strip() if Path('probe/active-head.txt').exists() else 'unknown'
+          lines = ['# Kemerton archive execution v1', '', f'- workflow run: `{run_id}`', f'- active branch HEAD: `{head}`']
+          path = Path('probe/kemerton-archive-execution.json')
+          if path.exists():
+              payload = json.loads(path.read_text(encoding='utf-8'))
               if payload.get('ok'):
                   result = payload['result']
                   acceptance = result['acceptance']
-                  lines += [
-                      f'- archived vintages: {acceptance["archived_vintages"]}',
-                      f'- FactAssertions created: {acceptance["fact_assertions_created"]}',
-                      f'- Judgments created: {acceptance["judgment_assertions_created"]}',
-                      '',
-                  ]
+                  lines += ['', f'- archived vintages: {acceptance["archived_vintages"]}', f'- FactAssertions created: {acceptance["fact_assertions_created"]}', f'- Judgments created: {acceptance["judgment_assertions_created"]}', '']
                   for row in result['documents']:
-                      lines.append(
-                          f'- `{row["vintage_id"]}` sha256 `{row["content_sha256"]}` '
-                          f'bytes={row["byte_length"]} type={row["content_type"]}'
-                      )
+                      lines.append(f'- `{row["vintage_id"]}` sha256 `{row["content_sha256"]}` bytes={row["byte_length"]} type={row["content_type"]}')
               else:
-                  lines.append(f'- execution failed: `{payload.get("error")}`')
-          else:
-              lines.append('- execution output missing; inspect job logs')
+                  lines += ['', f'- execution failed: `{payload.get("error")}`']
           Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
           PY
           cat probe/report.md
-
-      - name: Upload Kemerton archive artifact
+      - name: Upload archive artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -344,13 +292,9 @@ jobs:
           path: |
             probe/
             .longcycle/action-blobs/
-
-      - name: Comment result back to trigger issue
+      - name: Comment archive report
         if: always()
-        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
-        run: |
-          set -euo pipefail
-          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md
+        run: gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md
