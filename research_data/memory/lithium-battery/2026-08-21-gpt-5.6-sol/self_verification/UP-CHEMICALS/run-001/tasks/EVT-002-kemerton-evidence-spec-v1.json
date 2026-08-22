@@ -1,0 +1,470 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v1",
+  "task_id": "EVT-002-KEMERTON-EVIDENCE-V1",
+  "status": "fixed_archived_sources_ready_for_runtime_grounding",
+  "evidence_policy": {
+    "blind_memory_mutation": "forbidden",
+    "fresh_discovery": "forbidden",
+    "search_or_plan_material_is_evidence": false,
+    "fact_or_judgment_promotion": false,
+    "all_fragments_must_ground_against_archived_source_bytes": true,
+    "contract_schedule_is_not_management_guidance": true,
+    "later_outcome_must_not_backfill_prior_expectation": true
+  },
+  "sources": [
+    {
+      "key": "albemarle",
+      "name": "Albemarle primary disclosures",
+      "publisher_domain": "investors.albemarle.com",
+      "allowed_domains": [
+        "investors.albemarle.com",
+        "www.sec.gov"
+      ],
+      "kind": "company",
+      "quality_grade": "A"
+    }
+  ],
+  "documents": [
+    {
+      "key": "2019-launch",
+      "vintage_id": "KEMERTON-2019-LAUNCH-GUIDANCE",
+      "source_key": "albemarle",
+      "retrieval_url": "https://investors.albemarle.com/news-and-events/news/news-details/2019/ALBEMARLE-BEGINS-EARTHWORKS-AT-KEMERTON-PROJECT-REMAINS-ON-TARGET-IN-WESTERN-AUSTRALIA-EXPANSIONS-01-02-2019/default.aspx",
+      "original_source_url": "https://investors.albemarle.com/news-and-events/news/news-details/2019/ALBEMARLE-BEGINS-EARTHWORKS-AT-KEMERTON-PROJECT-REMAINS-ON-TARGET-IN-WESTERN-AUSTRALIA-EXPANSIONS-01-02-2019/default.aspx",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2019-LAUNCH-GUIDANCE",
+      "title": "Albemarle Kemerton earthworks launch guidance",
+      "published_at": "2019-01-02T00:00:00Z",
+      "first_known_at": "2019-01-02T23:59:59Z",
+      "expected_sha256": "7542b703eead9e55a0d1b0de07e62d82da6bea1063c0903706a0b32a10346ecc",
+      "retrieval_provenance": {
+        "mode": "publisher_direct",
+        "source_date": "2019-01-02"
+      }
+    },
+    {
+      "key": "2019-contract",
+      "vintage_id": "KEMERTON-2019-CONTRACT-SCHEDULE",
+      "source_key": "albemarle",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591319000078/exhibit1020630201910q.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591319000078/exhibit1020630201910q.htm",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2019-CONTRACT-SCHEDULE",
+      "title": "Kemerton contractual construction and commissioning schedule",
+      "published_at": "2019-08-07T16:57:18Z",
+      "first_known_at": "2019-08-07T16:57:18Z",
+      "expected_sha256": "38ac3687ce25bfcf2fadc2842f0504ce7c7429ebc03735f86abae2a9dde11f05",
+      "retrieval_provenance": {
+        "mode": "sec_filed_primary_contract",
+        "sec_accession": "0000915913-19-000078",
+        "sec_accepted_at": "2019-08-07T16:57:18Z",
+        "retrieval_transport": "SEC",
+        "publisher_authority": "Albemarle filed contractual disclosure"
+      }
+    },
+    {
+      "key": "2020-10k",
+      "vintage_id": "KEMERTON-2020-10K-GUIDANCE",
+      "source_key": "albemarle",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2020-10K-GUIDANCE",
+      "title": "Albemarle 2020 Form 10-K Kemerton guidance",
+      "published_at": "2021-02-19T16:37:48Z",
+      "first_known_at": "2021-02-19T16:37:48Z",
+      "expected_sha256": "f8568a6f42ce67ec5374471fd4333621b35a5b862adee24c4b5048ee4183adb0",
+      "retrieval_provenance": {
+        "mode": "sec_filed_10k",
+        "sec_accession": "0000915913-21-000018",
+        "sec_accepted_at": "2021-02-19T16:37:48Z"
+      }
+    },
+    {
+      "key": "2021q2",
+      "vintage_id": "KEMERTON-2021Q2-REVISION",
+      "source_key": "albemarle",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591321000147/a2q21earningsreleaseex991.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591321000147/a2q21earningsreleaseex991.htm",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2021Q2-REVISION",
+      "title": "Albemarle 2021 Q2 Kemerton revision",
+      "published_at": "2021-08-04T16:25:25Z",
+      "first_known_at": "2021-08-04T16:25:25Z",
+      "expected_sha256": "793da862ee73a2faa1ea3a0eba242d77fec875c4e0227f2663038a126d18529b",
+      "retrieval_provenance": {
+        "mode": "sec_filed_earnings_release",
+        "sec_accession": "0000915913-21-000147",
+        "sec_accepted_at": "2021-08-04T16:25:25Z"
+      }
+    },
+    {
+      "key": "2021q4",
+      "vintage_id": "KEMERTON-2021Q4-MECHANICAL-COMPLETE",
+      "source_key": "albemarle",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000017/a4q21earningsreleaseex991.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000017/a4q21earningsreleaseex991.htm",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2021Q4-MECHANICAL-COMPLETE",
+      "title": "Albemarle 2021 Q4 Kemerton project state",
+      "published_at": "2022-02-16T16:37:45Z",
+      "first_known_at": "2022-02-16T16:37:45Z",
+      "expected_sha256": "ed9344aaa92011dd32401e31fb40ba8ddbf3d48a2a456018761eda2e62cf6b2d",
+      "retrieval_provenance": {
+        "mode": "sec_filed_earnings_release",
+        "sec_accession": "0000915913-22-000017",
+        "sec_accepted_at": "2022-02-16T16:37:45Z"
+      }
+    },
+    {
+      "key": "2022q1",
+      "vintage_id": "KEMERTON-2022Q1-FIRST-PRODUCT-EXPECTATION",
+      "source_key": "albemarle",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000101/a1q22earningsreleaseex991.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000101/a1q22earningsreleaseex991.htm",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2022Q1-FIRST-PRODUCT-EXPECTATION",
+      "title": "Albemarle 2022 Q1 Kemerton first-product expectation",
+      "published_at": "2022-05-04T16:48:41Z",
+      "first_known_at": "2022-05-04T16:48:41Z",
+      "expected_sha256": "0b8bb97a3a2807962e8b1bea1022151d05e527afc169fb7f63d199b7996c9878",
+      "retrieval_provenance": {
+        "mode": "sec_filed_earnings_release",
+        "sec_accession": "0000915913-22-000101",
+        "sec_accepted_at": "2022-05-04T16:48:41Z"
+      }
+    },
+    {
+      "key": "2022q2",
+      "vintage_id": "KEMERTON-2022Q2-FIRST-PRODUCT-OUTCOME",
+      "source_key": "albemarle",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000134/a2q22earningsreleaseex991.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000134/a2q22earningsreleaseex991.htm",
+      "external_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY::KEMERTON-2022Q2-FIRST-PRODUCT-OUTCOME",
+      "title": "Albemarle 2022 Q2 Kemerton first-product outcome",
+      "published_at": "2022-08-03T16:27:49Z",
+      "first_known_at": "2022-08-03T16:27:49Z",
+      "expected_sha256": "ff766e66a35986d32334c90702f35e93f1e046073509b6d09a2b985e4f16587f",
+      "retrieval_provenance": {
+        "mode": "sec_filed_earnings_release",
+        "sec_accession": "0000915913-22-000134",
+        "sec_accepted_at": "2022-08-03T16:27:49Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2019-launch-60kt-scope",
+      "document_key": "2019-launch",
+      "excerpt": "initial capacity of 60,000 metric tons of LiOH",
+      "claim_context": {
+        "claim_role": "management_expectation",
+        "known_time": {
+          "upper_bound": "2019-01-02T23:59:59Z",
+          "precision": "day",
+          "basis": "publisher_release_date"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton initial project capacity",
+          "target": "60000 metric tons LiOH",
+          "precision": "project-level public design scope"
+        },
+        "capacity_scope": "project-level public description before later two-train contractual and ownership detail"
+      }
+    },
+    {
+      "fragment_key": "2019-launch-staged-commissioning",
+      "document_key": "2019-launch",
+      "excerpt": "commissioning of the Kemerton site is expected to start in stages during the course of 2021",
+      "claim_context": {
+        "claim_role": "management_expectation",
+        "known_time": {
+          "upper_bound": "2019-01-02T23:59:59Z",
+          "precision": "day",
+          "basis": "publisher_release_date"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton staged commissioning start",
+          "from": "2021-01-01",
+          "to": "2021-12-31",
+          "precision": "year"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019-contract-train1-date",
+      "document_key": "2019-contract",
+      "excerpt": "for Train 1, 18 March 2021",
+      "claim_context": {
+        "claim_role": "contract_schedule",
+        "known_time": {
+          "upper_bound": "2019-08-07T16:57:18Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Train 1 construction and successful Commissioning contractual reasonable-endeavours target",
+          "target": "2021-03-18",
+          "precision": "day"
+        },
+        "semantic_guard": "contractual target, not management guidance"
+      }
+    },
+    {
+      "fragment_key": "2019-contract-train2-date",
+      "document_key": "2019-contract",
+      "excerpt": "for Train 2, 25 July 2021",
+      "claim_context": {
+        "claim_role": "contract_schedule",
+        "known_time": {
+          "upper_bound": "2019-08-07T16:57:18Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Train 2 construction and successful Commissioning contractual reasonable-endeavours target",
+          "target": "2021-07-25",
+          "precision": "day"
+        },
+        "semantic_guard": "contractual target, not management guidance"
+      }
+    },
+    {
+      "fragment_key": "2019-contract-debottleneck-capacity",
+      "document_key": "2019-contract",
+      "excerpt": "increase from 20,000 ktpa to 25,000 ktpa lithium hydroxide processing capacity per Train",
+      "claim_context": {
+        "claim_role": "contract_capacity_scope",
+        "known_time": {
+          "upper_bound": "2019-08-07T16:57:18Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "capacity_scope": {
+          "train_count": 2,
+          "initial_per_train_source_wording": "20,000 ktpa",
+          "post_debottleneck_per_train_source_wording": "25,000 ktpa",
+          "interpretation": "contract-defined two-train scope; do not silently overwrite January 2019 project-level 60kt public description"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019-contract-ownership",
+      "document_key": "2019-contract",
+      "excerpt": "Buyer will hold 60% and the Seller will hold 40%",
+      "claim_context": {
+        "claim_role": "ownership_context",
+        "known_time": {
+          "upper_bound": "2019-08-07T16:57:18Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "capacity_scope_note": "ownership context is one reason project-level and attributable/scope descriptions must not be conflated"
+      }
+    },
+    {
+      "fragment_key": "2020-10k-late2021-plus-qualification",
+      "document_key": "2020-10k",
+      "excerpt": "expected to be completed in late 2021, followed by a six month commissioning and qualification process",
+      "claim_context": {
+        "claim_role": "management_expectation_revision",
+        "known_time": {
+          "upper_bound": "2021-02-19T16:37:48Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": [
+          {
+            "subject": "Kemerton construction completion",
+            "target": "late 2021",
+            "precision": "part-year"
+          },
+          {
+            "subject": "commissioning and qualification duration after construction",
+            "duration": "six months",
+            "precision": "approximate"
+          }
+        ]
+      }
+    },
+    {
+      "fragment_key": "2020-10k-50kt-scope",
+      "document_key": "2020-10k",
+      "excerpt": "initial capacity of about 50,000 metric tons (25,000 metric tons per processing train)",
+      "claim_context": {
+        "claim_role": "management_capacity_scope_revision",
+        "known_time": {
+          "upper_bound": "2021-02-19T16:37:48Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "capacity_scope": "two processing trains in the 2020 annual-report ownership/project description",
+        "reconciliation": "preserve alongside January 2019 60kt public project description as a scope/vintage change, not a silent correction"
+      }
+    },
+    {
+      "fragment_key": "2020-10k-sales-2022",
+      "document_key": "2020-10k",
+      "excerpt": "we expect our new plants in La Negra and Kemerton to begin producing sales in 2022",
+      "claim_context": {
+        "claim_role": "management_expectation",
+        "known_time": {
+          "upper_bound": "2021-02-19T16:37:48Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton producing sales",
+          "from": "2022-01-01",
+          "to": "2022-12-31",
+          "precision": "year"
+        },
+        "semantic_guard": "sales is later than construction and distinct from commissioning/qualification/first product"
+      }
+    },
+    {
+      "fragment_key": "2021q2-kemerton2-delay",
+      "document_key": "2021q2",
+      "excerpt": "Kemerton II construction completion now expected by the end of the first quarter 2022",
+      "claim_context": {
+        "claim_role": "management_expectation_revision",
+        "known_time": {
+          "upper_bound": "2021-08-04T16:25:25Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton II construction completion",
+          "target": "2022-03-31",
+          "precision": "quarter-end"
+        }
+      }
+    },
+    {
+      "fragment_key": "2021q2-revision-cause",
+      "document_key": "2021q2",
+      "excerpt": "labor shortages and COVID-19 travel restrictions in Western Australia",
+      "claim_context": {
+        "claim_role": "revision_cause",
+        "known_time": {
+          "upper_bound": "2021-08-04T16:25:25Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "applies_to": "management explanation for prioritizing Kemerton I and revising Kemerton II construction timing"
+      }
+    },
+    {
+      "fragment_key": "2021q2-commercial-production-after-qualification",
+      "document_key": "2021q2",
+      "excerpt": "expected to reach commercial production in 2022 following an approximately six month commissioning and qualification period",
+      "claim_context": {
+        "claim_role": "management_expectation_revision",
+        "known_time": {
+          "upper_bound": "2021-08-04T16:25:25Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton I and II commercial production",
+          "from": "2022-01-01",
+          "to": "2022-12-31",
+          "precision": "year",
+          "precondition": "approximately six month commissioning and qualification period"
+        }
+      }
+    },
+    {
+      "fragment_key": "2021q4-mechanical-complete-commissioning",
+      "document_key": "2021q4",
+      "excerpt": "Kemerton I conversion plant is mechanically complete and in the commissioning phase",
+      "claim_context": {
+        "claim_role": "project_status",
+        "known_time": {
+          "upper_bound": "2022-02-16T16:37:45Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "valid_effective_time": {
+          "as_of": "2022-02-16T16:37:45Z",
+          "precision": "known-as-of",
+          "onset": "unspecified"
+        },
+        "semantic_guard": "mechanical completion achieved; commissioning subsequent; neither implies qualification, first product, commercial production or sales"
+      }
+    },
+    {
+      "fragment_key": "2022q1-first-product-may-expectation",
+      "document_key": "2022q1",
+      "excerpt": "Kemerton I conversion plant is in commissioning and is expected to achieve first product in May",
+      "claim_context": {
+        "claim_role": "management_expectation_revision",
+        "known_time": {
+          "upper_bound": "2022-05-04T16:48:41Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton I first product",
+          "from": "2022-05-01",
+          "to": "2022-05-31",
+          "precision": "month"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022q1-kemerton2-mechanical-h2",
+      "document_key": "2022q1",
+      "excerpt": "Kemerton II conversion plant remains on track for mechanical completion in the second half of 2022",
+      "claim_context": {
+        "claim_role": "management_expectation_revision",
+        "known_time": {
+          "upper_bound": "2022-05-04T16:48:41Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "expectation_horizon": {
+          "subject": "Kemerton II mechanical completion",
+          "from": "2022-07-01",
+          "to": "2022-12-31",
+          "precision": "half-year"
+        }
+      }
+    },
+    {
+      "fragment_key": "2022q2-first-product-outcome",
+      "document_key": "2022q2",
+      "excerpt": "Kemerton I lithium conversion plant in Western Australia achieved first product in July 2022",
+      "claim_context": {
+        "claim_role": "outcome_milestone",
+        "known_time": {
+          "upper_bound": "2022-08-03T16:27:49Z",
+          "precision": "second",
+          "basis": "SEC accepted timestamp"
+        },
+        "valid_effective_time": {
+          "from": "2022-07-01",
+          "to": "2022-07-31",
+          "precision": "month"
+        },
+        "evaluates_prior_expectation": "2022q1-first-product-may-expectation",
+        "semantic_guard": "later July outcome must not be backfilled into the May-2022 or earlier expectation vintages"
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 7,
+    "required_fragments": 16,
+    "raw_blob_digest_must_match_spec": true,
+    "evidence_fragment_must_reference_archived_document": true,
+    "contract_schedule_must_remain_separate_from_management_guidance": true,
+    "capacity_60kt_and_50kt_must_be_preserved_as_scope_vintage_change": true,
+    "project_states_must_remain_distinct": [
+      "construction_completion",
+      "mechanical_completion",
+      "commissioning",
+      "qualification",
+      "first_product",
+      "commercial_production",
+      "sales"
+    ],
+    "later_outcome_must_not_rewrite_prior_expectation": true,
+    "blind_memory_counts_must_not_change": true,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
