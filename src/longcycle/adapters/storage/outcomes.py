@@ -20,6 +20,7 @@ class PostgresOutcomeRepository(PostgresSupport):
                     """
                     SELECT judgment_id, canonical_fact_version_id,
                            outcome_evidence_fragment_id, evaluation_status,
+                           semantic_relation,
                            outcome_from, outcome_to, outcome_precision, outcome_text,
                            outcome_first_known_at, timing_relation,
                            timing_delta_value, timing_delta_unit,
@@ -37,6 +38,7 @@ class PostgresOutcomeRepository(PostgresSupport):
                     "canonical_fact_version_id": evaluation.canonical_fact_version_id,
                     "outcome_evidence_fragment_id": evaluation.outcome_evidence_fragment_id,
                     "evaluation_status": evaluation.evaluation_status.value,
+                    "semantic_relation": evaluation.semantic_relation.value,
                     "outcome_from": evaluation.outcome_from,
                     "outcome_to": evaluation.outcome_to,
                     "outcome_precision": evaluation.outcome_precision.value,
@@ -95,6 +97,7 @@ class PostgresOutcomeRepository(PostgresSupport):
                     INSERT INTO research.judgment_outcome_evaluations (
                         id, judgment_id, canonical_fact_version_id,
                         outcome_evidence_fragment_id, evaluation_status,
+                        semantic_relation,
                         outcome_from, outcome_to, outcome_precision, outcome_text,
                         outcome_first_known_at, timing_relation,
                         timing_delta_value, timing_delta_unit,
@@ -102,7 +105,7 @@ class PostgresOutcomeRepository(PostgresSupport):
                         direction_correct, explanation,
                         evaluator_name, evaluator_version, evaluated_at
                     ) VALUES (
-                        %s, %s, %s, %s, %s,
+                        %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, NULL,
                         %s, %s, %s, %s, %s
@@ -114,6 +117,7 @@ class PostgresOutcomeRepository(PostgresSupport):
                         evaluation.canonical_fact_version_id,
                         evaluation.outcome_evidence_fragment_id,
                         evaluation.evaluation_status.value,
+                        evaluation.semantic_relation.value,
                         evaluation.outcome_from,
                         evaluation.outcome_to,
                         evaluation.outcome_precision.value,
