@@ -1,26 +1,32 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
-from uuid import UUID
+from uuid import NAMESPACE_URL, uuid5
 
 import pytest
 
 from longcycle.application.historical_replay import (
     ReplayEvidence,
     ReplaySnapshot,
+    build_replay_frame,
     build_replay_sequence,
     build_replay_snapshot,
+    build_replay_transition,
 )
 
 
-def evidence(fragment_key: str, known_at: datetime, *, role: str = "management_expectation") -> ReplayEvidence:
-    suffix = len(fragment_key)
+def evidence(
+    fragment_key: str,
+    known_at: datetime,
+    *,
+    role: str = "management_expectation",
+) -> ReplayEvidence:
     return ReplayEvidence(
         fragment_key=fragment_key,
-        evidence_fragment_id=UUID(int=suffix + 1),
-        document_version_id=UUID(int=suffix + 101),
+        evidence_fragment_id=uuid5(NAMESPACE_URL, f"evidence:{fragment_key}"),
+        document_version_id=uuid5(NAMESPACE_URL, f"document:{fragment_key}"),
         artifact_id=None,
-        locator=f"text:{suffix}:{suffix + 5}",
+        locator=f"text:{len(fragment_key)}:{len(fragment_key) + 5}",
         excerpt=f"statement {fragment_key}",
         claim_role=role,
         known_time_upper_bound=known_at,
@@ -90,6 +96,63 @@ def test_sequence_is_monotone_and_deterministic() -> None:
     assert {item.fragment_key for item in snapshots[0].evidence}.issubset(
         {item.fragment_key for item in snapshots[1].evidence}
     )
+
+
+def test_frame_groups_visible_evidence_by_existing_claim_role() -> None:
+    cutoff = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    snapshot = build_replay_snapshot(
+        (
+            evidence("expectation-b", cutoff, role="management_expectation"),
+            evidence("status", cutoff, role="project_status"),
+            evidence("expectation-a", cutoff, role="management_expectation"),
+        ),
+        knowledge_cutoff=cutoff,
+    )
+
+    frame = build_replay_frame(snapshot)
+
+    assert [group.claim_role for group in frame.role_groups] == [
+        "management_expectation",
+        "project_status",
+    ]
+    assert [item.fragment_key for item in frame.role_groups[0].evidence] == [
+        "expectation-a",
+        "expectation-b",
+    ]
+
+
+def test_transition_contains_only_evidence_newly_knowable_in_window() -> None:
+    first = datetime(2022, 5, 4, 16, 48, 41, tzinfo=UTC)
+    outcome = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    population = (
+        evidence("first-product-expectation", first),
+        evidence("first-product-outcome", outcome, role="outcome_milestone"),
+    )
+    previous = build_replay_snapshot(
+        population,
+        knowledge_cutoff=outcome - timedelta(seconds=1),
+    )
+    current = build_replay_snapshot(population, knowledge_cutoff=outcome)
+
+    transition = build_replay_transition(previous, current)
+
+    assert [group.claim_role for group in transition.new_evidence_groups] == ["outcome_milestone"]
+    assert [item.fragment_key for item in transition.new_evidence_groups[0].evidence] == [
+        "first-product-outcome"
+    ]
+    serialized = transition.model_dump(mode="json")
+    assert "first-product-expectation" not in str(serialized)
+
+
+def test_transition_rejects_non_monotone_snapshots() -> None:
+    first = datetime(2022, 5, 4, 16, 48, 41, tzinfo=UTC)
+    second = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    retained = evidence("retained", first)
+    previous = build_replay_snapshot((retained,), knowledge_cutoff=first)
+    current = build_replay_snapshot((), knowledge_cutoff=second)
+
+    with pytest.raises(ValueError, match="not monotone"):
+        build_replay_transition(previous, current)
 
 
 def test_naive_cutoff_is_rejected() -> None:
