@@ -48,6 +48,12 @@
       "path": "src/longcycle/adapters/storage/postgres.py",
       "contains": "FactAssertion evidence must exist on its extraction document",
       "description": "PostgreSQL write path rejects fragments outside the assertion extraction document."
+    },
+    {
+      "kind": "runtime",
+      "path": "scripts/execute_grounded_reality_projection.py",
+      "contains": "for link in fact.evidence",
+      "description": "Grounded Reality execution materializes every Fact evidence ref instead of a legacy singular fragment."
     }
   ],
   "revisit_when": "Revisit only if provenance is replaced by a richer claim graph that preserves fragment roles, source/document attribution and known-time independently; a convenience single-evidence API is not sufficient.",
