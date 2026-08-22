@@ -82,7 +82,7 @@
     {
       "asset_id": "evt005-fmc-counterexample-acquisition-run32572209653",
       "role": "raw_source_acquisition_cache",
-      "required_for_current_task": true,
+      "required_for_current_task": false,
       "transport": "github_release",
       "release_tag": "longcycle-dev-binary-cache",
       "google_drive_file_id": null,
@@ -91,7 +91,21 @@
       "sha256": "610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef",
       "content_summary": "Externally acquired EVT-005 source pack: FMC 2017 Annual Report/Form 10-K PDF and May 2 2018 issuer Q1 results HTML, each raw-SHA pinned and semantically verified by the acquisition action.",
       "components": [],
-      "restore_instruction": "Download from Release tag longcycle-dev-binary-cache into the current Action material root, verify outer SHA-256 610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef plus both raw document hashes, execute the normal materialized Evidence path, then discard the local source copy."
+      "restore_instruction": "Download from Release tag longcycle-dev-binary-cache only if EVT-005 needs re-grounding, verify outer SHA-256 plus both raw document hashes, run the normal materialized Evidence path, then discard the local source copy."
+    },
+    {
+      "asset_id": "evt005-fmc-grounded-evidence-run32575153279",
+      "role": "research_evidence_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1htAUh-LvmtIHFFMrD7CzPRL4S9ssGBD8",
+      "file_name": "evt005-fmc-grounded-evidence-32575153279.zip",
+      "size_bytes": 37489,
+      "sha256": "c9802f5023426f1b49157229d228cbd66b606788aa2d101a8e1a00d5e68e53df",
+      "content_summary": "Longcycle-generated EVT-005 grounded-evidence execution JSON and diagnostic log from the successful strict parser/Evidence run. This generated relay contains no externally acquired source payloads.",
+      "components": [],
+      "restore_instruction": "Restore from Google Drive file id 1htAUh-LvmtIHFFMrD7CzPRL4S9ssGBD8 only for EVT-005 execution inspection, verify outer SHA-256 c9802f5023426f1b49157229d228cbd66b606788aa2d101a8e1a00d5e68e53df, and treat the repository receipt plus source Release identities as the control-plane authority."
     }
   ]
 }
