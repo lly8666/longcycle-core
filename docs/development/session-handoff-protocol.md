@@ -14,7 +14,7 @@ terminal mission
 + minimum active context
 + live Git/CI state
 + exact binary assets required to continue
-+ how to verify and open those assets
++ how to verify and restore those assets
 ```
 
 The handoff is deliberately split into a small Git control plane and a bounded external binary data plane.
@@ -32,7 +32,7 @@ main/FRESH_AGENT_BOOTSTRAP.md
 → current.json
 → live HEAD / delta / CI refresh
 → bounded resume_read_set
-→ data-plane.json only as required by the cursor
+→ data-plane.json only as required by cursor
 → execute
 ```
 
@@ -48,16 +48,19 @@ The fixed transfer phrase remains task-free:
 | cross-industry method | `METHODOLOGY_CORE.md` | reusable research method |
 | mission calibration | `.longcycle/continuity/mission-fidelity.json` | semantic challenge, not answers |
 | dynamic control plane | `.longcycle/handoff/current.json` | goals, workstreams, cursor, live snapshot |
-| binary data plane | `.longcycle/handoff/data-plane.json` | external asset IDs, hashes, restore contract |
+| binary data plane manifest | `.longcycle/handoff/data-plane.json` | asset identity, transport, hashes, restore contract |
 | active context | handoff-referenced files | current benchmark/task details |
 | history | Git + devlogs | rationale / old state |
-| large bytes | verified external assets | portable DB/archive/runtime payloads |
+| externally acquired source bytes | GitHub Release during development | immutable source transport/cache |
+| Longcycle-generated binary state | Google Drive during development | replay/execution/runtime transport/cache |
 
-One information class has one normal owner. Google Drive metadata is never a truth source for research state.
+One information class has one normal owner. Release/Drive metadata is never research truth by itself.
 
 ## 4. Mission assimilation
 
 Read Strategy + Method Core first, then independently reconstruct the mission and method in the Agent's own words. Only then read the mission-fidelity contract and repair omissions. A high-capability transfer is not proven by repeating headings.
+
+Product success is not Agent benchmark score. The Agent must understand that Longcycle should let an industry researcher quickly build a defensible mental model of an industry, with Reality, contemporaneous Judgment, later Outcome, source grounding, disagreement and unknowns. A machine-clean benchmark that leaves the researcher to reconstruct the field manually is a product failure.
 
 Do not persist private chain-of-thought. Persist only concise decisions, task hierarchy, reproducible constraints and verification results.
 
@@ -78,13 +81,13 @@ Implementation/data freshness:
 ```text
 live Git graph / HEAD / CI
 + canonical repository receipts
-+ externally restored bytes that match repository SHA-256
++ externally restored bytes matching repository SHA-256
 > deterministic-derived state
 > checkpoint snapshot
-> narrative / Drive filename / Drive timestamp
+> narrative / transport metadata
 ```
 
-A Drive file id is a locator. Its repository-pinned digest is the integrity authority.
+A Release filename/tag or Drive file id is a locator. Repository-pinned identity and digest control integrity.
 
 ## 6. Control plane contract
 
@@ -99,69 +102,94 @@ A Drive file id is a locator. Its repository-pinned digest is the integrity auth
 - active context;
 - bounded `resume_read_set` (8 files or fewer);
 - `data_plane_manifest_path = .longcycle/handoff/data-plane.json`;
-- live CI snapshot and explicit refresh instruction;
+- live CI snapshot plus refresh instruction;
 - ordered next actions and unresolved questions.
 
 The cursor answers only what just finished, what resumes now, why, what ends it and what immediately follows. It is not a devlog.
 
 ## 7. Binary data plane contract
 
-`data-plane.json` is the only normal owner of current external binary handoff assets. Each asset records:
+`data-plane.json` uses `longcycle-handoff-data-plane/v2` and transport mode `github_release_sources_google_drive_generated`.
+
+Each asset records:
 
 - stable logical asset id and role;
 - whether the current cursor requires it;
-- transport (`google_drive` under the current environment constraint);
-- Drive file id and filename;
-- byte length and outer SHA-256;
-- important inner components with byte length and SHA-256;
+- transport;
+- Release tag or Drive file id as appropriate;
+- filename, byte length and outer SHA-256;
+- important inner components when needed;
 - concise content summary;
 - deterministic restore instruction.
 
-Current transport mode is `sandbox_google_drive_manual_relay`: large bytes move through the ChatGPT sandbox and Google Drive because Git text writes cannot carry them and GitHub Actions cannot consume Drive directly.
+### 7.1 GitHub Release lane: externally acquired raw source
 
-This is a transport limitation, not a reason to make Drive the database.
+Use GitHub Release only for externally acquired immutable source payloads/source packs: PDF, HTML, filings, formal announcement bytes and bundles that contain them.
 
-### Restore algorithm
+Rules:
+
+- unique immutable filename; never overwrite a recorded asset;
+- preserve retrieval host and upstream source identity separately from transport;
+- Release transport never upgrades or downgrades source authority;
+- re-grounding restores only the required source pack, verifies outer/raw hashes, then uses normal archive/parser/Evidence paths;
+- raw source packs must never be classified as Longcycle-generated state merely because an Action packaged them.
+
+### 7.2 Google Drive lane: Longcycle-generated binary state
+
+Use Google Drive for Longcycle-generated binary state: DuckDB replay materializations, execution/reconciliation output packs, generated DB snapshots when explicitly needed, and offline runtime packs.
+
+Rules:
+
+- Drive file id + repository-pinned digest define the object;
+- generated replay/execution packs are not source archives and must not inherit source authority;
+- DuckDB/replay materializations open read-only by default;
+- if raw source is needed, restore it separately from Release;
+- successor generated state gets a new Drive file/id and repository manifest entry.
+
+### 7.3 Restore algorithm
 
 ```text
 1. recover control plane first
-2. decide which assets are required_for_current_task
-3. fetch only those Drive file ids
-4. verify outer size + SHA-256 before extraction
-5. verify required inner component digests
-6. restore compatible offline runtime only if needed
-7. open research packs read-only by default
-8. fail closed on missing asset, hash mismatch or ABI mismatch
+2. inspect data-plane manifest
+3. decide which assets are required_for_current_task
+4. if none are required, do not restore old binary state
+5. for required Release source packs: fetch exact tag/name, verify outer + raw hashes
+6. for required Drive generated packs: fetch exact file id, verify outer + component hashes
+7. restore compatible runtime only if actually needed
+8. open generated research packs read-only by default
+9. fail closed on missing asset, hash mismatch or ABI mismatch
 ```
 
-If the Drive connector is unavailable, ask only for the exact repository-identified asset to be uploaded; never ask the user to reconstruct project background.
+If a required transport is unavailable, ask only for the exact repository-identified asset to be relayed/uploaded. Never ask the user to reconstruct project background.
 
 ## 8. Database handoff boundary
 
-Do not move a PostgreSQL cluster between sessions. PostgreSQL remains the transactional write/ops runtime for concurrent queues, leases, outbox and normal write semantics. Recreate it in GitHub Actions or another service-capable environment when those semantics are required.
+Do not move a live PostgreSQL cluster between sessions or place it in Release. PostgreSQL remains the transactional write/ops runtime for queues, leases, outbox and normal writes. Recreate it in GitHub Actions or another service-capable environment when those semantics are required.
+
+If a generated database snapshot is explicitly useful for handoff, it belongs in Google Drive and remains a snapshot, not live authority.
 
 Portable durable handoff uses:
 
 ```text
-immutable content-addressed source/artifact bytes
-+ repository machine receipts
-+ reconciled DuckDB research/evidence packs
+Git control-plane receipts and identities
++ immutable source bytes from Release when needed
++ generated DuckDB/execution/runtime state from Drive when needed
 ```
 
-DuckDB is a read/replay materialization, not a replacement for raw evidence. The sandbox opens it read-only unless an explicitly designed pack-building task says otherwise.
+DuckDB is a read/replay materialization, not a replacement for raw Evidence.
 
-Offline DuckDB runtime assets are ABI-specific. A wheel built for CPython 3.11 is not acceptable for a CPython 3.13 sandbox merely because both say DuckDB 1.5.5. Runtime assets therefore pin language ABI, architecture, version and SHA.
+Offline runtime assets are ABI-specific. Runtime mismatch fails closed and produces a new immutable generated runtime pack rather than forcing an incompatible binary.
 
 ## 9. Capacity and pack policy
 
-The current Drive capacity is limited, so handoff must be incremental and hot-pluggable rather than monolithic.
+Handoff must be incremental and hot-pluggable rather than monolithic.
 
 - Do not copy the whole multi-industry database at every session boundary.
-- Keep only the active/recent immutable packset needed for continuation plus small runtime packs.
-- Prefer bounded industry/time or task packs and content-addressed cold bundles.
-- New immutable bytes get a new asset id/file id; never replace bytes behind an existing manifest entry.
-- Old assets may be garbage-collected only after a verified successor exists and no current handoff references them.
-- The Git manifest remains small even when total historical storage grows.
+- Do not restore old-industry binaries when the current cursor does not require them.
+- Prefer bounded task/industry/time packs.
+- New immutable source bytes get a new Release filename.
+- New generated bytes get a new Drive file/id.
+- The Git manifest remains small and resume-relevant; it is not required to enumerate every cold historical asset forever.
 
 ## 10. Workstreams and vertical alignment
 
@@ -176,13 +204,13 @@ atomic task
 ↑ terminal mission
 ```
 
-Stop local optimization when `done_when` is met or marginal value collapses. Continuity infrastructure must return control to the research main path once transfer safety is demonstrated.
+Stop local optimization when `done_when` is met or marginal product value collapses. Continuity infrastructure must return control to the research main path once transfer safety is demonstrated.
 
 ## 11. Capability-aware entry
 
 The cursor declares `high_capability_reasoning` or `bounded_execution`. If a high-capability task cannot be reliably performed, obey `stop_and_escalate`; do not simulate confidence.
 
-User goals and constraints are authoritative, but a user-proposed implementation method is still subject to independent technical judgment.
+User goals and constraints are authoritative, but a proposed implementation method is still subject to independent technical judgment.
 
 ## 12. Micro-checkpoint lifecycle
 
@@ -191,48 +219,49 @@ After a coherent task boundary that changes what the next Agent should do:
 ```text
 1. commit substantive work
 2. run vertical alignment
-3. if required binary state changed, create/verify/relay immutable assets
+3. if resume-relevant binary state changed, create/upload/verify immutable assets on the correct transport
 4. update data-plane.json
-5. update current.json
-6. set checkpoint_based_on_head_sha to the substantive-work commit
-7. commit the handoff sync
-8. refresh live CI when correctness is material
+5. update any durable completion/exit receipt
+6. update current.json
+7. set checkpoint_based_on_head_sha to the last substantive/control-plane commit before current.json sync
+8. commit the handoff sync
+9. refresh live CI when correctness is material
+10. run bounded artificial-ignorance rehearsal
 ```
 
-`.longcycle/handoff/current.json` and `.longcycle/handoff/data-plane.json` are handoff-mutable paths. Large binary bytes never enter Git.
-
-If live HEAD differs from the checkpoint base, inspect intervening commits and fail closed into delta reconciliation rather than guessing.
+Because `current.json` itself is committed after its checkpoint base, live HEAD may normally be one handoff-only commit ahead. Fresh Agents must inspect the delta and classify it; this is not automatically stale state.
 
 ## 13. Test pyramid
 
 A handoff mechanism is not accepted from prose alone.
 
-1. Static contracts: schema, bounded read set, path ownership, hashes, workstream/cursor validity.
+1. Static contracts: schema, bounded read set, asset-role/transport validity, hashes, workstream/cursor validity.
 2. Repository-only reconstruction: rebuild current state without chat history.
-3. Binary roundtrip: Action/sandbox → Drive → fresh sandbox, outer + component SHA verification.
-4. Offline runtime drill: install the pinned runtime in a clean venv with no network and open the required portable DB.
+3. Binary transport check when the current cursor requires bytes.
+4. Offline runtime drill when a runtime pack is actually required.
 5. Artificial-ignorance drill: report current mission/state/task/data requirements using only the bounded bootstrap.
 6. Genuine fresh-Agent transfer when useful.
 
-A fresh Agent that recovers the task but cannot identify/open the required binary state has not fully passed v5 handoff.
+A transfer can pass without restoring any binary pack when `required_for_current_task=false` for all assets and the cursor genuinely does not need old bytes.
 
 ## 14. Failure policy
 
 Fail closed if any of these occur:
 
-- checkpoint is stale relative to substantive commits;
+- checkpoint is stale relative to unclassified substantive commits;
 - required resume/data path is missing;
-- Drive asset missing or wrong size/hash;
-- inner DB/receipt/runtime component hash mismatch;
-- runtime ABI incompatible with sandbox;
-- data package exists but cannot be opened read-only;
+- source pack is on the wrong transport;
+- generated replay/runtime pack is on the wrong transport;
+- required asset missing or wrong size/hash;
+- inner component digest mismatch;
+- runtime ABI incompatible;
 - reconstructed state contradicts canonical receipts/live Git;
 - the Agent needs old chat text to know what to do next.
 
-The user should never need to repeat already persisted background. A precise request for one missing binary asset is acceptable; a request to reconstruct project history is not.
+The user should never need to repeat persisted background. A precise request for one missing binary asset is acceptable; asking the user to reconstruct project history is not.
 
 ## 15. Evolution rule
 
 Material continuity changes require an observed failure or adversarial case, the smallest owning repair, typed schema update when semantics change, repository regression tests, an artificial-ignorance drill and a return to the product main path once safe.
 
-The target remains minimum sufficient context: future Agents remember the right abstractions, recover the exact bytes they need, and continue without turning handoff engineering into the roadmap.
+The target remains minimum sufficient context: future Agents remember the right abstractions, restore only the exact bytes they need, and continue without turning handoff engineering into the roadmap.
