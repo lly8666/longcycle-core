@@ -1,0 +1,172 @@
+name: Acquire EVT-004 contract-margin sources once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: c3bfbaaefa594246b26ef1999b6394c3806febac
+
+jobs:
+  acquire:
+    if: github.event.issue.title == '[longcycle-evt004-contract-margin-acquire-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install bounded PDF reader
+        run: python -m pip install --disable-pip-version-check --quiet pypdf==6.15.0
+
+      - name: Acquire and independently verify source bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p acquired
+          python - <<'PY'
+          import hashlib
+          import io
+          import json
+          import re
+          import urllib.request
+          from html import unescape
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          USER_AGENT = 'Mozilla/5.0 (compatible; LongcycleCollector/0.1; +https://github.com/lly8666/longcycle-core)'
+          ITEMS = [
+              {
+                  'key': 'livent-2019-10k-annualreports',
+                  'url': 'https://www.annualreports.com/HostedData/AnnualReportArchive/l/NYSE_LTHM_2019.pdf',
+                  'kind': 'pdf',
+                  'upstream_system': 'SEC EDGAR',
+                  'upstream_external_id': '0001742924-20-000012',
+                  'upstream_title': 'Livent Corporation 2019 Form 10-K',
+                  'required_phrases': [
+                      'Livent Corporation',
+                      'Form 10-K',
+                      'fixed or formula-based prices',
+                      'pass on increased costs',
+                      'FIFO inventory',
+                      'Finished goods',
+                      'Semi-finished goods',
+                  ],
+              },
+              {
+                  'key': 'livent-2019q3-issuer-release',
+                  'url': 'https://ir.arcadiumlithium.com/investors/news/news-details/2019/Livent-Releases-Third-Quarter-2019-Results-11-05-2019/',
+                  'kind': 'html',
+                  'upstream_system': 'Livent issuer investor relations',
+                  'upstream_external_id': '2019-11-05-Q3-results',
+                  'upstream_title': 'Livent Releases Third Quarter 2019 Results',
+                  'required_phrases': [
+                      'Livent Releases Third Quarter 2019 Results',
+                      '4,000 metric tons of hydroxide inventory',
+                      'higher customer commitments',
+                      'favorable product / customer mix',
+                      'lower costs from sourcing third-party carbonate',
+                  ],
+              },
+          ]
+
+          def fetch(url):
+              request = urllib.request.Request(url, headers={
+                  'User-Agent': USER_AGENT,
+                  'Accept': '*/*',
+                  'Accept-Language': 'en-US,en;q=0.8',
+              })
+              with urllib.request.urlopen(request, timeout=45) as response:
+                  return response.read(), response.geturl(), response.status, dict(response.headers.items())
+
+          def html_text(raw):
+              decoded = raw.decode('utf-8', errors='replace')
+              decoded = re.sub(r'(?is)<(script|style|noscript).*?>.*?</\\1>', ' ', decoded)
+              return ' '.join(unescape(re.sub(r'<[^>]+>', ' ', decoded)).split())
+
+          def pdf_text(raw):
+              if not raw.startswith(b'%PDF-'):
+                  raise ValueError('payload is not PDF')
+              reader = PdfReader(io.BytesIO(raw))
+              return ' '.join(' '.join((page.extract_text() or '').split()) for page in reader.pages)
+
+          rows = []
+          for item in ITEMS:
+              raw, final_url, status, headers = fetch(item['url'])
+              if status != 200:
+                  raise ValueError(f"unexpected HTTP {status} for {item['key']}")
+              text = pdf_text(raw) if item['kind'] == 'pdf' else html_text(raw)
+              lowered = text.lower()
+              missing = [phrase for phrase in item['required_phrases'] if phrase.lower() not in lowered]
+              if missing:
+                  raise ValueError(f"semantic identity/claim phrases missing for {item['key']}: {missing}")
+              suffix = '.pdf' if item['kind'] == 'pdf' else '.html'
+              raw_path = Path('acquired') / f"{item['key']}{suffix}"
+              raw_path.write_bytes(raw)
+              text_path = Path('acquired') / f"{item['key']}-visible.txt"
+              text_path.write_text(text, encoding='utf-8')
+              rows.append({
+                  'key': item['key'],
+                  'ok': True,
+                  'requested_url': item['url'],
+                  'final_url': final_url,
+                  'status': status,
+                  'content_type': headers.get('Content-Type') or headers.get('content-type'),
+                  'raw_sha256': hashlib.sha256(raw).hexdigest(),
+                  'raw_bytes': len(raw),
+                  'visible_text_sha256': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                  'visible_text_bytes': len(text.encode('utf-8')),
+                  'upstream_announcement': {
+                      'issuer': 'Livent Corporation',
+                      'system': item['upstream_system'],
+                      'external_id': item['upstream_external_id'],
+                      'title': item['upstream_title'],
+                  },
+                  'verified_phrases': item['required_phrases'],
+              })
+
+          payload = {
+              'schema_version': 'longcycle-approved-redistributor-acquisition/v1',
+              'task_id': 'EVT-004-CONTRACT-VINTAGE-MARGIN',
+              'active_head_sha': Path('.git/HEAD').read_text(errors='ignore').strip(),
+              'rows': rows,
+          }
+          Path('acquired/acquisition.json').write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Upload acquired source bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evt004-contract-margin-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: acquired/
+
+      - name: Report acquisition result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f acquired/acquisition.json ]]; then
+            body=$(printf 'EVT004_CONTRACT_MARGIN_ACQUIRE_PASS head=%s run_id=%s\n\n```json\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$(cat acquired/acquisition.json)")
+          else
+            body="EVT004_CONTRACT_MARGIN_ACQUIRE_FAIL head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
