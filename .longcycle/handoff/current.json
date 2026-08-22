@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 42,
+  "continuity_sequence": 43,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "8a0b886ebf94e2d07ef5017284a400f53900ab4c",
+  "checkpoint_based_on_head_sha": "053d4b53db89e2c160b816cee1f25c5abfe94077",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "Cold start from Issue #2 and the active PR/branch. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and .longcycle/handoff/data-plane.json. Refresh live HEAD/CI before trusting snapshots. Load only the bounded resume_read_set required by the cursor. Never ask the user to reconstruct persisted background. Every substantive work session must finish by advancing this repository handoff after the final substantive checkpoint.",
@@ -17,34 +17,35 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support temporally truthful no-lookahead canonical Reality + contemporaneous Expectation/Judgment + later Outcome replay across meaningful industrial trajectories using reusable primitives rather than lithium-specific hacks.",
-    "short_term_goal": "Complete the bounded hydroxide expectation-revision trajectory with exact archived source bytes: recover Livent 2018 and 2019 Q1 filing vintages, ground the high-nickel to hydroxide thesis and slower-than-anticipated pace revision, and replay rationale/relation context without hindsight leakage or source-authority downgrade.",
-    "next_big_step": "Resolve an authoritative or strongly verified same-content byte transport for the Livent 2019 Q1 10-Q, then archive/hash the locked 2018 10-K and 2019 Q1 10-Q, execute a grounded Evidence spec, and only then project Judgment vintages and any justified REVISES relation.",
-    "local_optimization_stop_rule": "Grounded Judgment rationale/relation projection is now verified reusable infrastructure. Do not extend generic schema, temporal semantics or agent/handoff infrastructure for EVT-003. Treat SEC cloud-runner blocking as a source-transport problem; never reduce evidence authority merely to make retrieval easier. Remain inside sealed UP-CHEMICALS.",
+    "short_term_goal": "Complete the bounded Livent hydroxide expectation-revision trajectory from exact source bytes: archive the locked 2018 10-K and 2019 Q1 10-Q, ground the high-nickel-to-hydroxide thesis and slower-than-anticipated pace revision, then replay source-backed Judgment context without hindsight leakage or source-authority downgrade.",
+    "next_big_step": "Acquire and SHA-pin the actual Livent 2019 Q1 filing bytes in an approved acquisition/manual-relay environment, use the now-proven materialized source lane to archive both locked Livent vintages through grounded Evidence v2, then persist Judgment vintages and a REVISES edge only if source-backed semantic identity and chronology justify it.",
+    "local_optimization_stop_rule": "The materialized source-access lane and grounded Judgment-context projection are both runtime-proven reusable infrastructure. Do not add more generic source/archive/schema/temporal/handoff framework work before attempting the real two-vintage EVT-003 replay. Only a concrete defect exposed by that replay justifies reopening architecture work. Remain inside sealed UP-CHEMICALS.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's historical recovery gap."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "first-end-to-end-reality-judgment-outcome-replay",
-    "last_completed_action": "Implemented a generic grounded Judgment context projection and PostgreSQL executor for source-backed rationales and revision relations. Fixed-head run 32562077475 on 6faeb929... passed PostgreSQL 17 migrations through 0024, Mypy on 75 source files, 15 focused tests, POSTGRES_EPISTEMIC_MEMORY_SMOKE_PASS and full Pytest 228 passed. A bounded SEC byte probe then established that GitHub-hosted runners receive HTTP 403 from direct SEC filing fetches; no bytes were accepted into the archive. The 2018 Livent 10-K same-filing PDF transport candidate and the unresolved 2019 Q1 transport are recorded in EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json at substantive checkpoint 8a0b886e....",
-    "current_task": "Resolve source transport for the locked Livent 2019 Q1 10-Q without weakening source authority. Once an authoritative or strongly verified same-content byte source exists, hash/archive the 2018 10-K and 2019 Q1 10-Q, create and execute the bounded hydroxide Evidence spec, and then ground the two Judgment vintages plus rationale/revision context.",
-    "why_now": "The application/storage/replay path for Judgment rationales and relations is now proven. The only gating defect exposed by EVT-003 is source-byte transport: SEC rejects direct GitHub-hosted runner fetches. Solving or cleanly routing around that transport boundary is required before Longcycle may claim archival Evidence or a formal revision edge.",
-    "done_when": "Both locked Livent filing vintages are archived as exact content-addressed bytes from authoritative or strongly verified same-content transports; conservative known-time bounds are recorded; claim-scoped Evidence grounding passes; the 2018 thesis and 2019 Q1 slower-pace Judgment replay without lookahead; REVISES is persisted only if the grounded subject/topic identity supports it. No unsealed shard search or blind-memory mutation occurs.",
+    "last_completed_action": "Closed the reusable blocked-source acquisition gap with a generic SHA-pinned materialized_file transport at the source boundary. Grounded Evidence spec v2 can now consume externally acquired bytes under a bounded material root while preserving publisher/canonical URL identity and then using the unchanged DocumentArchiver -> content-addressed archive -> parser artifact -> EvidenceFragment path. PR CI run 32563367138 on head 4a551e4b... proved MATERIALIZED_GROUNDED_EVIDENCE_SMOKE_PASS in PostgreSQL 17, Mypy on 76 source files, full Pytest 233 passed, existing Reality/Judgment/epistemic/no-lookahead smokes and memory audits. Durable receipt EVT-003-materialized-source-transport-receipt-v1.json was committed at substantive checkpoint 053d4b53....",
+    "current_task": "Obtain the actual verified Livent 2019 Q1 10-Q bytes, compute and pin their raw SHA-256, materialize them under an approved bounded root, then author and execute the final two-document EVT-003 grounded Evidence v2 spec for the 2018 10-K and 2019 Q1 10-Q. After Evidence persists, project the two Judgment vintages and source-backed context, adding REVISES only if the grounded statements are the same semantic object with valid chronology.",
+    "why_now": "The prior blocker was architectural only insofar as Longcycle had no safe way to ingest authoritative bytes acquired outside the CI runner. That gap is now closed and runtime-proven. The remaining blocker is the real source material itself, especially the 2019 Q1 bytes; more framework work would be local optimization rather than progress on the benchmark.",
+    "done_when": "Both locked Livent filing vintages have source-supported identity/known-time and exact locked raw SHA-256 values; grounded Evidence v2 archives both through the normal immutable path; claim-scoped Evidence persists with zero Fact/Judgment promotion in the Evidence executor; the 2018 and 2019 Judgment vintages plus justified rationales/relations persist; REVISES exists only if same-object semantics and chronology support it; PostgreSQL -> sealed DuckDB point-in-time replay proves no hindsight leakage. No unsealed shard search or blind-memory mutation occurs.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Use the locked Q1 SEC accession 0001742924-19-000025 to locate an authoritative or strongly verifiable same-content byte transport (prefer Livent/company filing CDN or another source whose filing identity/content can be cross-checked). Do not accept a third-party mirror as canonical truth solely because SEC returns 403 to GitHub runners. If no such transport is recoverable, persist the retrieval blocker and design the smallest source-access lane rather than broadening research scope."
+    "next_atomic_action": "Acquire the exact or strongly verified same-content Livent 2019 Q1 filing payload for accession 0001742924-19-000025 outside the SEC-blocked GitHub runner, compute SHA-256 immediately, retain its SEC/source identity and conservative availability bound, then place it in a bounded material root for grounded Evidence v2. Manual relay through the sandbox is acceptable as transport because transport no longer defines source authority. Do not broaden source search or add new infrastructure before this attempt."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / hydroxide expectation revision / source-byte transport",
+    "label": "Lithium-battery first benchmark / Livent hydroxide expectation revision / real source material acquisition",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
       "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json",
       "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-expectation-revision-plan-v1.json",
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json"
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-materialized-source-transport-receipt-v1.json"
     ],
     "core_exclusion_terms": [
       "lithium-battery",
@@ -67,7 +68,7 @@
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
-    "phase": "sealed_up_chemicals_hydroxide_cognition_context_projection_proven_source_transport_blocked",
+    "phase": "sealed_up_chemicals_materialized_source_lane_proven_real_livent_q1_bytes_next",
     "search_visibility": "self_verification",
     "total_raw_leads": 683,
     "sealed_shards": [
@@ -76,38 +77,39 @@
     "shard_count": 14,
     "seal_rule": "UP-CHEMICALS blind memory remains sealed/frozen. Fresh source work is allowed only inside bounded verification/evidence/replay tasks for this sealed shard; all other shards remain search-isolated until their own seal rule is satisfied. Search or transport failure does not falsify a Memory Lead, and no source-authority downgrade is allowed merely to bypass retrieval blocking.",
     "next_research_actions": [
-      "Resolve authoritative or strongly verified same-content transport for Livent 2019 Q1 10-Q.",
-      "Archive/hash the locked 2018 10-K and 2019 Q1 10-Q and execute claim-scoped Evidence grounding.",
-      "Project the 2018 thesis and 2019 Q1 slower-pace Judgment vintages with rationale context.",
-      "Persist REVISES only if grounded semantic identity supports it; otherwise preserve separate vintages.",
+      "Acquire and SHA-pin the real Livent 2019 Q1 10-Q source bytes using the approved materialized transport lane.",
+      "Acquire/pin the locked 2018 10-K source bytes and execute the final two-document grounded Evidence v2 spec.",
+      "Project the source-backed 2018 thesis and 2019 Q1 slower-pace Judgment vintages plus rationale context.",
+      "Persist REVISES only if grounded semantic identity and chronology support it; otherwise preserve separate Judgment vintages.",
+      "Seal PostgreSQL -> DuckDB replay and prove no-lookahead; stop at cognition history if a later comparable Outcome is not source-supportable.",
       "Do not enter unsealed shards or mutate sealed blind-memory artifacts."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32562077475,
-    "observed_head_sha": "6faeb9298381399455c982173a947423985607b8",
-    "conclusion": "Fixed-head Judgment-context projection gate run 32562077475 passed on 6faeb929...: PostgreSQL 17 migrations through 0024, Repair Memory audit, Mypy with no issues in 75 source files, 15 focused tests, POSTGRES_EPISTEMIC_MEMORY_SMOKE_PASS, full Pytest 228 passed, diff clean and blind-memory unchanged. Subsequent 8a0b886e... is the research transport/context receipt; fresh sessions must still refresh live HEAD/CI.",
-    "mypy_summary": "Run 32562077475: Mypy hard gate succeeded, 75 source files.",
-    "pytest_summary": "Run 32562077475: full Pytest hard gate succeeded, 228 passed.",
-    "ruff_summary": "CI #969: Ruff diagnostic step succeeded; it remains diagnostic rather than project-state authority.",
-    "refresh_instruction": "Fetch PR #1 and live design/industry-memory HEAD. Compare checkpoint base 8a0b886ebf94e2d07ef5017284a400f53900ab4c to live HEAD. If every later path is handoff-mutable only, continue from the Livent Q1 source-transport cursor; otherwise inspect substantive intervening commits before execution."
+    "last_observed_run": 32563367138,
+    "observed_head_sha": "4a551e4b85f9c643de28644935a7ed841b1ed6c2",
+    "conclusion": "PR CI run 32563367138 on product head 4a551e4b... passed all hard gates: PostgreSQL 17 migrations through 0024; repository, Judgment, Reality and typed epistemic smokes; MATERIALIZED_GROUNDED_EVIDENCE_SMOKE_PASS; both no-lookahead replay smokes; Mypy with no issues in 76 source files; full Pytest 233 passed; 14 compact shard indexes; memory-history current raw=683 formal_typed=625 with zero candidates exceeding current. Ruff remains diagnostic-only campaign debt and was not treated as a blocking architecture task.",
+    "mypy_summary": "Run 32563367138: Mypy hard gate succeeded, 76 source files.",
+    "pytest_summary": "Run 32563367138: full Pytest hard gate succeeded, 233 passed.",
+    "ruff_summary": "Run 32563367138: Ruff diagnostic remained non-green due broad pre-existing campaign cleanup debt; hard correctness gates were green. Do not broaden EVT-003 into Ruff cleanup.",
+    "refresh_instruction": "Fetch PR #1 and live design/industry-memory HEAD. Compare substantive checkpoint base 053d4b53db89e2c160b816cee1f25c5abfe94077 to live HEAD. If every later path is handoff-mutable only, continue from actual Livent Q1 source-material acquisition; otherwise inspect substantive intervening commits before execution."
   },
   "workstreams": [
     {
       "workstream_id": "first-end-to-end-reality-judgment-outcome-replay",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "hydroxide_cognition_projection_proven_q1_source_transport_next",
-      "summary": "Project-level replay, state-as-of Reality and storage-neutral Judgment rationale/relation replay are proven. EVT-003 also now has a generic grounded context write path. The main path is no longer architecture work: it is recovering exact Livent filing bytes and grounding the 2018-to-2019 hydroxide cognition trajectory without authority downgrade.",
+      "status": "materialized_transport_proven_real_livent_q1_bytes_next",
+      "summary": "Project-level replay, state-as-of Reality, Judgment rationale/relation replay and blocked-source materialized Evidence transport are all reusable and runtime-proven. The main path is now purely the real Livent source trajectory: obtain exact bytes, archive them, ground the two cognition vintages and prove replay without lowering evidence authority.",
       "next_actions": [
-        "Resolve Livent 2019 Q1 filing byte transport under accession 0001742924-19-000025.",
-        "Archive/hash 2018 and Q1 2019 filings and execute EVT-003 grounded Evidence spec.",
-        "Project source-backed Judgment vintages plus rationale/relation context.",
-        "Stop with truthful ambiguity if a formal REVISES relation or later Outcome is not supportable."
+        "Acquire and SHA-pin Livent 2019 Q1 filing bytes under accession 0001742924-19-000025.",
+        "Acquire/pin the locked 2018 10-K filing bytes and run the two-document EVT-003 grounded Evidence v2 spec through materialized transport.",
+        "Persist source-backed Judgment vintages plus rationale/relation context.",
+        "Seal PostgreSQL -> DuckDB no-lookahead replay and stop with truthful ambiguity if REVISES or a later Outcome is not supportable."
       ],
       "blockers": [
-        "Direct SEC fetch from GitHub-hosted runner returns HTTP 403; Q1 2019 equivalent same-content byte transport is not yet verified."
+        "The actual verified Livent 2019 Q1 raw filing payload is still not in hand; direct SEC fetch from GitHub-hosted runner returns HTTP 403."
       ]
     },
     {
@@ -130,31 +132,39 @@
     ".longcycle/handoff/current.json",
     ".longcycle/handoff/data-plane.json",
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-expectation-revision-plan-v1.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-materialized-source-transport-receipt-v1.json",
+    "src/longcycle/adapters/sources/materialized.py",
+    "scripts/execute_grounded_evidence_spec.py",
+    "scripts/smoke_materialized_grounded_evidence.py"
   ],
   "deep_reference_paths": [
     "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json",
     "src/longcycle/application/judgment_context_projection.py",
     "scripts/execute_grounded_judgment_context.py",
+    "src/longcycle/adapters/sources/materialized.py",
+    "scripts/execute_grounded_evidence_spec.py",
+    "scripts/smoke_materialized_grounded_evidence.py",
     ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json",
     ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json",
     "docs/development/storage-runtime-boundary.md"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Which authoritative or strongly verified same-content transport can supply exact Livent 2019 Q1 10-Q bytes when SEC blocks GitHub-hosted runners?",
-    "After both vintages are grounded, does the 2019 Q1 slower-than-anticipated statement formally revise the same 2018 thesis object or only one pace assumption within it?",
-    "What conservative filing-availability timestamp should bound the Q1 2019 Judgment if exact SEC acceptance metadata cannot be fetched by the execution runner?",
+    "Can the exact or strongly verified same-content Livent 2019 Q1 10-Q payload now be acquired through an approved/manual relay environment and SHA-pinned for materialized execution?",
+    "After both real vintages are grounded, does the 2019 Q1 slower-than-anticipated statement revise the same 2018 hydroxide-demand thesis object or only one pace assumption within it?",
+    "What source-supported conservative information-availability timestamp should bound each real Judgment vintage?",
     "Is a later comparable Reality/Outcome necessary for EVT-003, or is truthful cognition-history replay the correct stopping point?"
   ],
   "ordered_next_actions": [
-    "Cold-start correctly: Issue #2 → live PR/head → Strategy + Method Core → mission calibration → current handoff/data-plane → live CI; do not trust this CI snapshot without refresh.",
-    "Load RI-0003 and any path-matching Repair Memory cards before changing Fact/TemporalExtent/Postgres/DuckDB code; do not preload unrelated repair history.",
-    "Read the Kwinana typed-trajectory receipt and inspect only the current FactAssertion/TemporalExtent/canonical Reality contracts needed for the state-as-of question.",
-    "Using only existing archived Kwinana 2022 continuous-production-capability Evidence, implement the minimum state-as-of / unknown-onset representation that preserves known-time separately and cannot fabricate valid_from.",
-    "Prove PostgreSQL persistence, typed PostgreSQL→sealed DuckDB round-trip and no-lookahead replay with a focused real Kwinana acceptance test.",
-    "Re-run Kemerton direct-match Outcome and Kwinana related-milestone/indeterminate regressions; keep blind memory frozen and do not broaden Kwinana discovery.",
-    "Run hard CI, perform Vertical Alignment Gate, then decide whether to broaden to another real trajectory/shard instead of adding generic infrastructure.",
+    "Cold-start correctly: Issue #2 -> live PR/head -> Strategy + Method Core -> mission calibration -> current handoff/data-plane -> live CI; do not trust the CI snapshot without refresh.",
+    "Read the two EVT-003 source/transport receipts and the materialized adapter/executor only; do not reopen unrelated Kwinana or generic schema work.",
+    "Acquire the actual verified Livent 2019 Q1 10-Q bytes for accession 0001742924-19-000025 in an environment that can access the source; compute and preserve raw SHA-256 immediately.",
+    "Acquire and pin the locked 2018 10-K bytes, preserving publisher identity, canonical source URL, external filing ID and conservative known-time; the first-party PDF candidate is not considered archived until bytes are actually obtained and hashed.",
+    "Author one bounded longcycle-grounded-evidence-spec/v2 using materialized transport for the real source payloads, then execute it through the normal immutable archive/parser/Evidence path and verify zero Fact/Judgment promotion.",
+    "Project two source-backed Judgment vintages plus source-backed rationale context; persist REVISES only if same subject/topic semantic object and chronology are demonstrated by the grounded sources.",
+    "Seal PostgreSQL -> DuckDB point-in-time replay and prove no-lookahead; add a later Outcome only if a source-backed comparable forecast/outcome pair actually exists.",
+    "Do not add more generic source/archive/schema infrastructure before the real two-vintage replay exposes a concrete defect; do not enter unsealed shards or mutate sealed blind-memory artifacts.",
     "Before returning control after substantive work, advance this handoff again with the final substantive commit as checkpoint base."
   ]
 }
