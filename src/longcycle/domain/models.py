@@ -25,6 +25,7 @@ from .enums import (
     ReviewSeverity,
     SourceKind,
     TaxBasis,
+    TemporalPrecision,
     ValidTimeKind,
 )
 
@@ -407,6 +408,8 @@ class FactAssertion(DomainModel):
     dimensions_complete: bool = False
     valid_time_kind: ValidTimeKind = ValidTimeKind.UNKNOWN
     valid_time: TimeRange = Field(default_factory=TimeRange)
+    valid_time_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    valid_time_text: str | None = None
     observed_at: datetime | None = None
     source_published_at: datetime | None = None
     known_at: datetime = Field(default_factory=utc_now)
@@ -442,6 +445,55 @@ class FactAssertion(DomainModel):
     @classmethod
     def normalize_value_kind(cls, value: Any) -> Any:
         return FactValueKind.NUMERIC.value if value == "number" else value
+
+    @model_validator(mode="before")
+    @classmethod
+    def restore_and_mirror_valid_time_precision(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        payload = dict(value)
+        metadata = dict(payload.get("metadata") or {})
+        precision_key = "_longcycle_valid_time_precision"
+        text_key = "_longcycle_valid_time_text"
+        if "valid_time_precision" not in payload and precision_key in metadata:
+            payload["valid_time_precision"] = metadata[precision_key]
+        if "valid_time_text" not in payload and text_key in metadata:
+            payload["valid_time_text"] = metadata[text_key]
+        precision = payload.get("valid_time_precision", TemporalPrecision.UNKNOWN)
+        precision_value = precision.value if isinstance(precision, TemporalPrecision) else str(precision)
+        metadata[precision_key] = precision_value
+        source_text = payload.get("valid_time_text")
+        if source_text is not None:
+            metadata[text_key] = source_text
+        else:
+            metadata.pop(text_key, None)
+        payload["metadata"] = metadata
+        return payload
+
+    @model_validator(mode="after")
+    def valid_time_precision_matches_semantics(self) -> "FactAssertion":
+        bounded = {
+            TemporalPrecision.INSTANT,
+            TemporalPrecision.SECOND,
+            TemporalPrecision.MINUTE,
+            TemporalPrecision.HOUR,
+            TemporalPrecision.DAY,
+            TemporalPrecision.WEEK,
+            TemporalPrecision.MONTH,
+            TemporalPrecision.QUARTER,
+            TemporalPrecision.HALF_YEAR,
+            TemporalPrecision.YEAR,
+            TemporalPrecision.RANGE,
+        }
+        if self.valid_time_precision in bounded and self.valid_time_kind != ValidTimeKind.PERIOD:
+            raise ValueError("bounded fact valid-time precision requires period valid_time_kind")
+        if self.valid_time_precision == TemporalPrecision.APPROXIMATE and not self.valid_time_text:
+            raise ValueError("approximate fact valid time must preserve the source time text")
+        if self.valid_time_kind == ValidTimeKind.PERIOD and (
+            self.valid_time.start is None and self.valid_time.end is None
+        ):
+            raise ValueError("period fact valid time requires a start and/or end bound")
+        return self
 
     @property
     def scope_key(self) -> str:
