@@ -101,16 +101,16 @@ async def main() -> None:
     finally:
         await registry.close()
 
-    subject_id = stable_uuid_exact("epistemic-smoke", "project")
+    subject_id = stable_uuid_exact("epistemic-smoke", "production-line")
     with psycopg.connect(dsn) as connection:
         connection.execute(
             """
             INSERT INTO core.entities (
                 id, entity_type, canonical_name, normalized_name, lifecycle_status
-            ) VALUES (%s, 'project', %s, %s, 'active')
+            ) VALUES (%s, 'production_line', %s, %s, 'active')
             ON CONFLICT (id) DO NOTHING
             """,
-            (subject_id, "Epistemic smoke project", "epistemic smoke project"),
+            (subject_id, "Epistemic smoke production line", "epistemic smoke production line"),
         )
 
     research = PostgresResearchRepository(dsn, bucket_name="smoke")
@@ -129,7 +129,7 @@ async def main() -> None:
             external_id="epistemic-outcome-aug-2022",
             url="https://epistemic-smoke.longcycle.invalid/aug.txt",
             known_at=AUG_KNOWN,
-            text="The project achieved first product in July 2022.",
+            text="The production line achieved first product in July 2022.",
         )
 
         may_run_id = stable_uuid_exact("epistemic-smoke", "may-extraction")
@@ -148,7 +148,7 @@ async def main() -> None:
         aug_run_id = stable_uuid_exact("epistemic-smoke", "aug-extraction")
         fact = FactAssertion(
             id=stable_uuid_exact("epistemic-smoke", "first-product-fact"),
-            entity_type=EntityType.PROJECT,
+            entity_type=EntityType.PRODUCTION_LINE,
             entity_id=subject_id,
             field_name="project.first_product_status",
             value="achieved first product",
