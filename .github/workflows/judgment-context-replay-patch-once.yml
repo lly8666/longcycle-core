@@ -51,7 +51,9 @@ jobs:
           set -euo pipefail
           exec > >(tee /tmp/judgment-context-replay.log) 2>&1
           python scripts/_patch_judgment_context_replay_once.py
+          python scripts/_fix_judgment_context_replay_smoke_once.py
           rm scripts/_patch_judgment_context_replay_once.py
+          rm scripts/_fix_judgment_context_replay_smoke_once.py
           python -m pip install -e '.[dev,postgres,duckdb,s3]'
           python -m compileall -q src scripts tests
           python scripts/repair_memory.py audit
