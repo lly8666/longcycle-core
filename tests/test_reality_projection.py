@@ -12,7 +12,8 @@ from longcycle.application.reality_projection import (
     RealityProjectionSubject,
     build_grounded_reality_facts,
 )
-from longcycle.domain.enums import EntityType, TemporalPrecision
+from longcycle.domain.enums import EntityType, FactEvidenceRole, TemporalPrecision
+from longcycle.domain.models import FactEvidenceRef
 
 
 def _evidence(role: str = "outcome_milestone") -> GroundedRealityEvidence:
@@ -60,7 +61,12 @@ def test_grounded_reality_preserves_evidence_known_time_and_month_precision() ->
     evidence = _evidence()
     fact = build_grounded_reality_facts(_spec(), (evidence,))[0]
 
-    assert fact.evidence_fragment_id == evidence.evidence_fragment_id
+    assert fact.evidence == (
+        FactEvidenceRef(
+            evidence_fragment_id=evidence.evidence_fragment_id,
+            evidence_role=FactEvidenceRole.SUPPORTING,
+        ),
+    )
     assert fact.source_id == evidence.source_connector_id
     assert fact.document_id == evidence.document_version_id
     assert fact.known_at == evidence.known_time_upper_bound
