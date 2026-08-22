@@ -1,0 +1,107 @@
+{
+  "schema_version": "longcycle-adc-first-pair-replay-receipt/v1",
+  "status": "pass",
+  "execution_head_sha": "1b71d3c983cf5b66bebae812470559da59162cb6",
+  "control_issue": 91,
+  "workflow_run_id": 32581980862,
+  "failed_prior_attempt": {
+    "control_issue": 90,
+    "workflow_run_id": 32581724637,
+    "failure": "Projection executors incorrectly required known-time annotation on every fragment in a heterogeneous Evidence run, including fragments not cited by the current projection.",
+    "generic_fix_commits": [
+      "61be47e48bd6b3203a21d41785003f64a85b70c6",
+      "987000661f23eedae0daa51241444c623d603c17",
+      "9f4519b0381b02fa6af74ec04b35be63872a32a5",
+      "1b71d3c983cf5b66bebae812470559da59162cb6"
+    ],
+    "boundary": "The fix scopes projection validation to explicitly cited fragment keys; it does not relax known-time or claim-role requirements for cited Evidence."
+  },
+  "source_packs": [
+    {
+      "task_id": "SV-001",
+      "transport": "github_release",
+      "release_tag": "longcycle-dev-binary-cache",
+      "file_name": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
+      "sha256": "1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b"
+    },
+    {
+      "task_id": "SV-002",
+      "transport": "github_release",
+      "release_tag": "longcycle-dev-binary-cache",
+      "file_name": "longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip",
+      "sha256": "a244ed59d467b2aea8a693f02fa96034ef410f64fc80e777ef69daef226b304d"
+    }
+  ],
+  "generated_replay_capsule": {
+    "transport": "google_drive",
+    "google_drive_file_id": "1PFc3X_RFFzTo19UU21JlK0ayLe1h0t4v",
+    "file_name": "adc-first-pair-replay-32581980862.zip",
+    "size_bytes": 3097585,
+    "sha256": "28ef7d372909c76bc9a20ae66138e775604873aee2fe10d68424ef24368d51aa",
+    "github_actions_artifact_id": 9478039751,
+    "github_actions_artifact_name": "adc-first-pair-replay-32581980862",
+    "github_actions_artifact_digest": "sha256:28ef7d372909c76bc9a20ae66138e775604873aee2fe10d68424ef24368d51aa",
+    "contains_external_source_bytes": false,
+    "components": [
+      {
+        "path": "execution/adc-first-pair-memory.duckdb",
+        "role": "sealed typed two-trajectory industrial-memory replay database",
+        "size_bytes": 2895872,
+        "sha256": "f07490c7b52c4c5ba02185fa748cf7236b8f376573939ea2322954873a722619"
+      },
+      {
+        "path": "execution/pressure-assessment.json",
+        "role": "generic representation pressure assessment"
+      },
+      {
+        "path": "execution/replay-manifest.json",
+        "role": "typed DuckDB seal manifest"
+      }
+    ]
+  },
+  "typed_replay": {
+    "reality_count": 8,
+    "judgment_count": 3,
+    "outcome_count": 2,
+    "judgment_rationale_count": 0,
+    "judgment_relation_count": 0,
+    "typed_round_trip": true,
+    "subjects": [
+      "entity:66335cc8-4632-577c-86d4-42b9a2ef0484",
+      "entity:7caaf8e0-efb4-5037-bebc-367f90054251"
+    ]
+  },
+  "no_lookahead": {
+    "mirvetuximab_failure_before_revision": true,
+    "mirvetuximab_revision_before_approval": true,
+    "rova_t_expectation_before_randomized_failure": true,
+    "rova_t_2018_2019_impairment_valid_time_does_not_leak_before_2020_known_time": true
+  },
+  "outcome_checks": [
+    {
+      "judgment_key": "2019-mirasol-development-commitment",
+      "later_reality": "2022-us-accelerated-approval",
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "timing_relation": "not_comparable",
+      "interpretation": "Later approval is supportive historical context for the development path but is not the same milestone as the 2019 commitment and therefore is not auto-scored as realized."
+    },
+    {
+      "judgment_key": "2016-rova-t-peak-revenue-thesis",
+      "later_reality": "2019-rova-t-program-terminated",
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "timing_relation": "not_comparable",
+      "interpretation": "Program termination strongly undermines the acquisition-time commercial thesis but is not the same semantic target as peak revenue and therefore is not auto-scored as not-realized by this bounded evaluator."
+    }
+  ],
+  "generic_model_assessment": {
+    "reality_judgment_separation": "pass",
+    "known_time_valid_time_separation": "pass",
+    "related_milestone_conservatism": "pass",
+    "generic_representation_pressure": "non_direct_outcome_polarity",
+    "pressure_detail": "The model correctly keeps both non-direct later milestones indeterminate, but it cannot type the important distinction that the mirvetuximab approval supports the earlier development path while Rova-T termination undermines the earlier commercial thesis.",
+    "schema_change_decision": "not_yet_committed",
+    "next_test": "Validate a generic polarity/stance dimension orthogonal to semantic comparability and realization status before changing storage schema."
+  }
+}
