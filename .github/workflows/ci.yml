@@ -64,11 +64,11 @@ jobs:
         id: postgres_reality
         run: python scripts/smoke_postgres_reality.py
 
-      - name: PostgreSQL precision-aware Outcome smoke (hard gate)
-        id: postgres_outcomes
-        run: python scripts/smoke_postgres_outcomes.py
+      - name: Typed industrial memory integration (hard gate)
+        id: epistemic_memory
+        run: python scripts/smoke_postgres_epistemic.py
 
-      - name: No-lookahead portable replay smoke (hard gate)
+      - name: No-lookahead portable evidence replay smoke (hard gate)
         id: replay
         run: python scripts/smoke_no_lookahead_replay.py
 
@@ -126,7 +126,7 @@ jobs:
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
           echo "postgres_reality=${{ steps.postgres_reality.outcome }} (hard gate)"
-          echo "postgres_outcomes=${{ steps.postgres_outcomes.outcome }} (hard gate)"
+          echo "epistemic_memory=${{ steps.epistemic_memory.outcome }} (hard gate)"
           echo "replay=${{ steps.replay.outcome }} (hard gate)"
           echo "judgment_replay=${{ steps.judgment_replay.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
