@@ -14,7 +14,7 @@ env:
 
 jobs:
   normalize:
-    if: github.event.issue.title == '[longcycle-normalize-dev-binary-storage-v1]'
+    if: github.event.issue.title == '[longcycle-normalize-dev-binary-storage-v2]'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -52,7 +52,8 @@ jobs:
           ]
           results = []
           for key, root, out in cases:
-              receipt = json.loads((root / 'probe/grounded-evidence-execution.json').read_text())
+              payload = json.loads((root / 'probe/grounded-evidence-execution.json').read_text())
+              receipt = payload.get('result', payload)
               docs = receipt.get('documents') or []
               if not docs:
                   raise SystemExit(f'{key}: no documents in execution receipt')
@@ -83,7 +84,7 @@ jobs:
                       'byte_length': len(raw),
                       'content_type': doc.get('content_type'),
                       'canonical_retrieval_url': doc.get('canonical_retrieval_url'),
-                      'original_source_url': (doc.get('retrieval_provenance') or {}).get('original_source_url') or doc.get('original_source_url'),
+                      'original_source_url': doc.get('original_source_url'),
                       'published_at': doc.get('published_at'),
                       'first_known_at': doc.get('first_known_at'),
                   })
@@ -176,6 +177,7 @@ jobs:
           grep -Fxq longcycle-kemerton-source-pack-v1.zip <<<"$assets"
           grep -Fxq longcycle-evt003-approved-redistributor-acquisition-run32568791877.zip <<<"$assets"
           grep -Fxq longcycle-evt004-contract-margin-acquisition-run32570106526.zip <<<"$assets"
+          grep -Fxq longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip <<<"$assets"
 
       - name: Report normalization
         if: always()
