@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 38,
+  "continuity_sequence": 39,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "97c6e427a73aada05a9792b53004623cf2b14a06",
+  "checkpoint_based_on_head_sha": "878541ea89637a0cb2c42b4bbe53a7be471a5363",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Cold start from Issue #2 and the active PR/branch. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and .longcycle/handoff/data-plane.json. Refresh live HEAD/CI before trusting snapshots. Restore only data-plane assets required by the current cursor, verify outer and component SHA-256, and never ask the user to reconstruct persisted background.",
+  "bootstrap_instruction": "Cold start from Issue #2 and the active PR/branch. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and .longcycle/handoff/data-plane.json. Refresh live HEAD/CI before trusting snapshots. Restore only data-plane assets required by the current cursor, verify outer and component SHA-256, and never ask the user to reconstruct persisted background. Every substantive work session must finish by advancing this repository handoff after the final substantive checkpoint.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,37 +16,39 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support temporally truthful no-lookahead Reality + Expectation + Outcome replay across meaningful industrial cycles using reusable primitives rather than lithium-specific hacks.",
-    "short_term_goal": "Build and validate the first small no-lookahead replay fixture now that both Kwinana and Kemerton have completed real primary-source archive -> deterministic artifact -> grounded EvidenceFragment -> reconciled DuckDB paths.",
-    "next_big_step": "Use the restored Kemerton portable evidence pack to implement the first bounded no-lookahead replay fixture with explicit knowledge cutoffs, then test whether the same fixture shape can replay Kwinana without project-specific prose or hindsight leakage.",
-    "local_optimization_stop_rule": "Database architecture and handoff v5 are now quality-gated at the proven boundary: content-addressed ArchiveStore for raw/artifact bytes, PostgreSQL for transactional writes/ops, DuckDB for portable read/replay packs, and Git-manifested Drive assets for current sandbox byte transport. Do not restart database/handoff infrastructure work unless replay exposes a concrete repeated defect.",
+    "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support temporally truthful no-lookahead canonical Reality + contemporaneous Expectation/Judgment + later Outcome replay across a meaningful industrial trajectory using reusable primitives rather than lithium-specific hacks.",
+    "short_term_goal": "Close the remaining Reality-layer gap in the completed Kemerton replay trajectory. Evidence visibility replay, Judgment projection/replay and precision-aware Outcome evaluation now work; the next proof is to project source-supported realized/project-state claims into canonical Fact/Reality semantics without manufacturing finer occurrence dates than the sources support, then compose the three epistemic layers at historical cutoffs.",
+    "next_big_step": "Use the real Kemerton July-2022 first-product outcome and nearby project-state evidence to force the minimum temporal-precision semantics needed by FactAssertion/Reality. Persist and reconcile the projection through the normal fact path, materialize it into the portable replay state, and render an integrated as-of snapshot with canonical facts, contemporaneous judgments and only then-known outcome evaluations. Apply the same shape to Kwinana before broadening discovery.",
+    "local_optimization_stop_rule": "Replay and Judgment infrastructure have crossed their quality gate. Do not add more generic database, handoff, orchestration or inference framework unless the Kemerton Reality projection or Kwinana transfer exposes a concrete repeated defect. Keep raw/archive bytes outside SQL, PostgreSQL for transactional writes/ops, DuckDB for portable read/replay, and Drive only as manual sandbox byte transport under the current constraint.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's historical recovery gap."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "first-no-lookahead-replay",
-    "last_completed_action": "Handoff v5 passed its fresh-agent quality gate. The old sequence-36 stale-cursor failure was repaired; repository-only reconstruction from Issue #2 plus the eight-file resume set recovered the mission, Kwinana and Kemerton completion state, adopted hybrid storage boundary, required Drive assets and replay next step without old chat. The Kemerton capsule completed an exact sandbox -> Drive -> sandbox SHA roundtrip. A CPython-3.13 DuckDB 1.5.5 offline runtime pack also roundtripped through Drive, installed with --no-index in a clean venv, and opened the restored Kemerton DuckDB read-only (7 documents, 16 evidence fragments, 12 evidence fragments known by 2021 year-end, zero broken document references). CI #685 on substantive base 97c6e427a73aada05a9792b53004623cf2b14a06 passed migrations, PostgreSQL repository smoke, Mypy, Pytest, memory compact and history provenance gates.",
-    "current_task": "Build the first bounded evidence-backed no-lookahead historical replay fixture from the completed Kemerton trajectory using the restored portable DuckDB pack. At each explicit knowledge cutoff, expose only evidence knowable then, preserve contemporaneous expectations/revisions and project-state semantics, and reveal later outcome only after its known-time boundary.",
-    "why_now": "Kwinana and Kemerton have already proven source archive, deterministic artifact grounding and portable replay storage. The terminal product claim is historical re-entry with the future restored as unknown, so further database or handoff optimization has lower marginal value than proving no-lookahead replay now.",
-    "done_when": "A small deterministic replay fixture can be executed at several Kemerton knowledge cutoffs and demonstrably excludes later evidence; it shows the applicable contemporaneous expectation/contract/project-state trajectory without hindsight rewriting; later July-2022 first-product outcome appears only when its August disclosure is knowable; the fixture representation is generic enough to apply next to Kwinana without company-specific prose; tests are green.",
+    "parent_workstream_id": "first-end-to-end-reality-judgment-outcome-replay",
+    "last_completed_action": "The first real Kemerton cognition trajectory now has a generic no-lookahead Evidence replay, a grounded Judgment projection from seven management expectation/revision fragments, a separate Judgment replay overlay that filters future cognition in SQL, and a precision-aware Outcome evaluation for the May-2022 first-product expectation versus the July-2022 realized month. TemporalPrecision plus migrations 0018/0019 prevent fake exact target/outcome dates; 'late 2021' remains approximate with no invented bounds, and May-to-July is recorded as after_target_window plus two calendar months with timing_error_days left null. Migration 0017 and MemoryHypothesisAssessment also preserve bounded-search, indirectly corroborated model-memory as research-only hypotheses that can never publish as Fact/Judgment. Real Kemerton projection/replay/outcome receipts are committed. CI #801 on substantive base 878541ea89637a0cb2c42b4bbe53a7be471a5363 passed PostgreSQL migrations/repository/Judgment aggregate, Evidence replay, Judgment replay, Mypy, Pytest, memory compact and provenance gates.",
+    "current_task": "Close the canonical Reality gap exposed by the real benchmark. Inspect FactAssertion/canonical-fact valid-time semantics, add only the minimum source-precision support required to represent a realized event such as 'first product in July 2022' as a month-level occurrence without choosing a fake day, then project the real Kemerton outcome EvidenceFragment through the normal Fact/Reality path and integrate it with the already-working Judgment and Outcome replay layers.",
+    "why_now": "Historical replay already proves what evidence and cognition were knowable at each cutoff, and the later outcome comparison now respects source precision. Calling grounded Evidence itself 'Reality' would violate the project's Evidence/Assertion/Reconciliation boundary. The highest-value next step is therefore canonical Reality projection, not more replay plumbing or more source discovery.",
+    "done_when": "At least one real Kemerton realized/project-state claim is represented and reconciled as canonical Fact/Reality with source-supported occurrence precision and evidence provenance; no exact occurrence day is invented when the source only supports a month/period; an integrated historical snapshot clearly separates canonical Reality, contemporaneous Judgment and later Outcome evaluation and excludes each layer before its known-time; the representation transfers to Kwinana without company-specific logic; hard CI remains green.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Restore only the required Kemerton capsule and compatible DuckDB runtime from .longcycle/handoff/data-plane.json if they are not already present, verify all pinned hashes, open probe/kemerton-evidence.duckdb read-only, inspect evidence_timeline at bounded cutoffs around 2019-01-02, 2019-08-07, 2021-02-19, 2021-08-04, 2022-05-04 and 2022-08-03, then define the smallest reusable replay fixture/output contract before adding any new evidence."
+    "next_atomic_action": "Inspect FactAssertion, research.fact_assertions and canonical_fact_versions for how valid-time precision is represented. Using the real Kemerton fragment 2022q2-first-product-outcome (EvidenceFragment 6c2d3721-061a-5c06-803c-42ba8b353714; occurrence July 2022; first knowable 2022-08-03T16:27:49Z), add a first-class precision field only if necessary to avoid encoding July as a fake exact day, then build the smallest evidence-backed FactAssertion/Reality projection and a PostgreSQL hard smoke for that path."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
     "context_kind": "industry_benchmark_research",
-    "label": "Lithium-battery first benchmark / post-Kwinana+Kemerton no-lookahead replay entry",
+    "label": "Lithium-battery first benchmark / Kemerton Reality+Judgment+Outcome integration",
     "root_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "campaign_root": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol",
     "coverage_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-execution-receipt-v1.json",
       "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-execution-receipt-v1.json",
-      "docs/development/storage-runtime-boundary.md",
-      "docs/development/session-handoff-protocol.md",
-      "docs/development/continuity-architecture.md"
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-projection-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-projection-receipt-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-replay-receipt-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-first-product-outcome-evaluation-v1.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-execution-receipt-v1.json",
+      "docs/development/storage-runtime-boundary.md"
     ],
     "core_exclusion_terms": [
       "lithium-battery",
@@ -62,46 +64,50 @@
   "pending_user_directives": [
     "Use independent professional judgment; do not ask for confirmation on routine architecture/development decisions when the direction can be determined from mission and evidence.",
     "Current large-file handoff constraint is sandbox <-> Google Drive; GitHub Actions cannot directly pull Drive assets, so the sandbox is the manual relay point.",
-    "Test that a completely fresh Agent can restore state; once database/handoff architecture is sound, return to the research main line rather than optimizing infrastructure indefinitely."
+    "Historical occurrence/target time should match the precision that matters and the source can support: month/quarter/stage/range is often more truthful than an exact day. Never manufacture exact dates for convenience; known-time/no-lookahead eligibility still uses a conservative information-availability bound.",
+    "A high-value model memory that cannot be directly recovered from the old/open internet or a closed source may be retained as an auditable research-only indirectly corroborated hypothesis when bounded direct-source search plus independent archived indirect evidence and mechanism/sequence reasoning support it. Preserve alternatives, falsification conditions and search receipts; never silently promote model memory or logic into Fact/Judgment/Reality.",
+    "Every substantive work session must update the repository handoff before returning control, so the next Agent never depends on chat memory."
   ],
   "memory_campaign": {
     "campaign_id": "2026-08-21-gpt-5.6-sol",
     "industry": "lithium-battery",
-    "phase": "sealed_shard_grounded_evidence_ready_for_replay",
+    "phase": "sealed_shard_replay_judgment_outcome_ready_reality_projection_next",
     "search_visibility": "self_verification",
     "total_raw_leads": 683,
     "sealed_shards": [
       "UP-CHEMICALS"
     ],
     "shard_count": 14,
-    "seal_rule": "UP-CHEMICALS blind memory remains sealed/frozen. Fresh source work is allowed only inside bounded verification/evidence/replay tasks; other shards remain search-isolated until their own seal rule is satisfied.",
+    "seal_rule": "UP-CHEMICALS blind memory remains sealed/frozen. Fresh source work is allowed only inside bounded verification/evidence/replay tasks; other shards remain search-isolated until their own seal rule is satisfied. Search failure does not falsify a Memory Lead; any indirectly corroborated hypothesis remains research-only unless claim-scoped Evidence later enters the normal pipeline.",
     "next_research_actions": [
-      "Build the first evidence-backed no-lookahead replay fixture from the completed Kemerton trajectory using explicit knowledge cutoffs.",
-      "Apply the same reusable replay shape to Kwinana and check whether temporal semantics survive without project-specific prose.",
-      "Do not broaden lithium evidence discovery until the replay fixture exposes a specific missing evidence or abstraction need."
+      "Project the real Kemerton July-2022 first-product outcome and the minimum adjacent project-state claims into canonical Fact/Reality semantics with source-supported temporal precision.",
+      "Compose canonical Reality, contemporaneous Judgment and later Outcome evaluation into one no-lookahead historical snapshot and test cutoffs immediately before/at the August-2022 outcome disclosure.",
+      "Apply the same Reality/Judgment/Outcome shape to Kwinana before adding more evidence tasks or generic orchestration.",
+      "Do not broaden lithium evidence discovery unless the Reality projection or Kwinana transfer exposes a specific missing source or abstraction need."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 685,
-    "observed_head_sha": "97c6e427a73aada05a9792b53004623cf2b14a06",
-    "conclusion": "CI #685 succeeded on the final substantive handoff-v5 implementation/test base: PostgreSQL migrations, repository smoke, Mypy, Pytest including repository-only handoff/data-plane drills, memory compact indexes and history provenance all passed. This sequence-38 sync is handoff-only, so a fresh Agent must still refresh live HEAD/CI but should require delta reconciliation only if paths outside the declared handoff-mutable set changed after the checkpoint base.",
-    "mypy_summary": "Run #685: success.",
-    "pytest_summary": "Run #685: success, including v5 session handoff, data-plane and repository-only reconstruction tests.",
-    "ruff_summary": "Ruff remains diagnostic-only during the benchmark; existing repository lint debt is not a handoff gate.",
-    "refresh_instruction": "Fetch current active HEAD and latest CI. Compare checkpoint base 97c6e427a73aada05a9792b53004623cf2b14a06 to live HEAD; if only .longcycle/handoff/current.json and/or .longcycle/handoff/data-plane.json changed, treat it as a valid handoff sync and continue the replay cursor."
+    "last_observed_run": 801,
+    "observed_head_sha": "878541ea89637a0cb2c42b4bbe53a7be471a5363",
+    "conclusion": "CI #801 succeeded on the final substantive base for sequence 39. PostgreSQL migrations through 0019, repository smoke, Judgment aggregate smoke, no-lookahead Evidence replay smoke, no-lookahead Judgment replay smoke, Mypy, Pytest, memory compact indexes and history provenance all passed. This sequence-39 commit is handoff-only; refresh live HEAD/CI and reconcile only post-checkpoint substantive deltas before continuing.",
+    "mypy_summary": "Run #801: success.",
+    "pytest_summary": "Run #801: success, including temporal precision, memory-hypothesis boundary, Judgment projection/repository/replay and precision-aware Outcome evaluation tests.",
+    "ruff_summary": "Run #801 diagnostic Ruff step completed successfully; Ruff remains non-authoritative for project state and is not the reason to continue or stop the benchmark.",
+    "refresh_instruction": "Fetch current active HEAD and latest CI. Compare checkpoint base 878541ea89637a0cb2c42b4bbe53a7be471a5363 to live HEAD. If the only later commit is the expected .longcycle/handoff/current.json sync, continue from the Reality-projection cursor; otherwise inspect intervening substantive commits before acting."
   },
   "workstreams": [
     {
-      "workstream_id": "first-no-lookahead-replay",
+      "workstream_id": "first-end-to-end-reality-judgment-outcome-replay",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "active",
-      "summary": "Kwinana and Kemerton now provide two real grounded expectation/revision/outcome trajectories. The next product proof is historical re-entry: at each knowledge cutoff the replay must reveal only information knowable then, preserve contemporaneous expectations and revisions, and compare later outcomes without rewriting prior cognition.",
+      "status": "active_reality_projection_gap",
+      "summary": "Evidence and Judgment no-lookahead replay are now reusable and hard-gated. The real Kemerton management trajectory has seven grounded Judgments with source-precision targets, and the May first-product expectation has a precision-aware July outcome evaluation. The remaining epistemic gap is canonical Reality: grounded Evidence must still pass a Fact/Reality projection and reconciliation boundary before the benchmark can claim a true three-layer replay.",
       "next_actions": [
-        "Restore/open the required Kemerton portable pack read-only and enumerate the evidence visible at explicit historical cutoffs.",
-        "Define and test the smallest deterministic no-lookahead replay fixture/output contract.",
-        "Apply the same fixture to Kwinana before adding more evidence tasks or generic orchestration."
+        "Force FactAssertion/canonical Reality temporal precision from the real July-2022 Kemerton first-product outcome instead of inventing an exact day.",
+        "Persist/reconcile the minimum real Reality projection through the normal fact path with Evidence linkage and a hard PostgreSQL gate.",
+        "Render one integrated no-lookahead snapshot separating canonical Reality, contemporaneous Judgment and later Outcome evaluation.",
+        "Apply the same representation to Kwinana before abstracting further."
       ],
       "blockers": []
     },
@@ -124,24 +130,30 @@
     "CONTINUE_HERE.md",
     ".longcycle/handoff/current.json",
     ".longcycle/handoff/data-plane.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-execution-receipt-v1.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-execution-receipt-v1.json"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-replay-receipt-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-first-product-outcome-evaluation-v1.json"
   ],
   "deep_reference_paths": [
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-execution-receipt-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-projection-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-projection-receipt-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-execution-receipt-v1.json",
     "docs/development/storage-runtime-boundary.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development/continuity-architecture.md"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "What is the smallest reusable replay-fixture representation that restores the future as unknown while preserving Reality, contemporaneous Expectation/Judgment and later Outcome without lithium-specific prose?",
-    "After the first replay, should Kwinana's binary capsule also be promoted into the Drive hot handoff set, or can its repository receipt remain sufficient until a task actually needs its raw/replay bytes?",
+    "What is the minimum first-class occurrence/valid-time precision field required on FactAssertion/canonical Reality so a month-level realized event stays month-level without relying on ad-hoc metadata or fake dates?",
+    "What is the smallest integrated replay contract that keeps canonical Reality, contemporaneous Judgment and later Outcome evaluation visibly separate while sharing one knowledge cutoff?",
+    "After Kemerton proves the three-layer contract, which Kwinana expectations/outcomes are semantically comparable enough to validate transfer without forcing unlike project milestones into one trajectory?",
     "When the current ~15 GB Drive transport becomes a real scaling bottleneck, which object-store migration preserves content-addressed identities while changing only transport locators?"
   ],
   "ordered_next_actions": [
-    "Restore and verify only the required Kemerton capsule/runtime assets from the data-plane manifest; reuse already-restored verified copies when present.",
-    "Build and test the first Kemerton no-lookahead replay fixture at explicit knowledge cutoffs.",
-    "Apply the same fixture shape to Kwinana and inspect any semantic mismatch before abstracting further.",
-    "Do not continue handoff/database infrastructure work unless replay exposes a new concrete failure."
+    "Inspect FactAssertion and canonical_fact_versions temporal semantics against the real Kemerton July-2022 first-product outcome; add only the minimum source-precision field required to avoid fake exact dates.",
+    "Build and hard-gate the smallest grounded Evidence -> FactAssertion -> reconciliation/Reality projection for the Kemerton outcome, preserving occurrence month July 2022 and known-time 2022-08-03T16:27:49Z separately.",
+    "Materialize canonical Reality beside the existing Judgment replay and precision-aware Outcome evaluation, then render an integrated no-lookahead snapshot immediately before and at the outcome disclosure cutoff.",
+    "Apply the same three-layer replay shape to Kwinana and inspect semantic mismatches before abstracting further.",
+    "Use the research-only MemoryHypothesisAssessment path only when bounded direct-source recovery genuinely fails; never use it to bypass the Evidence/Fact boundary."
   ]
 }
