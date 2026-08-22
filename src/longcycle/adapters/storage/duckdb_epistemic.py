@@ -31,7 +31,13 @@ def _duckdb() -> Any:
 
 
 def _json(value: Any) -> str:
-    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        default=str,
+    )
 
 
 def _subject_values(subject: MemorySubjectRef) -> tuple[str, str | None, str | None]:
@@ -42,7 +48,10 @@ def _subject_values(subject: MemorySubjectRef) -> tuple[str, str | None, str | N
     )
 
 
-def _subject_from_values(entity_id: str | None, industry_node_id: str | None) -> MemorySubjectRef:
+def _subject_from_values(
+    entity_id: str | None,
+    industry_node_id: str | None,
+) -> MemorySubjectRef:
     return MemorySubjectRef(
         entity_id=UUID(entity_id) if entity_id else None,
         industry_node_id=UUID(industry_node_id) if industry_node_id else None,
@@ -97,25 +106,28 @@ def seal_industrial_memory(
             )
             """
         )
-        for item in timeline.reality:
-            subject_key, entity_id, industry_id = _subject_values(item.subject)
+        for reality_item in timeline.reality:
+            subject_key, entity_id, industry_id = _subject_values(reality_item.subject)
             connection.execute(
-                "INSERT INTO reality_memory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                """
+                INSERT INTO reality_memory
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
                 [
-                    str(item.canonical_fact_version_id),
+                    str(reality_item.canonical_fact_version_id),
                     subject_key,
                     entity_id,
                     industry_id,
-                    item.predicate_code,
-                    item.value_kind,
-                    item.value_text,
-                    item.value_payload,
-                    item.unit_code,
-                    *_extent_values(item.valid_time),
-                    item.known_at,
-                    item.confidence,
-                    item.publication_status,
-                    _json([str(value) for value in item.evidence_fragment_ids]),
+                    reality_item.predicate_code,
+                    reality_item.value_kind,
+                    reality_item.value_text,
+                    reality_item.value_payload,
+                    reality_item.unit_code,
+                    *_extent_values(reality_item.valid_time),
+                    reality_item.known_at,
+                    reality_item.confidence,
+                    reality_item.publication_status,
+                    _json([str(value) for value in reality_item.evidence_fragment_ids]),
                 ],
             )
 
@@ -145,26 +157,29 @@ def seal_industrial_memory(
             )
             """
         )
-        for item in timeline.judgments:
-            subject_key, entity_id, industry_id = _subject_values(item.subject)
+        for judgment_item in timeline.judgments:
+            subject_key, entity_id, industry_id = _subject_values(judgment_item.subject)
             connection.execute(
-                "INSERT INTO judgment_memory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                """
+                INSERT INTO judgment_memory
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
                 [
-                    str(item.judgment_id),
-                    item.judgment_key,
+                    str(judgment_item.judgment_id),
+                    judgment_item.judgment_key,
                     subject_key,
                     entity_id,
                     industry_id,
-                    item.speaker_name_text,
-                    item.topic_code,
-                    item.judgment_kind,
-                    *_extent_values(item.target_time),
-                    item.value_kind,
-                    item.value_text,
-                    item.value_payload,
-                    item.summary,
-                    item.known_at,
-                    _json([str(value) for value in item.evidence_fragment_ids]),
+                    judgment_item.speaker_name_text,
+                    judgment_item.topic_code,
+                    judgment_item.judgment_kind,
+                    *_extent_values(judgment_item.target_time),
+                    judgment_item.value_kind,
+                    judgment_item.value_text,
+                    judgment_item.value_payload,
+                    judgment_item.summary,
+                    judgment_item.known_at,
+                    _json([str(value) for value in judgment_item.evidence_fragment_ids]),
                 ],
             )
 
@@ -195,45 +210,64 @@ def seal_industrial_memory(
             )
             """
         )
-        for item in timeline.outcomes:
-            subject_key, entity_id, industry_id = _subject_values(item.subject)
+        for outcome_item in timeline.outcomes:
+            subject_key, entity_id, industry_id = _subject_values(outcome_item.subject)
             connection.execute(
-                "INSERT INTO outcome_memory VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                """
+                INSERT INTO outcome_memory
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
                 [
-                    str(item.evaluation_id),
-                    str(item.judgment_id),
+                    str(outcome_item.evaluation_id),
+                    str(outcome_item.judgment_id),
                     subject_key,
                     entity_id,
                     industry_id,
-                    str(item.canonical_fact_version_id) if item.canonical_fact_version_id else None,
-                    str(item.outcome_evidence_fragment_id) if item.outcome_evidence_fragment_id else None,
-                    item.evaluation_status,
-                    *_extent_values(item.occurrence_time),
-                    item.known_at,
-                    item.timing_relation,
-                    item.timing_delta_value,
-                    item.timing_delta_unit,
-                    item.explanation,
-                    item.evaluator_name,
-                    item.evaluator_version,
+                    (
+                        str(outcome_item.canonical_fact_version_id)
+                        if outcome_item.canonical_fact_version_id
+                        else None
+                    ),
+                    (
+                        str(outcome_item.outcome_evidence_fragment_id)
+                        if outcome_item.outcome_evidence_fragment_id
+                        else None
+                    ),
+                    outcome_item.evaluation_status,
+                    *_extent_values(outcome_item.occurrence_time),
+                    outcome_item.known_at,
+                    outcome_item.timing_relation,
+                    outcome_item.timing_delta_value,
+                    outcome_item.timing_delta_unit,
+                    outcome_item.explanation,
+                    outcome_item.evaluator_name,
+                    outcome_item.evaluator_version,
                 ],
             )
 
-        connection.execute("CREATE INDEX reality_known_idx ON reality_memory(subject_key, known_at)")
-        connection.execute("CREATE INDEX judgment_known_idx ON judgment_memory(subject_key, known_at)")
-        connection.execute("CREATE INDEX outcome_known_idx ON outcome_memory(subject_key, known_at)")
+        connection.execute(
+            "CREATE INDEX reality_known_idx ON reality_memory(subject_key, known_at)"
+        )
+        connection.execute(
+            "CREATE INDEX judgment_known_idx ON judgment_memory(subject_key, known_at)"
+        )
+        connection.execute(
+            "CREATE INDEX outcome_known_idx ON outcome_memory(subject_key, known_at)"
+        )
         connection.execute("CHECKPOINT")
     finally:
         connection.close()
 
     reader = DuckDBEpistemicMemoryReader(path)
-    all_subjects = sorted(
-        {
-            item.subject.key: item.subject
-            for item in (*timeline.reality, *timeline.judgments, *timeline.outcomes)
-        }.values(),
-        key=lambda item: item.key,
-    )
+    subjects_by_key: dict[str, MemorySubjectRef] = {}
+    for reality_item in timeline.reality:
+        subjects_by_key[reality_item.subject.key] = reality_item.subject
+    for judgment_item in timeline.judgments:
+        subjects_by_key[judgment_item.subject.key] = judgment_item.subject
+    for outcome_item in timeline.outcomes:
+        subjects_by_key[outcome_item.subject.key] = outcome_item.subject
+    all_subjects = sorted(subjects_by_key.values(), key=lambda subject: subject.key)
+
     round_trip = reader._timeline_sync(all_subjects)
     if round_trip != timeline:
         raise RuntimeError("sealed DuckDB generation does not round-trip to the typed timeline")
@@ -247,7 +281,7 @@ def seal_industrial_memory(
             "judgments": len(timeline.judgments),
             "outcomes": len(timeline.outcomes),
         },
-        "subject_keys": [item.key for item in all_subjects],
+        "subject_keys": [subject.key for subject in all_subjects],
         "typed_round_trip": True,
     }
 
@@ -265,7 +299,7 @@ class DuckDBEpistemicMemoryReader:
     ) -> tuple[str, list[Any]]:
         if not subjects:
             raise ValueError("at least one memory subject is required")
-        keys = [item.key for item in subjects]
+        keys = [subject.key for subject in subjects]
         placeholders = ", ".join("?" for _ in keys)
         clause = f"subject_key IN ({placeholders})"
         params: list[Any] = list(keys)
@@ -307,33 +341,52 @@ class DuckDBEpistemicMemoryReader:
         connection = duckdb.connect(str(self.path), read_only=True)
         try:
             reality_rows = connection.execute(
-                f"SELECT * FROM reality_memory WHERE {where} ORDER BY known_at, canonical_fact_version_id",
+                f"""
+                SELECT * FROM reality_memory
+                WHERE {where}
+                ORDER BY known_at, canonical_fact_version_id
+                """,
                 params,
             ).fetchall()
-            reality_columns = [item[0] for item in connection.description]
+            reality_columns = [column[0] for column in connection.description]
             judgment_rows = connection.execute(
-                f"SELECT * FROM judgment_memory WHERE {where} ORDER BY known_at, judgment_id",
+                f"""
+                SELECT * FROM judgment_memory
+                WHERE {where}
+                ORDER BY known_at, judgment_id
+                """,
                 params,
             ).fetchall()
-            judgment_columns = [item[0] for item in connection.description]
+            judgment_columns = [column[0] for column in connection.description]
             outcome_rows = connection.execute(
-                f"SELECT * FROM outcome_memory WHERE {where} ORDER BY known_at, evaluation_id",
+                f"""
+                SELECT * FROM outcome_memory
+                WHERE {where}
+                ORDER BY known_at, evaluation_id
+                """,
                 params,
             ).fetchall()
-            outcome_columns = [item[0] for item in connection.description]
+            outcome_columns = [column[0] for column in connection.description]
         finally:
             connection.close()
 
         reality = tuple(
-            self._reality(dict(zip(reality_columns, row, strict=True))) for row in reality_rows
+            self._reality(dict(zip(reality_columns, row, strict=True)))
+            for row in reality_rows
         )
         judgments = tuple(
-            self._judgment(dict(zip(judgment_columns, row, strict=True))) for row in judgment_rows
+            self._judgment(dict(zip(judgment_columns, row, strict=True)))
+            for row in judgment_rows
         )
         outcomes = tuple(
-            self._outcome(dict(zip(outcome_columns, row, strict=True))) for row in outcome_rows
+            self._outcome(dict(zip(outcome_columns, row, strict=True)))
+            for row in outcome_rows
         )
-        return IndustrialMemoryTimeline(reality=reality, judgments=judgments, outcomes=outcomes)
+        return IndustrialMemoryTimeline(
+            reality=reality,
+            judgments=judgments,
+            outcomes=outcomes,
+        )
 
     @staticmethod
     def _extent(row: dict[str, Any], prefix: str) -> TemporalExtent:
@@ -350,7 +403,10 @@ class DuckDBEpistemicMemoryReader:
     def _reality(cls, row: dict[str, Any]) -> CanonicalRealityRecord:
         return CanonicalRealityRecord(
             canonical_fact_version_id=UUID(row["canonical_fact_version_id"]),
-            subject=_subject_from_values(row["subject_entity_id"], row["subject_industry_node_id"]),
+            subject=_subject_from_values(
+                row["subject_entity_id"],
+                row["subject_industry_node_id"],
+            ),
             predicate_code=row["predicate_code"],
             value_kind=row["value_kind"],
             value_text=row["value_text"],
@@ -370,7 +426,10 @@ class DuckDBEpistemicMemoryReader:
         return JudgmentMemoryRecord(
             judgment_id=UUID(row["judgment_id"]),
             judgment_key=row["judgment_key"],
-            subject=_subject_from_values(row["subject_entity_id"], row["subject_industry_node_id"]),
+            subject=_subject_from_values(
+                row["subject_entity_id"],
+                row["subject_industry_node_id"],
+            ),
             speaker_name_text=row["speaker_name_text"],
             topic_code=row["topic_code"],
             judgment_kind=row["judgment_kind"],
@@ -391,7 +450,10 @@ class DuckDBEpistemicMemoryReader:
         return OutcomeMemoryRecord(
             evaluation_id=UUID(row["evaluation_id"]),
             judgment_id=UUID(row["judgment_id"]),
-            subject=_subject_from_values(row["subject_entity_id"], row["subject_industry_node_id"]),
+            subject=_subject_from_values(
+                row["subject_entity_id"],
+                row["subject_industry_node_id"],
+            ),
             canonical_fact_version_id=(
                 UUID(row["canonical_fact_version_id"])
                 if row["canonical_fact_version_id"]
