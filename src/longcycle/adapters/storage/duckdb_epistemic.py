@@ -194,6 +194,7 @@ def seal_industrial_memory(
                 canonical_fact_version_id VARCHAR,
                 outcome_evidence_fragment_id VARCHAR,
                 evaluation_status VARCHAR NOT NULL,
+                semantic_relation VARCHAR NOT NULL,
                 occurrence_time_kind VARCHAR NOT NULL,
                 occurrence_time_at TIMESTAMPTZ,
                 occurrence_time_from TIMESTAMPTZ,
@@ -215,7 +216,7 @@ def seal_industrial_memory(
             connection.execute(
                 """
                 INSERT INTO outcome_memory
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """,
                 [
                     str(outcome_item.evaluation_id),
@@ -234,6 +235,7 @@ def seal_industrial_memory(
                         else None
                     ),
                     outcome_item.evaluation_status,
+                    outcome_item.semantic_relation.value,
                     *_extent_values(outcome_item.occurrence_time),
                     outcome_item.known_at,
                     outcome_item.timing_relation,
@@ -465,6 +467,7 @@ class DuckDBEpistemicMemoryReader:
                 else None
             ),
             evaluation_status=row["evaluation_status"],
+            semantic_relation=row["semantic_relation"],
             occurrence_time=cls._extent(row, "occurrence_time"),
             known_at=row["known_at"],
             timing_relation=row["timing_relation"],
