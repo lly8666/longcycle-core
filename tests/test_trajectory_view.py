@@ -40,7 +40,6 @@ def _timeline() -> IndustrialMemoryTimeline:
             start=datetime(2022, 5, 1, tzinfo=UTC),
             end=datetime(2022, 6, 1, tzinfo=UTC),
             precision=TemporalPrecision.MONTH,
-            source_text="May 2022",
         ),
         value_kind="text",
         value_text="first product expected in May 2022",
@@ -57,7 +56,6 @@ def _timeline() -> IndustrialMemoryTimeline:
                 start=datetime(2022, 7, 1, tzinfo=UTC),
                 end=datetime(2022, 8, 1, tzinfo=UTC),
                 precision=TemporalPrecision.MONTH,
-                source_text="July 2022",
             ),
             "value_text": "first product revised to July 2022",
             "summary": "Management revised first-product guidance to July 2022.",
@@ -75,13 +73,11 @@ def _timeline() -> IndustrialMemoryTimeline:
             start=datetime(2022, 7, 1, tzinfo=UTC),
             end=datetime(2022, 8, 1, tzinfo=UTC),
             precision=TemporalPrecision.MONTH,
-            source_text="July 2022",
         ),
         observed_time=TemporalExtent(
             kind="instant",
             at=datetime(2022, 8, 3, tzinfo=UTC),
             precision=TemporalPrecision.DAY,
-            source_text="as of 2022-08-03",
         ),
         known_at=LATER_KNOWN,
         confidence=0.95,
@@ -128,6 +124,10 @@ def _timeline() -> IndustrialMemoryTimeline:
     )
 
 
+def _iso(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
 def test_trajectory_view_keeps_knowledge_time_and_historical_time_separate() -> None:
     timeline = _timeline()
     before = snapshot_from_timeline(
@@ -140,7 +140,10 @@ def test_trajectory_view_keeps_knowledge_time_and_historical_time_separate() -> 
     assert before_view["counts"]["outcomes"] == 0
     assert [entry["layer"] for entry in before_view["entries"]] == ["judgment"]
     assert before_view["entries"][0]["known_at"] == EARLY_KNOWN.isoformat()
-    assert before_view["entries"][0]["historical_time"]["source_text"] == "May 2022"
+    early_time = before_view["entries"][0]["historical_time"]
+    assert _iso(early_time["start"]) == datetime(2022, 5, 1, tzinfo=UTC)
+    assert _iso(early_time["end"]) == datetime(2022, 6, 1, tzinfo=UTC)
+    assert early_time["precision"] == "month"
 
     at = snapshot_from_timeline(timeline, knowledge_cutoff=LATER_KNOWN)
     view = build_researcher_trajectory_view(at)
@@ -163,6 +166,9 @@ def test_trajectory_view_keeps_knowledge_time_and_historical_time_separate() -> 
     outcome = view["entries"][3]
     assert outcome["links"]["judgment_entry_id"] == f"judgment:{EARLY_JUDGMENT}"
     assert outcome["links"]["reality_entry_id"] == f"reality:{REALITY_ID}"
-    assert outcome["historical_time"]["source_text"] == "July 2022"
+    occurrence = outcome["historical_time"]
+    assert _iso(occurrence["start"]) == datetime(2022, 7, 1, tzinfo=UTC)
+    assert _iso(occurrence["end"]) == datetime(2022, 8, 1, tzinfo=UTC)
+    assert occurrence["precision"] == "month"
     assert outcome["known_at"] == LATER_KNOWN.isoformat()
     assert view["boundary"]["judgment_not_rewritten_by_outcome"] is True
