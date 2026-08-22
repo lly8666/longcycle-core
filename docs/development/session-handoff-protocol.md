@@ -1,212 +1,67 @@
-# Longcycle Session Handoff Protocol v4
+# Longcycle Session Handoff Protocol v5
 
-> Normative operating protocol. Design rationale, failure history and future evolution live in `docs/development/continuity-architecture.md`.
+> Normative operating protocol. Design rationale and failure history live in `docs/development/continuity-architecture.md`.
 
 ## 1. Goal
 
-Longcycle may pass through many chat windows, Agents, model vintages and industries. Every new Agent must recover, without old chat history:
+A zero-context Agent must recover without old chat history:
 
 ```text
 terminal mission
-+ cross-industry methodology
-+ current medium-term goal
-+ current short-term goal
-+ current atomic continuation cursor
-+ required Agent capability class
-+ only the active context needed now
-+ live implementation state
++ cross-industry method
++ live medium/short goals
++ typed continuation cursor
++ minimum active context
++ live Git/CI state
++ exact binary assets required to continue
++ how to verify and open those assets
 ```
 
-Old industry/devlog history is recoverable cold storage, not default memory.
+The handoff is deliberately split into a small Git control plane and a bounded external binary data plane.
 
-## 2. Cold-start entry
-
-The default branch root must contain `FRESH_AGENT_BOOTSTRAP.md`.
-
-It resolves:
+## 2. Cold-start route
 
 ```text
-default branch
+main/FRESH_AGENT_BOOTSTRAP.md
 → issue #2 rendezvous
-→ active PR / development branch
+→ active PR / branch
 → active branch CONTINUE_HERE.md
+→ Strategy + Method Core
+→ first-pass mission reconstruction
+→ mission-fidelity calibration
+→ current.json
+→ live HEAD / delta / CI refresh
+→ bounded resume_read_set
+→ data-plane.json only as required by the cursor
+→ execute
 ```
 
-The pointer must not embed live industry, task, branch, campaign, count or CI facts.
+The fixed transfer phrase remains task-free:
+
+> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
 
 ## 3. State ownership
 
 | Layer | Canonical owner | Purpose |
 | --- | --- | --- |
-| terminal mission | `STRATEGIC_COMPASS.md` | why Longcycle exists / terminal capability / anti-drift |
-| cross-industry method | `METHODOLOGY_CORE.md` | adopted reusable operating method |
-| mission calibration | `.longcycle/continuity/mission-fidelity.json` | semantic questions + common misreadings, never full answers |
-| dynamic handoff | `.longcycle/handoff/current.json` | horizon, workstreams, capability requirement, cursor, live snapshot |
-| active context | paths referenced by handoff | current benchmark/task details |
-| history | Git + `docs/devlog/` | decisions, failures, old state, audits |
+| terminal mission | `STRATEGIC_COMPASS.md` | why Longcycle exists / anti-drift |
+| cross-industry method | `METHODOLOGY_CORE.md` | reusable research method |
+| mission calibration | `.longcycle/continuity/mission-fidelity.json` | semantic challenge, not answers |
+| dynamic control plane | `.longcycle/handoff/current.json` | goals, workstreams, cursor, live snapshot |
+| binary data plane | `.longcycle/handoff/data-plane.json` | external asset IDs, hashes, restore contract |
+| active context | handoff-referenced files | current benchmark/task details |
+| history | Git + devlogs | rationale / old state |
+| large bytes | verified external assets | portable DB/archive/runtime payloads |
 
-One information class has one normal owner.
+One information class has one normal owner. Google Drive metadata is never a truth source for research state.
 
-## 4. Mission assimilation — think first, calibrate second
+## 4. Mission assimilation
 
-Fresh Agent sequence:
+Read Strategy + Method Core first, then independently reconstruct the mission and method in the Agent's own words. Only then read the mission-fidelity contract and repair omissions. A high-capability transfer is not proven by repeating headings.
 
-```text
-read Strategy + Method Core
-→ independently reconstruct mission/method in own words
-→ only then read mission-fidelity.json
-→ compare against required semantic facets / misreadings
-→ targeted reread and repair if needed
-```
+Do not persist private chain-of-thought. Persist only concise decisions, task hierarchy, reproducible constraints and verification results.
 
-A pass requires causal explanation, not keyword repetition.
-
-Do not store private chain-of-thought. Persist only concise alignment conclusions or decisions when they materially affect project state.
-
-## 5. Independent judgment and user-advice handling
-
-User intent and user-proposed method are different authority classes.
-
-- The user owns goals, preferences, constraints and risk tradeoffs.
-- The Agent has a duty to make an independent technical/research judgment from the mission, evidence, live state and available capability.
-- A user-proposed method is not automatically the best method.
-- If a method is materially unsound, strategically weak, contradicted by evidence, or already beyond a stop condition, the Agent should explain why and refuse/narrow/rewrite it.
-- This is not a license for reflexive contrarianism or claims that the model is generally superior to the user. Model status is not evidence.
-
-The desired behavior is non-sycophantic, evidence-grounded and goal-respecting.
-
-## 6. Capability-aware task entry
-
-The continuation cursor declares one of two capability classes:
-
-- `high_capability_reasoning` — independent synthesis, contradiction checking, strategic judgment, ambiguous tradeoffs or high-value conflict resolution;
-- `bounded_execution` — explicit inputs, bounded source/task scope, clear stop condition and little freedom to redefine conclusions.
-
-If the active task requires `high_capability_reasoning` and the current Agent cannot reliably perform that level of work, it must obey `insufficient_capability_action = stop_and_escalate`.
-
-It must not imitate confidence and produce a surface-complete result.
-
-This is also the reserved future entry point for lower-cost Agent orchestration. No full dispatcher is implied by the current protocol.
-
-## 7. Fresh-session algorithm
-
-```text
-1. default root → FRESH_AGENT_BOOTSTRAP.md
-2. issue #2 → active PR / branch
-3. switch reads to active branch
-4. read STRATEGIC_COMPASS.md + METHODOLOGY_CORE.md
-5. produce first-pass mission/method reconstruction
-6. calibrate with .longcycle/continuity/mission-fidelity.json
-7. read current.json strategic horizon + continuation cursor
-8. check required capability / escalate if insufficient
-9. refresh live HEAD / commit delta / CI
-10. load only minimal resume_read_set / active context needed by cursor
-11. run Vertical Alignment Gate
-12. execute current/next atomic action
-```
-
-`resume_read_set` remains bounded at 8 files or fewer.
-
-## 8. Vertical Alignment Gate
-
-Run before a new substantive subproblem and after every coherent subtask.
-
-A simple main-path task follows:
-
-```text
-atomic task
-↑ main-path workstream
-↑ short-term milestone
-↑ medium-term capability proof
-↑ terminal mission
-```
-
-Not every legitimate task is main-path work. A task may be a temporary `supporting_quality_gate` or a permanent `parallel_track`. Therefore each workstream also declares:
-
-- `role`: `main_path`, `supporting_quality_gate` or `parallel_track`;
-- `parent_goal_ref`: the strategic horizon goal it serves.
-
-This prevents a support task from silently redefining the current product milestone merely because it is the active cursor.
-
-Then ask:
-
-1. Is this still a high-value action relative to the workstream's declared role and parent goal?
-2. Is `done_when` already satisfied?
-3. Is local scope growing only because the problem is interesting/easy to optimize?
-4. Did new evidence change or obsolete the parent task?
-5. Would stopping now materially reduce parent-level progress?
-6. If this is a support workstream, has the quality/blocker condition already been cleared so the Agent should return to `main_path`?
-
-If the task cannot be connected upward or marginal value has collapsed, stop/re-rank instead of deepening automatically.
-
-## 9. Continuation cursor and workstream contract
-
-`current.json.continuation_cursor` must contain:
-
-- `parent_workstream_id`;
-- `last_completed_action`;
-- `current_task`;
-- `why_now`;
-- `done_when`;
-- `required_capability`;
-- `insufficient_capability_action`;
-- `next_atomic_action`.
-
-Every active workstream must declare its `role` and `parent_goal_ref`; at least one `main_path` workstream must exist.
-
-The cursor is not a devlog. It answers only:
-
-```text
-what just finished?
-what should resume now?
-why is it current?
-what capability does it require?
-what happens if this Agent is not capable enough?
-what role does its workstream play?
-which parent goal does that workstream serve?
-what ends it?
-what comes immediately after?
-```
-
-## 10. Real-time micro-checkpoint lifecycle
-
-After a coherent task boundary that changes what the next Agent should do:
-
-```text
-1. commit substantive work
-2. run Vertical Alignment Gate
-3. update continuation cursor and materially changed dynamic fields
-4. set checkpoint_based_on_head_sha = substantive-work commit SHA
-5. commit handoff sync
-6. refresh live CI when correctness is material
-```
-
-Do not checkpoint cosmetic edits that do not change continuation.
-
-If a session ends before sync, live HEAD will differ from checkpoint base; the next Agent must reconcile intervening commits before acting.
-
-## 11. Canonical fixed transfer phrase
-
-> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
-
-The phrase must remain task-free. Repository state owns the current task.
-
-## 12. Core growth rule
-
-Core files have CI ceilings but ceilings are not brevity targets.
-
-Failure extremes:
-
-```text
-overcompression → slogans survive, causal mission disappears
-overgrowth      → startup becomes project archaeology
-```
-
-Current target: high semantic fidelity + bounded growth + minimum sufficient context.
-
-Specific industry facts never enter long-term Core. Reusable lessons enter Method Core only after explicit user adoption or sufficient cross-benchmark evidence.
-
-## 13. Authority planes
+## 5. Authority planes
 
 Strategic authority:
 
@@ -218,55 +73,166 @@ new explicit user goal / constraint / decision
 > deep historical narrative
 ```
 
-A user suggestion about implementation method is still subject to independent technical judgment; it is not the same thing as a user-owned goal or constraint.
-
-Implementation freshness:
+Implementation/data freshness:
 
 ```text
 live Git graph / HEAD / CI
-> canonical / deterministic-derived artifacts
++ canonical repository receipts
++ externally restored bytes that match repository SHA-256
+> deterministic-derived state
 > checkpoint snapshot
-> narrative
+> narrative / Drive filename / Drive timestamp
 ```
 
-New code cannot silently redefine mission. Old checkpoint state cannot outrank live Git.
+A Drive file id is a locator. Its repository-pinned digest is the integrity authority.
 
-## 14. Protocol evolution
+## 6. Control plane contract
 
-Material continuity changes require:
+`current.json` uses `longcycle-session-handoff/v5` and contains:
 
-1. observed failure/adversarial case;
-2. identified violated invariant;
-3. smallest-owner repair;
-4. schema version bump when semantics change;
-5. repository-only regression test;
-6. artificial-ignorance drill;
-7. genuine fresh-Agent report-only audit when useful;
-8. concise devlog of failure and remediation;
-9. return to product main path when continuity is safe.
+- active repo/PR/branch;
+- checkpoint base SHA;
+- strategic horizon;
+- continuation cursor;
+- workstream graph;
+- capability requirement;
+- active context;
+- bounded `resume_read_set` (8 files or fewer);
+- `data_plane_manifest_path = .longcycle/handoff/data-plane.json`;
+- live CI snapshot and explicit refresh instruction;
+- ordered next actions and unresolved questions.
 
-Continuity is infrastructure, not the product roadmap.
+The cursor answers only what just finished, what resumes now, why, what ends it and what immediately follows. It is not a devlog.
 
-## 15. Repository-only checks
+## 7. Binary data plane contract
 
-CI should verify at minimum:
+`data-plane.json` is the only normal owner of current external binary handoff assets. Each asset records:
 
-- Core byte/line bounds;
-- active-context exclusion from long-term cores;
-- mission semantic contract exists and contains no current-industry data;
-- bootstrap order requires first-pass synthesis before semantic calibration;
-- typed strategic horizon and continuation cursor are complete;
-- current cursor declares capability requirement and stop/escalate behavior;
-- workstream roles and parent-goal references are valid, with at least one main path;
-- resume set is bounded;
-- campaign/context paths derive from active context rather than a hard-coded industry;
-- raw/canonical campaign state agrees with checkpoint where applicable;
-- stale checkpoint scenarios are detected.
+- stable logical asset id and role;
+- whether the current cursor requires it;
+- transport (`google_drive` under the current environment constraint);
+- Drive file id and filename;
+- byte length and outer SHA-256;
+- important inner components with byte length and SHA-256;
+- concise content summary;
+- deterministic restore instruction.
 
-## 16. External fresh-Agent audit
+Current transport mode is `sandbox_google_drive_manual_relay`: large bytes move through the ChatGPT sandbox and Google Drive because Git text writes cannot carry them and GitHub Actions cannot consume Drive directly.
 
-A true external audit starts from repository name or the fixed transfer phrase only. The Agent must independently discover active state, reconstruct mission/method, calibrate itself, recover the continuation cursor, evaluate its own capability for the cursor, and report-only audit the mechanism without repairing it unless explicitly authorized.
+This is a transport limitation, not a reason to make Drive the database.
 
-Not remembering irrelevant old industry details is a success.
+### Restore algorithm
 
-A report that resolves paths correctly but merely repeats repository instructions without independent judgment is not sufficient evidence that a high-capability transfer succeeded.
+```text
+1. recover control plane first
+2. decide which assets are required_for_current_task
+3. fetch only those Drive file ids
+4. verify outer size + SHA-256 before extraction
+5. verify required inner component digests
+6. restore compatible offline runtime only if needed
+7. open research packs read-only by default
+8. fail closed on missing asset, hash mismatch or ABI mismatch
+```
+
+If the Drive connector is unavailable, ask only for the exact repository-identified asset to be uploaded; never ask the user to reconstruct project background.
+
+## 8. Database handoff boundary
+
+Do not move a PostgreSQL cluster between sessions. PostgreSQL remains the transactional write/ops runtime for concurrent queues, leases, outbox and normal write semantics. Recreate it in GitHub Actions or another service-capable environment when those semantics are required.
+
+Portable durable handoff uses:
+
+```text
+immutable content-addressed source/artifact bytes
++ repository machine receipts
++ reconciled DuckDB research/evidence packs
+```
+
+DuckDB is a read/replay materialization, not a replacement for raw evidence. The sandbox opens it read-only unless an explicitly designed pack-building task says otherwise.
+
+Offline DuckDB runtime assets are ABI-specific. A wheel built for CPython 3.11 is not acceptable for a CPython 3.13 sandbox merely because both say DuckDB 1.5.5. Runtime assets therefore pin language ABI, architecture, version and SHA.
+
+## 9. Capacity and pack policy
+
+The current Drive capacity is limited, so handoff must be incremental and hot-pluggable rather than monolithic.
+
+- Do not copy the whole multi-industry database at every session boundary.
+- Keep only the active/recent immutable packset needed for continuation plus small runtime packs.
+- Prefer bounded industry/time or task packs and content-addressed cold bundles.
+- New immutable bytes get a new asset id/file id; never replace bytes behind an existing manifest entry.
+- Old assets may be garbage-collected only after a verified successor exists and no current handoff references them.
+- The Git manifest remains small even when total historical storage grows.
+
+## 10. Workstreams and vertical alignment
+
+Each active workstream declares `main_path`, `supporting_quality_gate` or `parallel_track` and its parent strategic goal. At least one main path exists.
+
+Before a substantive subproblem and after each coherent subtask, verify:
+
+```text
+atomic task
+↑ owning workstream / role
+↑ short or medium goal
+↑ terminal mission
+```
+
+Stop local optimization when `done_when` is met or marginal value collapses. Continuity infrastructure must return control to the research main path once transfer safety is demonstrated.
+
+## 11. Capability-aware entry
+
+The cursor declares `high_capability_reasoning` or `bounded_execution`. If a high-capability task cannot be reliably performed, obey `stop_and_escalate`; do not simulate confidence.
+
+User goals and constraints are authoritative, but a user-proposed implementation method is still subject to independent technical judgment.
+
+## 12. Micro-checkpoint lifecycle
+
+After a coherent task boundary that changes what the next Agent should do:
+
+```text
+1. commit substantive work
+2. run vertical alignment
+3. if required binary state changed, create/verify/relay immutable assets
+4. update data-plane.json
+5. update current.json
+6. set checkpoint_based_on_head_sha to the substantive-work commit
+7. commit the handoff sync
+8. refresh live CI when correctness is material
+```
+
+`.longcycle/handoff/current.json` and `.longcycle/handoff/data-plane.json` are handoff-mutable paths. Large binary bytes never enter Git.
+
+If live HEAD differs from the checkpoint base, inspect intervening commits and fail closed into delta reconciliation rather than guessing.
+
+## 13. Test pyramid
+
+A handoff mechanism is not accepted from prose alone.
+
+1. Static contracts: schema, bounded read set, path ownership, hashes, workstream/cursor validity.
+2. Repository-only reconstruction: rebuild current state without chat history.
+3. Binary roundtrip: Action/sandbox → Drive → fresh sandbox, outer + component SHA verification.
+4. Offline runtime drill: install the pinned runtime in a clean venv with no network and open the required portable DB.
+5. Artificial-ignorance drill: report current mission/state/task/data requirements using only the bounded bootstrap.
+6. Genuine fresh-Agent transfer when useful.
+
+A fresh Agent that recovers the task but cannot identify/open the required binary state has not fully passed v5 handoff.
+
+## 14. Failure policy
+
+Fail closed if any of these occur:
+
+- checkpoint is stale relative to substantive commits;
+- required resume/data path is missing;
+- Drive asset missing or wrong size/hash;
+- inner DB/receipt/runtime component hash mismatch;
+- runtime ABI incompatible with sandbox;
+- data package exists but cannot be opened read-only;
+- reconstructed state contradicts canonical receipts/live Git;
+- the Agent needs old chat text to know what to do next.
+
+The user should never need to repeat already persisted background. A precise request for one missing binary asset is acceptable; a request to reconstruct project history is not.
+
+## 15. Evolution rule
+
+Material continuity changes require an observed failure or adversarial case, the smallest owning repair, typed schema update when semantics change, repository regression tests, an artificial-ignorance drill and a return to the product main path once safe.
+
+The target remains minimum sufficient context: future Agents remember the right abstractions, recover the exact bytes they need, and continue without turning handoff engineering into the roadmap.
