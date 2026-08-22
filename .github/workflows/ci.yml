@@ -72,6 +72,10 @@ jobs:
         id: epistemic_memory
         run: python scripts/smoke_postgres_epistemic.py
 
+      - name: Materialized grounded Evidence integration (hard gate)
+        id: materialized_evidence
+        run: python scripts/smoke_materialized_grounded_evidence.py
+
       - name: No-lookahead portable evidence replay smoke (hard gate)
         id: replay
         run: python scripts/smoke_no_lookahead_replay.py
@@ -132,6 +136,7 @@ jobs:
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
           echo "postgres_reality=${{ steps.postgres_reality.outcome }} (hard gate)"
           echo "epistemic_memory=${{ steps.epistemic_memory.outcome }} (hard gate)"
+          echo "materialized_evidence=${{ steps.materialized_evidence.outcome }} (hard gate)"
           echo "replay=${{ steps.replay.outcome }} (hard gate)"
           echo "judgment_replay=${{ steps.judgment_replay.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
