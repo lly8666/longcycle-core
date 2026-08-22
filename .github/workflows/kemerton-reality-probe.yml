@@ -1,0 +1,120 @@
+name: Kemerton canonical Reality probe
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EVIDENCE_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-evidence-spec-v2.json
+  REALITY_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-reality-projection-v1.json
+
+jobs:
+  reality:
+    if: github.event.issue.title == '[longcycle-kemerton-reality-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Run real grounded Reality path
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p probe
+          git rev-parse HEAD > probe/active-head.txt
+          printf '%s\n' "$GITHUB_RUN_ID" > probe/run-id.txt
+          python -m pip install -e '.[postgres,duckdb]'
+          longcycle --json db upgrade > probe/migrations.json
+          python scripts/execute_grounded_evidence_spec.py "$EVIDENCE_SPEC" \
+            --output probe/grounded-evidence-execution.json \
+            > probe/evidence.stdout 2> probe/evidence.stderr
+          python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" \
+            probe/grounded-evidence-execution.json \
+            --output probe/reality-execution.json \
+            > probe/reality.stdout 2> probe/reality.stderr
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+      - name: Build report
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def read(path: str, default: str = 'unknown') -> str:
+              item = Path(path)
+              return item.read_text(encoding='utf-8', errors='replace').strip() if item.exists() else default
+
+          lines = [
+              '# Kemerton canonical Reality probe', '',
+              f'- workflow run: `{read("probe/run-id.txt")}`',
+              f'- active branch HEAD: `{read("probe/active-head.txt")}`',
+          ]
+          path = Path('probe/reality-execution.json')
+          if path.exists():
+              payload = json.loads(path.read_text(encoding='utf-8'))
+              verification = payload['verification']
+              lines += [
+                  f'- task: `{payload["task_id"]}`',
+                  f'- FactAssertions: {verification["fact_count"]}',
+                  f'- canonical Reality rows: {verification["canonical_reality_count"]}',
+                  f'- all reconciled ACCEPT: {verification["all_reconciled_accept"]}',
+                  f'- precision preserved: {verification["valid_time_precision_preserved"]}',
+                  '', '## Canonical Reality', ''
+              ]
+              for row in payload['canonical_reality']:
+                  lines.append(
+                      f'- `{row["predicate_code"]}` = `{row["value_text"]}`; '
+                      f'valid `{row["valid_time_text"]}` precision=`{row["valid_time_precision"]}`; '
+                      f'known `{row["market_known_at"]}`'
+                  )
+          else:
+              lines += ['', '## Failure', '', '```text', read('probe/reality.stderr', read('probe/evidence.stderr', 'no output'))[-8000:], '```']
+          Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+          cat probe/report.md
+      - name: Upload probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kemerton-reality-v1-${{ github.run_id }}
+          retention-days: 30
+          include-hidden-files: true
+          if-no-files-found: error
+          path: |
+            probe/
+            .longcycle/action-blobs/
+      - name: Comment report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md
