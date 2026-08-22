@@ -1,0 +1,176 @@
+name: Execute repository research orchestration once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  execute:
+    if: >-
+      github.event.issue.title == '[longcycle-research-orchestration-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/research-orchestration-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Parse bounded orchestration request
+        id: request
+        shell: bash
+        env:
+          REQUEST_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import re
+          from pathlib import PurePosixPath
+
+          request = json.loads(os.environ['REQUEST_BODY'])
+          if set(request) != {'branch', 'head', 'orchestration_spec'}:
+              raise SystemExit('request must contain exactly branch, head and orchestration_spec')
+          branch = request['branch']
+          head = request['head']
+          spec = request['orchestration_spec']
+          if not isinstance(branch, str) or not re.fullmatch(r'[A-Za-z0-9._/-]+', branch):
+              raise SystemExit('invalid branch')
+          if not isinstance(head, str) or not re.fullmatch(r'[0-9a-f]{40}', head):
+              raise SystemExit('invalid head')
+          if not isinstance(spec, str) or not spec:
+              raise SystemExit('invalid orchestration_spec')
+          path = PurePosixPath(spec)
+          if path.is_absolute() or '..' in path.parts:
+              raise SystemExit('orchestration_spec must be a safe repository-relative path')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              print(f'branch={branch}', file=output)
+              print(f'head={head}', file=output)
+              print(f'spec={spec}', file=output)
+          PY
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.request.outputs.branch }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Verify requested repository state and orchestration spec
+        id: source
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ steps.request.outputs.head }}
+          ORCHESTRATION_SPEC: ${{ steps.request.outputs.spec }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test -f "$ORCHESTRATION_SPEC"
+          python - <<'PY'
+          import json
+          import os
+          import re
+
+          spec = json.load(open(os.environ['ORCHESTRATION_SPEC'], encoding='utf-8'))
+          if spec.get('schema_version') != 'longcycle-research-orchestration/v1':
+              raise SystemExit('unexpected orchestration schema')
+          source = spec.get('source_pack')
+          if not isinstance(source, dict):
+              raise SystemExit('orchestration spec has no source_pack')
+          release_tag = source.get('release_tag')
+          file_name = source.get('file_name')
+          sha256 = source.get('sha256')
+          if not isinstance(release_tag, str) or not release_tag:
+              raise SystemExit('invalid release_tag')
+          if not isinstance(file_name, str) or '/' in file_name or '\\' in file_name:
+              raise SystemExit('invalid source-pack file_name')
+          if not isinstance(sha256, str) or not re.fullmatch(r'[0-9a-f]{64}', sha256):
+              raise SystemExit('invalid source-pack sha256')
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              print(f'release_tag={release_tag}', file=output)
+              print(f'file_name={file_name}', file=output)
+              print(f'sha256={sha256}', file=output)
+          PY
+      - name: Restore declared immutable source pack
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ steps.source.outputs.release_tag }}
+          SOURCE_FILE: ${{ steps.source.outputs.file_name }}
+          SOURCE_SHA256: ${{ steps.source.outputs.sha256 }}
+        run: |
+          set -euo pipefail
+          mkdir -p source-pack
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$SOURCE_FILE" --dir source-pack
+          test "$(sha256sum "source-pack/$SOURCE_FILE" | awk '{print $1}')" = "$SOURCE_SHA256"
+      - name: Execute generic fail-closed orchestration
+        id: gate
+        shell: bash
+        env:
+          ORCHESTRATION_SPEC: ${{ steps.request.outputs.spec }}
+          SOURCE_FILE: ${{ steps.source.outputs.file_name }}
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/research-orchestration.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          python scripts/execute_research_orchestration.py \
+            "$ORCHESTRATION_SPEC" \
+            --source-pack "source-pack/$SOURCE_FILE" \
+            --work-dir work \
+            --output orchestration-execution.json
+          python - <<'PY'
+          import json
+          result = json.load(open('orchestration-execution.json'))
+          assert result['ok'] is True, result
+          payload = result['result']
+          assert payload['schema_version'] == 'longcycle-research-orchestration-execution/v1', payload
+          assert payload['evidence']['acceptance']['fact_assertions_created'] == 0, payload
+          assert payload['evidence']['acceptance']['judgment_assertions_created'] == 0, payload
+          print('RESEARCH_ORCHESTRATION_GENERIC_GATE_PASS')
+          PY
+      - name: Upload generated execution relay
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-orchestration-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            orchestration-execution.json
+            work/prepared-grounded-evidence-spec.json
+            work/grounded-evidence-execution.json
+            work/reality-execution.json
+            /tmp/research-orchestration.log
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+          EXPECTED_HEAD: ${{ steps.request.outputs.head }}
+          ORCHESTRATION_SPEC: ${{ steps.request.outputs.spec }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="RESEARCH_ORCHESTRATION_V1_PASS head=$EXPECTED_HEAD spec=$ORCHESTRATION_SPEC run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/research-orchestration.log 2>/dev/null || true)"
+            body=$(printf 'RESEARCH_ORCHESTRATION_V1_FAIL head=%s spec=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ORCHESTRATION_SPEC" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
