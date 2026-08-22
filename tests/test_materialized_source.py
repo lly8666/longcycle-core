@@ -17,7 +17,7 @@ def source():
     return build_materialized_source_definition(
         name="SEC EDGAR materialized filings",
         publisher_domain="sec.gov",
-        kind=SourceKind.REGULATORY,
+        kind=SourceKind.REGULATOR,
         quality_grade=QualityGrade.A,
     )
 
