@@ -17,12 +17,17 @@ from longcycle.adapters.storage.s3 import S3ArchiveStore
 from longcycle.application.evidence_recording import ArchivedEvidenceRecorder
 from longcycle.application.parsing import ArtifactPipeline
 from longcycle.application.source_archive import DocumentArchiver
+from longcycle.application.source_authority import (
+    parse_source_authority_profiles,
+    validate_redistributed_document_provenance,
+)
 from longcycle.application.source_registration import (
     build_http_source_definition,
     build_materialized_source_definition,
 )
 from longcycle.config import Settings
 from longcycle.domain.enums import QualityGrade, SourceKind
+from longcycle.domain.memory import SourceAuthorityProfile
 from longcycle.domain.models import (
     DiscoveryItem,
     DocumentArtifact,
@@ -110,6 +115,9 @@ def _load_spec(path: Path) -> dict[str, Any]:
             raise ValueError(f"source {key} has unsupported transport: {transport}")
         if transport == "materialized" and schema_version != SCHEMA_VERSION_V2:
             raise ValueError("materialized source transport requires grounded evidence spec v2")
+        profiles = parse_source_authority_profiles(row.get("authority_profiles"))
+        if profiles and schema_version != SCHEMA_VERSION_V2:
+            raise ValueError("source authority profiles require grounded evidence spec v2")
         allowed_domains = row.get("allowed_domains")
         if transport == "http" and (
             not isinstance(allowed_domains, list)
@@ -181,13 +189,18 @@ async def _register_sources(
     *,
     registry: PostgresSourceRegistry,
     source_specs: list[dict[str, Any]],
-) -> dict[str, SourceDefinition]:
+) -> tuple[
+    dict[str, SourceDefinition],
+    dict[str, tuple[SourceAuthorityProfile, ...]],
+]:
     registered: dict[str, SourceDefinition] = {}
+    profiles_by_key: dict[str, tuple[SourceAuthorityProfile, ...]] = {}
     for row in source_specs:
         key = row.get("key")
         if not isinstance(key, str) or not key:
             raise ValueError("source key must be a non-empty string")
         transport = str(row.get("transport", "http"))
+        profiles = parse_source_authority_profiles(row.get("authority_profiles"))
         if transport == "http":
             allowed_domains = row.get("allowed_domains")
             if not isinstance(allowed_domains, list) or not all(
@@ -210,8 +223,9 @@ async def _register_sources(
             )
         else:
             raise ValueError(f"source {key} has unsupported transport: {transport}")
-        registered[key] = await registry.register(source)
-    return registered
+        registered[key] = await registry.register(source, authority_profiles=profiles)
+        profiles_by_key[key] = profiles
+    return registered, profiles_by_key
 
 
 def _source_plugin(
@@ -236,6 +250,7 @@ async def _archive_documents(
     repository: PostgresResearchRepository,
     archive: ArchiveStore,
     sources: dict[str, SourceDefinition],
+    authority_profiles: dict[str, tuple[SourceAuthorityProfile, ...]],
     document_specs: list[dict[str, Any]],
     task_id: str,
     material_root: Path | None,
@@ -250,12 +265,20 @@ async def _archive_documents(
         if not isinstance(source_key, str) or source_key not in sources:
             raise ValueError(f"document {key} references unknown source {source_key!r}")
         persisted_source = await repository.get_source(sources[source_key].id)
+        retrieval_url = str(row["retrieval_url"])
+        retrieval_provenance = row.get("retrieval_provenance") or {}
+        validate_redistributed_document_provenance(
+            source=persisted_source,
+            retrieval_url=retrieval_url,
+            retrieval_provenance=retrieval_provenance,
+            authority_profiles=authority_profiles[source_key],
+        )
         plugin = _source_plugin(source=persisted_source, material_root=material_root)
         metadata = {
             "evidence_task_id": task_id,
             "vintage_id": row.get("vintage_id"),
             "original_source_url": row.get("original_source_url"),
-            "retrieval_provenance": row.get("retrieval_provenance") or {},
+            "retrieval_provenance": retrieval_provenance,
             "transport_plugin": persisted_source.plugin,
         }
         if persisted_source.plugin == "materialized_file":
@@ -269,7 +292,7 @@ async def _archive_documents(
         item = DiscoveryItem(
             source_id=persisted_source.id,
             external_id=str(row["external_id"]),
-            url=str(row["retrieval_url"]),
+            url=retrieval_url,
             title_hint=str(row["title"]),
             published_at_hint=_aware_datetime(row.get("published_at")),
             discovered_at=_aware_datetime(row.get("first_known_at"))
@@ -496,11 +519,15 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
             or not isinstance(fragment_specs, list)
         ):
             raise ValueError("spec source/document/fragment collections must be lists")
-        sources = await _register_sources(registry=registry, source_specs=source_specs)
+        sources, authority_profiles = await _register_sources(
+            registry=registry,
+            source_specs=source_specs,
+        )
         documents = await _archive_documents(
             repository=repository,
             archive=archive,
             sources=sources,
+            authority_profiles=authority_profiles,
             document_specs=document_specs,
             task_id=str(spec["task_id"]),
             material_root=args.material_root,
@@ -544,6 +571,10 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
                     ),
                     "first_known_at": document.first_known_at.isoformat(),
                     "retrieval_provenance": row.get("retrieval_provenance") or {},
+                    "source_authority_profiles": [
+                        profile.model_dump(mode="json")
+                        for profile in authority_profiles[str(row["source_key"])]
+                    ],
                     "expected_visible_text_sha256": row.get("expected_visible_text_sha256"),
                 }
             )
