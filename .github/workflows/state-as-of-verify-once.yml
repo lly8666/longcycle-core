@@ -10,7 +10,7 @@ permissions:
 
 env:
   ACTIVE_REF: design/industry-memory
-  EXPECTED_SHA: defc82eeee57f740583068e1dcb26b5b9dcfdb07
+  EXPECTED_SHA: a25120ab8706f5359b4da5e7ff89dea77d8942d4
   LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
   LONGCYCLE_BLOB_BACKEND: filesystem
   LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
@@ -162,7 +162,7 @@ jobs:
 
           proof = {
               'schema_version': 'longcycle-kwinana-state-as-of-replay-proof/v1',
-              'active_sha': 'defc82eeee57f740583068e1dcb26b5b9dcfdb07',
+              'active_sha': 'a25120ab8706f5359b4da5e7ff89dea77d8942d4',
               'counts': {
                   'before_2022': [len(before_2022.reality), len(before_2022.judgments), len(before_2022.outcomes)],
                   'pre_disclosure': [len(pre_disclosure.reality), len(pre_disclosure.judgments), len(pre_disclosure.outcomes)],
