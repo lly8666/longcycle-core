@@ -1,0 +1,110 @@
+{
+  "schema_version": "longcycle-judgment-replay-receipt/v1",
+  "task_id": "EVT-002-KEMERTON-JUDGMENT-REPLAY-V1",
+  "source_projection_task_id": "EVT-002-KEMERTON-JUDGMENTS-V1",
+  "source_evidence_database_sha256": "98f01c54bcb5b3ded7c8e28974182f7aae8f6d1c32308b887df1091584a02a7e",
+  "overlay": {
+    "duckdb_version": "1.5.5",
+    "sha256": "00c1b7f9e2bd80abcad4a4f52af931eea2357ddc7b262df1c4d2872eea570914",
+    "byte_length": 798720,
+    "validation_mode": "sandbox_read_only_after_build",
+    "durability": "deterministically_rebuildable_overlay_not_canonical_evidence"
+  },
+  "cutoffs": [
+    {
+      "knowledge_cutoff": "2019-01-02T23:59:58Z",
+      "visible_judgment_count": 0,
+      "visible_judgment_keys": []
+    },
+    {
+      "knowledge_cutoff": "2019-01-02T23:59:59Z",
+      "visible_judgment_count": 1,
+      "visible_judgment_keys": ["2019-staged-commissioning-2021"]
+    },
+    {
+      "knowledge_cutoff": "2021-02-19T16:37:47Z",
+      "visible_judgment_count": 1,
+      "visible_judgment_keys": ["2019-staged-commissioning-2021"]
+    },
+    {
+      "knowledge_cutoff": "2021-02-19T16:37:48Z",
+      "visible_judgment_count": 3,
+      "visible_judgment_keys": [
+        "2019-staged-commissioning-2021",
+        "2020-construction-completion-late-2021",
+        "2020-producing-sales-2022"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2021-08-04T16:25:24Z",
+      "visible_judgment_count": 3,
+      "visible_judgment_keys": [
+        "2019-staged-commissioning-2021",
+        "2020-construction-completion-late-2021",
+        "2020-producing-sales-2022"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2021-08-04T16:25:25Z",
+      "visible_judgment_count": 5,
+      "visible_judgment_keys": [
+        "2019-staged-commissioning-2021",
+        "2020-construction-completion-late-2021",
+        "2020-producing-sales-2022",
+        "2021q2-commercial-production-2022",
+        "2021q2-kemerton2-completion-by-q1-2022"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2022-05-04T16:48:40Z",
+      "visible_judgment_count": 5,
+      "visible_judgment_keys": [
+        "2019-staged-commissioning-2021",
+        "2020-construction-completion-late-2021",
+        "2020-producing-sales-2022",
+        "2021q2-commercial-production-2022",
+        "2021q2-kemerton2-completion-by-q1-2022"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2022-05-04T16:48:41Z",
+      "visible_judgment_count": 7,
+      "visible_judgment_keys": [
+        "2019-staged-commissioning-2021",
+        "2020-construction-completion-late-2021",
+        "2020-producing-sales-2022",
+        "2021q2-commercial-production-2022",
+        "2021q2-kemerton2-completion-by-q1-2022",
+        "2022q1-kemerton1-first-product-may",
+        "2022q1-kemerton2-mechanical-completion-h2"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2022-08-03T16:27:49Z",
+      "visible_judgment_count": 7,
+      "visible_judgment_keys": [
+        "2019-staged-commissioning-2021",
+        "2020-construction-completion-late-2021",
+        "2020-producing-sales-2022",
+        "2021q2-commercial-production-2022",
+        "2021q2-kemerton2-completion-by-q1-2022",
+        "2022q1-kemerton1-first-product-may",
+        "2022q1-kemerton2-mechanical-completion-h2"
+      ]
+    }
+  ],
+  "coarse_time_verification": {
+    "judgment_key": "2020-construction-completion-late-2021",
+    "target_precision": "approximate",
+    "target_text": "late 2021",
+    "target_from": null,
+    "target_to": null,
+    "fake_exact_date_created": false
+  },
+  "verification": {
+    "sql_filters_future_judgments_before_materialization": true,
+    "later_outcome_does_not_rewrite_prior_judgments": true,
+    "target_precision_preserved": true,
+    "source_evidence_pack_mutated": false
+  }
+}
