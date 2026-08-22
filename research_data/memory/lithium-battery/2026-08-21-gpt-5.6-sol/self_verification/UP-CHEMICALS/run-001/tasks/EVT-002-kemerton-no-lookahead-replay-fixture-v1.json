@@ -1,0 +1,73 @@
+{
+  "schema_version": "longcycle-no-lookahead-replay-fixture/v1",
+  "fixture_id": "EVT-002-KEMERTON-REPLAY-V1",
+  "source_asset_id": "kemerton-grounded-run28-capsule",
+  "source_duckdb_sha256": "98f01c54bcb5b3ded7c8e28974182f7aae8f6d1c32308b887df1091584a02a7e",
+  "authority": "acceptance_fixture_not_evidence",
+  "purpose": "Prove that the portable evidence timeline can reconstruct Kemerton at historical knowledge cutoffs without exposing later evidence or rewriting earlier expectations.",
+  "invariants": [
+    "A replay snapshot may contain only rows whose known_time_upper_bound is <= knowledge_cutoff.",
+    "The public snapshot contains no future fragment keys, excerpts, hidden-event counts or outcome hints.",
+    "Contract schedule, management expectation/revision, project status and outcome roles remain distinct.",
+    "Outcome evidence enters only when its own known-time boundary is reached.",
+    "The fixture validates evidence visibility only; it does not synthesize FactAssertions or Judgments."
+  ],
+  "cutoffs": [
+    {
+      "label": "launch-known",
+      "knowledge_cutoff": "2019-01-02T23:59:59Z",
+      "expected_visible_fragment_keys": [
+        "2019-launch-60kt-scope",
+        "2019-launch-staged-commissioning"
+      ]
+    },
+    {
+      "label": "contract-schedule-known",
+      "knowledge_cutoff": "2019-08-07T16:57:18Z",
+      "expected_visible_fragment_keys": [
+        "2019-launch-60kt-scope",
+        "2019-launch-staged-commissioning",
+        "2019-contract-debottleneck-capacity",
+        "2019-contract-ownership",
+        "2019-contract-train1-date",
+        "2019-contract-train2-date"
+      ]
+    },
+    {
+      "label": "2020-10k-revision-known",
+      "knowledge_cutoff": "2021-02-19T16:37:48Z",
+      "expected_visible_count": 9
+    },
+    {
+      "label": "2021q2-delay-revision-known",
+      "knowledge_cutoff": "2021-08-04T16:25:25Z",
+      "expected_visible_count": 12
+    },
+    {
+      "label": "mechanical-completion-known",
+      "knowledge_cutoff": "2022-02-16T16:37:45Z",
+      "expected_visible_count": 13
+    },
+    {
+      "label": "may-first-product-expectation-known",
+      "knowledge_cutoff": "2022-05-04T16:48:41Z",
+      "expected_visible_count": 15
+    },
+    {
+      "label": "one-second-before-first-product-outcome-disclosure",
+      "knowledge_cutoff": "2022-08-03T16:27:48Z",
+      "expected_visible_count": 15,
+      "must_exclude_fragment_keys": [
+        "2022q2-first-product-outcome"
+      ]
+    },
+    {
+      "label": "first-product-outcome-disclosed",
+      "knowledge_cutoff": "2022-08-03T16:27:49Z",
+      "expected_visible_count": 16,
+      "must_include_fragment_keys": [
+        "2022q2-first-product-outcome"
+      ]
+    }
+  ]
+}
