@@ -60,6 +60,10 @@ jobs:
         id: postgres_judgments
         run: python scripts/smoke_postgres_judgments.py
 
+      - name: PostgreSQL canonical Reality smoke (hard gate)
+        id: postgres_reality
+        run: python scripts/smoke_postgres_reality.py
+
       - name: No-lookahead portable replay smoke (hard gate)
         id: replay
         run: python scripts/smoke_no_lookahead_replay.py
@@ -117,6 +121,7 @@ jobs:
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
+          echo "postgres_reality=${{ steps.postgres_reality.outcome }} (hard gate)"
           echo "replay=${{ steps.replay.outcome }} (hard gate)"
           echo "judgment_replay=${{ steps.judgment_replay.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
