@@ -28,7 +28,15 @@ async def main() -> None:
     judgment_id = UUID("33333333-3333-3333-3333-333333333333")
     with psycopg.connect(dsn, row_factory=dict_row) as connection:
         judgment_row = connection.execute(
-            "SELECT extraction_run_id, source_connector_id FROM research.judgment_assertions WHERE id = %s",
+            """
+            SELECT judgment.extraction_run_id, judgment.source_connector_id,
+                   link.evidence_fragment_id
+            FROM research.judgment_assertions judgment
+            JOIN research.judgment_evidence link ON link.judgment_id = judgment.id
+            WHERE judgment.id = %s AND link.evidence_role = 'statement'
+            ORDER BY link.evidence_fragment_id
+            LIMIT 1
+            """,
             (judgment_id,),
         ).fetchone()
         if judgment_row is None:
@@ -76,7 +84,7 @@ async def main() -> None:
         extraction_confidence=1.0,
         evidence=(
             JudgmentEvidenceRef(
-                evidence_fragment_id=UUID("6ca3c119-b7b4-5a3b-a0b5-34ef70fbfd42"),
+                evidence_fragment_id=judgment_row["evidence_fragment_id"],
                 evidence_role=JudgmentEvidenceRole.STATEMENT,
             ),
         ),
