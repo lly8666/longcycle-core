@@ -11,7 +11,7 @@ permissions:
 
 env:
   ACTIVE_REF: design/industry-memory
-  EXPECTED_HEAD: 1a8c18880f10506bebb220426b3324cb9bc3cceb
+  EXPECTED_HEAD: 1b71d3c983cf5b66bebae812470559da59162cb6
   RELEASE_TAG: longcycle-dev-binary-cache
   SV001_ASSET: longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip
   SV001_ASSET_SHA256: 1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b
@@ -23,7 +23,7 @@ env:
 
 jobs:
   replay:
-    if: github.event.issue.title == '[longcycle-adc-first-pair-replay-v1]'
+    if: github.event.issue.title == '[longcycle-adc-first-pair-replay-v2]'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     services:
