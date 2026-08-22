@@ -1,0 +1,60 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "EVT-003-HYDROXIDE-JUDGMENTS-V2",
+  "source_evidence_task_id": "EVT-003-HYDROXIDE-EXPECTATION-REDISTRIBUTED-EVIDENCE-V2",
+  "allowed_claim_roles": ["management_expectation"],
+  "subjects": [
+    {
+      "id": "a6a75821-7ba6-532c-863c-1e656135cea9",
+      "entity_type": "legal_entity",
+      "canonical_name": "Livent Corporation"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2018-structural-high-nickel-hydroxide-thesis",
+      "evidence_refs": [
+        {
+          "fragment_key": "2018-structural-high-nickel-hydroxide-thesis",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "a6a75821-7ba6-532c-863c-1e656135cea9",
+      "speaker_name_text": "Livent Corporation management",
+      "topic_code": "industry.high_nickel_lithium_hydroxide_demand",
+      "judgment_kind": "thesis",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "as automotive OEMs move toward high-nickel cathode materials",
+      "value_kind": "text",
+      "value_text": "The shift toward high-nickel cathode materials will increasingly require battery-grade lithium hydroxide.",
+      "summary": "Livent's 2018 filing expressed a structural thesis that increasing high-nickel cathode adoption would increase the requirement for battery-grade lithium hydroxide.",
+      "metadata": {
+        "semantic_guard": "This is a structural demand thesis, not a dated near-term pace forecast. No exact demand date or volume is manufactured from the source."
+      }
+    },
+    {
+      "judgment_key": "2019q1-high-nickel-hydroxide-demand-timing",
+      "evidence_refs": [
+        {
+          "fragment_key": "2019q1-demand-timing-revision",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "a6a75821-7ba6-532c-863c-1e656135cea9",
+      "speaker_name_text": "Livent Corporation management",
+      "topic_code": "industry.high_nickel_lithium_hydroxide_demand",
+      "judgment_kind": "forecast",
+      "target_time_kind": "unknown",
+      "target_precision": "approximate",
+      "target_text": "late 2019 or early 2020",
+      "value_kind": "text",
+      "value_text": "Livent did not expect a meaningful change in demand for high-performance lithium hydroxide used in high-nickel cathode chemistries until late 2019 or early 2020 and reduced full-year volume and pricing forecasts accordingly.",
+      "summary": "By 2019 Q1, Livent expected the meaningful high-nickel-driven hydroxide demand inflection later than its near-term planning had assumed and reduced full-year volume and pricing forecasts.",
+      "metadata": {
+        "semantic_guard": "The source supports a negative near-term timing/strength revision but does not withdraw the longer-run structural high-nickel-to-hydroxide thesis.",
+        "relation_guard": "No REVISES relation is asserted to the 2018 structural thesis because the grounded 2018 object is not a same-granularity near-term pace forecast."
+      }
+    }
+  ]
+}
