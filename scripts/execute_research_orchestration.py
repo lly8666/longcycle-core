@@ -134,6 +134,10 @@ def _successful_reality_result(
     return result
 
 
+def _work_member(path: Path, work_dir: Path) -> str:
+    return path.resolve().relative_to(work_dir.resolve()).as_posix()
+
+
 def _execute(
     *,
     repo_root: Path,
@@ -198,7 +202,7 @@ def _execute(
         )
         reality_summary = {
             "spec_path": spec.reality_spec_path,
-            "output_path": str(reality_output),
+            "artifact_member": _work_member(reality_output, work_dir),
             "output_sha256": sha256_file(reality_output),
             "verification": reality_result["verification"],
         }
@@ -216,16 +220,17 @@ def _execute(
         "schema_version": "longcycle-research-orchestration-execution/v1",
         "task_id": spec.task_id,
         "phases": list(execution_phases(spec)),
-        "source_pack": {
-            **spec.source_pack.model_dump(mode="json"),
-            "local_path": str(source_pack_path),
+        "source_pack": spec.source_pack.model_dump(mode="json"),
+        "prepared_evidence_spec": {
+            "artifact_member": _work_member(prepared_path, work_dir),
+            "sha256": prepared.sha256,
+            "repair_count": prepared.repair_count,
         },
-        "prepared_evidence_spec": prepared.model_dump(mode="json"),
         "materials": [item.model_dump(mode="json") for item in materials],
         "evidence": {
             "spec_path": spec.evidence_spec_path,
             "repair_paths": list(spec.evidence_repair_paths),
-            "output_path": str(evidence_output),
+            "artifact_member": _work_member(evidence_output, work_dir),
             "output_sha256": sha256_file(evidence_output),
             "acceptance": evidence_result["acceptance"],
         },
