@@ -39,13 +39,15 @@ class RecordedEvidenceResult:
 
 
 class ArchivedEvidenceRecorder:
-    """Persist claim-scoped evidence only after grounding it in archived bytes.
+    """Persist claim-scoped evidence only after grounding it in archived material.
 
     Historical evidence tasks may already know which primary document and short
-    passage they need. Direct textual sources are checked against the immutable raw
-    source bytes. Binary sources such as PDF must first produce a persisted parser
-    artifact; excerpts are then checked against one explicit page in that immutable
-    artifact. Neither path creates FactAssertions or Judgments.
+    passage they need. Direct textual sources can be checked against immutable raw
+    source bytes. Transport-volatile HTML can instead be grounded against a persisted,
+    deterministic ``html-visible-text`` artifact. Binary sources such as PDF must first
+    produce a persisted parser artifact; excerpts are then checked against one explicit
+    page in that immutable artifact. None of these paths creates FactAssertions or
+    Judgments.
 
     Optional ``claim_context`` is evidence annotation, not a promoted fact. It is used
     to preserve distinctions such as known-time precision, valid/effective time and
@@ -100,6 +102,59 @@ class ArchivedEvidenceRecorder:
             (fragment,),
             content,
             allow_claim_context_annotation=True,
+        )
+        await self.repository.save_evidence((fragment,))
+        return RecordedEvidenceResult(fragment=fragment)
+
+    async def record_html_visible_text_excerpt(
+        self,
+        *,
+        document: SourceDocument,
+        artifact: DocumentArtifact,
+        excerpt: str,
+        occurrence: int | None = None,
+        claim_context: dict[str, Any] | None = None,
+    ) -> RecordedEvidenceResult:
+        """Ground HTML evidence in a stable artifact while retaining raw snapshot lineage."""
+
+        normalized_excerpt = self._validated_excerpt(excerpt, occurrence)
+        normalized_context = self._validated_claim_context(claim_context)
+        if artifact.document_id != document.id:
+            raise ValueError("parser artifact belongs to a different source document")
+        if artifact.artifact_type != "html-visible-text":
+            raise ValueError("HTML artifact evidence requires an html-visible-text parser artifact")
+        if artifact.content_type.split(";", 1)[0].strip().lower() != "text/plain":
+            raise ValueError("html-visible-text artifact must be text/plain")
+
+        artifact_bytes = await self._verified_archived_bytes(
+            key=artifact.blob_key,
+            expected_sha256=artifact.content_sha256,
+            expected_length=artifact.byte_length,
+            missing_message="HTML parser artifact blob is missing from the archive",
+            digest_message="archived HTML parser artifact does not match artifact digest",
+            length_message="archived HTML parser artifact length does not match metadata",
+        )
+        try:
+            corpus = artifact_bytes.decode("utf-8")
+        except UnicodeDecodeError as exc:
+            raise ValueError("html-visible-text artifact is not valid UTF-8") from exc
+        corpus = " ".join(corpus.split())
+        selected, start = self._select_occurrence(corpus, normalized_excerpt, occurrence)
+        end = start + len(normalized_excerpt)
+        locator = f"text:{start}:{end}"
+        structured_payload: dict[str, Any] = {
+            "occurrence": selected,
+            "parser_name": artifact.producer_name,
+            "parser_version": artifact.producer_version,
+        }
+        if normalized_context is not None:
+            structured_payload["claim_context"] = normalized_context
+        fragment = EvidenceFragment.create(
+            document_id=document.id,
+            artifact_id=artifact.id,
+            locator=locator,
+            excerpt=excerpt,
+            structured_payload=structured_payload,
         )
         await self.repository.save_evidence((fragment,))
         return RecordedEvidenceResult(fragment=fragment)
@@ -217,8 +272,6 @@ class ArchivedEvidenceRecorder:
             return None
         if not isinstance(claim_context, dict) or not claim_context:
             raise ValueError("claim_context must be a non-empty JSON object")
-        # Round-trip through canonical JSON-compatible values so the fragment identity
-        # cannot depend on mutable Python objects or non-JSON serialization behavior.
         try:
             normalized = json.loads(
                 json.dumps(claim_context, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
