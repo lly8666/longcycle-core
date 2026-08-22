@@ -12,6 +12,7 @@
     "src/longcycle/adapters/storage/postgres.py",
     "src/longcycle/application/pipeline.py",
     "src/longcycle/application/reality_projection.py",
+    "scripts/execute_grounded_reality_projection.py",
     "scripts/smoke_postgres_epistemic.py"
   ],
   "tags": [
@@ -22,11 +23,11 @@
     "source-boundary"
   ],
   "failure_signature": "FactAssertion collapses back to one evidence_fragment_id, loses evidence roles during persistence/reload, or combines fragments from different source documents into one assertion and thereby blurs source quality/known-time lineage.",
-  "root_cause": "The domain model lagged behind the existing assertion_evidence many-to-many table, while Judgment already modeled explicit evidence refs. A single-fragment field made provenance asymmetric and tempted callers to treat corroboration across sources as one claim.",
-  "invariant": "FactAssertion owns one or more typed FactEvidenceRef values, including at least one supporting fragment. Roles survive persistence/reload. All fragments on one FactAssertion belong to that assertion's extraction document; independent-source corroboration remains separate assertions so source and known-time semantics stay attributable.",
+  "root_cause": "The domain model lagged behind the existing assertion_evidence many-to-many table, while Judgment already modeled explicit evidence refs. A single-fragment field made provenance asymmetric and tempted callers and executors to treat one fragment as the Fact contract.",
+  "invariant": "FactAssertion owns one or more typed FactEvidenceRef values, including at least one supporting fragment. Roles survive persistence/reload. Executors persist every cited ref. All fragments on one FactAssertion belong to that assertion's extraction document; independent-source corroboration remains separate assertions so source and known-time semantics stay attributable.",
   "anti_regression": [
     "Do not reintroduce evidence_fragment_id as the FactAssertion domain/output contract; the current legacy input bridge is migration-only and may be removed.",
-    "Do not flatten evidence roles when loading assertions from PostgreSQL.",
+    "Do not flatten evidence roles when loading assertions from PostgreSQL or when constructing execution envelopes.",
     "Do not merge evidence from multiple source documents into one FactAssertion to simulate corroboration."
   ],
   "guards": [
@@ -54,7 +55,8 @@
     "migration:0022",
     "issue:#40",
     "issue:#41",
-    "commit:dd8bdf3039cf20116cbd797711d779ddadf51e02"
+    "commit:dd8bdf3039cf20116cbd797711d779ddadf51e02",
+    "benchmark:kwinana-reality-executor"
   ],
   "supersedes": []
 }
