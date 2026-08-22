@@ -71,12 +71,14 @@ jobs:
           python -m pip install -e '.[dev,postgres,duckdb,s3]'
           python - <<'PY'
           import asyncio
+          import hashlib
           import json
+          import os
           from pathlib import Path
 
           from longcycle.adapters.parsers import HtmlVisibleTextParser, PdfTextParser
 
-          spec = json.loads(Path(__import__('os').environ['SPEC_PATH']).read_text())
+          spec = json.loads(Path(os.environ['SPEC_PATH']).read_text())
           docs = {row['key']: row for row in spec['documents']}
           parsed = {}
           for key, row in docs.items():
@@ -88,7 +90,7 @@ jobs:
               else:
                   output = asyncio.run(HtmlVisibleTextParser().parse(None, raw))[0]
                   parsed[key] = output.content.decode('utf-8')
-                  print('HTML_CANONICAL_VISIBLE_SHA', output.sha256)
+                  print('HTML_CANONICAL_VISIBLE_SHA', hashlib.sha256(output.content).hexdigest())
 
           for fragment in spec['fragments']:
               key = fragment['fragment_key']
@@ -179,7 +181,7 @@ jobs:
           if [[ "$GATE_OUTCOME" == success ]]; then
             body="EVT005_FMC_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
           else
-            tail_text="$(tail -n 260 /tmp/evt005-fmc-evidence.log 2>/dev/null || true)"
+            tail_text="$(tail -n 300 /tmp/evt005-fmc-evidence.log 2>/dev/null || true)"
             body=$(printf 'EVT005_FMC_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
