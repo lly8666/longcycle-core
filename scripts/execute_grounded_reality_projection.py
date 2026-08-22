@@ -11,6 +11,7 @@ import psycopg
 from psycopg.rows import dict_row
 
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
+from longcycle.application.grounded_projection_inputs import select_projection_execution_fragments
 from longcycle.application.reality_projection import (
     GroundedRealityEvidence,
     GroundedRealityProjectionSpec,
@@ -60,9 +61,13 @@ def _load_spec(path: Path) -> GroundedRealityProjectionSpec:
 def _load_grounded_evidence(
     dsn: str,
     execution: dict[str, Any],
+    required_fragment_keys: set[str],
 ) -> tuple[tuple[GroundedRealityEvidence, ...], dict[str, EvidenceFragment]]:
     documents = {str(row["document_id"]): row for row in execution["documents"]}
-    fragment_rows = {str(row["evidence_fragment_id"]): row for row in execution["fragments"]}
+    fragment_rows = select_projection_execution_fragments(
+        execution,
+        sorted(required_fragment_keys),
+    )
     ids = list(fragment_rows)
     persisted: dict[str, EvidenceFragment] = {}
     projected: list[GroundedRealityEvidence] = []
@@ -81,7 +86,7 @@ def _load_grounded_evidence(
     by_id = {str(row["id"]): row for row in rows}
     if set(by_id) != set(ids):
         missing = sorted(set(ids) - set(by_id))
-        raise ValueError(f"grounded execution references missing persisted evidence: {missing}")
+        raise ValueError(f"grounded projection references missing persisted evidence: {missing}")
 
     for evidence_id, execution_row in fragment_rows.items():
         row = by_id[evidence_id]
@@ -162,7 +167,8 @@ async def _persist(
 ) -> dict[str, Any]:
     if execution["task_id"] != spec.source_evidence_task_id:
         raise ValueError("Reality projection source_evidence_task_id does not match grounded execution")
-    evidence, persisted = _load_grounded_evidence(dsn, execution)
+    required_fragment_keys = {item.evidence_fragment_key for item in spec.facts}
+    evidence, persisted = _load_grounded_evidence(dsn, execution, required_fragment_keys)
     facts = build_grounded_reality_facts(spec, evidence)
     _ensure_subjects(dsn, spec)
     repository = PostgresResearchRepository(dsn, bucket_name="reality-projection")
@@ -244,6 +250,7 @@ async def _persist(
             "all_fact_evidence_ids_persisted": True,
             "all_known_times_derived_from_grounded_evidence": True,
             "stable_assertion_to_canonical_mapping": True,
+            "known_time_required_only_for_projection_cited_fragments": True,
             "valid_time_semantics_preserved": all(
                 (
                     row["valid_time_kind"] == "period"
