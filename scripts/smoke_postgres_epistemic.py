@@ -26,6 +26,8 @@ from longcycle.domain.enums import (
     FactValueKind,
     JudgmentEvidenceRole,
     JudgmentKind,
+    JudgmentRationaleKind,
+    JudgmentRelationType,
     JudgmentTargetTimeKind,
     JudgmentValueKind,
     QualityGrade,
@@ -36,6 +38,8 @@ from longcycle.domain.enums import (
 from longcycle.domain.judgments import (
     JudgmentAssertion,
     JudgmentEvidenceRef,
+    JudgmentRationale,
+    JudgmentRelation,
     OutcomeObservation,
 )
 from longcycle.domain.models import (
@@ -139,6 +143,32 @@ async def main() -> None:
             "July 2022",
         )
         await research.save_evidence((aug_context_evidence,))
+
+        revision_document, revision_evidence = await _save_document_with_evidence(
+            research,
+            source_id=source.id,
+            external_id="epistemic-guidance-revision-aug-2022",
+            url="https://epistemic-smoke.longcycle.invalid/revision.txt",
+            known_at=AUG_KNOWN,
+            text=(
+                "Management revised first product guidance to July 2022 because "
+                "qualification took longer than originally expected."
+            ),
+        )
+        revision_run_id = stable_uuid_exact(
+            "epistemic-smoke", "aug-guidance-revision-extraction"
+        )
+        await research.save_extraction(
+            ExtractionEnvelope(
+                run_id=revision_run_id,
+                document_id=revision_document.id,
+                extractor_name="epistemic-smoke",
+                extractor_version="1.0.0",
+                schema_version="epistemic-smoke/v1",
+                evidence=(revision_evidence,),
+                candidates=(),
+            )
+        )
 
         may_run_id = stable_uuid_exact("epistemic-smoke", "may-extraction")
         await research.save_extraction(
@@ -244,10 +274,48 @@ async def main() -> None:
         ),
         metadata={"judgment_key": "may-first-product"},
     )
+
+    revised_judgment = judgment.model_copy(
+        update={
+            "id": stable_uuid_exact("epistemic-smoke", "aug-revised-judgment"),
+            "target_from": datetime(2022, 7, 1, tzinfo=UTC),
+            "target_to": datetime(2022, 8, 1, tzinfo=UTC),
+            "target_text": "July 2022",
+            "value_text": "first product guidance revised to July 2022",
+            "summary": "Management revised first-product guidance to July 2022.",
+            "source_published_at": AUG_KNOWN,
+            "first_known_at": AUG_KNOWN,
+            "extraction_run_id": revision_run_id,
+            "evidence": (
+                JudgmentEvidenceRef(
+                    evidence_fragment_id=revision_evidence.id,
+                    evidence_role=JudgmentEvidenceRole.STATEMENT,
+                ),
+            ),
+            "metadata": {"judgment_key": "july-first-product-revision"},
+        }
+    )
+    rationale = JudgmentRationale(
+        id=stable_uuid_exact("epistemic-smoke", "aug-revision-rationale"),
+        judgment_id=revised_judgment.id,
+        rationale_kind=JudgmentRationaleKind.MECHANISM,
+        summary="Qualification took longer than originally expected.",
+        evidence_fragment_id=revision_evidence.id,
+    )
+    relation = JudgmentRelation(
+        from_judgment_id=revised_judgment.id,
+        to_judgment_id=judgment.id,
+        relation_type=JudgmentRelationType.REVISES,
+        reason_summary="July guidance replaces the earlier May target.",
+    )
     judgments = PostgresJudgmentRepository(dsn)
     try:
-        await judgments.append_judgments((judgment,))
-        await judgments.append_judgments((judgment,))
+        await judgments.append_judgments((judgment, revised_judgment))
+        await judgments.append_judgments((judgment, revised_judgment))
+        await judgments.append_rationales((rationale,))
+        await judgments.append_rationales((rationale,))
+        await judgments.append_relations((relation,))
+        await judgments.append_relations((relation,))
     finally:
         await judgments.close()
 
@@ -262,8 +330,14 @@ async def main() -> None:
             raise AssertionError(f"pre-outcome replay leaked future state: {before_outcome}")
 
         at_reality = await reader.snapshot((subject,), knowledge_cutoff=AUG_KNOWN)
-        if len(at_reality.reality) != 1 or len(at_reality.judgments) != 1:
+        if len(at_reality.reality) != 1 or len(at_reality.judgments) != 2:
             raise AssertionError(f"Reality/Judgment boundary is incomplete: {at_reality}")
+        if len(at_reality.judgment_rationales) != 1:
+            raise AssertionError("Judgment rationale was not replayed from PostgreSQL")
+        if len(at_reality.judgment_relations) != 1:
+            raise AssertionError("Judgment revision relation was not replayed from PostgreSQL")
+        if at_reality.judgment_relations[0].relation_type != JudgmentRelationType.REVISES:
+            raise AssertionError("Judgment revision relation lost its typed semantics")
         canonical = at_reality.reality[0]
         if canonical.valid_time.kind != "period":
             raise AssertionError("canonical valid-time kind was lost")
@@ -313,8 +387,10 @@ async def main() -> None:
     finally:
         await reader.close()
 
-    if (len(at_outcome.reality), len(at_outcome.judgments), len(at_outcome.outcomes)) != (1, 1, 1):
+    if (len(at_outcome.reality), len(at_outcome.judgments), len(at_outcome.outcomes)) != (1, 2, 1):
         raise AssertionError(f"integrated PostgreSQL replay is incomplete: {at_outcome}")
+    if (len(at_outcome.judgment_rationales), len(at_outcome.judgment_relations)) != (1, 1):
+        raise AssertionError("integrated PostgreSQL replay lost Judgment context")
     if at_outcome.outcomes[0].timing_delta_value != 2:
         raise AssertionError("month-level Outcome delta was not preserved")
 
@@ -328,8 +404,10 @@ async def main() -> None:
     portable_at = await portable_reader.snapshot((subject,), knowledge_cutoff=AUG_KNOWN)
     if (len(portable_before.reality), len(portable_before.judgments), len(portable_before.outcomes)) != (0, 1, 0):
         raise AssertionError("portable replay leaked future state")
-    if (len(portable_at.reality), len(portable_at.judgments), len(portable_at.outcomes)) != (1, 1, 1):
+    if (len(portable_at.reality), len(portable_at.judgments), len(portable_at.outcomes)) != (1, 2, 1):
         raise AssertionError("portable replay does not match PostgreSQL typed memory")
+    if (len(portable_at.judgment_rationales), len(portable_at.judgment_relations)) != (1, 1):
+        raise AssertionError("portable replay lost Judgment context")
     if set(portable_at.reality[0].evidence_fragment_ids) != expected_fact_evidence:
         raise AssertionError("portable Reality lost multi-fragment Fact provenance")
     if not manifest["typed_round_trip"]:

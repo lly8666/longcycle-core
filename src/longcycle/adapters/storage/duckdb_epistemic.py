@@ -13,12 +13,14 @@ from longcycle.domain.epistemic import (
     CanonicalRealityRecord,
     IndustrialMemoryTimeline,
     JudgmentMemoryRecord,
+    JudgmentRationaleMemoryRecord,
+    JudgmentRelationMemoryRecord,
     MemorySubjectRef,
     OutcomeMemoryRecord,
     PointInTimeMemorySnapshot,
     TemporalExtent,
 )
-from longcycle.domain.enums import TemporalPrecision
+from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType, TemporalPrecision
 from longcycle.domain.models import require_aware_datetime
 
 
@@ -201,6 +203,80 @@ def seal_industrial_memory(
                 ],
             )
 
+
+        connection.execute(
+            """
+            CREATE TABLE judgment_rationale_memory (
+                rationale_id VARCHAR PRIMARY KEY,
+                judgment_id VARCHAR NOT NULL,
+                rationale_kind VARCHAR NOT NULL,
+                summary VARCHAR NOT NULL,
+                linked_fact_assertion_id VARCHAR,
+                linked_judgment_id VARCHAR,
+                evidence_fragment_id VARCHAR,
+                ordinal INTEGER NOT NULL,
+                known_at TIMESTAMPTZ NOT NULL
+            )
+            """
+        )
+        for rationale_item in timeline.judgment_rationales:
+            connection.execute(
+                """
+                INSERT INTO judgment_rationale_memory
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                [
+                    str(rationale_item.rationale_id),
+                    str(rationale_item.judgment_id),
+                    rationale_item.rationale_kind.value,
+                    rationale_item.summary,
+                    (
+                        str(rationale_item.linked_fact_assertion_id)
+                        if rationale_item.linked_fact_assertion_id
+                        else None
+                    ),
+                    (
+                        str(rationale_item.linked_judgment_id)
+                        if rationale_item.linked_judgment_id
+                        else None
+                    ),
+                    (
+                        str(rationale_item.evidence_fragment_id)
+                        if rationale_item.evidence_fragment_id
+                        else None
+                    ),
+                    rationale_item.ordinal,
+                    rationale_item.known_at,
+                ],
+            )
+
+        connection.execute(
+            """
+            CREATE TABLE judgment_relation_memory (
+                from_judgment_id VARCHAR NOT NULL,
+                to_judgment_id VARCHAR NOT NULL,
+                relation_type VARCHAR NOT NULL,
+                reason_summary VARCHAR,
+                known_at TIMESTAMPTZ NOT NULL,
+                PRIMARY KEY (from_judgment_id, to_judgment_id, relation_type)
+            )
+            """
+        )
+        for relation_item in timeline.judgment_relations:
+            connection.execute(
+                """
+                INSERT INTO judgment_relation_memory
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                [
+                    str(relation_item.from_judgment_id),
+                    str(relation_item.to_judgment_id),
+                    relation_item.relation_type.value,
+                    relation_item.reason_summary,
+                    relation_item.known_at,
+                ],
+            )
+
         connection.execute(
             """
             CREATE TABLE outcome_memory (
@@ -272,6 +348,12 @@ def seal_industrial_memory(
             "CREATE INDEX judgment_known_idx ON judgment_memory(subject_key, known_at)"
         )
         connection.execute(
+            "CREATE INDEX judgment_rationale_known_idx ON judgment_rationale_memory(judgment_id, known_at)"
+        )
+        connection.execute(
+            "CREATE INDEX judgment_relation_known_idx ON judgment_relation_memory(from_judgment_id, to_judgment_id, known_at)"
+        )
+        connection.execute(
             "CREATE INDEX outcome_known_idx ON outcome_memory(subject_key, known_at)"
         )
         connection.execute("CHECKPOINT")
@@ -300,6 +382,10 @@ def seal_industrial_memory(
             "reality": len(timeline.reality),
             "judgments": len(timeline.judgments),
             "outcomes": len(timeline.outcomes),
+        },
+        "judgment_context_counts": {
+            "rationales": len(timeline.judgment_rationales),
+            "relations": len(timeline.judgment_relations),
         },
         "subject_keys": [subject.key for subject in all_subjects],
         "typed_round_trip": True,
@@ -347,6 +433,8 @@ class DuckDBEpistemicMemoryReader:
             knowledge_cutoff=checked,
             reality=timeline.reality,
             judgments=timeline.judgments,
+            judgment_rationales=timeline.judgment_rationales,
+            judgment_relations=timeline.judgment_relations,
             outcomes=timeline.outcomes,
         )
 
@@ -378,6 +466,45 @@ class DuckDBEpistemicMemoryReader:
                 params,
             ).fetchall()
             judgment_columns = [column[0] for column in connection.description]
+
+            judgment_id_index = judgment_columns.index("judgment_id")
+            judgment_ids = [row[judgment_id_index] for row in judgment_rows]
+            rationale_rows: list[tuple[Any, ...]] = []
+            rationale_columns: list[str] = []
+            relation_rows: list[tuple[Any, ...]] = []
+            relation_columns: list[str] = []
+            if judgment_ids:
+                placeholders = ", ".join("?" for _ in judgment_ids)
+                rationale_clause = f"judgment_id IN ({placeholders})"
+                rationale_params: list[Any] = list(judgment_ids)
+                relation_clause = (
+                    f"from_judgment_id IN ({placeholders}) "
+                    f"AND to_judgment_id IN ({placeholders})"
+                )
+                relation_params: list[Any] = [*judgment_ids, *judgment_ids]
+                if cutoff is not None:
+                    rationale_clause += " AND known_at <= ?"
+                    rationale_params.append(cutoff)
+                    relation_clause += " AND known_at <= ?"
+                    relation_params.append(cutoff)
+                rationale_rows = connection.execute(
+                    f"""
+                    SELECT * FROM judgment_rationale_memory
+                    WHERE {rationale_clause}
+                    ORDER BY known_at, judgment_id, ordinal, rationale_id
+                    """,
+                    rationale_params,
+                ).fetchall()
+                rationale_columns = [column[0] for column in connection.description]
+                relation_rows = connection.execute(
+                    f"""
+                    SELECT * FROM judgment_relation_memory
+                    WHERE {relation_clause}
+                    ORDER BY known_at, from_judgment_id, to_judgment_id, relation_type
+                    """,
+                    relation_params,
+                ).fetchall()
+                relation_columns = [column[0] for column in connection.description]
             outcome_rows = connection.execute(
                 f"""
                 SELECT * FROM outcome_memory
@@ -398,6 +525,14 @@ class DuckDBEpistemicMemoryReader:
             self._judgment(dict(zip(judgment_columns, row, strict=True)))
             for row in judgment_rows
         )
+        rationales = tuple(
+            self._judgment_rationale(dict(zip(rationale_columns, row, strict=True)))
+            for row in rationale_rows
+        )
+        relations = tuple(
+            self._judgment_relation(dict(zip(relation_columns, row, strict=True)))
+            for row in relation_rows
+        )
         outcomes = tuple(
             self._outcome(dict(zip(outcome_columns, row, strict=True)))
             for row in outcome_rows
@@ -405,6 +540,8 @@ class DuckDBEpistemicMemoryReader:
         return IndustrialMemoryTimeline(
             reality=reality,
             judgments=judgments,
+            judgment_rationales=rationales,
+            judgment_relations=relations,
             outcomes=outcomes,
         )
 
@@ -472,6 +609,43 @@ class DuckDBEpistemicMemoryReader:
             evidence_fragment_ids=tuple(
                 UUID(value) for value in json.loads(row["evidence_fragment_ids"])
             ),
+        )
+
+
+    @staticmethod
+    def _judgment_rationale(row: dict[str, Any]) -> JudgmentRationaleMemoryRecord:
+        return JudgmentRationaleMemoryRecord(
+            rationale_id=UUID(row["rationale_id"]),
+            judgment_id=UUID(row["judgment_id"]),
+            rationale_kind=JudgmentRationaleKind(row["rationale_kind"]),
+            summary=row["summary"],
+            linked_fact_assertion_id=(
+                UUID(row["linked_fact_assertion_id"])
+                if row["linked_fact_assertion_id"]
+                else None
+            ),
+            linked_judgment_id=(
+                UUID(row["linked_judgment_id"])
+                if row["linked_judgment_id"]
+                else None
+            ),
+            evidence_fragment_id=(
+                UUID(row["evidence_fragment_id"])
+                if row["evidence_fragment_id"]
+                else None
+            ),
+            ordinal=row["ordinal"],
+            known_at=row["known_at"],
+        )
+
+    @staticmethod
+    def _judgment_relation(row: dict[str, Any]) -> JudgmentRelationMemoryRecord:
+        return JudgmentRelationMemoryRecord(
+            from_judgment_id=UUID(row["from_judgment_id"]),
+            to_judgment_id=UUID(row["to_judgment_id"]),
+            relation_type=JudgmentRelationType(row["relation_type"]),
+            reason_summary=row["reason_summary"],
+            known_at=row["known_at"],
         )
 
     @classmethod

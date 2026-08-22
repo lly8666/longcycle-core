@@ -10,13 +10,15 @@ from longcycle.domain.epistemic import (
     CanonicalRealityRecord,
     IndustrialMemoryTimeline,
     JudgmentMemoryRecord,
+    JudgmentRationaleMemoryRecord,
+    JudgmentRelationMemoryRecord,
     MemorySubjectRef,
     OutcomeMemoryRecord,
     PointInTimeMemorySnapshot,
     TemporalExtent,
     snapshot_from_timeline,
 )
-from longcycle.domain.enums import TemporalPrecision
+from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType, TemporalPrecision
 from longcycle.domain.models import canonical_json, require_aware_datetime
 
 from .postgres import PostgresSupport
@@ -113,10 +115,19 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
         async with self.connection() as connection:
             reality_rows = await self._reality_rows(connection, entity_ids, industry_ids)
             judgment_rows = await self._judgment_rows(connection, entity_ids, industry_ids)
+            judgment_ids = [row["judgment_id"] for row in judgment_rows]
+            rationale_rows = await self._judgment_rationale_rows(connection, judgment_ids)
+            relation_rows = await self._judgment_relation_rows(connection, judgment_ids)
             outcome_rows = await self._outcome_rows(connection, entity_ids, industry_ids)
         return IndustrialMemoryTimeline(
             reality=tuple(self._reality_record(row) for row in reality_rows),
             judgments=tuple(self._judgment_record(row) for row in judgment_rows),
+            judgment_rationales=tuple(
+                self._judgment_rationale_record(row) for row in rationale_rows
+            ),
+            judgment_relations=tuple(
+                self._judgment_relation_record(row) for row in relation_rows
+            ),
             outcomes=tuple(self._outcome_record(row) for row in outcome_rows),
         )
 
@@ -136,12 +147,25 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
             judgment_rows = await self._judgment_rows(
                 connection, entity_ids, industry_ids, knowledge_cutoff=checked
             )
+            judgment_ids = [row["judgment_id"] for row in judgment_rows]
+            rationale_rows = await self._judgment_rationale_rows(
+                connection, judgment_ids, knowledge_cutoff=checked
+            )
+            relation_rows = await self._judgment_relation_rows(
+                connection, judgment_ids, knowledge_cutoff=checked
+            )
             outcome_rows = await self._outcome_rows(
                 connection, entity_ids, industry_ids, knowledge_cutoff=checked
             )
         timeline = IndustrialMemoryTimeline(
             reality=tuple(self._reality_record(row) for row in reality_rows),
             judgments=tuple(self._judgment_record(row) for row in judgment_rows),
+            judgment_rationales=tuple(
+                self._judgment_rationale_record(row) for row in rationale_rows
+            ),
+            judgment_relations=tuple(
+                self._judgment_relation_record(row) for row in relation_rows
+            ),
             outcomes=tuple(self._outcome_record(row) for row in outcome_rows),
         )
         return snapshot_from_timeline(timeline, knowledge_cutoff=checked)
@@ -237,6 +261,90 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
         )
         return list(await cursor.fetchall())
 
+
+    @staticmethod
+    async def _judgment_rationale_rows(
+        connection: Any,
+        judgment_ids: list[UUID],
+        *,
+        knowledge_cutoff: datetime | None = None,
+    ) -> list[dict[str, Any]]:
+        if not judgment_ids:
+            return []
+        cursor = await connection.execute(
+            """
+            SELECT rationale.id AS rationale_id,
+                   rationale.judgment_id, rationale.rationale_kind,
+                   rationale.summary, rationale.linked_fact_assertion_id,
+                   rationale.linked_judgment_id, rationale.evidence_fragment_id,
+                   rationale.ordinal,
+                   GREATEST(
+                       owner.first_known_at,
+                       linked_judgment.first_known_at,
+                       linked_fact.first_known_at,
+                       rationale_fetch.first_known_at
+                   ) AS known_at
+            FROM research.judgment_rationales rationale
+            JOIN research.judgment_assertions owner
+              ON owner.id = rationale.judgment_id
+            LEFT JOIN research.judgment_assertions linked_judgment
+              ON linked_judgment.id = rationale.linked_judgment_id
+            LEFT JOIN research.fact_assertions linked_fact
+              ON linked_fact.id = rationale.linked_fact_assertion_id
+            LEFT JOIN evidence.evidence_fragments rationale_evidence
+              ON rationale_evidence.id = rationale.evidence_fragment_id
+            LEFT JOIN evidence.document_versions rationale_version
+              ON rationale_version.id = rationale_evidence.document_version_id
+            LEFT JOIN evidence.document_fetches rationale_fetch
+              ON rationale_fetch.id = rationale_version.first_fetch_id
+            WHERE rationale.judgment_id = ANY(%s::uuid[])
+              AND (
+                    %s::timestamptz IS NULL
+                 OR GREATEST(
+                        owner.first_known_at,
+                        linked_judgment.first_known_at,
+                        linked_fact.first_known_at,
+                        rationale_fetch.first_known_at
+                    ) <= %s
+              )
+            ORDER BY known_at, rationale.judgment_id, rationale.ordinal, rationale.id
+            """,
+            (judgment_ids, knowledge_cutoff, knowledge_cutoff),
+        )
+        return list(await cursor.fetchall())
+
+    @staticmethod
+    async def _judgment_relation_rows(
+        connection: Any,
+        judgment_ids: list[UUID],
+        *,
+        knowledge_cutoff: datetime | None = None,
+    ) -> list[dict[str, Any]]:
+        if not judgment_ids:
+            return []
+        cursor = await connection.execute(
+            """
+            SELECT relation.from_judgment_id, relation.to_judgment_id,
+                   relation.relation_type, relation.reason_summary,
+                   GREATEST(source.first_known_at, target.first_known_at) AS known_at
+            FROM research.judgment_relations relation
+            JOIN research.judgment_assertions source
+              ON source.id = relation.from_judgment_id
+            JOIN research.judgment_assertions target
+              ON target.id = relation.to_judgment_id
+            WHERE relation.from_judgment_id = ANY(%s::uuid[])
+              AND relation.to_judgment_id = ANY(%s::uuid[])
+              AND (
+                    %s::timestamptz IS NULL
+                 OR GREATEST(source.first_known_at, target.first_known_at) <= %s
+              )
+            ORDER BY known_at, relation.from_judgment_id,
+                     relation.to_judgment_id, relation.relation_type
+            """,
+            (judgment_ids, judgment_ids, knowledge_cutoff, knowledge_cutoff),
+        )
+        return list(await cursor.fetchall())
+
     @staticmethod
     async def _outcome_rows(
         connection: Any,
@@ -311,6 +419,31 @@ class PostgresEpistemicMemoryReader(PostgresSupport):
             summary=row["summary"],
             known_at=row["first_known_at"],
             evidence_fragment_ids=tuple(row["evidence_fragment_ids"]),
+        )
+
+
+    @staticmethod
+    def _judgment_rationale_record(row: dict[str, Any]) -> JudgmentRationaleMemoryRecord:
+        return JudgmentRationaleMemoryRecord(
+            rationale_id=row["rationale_id"],
+            judgment_id=row["judgment_id"],
+            rationale_kind=JudgmentRationaleKind(row["rationale_kind"]),
+            summary=row["summary"],
+            linked_fact_assertion_id=row["linked_fact_assertion_id"],
+            linked_judgment_id=row["linked_judgment_id"],
+            evidence_fragment_id=row["evidence_fragment_id"],
+            ordinal=row["ordinal"],
+            known_at=row["known_at"],
+        )
+
+    @staticmethod
+    def _judgment_relation_record(row: dict[str, Any]) -> JudgmentRelationMemoryRecord:
+        return JudgmentRelationMemoryRecord(
+            from_judgment_id=row["from_judgment_id"],
+            to_judgment_id=row["to_judgment_id"],
+            relation_type=JudgmentRelationType(row["relation_type"]),
+            reason_summary=row["reason_summary"],
+            known_at=row["known_at"],
         )
 
     @staticmethod

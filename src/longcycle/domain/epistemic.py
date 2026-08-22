@@ -9,6 +9,8 @@ from pydantic import Field, ValidationInfo, field_validator, model_validator
 
 from .enums import (
     JudgmentOutcomeStatus,
+    JudgmentRationaleKind,
+    JudgmentRelationType,
     OutcomeSemanticRelation,
     OutcomeTimingRelation,
     TemporalPrecision,
@@ -140,6 +142,44 @@ class JudgmentMemoryRecord(DomainModel):
         return self
 
 
+class JudgmentRationaleMemoryRecord(DomainModel):
+    """Point-in-time rationale attached to an immutable Judgment."""
+
+    rationale_id: UUID
+    judgment_id: UUID
+    rationale_kind: JudgmentRationaleKind
+    summary: str = Field(min_length=1)
+    linked_fact_assertion_id: UUID | None = None
+    linked_judgment_id: UUID | None = None
+    evidence_fragment_id: UUID | None = None
+    ordinal: int = Field(default=0, ge=0)
+    known_at: datetime
+
+    @field_validator("known_at")
+    @classmethod
+    def known_time_is_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "known_at")
+        assert checked is not None
+        return checked
+
+
+class JudgmentRelationMemoryRecord(DomainModel):
+    """Typed revision/dependency edge visible only once both Judgments are knowable."""
+
+    from_judgment_id: UUID
+    to_judgment_id: UUID
+    relation_type: JudgmentRelationType
+    reason_summary: str | None = None
+    known_at: datetime
+
+    @field_validator("known_at")
+    @classmethod
+    def known_time_is_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "known_at")
+        assert checked is not None
+        return checked
+
+
 class OutcomeMemoryRecord(DomainModel):
     evaluation_id: UUID
     judgment_id: UUID
@@ -184,6 +224,8 @@ class IndustrialMemoryTimeline(DomainModel):
     )
     reality: tuple[CanonicalRealityRecord, ...] = ()
     judgments: tuple[JudgmentMemoryRecord, ...] = ()
+    judgment_rationales: tuple[JudgmentRationaleMemoryRecord, ...] = ()
+    judgment_relations: tuple[JudgmentRelationMemoryRecord, ...] = ()
     outcomes: tuple[OutcomeMemoryRecord, ...] = ()
 
     @model_validator(mode="after")
@@ -194,13 +236,50 @@ class IndustrialMemoryTimeline(DomainModel):
         expected_judgments = tuple(
             sorted(self.judgments, key=lambda item: (item.known_at, str(item.judgment_id)))
         )
+        expected_rationales = tuple(
+            sorted(
+                self.judgment_rationales,
+                key=lambda item: (
+                    item.known_at,
+                    str(item.judgment_id),
+                    item.ordinal,
+                    str(item.rationale_id),
+                ),
+            )
+        )
+        expected_relations = tuple(
+            sorted(
+                self.judgment_relations,
+                key=lambda item: (
+                    item.known_at,
+                    str(item.from_judgment_id),
+                    str(item.to_judgment_id),
+                    item.relation_type.value,
+                ),
+            )
+        )
         expected_outcomes = tuple(
             sorted(self.outcomes, key=lambda item: (item.known_at, str(item.evaluation_id)))
         )
-        if self.reality != expected_reality or self.judgments != expected_judgments or self.outcomes != expected_outcomes:
+        if (
+            self.reality != expected_reality
+            or self.judgments != expected_judgments
+            or self.judgment_rationales != expected_rationales
+            or self.judgment_relations != expected_relations
+            or self.outcomes != expected_outcomes
+        ):
             raise ValueError("industrial memory timeline must be deterministically ordered")
         judgment_ids = {item.judgment_id for item in self.judgments}
         reality_ids = {item.canonical_fact_version_id for item in self.reality}
+        for rationale in self.judgment_rationales:
+            if rationale.judgment_id not in judgment_ids:
+                raise ValueError("Judgment rationale references a Judgment missing from the timeline")
+        for relation in self.judgment_relations:
+            if (
+                relation.from_judgment_id not in judgment_ids
+                or relation.to_judgment_id not in judgment_ids
+            ):
+                raise ValueError("Judgment relation references a Judgment missing from the timeline")
         for outcome in self.outcomes:
             if outcome.judgment_id not in judgment_ids:
                 raise ValueError("Outcome references a Judgment missing from the timeline")
@@ -219,6 +298,8 @@ class PointInTimeMemorySnapshot(DomainModel):
     knowledge_cutoff: datetime
     reality: tuple[CanonicalRealityRecord, ...] = ()
     judgments: tuple[JudgmentMemoryRecord, ...] = ()
+    judgment_rationales: tuple[JudgmentRationaleMemoryRecord, ...] = ()
+    judgment_relations: tuple[JudgmentRelationMemoryRecord, ...] = ()
     outcomes: tuple[OutcomeMemoryRecord, ...] = ()
 
     @field_validator("knowledge_cutoff")
@@ -232,7 +313,13 @@ class PointInTimeMemorySnapshot(DomainModel):
     def no_lookahead(self) -> "PointInTimeMemorySnapshot":
         future = [
             item.known_at
-            for group in (self.reality, self.judgments, self.outcomes)
+            for group in (
+                self.reality,
+                self.judgments,
+                self.judgment_rationales,
+                self.judgment_relations,
+                self.outcomes,
+            )
             for item in group
             if item.known_at > self.knowledge_cutoff
         ]
@@ -252,5 +339,11 @@ def snapshot_from_timeline(
         knowledge_cutoff=checked,
         reality=tuple(item for item in timeline.reality if item.known_at <= checked),
         judgments=tuple(item for item in timeline.judgments if item.known_at <= checked),
+        judgment_rationales=tuple(
+            item for item in timeline.judgment_rationales if item.known_at <= checked
+        ),
+        judgment_relations=tuple(
+            item for item in timeline.judgment_relations if item.known_at <= checked
+        ),
         outcomes=tuple(item for item in timeline.outcomes if item.known_at <= checked),
     )

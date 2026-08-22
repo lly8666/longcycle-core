@@ -14,15 +14,19 @@ from longcycle.domain.epistemic import (
     CanonicalRealityRecord,
     IndustrialMemoryTimeline,
     JudgmentMemoryRecord,
+    JudgmentRationaleMemoryRecord,
+    JudgmentRelationMemoryRecord,
     MemorySubjectRef,
     OutcomeMemoryRecord,
     TemporalExtent,
 )
-from longcycle.domain.enums import TemporalPrecision
+from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType, TemporalPrecision
 
 
 SUBJECT = MemorySubjectRef(entity_id=UUID("11111111-1111-1111-1111-111111111111"))
 JUDGMENT_ID = UUID("22222222-2222-2222-2222-222222222222")
+REVISED_JUDGMENT_ID = UUID("22222222-2222-2222-2222-222222222223")
+RATIONALE_ID = UUID("77777777-7777-7777-7777-777777777777")
 REALITY_ID = UUID("33333333-3333-3333-3333-333333333333")
 OUTCOME_ID = UUID("44444444-4444-4444-4444-444444444444")
 JUDGMENT_EVIDENCE_ID = UUID("55555555-5555-5555-5555-555555555555")
@@ -51,6 +55,37 @@ def _timeline() -> IndustrialMemoryTimeline:
         summary="Management expected first product in May 2022.",
         known_at=JUDGMENT_KNOWN,
         evidence_fragment_ids=(JUDGMENT_EVIDENCE_ID,),
+    )
+    revised_judgment = judgment.model_copy(
+        update={
+            "judgment_id": REVISED_JUDGMENT_ID,
+            "judgment_key": "first-product-july-revision",
+            "target_time": TemporalExtent(
+                kind="period",
+                start=datetime(2022, 7, 1, tzinfo=UTC),
+                end=datetime(2022, 8, 1, tzinfo=UTC),
+                precision=TemporalPrecision.MONTH,
+                source_text="July 2022",
+            ),
+            "value_text": "first product revised to July 2022",
+            "summary": "Management revised first-product guidance to July 2022.",
+            "known_at": OUTCOME_KNOWN,
+        }
+    )
+    rationale = JudgmentRationaleMemoryRecord(
+        rationale_id=RATIONALE_ID,
+        judgment_id=REVISED_JUDGMENT_ID,
+        rationale_kind=JudgmentRationaleKind.MECHANISM,
+        summary="Qualification took longer than originally expected.",
+        evidence_fragment_id=OUTCOME_EVIDENCE_ID,
+        known_at=OUTCOME_KNOWN,
+    )
+    relation = JudgmentRelationMemoryRecord(
+        from_judgment_id=REVISED_JUDGMENT_ID,
+        to_judgment_id=JUDGMENT_ID,
+        relation_type=JudgmentRelationType.REVISES,
+        reason_summary="July timing replaces the earlier May guidance.",
+        known_at=OUTCOME_KNOWN,
     )
     reality = CanonicalRealityRecord(
         canonical_fact_version_id=REALITY_ID,
@@ -98,7 +133,9 @@ def _timeline() -> IndustrialMemoryTimeline:
     )
     return IndustrialMemoryTimeline(
         reality=(reality,),
-        judgments=(judgment,),
+        judgments=(judgment, revised_judgment),
+        judgment_rationales=(rationale,),
+        judgment_relations=(relation,),
         outcomes=(outcome,),
     )
 
@@ -110,7 +147,8 @@ async def test_duckdb_memory_round_trip_and_no_lookahead(tmp_path) -> None:
 
     manifest = seal_industrial_memory(path, timeline)
     assert manifest["typed_round_trip"] is True
-    assert manifest["counts"] == {"reality": 1, "judgments": 1, "outcomes": 1}
+    assert manifest["counts"] == {"reality": 1, "judgments": 2, "outcomes": 1}
+    assert manifest["judgment_context_counts"] == {"rationales": 1, "relations": 1}
 
     reader = DuckDBEpistemicMemoryReader(path)
     restored = await reader.timeline((SUBJECT,))
@@ -121,11 +159,17 @@ async def test_duckdb_memory_round_trip_and_no_lookahead(tmp_path) -> None:
         knowledge_cutoff=datetime(2022, 8, 3, 16, 27, 48, tzinfo=UTC),
     )
     assert len(before.judgments) == 1
+    assert before.judgment_rationales == ()
+    assert before.judgment_relations == ()
     assert before.reality == ()
     assert before.outcomes == ()
 
     at = await reader.snapshot((SUBJECT,), knowledge_cutoff=OUTCOME_KNOWN)
-    assert len(at.judgments) == 1
+    assert len(at.judgments) == 2
+    assert len(at.judgment_rationales) == 1
+    assert at.judgment_rationales[0].rationale_kind == JudgmentRationaleKind.MECHANISM
+    assert len(at.judgment_relations) == 1
+    assert at.judgment_relations[0].relation_type == JudgmentRelationType.REVISES
     assert len(at.reality) == 1
     assert len(at.outcomes) == 1
     assert at.reality[0].valid_time.kind == "period"
