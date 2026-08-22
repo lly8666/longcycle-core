@@ -1,0 +1,91 @@
+{
+  "schema_version": "longcycle-repair-memory-index/v1",
+  "policy": "Route by path/tag, then load only matching active cards. Git is chronological cold history.",
+  "active": [
+    {
+      "id": "RI-0001",
+      "title": "Repository mutation success is proven by the live target ref",
+      "kind": "process",
+      "severity": "high",
+      "scope": [
+        ".github/workflows/**",
+        ".longcycle/handoff/**",
+        "scripts/*handoff*.py",
+        "scripts/*refactor*.py"
+      ],
+      "tags": [
+        "github-actions",
+        "handoff",
+        "truth-hierarchy",
+        "false-pass"
+      ],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0001-live-ref-authority.json"
+    },
+    {
+      "id": "RI-0002",
+      "title": "Epistemic integration gates use typed contracts, not storage internals",
+      "kind": "architecture",
+      "severity": "high",
+      "scope": [
+        "scripts/smoke_postgres_epistemic.py",
+        "src/longcycle/ports/epistemic.py",
+        "src/longcycle/adapters/storage/postgres_epistemic.py",
+        "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        ".github/workflows/ci.yml"
+      ],
+      "tags": [
+        "epistemic-memory",
+        "postgres",
+        "duckdb",
+        "integration-test",
+        "storage-boundary"
+      ],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json"
+    },
+    {
+      "id": "RI-0003",
+      "title": "Canonical Reality preserves valid-time kind and source precision",
+      "kind": "data",
+      "severity": "critical",
+      "scope": [
+        "migrations/0020_fact_valid_time_precision.sql",
+        "migrations/0021_canonical_valid_time_kind.sql",
+        "src/longcycle/domain/epistemic.py",
+        "src/longcycle/adapters/storage/postgres_epistemic.py",
+        "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        "scripts/smoke_postgres_epistemic.py"
+      ],
+      "tags": [
+        "reality",
+        "valid-time",
+        "temporal-precision",
+        "no-lookahead",
+        "canonical-fact"
+      ],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
+    },
+    {
+      "id": "RI-0004",
+      "title": "Fact provenance is multi-fragment but single-source-assertion scoped",
+      "kind": "data",
+      "severity": "critical",
+      "scope": [
+        "migrations/0022_fact_evidence_roles.sql",
+        "src/longcycle/domain/enums.py",
+        "src/longcycle/domain/models.py",
+        "src/longcycle/adapters/storage/postgres.py",
+        "src/longcycle/application/pipeline.py",
+        "src/longcycle/application/reality_projection.py",
+        "scripts/smoke_postgres_epistemic.py"
+      ],
+      "tags": [
+        "fact",
+        "evidence",
+        "provenance",
+        "multi-fragment",
+        "source-boundary"
+      ],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0004-fact-provenance-multi-fragment.json"
+    }
+  ]
+}
