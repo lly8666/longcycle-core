@@ -1,0 +1,43 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0001",
+  "status": "active",
+  "kind": "process",
+  "severity": "high",
+  "title": "Repository mutation success is proven by the live target ref",
+  "scope": [
+    ".github/workflows/**",
+    ".longcycle/handoff/**",
+    "scripts/*handoff*.py",
+    "scripts/*refactor*.py"
+  ],
+  "tags": [
+    "github-actions",
+    "handoff",
+    "truth-hierarchy",
+    "false-pass"
+  ],
+  "failure_signature": "An automation/comment reports PASS although the intended branch HEAD did not move to the reported repair, or correctness is claimed before live CI exists for that target SHA.",
+  "root_cause": "Success was inferred from a local checkout, local diff, or narrative receipt instead of re-reading the authoritative remote target ref and live CI state.",
+  "invariant": "A repo-mutating automation must report the exact pushed SHA, and acceptance must re-read the live target branch/PR HEAD and verify that SHA. Correctness claims additionally require live CI. Bot comments and local logs are receipts, never implementation authority.",
+  "anti_regression": [
+    "Do not infer a successful push from `git diff HEAD^ HEAD`, a local commit, or a PASS comment.",
+    "Do not let checkpoint prose or automation output outrank the live Git graph/HEAD/CI."
+  ],
+  "guards": [
+    {
+      "kind": "protocol",
+      "path": "docs/development/session-handoff-protocol.md",
+      "contains": "live Git graph / HEAD / CI",
+      "description": "Normative implementation/data freshness hierarchy keeps live Git/CI above receipts and checkpoints."
+    }
+  ],
+  "revisit_when": "Only revisit if repository mutation is moved behind a stronger transactional authority that can atomically prove the target ref update and its verification result.",
+  "origin_refs": [
+    "issue:#39",
+    "issue:#40",
+    "issue:#41",
+    "commit:dd8bdf3039cf20116cbd797711d779ddadf51e02"
+  ],
+  "supersedes": []
+}
