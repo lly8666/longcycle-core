@@ -46,7 +46,7 @@ jobs:
           cache: pip
 
       - name: Install
-        run: python -m pip install -e ".[dev,postgres,s3]"
+        run: python -m pip install -e ".[dev,postgres,s3,duckdb]"
 
       - name: PostgreSQL migrations (hard gate)
         id: migrations
@@ -55,6 +55,10 @@ jobs:
       - name: PostgreSQL repository smoke (hard gate)
         id: postgres_repository
         run: python scripts/smoke_postgres_repository.py
+
+      - name: No-lookahead portable replay smoke (hard gate)
+        id: replay
+        run: python scripts/smoke_no_lookahead_replay.py
 
       - name: Ruff (diagnostic during memory campaign)
         id: ruff
@@ -104,6 +108,7 @@ jobs:
         run: |
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
+          echo "replay=${{ steps.replay.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
           echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
