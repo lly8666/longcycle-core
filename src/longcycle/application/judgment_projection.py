@@ -43,9 +43,14 @@ class GroundedProjectionEvidence(DomainModel):
         return require_aware_datetime(value, info.field_name)
 
 
+class GroundedJudgmentEvidenceRef(DomainModel):
+    fragment_key: str = Field(min_length=1)
+    evidence_role: JudgmentEvidenceRole = JudgmentEvidenceRole.STATEMENT
+
+
 class GroundedJudgmentProjectionItem(DomainModel):
     judgment_key: str = Field(min_length=1)
-    evidence_fragment_keys: tuple[str, ...]
+    evidence_refs: tuple[GroundedJudgmentEvidenceRef, ...]
     subject_entity_id: UUID
     speaker_name_text: str = Field(min_length=1)
     speaker_role: str | None = None
@@ -63,6 +68,26 @@ class GroundedJudgmentProjectionItem(DomainModel):
     extraction_confidence: float = Field(default=1.0, ge=0, le=1)
     metadata: dict[str, Any] = Field(default_factory=dict)
 
+    @model_validator(mode="before")
+    @classmethod
+    def migrate_v1_fragment_keys(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        payload = dict(value)
+        legacy = payload.pop("evidence_fragment_keys", None)
+        if legacy is None:
+            return payload
+        if "evidence_refs" in payload:
+            raise ValueError("use either evidence_refs or legacy evidence_fragment_keys, not both")
+        payload["evidence_refs"] = [
+            {
+                "fragment_key": fragment_key,
+                "evidence_role": JudgmentEvidenceRole.STATEMENT.value,
+            }
+            for fragment_key in legacy
+        ]
+        return payload
+
     @field_validator("target_at", "target_from", "target_to")
     @classmethod
     def target_times_are_aware(
@@ -74,15 +99,23 @@ class GroundedJudgmentProjectionItem(DomainModel):
 
     @model_validator(mode="after")
     def has_grounding(self) -> GroundedJudgmentProjectionItem:
-        if not self.evidence_fragment_keys:
-            raise ValueError("grounded judgment projection requires evidence fragment keys")
-        if len(set(self.evidence_fragment_keys)) != len(self.evidence_fragment_keys):
+        if not self.evidence_refs:
+            raise ValueError("grounded judgment projection requires evidence refs")
+        fragment_keys = [item.fragment_key for item in self.evidence_refs]
+        if len(set(fragment_keys)) != len(fragment_keys):
             raise ValueError("grounded judgment evidence fragment keys must be unique")
+        if not any(
+            item.evidence_role == JudgmentEvidenceRole.STATEMENT for item in self.evidence_refs
+        ):
+            raise ValueError("grounded judgment projection requires a statement evidence ref")
         return self
 
 
 class GroundedJudgmentProjectionSpec(DomainModel):
-    schema_version: Literal["longcycle-judgment-projection-spec/v1"]
+    schema_version: Literal[
+        "longcycle-judgment-projection-spec/v1",
+        "longcycle-judgment-projection-spec/v2",
+    ]
     task_id: str = Field(min_length=1)
     source_evidence_task_id: str = Field(min_length=1)
     allowed_claim_roles: tuple[str, ...]
@@ -124,28 +157,39 @@ def build_grounded_judgments(
 
     for item in spec.judgments:
         try:
-            cited = tuple(by_key[key] for key in item.evidence_fragment_keys)
+            cited = tuple((ref, by_key[ref.fragment_key]) for ref in item.evidence_refs)
         except KeyError as exc:
             raise ValueError(f"judgment cites unavailable evidence fragment: {exc.args[0]}") from exc
 
-        disallowed = sorted({row.claim_role for row in cited} - set(spec.allowed_claim_roles))
+        cited_rows = tuple(row for _, row in cited)
+        disallowed = sorted({row.claim_role for row in cited_rows} - set(spec.allowed_claim_roles))
         if disallowed:
             raise ValueError(
                 "judgment projection cites disallowed claim roles: " + ", ".join(disallowed)
             )
-        if any(row.claim_role == "outcome_milestone" for row in cited):
+        if any(row.claim_role == "outcome_milestone" for row in cited_rows):
             raise ValueError("later outcome evidence cannot be projected as contemporaneous judgment")
+        for ref, row in cited:
+            if row.claim_role == "risk_caveat" and ref.evidence_role != JudgmentEvidenceRole.CAVEAT:
+                raise ValueError("risk_caveat evidence must be projected with caveat evidence role")
 
-        source_ids = {row.source_connector_id for row in cited}
+        source_ids = {row.source_connector_id for row in cited_rows}
         if len(source_ids) != 1:
             raise ValueError("one judgment projection must resolve to one source connector")
         source_connector_id = next(iter(source_ids))
-        first_known_at = max(row.known_time_upper_bound for row in cited)
-        published_candidates = [row.source_published_at for row in cited if row.source_published_at]
+        first_known_at = max(row.known_time_upper_bound for row in cited_rows)
+        published_candidates = [row.source_published_at for row in cited_rows if row.source_published_at]
         source_published_at = max(published_candidates) if published_candidates else None
-        evidence_ids = tuple(row.evidence_fragment_id for row in cited)
         subject = subjects[item.subject_entity_id]
-        identity_parts = tuple(str(value) for value in evidence_ids)
+
+        if spec.schema_version.endswith("/v1"):
+            identity_parts = tuple(str(row.evidence_fragment_id) for row in cited_rows)
+            extractor_version = "1.0.0"
+        else:
+            identity_parts = tuple(
+                f"{ref.evidence_role.value}:{row.evidence_fragment_id}" for ref, row in cited
+            )
+            extractor_version = "2.0.0"
 
         judgments.append(
             JudgmentAssertion(
@@ -179,22 +223,23 @@ def build_grounded_judgments(
                 ),
                 source_connector_id=source_connector_id,
                 extractor_name="grounded-judgment-projection",
-                extractor_version="1.0.0",
+                extractor_version=extractor_version,
                 extraction_confidence=item.extraction_confidence,
                 evidence=tuple(
                     JudgmentEvidenceRef(
-                        evidence_fragment_id=evidence_id,
-                        evidence_role=JudgmentEvidenceRole.STATEMENT,
+                        evidence_fragment_id=row.evidence_fragment_id,
+                        evidence_role=ref.evidence_role,
                     )
-                    for evidence_id in evidence_ids
+                    for ref, row in cited
                 ),
                 metadata={
                     **item.metadata,
                     "projection_task_id": spec.task_id,
                     "judgment_key": item.judgment_key,
                     "source_evidence_task_id": spec.source_evidence_task_id,
-                    "source_fragment_keys": list(item.evidence_fragment_keys),
-                    "source_claim_roles": [row.claim_role for row in cited],
+                    "source_fragment_keys": [ref.fragment_key for ref, _ in cited],
+                    "source_claim_roles": [row.claim_role for _, row in cited],
+                    "evidence_roles": [ref.evidence_role.value for ref, _ in cited],
                     "subject_entity_type": subject.entity_type,
                     "subject_canonical_name": subject.canonical_name,
                 },
