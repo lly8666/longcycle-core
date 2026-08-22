@@ -1,0 +1,84 @@
+name: Longcycle handoff runtime pack
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  duckdb-offline-runtime-v1:
+    if: github.event.issue.title == '[longcycle-handoff-runtime-pack-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Download immutable offline DuckDB runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p runtime/wheelhouse
+          python -m pip download --only-binary=:all: --no-deps 'duckdb==1.5.5' -d runtime/wheelhouse
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+
+          wheels = sorted(Path('runtime/wheelhouse').glob('duckdb-1.5.5-*.whl'))
+          if len(wheels) != 1:
+              raise SystemExit(f'expected exactly one duckdb wheel, found {len(wheels)}')
+          wheel = wheels[0]
+          payload = {
+              'schema_version': 'longcycle-offline-runtime-pack/v1',
+              'runtime': 'duckdb-python',
+              'version': '1.5.5',
+              'wheel_name': wheel.name,
+              'wheel_bytes': wheel.stat().st_size,
+              'wheel_sha256': hashlib.sha256(wheel.read_bytes()).hexdigest(),
+              'install': 'python -m pip install --no-index --no-deps <wheel>',
+              'purpose': 'Open Longcycle portable DuckDB evidence/research bundles in a network-restricted sandbox.',
+          }
+          Path('runtime/manifest.json').write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Smoke-test wheel in isolated venv
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv runtime/smoke-venv
+          runtime/smoke-venv/bin/python -m pip install --no-index --no-deps runtime/wheelhouse/duckdb-1.5.5-*.whl
+          runtime/smoke-venv/bin/python - <<'PY'
+          import duckdb
+          assert duckdb.__version__ == '1.5.5', duckdb.__version__
+          print('duckdb', duckdb.__version__)
+          PY
+          rm -rf runtime/smoke-venv
+
+      - name: Upload offline runtime pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: longcycle-duckdb-offline-runtime-v1
+          if-no-files-found: error
+          retention-days: 30
+          path: runtime/
+
+      - name: Comment runtime manifest
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          {
+            echo '# Longcycle DuckDB offline runtime v1'
+            echo
+            echo '```json'
+            cat runtime/manifest.json
+            echo '```'
+          } > runtime/report.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file runtime/report.md
