@@ -28,7 +28,7 @@ class SessionHandoffContractTest(unittest.TestCase):
             json.loads(HANDOFF.read_text(encoding="utf-8"))
         )
 
-        self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v4")
+        self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v5")
         self.assertEqual(checkpoint.repository, "lly8666/longcycle-core")
         self.assertEqual(checkpoint.active_branch, "design/industry-memory")
         self.assertEqual(checkpoint.active_pr, 1)
@@ -36,6 +36,11 @@ class SessionHandoffContractTest(unittest.TestCase):
         self.assertTrue(checkpoint.live_refresh_required)
         self.assertTrue(checkpoint.do_not_ask_user_to_repeat)
         self.assertLessEqual(len(checkpoint.resume_read_set), 8)
+        self.assertEqual(
+            checkpoint.data_plane_manifest_path,
+            ".longcycle/handoff/data-plane.json",
+        )
+        self.assertIn(checkpoint.data_plane_manifest_path, checkpoint.resume_read_set)
         self.assertEqual(checkpoint.ci.authority, "snapshot_not_authoritative")
         self.assertTrue(checkpoint.strategic_horizon.medium_term_goal)
         self.assertTrue(checkpoint.strategic_horizon.short_term_goal)
@@ -116,6 +121,7 @@ class SessionHandoffContractTest(unittest.TestCase):
             ".longcycle/continuity/mission-fidelity.json",
             "CONTINUE_HERE.md",
             ".longcycle/handoff/current.json",
+            ".longcycle/handoff/data-plane.json",
         }
         self.assertTrue(required.issubset(read_set))
         self.assertLessEqual(len(read_set), 8)
@@ -129,16 +135,28 @@ class SessionHandoffContractTest(unittest.TestCase):
         )
         workstreams = {item.workstream_id: item for item in checkpoint.workstreams}
 
-        main_path = workstreams["memory-atlas-active-benchmark"]
-        self.assertEqual(main_path.role, "main_path")
-        self.assertEqual(main_path.parent_goal_ref, "strategic_horizon.short_term_goal")
+        main_paths = [item for item in checkpoint.workstreams if item.role == "main_path"]
+        self.assertTrue(main_paths)
+        for main_path in main_paths:
+            self.assertNotEqual(
+                main_path.parent_goal_ref,
+                "strategic_horizon.parallel_permanent_tracks",
+            )
 
         cursor_workstream = workstreams[checkpoint.continuation_cursor.parent_workstream_id]
-        self.assertEqual(cursor_workstream.role, "main_path")
-        self.assertEqual(
-            cursor_workstream.parent_goal_ref,
-            "strategic_horizon.short_term_goal",
-        )
+        if cursor_workstream.role == "parallel_track":
+            self.assertEqual(
+                cursor_workstream.parent_goal_ref,
+                "strategic_horizon.parallel_permanent_tracks",
+            )
+        else:
+            self.assertIn(
+                cursor_workstream.parent_goal_ref,
+                {
+                    "strategic_horizon.short_term_goal",
+                    "strategic_horizon.medium_term_goal",
+                },
+            )
 
     def test_live_head_difference_requires_delta_reconciliation(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
