@@ -1,0 +1,100 @@
+{
+  "schema_version": "longcycle-handoff-rehearsal/v1",
+  "continuity_sequence_tested": 47,
+  "mode": "artificial_ignorance_bounded_cold_start",
+  "chat_history_allowed": false,
+  "deep_reference_allowed": false,
+  "allowed_inputs": [
+    "GitHub issue #2 rendezvous",
+    "live PR #1 / design/industry-memory HEAD",
+    "STRATEGIC_COMPASS.md",
+    "METHODOLOGY_CORE.md",
+    ".longcycle/continuity/mission-fidelity.json",
+    "CONTINUE_HERE.md",
+    ".longcycle/handoff/current.json",
+    ".longcycle/handoff/data-plane.json",
+    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/PILOT-000-industry-selection-plan-v1.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-005-fmc-counterexample-and-lithium-exit-receipt-v1.json",
+    "live CI for the tested head"
+  ],
+  "questions": [
+    {
+      "id": "mission",
+      "recovered": "Longcycle preserves evidence-backed point-in-time industrial memory so a user can re-enter what was knowable and believed at historical times, not merely query a hindsight database.",
+      "pass": true
+    },
+    {
+      "id": "product_success",
+      "recovered": "The product is successful when an entering industry researcher can quickly build a defensible mental model with structure, key variables, historical branches, contemporaneous cognition, outcomes, evidence and unknowns. Agent benchmark score is not the product objective.",
+      "pass": true
+    },
+    {
+      "id": "first_industry_status",
+      "recovered": "Lithium is frozen as the first regression/reference benchmark after EVT-001/003/004/005; do not add lithium trajectories for benchmark count.",
+      "pass": true
+    },
+    {
+      "id": "active_industry",
+      "recovered": "The active second-industry adversarial pilot is ADC innovative drugs, bounded to China-linked global development and business development.",
+      "pass": true
+    },
+    {
+      "id": "campaign_state",
+      "recovered": "Formal ADC Memory Atlas blind recall has not started. memory_campaign=null is intentional pre-campaign state, not missing state.",
+      "pass": true
+    },
+    {
+      "id": "anti_contamination",
+      "recovered": "The freshness web check used for scope selection cannot seed formal ADC Memory Leads or Evidence. Formal ADC work must begin with search_visibility=none blind recall and seal before historical self-verification/search.",
+      "pass": true
+    },
+    {
+      "id": "next_atomic_action",
+      "recovered": "Create the formal innovative-drugs-adc campaign metadata/root with bounded blind-recall shards and an explicit saturation/seal rule, then execute high-capability blind recall without browsing ADC sources first.",
+      "pass": true
+    },
+    {
+      "id": "storage_boundary",
+      "recovered": "Externally acquired immutable raw source/source-acquisition packs use GitHub Release; Longcycle-generated DuckDB/replay/execution/runtime/generated DB snapshots use Google Drive; a live PostgreSQL cluster is rebuilt when transactional semantics are needed and is never transported as session authority.",
+      "pass": true
+    },
+    {
+      "id": "binary_restore_decision",
+      "recovered": "All currently manifested assets have required_for_current_task=false, so a clean ADC blind start restores no old lithium binary pack from either Release or Drive.",
+      "pass": true
+    },
+    {
+      "id": "freshness_and_integrity",
+      "recovered": "Checkpoint CI is only a snapshot; the fresh Agent must compare checkpoint base to live HEAD, classify intervening commits and refresh live CI before trusting correctness.",
+      "pass": true
+    }
+  ],
+  "semantic_score": {
+    "passed": 10,
+    "total": 10,
+    "success_rate": 1.0
+  },
+  "operational_drill": {
+    "initial_result": "fail",
+    "failure_exposed": [
+      "Two legacy handoff tests incorrectly assumed that every valid handoff must have a non-null memory_campaign, which contradicted the truthful ADC pre-campaign state.",
+      "One bootstrap contract test depended on the exact phrase '不要默认读取旧 devlog'; the rewritten bootstrap preserved the semantics but had dropped that literal compatibility phrase."
+    ],
+    "repair_policy": "Do not fabricate an ADC campaign to satisfy tests. Make the pre-campaign state first-class in tests, retain a separate synthetic guard proving blind campaigns cannot expose fresh search, and restore the explicit no-old-devlog bootstrap phrase.",
+    "final_head_tested": "31164322d2022b3fdd3ba68b141986ccb0e62905",
+    "final_ci_run_id": 32576061175,
+    "final_ci_conclusion": "success",
+    "hard_gate_result": "PostgreSQL migrations/smokes, typed memory, materialized Evidence, no-lookahead replay, Mypy and Pytest all passed."
+  },
+  "data_plane_rehearsal": {
+    "manifest_schema": "longcycle-handoff-data-plane/v2",
+    "transport_mode": "github_release_sources_google_drive_generated",
+    "source_lane": "github_release",
+    "generated_state_lane": "google_drive",
+    "live_postgres_transport": "forbidden",
+    "required_assets_for_next_task": 0,
+    "restore_action": "restore_nothing"
+  },
+  "conclusion": "PASS",
+  "continuity_stop_condition": "Satisfied. A zero-context Agent can recover the mission, researcher success criterion, lithium exit, ADC pre-campaign state, anti-contamination rule, exact next atomic action and split storage boundary without chat history and without restoring old binary state. Stop continuity optimization and return to the ADC research main path unless a future concrete transfer failure appears."
+}
