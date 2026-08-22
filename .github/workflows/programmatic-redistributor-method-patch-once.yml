@@ -1,0 +1,80 @@
+name: Patch programmatic redistributor method once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  patch:
+    if: github.event.issue.title == '[longcycle-programmatic-redistributor-method-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+          token: ${{ github.token }}
+
+      - name: Patch Method Core
+        id: patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('METHODOLOGY_CORE.md')
+          text = path.read_text(encoding='utf-8')
+          anchor = (
+              '使用 authoritative redistributor 时必须同时保存**实际 retrieval host** 与 **upstream announcement identity**。'
+              '不得为了保持“primary source”外观，把从财经网站取得的 bytes 伪记成从监管/公司官网直接取得；'
+              '同一上游公告被多个财经网站转载时仍属于同一 evidence cluster，不能伪装成多份独立 corroboration。'
+              '若财经页面只是摘要、机器提取字段或新闻稿解读，则仍按其真实 claim scope 和 secondary 权威级别处理。\n'
+          )
+          addition = (
+              '\n程序化交易/金融数据接口、开源量化项目和开源公告采集项目适用同一原则：它们可以是可信的公告 acquisition / redistribution lane，'
+              '不因“不是发行人官网或监管官网”而自动降权。若接口或项目返回、缓存或镜像的是可核验的上市公司正式公告/年报/定期报告原文或完整文件，'
+              '并能交叉核对 issuer、filing/accession/公告号、标题、披露时间、上游 URL 或内容哈希等身份，则该具体 connector/document 可以按 '
+              '`authoritative_redistributor` 处理。开源代码本身只证明采集机制可审计，不等于仓库已经保存目标 Evidence；只有实际取得并归档的公告 payload 才进入证据链。\n'
+              '\n程序化数据源对公告的**二次加工字段**不得继承公告原文的权威性。平台自行计算的财务比率、标准化指标、分类标签、预测值、共识值或从公告抽取后重新加工的数据，'
+              '必须按其加工方法、claim scope 和可复现性单独评估；“底层来自年报”不能让派生值自动等同于年报原文。\n'
+          )
+          if addition.strip() in text:
+              raise SystemExit('programmatic redistributor method already present')
+          if anchor not in text:
+              raise SystemExit('method anchor not found')
+          path.write_text(text.replace(anchor, anchor + addition), encoding='utf-8')
+          PY
+          git diff --check
+          git diff -- METHODOLOGY_CORE.md
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add METHODOLOGY_CORE.md
+          git commit -m 'docs: trust verifiable programmatic announcement redistribution'
+          git push origin HEAD:${ACTIVE_REF}
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Report patch
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          PATCH_OUTCOME: ${{ steps.patch.outcome }}
+          PATCH_SHA: ${{ steps.patch.outputs.sha }}
+        run: |
+          set -euo pipefail
+          if [[ "$PATCH_OUTCOME" == success ]]; then
+            body="PROGRAMMATIC_REDISTRIBUTOR_METHOD_PASS pushed_sha=$PATCH_SHA run_id=$GITHUB_RUN_ID"
+          else
+            body="PROGRAMMATIC_REDISTRIBUTOR_METHOD_FAIL run_id=$GITHUB_RUN_ID"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
