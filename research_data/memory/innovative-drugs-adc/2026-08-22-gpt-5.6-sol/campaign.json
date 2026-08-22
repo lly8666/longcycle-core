@@ -1,0 +1,76 @@
+{
+  "schema_version": "longcycle-memory-campaign/v1",
+  "campaign_id": "ADC-20260822-GPT56SOL-001",
+  "industry_family": "innovative_drugs",
+  "bounded_scope": "antibody_drug_conjugates_adc_china_linked_global_development_and_business_development",
+  "campaign_period": {
+    "start": "2000-01-01",
+    "end": "2026-08-22",
+    "precision": "day_bounds_for_campaign_only"
+  },
+  "model_instrument": {
+    "provider": "OpenAI / ChatGPT runtime",
+    "model": "GPT-5.6 Sol",
+    "model_version": "not exposed beyond product model name",
+    "declared_knowledge_cutoff": "unknown / not asserted"
+  },
+  "campaign_started_at": "2026-08-22T21:51:00+08:00",
+  "blind_stage_completed_at": "2026-08-22",
+  "source_visibility": "none",
+  "fresh_web_search": "forbidden_until_seal",
+  "selection_context": {
+    "allowed_file": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/PILOT-000-industry-selection-plan-v1.json",
+    "allowed_use": "scope, anti-contamination boundary, semantic pressure set, researcher acceptance only",
+    "forbidden_use": "selection freshness-check web contents or any source-derived ADC historical answer"
+  },
+  "epistemic_status": "all blind records are unsourced model-memory leads, not Fact, Judgment, Reality, Outcome or Evidence",
+  "shards": [
+    {"shard_id": "ADC-STACK", "purpose": "target/antibody/linker/payload/DAR/biomarker/manufacturing/mechanism identity and platform evolution"},
+    {"shard_id": "ASSET-TRIAL", "purpose": "asset × indication × trial × regimen × endpoint/readout branching"},
+    {"shard_id": "RIGHTS-BD", "purpose": "ownership, license, territory, sponsor and China-to-global business-development trajectories"},
+    {"shard_id": "REG-COMM", "purpose": "jurisdictional regulatory states, label scope, access, safety and commercial outcomes"},
+    {"shard_id": "FAILURE-REV", "purpose": "failures, withdrawals, clinical holds, expectation revisions, rescues and counterexamples"},
+    {"shard_id": "GAP-AUDIT", "purpose": "atlas-only negative-space, terminology and cross-shard gap closure"}
+  ],
+  "blind_rules": [
+    "No ADC web search, source retrieval, search snippets, current news, or source-grounded historical material may be consumed before seal.",
+    "GitHub reads for control-plane handoff, methodology, code invariants and non-ADC formatting do not count as historical ADC input.",
+    "PILOT-000 may define scope/product acceptance but may not seed historical Memory Leads.",
+    "Do not invent exact dates, precise numbers, payload identities, trial outcomes or rights carve-outs when memory is uncertain; preserve uncertainty and search keys.",
+    "Raw JSONL is immutable after commit; later corrections use separate repair/normalization artifacts.",
+    "A Memory Lead can challenge the archive but cannot publish or overwrite Fact/Judgment/Reality/Outcome."
+  ],
+  "saturation_policy": {
+    "consecutive_low_novelty_passes": 3,
+    "max_high_importance_novel_per_low_pass": 1,
+    "require_no_major_coverage_gaps": true,
+    "required_long_tail_families": ["failures","rights/partner changes","mechanisms","terminology/search keys","uncertain fragments","China-global actors","regulatory reversals"]
+  },
+  "pass_outcomes": [
+    {"pass_id":"stack-initial-v1","family":"platform_mechanism_exhaustion","novel_lead_count":11,"duplicate_lead_count":0,"high_importance_novel_count":9},
+    {"pass_id":"asset-trial-initial-v1","family":"asset_indication_trial_exhaustion","novel_lead_count":15,"duplicate_lead_count":0,"high_importance_novel_count":11},
+    {"pass_id":"rights-bd-initial-v1","family":"actor_rights_business_development_exhaustion","novel_lead_count":15,"duplicate_lead_count":0,"high_importance_novel_count":11},
+    {"pass_id":"reg-comm-initial-v1","family":"regulatory_commercial_outcome_exhaustion","novel_lead_count":12,"duplicate_lead_count":0,"high_importance_novel_count":10},
+    {"pass_id":"failure-revision-initial-v1","family":"failure_revision_counterexample_exhaustion","novel_lead_count":12,"duplicate_lead_count":3,"high_importance_novel_count":7},
+    {"pass_id":"atlas-gap-001-v1","family":"negative_space_atlas_only","novel_lead_count":5,"duplicate_lead_count":0,"high_importance_novel_count":1},
+    {"pass_id":"atlas-gap-002-v1","family":"negative_space_atlas_only","novel_lead_count":4,"duplicate_lead_count":0,"high_importance_novel_count":0},
+    {"pass_id":"atlas-gap-003-v1","family":"terminology_atlas_only","novel_lead_count":1,"duplicate_lead_count":0,"high_importance_novel_count":0}
+  ],
+  "seal": {
+    "status": "sealed",
+    "stop_reason": "orthogonal_passes_reached_low_marginal_novelty",
+    "saturation_basis": "last three atlas-only passes added 1, 0, 0 high-importance novel leads; bounded coverage review found no major gap blocking the second-industry semantic pilot",
+    "reopen_rule": "new model vintage, explicit scope expansion, or a later verified trajectory exposing a major blind-category omission",
+    "raw_atlas_sha256": "5a8fbeaa843476c64464dbb507cfa658c7f449ae63168de0ede935d81e760bdf"
+  },
+  "next_stage": "high_model_self_verification_search_discovery",
+  "next_stage_boundary": "Search may begin only in a new post-seal run and may never rewrite the blind JSONL.",
+  "raw_layout": {
+    "path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind/passes-v1.jsonl",
+    "format": "JSONL pass records with embedded immutable leads",
+    "pass_record_count": 8,
+    "lead_count": 78,
+    "immutable_after_seal": true,
+    "records_include_shard_id_and_pass_id": true
+  }
+}
