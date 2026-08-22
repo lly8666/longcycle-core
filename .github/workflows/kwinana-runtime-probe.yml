@@ -146,8 +146,6 @@ jobs:
           assert len(before_2022.judgments) == 4
           assert len(before_2022.reality) == 0
           assert len(before_2022.outcomes) == 0
-
-          # The Reality is effective from Nov 30, but was not public/known until Dec 3.
           assert len(pre_disclosure.judgments) == 4
           assert len(pre_disclosure.reality) == 0
           assert len(pre_disclosure.outcomes) == 0
@@ -192,13 +190,12 @@ jobs:
           print(json.dumps(payload['verification'], indent=2))
           PY
 
-      - name: Verify blind memory remained frozen and snapshot runtime state
+      - name: Verify blind memory remained frozen and hash runtime proof
         shell: bash
         run: |
           set -euo pipefail
           git diff --exit-code -- \
             research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind/UP-CHEMICALS
-          pg_dump --no-owner --no-privileges "$LONGCYCLE_DATABASE_URL" | gzip -n -9 > probe/kwinana-typed.sql.gz
           sha256sum \
             probe/kwinana-evidence-execution.json \
             probe/kwinana-judgments.json \
@@ -206,7 +203,6 @@ jobs:
             probe/kwinana-related-outcome.json \
             probe/kwinana-memory.duckdb \
             probe/kwinana-replay-proof.json \
-            probe/kwinana-typed.sql.gz \
             | tee probe/SHA256SUMS.txt
           du -sh .longcycle/action-blobs probe
 
