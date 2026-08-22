@@ -1,0 +1,66 @@
+{
+  "schema_version": "longcycle-benchmark-task-plan/v1",
+  "task_id": "EVT-005-EFFECTIVE-SUPPLY-VS-NAMEPLATE",
+  "shard_id": "UP-CHEMICALS",
+  "sealed_scope_only": true,
+  "selection": {
+    "chosen_family": "SVQ-005-EFFECTIVE-SUPPLY-VS-NAMEPLATE",
+    "why_next": "EVT-001/Kwinana proved single-project state-as-of semantics, EVT-003 proved cognition-vintage replay and EVT-004 proved contract/inventory margin vintages. The next useful pressure is cross-project comparison with explicit counterexamples: nameplate capacity must not be equated with saleable/effective supply, but delay must not be assumed universally either."
+  },
+  "research_question": "Across a small source-grounded set of lithium-conversion projects, which state transitions and constraints explain the gap between announced/nameplate capacity and effective saleable supply, and can the model preserve an on-time counterexample rather than learning a failure-only rule?",
+  "minimum_comparison_set": [
+    {
+      "case": "Kwinana Train 1",
+      "role": "delayed/qualification-and-ramp case",
+      "reuse_policy": "Reuse already archived EVT-001 evidence and typed state trajectory where claim scope matches; do not reacquire merely for symmetry."
+    },
+    {
+      "case": "Livent hydroxide expansion",
+      "role": "economic/market pause case",
+      "source_target": "Livent 2019 Form 10-K",
+      "reuse_policy": "Reuse the SHA-pinned EVT-004 2019 10-K where the expansion-pause fragment is grounded from the same immutable bytes."
+    },
+    {
+      "case": "FMC China lithium-hydroxide expansion",
+      "role": "on-time counterexample",
+      "source_targets": [
+        "https://www.sec.gov/Archives/edgar/data/37785/000130817918000126/lfmc2018_defa14a.htm",
+        "https://www.sec.gov/Archives/edgar/data/37785/000003778518000035/fmcex991033118.htm"
+      ],
+      "required_claims": [
+        "the China lithium-hydroxide capacity expansion opened on time and under budget",
+        "subsequent higher volumes were attributed to the China hydroxide expansion"
+      ]
+    }
+  ],
+  "semantic_dimensions": [
+    "announced/nameplate capacity",
+    "construction/mechanical completion",
+    "commissioning",
+    "first product",
+    "qualification/customer acceptance",
+    "ramp/utilization",
+    "economics/market-driven pause or cancellation",
+    "saleable output or source-supported production-volume proxy",
+    "captive/contractual allocation where source-supported"
+  ],
+  "comparison_rule": "Do not create one scalar effective-supply haircut. Preserve source-defined project states and only derive effective-supply availability for a point in time when the evidence supports the required state/qualification/output semantics.",
+  "counterexample_rule": "At least one timely/on-plan case must remain in the benchmark. A delayed-project cluster cannot be generalized into a universal chemical-project delay prior.",
+  "first_new_source_action": {
+    "case": "FMC China lithium-hydroxide expansion",
+    "reason": "Kwinana is already archived and Livent 2019 10-K bytes are already SHA-pinned. FMC is the genuinely new source acquisition needed to establish the reverse case.",
+    "target": "Acquire the SEC/authoritative-redistributed 2018 shareholder disclosure and Q1 2018 results exhibit, archive exact bytes, ground completion/on-time and subsequent-volume claims, then compare against existing Kwinana/Livent evidence without mixing source clusters."
+  },
+  "known_public_anchor": {
+    "fmc_counterexample": "A March 2018 SEC-filed shareholder communication states the China lithium-hydroxide expansion opened on time and under budget; a May 2018 SEC-filed Q1 results exhibit attributes higher lithium volumes to the China hydroxide expansion and Argentina debottlenecking.",
+    "source_status": "discovery anchor only until exact bytes are archived through the normal Evidence path"
+  },
+  "acceptance": [
+    "Use only sealed UP-CHEMICALS leads and existing archived evidence plus newly acquired claim-scoped sources.",
+    "Preserve each project's source-defined state vocabulary before any cross-project normalization.",
+    "Retain at least one on-time counterexample and one delayed/qualified case.",
+    "Do not infer saleable battery-grade supply solely from nameplate or construction completion.",
+    "Do not count multiple vintages from one project as independent evidence for a general mechanism.",
+    "Only add a new cross-industry primitive if the comparison cannot be represented truthfully with existing state, Reality/Judgment and temporal semantics."
+  ]
+}
