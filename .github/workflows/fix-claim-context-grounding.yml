@@ -13,7 +13,7 @@ env:
 
 jobs:
   repair:
-    if: github.event.issue.title == '[longcycle-fix-claim-context-grounding-v1]'
+    if: github.event.issue.title == '[longcycle-fix-claim-context-grounding-v2]'
     runs-on: ubuntu-24.04
     steps:
       - name: Announce received repair event
@@ -69,8 +69,8 @@ jobs:
 
       - name: Install and run focused regression
         run: |
-          python -m pip install -e '.[dev]'
-          pytest -q tests/test_evidence_claim_context.py tests/test_evidence_recording.py
+          python -m pip install -e '.[dev,postgres,s3]'
+          pytest -q tests/test_evidence_claim_context.py tests/test_evidence_recording.py tests/test_source_registration.py
           mypy src
 
       - name: Commit and push repair
