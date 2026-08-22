@@ -7,7 +7,12 @@ from uuid import UUID
 
 from pydantic import Field, ValidationInfo, field_validator, model_validator
 
-from .enums import TemporalPrecision
+from .enums import (
+    JudgmentOutcomeStatus,
+    OutcomeSemanticRelation,
+    OutcomeTimingRelation,
+    TemporalPrecision,
+)
 from .models import DomainModel, require_aware_datetime
 
 
@@ -139,6 +144,7 @@ class OutcomeMemoryRecord(DomainModel):
     canonical_fact_version_id: UUID | None = None
     outcome_evidence_fragment_id: UUID | None = None
     evaluation_status: str = Field(min_length=1)
+    semantic_relation: OutcomeSemanticRelation = OutcomeSemanticRelation.DIRECT_MATCH
     occurrence_time: TemporalExtent
     known_at: datetime
     timing_relation: str = Field(min_length=1)
@@ -156,9 +162,16 @@ class OutcomeMemoryRecord(DomainModel):
         return checked
 
     @model_validator(mode="after")
-    def timing_delta_is_a_pair(self) -> "OutcomeMemoryRecord":
+    def semantic_and_timing_contract(self) -> "OutcomeMemoryRecord":
         if (self.timing_delta_value is None) != (self.timing_delta_unit is None):
             raise ValueError("outcome timing delta value/unit must be supplied together")
+        if self.semantic_relation != OutcomeSemanticRelation.DIRECT_MATCH:
+            if self.evaluation_status != JudgmentOutcomeStatus.INDETERMINATE.value:
+                raise ValueError("non-direct outcome memory must remain indeterminate")
+            if self.timing_relation != OutcomeTimingRelation.NOT_COMPARABLE.value:
+                raise ValueError("non-direct outcome memory cannot carry a timing comparison")
+            if self.timing_delta_value is not None:
+                raise ValueError("non-direct outcome memory cannot carry a timing delta")
         return self
 
 
