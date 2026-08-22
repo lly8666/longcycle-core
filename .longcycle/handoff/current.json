@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 37,
+  "continuity_sequence": 38,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "3fd733e7c66e2a3eef90bce7f78e4323c6c4e86b",
+  "checkpoint_based_on_head_sha": "97c6e427a73aada05a9792b53004623cf2b14a06",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
   "bootstrap_instruction": "Cold start from Issue #2 and the active PR/branch. Read Strategy and Method Core, independently reconstruct the mission, calibrate with mission-fidelity.json, then read this checkpoint and .longcycle/handoff/data-plane.json. Refresh live HEAD/CI before trusting snapshots. Restore only data-plane assets required by the current cursor, verify outer and component SHA-256, and never ask the user to reconstruct persisted background.",
@@ -18,21 +18,21 @@
   "strategic_horizon": {
     "medium_term_goal": "Prove the first real industry benchmark end-to-end: archived original evidence must support temporally truthful no-lookahead Reality + Expectation + Outcome replay across meaningful industrial cycles using reusable primitives rather than lithium-specific hacks.",
     "short_term_goal": "Build and validate the first small no-lookahead replay fixture now that both Kwinana and Kemerton have completed real primary-source archive -> deterministic artifact -> grounded EvidenceFragment -> reconciled DuckDB paths.",
-    "next_big_step": "After this fresh-agent handoff quality gate passes, use the restored Kemerton portable evidence pack to implement the first bounded no-lookahead replay fixture with explicit knowledge cutoffs, then test whether the same fixture shape can replay Kwinana without project-specific prose or hindsight leakage.",
-    "local_optimization_stop_rule": "Database architecture is frozen at the proven hybrid boundary: content-addressed ArchiveStore for raw/artifact bytes, PostgreSQL for transactional writes/ops, DuckDB for portable read/replay packs. Do not restart a DuckDB-versus-PostgreSQL rewrite debate, broaden evidence discovery, or keep optimizing handoff after the fresh-agent gate passes unless replay exposes a concrete repeated defect.",
+    "next_big_step": "Use the restored Kemerton portable evidence pack to implement the first bounded no-lookahead replay fixture with explicit knowledge cutoffs, then test whether the same fixture shape can replay Kwinana without project-specific prose or hindsight leakage.",
+    "local_optimization_stop_rule": "Database architecture and handoff v5 are now quality-gated at the proven boundary: content-addressed ArchiveStore for raw/artifact bytes, PostgreSQL for transactional writes/ops, DuckDB for portable read/replay packs, and Git-manifested Drive assets for current sandbox byte transport. Do not restart database/handoff infrastructure work unless replay exposes a concrete repeated defect.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now so today's original material does not become tomorrow's historical recovery gap."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "handoff-v5-fresh-agent-audit",
-    "last_completed_action": "Kwinana EVT-001 and Kemerton EVT-002 both completed real grounded-evidence runtime execution and portable DuckDB reconciliation. Kemerton exposed SEC/Akamai raw-HTML nondeterminism; Longcycle added the generic html-visible-text deterministic artifact boundary and independently reproduced stable artifact digests across changing raw snapshots. The Kemerton successful Action capsule was relayed sandbox -> Google Drive -> sandbox with identical ZIP SHA, and a CPython-3.13 DuckDB 1.5.5 offline runtime pack was separately built, relayed through Drive, installed in a clean network-free venv, and used to open the restored Kemerton DuckDB read-only (7 documents, 16 evidence fragments, 12 known by 2021 year-end, zero broken document refs). Handoff v5 control/data-plane code and protocol are now staged for repository-only validation.",
-    "current_task": "Run the final fresh-agent handoff quality gate without using chat memory as authority: refresh CI on the v5 handoff changes, perform bounded repository-only reconstruction from the fixed bootstrap/read set, and verify that a zero-context Agent can recover that Kwinana + Kemerton are complete, the hybrid storage boundary is adopted, the next main task is the first no-lookahead replay, and the exact Drive assets/runtime needed to continue are identified by file id and SHA.",
-    "why_now": "The user explicitly asked to test whether a completely new Agent can fully restore state. The previous handoff was demonstrably stale (sequence 36 still claimed Kwinana was runtime-blocked), so continuity must prove both semantic freshness and usable binary-state restoration before mainline replay resumes.",
-    "done_when": "Repository-only CI/drill passes with fidelity 1.0 and v5 schema/data-plane checks green; outer and inner Drive asset hashes remain verified; the offline runtime can open the required DuckDB read-only; an artificial-ignorance reconstruction reports the correct mission/current state/next task/data requirements without old chat; then the cursor is returned to the main replay workstream and only handoff-mutable paths differ from the substantive checkpoint base.",
+    "parent_workstream_id": "first-no-lookahead-replay",
+    "last_completed_action": "Handoff v5 passed its fresh-agent quality gate. The old sequence-36 stale-cursor failure was repaired; repository-only reconstruction from Issue #2 plus the eight-file resume set recovered the mission, Kwinana and Kemerton completion state, adopted hybrid storage boundary, required Drive assets and replay next step without old chat. The Kemerton capsule completed an exact sandbox -> Drive -> sandbox SHA roundtrip. A CPython-3.13 DuckDB 1.5.5 offline runtime pack also roundtripped through Drive, installed with --no-index in a clean venv, and opened the restored Kemerton DuckDB read-only (7 documents, 16 evidence fragments, 12 evidence fragments known by 2021 year-end, zero broken document references). CI #685 on substantive base 97c6e427a73aada05a9792b53004623cf2b14a06 passed migrations, PostgreSQL repository smoke, Mypy, Pytest, memory compact and history provenance gates.",
+    "current_task": "Build the first bounded evidence-backed no-lookahead historical replay fixture from the completed Kemerton trajectory using the restored portable DuckDB pack. At each explicit knowledge cutoff, expose only evidence knowable then, preserve contemporaneous expectations/revisions and project-state semantics, and reveal later outcome only after its known-time boundary.",
+    "why_now": "Kwinana and Kemerton have already proven source archive, deterministic artifact grounding and portable replay storage. The terminal product claim is historical re-entry with the future restored as unknown, so further database or handoff optimization has lower marginal value than proving no-lookahead replay now.",
+    "done_when": "A small deterministic replay fixture can be executed at several Kemerton knowledge cutoffs and demonstrably excludes later evidence; it shows the applicable contemporaneous expectation/contract/project-state trajectory without hindsight rewriting; later July-2022 first-product outcome appears only when its August disclosure is knowable; the fixture representation is generic enough to apply next to Kwinana without company-specific prose; tests are green.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh live CI for the v5 handoff head, then execute a bounded fresh-agent reconstruction using only Issue #2, the eight-file resume_read_set and live Git/CI; if it passes, update the cursor to first-no-lookahead-replay without further continuity expansion."
+    "next_atomic_action": "Restore only the required Kemerton capsule and compatible DuckDB runtime from .longcycle/handoff/data-plane.json if they are not already present, verify all pinned hashes, open probe/kemerton-evidence.duckdb read-only, inspect evidence_timeline at bounded cutoffs around 2019-01-02, 2019-08-07, 2021-02-19, 2021-08-04, 2022-05-04 and 2022-08-03, then define the smallest reusable replay fixture/output contract before adding any new evidence."
   },
   "active_context": {
     "context_id": "benchmark-lithium-memory-atlas-v1",
@@ -83,38 +83,25 @@
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 661,
-    "observed_head_sha": "68d637538545984b8e3f7dbcadb693bf74e740a8",
-    "conclusion": "CI #661 was green before the handoff-v5 control/data-plane changes. It is deliberately not treated as validation of sequence 37; refresh live CI on the current v5 head before declaring the fresh-agent gate passed.",
-    "mypy_summary": "Run #661: success before handoff-v5 changes; refresh required.",
-    "pytest_summary": "Run #661: success before handoff-v5 changes; refresh required.",
-    "ruff_summary": "Ruff remains diagnostic-only during the benchmark unless hard-gate policy changes.",
-    "refresh_instruction": "Fetch current active HEAD and its latest CI. Sequence 37 is accepted only after v5 session/data-plane models, handoff drill and new data-plane tests pass."
+    "last_observed_run": 685,
+    "observed_head_sha": "97c6e427a73aada05a9792b53004623cf2b14a06",
+    "conclusion": "CI #685 succeeded on the final substantive handoff-v5 implementation/test base: PostgreSQL migrations, repository smoke, Mypy, Pytest including repository-only handoff/data-plane drills, memory compact indexes and history provenance all passed. This sequence-38 sync is handoff-only, so a fresh Agent must still refresh live HEAD/CI but should require delta reconciliation only if paths outside the declared handoff-mutable set changed after the checkpoint base.",
+    "mypy_summary": "Run #685: success.",
+    "pytest_summary": "Run #685: success, including v5 session handoff, data-plane and repository-only reconstruction tests.",
+    "ruff_summary": "Ruff remains diagnostic-only during the benchmark; existing repository lint debt is not a handoff gate.",
+    "refresh_instruction": "Fetch current active HEAD and latest CI. Compare checkpoint base 97c6e427a73aada05a9792b53004623cf2b14a06 to live HEAD; if only .longcycle/handoff/current.json and/or .longcycle/handoff/data-plane.json changed, treat it as a valid handoff sync and continue the replay cursor."
   },
   "workstreams": [
     {
       "workstream_id": "first-no-lookahead-replay",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "ready_after_handoff_quality_gate",
-      "summary": "Kwinana and Kemerton now provide two real grounded expectation/revision/outcome trajectories. The next product proof is historical re-entry: at each knowledge cutoff the replay must reveal only information knowable then, preserve contemporaneous expectations, and compare later outcomes without rewriting prior cognition.",
+      "status": "active",
+      "summary": "Kwinana and Kemerton now provide two real grounded expectation/revision/outcome trajectories. The next product proof is historical re-entry: at each knowledge cutoff the replay must reveal only information knowable then, preserve contemporaneous expectations and revisions, and compare later outcomes without rewriting prior cognition.",
       "next_actions": [
-        "Use the Kemerton portable pack to define the smallest reusable no-lookahead replay fixture.",
-        "Validate cutoff behavior around 2019 contract targets, 2021 revisions, May-2022 first-product expectation and July-2022 outcome.",
+        "Restore/open the required Kemerton portable pack read-only and enumerate the evidence visible at explicit historical cutoffs.",
+        "Define and test the smallest deterministic no-lookahead replay fixture/output contract.",
         "Apply the same fixture to Kwinana before adding more evidence tasks or generic orchestration."
-      ],
-      "blockers": []
-    },
-    {
-      "workstream_id": "handoff-v5-fresh-agent-audit",
-      "role": "supporting_quality_gate",
-      "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "active_final_validation",
-      "summary": "Validate that a zero-context Agent can recover both repository control state and the minimum usable binary state under the sandbox/Drive constraint. Stop this workstream immediately after repository-only + binary usability + artificial-ignorance checks pass.",
-      "next_actions": [
-        "Refresh live CI for the v5 handoff implementation.",
-        "Run bounded artificial-ignorance reconstruction and compare it with canonical receipts/live state.",
-        "If green, switch continuation cursor back to first-no-lookahead-replay without adding more continuity features."
       ],
       "blockers": []
     },
@@ -152,9 +139,9 @@
     "When the current ~15 GB Drive transport becomes a real scaling bottleneck, which object-store migration preserves content-addressed identities while changing only transport locators?"
   ],
   "ordered_next_actions": [
-    "Refresh current active-branch CI and require all handoff-v5/data-plane repository checks to pass.",
-    "Perform one bounded artificial-ignorance reconstruction from Issue #2 plus the eight-file resume set; verify mission, completed Kwinana/Kemerton state, storage boundary, exact required Drive assets and current/next task.",
-    "If the quality gate passes, update the cursor back to first-no-lookahead-replay using only handoff-mutable paths.",
-    "Then build the first no-lookahead replay fixture; do not continue handoff/database infrastructure work without a new concrete failure."
+    "Restore and verify only the required Kemerton capsule/runtime assets from the data-plane manifest; reuse already-restored verified copies when present.",
+    "Build and test the first Kemerton no-lookahead replay fixture at explicit knowledge cutoffs.",
+    "Apply the same fixture shape to Kwinana and inspect any semantic mismatch before abstracting further.",
+    "Do not continue handoff/database infrastructure work unless replay exposes a new concrete failure."
   ]
 }
