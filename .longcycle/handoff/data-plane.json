@@ -1,76 +1,48 @@
 {
-  "schema_version": "longcycle-handoff-data-plane/v1",
-  "transport_mode": "github_release_on_demand_restore",
-  "development_release_tag": "longcycle-dev-binary-cache",
-  "development_release_policy": "During development, heavy immutable research binaries live as uniquely named GitHub Release assets outside Git history. Actions runners and ChatGPT sandboxes download only the asset required by the current task, verify the recorded outer SHA-256 before extraction, and discard the local copy when done. Release assets are a development cache, not source authority and not the terminal production archive.",
-  "google_drive_policy": "Google Drive is no longer the default store for heavy research binaries. It may be used only for lightweight/manual relay when a connector constraint requires it; do not put PDF/source/replay/runtime packs there by default.",
-  "postgres_policy": "Do not transport a PostgreSQL cluster as session state. PostgreSQL remains the transactional write/ops engine and is rebuilt in an Action or other service-capable runtime when writes/leases/outbox semantics are required. Durable control-plane truth remains repository receipts plus immutable binary packs.",
-  "duckdb_policy": "DuckDB is the portable read/replay materialization. Restore only the required Release asset, verify outer and inner SHA-256, install the pinned offline runtime only when the sandbox lacks a compatible DuckDB, and open research packs read-only.",
-  "terminal_archive_status": "Deferred by explicit development-stage policy. GitHub Release is the temporary shared binary cache while the product is still being proven. After Longcycle is operational, move content-addressed raw source bytes, parser artifacts and portable replay packs to a dedicated server/object store without changing source authority or evidence semantics.",
+  "schema_version": "longcycle-handoff-data-plane/v2",
+  "transport_mode": "github_release_sources_google_drive_generated",
+  "github_release_policy": "During development, only externally acquired immutable source payloads and source-acquisition packs such as PDF, HTML, filings and formal announcement bytes belong in the shared GitHub Release. Actions may download them directly from the external web, hash them, upload uniquely named immutable Release assets, and later restore only the source pack required by the current task. Release transport never changes source authority.",
+  "google_drive_folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
+  "google_drive_policy": "Longcycle-generated binary state belongs in Google Drive: DuckDB replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. Do not put externally acquired original PDF/HTML/source bytes in Drive by default. Drive is a portable generated-state relay, not the live transactional database authority.",
+  "postgres_policy": "Do not transport a live PostgreSQL cluster as session state or place it in GitHub Release. PostgreSQL remains the transactional write/ops engine and is rebuilt in a service-capable runtime when writes, leases or outbox semantics are required. If a generated database snapshot is ever needed for handoff, it belongs in Google Drive and remains a snapshot rather than live authority.",
+  "duckdb_policy": "DuckDB is the portable read/replay materialization. Restore the required generated capsule from Google Drive, verify outer and inner SHA-256 values, and open research packs read-only. Raw source bytes required for re-grounding are restored separately from GitHub Release.",
   "missing_required_asset_action": "stop_and_report_integrity_blocker",
-  "supersession_policy": "Release assets are immutable and append-only by filename. Never clobber bytes behind an existing recorded filename. A successor pack gets a new unique filename and SHA-256; repository receipts/data-plane advance to it only after download-back verification.",
+  "supersession_policy": "Both transports are immutable-by-identity for handoff purposes. Never replace bytes behind a recorded source Release filename or a recorded generated-state file id without advancing the repository manifest and SHA-256. Successor source packs get new Release filenames; successor generated packs get new Drive files/ids. The manifest is resume-relevant, not an exhaustive archive inventory.",
   "assets": [
-    {
-      "asset_id": "kemerton-grounded-run28-capsule",
-      "role": "research_evidence_capsule",
-      "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
-      "file_name": "longcycle-kemerton-grounded-run28.zip",
-      "size_bytes": 826670,
-      "sha256": "a568232b15b77696ce0a271b74fd32fb7066fb37476a58288bff68e59a00558f",
-      "content_summary": "EVT-002 Kemerton successful grounded-evidence capsule: 7 raw source snapshots, deterministic parser artifacts, 16 EvidenceFragments, execution/verification manifests and reconciled portable DuckDB.",
-      "components": [
-        {"path":"probe/kemerton-evidence.duckdb","role":"portable research/evidence replay database","size_bytes":2109440,"sha256":"98f01c54bcb5b3ded7c8e28974182f7aae8f6d1c32308b887df1091584a02a7e"},
-        {"path":"probe/grounded-evidence-execution.json","role":"machine execution receipt","size_bytes":25341,"sha256":"25bfa365f3b20aa88d8f218c4d0e9a378ba7009d10316e814c04a74ff13ffab6"},
-        {"path":"probe/duckdb-export.json","role":"DuckDB reconciliation manifest","size_bytes":2651,"sha256":"50d266a037795d231f85166c4abc38f1bd5edd88a9ce7f8e50c1b00498652b5b"}
-      ],
-      "restore_instruction": "Download this filename from Release tag longcycle-dev-binary-cache into the runner/sandbox, verify the ZIP SHA-256, verify required inner component hashes, then use locally only for the current task."
-    },
-    {
-      "asset_id": "kwinana-grounded-run19-capsule",
-      "role": "research_evidence_capsule",
-      "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
-      "file_name": "longcycle-kwinana-grounded-run19.zip",
-      "size_bytes": 337920,
-      "sha256": "1f2ec083a79532a2283562973a31e6af3941ad8bf6e72c108692bab19a368c13",
-      "content_summary": "EVT-001 Kwinana grounded-evidence capsule: 4 archived primary-source documents, deterministic PDF text artifacts, EvidenceFragments and portable DuckDB bundle.",
-      "components": [
-        {"path":"probe/kwinana-evidence.duckdb","role":"portable research/evidence replay database","size_bytes":2633728,"sha256":"99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec"},
-        {"path":"probe/grounded-evidence-execution.json","role":"machine execution receipt","size_bytes":13788,"sha256":"367b3132b3c1a9c96a7e51e07752d58b3bb3cd02e74526a9aa82e68fb26da7f7"},
-        {"path":"probe/duckdb-export.json","role":"DuckDB reconciliation manifest","size_bytes":2458,"sha256":"22c937ee5eb4c19a49fff345160d53bcc847a425dbf97aaf48940bce596df475"}
-      ],
-      "restore_instruction": "Download from the shared development Release only when Kwinana binary evidence/replay state is needed; verify ZIP and required component hashes before use."
-    },
     {
       "asset_id": "evt003-approved-redistributor-acquisition-run32568791877",
       "role": "raw_source_acquisition_cache",
       "required_for_current_task": false,
       "transport": "github_release",
       "release_tag": "longcycle-dev-binary-cache",
+      "google_drive_file_id": null,
       "file_name": "longcycle-evt003-approved-redistributor-acquisition-run32568791877.zip",
       "size_bytes": 2692182,
       "sha256": "76d3c74452b48de6a3ecf68b61b2ac37a4a9915ea4fece33d1f7c57ef185e0a8",
-      "content_summary": "EVT-003 SHA-pinned raw acquisition bundle: Livent 2018 Form 10-K redistribution and May 7 2019 Q1 issuer-results release plus acquisition checks.",
+      "content_summary": "Externally acquired EVT-003 source pack: Livent 2018 Form 10-K redistribution and May 7 2019 issuer results release plus acquisition checks.",
       "components": [],
-      "restore_instruction": "Download from Release, verify outer SHA-256, then verify raw source hashes against the EVT-003 durable repository receipt before re-grounding."
+      "restore_instruction": "Download this immutable source pack from Release tag longcycle-dev-binary-cache only when re-grounding EVT-003, verify the outer SHA-256 and the raw document hashes recorded in the durable receipt, and discard the local copy after use."
     },
     {
       "asset_id": "evt003-judgment-replay-run32569365809",
       "role": "typed_replay_capsule",
       "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1BNbUKcB35-wExdLijs-eVbfPOpgVHN4b",
       "file_name": "longcycle-evt003-judgment-replay-run32569365809.zip",
       "size_bytes": 23170,
       "sha256": "208314238b4fc43587108a61aaf5377457acb6fd55a493a91f356aa93ef88177",
-      "content_summary": "EVT-003 grounded Judgment/context outputs and sealed cognition-replay DuckDB.",
+      "content_summary": "Longcycle-generated EVT-003 Judgment/context outputs and sealed cognition-replay DuckDB; no external source bytes are required from this generated capsule.",
       "components": [
-        {"path":"execution/evt003-memory.duckdb","role":"sealed typed cognition replay database","size_bytes":2109440,"sha256":"f340c47223bcfdc49d379bf038a8dbf89836569e137d71b096662f959604e336"}
+        {
+          "path": "execution/evt003-memory.duckdb",
+          "role": "sealed typed cognition replay database",
+          "size_bytes": 2109440,
+          "sha256": "f340c47223bcfdc49d379bf038a8dbf89836569e137d71b096662f959604e336"
+        }
       ],
-      "restore_instruction": "Download from Release and verify ZIP plus sealed DuckDB SHA-256 before read-only replay."
+      "restore_instruction": "Restore from Google Drive file id 1BNbUKcB35-wExdLijs-eVbfPOpgVHN4b, verify the ZIP SHA-256 and sealed DuckDB SHA-256, then use read-only."
     },
     {
       "asset_id": "evt004-contract-margin-acquisition-run32570106526",
@@ -78,43 +50,48 @@
       "required_for_current_task": false,
       "transport": "github_release",
       "release_tag": "longcycle-dev-binary-cache",
+      "google_drive_file_id": null,
       "file_name": "longcycle-evt004-contract-margin-acquisition-run32570106526.zip",
       "size_bytes": 7638136,
       "sha256": "f0c31409be382d39456aaa6021576e8b07521d7e723f40d6f1969b40d32319b9",
-      "content_summary": "EVT-004 SHA-pinned raw acquisition bundle: Livent 2019 Form 10-K PDF and Nov 5 2019 Q3 issuer-results HTML plus acquisition checks.",
+      "content_summary": "Externally acquired EVT-004 source pack: Livent 2019 Form 10-K PDF and Nov 5 2019 Q3 issuer-results HTML plus acquisition checks.",
       "components": [],
-      "restore_instruction": "Download from Release, verify outer SHA-256 and raw document hashes, then recreate the normal materialized Evidence path locally if needed."
+      "restore_instruction": "Download this immutable source pack from Release only if EVT-004 needs re-grounding, verify the outer SHA-256 and raw document hashes, and discard the local copy after use."
     },
     {
       "asset_id": "evt004-contract-margin-replay-run32570715478",
       "role": "typed_replay_capsule",
       "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1RTvDPBH0xGkdTTtAn_MVZGFxNOfrLd0N",
       "file_name": "longcycle-evt004-contract-margin-replay-run32570715478.zip",
       "size_bytes": 30219,
       "sha256": "9f09929101a9645dce011b316ea7e379ca73b025cdde9f9bb72bb0e319580b01",
-      "content_summary": "EVT-004 Evidence, Reality, Judgment/rationale receipts, no-lookahead snapshot check and sealed typed-memory DuckDB.",
+      "content_summary": "Longcycle-generated EVT-004 Evidence/Reality/Judgment execution outputs, no-lookahead checks and sealed typed-memory DuckDB.",
       "components": [
-        {"path":"replay/evt004-memory.duckdb","role":"sealed typed contract/inventory replay database","size_bytes":2895872,"sha256":"13f889eb03c866ab4072bfd078d6d70d7a895cafafba7e0fa117dc0d1fb87d66"}
+        {
+          "path": "replay/evt004-memory.duckdb",
+          "role": "sealed typed contract/inventory replay database",
+          "size_bytes": 2895872,
+          "sha256": "13f889eb03c866ab4072bfd078d6d70d7a895cafafba7e0fa117dc0d1fb87d66"
+        }
       ],
-      "restore_instruction": "Download from Release and verify ZIP plus sealed DuckDB SHA-256 before read-only replay."
+      "restore_instruction": "Restore from Google Drive file id 1RTvDPBH0xGkdTTtAn_MVZGFxNOfrLd0N, verify the ZIP and DuckDB SHA-256 values, then use read-only."
     },
     {
-      "asset_id": "duckdb-offline-runtime-py313-v3-release",
-      "role": "offline_runtime",
-      "required_for_current_task": false,
+      "asset_id": "evt005-fmc-counterexample-acquisition-run32572209653",
+      "role": "raw_source_acquisition_cache",
+      "required_for_current_task": true,
       "transport": "github_release",
       "release_tag": "longcycle-dev-binary-cache",
-      "file_name": "longcycle-duckdb-offline-runtime-py313-v3-release.zip",
-      "size_bytes": 21660136,
-      "sha256": "acecdd4590788eaa823191228d6c7441d06acdae1e8dcdfc9b73dc7a7b5c8582",
-      "content_summary": "Hermetic development replay runtime for CPython 3.13 x86_64: DuckDB 1.5.5 plus pytz 2025.2. Rebuilt in GitHub Actions and Release-download verified.",
-      "components": [
-        {"path":"wheelhouse/duckdb-1.5.5-cp313-cp313-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl","role":"offline DuckDB Python runtime","size_bytes":21511060,"sha256":"078e6a60dd8eedde5832f45422ca5c4a6b8c837aeabd8a56ca0b7d933f588053"},
-        {"path":"wheelhouse/pytz-2025.2-py2.py3-none-any.whl","role":"TIMESTAMPTZ Python materialization dependency","size_bytes":509225,"sha256":"5ddf76296dd8c44c26eb8f4b6f35488f3ccbf6fbbd7adee0b7262d43f0ec2f00"}
-      ],
-      "restore_instruction": "Download only when the sandbox lacks compatible DuckDB/pytz, verify outer and wheel hashes, then install into an isolated venv with --no-index --no-deps."
+      "google_drive_file_id": null,
+      "file_name": "longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip",
+      "size_bytes": 8634841,
+      "sha256": "610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef",
+      "content_summary": "Externally acquired EVT-005 source pack: FMC 2017 Annual Report/Form 10-K PDF and May 2 2018 issuer Q1 results HTML, each raw-SHA pinned and semantically verified by the acquisition action.",
+      "components": [],
+      "restore_instruction": "Download from Release tag longcycle-dev-binary-cache into the current Action material root, verify outer SHA-256 610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef plus both raw document hashes, execute the normal materialized Evidence path, then discard the local source copy."
     }
   ]
 }
