@@ -5,13 +5,14 @@
   "capacity_policy": "Google Drive is a bounded handoff transport/cache under the current user constraint (~15 GB), not the terminal archive. Keep only active/recent immutable packs there; do not copy a monolithic multi-industry database on every handoff. No authoritative or unreconstructable research state may exist only in a sandbox: sandbox-only files are permitted only when they are disposable caches, failed attempts, superseded intermediates, or byte-identical copies of state already persisted in Git/Drive/another durable authority.",
   "postgres_policy": "Do not transport a PostgreSQL cluster as session state. PostgreSQL remains the transactional write/ops engine and is rebuilt in an Action or other service-capable runtime when writes/leases/outbox semantics are required. Durable handoff truth is immutable source/archive bytes plus reconciled portable research packs and repository receipts.",
   "duckdb_policy": "DuckDB is the portable read/replay materialization. A fresh sandbox restores only the packs required by the current cursor, verifies outer and inner SHA-256, installs the pinned offline runtime only when the sandbox lacks a compatible DuckDB, and opens packs read-only.",
+  "terminal_archive_status": "No terminal cross-session object-store archive is configured yet. Runtime Evidence execution uses content-addressed filesystem/S3 abstractions, but GitHub-hosted filesystem roots are ephemeral. Drive assets listed here are durable handoff/cache mirrors, not the terminal source of truth. A future terminal archive should preserve content-addressed raw source bytes and parser artifacts in an S3-compatible or equivalent durable object store without changing source authority semantics.",
   "missing_required_asset_action": "stop_and_report_integrity_blocker",
   "supersession_policy": "Assets are immutable and append-only. Never replace bytes behind an existing Drive file id. A new pack gets a new asset id/file id and current.json/data-plane.json advance to it; older packs remain cold until explicit capacity cleanup after successor verification.",
   "assets": [
     {
       "asset_id": "kemerton-grounded-run28-capsule",
       "role": "research_evidence_capsule",
-      "required_for_current_task": true,
+      "required_for_current_task": false,
       "transport": "google_drive",
       "google_drive_file_id": "18gqxLCTM6_3ZELRRhZhK8ZYehNOSY7_Q",
       "file_name": "longcycle-kemerton-grounded-run28.zip",
@@ -70,18 +71,84 @@
           "sha256": "22c937ee5eb4c19a49fff345160d53bcc847a425dbf97aaf48940bce596df475"
         }
       ],
-      "restore_instruction": "Restore only when the current cursor needs Kwinana binary evidence/replay state. Fetch by Drive file id, verify ZIP and required component SHA-256 values, then open probe/kwinana-evidence.duckdb read-only with a compatible DuckDB runtime. The repository execution receipt remains the textual control-plane authority for task completion; this capsule preserves the underlying archived bytes and portable database across sandbox loss."
+      "restore_instruction": "Restore only when the current cursor needs Kwinana binary evidence/replay state. Fetch by Drive file id, verify ZIP and required component SHA-256 values, then open probe/kwinana-evidence.duckdb read-only with a compatible DuckDB runtime."
+    },
+    {
+      "asset_id": "evt003-approved-redistributor-acquisition-run32568791877",
+      "role": "raw_source_acquisition_cache",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "google_drive_file_id": "1XjFgL8UKVpF6mE0bD0xdJY0uJ4d1iiRh",
+      "file_name": "longcycle-evt003-approved-redistributor-acquisition-run32568791877.zip",
+      "size_bytes": 2692182,
+      "sha256": "76d3c74452b48de6a3ecf68b61b2ac37a4a9915ea4fece33d1f7c57ef185e0a8",
+      "content_summary": "EVT-003 SHA-pinned raw acquisition bundle: Livent 2018 Form 10-K PDF redistributed by AnnualReports, May 7 2019 Q1 issuer-results HTML redistributed by PR Newswire, visible-text checks and acquisition manifest. Raw source identity is separately recorded in the repository receipt.",
+      "components": [],
+      "restore_instruction": "Fetch by Drive file id, verify the outer ZIP SHA-256, then verify each raw source SHA-256 against EVT-003-programmatic-redistributor-and-cognition-replay-receipt-v1.json before reuse. Drive is cache/relay, not source authority."
+    },
+    {
+      "asset_id": "evt003-judgment-replay-run32569365809",
+      "role": "typed_replay_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "google_drive_file_id": "1uMzVKDi8S8-9Q0ab4k3L_jMlv83-aa3y",
+      "file_name": "longcycle-evt003-judgment-replay-run32569365809.zip",
+      "size_bytes": 23170,
+      "sha256": "208314238b4fc43587108a61aaf5377457acb6fd55a493a91f356aa93ef88177",
+      "content_summary": "EVT-003 grounded Judgment/context execution outputs and sealed cognition-replay DuckDB. The companion raw acquisition bundle is a separate Drive asset.",
+      "components": [
+        {
+          "path": "execution/evt003-memory.duckdb",
+          "role": "sealed typed cognition replay database",
+          "size_bytes": 2109440,
+          "sha256": "f340c47223bcfdc49d379bf038a8dbf89836569e137d71b096662f959604e336"
+        }
+      ],
+      "restore_instruction": "Verify ZIP and sealed DuckDB SHA-256 before read-only replay. Restore the companion EVT-003 acquisition asset when raw-source re-grounding is required."
+    },
+    {
+      "asset_id": "evt004-contract-margin-acquisition-run32570106526",
+      "role": "raw_source_acquisition_cache",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "google_drive_file_id": "1lKMX5x34mXBF3KKO5KGzQnk6XAuUja7E",
+      "file_name": "longcycle-evt004-contract-margin-acquisition-run32570106526.zip",
+      "size_bytes": 7638136,
+      "sha256": "f0c31409be382d39456aaa6021576e8b07521d7e723f40d6f1969b40d32319b9",
+      "content_summary": "EVT-004 SHA-pinned raw acquisition bundle: Livent 2019 Form 10-K PDF redistributed by AnnualReports (raw SHA bef71d35...) and Nov 5 2019 Q3 issuer-results HTML redistributed by PR Newswire (raw SHA 9d8687f5...), plus acquisition checks/manifest.",
+      "components": [],
+      "restore_instruction": "Fetch by Drive file id, verify outer ZIP SHA-256, then verify raw document hashes against EVT-004-contract-vintage-margin-replay-receipt-v1.json. Re-run the normal materialized Evidence path to recreate content-addressed raw/parser blobs if needed."
+    },
+    {
+      "asset_id": "evt004-contract-margin-replay-run32570715478",
+      "role": "typed_replay_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "google_drive_file_id": "1GsrKCwRk6gEybhYvb0RN7pCUS5Szw67J",
+      "file_name": "longcycle-evt004-contract-margin-replay-run32570715478.zip",
+      "size_bytes": 30219,
+      "sha256": "9f09929101a9645dce011b316ea7e379ca73b025cdde9f9bb72bb0e319580b01",
+      "content_summary": "EVT-004 Evidence, Reality, Judgment, rationale execution receipts, no-lookahead snapshot check and sealed typed-memory DuckDB. The companion acquisition asset preserves raw source bytes.",
+      "components": [
+        {
+          "path": "replay/evt004-memory.duckdb",
+          "role": "sealed typed contract/inventory replay database",
+          "size_bytes": 2895872,
+          "sha256": "13f889eb03c866ab4072bfd078d6d70d7a895cafafba7e0fa117dc0d1fb87d66"
+        }
+      ],
+      "restore_instruction": "Verify ZIP and sealed DuckDB SHA-256 before read-only replay. Restore the companion EVT-004 acquisition asset when exact source-byte or Evidence re-grounding is required."
     },
     {
       "asset_id": "duckdb-offline-runtime-py313-v2",
       "role": "offline_runtime",
-      "required_for_current_task": true,
+      "required_for_current_task": false,
       "transport": "google_drive",
       "google_drive_file_id": "166-PCimOEaDvbvvKf71_1NGFVEIcBPAh",
       "file_name": "longcycle-duckdb-offline-runtime-py313-v2.zip",
       "size_bytes": 21673846,
       "sha256": "7d7f45e67766c22f60576bd317d2c163861c6056e9a985be8caff324514aa8f3",
-      "content_summary": "Hermetic offline replay runtime for the current ChatGPT sandbox class: DuckDB 1.5.5 plus pytz 2025.2 for CPython 3.13 x86_64. The pack passed GitHub Action and independent sandbox clean-venv --no-index/--no-deps installation, including direct Python materialization of TIMESTAMPTZ into a timezone-aware datetime.",
+      "content_summary": "Hermetic offline replay runtime for the current ChatGPT sandbox class: DuckDB 1.5.5 plus pytz 2025.2 for CPython 3.13 x86_64.",
       "components": [
         {
           "path": "wheelhouse/duckdb-1.5.5-cp313-cp313-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
@@ -102,7 +169,7 @@
           "sha256": "803d97b65474e44d132b41992857cb5e9b127ab9a10b3e6bf5478cd6a10cc229"
         }
       ],
-      "restore_instruction": "Fetch by Drive file id, verify ZIP and all component SHA-256 values, extract, create an isolated venv with the sandbox Python 3.13 interpreter, and run `python -m pip install --no-index --no-deps wheelhouse/*.whl`. Verify duckdb.__version__ == 1.5.5, pytz.__version__ == 2025.2 and direct TIMESTAMPTZ materialization before opening research packs. If the future sandbox ABI differs, fail closed and build a new runtime asset rather than forcing this pack."
+      "restore_instruction": "Fetch by Drive file id, verify ZIP and component hashes, then install only if the sandbox lacks a compatible DuckDB runtime."
     }
   ]
 }
