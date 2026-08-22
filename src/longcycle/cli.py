@@ -14,16 +14,24 @@ from longcycle.adapters.models import JsonFixtureGateway
 from longcycle.adapters.sources.http import HttpDocumentSource
 from longcycle.adapters.sources.local import LocalFolderSource
 from longcycle.adapters.sources.registry import SourceRegistry
+from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
 from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.research_orchestration import execute_research_orchestration_receipt
 from longcycle.application.scheduling import SchedulePolicy
+from longcycle.application.trajectory_view import build_researcher_trajectory_view
 from longcycle.config import Settings
 from longcycle.database import MigrationRunner
+from longcycle.domain.epistemic import MemorySubjectRef
 from longcycle.domain.enums import Cadence, QualityGrade, SourceKind
-from longcycle.domain.models import CollectionPolicy, SourceDefinition, stable_uuid
+from longcycle.domain.models import (
+    CollectionPolicy,
+    SourceDefinition,
+    require_aware_datetime,
+    stable_uuid,
+)
 from longcycle.ports.model import ExtractionTarget
 from longcycle.ports.source import DiscoveryContext, FetchContext
 
@@ -33,6 +41,13 @@ def _default_migrations_dir() -> Path:
     if repository_dir.is_dir():
         return repository_dir
     return Path(__file__).resolve().with_name("sql_migrations")
+
+
+def _parse_aware_datetime(value: str) -> datetime:
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    checked = require_aware_datetime(parsed, "knowledge_cutoff")
+    assert checked is not None
+    return checked
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -52,7 +67,7 @@ def _parser() -> argparse.ArgumentParser:
     source_sub = source.add_subparsers(dest="source_command", required=True)
     source_sub.add_parser("plugins", help="list installed source plugins")
 
-    research = subparsers.add_parser("research", help="research execution operations")
+    research = subparsers.add_parser("research", help="research execution and replay operations")
     research_sub = research.add_subparsers(dest="research_command", required=True)
     research_run = research_sub.add_parser(
         "run",
@@ -72,6 +87,24 @@ def _parser() -> argparse.ArgumentParser:
         "--skip-db-upgrade",
         action="store_true",
         help="skip database migration when PostgreSQL has already been upgraded",
+    )
+    research_replay = research_sub.add_parser(
+        "replay",
+        help="render a no-lookahead researcher trajectory view from portable industrial memory",
+    )
+    research_replay.add_argument("database", type=Path)
+    research_replay.add_argument("cutoff", type=_parse_aware_datetime)
+    research_replay.add_argument(
+        "--subject-id",
+        action="append",
+        default=[],
+        help="entity UUID to include in the point-in-time trajectory",
+    )
+    research_replay.add_argument(
+        "--industry-node-id",
+        action="append",
+        default=[],
+        help="industry taxonomy-node UUID to include in the point-in-time trajectory",
     )
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
@@ -178,6 +211,18 @@ async def _demo() -> dict[str, object]:
         return asdict(report)
 
 
+async def _research_replay(args: argparse.Namespace) -> dict[str, object]:
+    subjects = tuple(
+        [MemorySubjectRef(entity_id=UUID(value)) for value in args.subject_id]
+        + [MemorySubjectRef(industry_node_id=UUID(value)) for value in args.industry_node_id]
+    )
+    if not subjects:
+        raise ValueError("research replay requires at least one --subject-id or --industry-node-id")
+    reader = DuckDBEpistemicMemoryReader(args.database)
+    snapshot = await reader.snapshot(subjects, knowledge_cutoff=args.cutoff)
+    return build_researcher_trajectory_view(snapshot)
+
+
 async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
     settings = Settings.from_env()
     if args.command == "doctor":
@@ -209,6 +254,8 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         if not isinstance(result, dict):
             raise RuntimeError("research orchestration returned no result object")
         return result
+    if args.command == "research" and args.research_command == "replay":
+        return await _research_replay(args)
     if args.command == "schedule":
         collection_policy = CollectionPolicy(
             industry_id=args.industry_id,
