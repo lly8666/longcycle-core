@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Any
@@ -16,7 +17,7 @@ from longcycle.domain.enums import (
     JudgmentTargetTimeKind,
     JudgmentValueKind,
 )
-from longcycle.domain.models import DomainModel, require_aware_datetime
+from longcycle.domain.models import DomainModel, canonical_json, require_aware_datetime
 
 
 class JudgmentEvidenceRef(DomainModel):
@@ -83,9 +84,8 @@ class JudgmentAssertion(DomainModel):
 
     @model_validator(mode="after")
     def matches_database_contract(self) -> JudgmentAssertion:
-        if (self.speaker_entity_id is None) == (self.speaker_name_text is None):
-            if self.speaker_entity_id is None:
-                raise ValueError("judgment requires a speaker entity or speaker name")
+        if self.speaker_entity_id is None and self.speaker_name_text is None:
+            raise ValueError("judgment requires a speaker entity or speaker name")
         if (self.subject_entity_id is None) == (self.subject_industry_node_id is None):
             raise ValueError("judgment requires exactly one subject identity")
         if (self.predicate_code is None) != (self.comparability_hash is None):
@@ -143,6 +143,11 @@ class JudgmentAssertion(DomainModel):
         ]
         if competing or self.value_low is not None or self.value_high is not None:
             raise ValueError("judgment value must use exactly one representation")
+
+    @property
+    def content_fingerprint(self) -> str:
+        payload = self.model_dump(mode="json", exclude={"id"})
+        return hashlib.sha256(canonical_json(payload).encode("utf-8")).hexdigest()
 
 
 class JudgmentRationale(DomainModel):
