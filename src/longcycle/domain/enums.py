@@ -136,6 +136,31 @@ class JudgmentRelationType(StrEnum):
     CONTRADICTS = "contradicts"
 
 
+class JudgmentOutcomeStatus(StrEnum):
+    REALIZED = "realized"
+    PARTIALLY_REALIZED = "partially_realized"
+    NOT_REALIZED = "not_realized"
+    NOT_YET_EVALUABLE = "not_yet_evaluable"
+    INVALIDATED = "invalidated"
+
+
+class OutcomeTimingRelation(StrEnum):
+    WITHIN_TARGET_WINDOW = "within_target_window"
+    BEFORE_TARGET_WINDOW = "before_target_window"
+    AFTER_TARGET_WINDOW = "after_target_window"
+    OVERLAPS_TARGET_WINDOW = "overlaps_target_window"
+    NOT_COMPARABLE = "not_comparable"
+
+
+class TemporalDeltaUnit(StrEnum):
+    DAYS = "days"
+    WEEKS = "weeks"
+    CALENDAR_MONTHS = "calendar_months"
+    CALENDAR_QUARTERS = "calendar_quarters"
+    HALF_YEARS = "half_years"
+    CALENDAR_YEARS = "calendar_years"
+
+
 class JobStage(StrEnum):
     DISCOVER = "discover"
     FETCH = "fetch"
