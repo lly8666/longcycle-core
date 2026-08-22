@@ -9,6 +9,7 @@ from typing import Any
 
 from longcycle.adapters.parsers import HtmlVisibleTextParser, PdfTextParser
 from longcycle.adapters.sources.http import HttpDocumentSource
+from longcycle.adapters.sources.materialized import MaterializedDocumentSource
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
 from longcycle.adapters.storage.postgres_sources import PostgresSourceRegistry
@@ -16,7 +17,10 @@ from longcycle.adapters.storage.s3 import S3ArchiveStore
 from longcycle.application.evidence_recording import ArchivedEvidenceRecorder
 from longcycle.application.parsing import ArtifactPipeline
 from longcycle.application.source_archive import DocumentArchiver
-from longcycle.application.source_registration import build_http_source_definition
+from longcycle.application.source_registration import (
+    build_http_source_definition,
+    build_materialized_source_definition,
+)
 from longcycle.config import Settings
 from longcycle.domain.enums import QualityGrade, SourceKind
 from longcycle.domain.models import (
@@ -27,10 +31,12 @@ from longcycle.domain.models import (
 )
 from longcycle.ports.archive import ArchiveStore
 from longcycle.ports.parser import DocumentParser
-from longcycle.ports.source import FetchContext
+from longcycle.ports.source import FetchContext, SourcePlugin
 
 
-SCHEMA_VERSION = "longcycle-grounded-evidence-spec/v1"
+SCHEMA_VERSION_V1 = "longcycle-grounded-evidence-spec/v1"
+SCHEMA_VERSION_V2 = "longcycle-grounded-evidence-spec/v2"
+SUPPORTED_SCHEMA_VERSIONS = frozenset({SCHEMA_VERSION_V1, SCHEMA_VERSION_V2})
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -43,6 +49,14 @@ def _parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("spec", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument(
+        "--material-root",
+        type=Path,
+        help=(
+            "Root containing externally acquired source bytes referenced by v2 materialized "
+            "documents. Paths inside the spec must remain relative to this root."
+        ),
+    )
     return parser
 
 
@@ -60,10 +74,9 @@ def _load_spec(path: Path) -> dict[str, Any]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, dict):
         raise ValueError("grounded evidence spec must be a JSON object")
-    if payload.get("schema_version") != SCHEMA_VERSION:
-        raise ValueError(
-            f"unsupported grounded evidence spec schema: {payload.get('schema_version')!r}"
-        )
+    schema_version = payload.get("schema_version")
+    if schema_version not in SUPPORTED_SCHEMA_VERSIONS:
+        raise ValueError(f"unsupported grounded evidence spec schema: {schema_version!r}")
     sources = payload.get("sources")
     documents = payload.get("documents")
     fragments = payload.get("fragments")
@@ -82,17 +95,57 @@ def _load_spec(path: Path) -> dict[str, Any]:
         raise ValueError("acceptance.required_fragments does not match fragments")
     if acceptance.get("facts_created") != 0 or acceptance.get("judgments_created") != 0:
         raise ValueError("grounded evidence executor only supports zero Fact/Judgment promotion")
+
+    source_transport: dict[str, str] = {}
+    for row in sources:
+        if not isinstance(row, dict):
+            raise ValueError("grounded evidence source specs must be objects")
+        key = row.get("key")
+        if not isinstance(key, str) or not key:
+            raise ValueError("source key must be a non-empty string")
+        if key in source_transport:
+            raise ValueError(f"duplicate source key: {key}")
+        transport = str(row.get("transport", "http"))
+        if transport not in {"http", "materialized"}:
+            raise ValueError(f"source {key} has unsupported transport: {transport}")
+        if transport == "materialized" and schema_version != SCHEMA_VERSION_V2:
+            raise ValueError("materialized source transport requires grounded evidence spec v2")
+        allowed_domains = row.get("allowed_domains")
+        if transport == "http" and (
+            not isinstance(allowed_domains, list)
+            or not all(isinstance(item, str) for item in allowed_domains)
+        ):
+            raise ValueError(f"source {key} allowed_domains must be a string list")
+        source_transport[key] = transport
+
+    seen_document_keys: set[str] = set()
     for row in documents:
         if not isinstance(row, dict):
             raise ValueError("grounded evidence document specs must be objects")
+        key = row.get("key")
+        source_key = row.get("source_key")
+        if not isinstance(key, str) or not key:
+            raise ValueError("document key must be a non-empty string")
+        if key in seen_document_keys:
+            raise ValueError(f"duplicate document key: {key}")
+        seen_document_keys.add(key)
+        if not isinstance(source_key, str) or source_key not in source_transport:
+            raise ValueError(f"document {key} references unknown source {source_key!r}")
         raw_digest = row.get("expected_sha256")
         text_digest = row.get("expected_visible_text_sha256")
         raw_ok = isinstance(raw_digest, str) and bool(raw_digest)
         text_ok = isinstance(text_digest, str) and bool(text_digest)
         if not raw_ok and not text_ok:
-            raise ValueError(
-                f"document {row.get('key')!r} must pin raw SHA or visible-text artifact SHA"
-            )
+            raise ValueError(f"document {key!r} must pin raw SHA or visible-text artifact SHA")
+        if source_transport[source_key] == "materialized":
+            material_path = row.get("material_path")
+            content_type = row.get("content_type")
+            if not raw_ok:
+                raise ValueError(f"materialized document {key} must pin expected_sha256")
+            if not isinstance(material_path, str) or not material_path.strip():
+                raise ValueError(f"materialized document {key} must define material_path")
+            if not isinstance(content_type, str) or not content_type.strip():
+                raise ValueError(f"materialized document {key} must define content_type")
     return payload
 
 
@@ -134,20 +187,48 @@ async def _register_sources(
         key = row.get("key")
         if not isinstance(key, str) or not key:
             raise ValueError("source key must be a non-empty string")
-        allowed_domains = row.get("allowed_domains")
-        if not isinstance(allowed_domains, list) or not all(
-            isinstance(item, str) for item in allowed_domains
-        ):
-            raise ValueError(f"source {key} allowed_domains must be a string list")
-        source = build_http_source_definition(
-            name=str(row["name"]),
-            publisher_domain=str(row["publisher_domain"]),
-            kind=SourceKind(str(row["kind"])),
-            quality_grade=QualityGrade(str(row["quality_grade"])),
-            allowed_domains=allowed_domains,
-        )
+        transport = str(row.get("transport", "http"))
+        if transport == "http":
+            allowed_domains = row.get("allowed_domains")
+            if not isinstance(allowed_domains, list) or not all(
+                isinstance(item, str) for item in allowed_domains
+            ):
+                raise ValueError(f"source {key} allowed_domains must be a string list")
+            source = build_http_source_definition(
+                name=str(row["name"]),
+                publisher_domain=str(row["publisher_domain"]),
+                kind=SourceKind(str(row["kind"])),
+                quality_grade=QualityGrade(str(row["quality_grade"])),
+                allowed_domains=allowed_domains,
+            )
+        elif transport == "materialized":
+            source = build_materialized_source_definition(
+                name=str(row["name"]),
+                publisher_domain=str(row["publisher_domain"]),
+                kind=SourceKind(str(row["kind"])),
+                quality_grade=QualityGrade(str(row["quality_grade"])),
+            )
+        else:
+            raise ValueError(f"source {key} has unsupported transport: {transport}")
         registered[key] = await registry.register(source)
     return registered
+
+
+def _source_plugin(
+    *,
+    source: SourceDefinition,
+    material_root: Path | None,
+) -> SourcePlugin:
+    if source.plugin == "http_document":
+        return HttpDocumentSource(source)
+    if source.plugin == "materialized_file":
+        if material_root is None:
+            raise ValueError(
+                "grounded evidence spec uses materialized source transport but --material-root "
+                "was not supplied"
+            )
+        return MaterializedDocumentSource(source, material_root=material_root)
+    raise ValueError(f"unsupported persisted source plugin: {source.plugin}")
 
 
 async def _archive_documents(
@@ -157,6 +238,7 @@ async def _archive_documents(
     sources: dict[str, SourceDefinition],
     document_specs: list[dict[str, Any]],
     task_id: str,
+    material_root: Path | None,
 ) -> dict[str, SourceDocument]:
     archived: dict[str, SourceDocument] = {}
     archiver = DocumentArchiver(repository=repository, archive=archive)
@@ -168,13 +250,22 @@ async def _archive_documents(
         if not isinstance(source_key, str) or source_key not in sources:
             raise ValueError(f"document {key} references unknown source {source_key!r}")
         persisted_source = await repository.get_source(sources[source_key].id)
-        plugin = HttpDocumentSource(persisted_source)
+        plugin = _source_plugin(source=persisted_source, material_root=material_root)
         metadata = {
             "evidence_task_id": task_id,
             "vintage_id": row.get("vintage_id"),
             "original_source_url": row.get("original_source_url"),
             "retrieval_provenance": row.get("retrieval_provenance") or {},
+            "transport_plugin": persisted_source.plugin,
         }
+        if persisted_source.plugin == "materialized_file":
+            metadata.update(
+                {
+                    "material_path": row.get("material_path"),
+                    "material_expected_sha256": row.get("expected_sha256"),
+                    "material_content_type": row.get("content_type"),
+                }
+            )
         item = DiscoveryItem(
             source_id=persisted_source.id,
             external_id=str(row["external_id"]),
@@ -412,6 +503,7 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
             sources=sources,
             document_specs=document_specs,
             task_id=str(spec["task_id"]),
+            material_root=args.material_root,
         )
         fragments, artifacts = await _record_fragments(
             repository=repository,
@@ -440,6 +532,7 @@ async def _run(args: argparse.Namespace) -> dict[str, Any]:
                     "document_key": key,
                     "document_id": str(document.id),
                     "source_id": str(document.source_id),
+                    "transport_plugin": document.metadata.get("transport_plugin"),
                     "canonical_retrieval_url": document.canonical_url,
                     "original_source_url": row.get("original_source_url"),
                     "content_sha256": document.content_sha256,
