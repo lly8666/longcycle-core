@@ -9,6 +9,10 @@ from pydantic import BaseModel, ConfigDict, Field
 from longcycle.application.session_handoff import SessionHandoffCheckpoint
 
 
+MAX_HANDOFF_BYTES = 64 * 1024
+MAX_RESUME_CONTEXT_BYTES = 256 * 1024
+
+
 class HandoffDrillCheck(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
@@ -99,6 +103,19 @@ def audit_repository_handoff(
     methodology = (root / checkpoint.core_refs.methodology_path).read_text(encoding="utf-8")
     mission_contract = _read_json(root / checkpoint.core_refs.mission_fidelity_path)
     continue_here = (root / "CONTINUE_HERE.md").read_text(encoding="utf-8")
+    fresh_bootstrap = (root / "FRESH_AGENT_BOOTSTRAP.md").read_text(encoding="utf-8")
+
+    resume_paths = tuple(root / relative for relative in checkpoint.resume_read_set)
+    missing_resume_paths = tuple(
+        str(path.relative_to(root)) for path in resume_paths if not path.is_file()
+    )
+    resume_context_bytes = sum(path.stat().st_size for path in resume_paths if path.is_file())
+    missing_deep_paths = tuple(
+        relative
+        for relative in checkpoint.active_context.deep_context_paths
+        if not (root / relative).is_file()
+    )
+    handoff_bytes = handoff_path.stat().st_size
 
     raw_total: int | None = None
     raw_counts: dict[str, int] = {}
@@ -132,10 +149,7 @@ def audit_repository_handoff(
             coverage_counts[shard_id] = lead_count
 
         shard_mismatches = {
-            shard_id: {
-                "coverage": coverage_counts.get(shard_id),
-                "raw": raw_counts.get(shard_id),
-            }
+            shard_id: {"coverage": coverage_counts.get(shard_id), "raw": raw_counts.get(shard_id)}
             for shard_id in sorted(set(coverage_counts) | set(raw_counts))
             if coverage_counts.get(shard_id) != raw_counts.get(shard_id)
         }
@@ -147,9 +161,7 @@ def audit_repository_handoff(
 
     core_text = f"{strategy}\n{methodology}".lower()
     core_exclusion_hits = tuple(
-        term
-        for term in checkpoint.active_context.core_exclusion_terms
-        if term.lower() in core_text
+        term for term in checkpoint.active_context.core_exclusion_terms if term.lower() in core_text
     )
 
     contract_text = json.dumps(mission_contract, ensure_ascii=False).lower()
@@ -160,12 +172,43 @@ def audit_repository_handoff(
     )
     facets = mission_contract.get("required_facets")
     misreadings = mission_contract.get("common_misreadings")
+    bootstrap_lower = fresh_bootstrap.lower()
 
     checks_list = [
         HandoffDrillCheck(
             name="bounded_bootstrap_read_set",
             passed=len(checkpoint.resume_read_set) <= 8,
             detail=f"resume_read_set={len(checkpoint.resume_read_set)}",
+        ),
+        HandoffDrillCheck(
+            name="resume_read_set_paths_exist",
+            passed=not missing_resume_paths,
+            detail=f"missing={missing_resume_paths}",
+        ),
+        HandoffDrillCheck(
+            name="active_deep_context_paths_exist",
+            passed=not missing_deep_paths,
+            detail=f"missing={missing_deep_paths}",
+        ),
+        HandoffDrillCheck(
+            name="handoff_file_remains_bounded",
+            passed=handoff_bytes <= MAX_HANDOFF_BYTES,
+            detail=f"bytes={handoff_bytes}, limit={MAX_HANDOFF_BYTES}",
+        ),
+        HandoffDrillCheck(
+            name="resume_context_remains_bounded",
+            passed=resume_context_bytes <= MAX_RESUME_CONTEXT_BYTES,
+            detail=f"bytes={resume_context_bytes}, limit={MAX_RESUME_CONTEXT_BYTES}",
+        ),
+        HandoffDrillCheck(
+            name="fresh_bootstrap_preserves_stable_rendezvous",
+            passed=(
+                "issue #2" in bootstrap_lower
+                and "continue_here.md" in bootstrap_lower
+                and ".longcycle/handoff/current.json" in bootstrap_lower
+                and "do not ask" in bootstrap_lower
+            ),
+            detail="fresh bootstrap must resolve stable issue/branch/cursor without user reconstruction",
         ),
         HandoffDrillCheck(
             name="bootstrap_reads_strategy_method_then_calibrates",
@@ -269,11 +312,7 @@ def audit_repository_handoff(
                 HandoffDrillCheck(
                     name="coverage_shard_counts_match_raw",
                     passed=not shard_mismatches,
-                    detail="mismatches=" + json.dumps(
-                        shard_mismatches,
-                        ensure_ascii=False,
-                        sort_keys=True,
-                    ),
+                    detail="mismatches=" + json.dumps(shard_mismatches, ensure_ascii=False, sort_keys=True),
                 ),
                 HandoffDrillCheck(
                     name="checkpoint_shard_count_matches_raw",
@@ -282,22 +321,13 @@ def audit_repository_handoff(
                 ),
                 HandoffDrillCheck(
                     name="search_visibility_agrees",
-                    passed=(
-                        campaign.search_visibility
-                        == coverage.get("search_visibility")
-                    ),
-                    detail=(
-                        f"checkpoint={campaign.search_visibility}, "
-                        f"coverage={coverage.get('search_visibility')}"
-                    ),
+                    passed=campaign.search_visibility == coverage.get("search_visibility"),
+                    detail=f"checkpoint={campaign.search_visibility}, coverage={coverage.get('search_visibility')}",
                 ),
                 HandoffDrillCheck(
                     name="sealed_shards_agree",
                     passed=campaign.sealed_shards == sealed_from_coverage,
-                    detail=(
-                        f"checkpoint={campaign.sealed_shards}, "
-                        f"coverage={sealed_from_coverage}"
-                    ),
+                    detail=f"checkpoint={campaign.sealed_shards}, coverage={sealed_from_coverage}",
                 ),
             ]
         )
@@ -329,8 +359,4 @@ def audit_repository_handoff(
         sealed_shards=sealed_from_coverage,
         ordered_next_actions=checkpoint.ordered_next_actions,
     )
-    return HandoffIsolationReport(
-        recovered=recovered,
-        fidelity_score=score,
-        checks=checks,
-    )
+    return HandoffIsolationReport(recovered=recovered, fidelity_score=score, checks=checks)
