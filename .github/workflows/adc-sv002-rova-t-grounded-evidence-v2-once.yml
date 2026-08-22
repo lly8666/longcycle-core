@@ -1,0 +1,104 @@
+name: Execute ADC SV-002 Rova-T grounded evidence once v2
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: 7c7ffdd56f24a06465fc0a7373f84948bca3264e
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip
+  RELEASE_ASSET_SHA256: a244ed59d467b2aea8a693f02fa96034ef410f64fc80e777ef69daef226b304d
+  SPEC_PATH: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-002-grounded-evidence-spec-v1.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-adc-sv002-rova-t-grounded-evidence-v2]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-sv002-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.EXPECTED_HEAD }}', fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Restore source pack from development Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+          test "$(sha256sum material/abbvie-stemcentrx-acquisition-2016-04-28.html | awk '{print $1}')" = '807268c83ba7fcc7e70773815f9afddbd2c6957f3410dd5012ddd0d881470bd5'
+          test "$(sha256sum material/abbvie-tahoe-halt-2018-12-05.html | awk '{print $1}')" = '6e4fc461f7ffb8ea2cceeff2bd806fe5b30080ffebd5a675896cb8753bfe53f3'
+          test "$(sha256sum material/abbvie-stemcentrx-impairment-8k-2019-01-04.pdf | awk '{print $1}')" = 'ccdad7f84acd5000ed4397c84add094a7f1920bab3f4cb73dd3b1801d30defc9'
+          test "$(sha256sum material/abbvie-rova-t-meru-termination-2019-08-29.html | awk '{print $1}')" = '5a082ec98ecf70eb917dc5da7a13b9b0f8d2a14c21b771fee4b160e13235eee2'
+          test "$(sha256sum material/abbvie-2019-10k-stemcentrx-impairments.pdf | awk '{print $1}')" = '8a8d47fcf65b61337b714cfbc030c7e751ee84185832d68b0e4484b1398168a7'
+      - name: Execute normal Grounded Evidence v2 path
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv002-evidence.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output adc-sv002-evidence-execution.json
+          python - <<'PY'
+          import json
+          p=json.load(open('adc-sv002-evidence-execution.json')); assert p['ok'] is True,p; r=p['result']
+          assert len(r['documents'])==5,r; assert len(r['fragments'])==9,r
+          assert r['acceptance']['persisted_document_versions']==5,r
+          assert r['acceptance']['persisted_evidence_fragments']==9,r
+          assert r['acceptance']['fact_assertions_created']==0,r
+          assert r['acceptance']['judgment_assertions_created']==0,r
+          docs={x['document_key']:x for x in r['documents']}
+          expected={'stemcentrx-acquisition-2016':'807268c83ba7fcc7e70773815f9afddbd2c6957f3410dd5012ddd0d881470bd5','tahoe-halt-2018':'6e4fc461f7ffb8ea2cceeff2bd806fe5b30080ffebd5a675896cb8753bfe53f3','stemcentrx-impairment-8k-2019':'ccdad7f84acd5000ed4397c84add094a7f1920bab3f4cb73dd3b1801d30defc9','meru-termination-2019':'5a082ec98ecf70eb917dc5da7a13b9b0f8d2a14c21b771fee4b160e13235eee2','abbvie-2019-10k-impairments':'8a8d47fcf65b61337b714cfbc030c7e751ee84185832d68b0e4484b1398168a7'}
+          for k,d in expected.items(): assert docs[k]['content_sha256']==d and docs[k]['transport_plugin']=='materialized_file',docs[k]
+          for k in ('stemcentrx-impairment-8k-2019','abbvie-2019-10k-impairments'):
+            assert any(x['authority_class']=='authoritative_redistributor' for x in docs[k]['source_authority_profiles']),docs[k]
+          keys={x['fragment_key'] for x in r['fragments']}
+          assert keys=={'acquisition-peak-revenue-expectation','acquisition-early-orr-signal','acquisition-transaction-value','tahoe-shorter-os','impairment-estimated-net-impact','meru-no-survival-benefit','rova-t-program-terminated','2018-gross-impairment-charge','2019-remaining-value-impairment'},keys
+          print('ADC_SV002_GROUNDED_EVIDENCE_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+      - name: Upload generated execution relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-sv002-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            adc-sv002-evidence-execution.json
+            /tmp/adc-sv002-evidence.log
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.gate.outcome }}'}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then body="ADC_SV002_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"; else tail_text="$(tail -n 220 /tmp/adc-sv002-evidence.log 2>/dev/null || true)"; body=$(printf 'ADC_SV002_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text"); fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
