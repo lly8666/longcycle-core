@@ -56,6 +56,10 @@ jobs:
         id: postgres_repository
         run: python scripts/smoke_postgres_repository.py
 
+      - name: PostgreSQL judgment aggregate smoke (hard gate)
+        id: postgres_judgments
+        run: python scripts/smoke_postgres_judgments.py
+
       - name: No-lookahead portable replay smoke (hard gate)
         id: replay
         run: python scripts/smoke_no_lookahead_replay.py
@@ -108,6 +112,7 @@ jobs:
         run: |
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
+          echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
           echo "replay=${{ steps.replay.outcome }} (hard gate)"
           echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
           echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
