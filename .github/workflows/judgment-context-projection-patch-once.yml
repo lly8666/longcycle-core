@@ -1,0 +1,669 @@
+name: Patch grounded Judgment context projection once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 762971853e44c375124bb616a33de3a2ac73f282
+
+jobs:
+  patch:
+    if: github.event.issue.title == '[longcycle-judgment-context-projection-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Add storage-neutral grounded context projection
+        id: apply
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/context-projection.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          cat > src/longcycle/application/judgment_context_projection.py <<'PY'
+          from __future__ import annotations
+
+          from typing import Literal
+
+          from pydantic import Field, model_validator
+
+          from longcycle.application.judgment_projection import GroundedProjectionEvidence
+          from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType
+          from longcycle.domain.judgments import (
+              JudgmentAssertion,
+              JudgmentRationale,
+              JudgmentRelation,
+          )
+          from longcycle.domain.models import DomainModel, stable_uuid_exact
+
+
+          _REVISION_FAMILY = frozenset(
+              {
+                  JudgmentRelationType.REVISES,
+                  JudgmentRelationType.REAFFIRMS,
+                  JudgmentRelationType.WITHDRAWS,
+                  JudgmentRelationType.NARROWS,
+                  JudgmentRelationType.WIDENS,
+              }
+          )
+
+
+          class GroundedJudgmentRationaleItem(DomainModel):
+              rationale_key: str = Field(min_length=1)
+              judgment_key: str = Field(min_length=1)
+              rationale_kind: JudgmentRationaleKind
+              summary: str = Field(min_length=1)
+              evidence_fragment_key: str | None = None
+              linked_judgment_key: str | None = None
+              ordinal: int = Field(default=0, ge=0)
+
+              @model_validator(mode="after")
+              def has_grounding(self) -> GroundedJudgmentRationaleItem:
+                  if self.evidence_fragment_key is None and self.linked_judgment_key is None:
+                      raise ValueError(
+                          "grounded Judgment rationale requires evidence or a linked Judgment"
+                      )
+                  return self
+
+
+          class GroundedJudgmentRelationItem(DomainModel):
+              from_judgment_key: str = Field(min_length=1)
+              to_judgment_key: str = Field(min_length=1)
+              relation_type: JudgmentRelationType
+              reason_summary: str | None = None
+
+              @model_validator(mode="after")
+              def does_not_self_link(self) -> GroundedJudgmentRelationItem:
+                  if self.from_judgment_key == self.to_judgment_key:
+                      raise ValueError("grounded Judgment relation cannot self-link")
+                  return self
+
+
+          class GroundedJudgmentContextSpec(DomainModel):
+              schema_version: Literal["longcycle-judgment-context-projection-spec/v1"]
+              task_id: str = Field(min_length=1)
+              source_judgment_task_id: str = Field(min_length=1)
+              source_evidence_task_id: str = Field(min_length=1)
+              allowed_rationale_claim_roles: tuple[str, ...] = ()
+              rationales: tuple[GroundedJudgmentRationaleItem, ...] = ()
+              relations: tuple[GroundedJudgmentRelationItem, ...] = ()
+
+              @model_validator(mode="after")
+              def has_unique_context(self) -> GroundedJudgmentContextSpec:
+                  if not self.rationales and not self.relations:
+                      raise ValueError("grounded Judgment context spec must define context")
+                  rationale_keys = [item.rationale_key for item in self.rationales]
+                  if len(set(rationale_keys)) != len(rationale_keys):
+                      raise ValueError("grounded Judgment rationale keys must be unique")
+                  relation_keys = [
+                      (
+                          item.from_judgment_key,
+                          item.to_judgment_key,
+                          item.relation_type,
+                      )
+                      for item in self.relations
+                  ]
+                  if len(set(relation_keys)) != len(relation_keys):
+                      raise ValueError("grounded Judgment relations must be unique")
+                  return self
+
+
+          def _judgments_by_key(
+              judgments: tuple[JudgmentAssertion, ...],
+          ) -> dict[str, JudgmentAssertion]:
+              result: dict[str, JudgmentAssertion] = {}
+              for judgment in judgments:
+                  key = judgment.metadata.get("judgment_key")
+                  if not isinstance(key, str) or not key:
+                      raise ValueError("grounded context requires Judgment metadata.judgment_key")
+                  if key in result:
+                      raise ValueError("grounded context Judgment keys must be unique")
+                  result[key] = judgment
+              return result
+
+
+          def _same_subject(left: JudgmentAssertion, right: JudgmentAssertion) -> bool:
+              return (
+                  left.subject_entity_id == right.subject_entity_id
+                  and left.subject_industry_node_id == right.subject_industry_node_id
+              )
+
+
+          def build_grounded_judgment_context(
+              spec: GroundedJudgmentContextSpec,
+              judgments: tuple[JudgmentAssertion, ...],
+              evidence: tuple[GroundedProjectionEvidence, ...],
+          ) -> tuple[tuple[JudgmentRationale, ...], tuple[JudgmentRelation, ...]]:
+              """Build source-backed cognitive context around already-grounded Judgments.
+
+              This projection never edits a Judgment. Rationale evidence must have been
+              knowable no later than the owning Judgment. Revision-family relations require
+              semantic identity at the coarse reusable level: same subject and topic, with
+              the revising assertion no earlier than the assertion it qualifies.
+              """
+
+              by_judgment_key = _judgments_by_key(judgments)
+              by_evidence_key = {item.fragment_key: item for item in evidence}
+              if len(by_evidence_key) != len(evidence):
+                  raise ValueError("grounded context evidence keys must be unique")
+
+              rationales: list[JudgmentRationale] = []
+              for item in spec.rationales:
+                  try:
+                      judgment = by_judgment_key[item.judgment_key]
+                  except KeyError as exc:
+                      raise ValueError(
+                          f"rationale references unavailable Judgment: {item.judgment_key}"
+                      ) from exc
+
+                  evidence_row = None
+                  if item.evidence_fragment_key is not None:
+                      try:
+                          evidence_row = by_evidence_key[item.evidence_fragment_key]
+                      except KeyError as exc:
+                          raise ValueError(
+                              "rationale references unavailable evidence fragment: "
+                              f"{item.evidence_fragment_key}"
+                          ) from exc
+                      if (
+                          spec.allowed_rationale_claim_roles
+                          and evidence_row.claim_role not in spec.allowed_rationale_claim_roles
+                      ):
+                          raise ValueError(
+                              "rationale cites disallowed claim role: " + evidence_row.claim_role
+                          )
+                      if evidence_row.known_time_upper_bound > judgment.first_known_at:
+                          raise ValueError(
+                              "rationale evidence cannot become knowable after its Judgment"
+                          )
+
+                  linked_judgment = None
+                  if item.linked_judgment_key is not None:
+                      try:
+                          linked_judgment = by_judgment_key[item.linked_judgment_key]
+                      except KeyError as exc:
+                          raise ValueError(
+                              "rationale references unavailable linked Judgment: "
+                              f"{item.linked_judgment_key}"
+                          ) from exc
+
+                  rationales.append(
+                      JudgmentRationale(
+                          id=stable_uuid_exact(
+                              "grounded-judgment-rationale",
+                              spec.task_id,
+                              item.rationale_key,
+                              str(judgment.id),
+                              str(evidence_row.evidence_fragment_id) if evidence_row else "",
+                              str(linked_judgment.id) if linked_judgment else "",
+                          ),
+                          judgment_id=judgment.id,
+                          rationale_kind=item.rationale_kind,
+                          summary=item.summary,
+                          linked_judgment_id=(
+                              linked_judgment.id if linked_judgment is not None else None
+                          ),
+                          evidence_fragment_id=(
+                              evidence_row.evidence_fragment_id
+                              if evidence_row is not None
+                              else None
+                          ),
+                          ordinal=item.ordinal,
+                      )
+                  )
+
+              relations: list[JudgmentRelation] = []
+              for item in spec.relations:
+                  try:
+                      from_judgment = by_judgment_key[item.from_judgment_key]
+                      to_judgment = by_judgment_key[item.to_judgment_key]
+                  except KeyError as exc:
+                      raise ValueError(
+                          f"relation references unavailable Judgment: {exc.args[0]}"
+                      ) from exc
+
+                  if item.relation_type in _REVISION_FAMILY:
+                      if not _same_subject(from_judgment, to_judgment):
+                          raise ValueError(
+                              "revision-family relation requires the same Judgment subject"
+                          )
+                      if from_judgment.topic_code != to_judgment.topic_code:
+                          raise ValueError(
+                              "revision-family relation requires the same Judgment topic"
+                          )
+                      if from_judgment.first_known_at < to_judgment.first_known_at:
+                          raise ValueError(
+                              "revision-family relation cannot point from earlier cognition to later cognition"
+                          )
+
+                  relations.append(
+                      JudgmentRelation(
+                          from_judgment_id=from_judgment.id,
+                          to_judgment_id=to_judgment.id,
+                          relation_type=item.relation_type,
+                          reason_summary=item.reason_summary,
+                      )
+                  )
+
+              return tuple(rationales), tuple(relations)
+          PY
+
+          cat > scripts/execute_grounded_judgment_context.py <<'PY'
+          from __future__ import annotations
+
+          import argparse
+          import asyncio
+          import json
+          import os
+          from pathlib import Path
+          from typing import Any
+
+          from longcycle.adapters.storage.judgments import PostgresJudgmentRepository
+          from longcycle.application.judgment_context_projection import (
+              GroundedJudgmentContextSpec,
+              build_grounded_judgment_context,
+          )
+          from longcycle.application.judgment_projection import GroundedProjectionEvidence
+          from longcycle.domain.judgments import JudgmentAssertion
+
+
+          def _parser() -> argparse.ArgumentParser:
+              parser = argparse.ArgumentParser(
+                  description=(
+                      "Persist source-backed rationales and relations around an already-grounded "
+                      "Judgment projection."
+                  )
+              )
+              parser.add_argument("spec", type=Path)
+              parser.add_argument("judgment_execution", type=Path)
+              parser.add_argument("evidence_execution", type=Path)
+              parser.add_argument("--output", type=Path, required=True)
+              return parser
+
+
+          def _load_judgments(path: Path) -> tuple[str, tuple[JudgmentAssertion, ...]]:
+              payload = json.loads(path.read_text(encoding="utf-8"))
+              if payload.get("schema_version") != "longcycle-grounded-judgment-persistence/v1":
+                  raise ValueError("unexpected grounded Judgment execution schema")
+              task_id = payload.get("task_id")
+              rows = payload.get("judgments")
+              if not isinstance(task_id, str) or not isinstance(rows, list):
+                  raise ValueError("grounded Judgment execution is incomplete")
+              return task_id, tuple(JudgmentAssertion.model_validate(row) for row in rows)
+
+
+          def _load_evidence(path: Path) -> tuple[str, tuple[GroundedProjectionEvidence, ...]]:
+              payload = json.loads(path.read_text(encoding="utf-8"))
+              if payload.get("ok") is not True:
+                  raise ValueError("grounded evidence execution must be successful")
+              result = payload.get("result")
+              if not isinstance(result, dict):
+                  raise ValueError("grounded evidence execution has no result")
+              task_id = result.get("task_id")
+              documents = result.get("documents")
+              fragments = result.get("fragments")
+              if not isinstance(task_id, str) or not isinstance(documents, list) or not isinstance(
+                  fragments, list
+              ):
+                  raise ValueError("grounded evidence execution is incomplete")
+              documents_by_id = {str(row["document_id"]): row for row in documents}
+              projected: list[GroundedProjectionEvidence] = []
+              for row in fragments:
+                  context = row.get("claim_context")
+                  if not isinstance(context, dict):
+                      raise ValueError("grounded evidence fragment has no claim_context")
+                  known = context.get("known_time")
+                  if not isinstance(known, dict) or not known.get("upper_bound"):
+                      raise ValueError("grounded evidence fragment lacks known-time bound")
+                  document = documents_by_id[str(row["document_id"])]
+                  projected.append(
+                      GroundedProjectionEvidence(
+                          fragment_key=row["fragment_key"],
+                          evidence_fragment_id=row["evidence_fragment_id"],
+                          document_version_id=row["document_id"],
+                          source_connector_id=document["source_id"],
+                          claim_role=context["claim_role"],
+                          known_time_upper_bound=known["upper_bound"],
+                          source_published_at=document.get("published_at"),
+                          excerpt=row.get("excerpt") or "[grounded evidence]",
+                      )
+                  )
+              return task_id, tuple(projected)
+
+
+          async def _execute(
+              *,
+              dsn: str,
+              spec: GroundedJudgmentContextSpec,
+              judgment_task_id: str,
+              judgments: tuple[JudgmentAssertion, ...],
+              evidence_task_id: str,
+              evidence: tuple[GroundedProjectionEvidence, ...],
+          ) -> dict[str, Any]:
+              if judgment_task_id != spec.source_judgment_task_id:
+                  raise ValueError("context source Judgment task does not match execution")
+              if evidence_task_id != spec.source_evidence_task_id:
+                  raise ValueError("context source Evidence task does not match execution")
+
+              rationales, relations = build_grounded_judgment_context(spec, judgments, evidence)
+              repository = PostgresJudgmentRepository(dsn)
+              try:
+                  await repository.append_rationales(rationales)
+                  await repository.append_rationales(rationales)
+                  await repository.append_relations(relations)
+                  await repository.append_relations(relations)
+                  async with repository.connection() as connection:
+                      rationale_ids = [item.id for item in rationales]
+                      if rationale_ids:
+                          cursor = await connection.execute(
+                              "SELECT count(*) AS n FROM research.judgment_rationales WHERE id = ANY(%s::uuid[])",
+                              (rationale_ids,),
+                          )
+                          row = await cursor.fetchone()
+                          rationale_count = int(row["n"]) if row is not None else -1
+                      else:
+                          rationale_count = 0
+                      from_ids = [item.from_judgment_id for item in relations]
+                      if from_ids:
+                          cursor = await connection.execute(
+                              """
+                              SELECT from_judgment_id, to_judgment_id, relation_type, reason_summary
+                              FROM research.judgment_relations
+                              WHERE from_judgment_id = ANY(%s::uuid[])
+                              """,
+                              (from_ids,),
+                          )
+                          persisted_relation_rows = await cursor.fetchall()
+                      else:
+                          persisted_relation_rows = []
+              finally:
+                  await repository.close()
+
+              expected_relations = {
+                  (
+                      item.from_judgment_id,
+                      item.to_judgment_id,
+                      item.relation_type.value,
+                      item.reason_summary,
+                  )
+                  for item in relations
+              }
+              persisted_relations = {
+                  (
+                      row["from_judgment_id"],
+                      row["to_judgment_id"],
+                      row["relation_type"],
+                      row["reason_summary"],
+                  )
+                  for row in persisted_relation_rows
+              }
+              if rationale_count != len(rationales):
+                  raise RuntimeError("grounded Judgment rationale persistence count mismatch")
+              if not expected_relations.issubset(persisted_relations):
+                  raise RuntimeError("grounded Judgment relation persistence mismatch")
+
+              return {
+                  "schema_version": "longcycle-grounded-judgment-context-persistence/v1",
+                  "task_id": spec.task_id,
+                  "source_judgment_task_id": spec.source_judgment_task_id,
+                  "source_evidence_task_id": spec.source_evidence_task_id,
+                  "rationales": [item.model_dump(mode="json") for item in rationales],
+                  "relations": [item.model_dump(mode="json") for item in relations],
+                  "verification": {
+                      "rationale_count": len(rationales),
+                      "relation_count": len(relations),
+                      "idempotent_reappend_passed": True,
+                      "revision_family_identity_guarded": True,
+                      "rationale_evidence_no_lookahead_guarded": True,
+                  },
+              }
+
+
+          def main() -> int:
+              args = _parser().parse_args()
+              dsn = os.environ.get("LONGCYCLE_DATABASE_URL")
+              if not dsn:
+                  raise RuntimeError("LONGCYCLE_DATABASE_URL is required")
+              spec = GroundedJudgmentContextSpec.model_validate_json(
+                  args.spec.read_text(encoding="utf-8")
+              )
+              judgment_task_id, judgments = _load_judgments(args.judgment_execution)
+              evidence_task_id, evidence = _load_evidence(args.evidence_execution)
+              result = asyncio.run(
+                  _execute(
+                      dsn=dsn,
+                      spec=spec,
+                      judgment_task_id=judgment_task_id,
+                      judgments=judgments,
+                      evidence_task_id=evidence_task_id,
+                      evidence=evidence,
+                  )
+              )
+              rendered = json.dumps(result, ensure_ascii=False, indent=2, default=str) + "\n"
+              args.output.parent.mkdir(parents=True, exist_ok=True)
+              args.output.write_text(rendered, encoding="utf-8")
+              print(rendered, end="")
+              return 0
+
+
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          PY
+
+          cat > tests/test_judgment_context_projection.py <<'PY'
+          from __future__ import annotations
+
+          from datetime import UTC, datetime
+          from uuid import UUID
+
+          import pytest
+
+          from longcycle.application.judgment_context_projection import (
+              GroundedJudgmentContextSpec,
+              GroundedJudgmentRationaleItem,
+              GroundedJudgmentRelationItem,
+              build_grounded_judgment_context,
+          )
+          from longcycle.application.judgment_projection import GroundedProjectionEvidence
+          from longcycle.domain.enums import (
+              JudgmentEvidenceRole,
+              JudgmentKind,
+              JudgmentRationaleKind,
+              JudgmentRelationType,
+              JudgmentTargetTimeKind,
+              JudgmentValueKind,
+              TemporalPrecision,
+          )
+          from longcycle.domain.judgments import JudgmentAssertion, JudgmentEvidenceRef
+
+
+          def judgment(*, key: str, known_day: int, topic: str = "market.demand-thesis") -> JudgmentAssertion:
+              evidence_id = UUID(int=100 + known_day)
+              return JudgmentAssertion(
+                  id=UUID(int=known_day),
+                  speaker_name_text="Management",
+                  subject_entity_id=UUID(int=10),
+                  topic_code=topic,
+                  judgment_kind=JudgmentKind.THESIS,
+                  target_time_kind=JudgmentTargetTimeKind.TIMELESS,
+                  target_precision=TemporalPrecision.UNKNOWN,
+                  value_kind=JudgmentValueKind.TEXT,
+                  value_text=f"thesis {key}",
+                  summary=f"Judgment {key}",
+                  source_published_at=datetime(2019, 1, known_day, tzinfo=UTC),
+                  first_known_at=datetime(2019, 1, known_day, tzinfo=UTC),
+                  extraction_run_id=UUID(int=200 + known_day),
+                  source_connector_id=UUID(int=300),
+                  extractor_name="fixture",
+                  extractor_version="1.0.0",
+                  extraction_confidence=1.0,
+                  evidence=(
+                      JudgmentEvidenceRef(
+                          evidence_fragment_id=evidence_id,
+                          evidence_role=JudgmentEvidenceRole.STATEMENT,
+                      ),
+                  ),
+                  metadata={"judgment_key": key},
+              )
+
+
+          def evidence(*, key: str, known_day: int) -> GroundedProjectionEvidence:
+              return GroundedProjectionEvidence(
+                  fragment_key=key,
+                  evidence_fragment_id=UUID(int=400 + known_day),
+                  document_version_id=UUID(int=500 + known_day),
+                  source_connector_id=UUID(int=300),
+                  claim_role="management_thesis_context",
+                  known_time_upper_bound=datetime(2019, 1, known_day, tzinfo=UTC),
+                  source_published_at=datetime(2019, 1, known_day, tzinfo=UTC),
+                  excerpt=f"context {key}",
+              )
+
+
+          def context_spec() -> GroundedJudgmentContextSpec:
+              return GroundedJudgmentContextSpec(
+                  schema_version="longcycle-judgment-context-projection-spec/v1",
+                  task_id="context-fixture",
+                  source_judgment_task_id="judgments-fixture",
+                  source_evidence_task_id="evidence-fixture",
+                  allowed_rationale_claim_roles=("management_thesis_context",),
+                  rationales=(
+                      GroundedJudgmentRationaleItem(
+                          rationale_key="later-mechanism",
+                          judgment_key="later",
+                          rationale_kind=JudgmentRationaleKind.MECHANISM,
+                          summary="A source-backed mechanism explains the revised pace.",
+                          evidence_fragment_key="later-context",
+                      ),
+                  ),
+                  relations=(
+                      GroundedJudgmentRelationItem(
+                          from_judgment_key="later",
+                          to_judgment_key="earlier",
+                          relation_type=JudgmentRelationType.REVISES,
+                          reason_summary="Later cognition qualifies the earlier same-topic thesis.",
+                      ),
+                  ),
+              )
+
+
+          def test_builds_stable_source_backed_rationale_and_revision_relation() -> None:
+              judgments = (judgment(key="earlier", known_day=1), judgment(key="later", known_day=2))
+              evidence_rows = (evidence(key="later-context", known_day=2),)
+
+              first = build_grounded_judgment_context(context_spec(), judgments, evidence_rows)
+              second = build_grounded_judgment_context(context_spec(), judgments, evidence_rows)
+
+              rationales, relations = first
+              assert first == second
+              assert len(rationales) == 1
+              assert rationales[0].judgment_id == judgments[1].id
+              assert rationales[0].evidence_fragment_id == evidence_rows[0].evidence_fragment_id
+              assert len(relations) == 1
+              assert relations[0].from_judgment_id == judgments[1].id
+              assert relations[0].to_judgment_id == judgments[0].id
+              assert relations[0].relation_type == JudgmentRelationType.REVISES
+
+
+          def test_revision_family_rejects_cross_topic_semantic_drift() -> None:
+              judgments = (
+                  judgment(key="earlier", known_day=1),
+                  judgment(key="later", known_day=2, topic="market.price-thesis"),
+              )
+              with pytest.raises(ValueError, match="same Judgment topic"):
+                  build_grounded_judgment_context(
+                      context_spec(), judgments, (evidence(key="later-context", known_day=2),)
+                  )
+
+
+          def test_revision_family_rejects_reverse_time_relation() -> None:
+              judgments = (judgment(key="earlier", known_day=3), judgment(key="later", known_day=2))
+              with pytest.raises(ValueError, match="earlier cognition"):
+                  build_grounded_judgment_context(
+                      context_spec(), judgments, (evidence(key="later-context", known_day=2),)
+                  )
+
+
+          def test_rationale_rejects_future_evidence_leakage() -> None:
+              judgments = (judgment(key="earlier", known_day=1), judgment(key="later", known_day=2))
+              with pytest.raises(ValueError, match="after its Judgment"):
+                  build_grounded_judgment_context(
+                      context_spec(), judgments, (evidence(key="later-context", known_day=3),)
+                  )
+
+
+          def test_unknown_context_key_fails_closed() -> None:
+              spec = context_spec().model_copy(
+                  update={
+                      "relations": (
+                          GroundedJudgmentRelationItem(
+                              from_judgment_key="missing",
+                              to_judgment_key="earlier",
+                              relation_type=JudgmentRelationType.REVISES,
+                          ),
+                      )
+                  }
+              )
+              with pytest.raises(ValueError, match="unavailable Judgment"):
+                  build_grounded_judgment_context(
+                      spec,
+                      (judgment(key="earlier", known_day=1), judgment(key="later", known_day=2)),
+                      (evidence(key="later-context", known_day=2),),
+                  )
+          PY
+
+          python -m pip install -e '.[dev,postgres,duckdb]'
+          python -m compileall -q src scripts tests
+          mypy src
+          pytest -q tests/test_judgment_context_projection.py tests/test_judgment_projection.py tests/test_epistemic_memory.py
+          pytest -q
+          git diff --check
+
+      - name: Commit and push only on green gate
+        id: push
+        if: steps.apply.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name longcycle-judgment-context-projection
+          git config user.email actions@users.noreply.github.com
+          git add src/longcycle/application/judgment_context_projection.py \
+            scripts/execute_grounded_judgment_context.py \
+            tests/test_judgment_context_projection.py
+          git commit -m 'feat: project grounded judgment context'
+          git push origin HEAD:${ACTIVE_REF}
+          git rev-parse HEAD | tee /tmp/context-projection-sha.txt
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$APPLY_OUTCOME" == success && "$PUSH_OUTCOME" == success ]]; then
+            sha="$(cat /tmp/context-projection-sha.txt)"
+            body="JUDGMENT_CONTEXT_PROJECTION_PASS pushed_sha=$sha run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/context-projection.log 2>/dev/null || true)"
+            body=$(printf 'JUDGMENT_CONTEXT_PROJECTION_FAIL apply=%s push=%s run_id=%s\n\n```text\n%s\n```' "$APPLY_OUTCOME" "$PUSH_OUTCOME" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
