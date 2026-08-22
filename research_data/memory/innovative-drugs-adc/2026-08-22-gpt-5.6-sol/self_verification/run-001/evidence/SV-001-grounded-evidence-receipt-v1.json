@@ -1,0 +1,160 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "ADC-SV-001-MIRVETUXIMAB-GROUNDED-EVIDENCE-V1",
+  "status": "pass",
+  "spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-001-grounded-evidence-spec-v1.json",
+  "execution_head_sha": "75c0168c51a156fa904e0513638eac8ad5660f04",
+  "control_issue": 86,
+  "workflow_run_id": 32580391735,
+  "source_pack": {
+    "transport": "github_release",
+    "release_tag": "longcycle-dev-binary-cache",
+    "file_name": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
+    "size_bytes": 780911,
+    "sha256": "1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b",
+    "acquisition_run_id": 32579952518,
+    "acquisition_issue": 85
+  },
+  "generated_execution_relay": {
+    "transport": "google_drive",
+    "google_drive_file_id": "1R3EaC_SVIX_TvfCuBJ36r5n5MzM_4wzv",
+    "file_name": "adc-sv001-grounded-evidence-32580391735.zip",
+    "size_bytes": 50084,
+    "sha256": "129e4bb8c8966d1001fccd47d85d5aea3b7852aa81e64e688acf6ce9ac34b2b0",
+    "github_actions_artifact_id": 9477633159,
+    "github_actions_artifact_name": "adc-sv001-grounded-evidence-32580391735",
+    "github_actions_artifact_digest": "sha256:129e4bb8c8966d1001fccd47d85d5aea3b7852aa81e64e688acf6ce9ac34b2b0",
+    "contains_external_source_bytes": false
+  },
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 8,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "documents": [
+    {
+      "document_key": "forward1-topline-2019",
+      "document_id": "f78a4c85-938d-502a-92be-8f3ad6ece6e5",
+      "content_sha256": "b62ba1e6aaee74aeb2cff6b36864ae65547035eaae8c6dcd37631ad125b0e469",
+      "authority_class": "primary_self_statement",
+      "source_cluster": "immunogen-forward1-origin"
+    },
+    {
+      "document_key": "forward1-esmo-scoring-2019",
+      "document_id": "eeaab0b4-b965-5a58-bf40-d4ef6c939c7c",
+      "content_sha256": "ef2651869d97a57f39e4d47967f954ef68393a7a1a95a088032e9a9985ab6893",
+      "authority_class": "authoritative_redistributor",
+      "retrieval_host": "www.adcreview.com",
+      "upstream_identity": "ESMO 2019 / ImmunoGen-sponsored FORWARD I oral presentation / NCT02631876",
+      "source_cluster": "immunogen-forward1-origin"
+    },
+    {
+      "document_key": "fda-accelerated-2022",
+      "document_id": "954891af-bef0-5076-a9af-c3a7a6375fde",
+      "content_sha256": "ce6bf9af5c2ca81442ebfde0b31de49e75439fdb7c998776b2c3819794a2b8b9",
+      "authority_class": "authoritative_primary",
+      "source_cluster": "fda-official-record"
+    },
+    {
+      "document_key": "fda-regular-2024",
+      "document_id": "778b1ce8-1cc7-5710-9b93-6fbcccb96b11",
+      "content_sha256": "e94caeb4b8f0329874969e00bcd6c4f4aa39d47462925835bd981ba4f9a203f5",
+      "authority_class": "authoritative_primary",
+      "source_cluster": "fda-official-record"
+    }
+  ],
+  "parser_artifacts": [
+    {
+      "document_key": "forward1-esmo-scoring-2019",
+      "artifact_id": "c51fd9c7-50c0-5182-b53b-ce0ee52c0d8c",
+      "artifact_type": "pdf-text-pages",
+      "artifact_sha256": "a4e7fe3530239954e6b9fbbb2d8dab172d479a1c2cdf8cf024fe1d367e7fec07",
+      "parser_name": "pypdf-text",
+      "parser_version": "1.0.0+pypdf-6.15.0"
+    }
+  ],
+  "evidence_fragments": [
+    {
+      "claim_id": "SV001-C01",
+      "fragment_key": "forward1-primary-pfs-failed",
+      "evidence_fragment_id": "aff33c83-101b-5f63-b3dd-fd9835936616",
+      "document_id": "f78a4c85-938d-502a-92be-8f3ad6ece6e5",
+      "locator": "visible-text:1267:1404",
+      "fragment_sha256": "b06ba858b08654e75c524c933a247b4bd087855ecdc44837616cda8cc1a81e86",
+      "epistemic_layer": "reality"
+    },
+    {
+      "claim_id": "SV001-C02",
+      "fragment_key": "forward1-scoring-exploratory-interpretation",
+      "evidence_fragment_id": "40f3130b-a4a6-5da2-b11c-d958813fefde",
+      "document_id": "eeaab0b4-b965-5a58-bf40-d4ef6c939c7c",
+      "artifact_id": "c51fd9c7-50c0-5182-b53b-ce0ee52c0d8c",
+      "locator": "$.pages[9].text",
+      "fragment_sha256": "a482c913aa476a5fc70069b0a1b26bde8dbef0500b53ec954da0d2de3ea48843",
+      "epistemic_layer": "judgment",
+      "causal_boundary": "Contemporaneous exploratory interpretation only; not proof that scoring change caused later success."
+    },
+    {
+      "claim_id": "SV001-C03",
+      "fragment_key": "mirasol-design-supported",
+      "evidence_fragment_id": "dbb2d3a3-30ef-591d-8ffd-a4d5a86018af",
+      "document_id": "eeaab0b4-b965-5a58-bf40-d4ef6c939c7c",
+      "artifact_id": "c51fd9c7-50c0-5182-b53b-ce0ee52c0d8c",
+      "locator": "$.pages[14].text",
+      "fragment_sha256": "7cbca1fc136c0e4ca4f180812c3ef6dcdbad0872679ae8a2e4e376b55ac8b121",
+      "epistemic_layer": "judgment"
+    },
+    {
+      "claim_id": "SV001-C04",
+      "fragment_key": "fda-accelerated-approval-state",
+      "evidence_fragment_id": "6d9bc0f0-e885-5bb8-b19e-18668aa18cf6",
+      "document_id": "954891af-bef0-5076-a9af-c3a7a6375fde",
+      "locator": "visible-text:2527:2589",
+      "fragment_sha256": "5dd8fdd6a9a223bc72811119bc4dc015dc54699ddc6c08da8363db9289d338c6",
+      "epistemic_layer": "reality"
+    },
+    {
+      "claim_id": "SV001-C05",
+      "fragment_key": "fda-folr1-companion-diagnostic",
+      "evidence_fragment_id": "d125da30-affd-57d5-a65e-a0c00b001049",
+      "document_id": "954891af-bef0-5076-a9af-c3a7a6375fde",
+      "locator": "visible-text:3019:3076",
+      "fragment_sha256": "cda356d2e0084662f17cb8d681777a10dd8afd61563dfb272c2c0da37ed647e0",
+      "epistemic_layer": "reality"
+    },
+    {
+      "claim_id": "SV001-C06",
+      "fragment_key": "fda-regular-approval-state",
+      "evidence_fragment_id": "f201546c-dc9b-5e60-be8b-2b51967c198f",
+      "document_id": "778b1ce8-1cc7-5710-9b93-6fbcccb96b11",
+      "locator": "visible-text:2453:2521",
+      "fragment_sha256": "e9458c75aa5ae20df5b720ee69797956b4273d46becb471b9242e230c3cdc65e",
+      "epistemic_layer": "reality"
+    },
+    {
+      "claim_id": "SV001-C07",
+      "fragment_key": "fda-mirasol-confirmatory-basis",
+      "evidence_fragment_id": "4b2b0dbb-9c9c-5e71-bf9d-a5a149fea2c8",
+      "document_id": "778b1ce8-1cc7-5710-9b93-6fbcccb96b11",
+      "locator": "visible-text:2996:3029",
+      "fragment_sha256": "b7f0bbaf8a3c6aebf55b00f33e73efe7142052f0ebc4042dbaa796ab647dc507",
+      "epistemic_layer": "reality"
+    },
+    {
+      "claim_id": "SV001-C08",
+      "fragment_key": "fda-postmarketing-requirement-satisfied",
+      "evidence_fragment_id": "3a8a889e-7ef4-5461-b409-031469f12d89",
+      "document_id": "778b1ce8-1cc7-5710-9b93-6fbcccb96b11",
+      "locator": "visible-text:3739:3801",
+      "fragment_sha256": "8a6d40fcc84e29e2d7e8fc3f13946bb5010aafb1636dc687903c310e4cf9fb46",
+      "epistemic_layer": "reality"
+    }
+  ],
+  "causal_hypothesis": {
+    "claim": "The biomarker scoring fix caused later registrational success.",
+    "publication_status": "not_promoted",
+    "reason": "The grounded 2019 Evidence supports a contemporaneous scoring/selection interpretation and MIRASOL design response, but does not isolate scoring as the cause of later success from population, trial-design and evidence-maturity changes."
+  },
+  "next_action": "Execute the same bounded source acquisition and grounded-Evidence path for SV-002 Rova-T: acquisition-time expectation, TAHOE randomized failure, impairment, and MERU termination."
+}
