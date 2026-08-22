@@ -45,6 +45,10 @@ source/watchlist
 
 使用 authoritative redistributor 时必须同时保存**实际 retrieval host** 与 **upstream announcement identity**。不得为了保持“primary source”外观，把从财经网站取得的 bytes 伪记成从监管/公司官网直接取得；同一上游公告被多个财经网站转载时仍属于同一 evidence cluster，不能伪装成多份独立 corroboration。若财经页面只是摘要、机器提取字段或新闻稿解读，则仍按其真实 claim scope 和 secondary 权威级别处理。
 
+程序化交易/金融数据接口、开源量化项目和开源公告采集项目适用同一原则：它们可以是可信的公告 acquisition / redistribution lane，不因“不是发行人官网或监管官网”而自动降权。若接口或项目返回、缓存或镜像的是可核验的上市公司正式公告/年报/定期报告原文或完整文件，并能交叉核对 issuer、filing/accession/公告号、标题、披露时间、上游 URL 或内容哈希等身份，则该具体 connector/document 可以按 `authoritative_redistributor` 处理。开源代码本身只证明采集机制可审计，不等于仓库已经保存目标 Evidence；只有实际取得并归档的公告 payload 才进入证据链。
+
+程序化数据源对公告的**二次加工字段**不得继承公告原文的权威性。平台自行计算的财务比率、标准化指标、分类标签、预测值、共识值或从公告抽取后重新加工的数据，必须按其加工方法、claim scope 和可复现性单独评估；“底层来自年报”不能让派生值自动等同于年报原文。
+
 历史互联网会丢失资料，闭源资料也可能永远无法直接恢复。因此“找不到直接原始来源”不能等价于“这件事没有发生”。当一个高价值 Memory Lead 在有界、可审计的直接来源搜索后仍无法恢复，但存在物理约束、前后事件、独立间接资料、行动结果或机制链等多方面一致支持时，可以保留为 **research-only、indirectly corroborated hypothesis**。
 
 这种状态必须同时保存：搜索过什么以及哪些来源不可达、支持与反证材料、推理链、可替代解释、可证伪条件和校准后的不确定性。多个模型记忆若可能来自相同训练资料，不能伪装成独立证据；“逻辑上说得通”也不能单独变成 Evidence。
