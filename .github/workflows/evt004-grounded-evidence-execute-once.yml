@@ -11,14 +11,14 @@ permissions:
 
 env:
   ACTIVE_REF: design/industry-memory
-  EXPECTED_HEAD: 0319c44775464dc2b139693906c18951b7d0c9e3
+  EXPECTED_HEAD: a2a5644588275dd24ea23b9b8edd6d0fc2881cd5
   ACQUISITION_RUN_ID: '32570106526'
   ACQUISITION_ARTIFACT: evt004-contract-margin-32570106526
   SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-004-contract-vintage-margin-grounded-evidence-spec-v2.json
 
 jobs:
   execute:
-    if: github.event.issue.title == '[longcycle-evt004-grounded-evidence-execute-v1]'
+    if: github.event.issue.title == '[longcycle-evt004-grounded-evidence-execute-v2]'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     services:
