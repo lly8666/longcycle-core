@@ -1,6 +1,11 @@
 name: Kwinana typed trajectory runtime probe
 
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .longcycle/kwinana-typed-runtime-trigger
   push:
     branches:
       - design/industry-memory-runtime-probe
