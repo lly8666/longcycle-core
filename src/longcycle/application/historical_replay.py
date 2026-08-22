@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from datetime import datetime
+from itertools import pairwise
 from typing import Any, Literal
 from uuid import UUID
 
@@ -48,7 +49,7 @@ class ReplaySnapshot(DomainModel):
         return checked
 
     @model_validator(mode="after")
-    def contains_only_knowable_evidence(self) -> "ReplaySnapshot":
+    def contains_only_knowable_evidence(self) -> ReplaySnapshot:
         if any(item.known_time_upper_bound > self.knowledge_cutoff for item in self.evidence):
             raise ValueError("replay snapshot contains evidence from after the knowledge cutoff")
         expected = tuple(
@@ -96,7 +97,7 @@ def build_replay_sequence(
 
     population = tuple(evidence)
     cutoffs = tuple(knowledge_cutoffs)
-    for previous, current in zip(cutoffs, cutoffs[1:], strict=False):
+    for previous, current in pairwise(cutoffs):
         previous_checked = require_aware_datetime(previous, "knowledge_cutoff")
         current_checked = require_aware_datetime(current, "knowledge_cutoff")
         assert previous_checked is not None
