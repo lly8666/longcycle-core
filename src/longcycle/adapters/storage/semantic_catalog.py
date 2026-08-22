@@ -46,7 +46,8 @@ class PostgresSemanticCatalog(PostgresSupport):
             )
             conversion_cursor = await connection.execute(
                 """
-                SELECT from_unit, to_unit, multiplier, offset, valid_from, valid_to
+                SELECT from_unit, to_unit, multiplier, additive_offset AS offset,
+                       valid_from, valid_to
                 FROM core.unit_conversion_versions
                 WHERE (valid_from IS NULL OR valid_from <= current_date)
                   AND (valid_to IS NULL OR valid_to > current_date)
