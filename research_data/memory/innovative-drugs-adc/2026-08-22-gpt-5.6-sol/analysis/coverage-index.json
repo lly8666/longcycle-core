@@ -3,9 +3,17 @@
   "campaign_id": "ADC-20260822-GPT56SOL-001",
   "authority_class": "deterministic_or_curated_analysis_over_immutable_unsourced_blind_memory",
   "blind_stage": "sealed",
-  "source_visibility": "none",
-  "record_count": 78,
-  "shard_counts": {"ADC-STACK":11,"ASSET-TRIAL":15,"RIGHTS-BD":15,"REG-COMM":12,"FAILURE-REV":15,"GAP-AUDIT":10},
+  "search_visibility": "none",
+  "total_raw_leads_so_far": 78,
+  "shards": [
+    {"shard_id":"ADC-STACK","lead_count":11,"status":"sealed"},
+    {"shard_id":"ASSET-TRIAL","lead_count":15,"status":"sealed"},
+    {"shard_id":"RIGHTS-BD","lead_count":15,"status":"sealed"},
+    {"shard_id":"REG-COMM","lead_count":12,"status":"sealed"},
+    {"shard_id":"FAILURE-REV","lead_count":15,"status":"sealed"},
+    {"shard_id":"GAP-AUDIT","lead_count":10,"status":"sealed"}
+  ],
+  "sealed_shards": ["ADC-STACK","ASSET-TRIAL","RIGHTS-BD","REG-COMM","FAILURE-REV","GAP-AUDIT"],
   "semantic_coverage": {
     "technology_stack": ["target/antibody","linker cleavage/stability","payload classes","DAR/conjugation heterogeneity","bystander effect","biomarker density","resistance","CMC/manufacturing"],
     "clinical_identity": ["asset","indication","line of therapy","regimen/combination","trial","endpoint","interim vs mature readout","biomarker population","safety/dose"],
@@ -17,18 +25,14 @@
   "china_global_actor_coverage": ["RemeGen/disitamab vedotin","Kelun-Biotech/SKB264-MK-2870","Hansoh/HS-20093","SystImmune-Biokin/BL-B01D1","DualityBio/BioNTech programs","MediLink/YL202","Hengrui/SHR-A1811","ProfoundBio/Genmab"],
   "global_landmark_coverage": ["Mylotarg","Adcetris","Kadcyla","Enhertu","Trodelvy","Padcev","Polivy","Elahere","Blenrep","Rova-T","Besponsa","Zynlonta"],
   "major_coverage_gaps_remain": false,
-  "bounded_thin_areas_not_blocking_seal": [
-    "pre-2000 experimental ADC history is intentionally outside the main period",
-    "commercial manufacturing economics remain mechanism-level rather than asset-specific",
-    "China reimbursement/access is represented as a mechanism lead but not yet product-specific",
-    "newer 2024-2026 China-origin assets contain deliberately uncertain names/status because no fresh search was allowed"
-  ],
+  "bounded_thin_areas_not_blocking_seal": ["pre-2000 experimental ADC history is intentionally outside the main period","commercial manufacturing economics remain mechanism-level rather than asset-specific","China reimbursement/access is represented as a mechanism lead but not yet product-specific","newer 2024-2026 China-origin assets contain deliberately uncertain names/status because no fresh search was allowed"],
   "required_long_tail_families_missing": [],
   "recent_pass_outcomes": [
-    {"pass_id":"atlas-gap-001-v1","family":"negative_space_atlas_only","novel_lead_count":5,"duplicate_lead_count":0,"high_importance_novel_count":1},
-    {"pass_id":"atlas-gap-002-v1","family":"negative_space_atlas_only","novel_lead_count":4,"duplicate_lead_count":0,"high_importance_novel_count":0},
-    {"pass_id":"atlas-gap-003-v1","family":"terminology_atlas_only","novel_lead_count":1,"duplicate_lead_count":0,"high_importance_novel_count":0}
+    {"pass_id":"atlas-gap-001-v1","high_importance_novel_count":1},
+    {"pass_id":"atlas-gap-002-v1","high_importance_novel_count":0},
+    {"pass_id":"atlas-gap-003-v1","high_importance_novel_count":0}
   ],
-  "saturation_result": {"saturated":true,"reason_codes":["orthogonal_passes_reached_low_marginal_novelty"],"interpretation":"This is sufficient saturation for the bounded cross-industry semantic pilot, not a claim of comprehensive ADC market coverage."},
-  "raw_files": [{"path":"research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind/passes-v1.jsonl","sha256":"5a8fbeaa843476c64464dbb507cfa658c7f449ae63168de0ede935d81e760bdf","bytes":22101,"pass_record_count":8,"lead_count":78}]
+  "saturation_result": {"saturated":true,"reason_codes":["orthogonal_passes_reached_low_marginal_novelty"],"interpretation":"Sufficient for the bounded cross-industry semantic pilot, not comprehensive ADC market coverage."},
+  "sealed_pass_archive": {"path":"research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind/passes-v1.jsonl","sha256":"5a8fbeaa843476c64464dbb507cfa658c7f449ae63168de0ede935d81e760bdf","pass_record_count":8,"lead_count":78},
+  "handoff_shard_projection": {"purpose":"Deterministic one-lead-per-line identity projection for repository handoff audit; adds no new memory.","pattern":"blind/<shard_id>/sealed-leads-v1.jsonl"}
 }
