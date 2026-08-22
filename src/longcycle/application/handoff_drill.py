@@ -173,6 +173,9 @@ def audit_repository_handoff(
     facets = mission_contract.get("required_facets")
     misreadings = mission_contract.get("common_misreadings")
     bootstrap_lower = fresh_bootstrap.lower()
+    bootstrap_has_no_reconstruction_rule = (
+        "do not ask" in bootstrap_lower or "不要让我重复背景" in fresh_bootstrap
+    )
 
     checks_list = [
         HandoffDrillCheck(
@@ -203,12 +206,16 @@ def audit_repository_handoff(
         HandoffDrillCheck(
             name="fresh_bootstrap_preserves_stable_rendezvous",
             passed=(
-                "issue #2" in bootstrap_lower
+                "#2" in bootstrap_lower
+                and "longcycle live handoff / session bootstrap" in bootstrap_lower
                 and "continue_here.md" in bootstrap_lower
-                and ".longcycle/handoff/current.json" in bootstrap_lower
-                and "do not ask" in bootstrap_lower
+                and "typed continuation cursor" in bootstrap_lower
+                and bootstrap_has_no_reconstruction_rule
             ),
-            detail="fresh bootstrap must resolve stable issue/branch/cursor without user reconstruction",
+            detail=(
+                "fresh bootstrap must semantically resolve stable issue, active branch bootstrap, "
+                "typed cursor and no-user-reconstruction rule independent of Markdown formatting"
+            ),
         ),
         HandoffDrillCheck(
             name="bootstrap_reads_strategy_method_then_calibrates",
@@ -312,7 +319,8 @@ def audit_repository_handoff(
                 HandoffDrillCheck(
                     name="coverage_shard_counts_match_raw",
                     passed=not shard_mismatches,
-                    detail="mismatches=" + json.dumps(shard_mismatches, ensure_ascii=False, sort_keys=True),
+                    detail="mismatches="
+                    + json.dumps(shard_mismatches, ensure_ascii=False, sort_keys=True),
                 ),
                 HandoffDrillCheck(
                     name="checkpoint_shard_count_matches_raw",
@@ -322,7 +330,10 @@ def audit_repository_handoff(
                 HandoffDrillCheck(
                     name="search_visibility_agrees",
                     passed=campaign.search_visibility == coverage.get("search_visibility"),
-                    detail=f"checkpoint={campaign.search_visibility}, coverage={coverage.get('search_visibility')}",
+                    detail=(
+                        f"checkpoint={campaign.search_visibility}, "
+                        f"coverage={coverage.get('search_visibility')}"
+                    ),
                 ),
                 HandoffDrillCheck(
                     name="sealed_shards_agree",
