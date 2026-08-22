@@ -217,7 +217,9 @@ class AssertionNormalizer:
         return stable_uuid(
             "assertion-v2",
             str(assertion.document_id),
-            str(assertion.evidence_fragment_id),
+            canonical_json(
+                [item.model_dump(mode="json") for item in assertion.evidence]
+            ),
             assertion.scope_key,
             canonical_json(assertion.valid_time.model_dump(mode="json")),
             assertion.valid_time_kind.value,

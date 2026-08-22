@@ -7,12 +7,13 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from longcycle.domain.enums import EntityType, ValidTimeKind
+from longcycle.domain.enums import EntityType, FactEvidenceRole, ValidTimeKind
 from longcycle.domain.models import (
     EvidenceFragment,
     ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     SourceDocument,
     TimeRange,
@@ -108,7 +109,12 @@ class JsonFixtureGateway:
                     observed_at=fact.observed_at,
                     source_id=document.source_id,
                     document_id=document.id,
-                    evidence_fragment_id=fragment.id,
+                    evidence=(
+                        FactEvidenceRef(
+                            evidence_fragment_id=fragment.id,
+                            evidence_role=FactEvidenceRole.SUPPORTING,
+                        ),
+                    ),
                     extraction_run_id=run_id,
                     extractor_name=self.extractor_name,
                     extractor_version=self.extractor_version,

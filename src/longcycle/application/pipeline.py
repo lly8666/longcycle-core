@@ -319,8 +319,11 @@ class CollectionPipeline:
         for candidate in candidates:
             if candidate.document_id != document.id:
                 raise ValueError("assertion references a different document")
-            if candidate.evidence_fragment_id not in evidence_ids:
-                raise ValueError("assertion has no evidence fragment in this extraction")
+            candidate_evidence_ids = {
+                item.evidence_fragment_id for item in candidate.evidence
+            }
+            if not candidate_evidence_ids.issubset(evidence_ids):
+                raise ValueError("assertion has evidence outside this extraction")
             if candidate.extraction_run_id != extraction.run_id:
                 raise ValueError("assertion extraction_run_id does not match envelope")
             if candidate.supersedes_id in candidate_ids:

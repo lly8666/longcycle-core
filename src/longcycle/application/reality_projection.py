@@ -8,6 +8,7 @@ from pydantic import Field, ValidationInfo, field_validator, model_validator
 
 from longcycle.domain.enums import (
     EntityType,
+    FactEvidenceRole,
     FactValueKind,
     TemporalPrecision,
     ValidTimeKind,
@@ -16,6 +17,7 @@ from longcycle.domain.models import (
     DomainModel,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     TimeRange,
     require_aware_datetime,
@@ -168,7 +170,12 @@ def build_grounded_reality_facts(
                 known_at=cited.known_time_upper_bound,
                 source_id=cited.source_connector_id,
                 document_id=cited.document_version_id,
-                evidence_fragment_id=cited.evidence_fragment_id,
+                evidence=(
+                    FactEvidenceRef(
+                        evidence_fragment_id=cited.evidence_fragment_id,
+                        evidence_role=FactEvidenceRole.SUPPORTING,
+                    ),
+                ),
                 extraction_run_id=extraction_run_id,
                 extractor_name="grounded-reality-projection",
                 extractor_version="1.0.0",

@@ -157,6 +157,11 @@ class InMemoryResearchRepository:
                 raise ValueError("assertion references an unknown supersession target")
             for assertion in assertions:
                 if assertion.id in self.assertions:
+                    existing = self.assertions[assertion.id]
+                    if existing.immutable_fingerprint != assertion.immutable_fingerprint:
+                        raise ValueError(
+                            "FactAssertion id already maps to different immutable content"
+                        )
                     continue
                 self.assertions[assertion.id] = assertion
                 self._assertion_ingest_status[assertion.id] = assertion.status

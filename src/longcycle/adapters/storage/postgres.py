@@ -27,6 +27,7 @@ from longcycle.domain.models import (
     ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     ReconciliationResult,
     ReviewItem,
@@ -866,13 +867,49 @@ class PostgresResearchRepository(PostgresSupport):
                         self.jsonb(assertion.metadata),
                     ),
                 )
-                await connection.execute(
+                evidence_ids = [item.evidence_fragment_id for item in assertion.evidence]
+                evidence_cursor = await connection.execute(
                     """
-                    INSERT INTO research.assertion_evidence (assertion_id, evidence_fragment_id)
-                    VALUES (%s, %s) ON CONFLICT DO NOTHING
+                    SELECT fragment.id
+                    FROM evidence.evidence_fragments fragment
+                    JOIN evidence.extraction_runs run
+                      ON run.id = %s
+                     AND run.document_version_id = fragment.document_version_id
+                    WHERE fragment.id = ANY(%s::uuid[])
                     """,
-                    (assertion.id, assertion.evidence_fragment_id),
+                    (assertion.extraction_run_id, evidence_ids),
                 )
+                related_evidence_ids = {
+                    row["id"] for row in await evidence_cursor.fetchall()
+                }
+                if related_evidence_ids != set(evidence_ids):
+                    raise ValueError(
+                        "FactAssertion evidence must exist on its extraction document"
+                    )
+                for evidence_ref in assertion.evidence:
+                    await connection.execute(
+                        """
+                        INSERT INTO research.assertion_evidence (
+                            assertion_id, evidence_fragment_id, evidence_role
+                        ) VALUES (%s, %s, %s)
+                        ON CONFLICT (assertion_id, evidence_fragment_id) DO NOTHING
+                        """,
+                        (
+                            assertion.id,
+                            evidence_ref.evidence_fragment_id,
+                            evidence_ref.evidence_role.value,
+                        ),
+                    )
+                persisted_assertion = await self._assertion_by_id_on_connection(
+                    connection,
+                    assertion.id,
+                )
+                if persisted_assertion is None:
+                    raise RuntimeError("persisted FactAssertion could not be reloaded")
+                if persisted_assertion.immutable_fingerprint != assertion.immutable_fingerprint:
+                    raise ValueError(
+                        "FactAssertion id already maps to different immutable content"
+                    )
 
     async def assertions_for_comparison(self, candidate: FactAssertion) -> Sequence[FactAssertion]:
         async with self.connection() as connection:
@@ -887,12 +924,21 @@ class PostgresResearchRepository(PostgresSupport):
         subject_industry_node_id = candidate.entity_id if candidate.entity_type == EntityType.INDUSTRY else None
         cursor = await connection.execute(
             """
-            SELECT assertion.*, link.evidence_fragment_id,
+            SELECT assertion.*, evidence.evidence_refs,
                    run.extractor_name, run.extractor_version, run.document_version_id,
                    entity.entity_type AS subject_entity_type,
                    dimensions.canonical_payload
             FROM research.fact_assertions_with_status assertion
-            JOIN research.assertion_evidence link ON link.assertion_id = assertion.id
+            JOIN LATERAL (
+                SELECT jsonb_agg(
+                    jsonb_build_object(
+                        'evidence_fragment_id', link.evidence_fragment_id,
+                        'evidence_role', link.evidence_role
+                    ) ORDER BY link.evidence_fragment_id
+                ) AS evidence_refs
+                FROM research.assertion_evidence link
+                WHERE link.assertion_id = assertion.id
+            ) evidence ON true
             JOIN evidence.extraction_runs run ON run.id = assertion.extraction_run_id
             JOIN research.fact_dimension_sets dimensions
               ON dimensions.comparability_hash = assertion.comparability_hash
@@ -935,19 +981,26 @@ class PostgresResearchRepository(PostgresSupport):
     ) -> FactAssertion | None:
         cursor = await connection.execute(
             """
-            SELECT assertion.*, link.evidence_fragment_id,
+            SELECT assertion.*, evidence.evidence_refs,
                    run.extractor_name, run.extractor_version, run.document_version_id,
                    entity.entity_type AS subject_entity_type,
                    dimensions.canonical_payload
             FROM research.fact_assertions_with_status assertion
-            JOIN research.assertion_evidence link ON link.assertion_id = assertion.id
+            JOIN LATERAL (
+                SELECT jsonb_agg(
+                    jsonb_build_object(
+                        'evidence_fragment_id', link.evidence_fragment_id,
+                        'evidence_role', link.evidence_role
+                    ) ORDER BY link.evidence_fragment_id
+                ) AS evidence_refs
+                FROM research.assertion_evidence link
+                WHERE link.assertion_id = assertion.id
+            ) evidence ON true
             JOIN evidence.extraction_runs run ON run.id = assertion.extraction_run_id
             JOIN research.fact_dimension_sets dimensions
               ON dimensions.comparability_hash = assertion.comparability_hash
             LEFT JOIN core.entities entity ON entity.id = assertion.subject_entity_id
             WHERE assertion.id = %s
-            ORDER BY link.evidence_fragment_id
-            LIMIT 1
             """,
             (assertion_id,),
         )
@@ -1479,7 +1532,10 @@ class PostgresResearchRepository(PostgresSupport):
             known_at=row["first_known_at"],
             source_id=row["source_connector_id"],
             document_id=row["document_version_id"],
-            evidence_fragment_id=row["evidence_fragment_id"],
+            evidence=tuple(
+                FactEvidenceRef.model_validate(item)
+                for item in (row.get("evidence_refs") or [])
+            ),
             extraction_run_id=row["extraction_run_id"],
             extractor_name=row["extractor_name"],
             extractor_version=row["extractor_version"],

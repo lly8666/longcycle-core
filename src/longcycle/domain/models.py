@@ -13,6 +13,7 @@ from .enums import (
     Cadence,
     Decision,
     EntityType,
+    FactEvidenceRole,
     FactStatus,
     FactValueKind,
     FreightBasis,
@@ -391,6 +392,11 @@ class FactDimensions(DomainModel):
         return hashlib.sha256(canonical_json(self.canonical_payload).encode()).hexdigest()
 
 
+class FactEvidenceRef(DomainModel):
+    evidence_fragment_id: UUID
+    evidence_role: FactEvidenceRole = FactEvidenceRole.SUPPORTING
+
+
 class FactAssertion(DomainModel):
     id: UUID = Field(default_factory=uuid4)
     entity_type: EntityType
@@ -415,7 +421,7 @@ class FactAssertion(DomainModel):
     known_at: datetime = Field(default_factory=utc_now)
     source_id: UUID
     document_id: UUID
-    evidence_fragment_id: UUID
+    evidence: tuple[FactEvidenceRef, ...]
     extraction_run_id: UUID
     extractor_name: str
     extractor_version: str
@@ -452,6 +458,18 @@ class FactAssertion(DomainModel):
         if not isinstance(value, dict):
             return value
         payload = dict(value)
+        legacy_evidence_id = payload.pop("evidence_fragment_id", None)
+        if legacy_evidence_id is not None:
+            if payload.get("evidence"):
+                raise ValueError(
+                    "FactAssertion cannot supply both evidence and legacy evidence_fragment_id"
+                )
+            payload["evidence"] = (
+                {
+                    "evidence_fragment_id": legacy_evidence_id,
+                    "evidence_role": FactEvidenceRole.SUPPORTING.value,
+                },
+            )
         metadata = dict(payload.get("metadata") or {})
         precision_key = "_longcycle_valid_time_precision"
         text_key = "_longcycle_valid_time_text"
@@ -493,7 +511,19 @@ class FactAssertion(DomainModel):
             self.valid_time.start is None and self.valid_time.end is None
         ):
             raise ValueError("period fact valid time requires a start and/or end bound")
+        if not self.evidence:
+            raise ValueError("FactAssertion requires at least one EvidenceFragment reference")
+        evidence_ids = [item.evidence_fragment_id for item in self.evidence]
+        if len(set(evidence_ids)) != len(evidence_ids):
+            raise ValueError("FactAssertion evidence fragments must be unique")
+        if not any(item.evidence_role == FactEvidenceRole.SUPPORTING for item in self.evidence):
+            raise ValueError("FactAssertion requires at least one supporting evidence fragment")
         return self
+
+    @property
+    def immutable_fingerprint(self) -> str:
+        payload = self.model_dump(mode="json", exclude={"status"})
+        return hashlib.sha256(canonical_json(payload).encode()).hexdigest()
 
     @property
     def scope_key(self) -> str:
