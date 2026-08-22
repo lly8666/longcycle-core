@@ -38,9 +38,16 @@ if count != 2:
     raise SystemExit(
         f"{path}: expected two rationale_document known-time references, found {count}"
     )
-Path(path).write_text(
-    text.replace("rationale_document.first_known_at", "rationale_fetch.first_known_at"),
-    encoding="utf-8",
+text = text.replace(
+    "rationale_document.first_known_at",
+    "rationale_fetch.first_known_at",
 )
+linked_fact_count = text.count("linked_fact.known_at")
+if linked_fact_count != 2:
+    raise SystemExit(
+        f"{path}: expected two linked_fact known-time references, found {linked_fact_count}"
+    )
+text = text.replace("linked_fact.known_at", "linked_fact.first_known_at")
+Path(path).write_text(text, encoding="utf-8")
 
 print("JUDGMENT_CONTEXT_REPLAY_EVIDENCE_JOIN_FIX_APPLIED")
