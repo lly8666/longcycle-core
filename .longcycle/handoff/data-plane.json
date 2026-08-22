@@ -38,7 +38,7 @@
           "sha256": "50d266a037795d231f85166c4abc38f1bd5edd88a9ce7f8e50c1b00498652b5b"
         }
       ],
-      "restore_instruction": "Fetch this Drive file id into the sandbox, verify the ZIP SHA-256 before extraction, verify each required component SHA-256, then open probe/kemerton-evidence.duckdb read-only. If compatible DuckDB is absent, first restore asset duckdb-offline-runtime-py313-v1. Do not treat Drive metadata or filenames as integrity evidence."
+      "restore_instruction": "Fetch this Drive file id into the sandbox, verify the ZIP SHA-256 before extraction, verify each required component SHA-256, then open probe/kemerton-evidence.duckdb read-only. If compatible DuckDB is absent, first restore asset duckdb-offline-runtime-py313-v2. Do not treat Drive metadata or filenames as integrity evidence."
     },
     {
       "asset_id": "kwinana-grounded-run19-capsule",
@@ -73,15 +73,15 @@
       "restore_instruction": "Restore only when the current cursor needs Kwinana binary evidence/replay state. Fetch by Drive file id, verify ZIP and required component SHA-256 values, then open probe/kwinana-evidence.duckdb read-only with a compatible DuckDB runtime. The repository execution receipt remains the textual control-plane authority for task completion; this capsule preserves the underlying archived bytes and portable database across sandbox loss."
     },
     {
-      "asset_id": "duckdb-offline-runtime-py313-v1",
+      "asset_id": "duckdb-offline-runtime-py313-v2",
       "role": "offline_runtime",
       "required_for_current_task": true,
       "transport": "google_drive",
-      "google_drive_file_id": "1Bq-RY752B5jzHNGfTbBy9hEbUkWu4v8Y",
-      "file_name": "longcycle-duckdb-offline-runtime-py313-v1.zip",
-      "size_bytes": 21296385,
-      "sha256": "06539569626998b4d6fa63acbd327054e3b1d46fb0b8502f0ebc96d6cc8992a2",
-      "content_summary": "Offline DuckDB 1.5.5 runtime for the current ChatGPT sandbox class: CPython 3.13, x86_64, manylinux_2_26/2_28 wheel plus manifest. Built and smoke-tested in GitHub Actions, relayed through the sandbox to Drive, then downloaded from Drive and installed successfully in a clean local venv.",
+      "google_drive_file_id": "166-PCimOEaDvbvvKf71_1NGFVEIcBPAh",
+      "file_name": "longcycle-duckdb-offline-runtime-py313-v2.zip",
+      "size_bytes": 21673846,
+      "sha256": "7d7f45e67766c22f60576bd317d2c163861c6056e9a985be8caff324514aa8f3",
+      "content_summary": "Hermetic offline replay runtime for the current ChatGPT sandbox class: DuckDB 1.5.5 plus pytz 2025.2 for CPython 3.13 x86_64. The pack passed GitHub Action and independent sandbox clean-venv --no-index/--no-deps installation, including direct Python materialization of TIMESTAMPTZ into a timezone-aware datetime.",
       "components": [
         {
           "path": "wheelhouse/duckdb-1.5.5-cp313-cp313-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
@@ -90,13 +90,19 @@
           "sha256": "078e6a60dd8eedde5832f45422ca5c4a6b8c837aeabd8a56ca0b7d933f588053"
         },
         {
+          "path": "wheelhouse/pytz-2025.2-py2.py3-none-any.whl",
+          "role": "TIMESTAMPTZ Python materialization dependency",
+          "size_bytes": 509225,
+          "sha256": "5ddf76296dd8c44c26eb8f4b6f35488f3ccbf6fbbd7adee0b7262d43f0ec2f00"
+        },
+        {
           "path": "manifest.json",
-          "role": "runtime ABI/version/install manifest",
-          "size_bytes": 574,
-          "sha256": "63b1d38f804871874ff4e9b47677391274aec56c9ddf12e101434454ab8e9239"
+          "role": "runtime ABI/version/install/acceptance manifest",
+          "size_bytes": 1141,
+          "sha256": "803d97b65474e44d132b41992857cb5e9b127ab9a10b3e6bf5478cd6a10cc229"
         }
       ],
-      "restore_instruction": "Fetch by Drive file id, verify ZIP and wheel SHA-256, extract, create an isolated venv with the sandbox Python 3.13 interpreter, and run `python -m pip install --no-index --no-deps <wheel>`. Verify duckdb.__version__ == 1.5.5 before opening research packs. If the future sandbox ABI differs, fail closed and build a new runtime asset rather than forcing this wheel."
+      "restore_instruction": "Fetch by Drive file id, verify ZIP and all component SHA-256 values, extract, create an isolated venv with the sandbox Python 3.13 interpreter, and run `python -m pip install --no-index --no-deps wheelhouse/*.whl`. Verify duckdb.__version__ == 1.5.5, pytz.__version__ == 2025.2 and direct TIMESTAMPTZ materialization before opening research packs. If the future sandbox ABI differs, fail closed and build a new runtime asset rather than forcing this pack."
     }
   ]
 }
