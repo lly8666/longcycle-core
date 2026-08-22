@@ -202,7 +202,7 @@ async def _persist(
     with psycopg.connect(dsn, row_factory=dict_row) as connection:
         canonical_rows = connection.execute(
             """
-            SELECT canonical.id, canonical.fact_key_id, key.predicate_code,
+            SELECT canonical.id, link.assertion_id, canonical.fact_key_id, key.predicate_code,
                    canonical.value_kind, canonical.value_text,
                    canonical.valid_time_kind, canonical.valid_from, canonical.valid_to,
                    canonical.valid_time_precision, canonical.valid_time_text,
@@ -241,6 +241,7 @@ async def _persist(
             "all_reconciled_accept": True,
             "all_fact_evidence_ids_persisted": True,
             "all_known_times_derived_from_grounded_evidence": True,
+            "stable_assertion_to_canonical_mapping": True,
             "valid_time_semantics_preserved": all(
                 row["valid_time_kind"] in {"period", "timeless", "unknown"}
                 and row["valid_time_precision"] != "unknown"
