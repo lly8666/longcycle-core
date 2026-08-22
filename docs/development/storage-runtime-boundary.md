@@ -1,8 +1,8 @@
 # Longcycle storage runtime boundary
 
-Status: adopted after the first real Kwinana grounded-evidence benchmark.
+Status: adopted after the first real Kwinana grounded-evidence benchmark and refined by the Kemerton SEC transport-stability defect.
 
-This decision records what the benchmark proved. It is intentionally narrower than a full repository rewrite.
+This decision records what real benchmarks proved. It is intentionally narrower than a full repository rewrite.
 
 ## Decision
 
@@ -34,6 +34,23 @@ The authoritative machine receipt is:
 
 `research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-execution-receipt-v1.json`
 
+## Raw transport snapshot versus stable grounding identity
+
+A raw HTTP response and the historical statement carried by that response are related but not always the same identity layer.
+
+Kemerton exposed a real example. Repeated requests for the same immutable SEC filing URL produced different raw SHA-256 values because SEC/Akamai inserted hidden script and pixel material. Independent raw snapshots differed in byte length and digest, while Longcycle's normalized visible text was byte-for-byte identical after excluding `script`, `style` and `noscript` content.
+
+Therefore:
+
+- every fetched raw response remains immutable and content-addressed; its exact SHA proves what Longcycle actually received on that retrieval;
+- raw SHA remains a valid cross-run identity when the transport is demonstrated stable;
+- when transport-only bytes are demonstrated volatile, the executor must not pretend that one historical raw SHA can identify every later retrieval;
+- a deterministic, versioned parser artifact such as `html-visible-text` becomes the stable grounding identity for textual EvidenceFragments;
+- the artifact must retain lineage to its exact raw `SourceDocument`, parser name/version and input digest;
+- Evidence never discards or overwrites the raw snapshot merely because a stable artifact exists.
+
+This is the same architecture already used for PDF evidence: immutable raw source -> deterministic parser artifact -> grounded fragment.
+
 ## Canonical row reconciliation rule
 
 A portable DuckDB bundle is not authoritative merely because rows were copied into it. Export is accepted only when the selected PostgreSQL rows are canonicalized deterministically and the DuckDB mirror reproduces the same row digests and table digests.
@@ -43,7 +60,7 @@ The current bundle schema uses:
 - `canonical_rows` — canonical JSON row mirror plus row SHA-256;
 - `document_index` — portable source-version identity, archive locator and source/retrieval provenance;
 - `evidence_index` — fragment identity, locator and first-class temporal/claim context;
-- `page_text` — deterministic parser output for bounded hot review;
+- `page_text` — deterministic PDF parser output for bounded hot review;
 - `evidence_timeline` — point-in-time-oriented analytical view.
 
 A bundle must fail closed on digest mismatch or broken document/artifact references.
@@ -53,6 +70,8 @@ A bundle must fail closed on digest mismatch or broken document/artifact referen
 Historical recovery may retrieve a publisher's original bytes through a third-party archival transport. The publisher/source authority and the retrieval route must remain distinguishable.
 
 For example, the Kwinana 2018/2019 Tianqi pages were unavailable from the GitHub runner's direct route but their exact original Tianqi pages were recoverable from verified Internet Archive captures. Tianqi remains the publisher whose wording carries the claim; Internet Archive is retrieval/capture provenance. The archive capture timestamp must not be substituted for historical `known_time`.
+
+Likewise, an SEC-hosted filing can be authoritative filing transport while hidden SEC/Akamai delivery bytes remain non-semantic transport material. Retrieval provenance and publisher/filing authority must remain separate from parser-level textual identity.
 
 ## Time semantics remain above storage
 
@@ -66,12 +85,30 @@ Storage must not collapse:
 - month-level forward expectation into a day-level outcome declaration;
 - commissioning, continuous operation, commercial-production capability, customer qualification and nameplate capacity into one status.
 
+## Why DuckDB does not replace PostgreSQL wholesale now
+
+Longcycle should optimize for semantic clarity, not the minimum number of database products.
+
+The research/evidence side is increasingly compatible with immutable or append-oriented portable materialization, which makes DuckDB a strong long-term format there. The operational side already uses server-style coordination semantics such as concurrent job claiming, lease fencing, retries/dead-letter state and outbox processing. Reimplementing those semantics merely to say that Longcycle uses one database would increase coupling and migration risk without improving historical replay.
+
+Development time being available is not itself a reason to rewrite the wrong layer. Extra time should first buy stronger evidence identity, replay tests, cross-company comparability and failure drills.
+
+Reconsider a wider PostgreSQL retirement only when real benchmarks show all of the following:
+
+1. research truth can be rebuilt and audited entirely from sealed archive/artifact/bundle materializations across multiple industries and trajectories;
+2. mutable operational coordination has become small enough to replace cleanly, or DuckDB's supported remote/multi-writer coordination is mature enough for the required semantics;
+3. PostgreSQL is a measured operational burden rather than a theoretical source of architectural impurity;
+4. parity and failure-recovery drills show no loss of transaction, constraint, lease/fencing or audit guarantees;
+5. the migration materially simplifies the system instead of moving server coordination complexity into application code.
+
+Until those gates are met, the elegant architecture is **shared semantics with deliberately different storage roles**.
+
 ## Operational boundary
 
 Do not now add a generic DuckDB write repository, distributed orchestration layer or cross-database synchronization service merely because the portable bundle worked.
 
 The next benchmark work should reuse the proven path:
 
-`primary source -> immutable archive -> grounded EvidenceFragment -> portable reconciled DuckDB bundle/replay`
+`primary source -> immutable archive -> deterministic grounding artifact when needed -> grounded EvidenceFragment -> portable reconciled DuckDB bundle/replay`
 
-Add further storage abstraction only when a real industry trajectory exposes a concrete repeated need. The next mainline task is EVT-002 Kemerton, followed by the first small no-lookahead replay fixture.
+Add further storage abstraction only when a real industry trajectory exposes a concrete repeated need. After EVT-002 Kemerton, the next mainline target is the first small no-lookahead replay fixture.
