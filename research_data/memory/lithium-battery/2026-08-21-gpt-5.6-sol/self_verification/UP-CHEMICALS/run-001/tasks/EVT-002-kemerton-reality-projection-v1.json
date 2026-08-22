@@ -1,0 +1,35 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "EVT-002-KEMERTON-REALITY-V1",
+  "source_evidence_task_id": "EVT-002-KEMERTON-EVIDENCE-V2",
+  "allowed_claim_roles": ["outcome_milestone"],
+  "subjects": [
+    {
+      "id": "ba9bcc13-482f-548d-a450-9d9089012778",
+      "entity_type": "production_line",
+      "canonical_name": "Kemerton I conversion plant"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2022q2-kemerton1-first-product-july",
+      "evidence_fragment_key": "2022q2-first-product-outcome",
+      "subject_entity_id": "ba9bcc13-482f-548d-a450-9d9089012778",
+      "predicate_code": "project.first_product_status",
+      "value_text": "achieved first product",
+      "valid_time_kind": "period",
+      "valid_from": "2022-07-01T00:00:00Z",
+      "valid_to": "2022-08-01T00:00:00Z",
+      "valid_time_precision": "month",
+      "valid_time_text": "July 2022",
+      "statistical_scope": "project milestone",
+      "extraction_confidence": 1.0,
+      "source_quality": 1.0,
+      "corroboration": 0.8,
+      "metadata": {
+        "semantic_guard": "The half-open July bounds support interval querying only; they do not assert that first product occurred on July 1. Source occurrence precision is month.",
+        "source_excerpt": "Kemerton I lithium conversion plant in Western Australia achieved first product in July 2022"
+      }
+    }
+  ]
+}
