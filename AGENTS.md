@@ -41,6 +41,26 @@ Do not use model status as authority. The standard is calibrated reasoning, evid
 
 Current task capability requirements come from the continuation cursor. `high_capability_reasoning` tasks require independent synthesis, adversarial checking and strategic judgment. `bounded_execution` tasks are suitable for lower-capability Agents operating under explicit inputs, source targets and stop conditions.
 
+## Repair Memory gate — do not rediscover old regressions blindly
+
+Before a substantive edit whose target paths are known, query the bounded Repair Memory for those paths:
+
+```bash
+python scripts/repair_memory.py relevant <path> [<path> ...]
+```
+
+If investigating a bug before its owning path is known, query a few symptom/root-cause terms:
+
+```bash
+python scripts/repair_memory.py query "evidence provenance"
+```
+
+Read only matching cards under `.longcycle/repair-memory/invariants/`. They explain non-obvious repairs that future cleanups must not accidentally reverse and point to the executable/schema/type guards that enforce them.
+
+Do not preload every repair card. Do not create a card for every bug. Promotion, size limits, lifecycle and deduplication rules live in `docs/development/repair-memory.md`. A repeated repair updates the existing invariant when it has the same root cause; chronological history belongs to Git, not to growing card prose.
+
+If an invariant must change because the architecture genuinely changed, do so deliberately: satisfy its `revisit_when`, update/supersede the card and its guards in the same coherent change. Repair Memory is an anti-accident mechanism, not a ban on better architecture.
+
 ## Vertical alignment loop — anti-tunnel rule
 
 Before starting a new substantive subproblem and after completing every coherent subtask, internally restate this parent chain:
