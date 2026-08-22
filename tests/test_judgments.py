@@ -11,6 +11,7 @@ from longcycle.domain.enums import (
     JudgmentKind,
     JudgmentTargetTimeKind,
     JudgmentValueKind,
+    TemporalPrecision,
 )
 from longcycle.domain.judgments import JudgmentAssertion, JudgmentEvidenceRef
 
@@ -25,6 +26,8 @@ def base_payload() -> dict[str, object]:
         "target_time_kind": JudgmentTargetTimeKind.PERIOD,
         "target_from": datetime(2022, 5, 1, tzinfo=UTC),
         "target_to": datetime(2022, 6, 1, tzinfo=UTC),
+        "target_precision": TemporalPrecision.MONTH,
+        "target_text": "May 2022",
         "value_kind": JudgmentValueKind.TEXT,
         "value_text": "first product expected in May 2022",
         "summary": "Kemerton I first product is expected in May 2022.",
@@ -48,8 +51,46 @@ def test_valid_judgment_matches_period_guidance_contract() -> None:
     judgment = JudgmentAssertion.model_validate(base_payload())
 
     assert judgment.target_time_kind == JudgmentTargetTimeKind.PERIOD
+    assert judgment.target_precision == TemporalPrecision.MONTH
+    assert judgment.target_text == "May 2022"
     assert judgment.value_text == "first product expected in May 2022"
     assert judgment.evidence[0].evidence_role == JudgmentEvidenceRole.STATEMENT
+
+
+def test_approximate_natural_language_target_does_not_require_fake_date_bounds() -> None:
+    payload = base_payload()
+    payload.update(
+        {
+            "target_time_kind": JudgmentTargetTimeKind.UNKNOWN,
+            "target_from": None,
+            "target_to": None,
+            "target_precision": TemporalPrecision.APPROXIMATE,
+            "target_text": "late 2021",
+            "value_text": "construction expected to be completed in late 2021",
+        }
+    )
+
+    judgment = JudgmentAssertion.model_validate(payload)
+
+    assert judgment.target_from is None
+    assert judgment.target_to is None
+    assert judgment.target_text == "late 2021"
+
+
+def test_approximate_target_requires_source_wording() -> None:
+    payload = base_payload()
+    payload.update(
+        {
+            "target_time_kind": JudgmentTargetTimeKind.UNKNOWN,
+            "target_from": None,
+            "target_to": None,
+            "target_precision": TemporalPrecision.APPROXIMATE,
+            "target_text": None,
+        }
+    )
+
+    with pytest.raises(ValueError, match="source target text"):
+        JudgmentAssertion.model_validate(payload)
 
 
 def test_numeric_range_uses_one_value_representation() -> None:
