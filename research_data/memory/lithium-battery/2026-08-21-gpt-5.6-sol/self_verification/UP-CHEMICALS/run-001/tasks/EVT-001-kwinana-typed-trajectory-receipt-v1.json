@@ -1,0 +1,132 @@
+{
+  "schema_version": "longcycle-kwinana-typed-trajectory-receipt/v1",
+  "task_id": "EVT-001-KWINANA-TYPED-TRAJECTORY-V1",
+  "runtime": {
+    "workflow_run_id": 32557226950,
+    "workflow_run_number": 12,
+    "workflow_conclusion": "success",
+    "executed_head_sha": "ff93c0f6f6cae7ff62a7b24ea507a5619affd93c",
+    "postgres_version": "17.11",
+    "duckdb_version": "1.5.5",
+    "pypdf_version": "6.15.0"
+  },
+  "evidence": {
+    "task_id": "EVT-001-KWINANA-EVIDENCE-V1",
+    "document_count": 4,
+    "fragment_count": 9,
+    "documents": [
+      {
+        "document_key": "2018",
+        "document_id": "d0d526b1-1cac-5ec7-9ac5-d8d8c3e76750",
+        "content_sha256": "c4cb66b3eeb789340c1771091f1a1bf0f7a085c351d59f0381af4d0f9a64ce5b",
+        "first_known_at": "2018-12-21T23:59:59Z"
+      },
+      {
+        "document_key": "2019",
+        "document_id": "85ddc5c5-eed2-5fee-add0-901bc8fb191f",
+        "content_sha256": "caa60e12484b0b4f7e1025acdb48a70cb874924e8139673b0e84996b4d9f8526",
+        "first_known_at": "2019-04-30T23:59:59Z"
+      },
+      {
+        "document_key": "2021",
+        "document_id": "9f6d4db7-b4b3-5286-958a-03c486ded12a",
+        "content_sha256": "aae71640b46ccdba4c396142796ad34c86b4c66dbe0073870b8c4439848892f5",
+        "first_known_at": "2021-08-23T23:59:59Z"
+      },
+      {
+        "document_key": "2022",
+        "document_id": "fdcf8fdc-e18e-596c-b03f-ff68183d1386",
+        "content_sha256": "b2d0acd1f51ee398185148cea596de4496b353a4e6893cb76b9dd273b48f0783",
+        "first_known_at": "2022-12-03T23:59:59Z"
+      }
+    ]
+  },
+  "judgments": {
+    "task_id": "EVT-001-KWINANA-JUDGMENTS-V2",
+    "count": 5,
+    "evidence_link_count": 8,
+    "risk_caveat_preserved": true,
+    "ids_by_key": {
+      "2018-stage1-commissioning-year-end": "edb540eb-97bd-5bd0-8f05-5007fa8c2219",
+      "2019-phase1-come-online-h2": "c64c2653-1429-5e3b-acac-e6bbc61938a8",
+      "2021-full-line-operation-by-year-end": "98e91113-7b01-5455-ab4d-13fe14190149",
+      "2021-design-capacity-q4-2022": "84f35e5b-3996-5c98-8db8-3c8f8d787ccf",
+      "2022-december-output-ramp": "a2ab4eaa-e1b9-5b32-92da-9f70a55a9fb5"
+    }
+  },
+  "reality": {
+    "task_id": "EVT-001-KWINANA-REALITY-V1",
+    "fact_key": "2022-train1-commercial-production-capability",
+    "fact_id": "b1dad7b6-7094-55f4-9ccf-132e5989cdb6",
+    "canonical_fact_version_id": "91da3544-53e6-5081-ad18-1042cb9d31b1",
+    "valid_from": "2022-11-30T00:00:00Z",
+    "valid_time_precision": "day",
+    "known_at": "2022-12-03T23:59:59Z",
+    "evidence_fragment_ids": [
+      "ed9cf375-c5e9-5af5-8204-03569fb5f1c3"
+    ],
+    "excluded_as_of_status": "The separate 2022-12-03 continuous-production operating-capability statement remains Evidence only because its onset is unspecified; it was not converted into a fabricated valid_from Fact."
+  },
+  "outcome": {
+    "evaluation_id": "085c3cd5-a8a8-53bf-9f4c-5384ce73d41a",
+    "judgment_id": "98e91113-7b01-5455-ab4d-13fe14190149",
+    "canonical_fact_version_id": "91da3544-53e6-5081-ad18-1042cb9d31b1",
+    "semantic_relation": "related_milestone",
+    "evaluation_status": "indeterminate",
+    "timing_relation": "not_comparable",
+    "timing_delta_value": null,
+    "timing_delta_unit": null
+  },
+  "portable_memory": {
+    "file_sha256": "b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd",
+    "file_bytes": 2633728,
+    "counts": {
+      "reality": 1,
+      "judgments": 5,
+      "outcomes": 1
+    },
+    "typed_round_trip": true
+  },
+  "replay": {
+    "cutoffs": {
+      "2021-12-31T23:59:59Z": {
+        "reality": 0,
+        "judgments": 4,
+        "outcomes": 0
+      },
+      "2022-12-02T23:59:59Z": {
+        "reality": 0,
+        "judgments": 4,
+        "outcomes": 0
+      },
+      "2022-12-03T23:59:59Z": {
+        "reality": 1,
+        "judgments": 5,
+        "outcomes": 1
+      }
+    },
+    "verification": {
+      "effective_time_does_not_leak_before_known_time": true,
+      "risk_caveat_survives_judgment_projection": true,
+      "related_milestone_is_indeterminate": true,
+      "related_milestone_has_no_timing_delta": true,
+      "typed_duckdb_round_trip": true,
+      "blind_memory_mutated": false
+    }
+  },
+  "runtime_artifact": {
+    "github_actions_artifact_id": 9471777542,
+    "name": "kwinana-typed-trajectory",
+    "zip_digest": "sha256:b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e",
+    "expires_at": "2026-09-21T06:32:52Z",
+    "role": "bounded_runtime_proof_only_not_durable_archive"
+  },
+  "file_hashes": {
+    "kwinana-evidence-execution.json": "46ae4225f13ed4178dadb39265087f878fb88c51380c2ad6ddcc79662ad4b20f",
+    "kwinana-judgments.json": "46339bfa238cbc1001c8365edbfcd92a4932622c4d089c14eb2adb113c481e2b",
+    "kwinana-reality.json": "17915366bf313a3a39e7b5faba2f97cc081042cce8c224fc7f4c526f2e4235fe",
+    "kwinana-related-outcome.json": "47c54f912fb3a71d2507994f513a8445044bfd63209c446dce7dc1e001ab564a",
+    "kwinana-memory.duckdb": "b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd",
+    "kwinana-replay-proof.json": "ef4efa73e09ceeb92e247355a6ccdf73f5011502df4d7199476104a4984cea2d"
+  }
+}
