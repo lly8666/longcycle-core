@@ -5,7 +5,7 @@
   "google_drive_folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
   "google_drive_policy": "Longcycle-generated binary state belongs in Google Drive: DuckDB replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. Do not put externally acquired original PDF/HTML/source bytes in Drive by default. Drive is a portable generated-state relay, not the live transactional database authority.",
   "postgres_policy": "Do not transport a live PostgreSQL cluster as session state or place it in GitHub Release. PostgreSQL remains the transactional write/ops engine and is rebuilt in a service-capable runtime when writes, leases or outbox semantics are required. If a generated database snapshot is ever needed for handoff, it belongs in Google Drive and remains a snapshot rather than live authority.",
-  "duckdb_policy": "DuckDB is the portable read/replay materialization. Restore a required generated capsule from Google Drive, verify recorded SHA-256 values, and open research packs read-only. Raw source bytes required for re-grounding are restored separately from GitHub Release.",
+  "duckdb_policy": "DuckDB is the portable read/replay materialization. Restore a required generated capsule from Google Drive, verify recorded SHA-256 values, and open research packs read-only. Raw source bytes required for re-grounding are restored separately from GitHub Release. Additive older sealed v1 generations remain immutable and are read compatibly; absence of later optional context tables/observation columns is not permission to rewrite historical bytes.",
   "missing_required_asset_action": "stop_and_report_integrity_blocker",
   "supersession_policy": "Both transports are immutable-by-identity for handoff purposes. Never replace bytes behind a recorded source Release filename or a recorded generated-state file id without advancing the repository manifest and SHA-256. Successor source packs get new Release filenames; successor generated packs get new Drive files/ids. This manifest is deliberately resume-relevant rather than an exhaustive historical asset inventory; durable receipts retain older artifact identities.",
   "assets": [
@@ -120,6 +120,27 @@
       "content_summary": "Generated RC48 Evidence plus Reality projection output/log. Eight namespaced canonical Reality facts preserve territory, development, collaboration, sponsor/collaborator and regulatory-state distinctions; valid-time/known-time no-lookahead gate passed.",
       "components": [],
       "restore_instruction": "Restore from Google Drive file id 1WwMAW7_ToQgnNYnTm_aVHEL6gMoBDqeP for RC48 Reality inspection; verify ZIP SHA before use."
+    },
+    {
+      "asset_id": "lithium-kwinana-typed-trajectory-run32557226950",
+      "role": "typed_replay_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa",
+      "file_name": "longcycle-lithium-kwinana-typed-trajectory-run32557226950.zip",
+      "size_bytes": 325964,
+      "sha256": "b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e",
+      "content_summary": "Integrity-verified historical Kwinana generated typed memory migrated from an expiring Actions artifact to durable Drive transport. Internal legacy-v1 kwinana-memory.duckdb SHA is b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd. Current CAP-0005 reader can replay it read-only after additive legacy compatibility repair.",
+      "components": [
+        {
+          "path": "probe/kwinana-memory.duckdb",
+          "sha256": "b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd",
+          "size_bytes": 2633728,
+          "role": "legacy sealed v1 typed point-in-time memory"
+        }
+      ],
+      "restore_instruction": "Restore from Google Drive file id 18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa, verify outer SHA b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e and internal DuckDB SHA b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd, then open read-only through CAP-0005. Do not mutate old bytes to add later optional tables or columns."
     }
   ]
 }
