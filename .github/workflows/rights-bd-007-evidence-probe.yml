@@ -10,6 +10,13 @@ on:
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
       - 'scripts/execute_grounded_evidence_spec.py'
       - 'src/longcycle/adapters/sources/materialized.py'
+  pull_request:
+    paths:
+      - '.github/workflows/rights-bd-007-evidence-probe.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/**'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
   workflow_dispatch:
 
 permissions:
@@ -68,9 +75,10 @@ jobs:
           import hashlib
           import json
           from pathlib import Path
+          import os
 
-          spec = json.loads(Path(__import__('os').environ['SPEC']).read_text(encoding='utf-8'))
-          root = Path(__import__('os').environ['MATERIAL_ROOT'])
+          spec = json.loads(Path(os.environ['SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['MATERIAL_ROOT'])
           by_document = {row['key']: row for row in spec['documents']}
           for row in by_document.values():
               material = root / row['material_path']
