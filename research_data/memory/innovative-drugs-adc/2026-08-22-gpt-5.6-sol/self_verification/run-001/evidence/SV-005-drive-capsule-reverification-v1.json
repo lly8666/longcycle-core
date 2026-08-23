@@ -1,0 +1,84 @@
+{
+  "schema_version": "longcycle-drive-capsule-reverification/v1",
+  "task_id": "ADC-SV-005-BLENREP-DRIVE-CAPSULE-REVERIFY-V1",
+  "source_task_id": "ADC-SV-005-BLENREP-WEB-CAPTURE-V1",
+  "verification_mode": "authorized_google_drive_restore_plus_local_sqlite_read",
+  "verified_at": "2026-08-23T11:15:00Z",
+  "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+  "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
+  "mime_type": "application/vnd.sqlite3",
+  "size_bytes": 24576,
+  "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+  "capsule_manifest": {
+    "schema_version": "longcycle-webpage-capture-capsule/v1",
+    "task_id": "ADC-SV-005-BLENREP-WEB-CAPTURE-V1",
+    "capture_count": 3,
+    "created_at_utc": "2026-08-23T09:17:27.116868+00:00",
+    "evidence_boundary": "Source-derived visible text/provenance only. Capsule transport does not promote Evidence, Fact, Judgment or Reality.",
+    "transport_role": "bounded_handoff_capsule"
+  },
+  "capture_checks": [
+    {
+      "source_id": "fda-blenrep-accelerated-approval-2020",
+      "text_sha256_recorded": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+      "text_sha256_recomputed": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+      "word_count": 156,
+      "fragment_checks": [
+        {
+          "fragment_key": "fda-initial-accelerated-approval",
+          "excerpt_sha256": "f47da98cfad9152704ec2f49c5025158b2683c807eb03fa3af47215082e41336",
+          "present_in_visible_text": true
+        },
+        {
+          "fragment_key": "fda-ocular-risk-known-at-initial-vintage",
+          "excerpt_sha256": "41394fa8ef7dc93117dbdb0a584a67068d25061970987ecace080679e616f65d",
+          "present_in_visible_text": true
+        }
+      ],
+      "runtime_material_sha256": "548ff2ecc10145657e80153733f6d553ad33c5b62bb96215cd8e78f29a720cf7"
+    },
+    {
+      "source_id": "gsk-dreamm3-2022-11-07",
+      "text_sha256_recorded": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+      "text_sha256_recomputed": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+      "word_count": 174,
+      "fragment_checks": [
+        {
+          "fragment_key": "dreamm3-primary-endpoint-failure",
+          "excerpt_sha256": "ee3a578b1183236ddf8cd1cce2ea09e5e09f4203215d0798205e8885684ad383",
+          "present_in_visible_text": true
+        }
+      ],
+      "runtime_material_sha256": "55c7d54a190a670c1cf3049d4b4cd88f6babc678bea000b23621054f1985165a"
+    },
+    {
+      "source_id": "gsk-blenrep-withdrawal-2022-11-22",
+      "text_sha256_recorded": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+      "text_sha256_recomputed": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+      "word_count": 183,
+      "fragment_checks": [
+        {
+          "fragment_key": "gsk-public-withdrawal-process",
+          "excerpt_sha256": "1664a36476bfa347edbdfe15f4934091f1338017ab6da723480e1c559c24ed26",
+          "present_in_visible_text": true
+        },
+        {
+          "fragment_key": "gsk-post-failure-development-commitment",
+          "excerpt_sha256": "8bfe14c9dd62cfc4e8157dd23d504ec655757de19f50ced0dc18ea96768fb928",
+          "present_in_visible_text": true
+        }
+      ],
+      "runtime_material_sha256": "6cd6049d27152ac629a80957e0630bf97c166661e81492a5401c093afb84e726"
+    }
+  ],
+  "acceptance": {
+    "outer_sha_matches_handoff": true,
+    "capture_count": 3,
+    "all_recorded_text_hashes_recomputed": true,
+    "all_five_spec_web_fragments_present_in_drive_visible_text": true,
+    "all_three_runtime_material_hashes_match_grounded_evidence_spec": true
+  },
+  "epistemic_boundary": "This receipt proves that the already-preserved private Drive webpage capsule contains the exact claim-scoped visible-text fragments used by the BLENREP Grounded Evidence spec. It is an acquisition/capture integrity receipt, not Evidence/Fact/Judgment promotion. GitHub Actions runtime may deterministically materialize the reviewed fragments from the repo-owned spec after verifying this receipt; it must not re-fetch the source webpages or treat the receipt as source authority.",
+  "privacy_boundary": "The Drive capsule remained private. No sharing permission was changed and no webpage source bytes/capsule were copied into GitHub Release or Git history.",
+  "next_action": "Remove live webpage fetching from the BLENREP PostgreSQL Grounded Evidence workflow; validate this receipt and materialize only the pinned spec excerpts before normal archive/Evidence execution."
+}
