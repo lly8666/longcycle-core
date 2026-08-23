@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 73,
+  "continuity_sequence": 74,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "6550006bb8404842dbc1e70cf56c96c3f9dc6723",
+  "checkpoint_based_on_head_sha": "5585f1e01b39392f66b067ffa2503ac6f00d794a",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head and reconcile any commits after this checkpoint. CAP-0007 productization is complete through the existing `longcycle research run` surface: PostgreSQL run 32641231141 at head 975fa228b14daa19d39d277926ad5e5d700037f8 passed the normal researcher CLI path from Grounded Evidence through Reality, Judgment, related-milestone Outcome, sealed DuckDB and no-lookahead replay. Do not reopen ADC sampling, PDF downloader work or orchestration plumbing. The active development path is CAP-0005 researcher-readable point-in-time replay: preserve typed/no-lookahead semantics while making the already-filtered snapshot easier for a researcher to understand.",
+  "bootstrap_instruction": "Resume from live PR/head and reconcile only commits after checkpoint 5585f1e01b39392f66b067ffa2503ac6f00d794a. The execution and reading stack is now product-proven: `longcycle research run` can execute a repo-owned Evidence -> Reality -> Judgment -> Outcome -> sealed replay trajectory, and `longcycle research replay` now exposes deterministic knowledge progression plus Judgment-centered storylines over the already-filtered CAP-0005 snapshot. Exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 passed service-capable run 32647898143; the three later commits are only the durable validation receipt and CAP-0005 capability metadata/index. Do not reopen BLENREP, PDF acquisition, ADC sampling, orchestration plumbing or storyline polish. The next task is a higher-level researcher-product gap audit against the Strategic Compass mental-map success criterion.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,52 +16,55 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Make Longcycle a durable point-in-time industrial-memory system whose normal research surface lets a researcher see what was known, what was believed then, and what later Outcome became visible without hindsight or semantic collapse.",
-    "short_term_goal": "Extend CAP-0005's read-only trajectory projection so a typed point-in-time snapshot exposes deterministic knowledge progression and Judgment-centered storylines while retaining the existing flat typed entries for compatibility.",
-    "next_big_step": "Prove the new researcher-readable projection through the existing `longcycle research replay` CLI against the sealed BLENREP regression at 2022, 2023 and 2024 cutoffs, then stop presentation work at the first useful deterministic surface and move to the next cross-industry product gap.",
-    "local_optimization_stop_rule": "Do not create narrative inference, causal analysis, new Outcome semantics, a second replay owner, another ADC sample, or another orchestration layer. Presentation may only reorganize rows already admitted by CAP-0005's typed knowledge-cutoff boundary.",
+    "medium_term_goal": "Turn the proven point-in-time memory engine into a cross-industry research product that lets a first-time researcher quickly build a defensible industry mental map: structure and participants, real drivers/constraints, historical trajectories, contemporaneous disputes/Judgments, later Outcomes, evidence boundaries and explicit unknowns.",
+    "short_term_goal": "Audit the current researcher journey against that mental-map standard and identify the single highest-value cross-industry product gap above subject-level trajectory replay before implementing another surface.",
+    "next_big_step": "Using capability discovery plus existing completed research artifacts, map each mental-map requirement to an existing semantic/read owner or a demonstrated missing product projection. Prefer one already-completed non-pharma/lithium context as an observation fixture so the audit is not biased by BLENREP. Do not collect new sources merely to perform this audit.",
+    "local_optimization_stop_rule": "Do not add more CAP-0005 fields, another ADC example, another orchestration layer, another PDF transport mechanism or domain-specific narrative. The next code change must follow from a demonstrated cross-industry researcher-comprehension gap, not from a desire to make the current benchmark prettier.",
     "parallel_permanent_tracks": [
-      "Current collection remains source-first/preserve-now. PDF raw-byte download is not a research prerequisite; readable claim-relevant content may ground Evidence before later optional materialization."
+      "Current collection remains source-first/preserve-now; readable webpages use bounded capture DB -> Drive, and PDF raw-byte materialization remains optional after truthful content verification unless byte-level verification is claim-critical."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "researcher-trajectory-reading-surface",
-    "last_completed_action": "The existing `longcycle research run` entrypoint now schema-dispatches to the generic CAP-0007 epistemic trajectory, and real PostgreSQL run 32641231141 passed through that normal researcher CLI. CAP-0005 trajectory_view has since been extended additively with deterministic `knowledge_progression`, `judgment_storylines` and `unlinked_reality_entry_ids`; focused tests were expanded, and the existing generic trajectory workflow was wired to exercise `longcycle research replay` at three historical cutoffs.",
-    "current_task": "Observe and fix only real failures from the researcher-readable replay regression at head 6550006bb8404842dbc1e70cf56c96c3f9dc6723. Require 2022/2023 to show the 2022 Judgment with no Outcome, 2024 to show exactly one related_milestone Outcome that remains indeterminate/not_comparable, identical original Judgment content across cutoffs, and knowledge-progression terminal counts matching the typed replay counts.",
-    "why_now": "Execution plumbing is already proven. The next product bottleneck is researcher comprehension: flat typed rows preserve truth but still force the researcher to manually reconstruct how knowledge and Judgment evolved. CAP-0005 explicitly allows read-only researcher views over an already-filtered typed snapshot.",
-    "done_when": "Focused trajectory-view tests and one real sealed-memory CLI replay regression pass; the view proves no future Outcome leakage before its known time, preserves related_milestone as indeterminate/not_comparable, leaves original Judgment content unchanged, and adds no inferred causality or realization semantics.",
+    "parent_workstream_id": "researcher-industry-mental-map-gap-audit",
+    "last_completed_action": "Extended CAP-0005's existing read-only trajectory projection with additive `knowledge_progression`, `judgment_storylines` and `unlinked_reality_entry_ids` while preserving flat entries and typed knowledge-cutoff semantics. The first real regression run 32647650765 proved the product code, focused tests and full PostgreSQL trajectory but exposed one workflow-only predicate assertion typo. After correcting only that assertion, exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 passed run 32647898143, including focused contracts, full `longcycle research run`, and three historical `longcycle research replay` cutoffs. The replay proved 2022 4/1/0, 2023 6/1/0, 2024 8/1/1; the original 2022 Judgment remained unchanged; the later Outcome remained related_milestone + indeterminate + not_comparable. A durable validation receipt was added, then CAP-0005 card and compact index were synchronized.",
+    "current_task": "Perform a bounded researcher-product gap audit against STRATEGIC_COMPASS section 3/5. For a first-time industry researcher, assess whether existing capabilities already provide: value-chain/participant structure; key drivers and constraints; long historical trajectories; contemporaneous Judgment/disagreement and revisions; later Outcome; evidence drill-down; and explicit unknown/controversy. Discover existing capability owners first. Use existing completed non-pharma research artifacts as observation where practical, but do not start new source research or create a new capability during the audit.",
+    "why_now": "Point-in-time execution and subject-level researcher reading are now proven. Continuing to polish the same trajectory would be local benchmark optimization. The Strategic Compass says the real product passes only when a researcher can rapidly form an evidence-bounded industry mental map, so the next decision must move one level up from a single-subject storyline.",
+    "done_when": "A repository-backed product-gap note classifies each mental-map requirement as already served, partially served or missing; names the existing semantic owner where one exists; uses at least one non-pharma observation to avoid ADC-specific conclusions; and selects exactly one next implementation target only if a truthful cross-industry gap remains. No code is required merely to complete the audit.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh exact-head `longcycle/generic-epistemic-trajectory` status. If red, inspect the first failing step and repair only the read projection/assertion contract. If green, update CAP-0005 ownership metadata and persist the successful researcher-surface regression before choosing the next product gap."
+    "next_atomic_action": "Refresh live HEAD, read STRATEGIC_COMPASS plus the compact capability index and current researcher surfaces, then locate one already-completed non-pharma/lithium research trajectory or receipt for a bounded researcher-journey observation. Produce the gap map before proposing code."
   },
   "active_context": {
-    "context_id": "researcher-readable-point-in-time-trajectory-v1",
-    "context_kind": "cross_industry_read_only_product_surface",
-    "label": "Knowledge progression and Judgment-centered historical storylines over typed replay",
+    "context_id": "cross-industry-researcher-mental-map-gap-audit-v1",
+    "context_kind": "cross_industry_product_discovery",
+    "label": "Researcher mental-map product gap above point-in-time trajectory replay",
     "root_path": "src/longcycle/application",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
+      "STRATEGIC_COMPASS.md",
       "src/longcycle/application/trajectory_view.py",
-      "tests/test_trajectory_view.py",
       "src/longcycle/cli.py",
       ".longcycle/capabilities/cards/CAP-0005.json",
-      ".github/workflows/research-trajectory-v1-sv005-proof.yml"
+      ".longcycle/capabilities/cards/CAP-0007.json",
+      "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/researcher-readable-trajectory-validation-v1.json"
     ],
     "core_exclusion_terms": [
-      "presentation-decides-knowledge-visibility",
-      "hindsight-narrative-inference",
-      "related-milestone-promoted-to-realized",
-      "judgment-rewritten-by-outcome",
-      "new-replay-semantic-owner",
+      "new-capability-before-gap-audit",
       "adc-benchmark-expansion",
-      "pdf-downloader-work"
+      "subject-storyline-polish",
+      "presentation-infers-causality",
+      "presentation-decides-knowledge-visibility",
+      "pdf-downloader-work",
+      "duplicate-replay-owner",
+      "duplicate-orchestration-owner"
     ]
   },
   "pending_user_directives": [
     "Continue autonomously from repository handoff and do not ask the user to repeat background.",
+    "Do not switch to Work mode; perform repository development directly in the chat tool surface.",
     "Use independent professional judgment and optimize for the large logic rather than local benchmark polish.",
-    "Historical recovery remains memory-first and Evidence-final; search/model memory are discovery instruments, never Evidence.",
+    "Historical recovery remains memory-first and Evidence-final; model memory/search are discovery instruments, never publishable Evidence.",
     "Never drop readable source information because of tool limitations.",
     "PDF raw-byte download is not a research prerequisite; locator-only cannot prove an unread claim, while content-verified readable representation may ground Evidence before later optional materialization.",
     "Do not create Actions merely to download PDFs or webpages; Actions remain valid for CI/PostgreSQL/runtime validation.",
@@ -70,25 +73,36 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32641231141,
-    "observed_head_sha": "975fa228b14daa19d39d277926ad5e5d700037f8",
-    "conclusion": "Exact-head status `longcycle/generic-epistemic-trajectory` passed at 975fa228b14daa19d39d277926ad5e5d700037f8. Run 32641231141 passed focused contracts and executed the complete epistemic trajectory through the normal `longcycle research run` CLI. The later CAP-0005 reading-surface commits have not yet been observed successful at this checkpoint.",
-    "mypy_summary": "No full-project exact-head Mypy result observed for the new reading-surface commits.",
-    "pytest_summary": "The generic CLI proof passed its focused pre-existing contracts; `tests/test_trajectory_view.py` has been expanded and is now included in the pending reading-surface runtime gate.",
-    "ruff_summary": "No new Ruff result observed; Ruff is not used as a substitute for the typed replay/runtime gate.",
-    "refresh_instruction": "Refresh live PR HEAD and the explicit `longcycle/generic-epistemic-trajectory` status before claiming the researcher-readable surface passed."
+    "last_observed_run": 32647898143,
+    "observed_head_sha": "786116f1e425e4ab43a00f69bb09f04f210cc701",
+    "conclusion": "Exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 has explicit success status `longcycle/generic-epistemic-trajectory`. Run 32647898143 completed focused unit contracts, PostgreSQL trajectory execution through `longcycle research run`, generic receipt assertions, three-cutoff researcher replay assertions and artifact upload. Compare from that head to checkpoint base 5585f1e01b39392f66b067ffa2503ac6f00d794a shows only three non-runtime files: the durable validation receipt, CAP-0005 card and compact capability index.",
+    "mypy_summary": "No full-project exact-head Mypy run was observed for this presentation extension; the service-capable focused regression is not claimed as full CI.",
+    "pytest_summary": "Run 32647898143 passed the focused contract set including tests/test_trajectory_view.py before executing the real PostgreSQL/DuckDB/CLI replay path.",
+    "ruff_summary": "No new full-project Ruff result observed; Ruff remains technical debt and is not a substitute for the epistemic/runtime proof.",
+    "refresh_instruction": "On resume refresh live HEAD/status. Do not expect the handoff/capability metadata commits to have an exact runtime status; the implementation proof is run 32647898143 at 786116f1e425e4ab43a00f69bb09f04f210cc701, with a verified metadata-only delta afterward."
   },
   "workstreams": [
     {
-      "workstream_id": "researcher-trajectory-reading-surface",
+      "workstream_id": "researcher-industry-mental-map-gap-audit",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "implementation_committed_runtime_regression_pending",
-      "summary": "CAP-0005 now has an additive deterministic reading projection over the typed snapshot. The remaining gate is real CLI replay validation across historical cutoffs.",
+      "status": "ready_for_bounded_cross_industry_product_audit",
+      "summary": "Execution and point-in-time reading are proven. The main path now asks what a first-time researcher still cannot understand quickly at the industry level, before another implementation is admitted.",
       "next_actions": [
-        "Observe/fix the real sealed-memory researcher replay regression.",
-        "On pass, update CAP-0005 card/index and persist a validation receipt.",
-        "Then stop local presentation polish and select the next cross-industry product gap from repository state."
+        "Inventory current product surfaces against the Strategic Compass mental-map requirements.",
+        "Use one existing non-pharma completed trajectory/receipt as a bounded transfer observation.",
+        "Classify the highest-value missing cross-industry researcher capability before writing code."
+      ],
+      "blockers": []
+    },
+    {
+      "workstream_id": "researcher-trajectory-reading-surface",
+      "role": "supporting_quality_gate",
+      "parent_goal_ref": "strategic_horizon.medium_term_goal",
+      "status": "completed_and_runtime_proven",
+      "summary": "CAP-0005 researcher reading now preserves typed entries while adding deterministic knowledge progression and Judgment storylines. Run 32647898143 proved no-lookahead cutoffs and non-direct Outcome wording through the normal replay CLI.",
+      "next_actions": [
+        "Treat this as a reusable product primitive; extend only when a future cross-industry researcher journey exposes a concrete general gap."
       ],
       "blockers": []
     },
@@ -96,10 +110,10 @@
       "workstream_id": "reusable-research-orchestration",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "completed_product_entrypoint_regression_fixture",
-      "summary": "CAP-0007 generic trajectory and the existing `longcycle research run` entrypoint are both real-PostgreSQL proven. Keep them as regression fixtures rather than continuing execution-plumbing work.",
+      "status": "completed_product_entrypoint",
+      "summary": "CAP-0007 and the existing `longcycle research run` surface are real-PostgreSQL proven from Grounded Evidence through sealed replay. Do not continue execution-plumbing work without a new cross-industry failure.",
       "next_actions": [
-        "Revisit only if a future cross-industry research task exposes a concrete composition gap."
+        "Revisit only if a future research journey exposes a concrete composition defect."
       ],
       "blockers": []
     },
@@ -107,10 +121,10 @@
       "workstream_id": "capability-governance",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "cap0005_extension_pending_runtime_proof",
-      "summary": "The new work extends CAP-0005's declared researcher-readable projection seam; no new capability owner is needed.",
+      "status": "cap0005_cap0007_single_owner_boundaries_current",
+      "summary": "CAP-0005 owns typed no-lookahead replay and researcher read projections; CAP-0007 owns execution composition. The compact index is synchronized after the CAP-0005 extension.",
       "next_actions": [
-        "Update CAP-0005 card/index only after the reading projection passes its real replay gate."
+        "Run capability admission before any implementation selected by the mental-map gap audit."
       ],
       "blockers": []
     },
@@ -119,9 +133,9 @@
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
       "status": "source_first_preserve_now",
-      "summary": "Current collection remains source-first; optional raw-file enrichment stays outside the active product-reading task.",
+      "summary": "Current collection preservation continues independently; transport friction is not allowed to become the product roadmap.",
       "next_actions": [
-        "Continue normal preservation when active tasks expose new high-value source material."
+        "Continue normal preservation only when active tasks encounter new valuable source material."
       ],
       "blockers": []
     }
@@ -139,20 +153,20 @@
   "deep_reference_paths": [
     "src/longcycle/application/trajectory_view.py",
     "tests/test_trajectory_view.py",
-    "src/longcycle/domain/epistemic.py",
     ".longcycle/capabilities/cards/CAP-0005.json",
-    ".github/workflows/research-trajectory-v1-sv005-proof.yml",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json"
+    ".longcycle/capabilities/cards/CAP-0007.json",
+    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/researcher-readable-trajectory-validation-v1.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Does the new deterministic researcher storyline remain useful across a non-pharma trajectory without adding domain-specific wording?",
-    "After this reading surface is proven, which repository-declared cross-industry product gap should become the next main cursor?"
+    "Which existing capability or missing read model should own the first-time researcher industry mental map without duplicating CAP-0003/4/5 semantics?",
+    "Does an existing non-pharma completed trajectory expose researcher friction that the BLENREP subject-level storyline did not?",
+    "Can industry structure, drivers/constraints, disputes and explicit unknowns be composed from current typed memory, or is a new read-only aggregation contract demonstrably required?"
   ],
   "ordered_next_actions": [
-    "Refresh live HEAD and researcher replay regression status.",
-    "Repair only real CAP-0005 projection/test failures until the three-cutoff regression passes.",
-    "On pass, update CAP-0005 card/index plus a durable validation receipt.",
-    "Advance handoff again before returning control."
+    "Refresh live PR HEAD and reconcile any post-checkpoint commits.",
+    "Read Strategic Compass and capability index, then inventory the current researcher journey against the mental-map success criteria.",
+    "Locate one existing completed non-pharma/lithium trajectory or receipt for a bounded transfer observation without new source research.",
+    "Persist a product-gap audit and select at most one next implementation target after capability admission."
   ]
 }
