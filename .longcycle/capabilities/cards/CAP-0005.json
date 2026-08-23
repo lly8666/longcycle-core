@@ -5,7 +5,9 @@
     "epistemic replay",
     "trajectory view",
     "research replay",
-    "historical snapshot"
+    "historical snapshot",
+    "knowledge progression",
+    "judgment storyline"
   ],
   "entrypoints": [
     {
@@ -13,6 +15,12 @@
       "description": "Storage-neutral typed reader is the semantic replay owner used by PostgreSQL, DuckDB and product-facing replay.",
       "kind": "port",
       "path": "src/longcycle/ports/epistemic.py"
+    },
+    {
+      "contains": "def build_researcher_trajectory_view(",
+      "description": "Deterministic read-only projection turns one already-filtered point-in-time snapshot into flat entries, knowledge progression and Judgment-centered storylines without deciding visibility or adding epistemic records.",
+      "kind": "application",
+      "path": "src/longcycle/application/trajectory_view.py"
     }
   ],
   "extension_seams": [
@@ -32,6 +40,18 @@
       "description": "Hard smoke round-trips one typed timeline across PostgreSQL and DuckDB.",
       "kind": "test",
       "path": "scripts/smoke_postgres_epistemic.py"
+    },
+    {
+      "contains": "test_trajectory_storyline_preserves_related_milestone_as_indeterminate",
+      "description": "Presentation regression proves a related milestone stays indeterminate/not-comparable and is never narrated as realized.",
+      "kind": "test",
+      "path": "tests/test_trajectory_view.py"
+    },
+    {
+      "contains": "RESEARCHER_READABLE_REPLAY_SURFACE_PASS",
+      "description": "Service-capable regression exercises `longcycle research replay` at multiple historical cutoffs and verifies knowledge progression plus unchanged original Judgment content.",
+      "kind": "runtime",
+      "path": ".github/workflows/research-trajectory-v1-sv005-proof.yml"
     }
   ],
   "id": "CAP-0005",
@@ -39,15 +59,19 @@
   "non_goals": [
     "Direct SQL as product replay semantics.",
     "Creating new Fact/Judgment/Outcome records.",
-    "Presentation code deciding its own knowledge-cutoff eligibility."
+    "Presentation code deciding its own knowledge-cutoff eligibility.",
+    "Inferring causality, realization or success/failure beyond the stored Outcome semantics.",
+    "Rewriting an original Judgment because a later Outcome became visible."
   ],
   "owned_semantics": [
     "replay.knowledge_cutoff_visibility",
     "replay.no_lookahead_boundary",
-    "replay.typed_reality_judgment_outcome_snapshot"
+    "replay.typed_reality_judgment_outcome_snapshot",
+    "replay.researcher_knowledge_progression_projection",
+    "replay.researcher_judgment_storyline_projection"
   ],
-  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff; presentation layers must delegate to this typed read boundary.",
-  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics.",
+  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that already-filtered snapshot. Knowledge progression and Judgment storylines may reorganize visible records for comprehension but never decide eligibility, manufacture causality, promote non-direct Outcomes, or rewrite the original historical Judgment.",
+  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics while keeping researcher presentation downstream of knowledge-cutoff filtering.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/ports/epistemic.py",
@@ -57,6 +81,7 @@
     "src/longcycle/application/judgment_replay.py",
     "src/longcycle/application/trajectory_view.py",
     "scripts/replay_integrated_history.py",
+    "tests/test_trajectory_view.py",
     "src/longcycle/cli.py"
   ],
   "status": "active",
@@ -66,7 +91,10 @@
     "knowledge-cutoff",
     "no-lookahead",
     "duckdb",
-    "trajectory"
+    "trajectory",
+    "researcher-view",
+    "knowledge-progression",
+    "judgment-storyline"
   ],
   "title": "Typed point-in-time industrial-memory replay"
 }
