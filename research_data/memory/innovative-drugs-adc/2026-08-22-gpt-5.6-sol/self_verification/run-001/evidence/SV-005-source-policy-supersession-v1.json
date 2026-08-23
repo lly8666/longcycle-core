@@ -1,0 +1,30 @@
+{
+  "schema_version": "longcycle-research-instruction-supersession/v1",
+  "task_id": "SV-005-blenrep",
+  "supersedes_instruction_in": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/tasks/SV-005-blenrep.json",
+  "superseded_instruction_scope": "The original delegated_evidence_instructions sentence that routed raw PDFs/labels requiring source bytes through the existing GitHub Actions -> Release acquisition lane.",
+  "historical_record_policy": "Do not rewrite the original post-seal task packet. It truthfully records the acquisition policy at the time it was authored. This receipt changes execution routing prospectively only.",
+  "current_pdf_policy": {
+    "states": [
+      "locator_verified",
+      "content_verified",
+      "materialized"
+    ],
+    "locator_verified": "Record publisher/document identity, original URL, filename/title/date when supported and verification provenance. Locator existence alone cannot prove an unread claim.",
+    "content_verified": "If a trusted research surface actually exposed claim-relevant PDF content and a faithful readable representation/locator was preserved, Grounded Evidence may proceed before raw PDF bytes exist.",
+    "materialized": "A later normal-network Agent may download and verify raw source bytes, then append raw size/SHA/storage metadata to the same logical document. This is optional completeness enrichment unless byte-level/source-format verification is itself claim-relevant.",
+    "actions_rule": "Do not create or run GitHub Actions merely to download new PDF source bytes. Actions remain valid for CI/PostgreSQL/runtime execution."
+  },
+  "blenrep_execution_effect": "SV-005 source discovery must not re-enter PDF downloader engineering. Reuse the already-existing legacy Release PDFs where convenient, use preserved webpage/readable material for the other claims, execute the bounded Grounded Evidence trajectory, and defer any missing raw PDF materialization that is not claim-critical.",
+  "authority_boundary": "Mainstream official/regulatory/issuer/institutional hosting establishes a credible document locator/identity lane, not universal claim authority. Authority remains claim-scoped and same-upstream mirrors remain one evidence cluster.",
+  "canonical_policy_refs": [
+    "METHODOLOGY_CORE.md",
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "CONTINUE_HERE.md",
+    ".longcycle/handoff/data-plane.json",
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0029_source_representation_fetch_state.sql",
+    "src/longcycle/adapters/storage/postgres_source_locators.py",
+    "src/longcycle/application/research_orchestration.py"
+  ]
+}
