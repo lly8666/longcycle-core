@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://longcycle.local/schemas/agent-document-record/v1",
+  "$id": "https://longcycle.local/schemas/agent-document-record/v2",
   "title": "Longcycle historical collection document record",
   "type": "object",
   "additionalProperties": false,
@@ -87,8 +87,54 @@
     "speakers": {"type": "array", "items": {"type": "string"}, "default": []},
     "target_periods": {"type": "array", "items": {"type": "string"}, "default": []},
     "locators_to_review": {"type": "array", "items": {"type": "string"}, "default": []},
-    "downloaded_file": {"type": ["string", "null"]},
-    "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+
+    "source_media_type": {
+      "type": ["string", "null"],
+      "description": "Upstream media identity, e.g. application/pdf, independent of the currently preserved representation content type."
+    },
+    "source_file_name": {
+      "type": ["string", "null"],
+      "description": "Upstream file name when known, even when raw bytes are not yet materialized."
+    },
+    "source_capture_state": {
+      "enum": ["locator_verified", "content_verified", "materialized", null],
+      "description": "Source completeness state. locator_verified alone never proves claim content."
+    },
+    "materialization_status": {
+      "enum": ["pending_materialization", "materialized", "not_applicable", null]
+    },
+    "verification_mode": {
+      "type": ["string", "null"],
+      "description": "How document identity/locator was verified."
+    },
+    "content_verification_mode": {
+      "type": ["string", "null"],
+      "description": "How claim-relevant content was actually read when source_capture_state=content_verified."
+    },
+    "claim_relevant_content_preserved": {
+      "type": ["boolean", "null"],
+      "description": "Must be true before content_verified may support claim-level Evidence."
+    },
+    "readable_representation_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Digest of a faithful readable representation; not a raw-PDF hash unless raw bytes were actually materialized."
+    },
+    "raw_materialized_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_materialized_storage_locator": {"type": ["string", "null"]},
+
+    "downloaded_file": {
+      "type": ["string", "null"],
+      "description": "Legacy/optional local raw file field. null is valid for locator/content-verified PDFs pending later materialization."
+    },
+    "sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Legacy downloaded-file hash when a raw file was actually downloaded. Prefer raw_materialized_sha256 for new records."
+    },
     "access_status": {"enum": ["ok", "paywalled", "login_required", "missing", "broken"]},
     "notes": {"type": ["string", "null"]},
     "claims": {
@@ -102,6 +148,42 @@
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"source_media_type": {"const": "application/pdf"}},
+        "required": ["source_media_type"]
+      },
+      "then": {
+        "required": ["source_capture_state", "materialization_status"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"source_capture_state": {"const": "content_verified"}},
+        "required": ["source_capture_state"]
+      },
+      "then": {
+        "required": [
+          "content_verification_mode",
+          "claim_relevant_content_preserved",
+          "readable_representation_sha256"
+        ],
+        "properties": {
+          "claim_relevant_content_preserved": {"const": true}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"source_capture_state": {"const": "materialized"}},
+        "required": ["source_capture_state"]
+      },
+      "then": {
+        "required": ["raw_materialized_sha256"]
+      }
+    }
+  ],
   "$defs": {
     "commonClaim": {
       "type": "object",
