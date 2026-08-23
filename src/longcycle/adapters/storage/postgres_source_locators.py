@@ -58,6 +58,17 @@ class PostgresSourceLocatorRegistry(PostgresSupport):
             raise ValueError("canonical_url must be non-empty")
 
         metadata = dict(locator_metadata or {})
+        if source_capture_state == "content_verified":
+            verification_mode = metadata.get("content_verification_mode")
+            if not isinstance(verification_mode, str) or not verification_mode.strip():
+                raise ValueError(
+                    "content_verified requires a non-empty content_verification_mode"
+                )
+            if metadata.get("claim_relevant_content_preserved") is not True:
+                raise ValueError(
+                    "content_verified requires claim_relevant_content_preserved=true"
+                )
+
         async with self.connection() as connection:
             publisher_cursor = await connection.execute(
                 "SELECT publisher_id FROM evidence.source_connectors WHERE id = %s",
