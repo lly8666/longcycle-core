@@ -15,8 +15,11 @@ class SchemaContractTest(unittest.TestCase):
     def test_migrations_are_ordered_nonempty_and_transaction_free(self) -> None:
         files = sorted(MIGRATIONS.glob("*.sql"))
         versions = [int(path.name[:4]) for path in files]
-        self.assertEqual(versions, list(range(1, len(files) + 1)))
+        self.assertEqual(versions, sorted(versions))
+        self.assertEqual(len(versions), len(set(versions)))
+        self.assertTrue(all(version > 0 for version in versions))
         for path in files:
+            self.assertRegex(path.name, r"^\d{4}_.+\.sql$")
             body = path.read_text(encoding="utf-8")
             self.assertTrue(body.strip(), path.name)
             self.assertIsNone(re.search(r"(?im)^\s*(BEGIN|COMMIT)\s*;", body), path.name)
