@@ -150,7 +150,7 @@ class ResearchPlaybookTest(unittest.TestCase):
     def test_agent_sop_prevents_shallow_historical_search(self) -> None:
         sop = (RESEARCH_DOCS / "research-agent-sop.md").read_text(encoding="utf-8")
         self.assertIn("minimum search depth", sop)
-        self.assertIn("至少 6 个", sop)
+        self.assertIn(">= 6 个", sop)
         self.assertIn("citation chain", sop)
         self.assertIn("not_found != false", sop)
         self.assertIn("Current Collection", sop)
