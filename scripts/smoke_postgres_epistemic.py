@@ -73,6 +73,7 @@ async def _save_document_with_evidence(
         content=(text + "\n").encode(),
         content_type="text/plain",
         canonical_url=url,
+        headers={"x-longcycle-raw-source-materialized": "true"},
         retrieved_at=known_at,
     )
     document = SourceDocument.from_payload(
