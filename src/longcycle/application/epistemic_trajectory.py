@@ -307,9 +307,11 @@ def validate_replay_snapshot(
         "judgments": payload.get("judgments"),
         "outcomes": payload.get("outcomes"),
     }
+    validated_layers: dict[str, list[dict[str, Any]]] = {}
     for layer, rows in layers.items():
         if not isinstance(rows, list):
             raise ValueError(f"replay {cutoff.key} layer {layer} is not a list")
+        validated_rows: list[dict[str, Any]] = []
         for row in rows:
             if not isinstance(row, dict):
                 raise ValueError(f"replay {cutoff.key} layer {layer} contains non-object row")
@@ -318,11 +320,13 @@ def validate_replay_snapshot(
                 raise ValueError(f"replay {cutoff.key} layer {layer} row has no known_at")
             if _parse_aware(known_raw, label=f"{layer}.known_at") > cutoff.knowledge_cutoff:
                 raise ValueError(f"replay {cutoff.key} leaked future {layer} row")
+            validated_rows.append(row)
+        validated_layers[layer] = validated_rows
 
     counts = ReplayCounts(
-        reality=len(layers["reality"]),
-        judgments=len(layers["judgments"]),
-        outcomes=len(layers["outcomes"]),
+        reality=len(validated_layers["reality"]),
+        judgments=len(validated_layers["judgments"]),
+        outcomes=len(validated_layers["outcomes"]),
     )
     if cutoff.expected_counts is not None and counts != cutoff.expected_counts:
         raise ValueError(
