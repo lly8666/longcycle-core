@@ -101,6 +101,21 @@ class HandoffIsolationDrillTest(unittest.TestCase):
             self.assertEqual(report.recovered.total_raw_leads, campaign.total_raw_leads)
             self.assertEqual(report.recovered.sealed_shards, campaign.sealed_shards)
 
+    def test_fresh_bootstrap_exposes_bounded_on_demand_history_recall(self) -> None:
+        bootstrap = (ROOT / "FRESH_AGENT_BOOTSTRAP.md").read_text(encoding="utf-8")
+        protocol = (ROOT / "docs" / "development" / "on-demand-history-recall.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("docs/development/on-demand-history-recall.md", bootstrap)
+        self.assertIn("Do **not** preload old devlogs/issues/benchmarks", bootstrap)
+        self.assertIn("HISTORICAL_RECALL_PROTOCOL_V1", protocol)
+        self.assertIn("capability registry relevant/query", protocol)
+        self.assertIn("repair-memory relevant/query", protocol)
+        self.assertIn("follow exact origin refs / scoped paths", protocol)
+        self.assertIn("Do not crawl all devlogs", protocol)
+        self.assertIn("Most history should stay cold in Git", protocol)
+
     def test_cursor_must_point_to_declared_workstream(self) -> None:
         current_path = ROOT / ".longcycle" / "handoff" / "current.json"
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
