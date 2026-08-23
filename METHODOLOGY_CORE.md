@@ -13,25 +13,27 @@ Blind Memory Exhaustion
 → saturation / seal
 → high-capability self-verification / search discovery
 → claim-scoped evidence tasks
-→ original-source archive
+→ source identity + claim-relevant content verification
 → Evidence / Assertion / Reconciliation
+→ deferred raw-byte materialization where useful
 ```
 
 未 seal 的 blind 单元不得被新搜索结果反向污染；`not_found != false`。
 
-## M2. 当下采集：Source-first, Archive-now
+## M2. 当下采集：Source-first, Preserve-now
 
-今天仍容易获得的高价值原始资料，应尽快、按版本归档，而不是等几年后再历史抢救。
+今天仍容易获得的高价值原始资料，应尽快保存其**可读内容、source identity、locator、版本/时间语义和 provenance**，而不是等几年后再历史抢救。
 
 ```text
 source/watchlist
 → proactive collection
-→ original/version archive
+→ faithful content/version capture or verified source locator
 → Reality / Judgment extraction
 → revision tracking
+→ raw-file materialization when useful/available
 ```
 
-历史恢复与当下采集是两条长期并行路线。
+“Preserve-now”首先要求不丢失当前可读、可定位、可证明的 source information；不要求为了 byte-identical 下载而阻塞研究主路径。历史恢复与当下采集是两条长期并行路线。
 
 ## M3. Evidence 决定可发布历史；模型、搜索与推理可以保留研究假设
 
@@ -41,13 +43,33 @@ source/watchlist
 - 同源转载要视为同一 evidence cluster；
 - 权威来源之间若口径仍不可调和，保留冲突，不强行选答案。
 
-**原始 PDF 的可接受性由文档身份决定，不由下载域名决定。** 国内外大型、稳定、可追溯的网站，只要转载或镜像的是可核验的完整原始 PDF，而不是摘要、编辑改写或二次加工，就可以作为 `authoritative_redistributor` acquisition lane。必须能够把实际归档 bytes 可靠映射回上游文档身份，并同时保存实际 retrieval host、上游 issuer/authority、标题、发布日期或保守 known-time、文档号/filing/accession/公告号（若有）、原始 URL（若可得）和内容 hash。转载站只承担获取与保存通道；claim authority 仍继承自被核验的上游原始文档。同一原始 PDF 出现在多个网站仍只算一个 evidence cluster，不能伪装成多份独立证据。
+### PDF：文档身份、可读内容与 raw bytes 是三个不同问题
 
-对于**上市公司正式公告、法定披露、定期报告和公告附件**，不要求只能从发行人、交易所或监管机构的原始服务器下载 bytes。大型、稳定、可追溯的财经公告库若保存的是可识别的正式公告原文或完整文档，可以作为 `authoritative_redistributor` 使用；例如新浪财经、腾讯财经、同花顺、雪球、东方财富等，此列表不是封闭白名单。成立条件是：能够保留或可靠映射上游公告身份（发行人/监管或交易所体系、公告号或 filing/accession、标题、发布日期/可知时间、原始 URL 等），并且实际归档内容是公告本身而不是媒体摘要、编辑报道或二次解读。
+**原始 PDF 的可接受性由文档身份和 claim-relevant 内容决定，不由当前 Agent 是否成功下载 bytes 决定。**
 
-使用 authoritative redistributor 时必须同时保存**实际 retrieval host** 与 **upstream announcement identity**。不得为了保持“primary source”外观，把从财经网站取得的 bytes 伪记成从监管/公司官网直接取得；同一上游公告被多个财经网站转载时仍属于同一 evidence cluster，不能伪装成多份独立 corroboration。若财经页面只是摘要、机器提取字段或新闻稿解读，则仍按其真实 claim scope 和 secondary 权威级别处理。
+PDF 使用三个显式状态：
 
-程序化交易/金融数据接口、开源量化项目和开源公告采集项目适用同一原则：它们可以是可信的公告 acquisition / redistribution lane，不因“不是发行人官网或监管官网”而自动降权。若接口或项目返回、缓存或镜像的是可核验的上市公司正式公告/年报/定期报告原文或完整文件，并能交叉核对 issuer、filing/accession/公告号、标题、披露时间、上游 URL 或内容哈希等身份，则该具体 connector/document 可以按 `authoritative_redistributor` 处理。开源代码本身只证明采集机制可审计，不等于仓库已经保存目标 Evidence；只有实际取得并归档的公告 payload 才进入证据链。
+```text
+locator_verified
+→ content_verified
+→ materialized
+```
+
+- `locator_verified`：已经确认 publisher/upstream document identity、原始 PDF URL、文件名（能确定时）、title/date/文档号等。对于国内外大型、稳定、可追溯的官方、监管、issuer、机构或主流公告站点，只要 source/document identity 与 locator 可核验，就把它视为真实存在的合法 source document，不再为了证明某个 GitHub runner 能下载而消耗研究时间。
+- `content_verified`：当前 Agent 已通过可信界面实际读到 claim-relevant PDF 内容，并能保存页码/章节/claim-scoped excerpt 或等价的忠实 readable representation。**这个状态已经可以进入正常 Evidence 语义，即使 raw PDF bytes 还没有下载、hash 或外部归档。**
+- `materialized`：以后有正常网络的 Agent 再下载记录的 PDF URL，验证 document identity 与 earlier verified content，补 raw size/SHA/storage locator。这是 completeness/integrity enrichment，不是前两步的前置条件。
+
+只确认链接存在、完全没读到 claim-relevant 内容时，不能拿 `locator_verified` 证明具体 claim；此时只能保存 source locator，等待后续 content verification。
+
+若 later materialization 得到的 bytes 与 earlier `content_verified` 的文档身份或内容冲突，必须 fail closed、建立 integrity repair，不能静默覆盖此前 Evidence。
+
+**主流网站 / redistributor 的 authority 仍然是 claim-scoped。** 大型、稳定、可追溯的网站若转载或镜像的是可核验的完整原始 PDF/正式公告，可以作为 `authoritative_redistributor` retrieval lane；authority 继承自被核验的上游原始文档，而不是来自下载 host、`.pdf` 后缀或 transport。同一原始 PDF 出现在多个网站仍只算一个 evidence cluster，不能伪装成多份独立证据。
+
+对于**上市公司正式公告、法定披露、定期报告和公告附件**，不要求只能从发行人、交易所或监管机构的原始服务器取得 bytes。大型、稳定、可追溯的财经公告库若保存的是可识别的正式公告原文或完整文档，可以作为 `authoritative_redistributor` 使用；例如新浪财经、腾讯财经、同花顺、雪球、东方财富等，此列表不是封闭白名单。成立条件是能够保留或可靠映射上游公告身份（发行人/监管或交易所体系、公告号或 filing/accession、标题、发布日期/可知时间、原始 URL 等），并且**当前用于 claim grounding 的内容确实来自公告本身**而不是媒体摘要、编辑报道或二次解读。raw bytes 可以后续 materialize。
+
+使用 authoritative redistributor 时必须同时保存**实际 retrieval host** 与 **upstream announcement identity**。不得为了保持“primary source”外观，把从财经网站读取/取得的内容伪记成从监管/公司官网直接取得；同一上游公告被多个财经网站转载时仍属于同一 evidence cluster，不能伪装成多份独立 corroboration。若财经页面只是摘要、机器提取字段或新闻稿解读，则仍按其真实 claim scope 和 secondary 权威级别处理。
+
+程序化交易/金融数据接口、开源量化项目和开源公告采集项目适用同一原则：它们可以是可信的公告 acquisition / redistribution lane，不因“不是发行人官网或监管官网”而自动降权。若接口或项目返回、缓存或镜像的是可核验的上市公司正式公告/年报/定期报告原文或完整文件，并能交叉核对 issuer、filing/accession/公告号、标题、披露时间、上游 URL 等身份，则该具体 connector/document 可以按 `authoritative_redistributor` 处理。开源代码本身只证明采集机制可审计，不等于仓库已经保存目标 Evidence；**必须实际取得/读取 claim-relevant 公告 payload 或忠实 representation** 才进入证据链。raw byte hash 是后续完整性字段，不再是 claim Evidence 的先决条件。
 
 程序化数据源对公告的**二次加工字段**不得继承公告原文的权威性。平台自行计算的财务比率、标准化指标、分类标签、预测值、共识值或从公告抽取后重新加工的数据，必须按其加工方法、claim scope 和可复现性单独评估；“底层来自年报”不能让派生值自动等同于年报原文。
 
