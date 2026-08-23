@@ -1,0 +1,157 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "ADC-SV-005-BLENREP-REALITY-V1",
+  "source_evidence_task_id": "ADC-SV-005-BLENREP-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "initial_us_accelerated_approval",
+    "safety_burden_known_at_initial_approval_vintage",
+    "confirmatory_trial_primary_endpoint_failure",
+    "participant_public_withdrawal_process_statement",
+    "written_bla_withdrawal_request",
+    "us_bla_revocation_effective",
+    "later_combination_regimen_identity",
+    "later_combination_positive_pfs_readout"
+  ],
+  "subjects": [
+    {
+      "id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "entity_type": "product",
+      "canonical_name": "belantamab mafodotin / BLENREP"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2020-us-accelerated-approval",
+      "evidence_fragment_key": "fda-initial-accelerated-approval",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "regulatory.us_accelerated_approval_status",
+      "value_text": "FDA granted accelerated approval to belantamab mafodotin-blmf in the United States.",
+      "valid_time_kind": "period",
+      "valid_from": "2020-08-05T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "August 5, 2020",
+      "statistical_scope": "BLENREP monotherapy U.S. accelerated-approval branch",
+      "metadata": {
+        "regimen_identity": "BLENREP monotherapy",
+        "jurisdiction": "United States",
+        "temporal_guard": "This fact records the 2020 approval state only; later withdrawal text on the current FDA page is excluded from this vintage."
+      }
+    },
+    {
+      "fact_key": "2020-ocular-risk-known-at-approval",
+      "evidence_fragment_key": "fda-ocular-risk-known-at-initial-vintage",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "safety.ocular_toxicity_burden",
+      "value_text": "Ocular toxicity was already a material safety burden at the initial U.S. approval vintage.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2020-08-05T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "August 5, 2020 approval vintage",
+      "statistical_scope": "BLENREP initial U.S. approval safety state",
+      "metadata": {
+        "onset_guard": "The evidence establishes presence at the approval vintage, not an exact onset date.",
+        "hindsight_guard": "Do not narrate ocular toxicity as a later surprise."
+      }
+    },
+    {
+      "fact_key": "2022-dreamm3-primary-pfs-failure",
+      "evidence_fragment_key": "dreamm3-primary-endpoint-failure",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "clinical.dreamm3_primary_pfs_outcome",
+      "value_text": "DREAMM-3 did not meet its primary PFS endpoint for BLENREP monotherapy versus PomDex.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2022-11-07T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "November 7, 2022 topline announcement",
+      "statistical_scope": "DREAMM-3 BLENREP monotherapy versus PomDex",
+      "metadata": {
+        "regimen_identity": "BLENREP monotherapy versus PomDex",
+        "endpoint": "PFS superiority",
+        "onset_guard": "The source establishes the result by the announcement vintage, not a separate exact occurrence timestamp."
+      }
+    },
+    {
+      "fact_key": "2022-public-us-withdrawal-process",
+      "evidence_fragment_key": "gsk-public-withdrawal-process",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "regulatory.us_withdrawal_process_public_statement",
+      "value_text": "GSK publicly stated that it had initiated the process for withdrawal of the U.S. marketing authorisation.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2022-11-22T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "November 22, 2022 public statement",
+      "statistical_scope": "GSK participant statement about U.S. withdrawal process",
+      "metadata": {
+        "authority_boundary": "Participant public-process statement only; not the authoritative legal revocation date.",
+        "onset_guard": "The statement establishes the public process state at this vintage without substituting for the later Federal Register record."
+      }
+    },
+    {
+      "fact_key": "2022-written-bla-withdrawal-request",
+      "evidence_fragment_key": "federal-register-written-withdrawal-request",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "regulatory.us_written_bla_withdrawal_request",
+      "value_text": "GSK requested withdrawal (revocation) of the BLENREP BLA in writing.",
+      "valid_time_kind": "period",
+      "valid_from": "2022-11-18T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "November 18, 2022",
+      "statistical_scope": "BLENREP U.S. BLA withdrawal request",
+      "metadata": {
+        "known_time_guard": "The event date is November 18, 2022, but this Federal Register evidence does not make that exact date knowable in a 2022 replay."
+      }
+    },
+    {
+      "fact_key": "2023-us-bla-revocation-effective",
+      "evidence_fragment_key": "federal-register-effective-revocation",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "regulatory.us_bla_revocation",
+      "value_text": "The BLENREP biologics license application was revoked in the United States.",
+      "valid_time_kind": "period",
+      "valid_from": "2023-02-06T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "February 6, 2023",
+      "statistical_scope": "BLENREP U.S. BLA legal status",
+      "metadata": {
+        "jurisdiction": "United States",
+        "known_time_guard": "Legal effective time and later Federal Register knowable time remain separate."
+      }
+    },
+    {
+      "fact_key": "2024-dreamm7-bvd-regimen-identity",
+      "evidence_fragment_key": "dreamm7-bvd-regimen-identity",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "clinical.dreamm7_regimen_identity",
+      "value_text": "DREAMM-7 evaluated belantamab mafodotin combined with bortezomib plus dexamethasone (BVd).",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-02-05T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "February 5, 2024 readout",
+      "statistical_scope": "DREAMM-7 BVd regimen branch",
+      "metadata": {
+        "identity_guard": "BVd is a distinct combination regimen and must not be merged with DREAMM-3 BLENREP monotherapy."
+      }
+    },
+    {
+      "fact_key": "2024-dreamm7-positive-pfs",
+      "evidence_fragment_key": "dreamm7-positive-pfs",
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "predicate_code": "clinical.dreamm7_pfs_outcome",
+      "value_text": "DREAMM-7 reported a positive PFS result for BVd versus DVd, with a reported hazard ratio of 0.41.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-02-05T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "February 5, 2024 readout",
+      "statistical_scope": "DREAMM-7 BVd versus DVd PFS readout",
+      "metadata": {
+        "regimen_identity": "BVd versus DVd",
+        "outcome_boundary": "Later related milestone for the 2022 development-continuation Judgment; not direct realization of BLENREP monotherapy efficacy."
+      }
+    }
+  ]
+}
