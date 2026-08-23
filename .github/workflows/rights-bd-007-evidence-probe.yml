@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   evidence:
@@ -140,3 +141,44 @@ jobs:
             .artifacts/rights-bd-007-blobs
           if-no-files-found: warn
           retention-days: 7
+
+      - name: Report exact-head runtime receipt
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts
+          output_sha="missing"
+          acceptance="unavailable"
+          if [[ -f "$OUTPUT" ]]; then
+            output_sha="$(sha256sum "$OUTPUT" | awk '{print $1}')"
+            acceptance="$(python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ['OUTPUT']).read_text(encoding='utf-8'))
+          result = payload.get('result') or {}
+          print(json.dumps(result.get('acceptance'), sort_keys=True, separators=(',', ':')))
+          PY
+          )"
+          fi
+          receipt=.artifacts/RIGHTS-BD-007-runtime-receipt.md
+          cat > "$receipt" <<EOF
+          [RIGHTS-BD-007-EVIDENCE-PROBE]
+
+          - head_sha: \`$HEAD_SHA\`
+          - run_id: \`$RUN_ID\`
+          - job_status: \`$JOB_STATUS\`
+          - output_sha256: \`$output_sha\`
+          - acceptance: \`$acceptance\`
+          - run_url: https://github.com/$REPOSITORY/actions/runs/$RUN_ID
+          EOF
+          gh issue comment 2 --repo "$REPOSITORY" --body-file "$receipt"
