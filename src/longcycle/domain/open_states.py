@@ -21,11 +21,18 @@ CoverageState = Literal["unseen", "thin", "needs_review"]
 class RealityConflictAssertionRecord(DomainModel):
     assertion_id: UUID
     source_id: UUID
+    source_cluster: str | None = None
     known_at: datetime
     value_kind: str = Field(min_length=1)
     value: dict[str, Any]
     unit_code: str | None = None
     evidence_fragment_ids: tuple[UUID, ...]
+
+    @property
+    def source_independence_key(self) -> str:
+        """Match CAP-0003/Reconciler independence semantics exactly."""
+
+        return self.source_cluster or str(self.source_id)
 
     @field_validator("known_at")
     @classmethod
@@ -48,6 +55,8 @@ class RealitySourceDisagreementRecord(DomainModel):
 
     ``research_case_opened_at`` is curation provenance, not historical market knowledge.
     The historical visibility boundary is derived only from member assertion ``known_at``.
+    Source independence follows the existing Fact/Reconciler ``source_cluster`` semantics;
+    connector identity is only the conservative fallback when no cluster was recorded.
     """
 
     conflict_case_id: UUID
@@ -75,8 +84,13 @@ class RealitySourceDisagreementRecord(DomainModel):
     def explicit_multi_source_conflict(self) -> "RealitySourceDisagreementRecord":
         if len(self.assertions) < 2:
             raise ValueError("source disagreement requires at least two visible conflict members")
-        if len({item.source_id for item in self.assertions}) < 2:
-            raise ValueError("source disagreement requires at least two distinct sources")
+        independent_sources = {
+            item.source_independence_key for item in self.assertions
+        }
+        if len(independent_sources) < 2:
+            raise ValueError(
+                "source disagreement requires at least two independent source clusters"
+            )
         expected = max(item.known_at for item in self.assertions)
         if self.archive_disagreement_known_at != expected:
             raise ValueError("archive disagreement known time must equal latest visible member known time")
