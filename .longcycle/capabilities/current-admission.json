@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "DRAM-CROSS-INDUSTRY-BENCHMARK-001",
-  "intent": "Initialize the second cross-industry benchmark as a DRAM historical model-memory campaign. Reuse the existing CAP-0006 sealed blind-recall, saturation, fresh-context, post-seal verification and Evidence-final authority boundaries. The benchmark may expose future semantic gaps, but initialization must not add product code, a new capability, a new truth owner, or semiconductor-specific core schema.",
+  "intent_id": "MEMORY-SEMICONDUCTORS-CROSS-INDUSTRY-BENCHMARK-001",
+  "intent": "Initialize the third real-industry benchmark as a joint DRAM + NAND historical model-memory campaign. Reuse the existing CAP-0006 sealed blind-recall, saturation, fresh-context, post-seal verification and Evidence-final authority boundaries. The benchmark may expose future semantic gaps, but initialization must not add product code, a new capability, a new truth owner, or semiconductor-specific core schema.",
   "governance_mode": "converging",
   "disposition": "reuse",
   "target_capability_ids": [
@@ -10,12 +10,12 @@
   "closest_existing_capability_ids": [
     "CAP-0006"
   ],
-  "rationale": "CAP-0006 already owns memory campaign isolation, fragmentary recall, campaign saturation/seal, post-seal verification depth and research-only coverage state. DRAM changes the industrial subject matter, not those semantics. The readiness audit explicitly freezes new researcher product work until the second industry demonstrates a concrete cross-industry failure. Therefore the truthful admission is reuse, not extend/new.",
+  "rationale": "CAP-0006 already owns memory campaign isolation, fragmentary recall, campaign saturation/seal, post-seal verification depth and research-only coverage state. Broadening the benchmark from DRAM-only to DRAM + NAND changes the research subject boundary, not campaign semantics. The storage benchmark deliberately keeps product-line metrics distinct while testing shared-company and shared-cycle hypotheses. Therefore the truthful admission remains reuse, not extend/new.",
   "unmet_requirement": null,
   "evidence_refs": [
     "docs/development/researcher-mental-map-gap-audit-v2.md",
-    "docs/research/dram-memory-collection-plan.md",
-    "docs/research/dram-memory-exhaustion-manifest.json",
+    "docs/research/memory-semiconductors-collection-plan.md",
+    "docs/research/memory-semiconductors-exhaustion-manifest.json",
     "docs/research/model-memory-exhaustion-protocol.md",
     ".longcycle/capabilities/cards/CAP-0006.json"
   ],
