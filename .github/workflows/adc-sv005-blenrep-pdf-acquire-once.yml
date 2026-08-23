@@ -46,15 +46,15 @@ jobs:
           UA = 'LongcycleCollector/0.2 lly8666@users.noreply.github.com'
           ITEMS = [
               {
-                  'key': 'fda-blenrep-label-2020-08',
-                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.Pdf',
-                  'retrieval_role': 'authoritative_regulator_historical_label',
-                  'upstream_system': 'U.S. Food and Drug Administration historical prescribing information',
-                  'upstream_external_id': 'BLA-761158-S000-label-2020-08',
-                  'upstream_title': 'BLENREP (belantamab mafodotin-blmf) prescribing information, revised 08/2020',
+                  'key': 'fda-blenrep-accelerated-approval-package-2020-08-05',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/nda/2020/761158Orig1s000Approv.pdf',
+                  'retrieval_role': 'authoritative_regulator_approval_package',
+                  'upstream_system': 'U.S. Food and Drug Administration Drugs@FDA approval package',
+                  'upstream_external_id': 'BLA-761158-Orig1s000-approval-package',
+                  'upstream_title': 'BLENREP BLA 761158 accelerated approval package',
                   'published_date': '2020-08-05',
-                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.Pdf',
-                  'required_phrases': ['ocular toxicity', 'BLENREP REMS', 'at least 4 prior therapies', 'confirmatory trial'],
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/nda/2020/761158Orig1s000Approv.pdf',
+                  'required_phrases': ['BLA ACCELERATED APPROVAL', 'August 5, 2020', 'ocular toxicity', 'REMS'],
               },
               {
                   'key': 'federal-register-blenrep-revocation-2023',
@@ -118,7 +118,7 @@ jobs:
               'task_id': 'ADC-SV-005-BLENREP-PDF-SOURCES-V1',
               'active_head_sha': 'e944f1b02985f09d2ca9eb20eb858294d0ba6415',
               'source_role': 'raw original/authoritative PDF acquisition for later claim-scoped Grounded Evidence',
-              'representation_boundary': 'Readable GSK webpage-only DREAMM-3 and 2022 withdrawal sources are intentionally excluded from this PDF Action and remain on the webpage capture -> bounded local DB -> Drive lane.',
+              'representation_boundary': 'The historical FDA label remains a readable authoritative source but its label endpoint returned stable 404 to the GitHub runner. The FDA approval package is archived instead for raw-byte 2020 approval/ocular-risk/REMS grounding. Readable GSK webpage-only DREAMM-3 and 2022 withdrawal sources remain on the webpage capture -> bounded local DB -> Drive lane.',
               'success_count': sum(1 for row in rows if row['ok']),
               'item_count': len(ITEMS),
               'rows': rows,
