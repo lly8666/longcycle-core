@@ -12,19 +12,19 @@ SET source_capture_state = 'content_verified',
     content_verified_at = coalesce(
         document.content_verified_at,
         (
-            SELECT min(fetch.retrieved_at)
-            FROM evidence.document_fetches AS fetch
-            WHERE fetch.document_id = document.id
-              AND fetch.response_headers ->> 'x-longcycle-raw-source-materialized' = 'false'
+            SELECT min(source_fetch.retrieved_at)
+            FROM evidence.document_fetches AS source_fetch
+            WHERE source_fetch.document_id = document.id
+              AND source_fetch.response_headers ->> 'x-longcycle-raw-source-materialized' = 'false'
         )
     )
 WHERE document.source_capture_state = 'materialized'
   AND document.raw_materialized_document_version_id IS NULL
   AND EXISTS (
       SELECT 1
-      FROM evidence.document_fetches AS fetch
-      WHERE fetch.document_id = document.id
-        AND fetch.response_headers ->> 'x-longcycle-raw-source-materialized' = 'false'
+      FROM evidence.document_fetches AS source_fetch
+      WHERE source_fetch.document_id = document.id
+        AND source_fetch.response_headers ->> 'x-longcycle-raw-source-materialized' = 'false'
   );
 
 -- Pre-0031 materialized rows were created by the historical raw archive path unless they carried
@@ -36,12 +36,12 @@ WITH legacy_raw_version AS (
         version.id AS document_version_id,
         version.created_at
     FROM evidence.document_versions AS version
-    JOIN evidence.document_fetches AS fetch
-      ON fetch.id = version.first_fetch_id
-     AND fetch.document_id = version.document_id
-     AND fetch.content_blob_id = version.content_blob_id
+    JOIN evidence.document_fetches AS source_fetch
+      ON source_fetch.id = version.first_fetch_id
+     AND source_fetch.document_id = version.document_id
+     AND source_fetch.content_blob_id = version.content_blob_id
     WHERE coalesce(
-        fetch.response_headers ->> 'x-longcycle-raw-source-materialized',
+        source_fetch.response_headers ->> 'x-longcycle-raw-source-materialized',
         'legacy-raw'
     ) <> 'false'
     ORDER BY version.document_id, version.version_ordinal, version.created_at, version.id
@@ -89,15 +89,15 @@ DECLARE
     v_content_type text;
 BEGIN
     SELECT
-        fetch.response_headers ->> 'x-longcycle-raw-source-materialized',
-        fetch.retrieved_at,
+        source_fetch.response_headers ->> 'x-longcycle-raw-source-materialized',
+        source_fetch.retrieved_at,
         blob.content_type
     INTO v_raw_materialized, v_retrieved_at, v_content_type
-    FROM evidence.document_fetches AS fetch
-    JOIN evidence.content_blobs AS blob ON blob.id = fetch.content_blob_id
-    WHERE fetch.id = NEW.first_fetch_id
-      AND fetch.document_id = NEW.document_id
-      AND fetch.content_blob_id = NEW.content_blob_id;
+    FROM evidence.document_fetches AS source_fetch
+    JOIN evidence.content_blobs AS blob ON blob.id = source_fetch.content_blob_id
+    WHERE source_fetch.id = NEW.first_fetch_id
+      AND source_fetch.document_id = NEW.document_id
+      AND source_fetch.content_blob_id = NEW.content_blob_id;
 
     IF NOT FOUND THEN
         RAISE EXCEPTION
