@@ -13,13 +13,17 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 _SHA256_PATTERN = r"^[0-9a-f]{64}$"
+ORCHESTRATION_V1 = "longcycle-research-orchestration/v1"
+ORCHESTRATION_V2 = "longcycle-research-orchestration/v2"
 
 
 class ResearchSourcePackSpec(BaseModel):
-    """Immutable externally acquired source-pack identity.
+    """Legacy immutable source-pack identity.
 
-    Transport restoration is deliberately outside this contract. The runner receives one local
-    ZIP and verifies that it is exactly the repository-declared Release asset before using bytes.
+    This remains supported so historical execution specs/receipts are replayable. It is not the
+    default prerequisite for new research. V2 orchestration accepts an already prepared local
+    material root whose files may come from Drive capture capsules, legacy Release assets, direct
+    readable representations, or later raw-source materialization.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -31,11 +35,7 @@ class ResearchSourcePackSpec(BaseModel):
 
 
 class GroundedEvidenceRepairOperation(BaseModel):
-    """One deliberately narrow repair to a Grounded Evidence fragment expectation.
-
-    V1 only permits exact structured expected-value repair. Claim context, source/document identity,
-    locators and acceptance cannot be patched through this mechanism.
-    """
+    """One deliberately narrow repair to a Grounded Evidence fragment expectation."""
 
     model_config = ConfigDict(extra="forbid", frozen=True, populate_by_name=True)
 
@@ -65,22 +65,36 @@ class GroundedEvidenceSpecRepair(BaseModel):
 
 
 class ResearchOrchestrationSpec(BaseModel):
-    """Bounded composition contract for source pack -> Evidence -> optional Reality.
+    """Bounded composition contract for preserved source material -> Evidence -> optional Reality.
 
-    The orchestration spec references the existing epistemic specs instead of restating their
-    semantics. It owns only immutable material verification, explicit repair overlays, execution
-    order and immutable-path guards.
+    V1 is the historical GitHub-Release source-pack contract and remains replayable. V2 removes
+    transport from the epistemic contract: the caller supplies a prepared local material root, and
+    Longcycle verifies every Evidence document's declared material digest before execution.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["longcycle-research-orchestration/v1"]
+    schema_version: Literal[
+        "longcycle-research-orchestration/v1",
+        "longcycle-research-orchestration/v2",
+    ]
     task_id: str = Field(min_length=1)
-    source_pack: ResearchSourcePackSpec
+    source_pack: ResearchSourcePackSpec | None = None
     evidence_spec_path: str = Field(min_length=1)
     evidence_repair_paths: tuple[str, ...] = ()
     reality_spec_path: str | None = None
     immutable_paths: tuple[str, ...] = ()
+
+    @model_validator(mode="after")
+    def transport_contract_matches_version(self) -> ResearchOrchestrationSpec:
+        if self.schema_version == ORCHESTRATION_V1 and self.source_pack is None:
+            raise ValueError("research orchestration v1 requires legacy source_pack metadata")
+        if self.schema_version == ORCHESTRATION_V2 and self.source_pack is not None:
+            raise ValueError(
+                "research orchestration v2 is transport-neutral; restore/prepare source material "
+                "outside the spec and pass a local material root"
+            )
+        return self
 
 
 class VerifiedMaterial(BaseModel):
@@ -205,6 +219,13 @@ def materialize_evidence_spec(
 
 
 def _required_materials(evidence_spec: dict[str, Any]) -> dict[str, str]:
+    """Return local preserved-material paths and their declared byte digests.
+
+    ``expected_sha256`` identifies the bytes supplied to the Evidence executor. Those bytes may be
+    raw upstream source bytes or a truthful source-derived readable representation. The function
+    deliberately does not call this a raw-source hash.
+    """
+
     rows = evidence_spec.get("documents")
     if not isinstance(rows, list) or not rows:
         raise ValueError("Grounded Evidence spec must contain non-empty documents")
@@ -216,16 +237,49 @@ def _required_materials(evidence_spec: dict[str, Any]) -> dict[str, str]:
         expected_sha256 = row.get("expected_sha256")
         if not isinstance(material_path, str) or not material_path:
             raise ValueError(
-                "research orchestration v1 requires every Evidence document to use "
-                "materialized source transport"
+                "research orchestration requires each prepared Evidence document to declare "
+                "material_path; transport restoration happens outside the epistemic runner"
             )
         if not isinstance(expected_sha256, str) or len(expected_sha256) != 64:
-            raise ValueError(f"materialized document {material_path!r} has no pinned raw SHA-256")
+            raise ValueError(
+                f"prepared Evidence material {material_path!r} has no pinned SHA-256"
+            )
         previous = required.get(material_path)
         if previous is not None and previous != expected_sha256:
             raise ValueError(f"material path {material_path!r} has conflicting expected digests")
         required[material_path] = expected_sha256
     return required
+
+
+def verify_material_root(
+    *,
+    material_root: Path,
+    evidence_spec: dict[str, Any],
+) -> tuple[VerifiedMaterial, ...]:
+    """Verify prepared local source material without assuming how it was transported."""
+
+    root = material_root.resolve()
+    if not root.is_dir():
+        raise ValueError(f"material root is not a directory: {root}")
+    verified: list[VerifiedMaterial] = []
+    for relative_path, expected_sha256 in sorted(_required_materials(evidence_spec).items()):
+        path = _resolved_under(root, relative_path)
+        if not path.is_file():
+            raise ValueError(f"material root is missing required material: {relative_path}")
+        actual_sha = sha256_file(path)
+        if actual_sha != expected_sha256:
+            raise ValueError(
+                f"material digest mismatch for {relative_path}: "
+                f"expected {expected_sha256}, got {actual_sha}"
+            )
+        verified.append(
+            VerifiedMaterial(
+                material_path=relative_path,
+                sha256=actual_sha,
+                size_bytes=path.stat().st_size,
+            )
+        )
+    return tuple(verified)
 
 
 def _validated_zip_entries(archive: zipfile.ZipFile) -> dict[str, zipfile.ZipInfo]:
@@ -253,6 +307,8 @@ def verify_and_extract_source_pack(
     evidence_spec: dict[str, Any],
     material_root: Path,
 ) -> tuple[VerifiedMaterial, ...]:
+    """Replay the legacy v1 Release-pack contract without making it the v2 default."""
+
     if source_pack_path.name != source_pack_spec.file_name:
         raise ValueError(
             f"source pack filename mismatch: expected {source_pack_spec.file_name!r}, "
@@ -327,13 +383,7 @@ def execution_phases(spec: ResearchOrchestrationSpec) -> tuple[str, ...]:
 
 
 def _repo_path(repo_root: Path, relative_path: str) -> Path:
-    root = repo_root.resolve()
-    candidate = (root / relative_path).resolve()
-    try:
-        candidate.relative_to(root)
-    except ValueError as exc:
-        raise ValueError(f"repository path escapes root: {relative_path}") from exc
-    return candidate
+    return _resolved_under(repo_root, relative_path)
 
 
 def _clean_work_dir(path: Path) -> Path:
@@ -426,23 +476,66 @@ def _work_member(path: Path, work_dir: Path) -> str:
     return path.resolve().relative_to(work_dir.resolve()).as_posix()
 
 
+def _prepare_materials(
+    *,
+    spec: ResearchOrchestrationSpec,
+    prepared_spec: dict[str, Any],
+    source_pack_path: Path | None,
+    material_root_path: Path | None,
+    work_dir: Path,
+) -> tuple[Path, tuple[VerifiedMaterial, ...], dict[str, Any]]:
+    if spec.schema_version == ORCHESTRATION_V1:
+        if spec.source_pack is None or source_pack_path is None:
+            raise ValueError("research orchestration v1 requires --source-pack")
+        if material_root_path is not None:
+            raise ValueError("research orchestration v1 does not accept --material-root")
+        material_root = work_dir / "material"
+        verified = verify_and_extract_source_pack(
+            source_pack_path=source_pack_path.resolve(),
+            source_pack_spec=spec.source_pack,
+            evidence_spec=prepared_spec,
+            material_root=material_root,
+        )
+        provenance = {
+            "mode": "legacy_source_pack",
+            "source_pack": spec.source_pack.model_dump(mode="json"),
+        }
+        return material_root, verified, provenance
+
+    if source_pack_path is not None:
+        raise ValueError(
+            "research orchestration v2 does not require a source pack; pass prepared material "
+            "through --material-root"
+        )
+    if material_root_path is None:
+        raise ValueError("research orchestration v2 requires --material-root")
+    material_root = material_root_path.resolve()
+    verified = verify_material_root(material_root=material_root, evidence_spec=prepared_spec)
+    provenance = {
+        "mode": "prepared_material_root",
+        "transport_neutral": True,
+        "material_root": str(material_root),
+    }
+    return material_root, verified, provenance
+
+
 def execute_research_orchestration(
     *,
     repo_root: Path,
     spec: ResearchOrchestrationSpec,
-    source_pack_path: Path,
     work_dir: Path,
+    source_pack_path: Path | None = None,
+    material_root_path: Path | None = None,
     skip_db_upgrade: bool = False,
 ) -> dict[str, Any]:
-    """Execute the validated source-pack -> Evidence -> optional Reality composition.
+    """Execute preserved-material -> Evidence -> optional Reality composition.
 
-    Transport restoration is still an outer adapter concern. This function starts from one already
-    restored immutable source pack and delegates epistemic work to the existing repository scripts.
+    Source transport is an outer concern. V2 verifies an already prepared local material root and
+    never requires GitHub Release or raw-PDF download as an epistemic prerequisite.
     """
 
     repo_root = repo_root.resolve()
     work_dir = _clean_work_dir(work_dir)
-    source_pack_path = source_pack_path.resolve()
     before_immutable = snapshot_immutable_paths(repo_root, spec.immutable_paths)
     prepared_path = work_dir / "prepared-grounded-evidence-spec.json"
     prepared_spec, prepared = materialize_evidence_spec(
@@ -451,12 +544,12 @@ def execute_research_orchestration(
         repair_paths=spec.evidence_repair_paths,
         destination=prepared_path,
     )
-    material_root = work_dir / "material"
-    materials = verify_and_extract_source_pack(
+    material_root, materials, source_material = _prepare_materials(
+        spec=spec,
+        prepared_spec=prepared_spec,
         source_pack_path=source_pack_path,
-        source_pack_spec=spec.source_pack,
-        evidence_spec=prepared_spec,
-        material_root=material_root,
+        material_root_path=material_root_path,
+        work_dir=work_dir,
     )
 
     if not skip_db_upgrade:
@@ -514,10 +607,11 @@ def execute_research_orchestration(
         raise ValueError(f"immutable-path guard changed during orchestration: {changed}")
 
     return {
-        "schema_version": "longcycle-research-orchestration-execution/v1",
+        "schema_version": "longcycle-research-orchestration-execution/v2",
+        "orchestration_spec_version": spec.schema_version,
         "task_id": spec.task_id,
         "phases": list(execution_phases(spec)),
-        "source_pack": spec.source_pack.model_dump(mode="json"),
+        "source_material": source_material,
         "prepared_evidence_spec": {
             "artifact_member": _work_member(prepared_path, work_dir),
             "sha256": prepared.sha256,
@@ -540,12 +634,13 @@ def execute_research_orchestration_receipt(
     *,
     repo_root: Path,
     spec_path: Path,
-    source_pack_path: Path,
     work_dir: Path,
     output_path: Path,
+    source_pack_path: Path | None = None,
+    material_root_path: Path | None = None,
     skip_db_upgrade: bool = False,
 ) -> dict[str, Any]:
-    """Run orchestration and always attempt to persist one machine-readable success/failure receipt."""
+    """Run orchestration and always attempt to persist a machine-readable success/failure receipt."""
 
     output_path = output_path.resolve()
     try:
@@ -554,6 +649,7 @@ def execute_research_orchestration_receipt(
             repo_root=repo_root,
             spec=spec,
             source_pack_path=source_pack_path,
+            material_root_path=material_root_path,
             work_dir=work_dir,
             skip_db_upgrade=skip_db_upgrade,
         )
