@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 59,
+  "continuity_sequence": 60,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "6342add86e5a9ecefb94b6fa03081772ff124bf3",
+  "checkpoint_based_on_head_sha": "125f14fa3e317f4c021f6a3a28b20489b8c9a445",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head. Longcycle continuity is intentionally bounded: default bootstrap loads current mission/method/cursor/capability ownership, not project history. Cold Git/Issue/receipt history is recalled only when a fuzzy prior-history cue, core_locked semantic change, legacy provenance question or other CAP-0009 trigger appears. Historical recovery remains memory-first and Evidence-final: CAP-0006 owns blind/fragmentary Model Memory including approximate time; CAP-0007 is only the post-acquisition execution stage. Do not tune the system to make continuity drills pass and do not treat a drill report's own PASS as authority.",
+  "bootstrap_instruction": "Resume from live PR/head. Continuity black-box validation is complete and should not remain the main path: an external fresh Agent independently recovered the live mission/current cursor without preloading old history, used bounded on-demand recall for a fuzzy temporal-history cue, and preserved CAP-0006 memory-first discovery upstream of CAP-0007 execution. Keep CAP-0009/CAP-0010/Repair Memory as permanent supporting constraints, but stop continuity optimization unless a new concrete transfer failure appears. Historical recovery remains memory-first and Evidence-final; preserve fragmentary/approximate Memory Leads rather than forcing exact dates.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,43 +16,44 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Keep Longcycle understandable, truthful and efficiently developable across years of short fresh-Agent sessions: bounded hot handoff, latent on-demand cold history, stable semantic owners, memory-first historical discovery, Evidence-final publication and source-supported temporal uncertainty.",
-    "short_term_goal": "Black-box the continuity design with a genuinely fresh Agent after three same-Agent artificial-ignorance scenarios passed, then inspect that external report independently before doing any more continuity optimization.",
-    "next_big_step": "A fresh Agent with no prior Longcycle chat executes GitHub issue #129 and writes exactly one report under .longcycle/handoff/rehearsals. A later maintainer inspects the actual answers/read set against the tested subject HEAD. If the large logic passes, stop continuity work and return to the pending real memory-first lifecycle validation.",
-    "local_optimization_stop_rule": "Do not add a long-term-memory database, vector-store authority, new continuity subsystem or extra benchmark matrix. Do not edit implementation during the external drill. Do not tune wording to expected answers. Three scenarios are sufficient unless an actual fresh-Agent report exposes a distinct failure mode.",
+    "medium_term_goal": "Make Longcycle a durable point-in-time industrial-memory research system that stays understandable, truthful and efficiently developable across years of short fresh-Agent sessions: memory-first historical discovery, Evidence-final publication, source-supported temporal uncertainty, stable semantic ownership, backward-readable generated state and bounded on-demand recovery of old design rationale.",
+    "short_term_goal": "Prove the normal historical-research lifecycle still begins from sealed Model Memory by taking one existing high-value Memory Lead with approximate or partly unknown recalled time through post-seal discovery and the already-owned archive/Evidence/orchestration/replay path without adding architecture.",
+    "next_big_step": "Select one unresolved high-value lead from an existing sealed Memory Atlas whose recalled timing is intentionally coarse or partial. Preserve that uncertainty, use aliases/query families and the approximate period to drive post-seal source discovery, archive any recovered source through existing boundaries, then reuse CAP-0007 execution and CAP-0005 replay only if the grounded material justifies those phases.",
+    "local_optimization_stop_rule": "Do not add another continuity subsystem, long-term-memory database, vector-store authority, research-orchestration layer, replay v2 or temporal schema for convenience. Do not force fuzzy Memory Leads into exact dates. Do not continue continuity drills after the external black-box PASS unless a later real handoff exposes a distinct failure. Promote architecture only from a demonstrated truthful/product failure against existing capability owners.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "fresh-agent-continuity-validation",
-    "last_completed_action": "Sequence-58 continuity/memory-first state passed exact-head full validation run 32620324795. This session then ran three bounded same-Agent artificial-ignorance drills: DUMB-01 cold start without old history, DUMB-02 fuzzy prior-history cue routed through Capability/Repair Memory to exact issue #42, and DUMB-03 source-pack trap preserving CAP-0006 memory-first upstream of CAP-0007 execution. All three passed, with the independence limitation explicitly recorded in .longcycle/handoff/rehearsals/sequence-58-artificial-ignorance-v1.json. Added docs/development/fresh-agent-continuity-drill.md, its regression test, rehearsal authority note and operator note. Opened GitHub issue #129 as the stable rendezvous for a genuinely fresh Agent; that Agent is allowed exactly one report mutation and is forbidden from repairing the system during the test.",
-    "current_task": "Obtain and independently inspect one genuine external fresh-Agent continuity report from issue #129. The testing Agent must have no prior Longcycle chat context, must complete DUMB-01/02/03 before reading earlier rehearsals, and may write only its report. The inspector must verify semantic recovery, actual reads, authority discipline and subject-head freshness rather than trusting the report's self-grade.",
-    "why_now": "Same-Agent artificial ignorance can prove that repository inputs are sufficient but cannot prove independence from latent chat context. One real fresh-Agent black-box run is the right final test of the handoff/on-demand-memory design before further project development.",
-    "done_when": "Issue #129 contains a report commit from a genuinely fresh Agent; the report identifies the tested subject HEAD and actual read set; a later maintainer verifies all three scenarios or records a concrete failure; no product implementation was modified by the testing Agent; and any repair, if needed, is limited to a demonstrated large-logic continuity failure rather than wording polish.",
+    "parent_workstream_id": "memory-first-lifecycle-validation",
+    "last_completed_action": "Continuity validation is closed. Sequence-58 exact-head full validation passed run 32620324795. Three same-Agent artificial-ignorance scenarios then passed and were explicitly marked non-independent. A genuinely fresh Agent subsequently executed GitHub issue #129 with no prior Longcycle chat and wrote only .longcycle/handoff/rehearsals/fresh-agent-external-59-608c968.json against subject HEAD 608c968c05dba8d55e8bf56f335ff08383af8621. Independent maintainer review accepted the report: DUMB-01 recovered mission/live cursor/capability ownership without old-history preload; DUMB-02 followed bounded CAP-0003 -> RI-0003 -> exact issue #42 history for the fuzzy temporal cue and stopped; DUMB-03 resisted the source-pack trap and kept CAP-0006 memory-first discovery upstream of CAP-0007 execution. unexpected_reads was empty. Commit delta 608c968 -> 125f14f contains only the permitted external report file; the test Agent did not mutate handoff, implementation, Capability/Repair cards or tests. No large-logic continuity defect was found, so continuity optimization stops.",
+    "current_task": "Validate the normal memory-first product lifecycle on one existing sealed, high-value Memory Lead whose recalled time is approximate or partly unknown. Start from the immutable lead as discovery memory, preserve its uncertainty, perform only post-seal bounded source discovery, then reuse existing source/archive/Evidence, CAP-0007 execution and CAP-0005 replay if sufficient grounded material is recovered.",
+    "why_now": "Evidence/Reality/replay and continuity are now strongly validated. The remaining architecture-fidelity risk is product-path discoverability: recent benchmark execution begins from prepared source packs, so a real memory-led run is the best proof that future Agents will still use Model Memory as the historical-recovery starting point and will not discard useful fuzzy memories for lacking exact dates.",
+    "done_when": "One already sealed Memory Lead with coarse/partial recalled time is selected without mutating blind memory; its original uncertainty remains visible; post-seal discovery is driven from aliases/query families and approximate period rather than invented dates; any recovered publishable history passes normal immutable source/archive and claim-scoped Evidence boundaries; CAP-0007/CAP-0005 are reused rather than duplicated when applicable; and any friction is classified as discovery/product friction versus a true representation defect before architecture changes.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "If acting as the external test Agent, execute issue #129 exactly and submit only the report. If acting as the returning maintainer and a #129 report already exists, inspect that report against its subject HEAD before any other work; otherwise do not fabricate an independent result from the current session."
+    "next_atomic_action": "From an existing sealed Memory Atlas, select one unresolved high-value lead whose approximate_period or recalled statement is intentionally coarse/partial. Before any search, record the CAP-0006 owner and the lead's existing uncertainty fields/raw wording; then open only that lead's bounded post-seal verification context and begin source discovery without guessing an exact date."
   },
   "active_context": {
-    "context_id": "fresh-agent-continuity-black-box-v1",
-    "context_kind": "repository_backed_continuity_validation",
-    "label": "three-scenario fresh-Agent black-box continuity drill",
-    "root_path": "docs/development/fresh-agent-continuity-drill.md",
+    "context_id": "memory-first-lifecycle-validation-v2",
+    "context_kind": "historical_memory_first_product_validation",
+    "label": "sealed fuzzy Memory Lead to grounded Evidence/replay through existing owners",
+    "root_path": "src/longcycle/application/memory_campaign.py",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      "FRESH_AGENT_BOOTSTRAP.md",
-      "docs/development/on-demand-history-recall.md",
-      "docs/development/fresh-agent-continuity-drill-operator.md",
-      ".longcycle/handoff/rehearsals/sequence-58-artificial-ignorance-v1.json",
-      "tests/test_fresh_agent_continuity_drill.py"
+      ".longcycle/capabilities/cards/CAP-0006.json",
+      ".longcycle/capabilities/cards/CAP-0007.json",
+      ".longcycle/capabilities/cards/CAP-0005.json",
+      ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json",
+      "tests/test_memory_campaign.py",
+      "tests/test_memory_ingest.py"
     ],
     "core_exclusion_terms": [
-      "always-loaded project history",
-      "self-graded report authority",
-      "test-driven architecture mutation",
       "source-first historical recovery",
+      "invented exact memory date",
+      "new orchestration subsystem",
+      "always-loaded project history",
       "vector memory authority"
     ]
   },
@@ -60,9 +61,9 @@
     "Use independent professional judgment and optimize for the large logic rather than local benchmark polish.",
     "Model memory/search are discovery instruments, not publishable Evidence; historical recovery remains memory-first and Evidence-final.",
     "Preserve approximate/unknown historical time rather than forcing exact dates for convenience.",
-    "Project long-term memory should be latent and on-demand: old discussions/research stay durable and discoverable but do not pollute normal fresh-Agent context.",
-    "Test continuity by deliberate artificial-ignorance/fresh-Agent scenarios, but do not drill into wording details or modify the system just to pass the test.",
-    "Leave a way for a genuinely fresh Agent to generate a GitHub report that a returning maintainer can inspect independently.",
+    "Project long-term memory should remain latent and on-demand: old discussions/research stay durable and discoverable but do not pollute normal fresh-Agent context.",
+    "Capability governance and Repair Memory must survive handoffs and prevent duplicate semantic ownership or accidental reversal of validated invariants.",
+    "The external fresh-Agent continuity gate passed; stop continuity optimization unless a future real transfer exposes a distinct failure.",
     "Each Agent session has roughly a 25-minute working window; keep work bounded, commit coherent state and hand off before the window is exhausted.",
     "Every substantive work session must update the repository handoff before returning control."
   ],
@@ -71,34 +72,35 @@
     "authority": "snapshot_not_authoritative",
     "last_observed_run": 32620324795,
     "observed_head_sha": "0348acddf80bb8ed870bcd48175354cda540da63",
-    "conclusion": "Sequence-58 exact-head full validation passed Repair Memory, Capability Registry, PostgreSQL repository/Judgment/Reality/typed-memory/Evidence smokes, no-lookahead replays, Mypy, Pytest, compact-index build and memory-history audit. Sequence-59 adds only continuity drill documentation/test/rehearsal and this handoff, so final exact-head validation must be refreshed after this commit.",
-    "mypy_summary": "Mypy src passed in run 32620324795; refresh on sequence-59 live head.",
-    "pytest_summary": "Pytest passed in run 32620324795; sequence-59 adds test_fresh_agent_continuity_drill.py and requires final refresh.",
+    "conclusion": "Sequence-58 exact-head full validation passed Repair Memory, Capability Registry, PostgreSQL repository/Judgment/Reality/typed-memory/Evidence smokes, no-lookahead replays, Mypy, Pytest, compact-index build and memory-history audit. Subsequent sequence-59 continuity-drill files and the external report did not modify product semantics, but the next Agent must refresh live CI on the sequence-60 head before substantive work.",
+    "mypy_summary": "Mypy src passed in full validation run 32620324795; refresh live status on the current head.",
+    "pytest_summary": "Pytest passed in run 32620324795; continuity drill regression files were added afterward and require live-head refresh before new substantive development.",
     "ruff_summary": "Diagnostic-only in normal CI; not a correctness gate.",
-    "refresh_instruction": "Run the owner-only exact-head full validator on the live sequence-59 HEAD and treat that live result as authority over this snapshot."
+    "refresh_instruction": "Refresh PR #1 live HEAD and exact-head CI before beginning Memory Lead discovery. Treat live Git/CI as authority over this checkpoint snapshot."
   },
   "workstreams": [
     {
-      "workstream_id": "fresh-agent-continuity-validation",
+      "workstream_id": "memory-first-lifecycle-validation",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "same_agent_three_scenario_pass_external_black_box_pending",
-      "summary": "Three bounded artificial-ignorance scenarios passed without new architecture, but true independence remains intentionally unclaimed. Issue #129 is the external fresh-Agent gate; its report must be inspected, not merely self-graded.",
+      "status": "sealed_fuzzy_memory_lead_validation_next",
+      "summary": "Architecture-fidelity audit and external continuity black-box both support the same next proof: explicitly exercise the upstream Memory Atlas path with one sealed fuzzy-time lead, then reuse existing downstream owners only as evidence warrants.",
       "next_actions": [
-        "Run issue #129 from a genuinely fresh Agent with no prior Longcycle chat.",
-        "Inspect the resulting report's answer summaries, actual reads, authority refs and subject-head freshness.",
-        "If it passes, stop continuity optimization; if it fails, repair only the demonstrated large-logic failure."
+        "Select one existing sealed high-value lead with approximate/partial time.",
+        "Preserve its recalled uncertainty while running only post-seal bounded source discovery.",
+        "Archive recovered source through existing boundaries and reuse CAP-0007/CAP-0005 only when grounded material justifies it."
       ],
       "blockers": []
     },
     {
-      "workstream_id": "memory-first-lifecycle-validation",
+      "workstream_id": "session-continuity",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "paused_until_external_continuity_gate",
-      "summary": "The next product proof remains one existing sealed fuzzy-time Memory Lead through post-seal discovery and existing Evidence/orchestration/replay owners. It is paused only long enough to finish the external continuity black-box gate.",
+      "status": "external_black_box_pass_established_and_guarded",
+      "summary": "CAP-0009 bounded bootstrap plus on-demand cold-history recall passed same-Agent and genuinely fresh-Agent black-box tests. Issue #129 remains the reusable external drill rendezvous, but continuity is no longer the current optimization target.",
       "next_actions": [
-        "After the external continuity gate closes, select one existing sealed high-value lead with approximate/partial time and resume the sequence-58 memory-first lifecycle plan."
+        "Keep bounded bootstrap and latent historical recall as standing constraints.",
+        "Re-run the external drill only after a material continuity change or a concrete real transfer failure."
       ],
       "blockers": []
     },
@@ -107,9 +109,10 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "established_and_guarded",
-      "summary": "Capability/Repair ownership and on-demand historical recall remain the compact routing layers; no new semantic owner was added for the drill.",
+      "summary": "Capability ownership/admission and Repair Memory remain permanent anti-drift gates; default reuse/extend and one semantic owner per stable responsibility.",
       "next_actions": [
-        "Keep capability ownership and Repair Memory as the first routing layers when an external drill reveals a real failure."
+        "Use capability discovery before material product/architecture development.",
+        "Use bounded historical recall before changing a core_locked semantic owner when prior rationale may matter."
       ],
       "blockers": []
     },
@@ -136,29 +139,27 @@
     ".longcycle/repair-memory/active-index.json"
   ],
   "deep_reference_paths": [
+    ".longcycle/handoff/rehearsals/fresh-agent-external-59-608c968.json",
     "docs/development/fresh-agent-continuity-drill.md",
-    "docs/development/fresh-agent-continuity-drill-operator.md",
     "docs/development/on-demand-history-recall.md",
-    ".longcycle/handoff/rehearsals/sequence-58-artificial-ignorance-v1.json",
-    "tests/test_fresh_agent_continuity_drill.py",
-    "github:issue:129",
     ".longcycle/capabilities/cards/CAP-0006.json",
     ".longcycle/capabilities/cards/CAP-0007.json",
     ".longcycle/capabilities/cards/CAP-0009.json",
-    ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
+    ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json",
+    "github:issue:129"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Will a genuinely fresh Agent recover the live task and semantic ownership without broad cold-history loading?",
-    "When given only a fuzzy prior-history cue, will it use bounded owner -> Repair Memory -> exact origin retrieval rather than either ignoring history or crawling everything?",
-    "Will it resist the source-pack trap and preserve CAP-0006 memory-first historical recovery upstream of CAP-0007 execution?",
-    "If the external report passes, continuity optimization should stop and the real fuzzy Memory Lead lifecycle validation should resume."
+    "Does a real sealed fuzzy-time Memory Lead naturally survive the entire researcher workflow from Model Memory discovery through post-seal source recovery without being sharpened into an invented exact date?",
+    "The deferred non-direct Outcome implication-polarity pressure remains outside schema; Rova-T and Kwinana did not justify promotion beyond related_milestone + indeterminate.",
+    "On-demand historical recall remains deterministic and repository-pointer based. Consider semantic/embedding routing only if real scale later proves bounded capability/repair/origin lookup insufficient; such routing must never become authority.",
+    "Continue treating additive legacy portable-memory compatibility conservatively: support lawful old typed generations, upgrade obsolete prototypes deterministically when provenance permits, and never rewrite historical bytes."
   ],
   "ordered_next_actions": [
-    "Refresh live PR/head and run final exact-head full CI for sequence 59.",
-    "Have a genuinely fresh Agent execute GitHub issue #129; do not give it prior chat context or earlier rehearsal reports.",
-    "Inspect the resulting external report against its tested subject HEAD; do not trust its self-grade without checking reads and authority refs.",
-    "If all three large-logic scenarios pass, stop continuity optimization and resume the sealed fuzzy-time Memory Lead lifecycle validation from sequence 58.",
-    "If a scenario fails, classify the failure against CAP-0009/CAP-0006/CAP-0007/RI-0003 and make only the smallest repair justified by that concrete failure."
+    "Refresh PR #1 live HEAD and current CI; sequence-60 handoff may be one control-plane commit ahead of checkpoint_based_on_head_sha.",
+    "Select one existing sealed Memory Lead whose recalled time is approximate/partial and whose verification remains unresolved or useful.",
+    "Read only that lead's bounded campaign/verification context; do not crawl old history unless an on-demand historical-recall trigger fires.",
+    "Run post-seal source discovery from aliases/query families and approximate period without guessing an exact date; archive recovered source through existing boundaries.",
+    "Reuse existing Evidence/orchestration/replay owners as justified; classify any friction before proposing architecture and update handoff after the real memory-led run changes the cursor."
   ]
 }
