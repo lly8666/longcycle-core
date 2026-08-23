@@ -10,13 +10,13 @@
   "entrypoints": [
     {
       "contains": "class ResearchOrchestrationSpec(BaseModel):",
-      "description": "Repository-owned orchestration spec composes existing Evidence/Reality executors and preserved-source integrity guards.",
+      "description": "Repository-owned orchestration spec composes existing Evidence/Reality executors and preserved-source integrity guards; v2 accepts a transport-neutral prepared material root.",
       "kind": "application",
       "path": "src/longcycle/application/research_orchestration.py"
     },
     {
-      "contains": "\"run\",",
-      "description": "Existing longcycle research command surface delegates to the shared orchestration application logic.",
+      "contains": "--material-root",
+      "description": "The longcycle research command accepts a transport-neutral material root for v2 while retaining --source-pack only for legacy v1 replay.",
       "kind": "cli",
       "path": "src/longcycle/cli.py"
     }
@@ -28,8 +28,14 @@
   ],
   "guards": [
     {
-      "contains": "class ResearchOrchestrationContractTest",
-      "description": "Contract tests cover preserved source-material hashes, repair guards and immutable paths.",
+      "contains": "test_v2_material_root_verifies_required_representations_without_source_pack",
+      "description": "Contract tests prove new orchestration verifies prepared source representations without requiring a Release/source-pack transport.",
+      "kind": "test",
+      "path": "tests/test_research_orchestration.py"
+    },
+    {
+      "contains": "test_legacy_source_pack_hash_and_required_material_hashes_are_fail_closed",
+      "description": "Legacy v1 source-pack replay remains hash-checked and fail-closed without becoming the v2 default.",
       "kind": "test",
       "path": "tests/test_research_orchestration.py"
     }
@@ -48,7 +54,7 @@
     "orchestration.bounded_evidence_reality_composition",
     "orchestration.portable_execution_receipt"
   ],
-  "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. It consumes CAP-0001/CAP-0002 source/Evidence state and must not turn raw-byte acquisition into an independent research prerequisite.",
+  "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. V2 is transport-neutral and consumes a verified local material root; legacy v1 source-pack replay is compatibility only and must not turn raw-byte acquisition into an independent research prerequisite.",
   "revisit_when": "Only replace if source identity, representation integrity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery or transport semantics.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
@@ -63,6 +69,7 @@
   "tags": [
     "orchestration",
     "source-material",
+    "transport-neutral",
     "repair-overlay",
     "receipt",
     "fail-closed"
