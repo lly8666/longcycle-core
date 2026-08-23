@@ -80,7 +80,8 @@
         "fact normalization",
         "fact reconciliation",
         "reality projection",
-        "comparability"
+        "comparability",
+        "state as of"
       ],
       "card_path": ".longcycle/capabilities/cards/CAP-0003.json",
       "extension_seams": [
@@ -93,23 +94,26 @@
         "reality.fact.normalization",
         "reality.fact.comparability",
         "reality.canonical.reconciliation",
-        "reality.valid_time_precision"
+        "reality.valid_time_precision",
+        "reality.observation_time_unknown_onset"
       ],
-      "purpose": "Own typed Fact normalization, comparability and canonical Reality semantics, including source-supported temporal precision and reconciliation rather than direct assertion copying.",
+      "purpose": "Own typed Fact normalization, comparability and canonical Reality semantics, including source-supported valid-time precision, explicit period/timeless/unknown kind, observation/as-of state with unknown onset, and reconciliation rather than direct assertion copying.",
       "scope": [
         "src/longcycle/application/normalization.py",
         "src/longcycle/application/reality_projection.py",
         "src/longcycle/application/reconciliation.py",
         "src/longcycle/domain/models.py",
         "migrations/0020_fact_valid_time_precision.sql",
-        "migrations/0021_canonical_valid_time_kind.sql"
+        "migrations/0021_canonical_valid_time_kind.sql",
+        "migrations/0024_canonical_observation_time.sql"
       ],
       "tags": [
         "reality",
         "fact",
         "normalization",
         "reconciliation",
-        "temporal-precision"
+        "temporal-precision",
+        "observation-time"
       ],
       "title": "Canonical Reality normalization and reconciliation"
     },
@@ -119,7 +123,8 @@
         "expectation memory",
         "forecast history",
         "outcome evaluation",
-        "revision history"
+        "revision history",
+        "precision aware outcome"
       ],
       "card_path": ".longcycle/capabilities/cards/CAP-0004.json",
       "extension_seams": [
@@ -131,22 +136,27 @@
       "owned_semantics": [
         "judgment.assertion.identity",
         "judgment.rationale_revision_history",
-        "outcome.judgment_reality_evaluation"
+        "judgment.target_temporal_precision",
+        "outcome.judgment_reality_evaluation",
+        "outcome.precision_aware_timing"
       ],
-      "purpose": "Own contemporaneous Judgment representation, rationale/revision context and later Outcome evaluation without rewriting the original historical Judgment.",
+      "purpose": "Own contemporaneous Judgment representation, source-supported target precision, rationale/revision context and later precision-aware Outcome evaluation without rewriting the original historical Judgment.",
       "scope": [
         "src/longcycle/application/judgment_projection.py",
         "src/longcycle/application/judgment_context_projection.py",
         "src/longcycle/application/judgment_replay.py",
         "src/longcycle/domain/judgments.py",
-        "src/longcycle/domain/outcomes.py"
+        "src/longcycle/domain/outcomes.py",
+        "migrations/0018_judgment_temporal_precision.sql",
+        "migrations/0019_precision_aware_outcome_timing.sql"
       ],
       "tags": [
         "judgment",
         "expectation",
         "outcome",
         "rationale",
-        "revision"
+        "revision",
+        "temporal-precision"
       ],
       "title": "Judgment, expectation revision and Outcome memory"
     },
@@ -198,31 +208,37 @@
         "blind recall",
         "memory atlas",
         "self verification",
-        "verification depth"
+        "verification depth",
+        "fragmentary historical recall"
       ],
       "card_path": ".longcycle/capabilities/cards/CAP-0006.json",
       "extension_seams": [
-        "Add orthogonal recall/search families without weakening the sealed blind/search boundary.",
+        "Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.",
         "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite."
       ],
       "id": "CAP-0006",
       "maturity": "stable",
       "owned_semantics": [
         "memory.blind_recall_isolation",
+        "memory.fragmentary_temporal_recall",
         "memory.campaign_saturation_and_seal",
         "memory.post_seal_verification_depth"
       ],
-      "purpose": "Own blind memory-exhaustion, sealing/saturation and post-seal self-verification/delegated search depth while keeping Model Memory permanently below Evidence authority.",
+      "purpose": "Own blind memory-exhaustion, including fragmentary/approximate historical recall, sealing/saturation and post-seal self-verification/delegated search depth while keeping Model Memory permanently below Evidence authority.",
       "scope": [
         "src/longcycle/application/memory_campaign.py",
+        "src/longcycle/application/memory_ingest.py",
         "src/longcycle/application/memory_audit.py",
         "src/longcycle/application/memory_history.py",
         "tests/test_memory_campaign.py",
+        "tests/test_memory_ingest.py",
         "docs/research/**memory**"
       ],
       "tags": [
         "memory",
         "blind-recall",
+        "approximate-time",
+        "uncertainty",
         "seal",
         "saturation",
         "self-verification"
@@ -240,7 +256,8 @@
       "card_path": ".longcycle/capabilities/cards/CAP-0007.json",
       "extension_seams": [
         "Add researcher/task invocation adapters by delegation to the same application contract.",
-        "Add new bounded execution phases only when an existing semantic executor already owns the phase."
+        "Add new bounded execution phases only when an existing semantic executor already owns the phase.",
+        "Historical-recovery discovery stays upstream in CAP-0006; compose its archived outputs here only after normal source acquisition has produced an immutable source pack/spec."
       ],
       "id": "CAP-0007",
       "maturity": "stable",
@@ -249,7 +266,7 @@
         "orchestration.bounded_evidence_reality_composition",
         "orchestration.portable_execution_receipt"
       ],
-      "purpose": "Own bounded composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards without duplicating epistemic executors.",
+      "purpose": "Own the execution-stage composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards; historical memory-first discovery remains upstream in CAP-0006.",
       "scope": [
         "src/longcycle/application/research_orchestration.py",
         "scripts/execute_research_orchestration.py",
@@ -309,21 +326,24 @@
         "session continuity",
         "fresh agent bootstrap",
         "resume cursor",
-        "data plane handoff"
+        "data plane handoff",
+        "historical recall"
       ],
       "card_path": ".longcycle/capabilities/cards/CAP-0009.json",
       "extension_seams": [
         "Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.",
-        "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger."
+        "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger.",
+        "Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff."
       ],
       "id": "CAP-0009",
       "maturity": "core_locked",
       "owned_semantics": [
         "continuity.resume_cursor",
         "continuity.live_head_reconciliation",
-        "continuity.resume_asset_identity"
+        "continuity.resume_asset_identity",
+        "continuity.on_demand_history_recall"
       ],
-      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, while live Git/CI remains implementation authority.",
+      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
       "scope": [
         "src/longcycle/application/session_handoff.py",
         "src/longcycle/application/handoff_data_plane.py",
@@ -331,12 +351,16 @@
         "src/longcycle/application/handoff_drill.py",
         ".longcycle/handoff/**",
         "CONTINUE_HERE.md",
-        "FRESH_AGENT_BOOTSTRAP.md"
+        "FRESH_AGENT_BOOTSTRAP.md",
+        "docs/development/session-handoff-protocol.md",
+        "docs/development/continuity-architecture.md",
+        "docs/development/on-demand-history-recall.md"
       ],
       "tags": [
         "handoff",
         "continuity",
         "bootstrap",
+        "historical-recall",
         "live-head",
         "data-plane"
       ],
