@@ -8,12 +8,14 @@ from longcycle.domain.epistemic import (
     JudgmentMemoryRecord,
     JudgmentRationaleMemoryRecord,
     JudgmentRelationMemoryRecord,
+    OutcomeMemoryRecord,
     PointInTimeMemorySnapshot,
     TemporalExtent,
 )
 
 
 _LAYER_ORDER = {"judgment": 0, "reality": 1, "outcome": 2}
+_COUNT_KEY = {"judgment": "judgments", "reality": "reality", "outcome": "outcomes"}
 
 
 def _extent_payload(extent: TemporalExtent | None) -> dict[str, Any] | None:
@@ -24,6 +26,16 @@ def _extent_payload(extent: TemporalExtent | None) -> dict[str, Any] | None:
 
 def _value_payload(*, kind: str, text: str | None, payload: str | None) -> dict[str, Any]:
     return {"kind": kind, "text": text, "payload": payload}
+
+
+def _relation_payload(item: JudgmentRelationMemoryRecord) -> dict[str, Any]:
+    return {
+        "from_judgment_id": str(item.from_judgment_id),
+        "to_judgment_id": str(item.to_judgment_id),
+        "relation_type": item.relation_type.value,
+        "reason_summary": item.reason_summary,
+        "known_at": item.known_at.isoformat(),
+    }
 
 
 def _judgment_context(
@@ -49,17 +61,174 @@ def _judgment_context(
         if item.judgment_id == judgment.judgment_id
     ]
     visible_relations = [
-        {
-            "from_judgment_id": str(item.from_judgment_id),
-            "to_judgment_id": str(item.to_judgment_id),
-            "relation_type": item.relation_type.value,
-            "reason_summary": item.reason_summary,
-            "known_at": item.known_at.isoformat(),
-        }
+        _relation_payload(item)
         for item in relations
         if item.from_judgment_id == judgment.judgment_id
     ]
     return visible_rationales, visible_relations
+
+
+def _count_phrase(counts: dict[str, int]) -> str:
+    return ", ".join(
+        (
+            f"{counts['judgments']} Judgment",
+            f"{counts['reality']} Reality",
+            f"{counts['outcomes']} Outcome",
+        )
+    )
+
+
+def _knowledge_progression(entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for entry in entries:
+        grouped[str(entry["known_at"])].append(entry)
+
+    running = {"reality": 0, "judgments": 0, "outcomes": 0}
+    progression: list[dict[str, Any]] = []
+    for known_at in sorted(grouped, key=datetime.fromisoformat):
+        introduced = grouped[known_at]
+        introduced_counts = {"reality": 0, "judgments": 0, "outcomes": 0}
+        for entry in introduced:
+            key = _COUNT_KEY[str(entry["layer"])]
+            introduced_counts[key] += 1
+            running[key] += 1
+        progression.append(
+            {
+                "known_at": known_at,
+                "introduced": [
+                    {
+                        "entry_id": str(entry["entry_id"]),
+                        "layer": str(entry["layer"]),
+                        "headline": str(entry["headline"]),
+                    }
+                    for entry in introduced
+                ],
+                "introduced_counts": introduced_counts,
+                "counts_after": dict(running),
+                "researcher_summary": (
+                    f"At this knowledge point the archive added {_count_phrase(introduced_counts)}. "
+                    f"The visible snapshot then contained {_count_phrase(running)}."
+                ),
+            }
+        )
+    return progression
+
+
+def _outcome_story_payload(
+    outcome: OutcomeMemoryRecord,
+    *,
+    reality_by_id: dict[Any, Any],
+) -> dict[str, Any]:
+    linked_reality = (
+        reality_by_id.get(outcome.canonical_fact_version_id)
+        if outcome.canonical_fact_version_id is not None
+        else None
+    )
+    return {
+        "evaluation_id": str(outcome.evaluation_id),
+        "known_at": outcome.known_at.isoformat(),
+        "evaluation_status": outcome.evaluation_status,
+        "semantic_relation": outcome.semantic_relation.value,
+        "timing_relation": outcome.timing_relation,
+        "occurrence_time": _extent_payload(outcome.occurrence_time),
+        "explanation": outcome.explanation,
+        "linked_reality": (
+            {
+                "canonical_fact_version_id": str(linked_reality.canonical_fact_version_id),
+                "known_at": linked_reality.known_at.isoformat(),
+                "predicate_code": linked_reality.predicate_code,
+                "value": _value_payload(
+                    kind=linked_reality.value_kind,
+                    text=linked_reality.value_text,
+                    payload=linked_reality.value_payload,
+                ),
+                "valid_time": _extent_payload(linked_reality.valid_time),
+            }
+            if linked_reality is not None
+            else None
+        ),
+    }
+
+
+def _judgment_storylines(
+    snapshot: PointInTimeMemorySnapshot,
+    *,
+    reality_by_id: dict[Any, Any],
+) -> list[dict[str, Any]]:
+    outcomes_by_judgment: dict[Any, list[OutcomeMemoryRecord]] = defaultdict(list)
+    for outcome in snapshot.outcomes:
+        outcomes_by_judgment[outcome.judgment_id].append(outcome)
+    for values in outcomes_by_judgment.values():
+        values.sort(key=lambda item: (item.known_at, str(item.evaluation_id)))
+
+    result: list[dict[str, Any]] = []
+    for judgment in snapshot.judgments:
+        rationales, outgoing = _judgment_context(
+            judgment,
+            snapshot.judgment_rationales,
+            snapshot.judgment_relations,
+        )
+        incoming = [
+            _relation_payload(item)
+            for item in snapshot.judgment_relations
+            if item.to_judgment_id == judgment.judgment_id
+        ]
+        outcomes = outcomes_by_judgment.get(judgment.judgment_id, [])
+        later_outcomes = [
+            _outcome_story_payload(item, reality_by_id=reality_by_id)
+            for item in outcomes
+        ]
+        speaker = judgment.speaker_name_text or "Source-grounded speaker"
+        if later_outcomes:
+            latest = later_outcomes[-1]
+            researcher_summary = (
+                f"At {judgment.known_at.isoformat()}, {speaker} recorded: {judgment.summary} "
+                f"By the {snapshot.knowledge_cutoff.isoformat()} cutoff, "
+                f"{len(later_outcomes)} Outcome evaluation(s) were visible; the latest is "
+                f"{latest['evaluation_status']} with semantic relation "
+                f"{latest['semantic_relation']}. The later record does not rewrite the original Judgment."
+            )
+            status = "outcome_visible"
+        else:
+            researcher_summary = (
+                f"At {judgment.known_at.isoformat()}, {speaker} recorded: {judgment.summary} "
+                f"No Outcome evaluation for this Judgment is visible by the "
+                f"{snapshot.knowledge_cutoff.isoformat()} cutoff."
+            )
+            status = "judgment_visible_no_outcome"
+
+        result.append(
+            {
+                "storyline_id": f"judgment:{judgment.judgment_id}",
+                "subject": judgment.subject.model_dump(mode="json"),
+                "topic_code": judgment.topic_code,
+                "status_as_of_cutoff": status,
+                "at_the_time": {
+                    "judgment_id": str(judgment.judgment_id),
+                    "known_at": judgment.known_at.isoformat(),
+                    "speaker_name_text": judgment.speaker_name_text,
+                    "judgment_kind": judgment.judgment_kind,
+                    "statement": judgment.summary,
+                    "target_time": _extent_payload(judgment.target_time),
+                    "value": _value_payload(
+                        kind=judgment.value_kind,
+                        text=judgment.value_text,
+                        payload=judgment.value_payload,
+                    ),
+                    "rationales": rationales,
+                    "evidence_fragment_ids": [
+                        str(value) for value in judgment.evidence_fragment_ids
+                    ],
+                },
+                "revision_context": {
+                    "outgoing_relations": outgoing,
+                    "incoming_relations": incoming,
+                },
+                "later_outcomes": later_outcomes,
+                "researcher_summary": researcher_summary,
+            }
+        )
+    return result
 
 
 def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dict[str, Any]:
@@ -68,7 +237,9 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
     This is a deterministic read model only. It does not infer causality, rewrite Judgment from
     Outcome, change temporal precision, or create new Evidence/Fact/Judgment/Outcome records.
     Entries are ordered by when they became knowable; each entry preserves its separate historical
-    time (Reality valid time, Judgment target time, or Outcome occurrence time).
+    time (Reality valid time, Judgment target time, or Outcome occurrence time). The additional
+    knowledge-progression and Judgment-storyline projections are built only from this already
+    filtered snapshot and therefore cannot pull future rows across the knowledge cutoff.
     """
 
     judgments = {judgment.judgment_id: judgment for judgment in snapshot.judgments}
@@ -201,11 +372,23 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
         }
         for key in sorted(subject_counts)
     ]
+    linked_reality_ids = {
+        outcome.canonical_fact_version_id
+        for outcome in snapshot.outcomes
+        if outcome.canonical_fact_version_id is not None
+    }
     return {
         "schema_version": "longcycle-researcher-trajectory-view/v1",
         "knowledge_cutoff": snapshot.knowledge_cutoff.isoformat(),
         "subjects": subject_summary,
         "entries": entries,
+        "knowledge_progression": _knowledge_progression(entries),
+        "judgment_storylines": _judgment_storylines(snapshot, reality_by_id=reality),
+        "unlinked_reality_entry_ids": [
+            f"reality:{item.canonical_fact_version_id}"
+            for item in snapshot.reality
+            if item.canonical_fact_version_id not in linked_reality_ids
+        ],
         "counts": {
             "reality": len(snapshot.reality),
             "judgments": len(snapshot.judgments),
@@ -219,6 +402,8 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             "source_temporal_precision_preserved": True,
             "evidence_references_preserved": True,
             "judgment_not_rewritten_by_outcome": True,
+            "storylines_derive_only_from_filtered_snapshot": True,
+            "presentation_adds_no_causality_or_realization_inference": True,
             "no_new_epistemic_records_created": True,
         },
     }
