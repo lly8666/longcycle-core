@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 77,
+  "continuity_sequence": 78,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "f2c325580a6d96ce145f7178508e526f5e0bdb1a",
+  "checkpoint_based_on_head_sha": "7f2848d2411b59e1b851ba39c3c6dc3b09706500",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head and reconcile only commits after verified implementation checkpoint f2c325580a6d96ce145f7178508e526f5e0bdb1a. Researcher industry orientation and researcher Evidence drilldown are both complete and full-CI proven. Evidence drilldown adds a typed read-by-fragment boundary over existing source/Evidence truth owners: Evidence id plus historical cutoff returns claim-scoped readable content, logical source/publisher identity, historical first-known timing, retrieval context, exact representation identity and current preservation/materialization provenance. Later raw-source materialization never retroactively relabels an earlier readable representation as raw. No migration, new truth owner, write-path change or CAP-0005 cutoff duplication was added. The next product gap is an explicit researcher view of unknown/conflict states that keeps archived contradiction, unresolved typed conflict, research-only open question and simple lack of coverage distinct. Begin that next work only with fresh capability discovery/admission and path-scoped Repair Memory lookup.",
+  "bootstrap_instruction": "Resume from live PR/head and reconcile only commits after verified implementation checkpoint 7f2848d2411b59e1b851ba39c3c6dc3b09706500. Researcher industry orientation, Evidence drilldown and explicit open-state/controversy projection are complete and full-CI proven. The open-state surface adds no migration or parallel truth layer: default historical output combines only source-knowable multi-source Reality disagreement plus typed Judgment contradiction/counterargument visible through the existing no-lookahead snapshot; current Memory disagreement, unresolved research hypothesis and explicit model-memory coverage gaps appear only through an opt-in overlay labelled current research-only, non-historical and not cutoff-filtered. Conflict-case curation time is never historical known-time, model-memory coverage is not archive absence, missing rows do not synthesize unknowns, and `not_found != false`. Do not reopen or extend these three researcher surfaces unless a new cross-industry failure demonstrates a concrete semantic defect. The next task is consolidation, not another feature: refresh the researcher mental-map product-gap audit against the now-proven surfaces, classify the remaining Strategic Compass requirements, and admit exactly one next target only if a material truthful gap remains.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,43 +17,44 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Turn the proven point-in-time memory engine into a cross-industry research product that lets a first-time researcher quickly build a defensible industry mental map: structure and participants, real drivers/constraints, historical trajectories, contemporaneous disputes/Judgments, later Outcomes, evidence boundaries and explicit unknowns.",
-    "short_term_goal": "Close the next smallest researcher-facing gap after industry orientation and Evidence drilldown: expose explicitly owned unknown/conflict/open states without collapsing contradiction, unresolved conflict, research-only uncertainty and missing coverage into one synthetic label.",
-    "next_big_step": "Run capability discovery/admission for a researcher open-state projection, inspect CAP-0003/CAP-0004/CAP-0006 plus existing replay/orientation read contracts, and determine whether archived contradiction, unresolved typed conflict, research-only open question and no-coverage can already be read truthfully. Prefer reuse/extend; if an essential state lacks a truthful owner/read contract, persist the semantic gap before schema or new ownership work.",
-    "local_optimization_stop_rule": "Do not infer controversy, uncertainty or absence from row counts, filenames, missing search results, prose generation or co-occurrence. Preserve `not_found != false`. Do not move research-only Memory into Evidence/Reality/Judgment, create a second cutoff owner, reopen subject storyline polish, collect new sources for the demo, or treat transport/materialization friction as the roadmap.",
+    "short_term_goal": "Consolidate before adding another feature: re-audit the first-time researcher mental-map experience now that industry orientation, Evidence drilldown and explicit open-state/controversy views are all full-CI proven, then identify the smallest remaining truthful cross-industry product gap if one exists.",
+    "next_big_step": "Refresh `docs/development/researcher-mental-map-gap-audit-v1.md` against current live product behavior. Reclassify every Strategic Compass requirement, explicitly retire gaps already closed by orientation/Evidence/open-states, distinguish product composition gaps from missing semantic owners, and choose exactly one next target only after capability discovery/admission. Do not implement while the audit is still deciding what actually remains.",
+    "local_optimization_stop_rule": "Do not reopen industry orientation, Evidence drilldown or open-state projection for polish. Do not infer causality, importance, controversy, unknowns or absence from counts, filenames, missing rows, search failure or prose generation. Preserve `not_found != false`; keep current research-only state out of historical replay; do not collect new sources merely to make a product demo richer; do not turn transport/materialization friction into the roadmap.",
     "parallel_permanent_tracks": [
       "Current collection remains source-first/preserve-now; preserve readable source information and provenance first, with raw-byte materialization optional unless byte-level verification is claim-critical."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "researcher-explicit-open-state-projection",
-    "last_completed_action": "Completed and full-CI proved researcher Evidence drilldown as an EXTEND of CAP-0001 plus CAP-0002. A new storage-neutral EvidenceDrilldownReader and EvidenceDrilldownRecord let product code read one EvidenceFragment by id without direct SQL. PostgresEvidenceDrilldownReader joins existing Evidence/document/publisher/fetch state into that typed record; build_researcher_evidence_drilldown enforces the Evidence source first_known_at cutoff and renders claim-scoped excerpt/structured payload, logical source identity, publisher, historical timing, retrieval context, exact Evidence-version representation identity and separately labelled current preservation state. CLI `longcycle research evidence <fragment_id> <cutoff>` exposes the path. A real PostgreSQL smoke persists a content_verified readable representation, grounds Evidence on it, later materializes raw PDF bytes, then proves the old Evidence remains readable_representation while current source state becomes materialized; an earlier cutoff fails closed. Capability cards/index now assign source identity/current-preservation reads to CAP-0001 and Evidence fragment read/historical visibility to CAP-0002 while CAP-0005 remains navigation/replay. Exact implementation head f2c325580a6d96ce145f7178508e526f5e0bdb1a passed full CI run 32657062146 with all hard gates green.",
-    "current_task": "Begin the next bounded researcher product gap: an explicit open-state/controversy projection. First discover the existing semantic owners and typed read paths for archived contradicting Evidence, unresolved canonical/typed conflict, research-only unresolved questions or hypotheses, and simple absence of coverage. The product must keep these states distinct and must never infer unknown/controversy from missing rows or search failure. Only implement a read-only projection if the required semantics already exist; otherwise persist the exact missing contract and stop before inventing a parallel owner.",
-    "why_now": "Industry orientation lets a first-time researcher find relevant subjects, and Evidence drilldown now lets them inspect the source behind a record. The mental-map audit's remaining explicit product gap is epistemic negative space: the researcher still cannot distinguish 'sources conflict', 'typed conflict unresolved', 'research question open', and 'we simply have no coverage'. Making that distinction visible advances defensible research more than adding another storyline field.",
-    "done_when": "Either (A) existing owners/read contracts can truthfully distinguish the open-state classes and one bounded researcher projection is implemented with focused no-inference/no-lookahead tests, or (B) a repository-backed semantic-gap note demonstrates exactly which state lacks an owner/read contract. `not_found != false`; no new source collection is required.",
+    "parent_workstream_id": "researcher-mental-map-consolidation-audit",
+    "last_completed_action": "Completed and full-CI proved the researcher explicit open-state/controversy surface. `longcycle research open-states <industry_node_id> <cutoff>` reuses source-grounded industry membership, the typed no-lookahead EpistemicMemoryReader snapshot and new storage-neutral open-state read ports. Historical Reality disagreement is reconstructed only when at least two visible conflict members come from at least two distinct sources; its visibility time is the latest member FactAssertion first_known_at, while conflict-case opened/closed timestamps remain current archive-curation provenance. Typed Judgment `contradicts` relations and counterargument rationales remain owned by CAP-0004/CAP-0005. `--include-current-research` separately exposes current Memory disagreement cases, unresolved/mixed/insufficient-basis research hypotheses and explicit `unseen`/`thin`/`needs_review` model-memory coverage cells; the overlay is explicitly research-only, not historical market knowledge and not cutoff-filtered. No migration, new table or new truth owner was added. Capability admission was EXTEND CAP-0003 + CAP-0005 + CAP-0006 with CAP-0004 reused. Exact implementation head 7f2848d2411b59e1b851ba39c3c6dc3b09706500 passed full CI run 32659130676 with every hard gate green, including the new real PostgreSQL researcher open-states smoke, Mypy and full Pytest.",
+    "current_task": "Run a bounded product consolidation audit, not another implementation sprint. Refresh the researcher mental-map gap audit using the live orientation, Evidence drilldown and open-state surfaces; determine which Strategic Compass requirements are now served, partially served or still genuinely missing across industries. Separate presentation/navigation gaps from missing semantic truth owners. If one material gap remains, perform capability discovery/admission and name exactly one next target; do not implement it in the same audit step unless the audit has first demonstrated the gap and ownership route.",
+    "why_now": "Three consecutive researcher-facing gaps have now been closed and runtime-proven. Continuing to add surfaces without re-auditing the end-to-end first-time researcher experience would risk local feature accumulation instead of mission progress. The right next move is to reassess the whole mental-map path before spending another architecture budget.",
+    "done_when": "The repository-backed mental-map audit reflects current live behavior, every Strategic Compass researcher requirement is reclassified, closed gaps are explicitly retired, remaining gaps preserve authority/time boundaries, and at most one next material target is admitted with an existing owner or a demonstrated semantic gap. No new product code is required for the audit itself.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh live PR HEAD/status, run capability-registry discovery/admission for explicit researcher open/conflict states, inspect CAP-0003/CAP-0004/CAP-0006 and relevant typed ports/adapters, then run path-scoped Repair Memory lookup before modifying any identified implementation path."
+    "next_atomic_action": "Refresh live PR HEAD/status, re-read STRATEGIC_COMPASS.md plus the existing mental-map audit and capability index, inspect the three now-proven researcher surfaces as one end-to-end experience, then update the audit before admitting any new implementation target."
   },
   "active_context": {
-    "context_id": "cross-industry-researcher-open-states-v1",
-    "context_kind": "cross_industry_read_only_product_surface",
-    "label": "Explicit unknown/conflict/open-state researcher projection after Evidence drilldown",
-    "root_path": "src/longcycle/application",
+    "context_id": "cross-industry-researcher-mental-map-consolidation-v1",
+    "context_kind": "cross_industry_product_gap_audit",
+    "label": "Consolidate the researcher mental-map product after orientation, Evidence drilldown and open states",
+    "root_path": "docs/development",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
       "docs/development/researcher-mental-map-gap-audit-v1.md",
-      ".longcycle/capabilities/cards/CAP-0003.json",
-      ".longcycle/capabilities/cards/CAP-0004.json",
-      ".longcycle/capabilities/cards/CAP-0006.json",
-      "src/longcycle/domain/evidence.py",
-      "src/longcycle/ports/evidence.py",
-      "src/longcycle/application/evidence_drilldown.py",
       "src/longcycle/application/industry_orientation.py",
+      "src/longcycle/application/evidence_drilldown.py",
+      "src/longcycle/application/open_state_view.py",
+      "src/longcycle/application/trajectory_view.py",
       "src/longcycle/ports/epistemic.py",
+      ".longcycle/capabilities/active-index.json",
       "src/longcycle/cli.py"
     ],
     "core_exclusion_terms": [
+      "reopen-orientation-polish",
+      "reopen-evidence-drilldown-polish",
+      "reopen-open-state-polish",
       "not-found-means-false",
       "presentation-infers-controversy",
       "presentation-invents-unknowns",
@@ -61,8 +62,7 @@
       "research-memory-promoted-to-evidence",
       "duplicate-cutoff-owner",
       "duplicate-conflict-owner",
-      "new-source-research-for-open-state-demo",
-      "subject-storyline-polish",
+      "new-source-research-for-demo",
       "pdf-downloader-work"
     ]
   },
@@ -75,30 +75,42 @@
     "Never drop readable source information because of tool limitations.",
     "PDF raw-byte download is not a research prerequisite; locator-only cannot prove an unread claim, while content-verified readable representation may ground Evidence before later optional materialization.",
     "Do not create Actions merely to download PDFs or webpages; Actions remain valid for CI/PostgreSQL/runtime validation.",
-    "Every substantive session must update repository handoff before returning control."
+    "Every substantive session must update repository handoff before returning control.",
+    "Finish self-opened implementation threads before starting another feature; do not let locally invented workstreams sprawl without closure."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32657062146,
-    "observed_head_sha": "f2c325580a6d96ce145f7178508e526f5e0bdb1a",
-    "conclusion": "Exact implementation head f2c325580a6d96ce145f7178508e526f5e0bdb1a has explicit success status longcycle/full-ci. Run 32657062146 passed every hard gate, including capability/Repair Memory audits, all PostgreSQL migrations and legacy smokes, researcher industry orientation, the new researcher Evidence drilldown smoke, materialized Evidence, no-lookahead replay/Judgment replay, Mypy, Pytest, compact-index build and memory-history audit.",
-    "mypy_summary": "Run 32657062146 passed full-project `mypy src`; the new Evidence domain/port/adapter/application/CLI path is typed without storage internals leaking into product code.",
-    "pytest_summary": "Run 32657062146 passed full Pytest. The zero-context capability rehearsal now follows the repository's current admission dynamically instead of hard-coding the previous CAP-0005 orientation target.",
-    "ruff_summary": "Run 32657062146 also completed Ruff successfully; correctness authority remains the full hard-gate set rather than style alone.",
-    "refresh_instruction": "On resume refresh live PR HEAD and combined status before trusting this snapshot. The verified Evidence-drilldown implementation checkpoint is f2c325580a6d96ce145f7178508e526f5e0bdb1a / run 32657062146; a subsequent handoff-only commit may move live HEAD beyond that proof SHA."
+    "last_observed_run": 32659130676,
+    "observed_head_sha": "7f2848d2411b59e1b851ba39c3c6dc3b09706500",
+    "conclusion": "Exact implementation head 7f2848d2411b59e1b851ba39c3c6dc3b09706500 has explicit success status `longcycle/full-ci`. Run 32659130676 passed every hard gate: Repair Memory and capability audits, PostgreSQL migrations and legacy smokes, typed industrial memory, researcher industry orientation, the new researcher open-states PostgreSQL smoke, researcher Evidence drilldown, materialized Evidence, no-lookahead portable/Judgment replay, Mypy, full Pytest, compact-index build and memory-history audit.",
+    "mypy_summary": "Run 32659130676 passed full-project `mypy src`. The only prior open-state type failure was a presentation dictionary-unpack inference issue; it was fixed without changing SQL, cutoff or authority semantics.",
+    "pytest_summary": "Run 32659130676 passed full Pytest, including focused open-state tests proving default historical output excludes current research state and the opt-in overlay remains explicitly non-historical/not cutoff-filtered.",
+    "ruff_summary": "Run 32659130676 also completed Ruff successfully; correctness authority remains the complete hard-gate set rather than style alone.",
+    "refresh_instruction": "On resume refresh live PR HEAD and combined status before trusting this snapshot. The verified open-state implementation checkpoint is 7f2848d2411b59e1b851ba39c3c6dc3b09706500 / run 32659130676; this handoff-only commit moves live HEAD beyond that proof SHA and should be validated separately."
   },
   "workstreams": [
     {
-      "workstream_id": "researcher-explicit-open-state-projection",
+      "workstream_id": "researcher-mental-map-consolidation-audit",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "ready_for_capability_discovery_and_semantic_feasibility",
-      "summary": "The remaining mental-map product gap is explicit negative-space visibility. A researcher must be able to distinguish archived contradiction, unresolved typed conflict, research-only open question/hypothesis and simple no-coverage without presentation inference. Start with capability discovery/admission and owner/read-contract inspection.",
+      "status": "ready_for_product_gap_reaudit",
+      "summary": "Three researcher surfaces are now runtime-proven. Re-audit the complete first-time researcher path before opening another implementation target, explicitly retiring closed gaps and identifying at most one remaining material cross-industry gap.",
       "next_actions": [
-        "Refresh live HEAD/status and run capability discovery/admission for explicit researcher open/conflict states.",
-        "Inspect CAP-0003/CAP-0004/CAP-0006 plus relevant replay/research-state ports for owned conflict/open-state semantics and cutoff behavior.",
-        "Run path-scoped Repair Memory lookup, then implement one minimal read-only projection or persist the demonstrated semantic blocker."
+        "Refresh live HEAD/status and re-read Strategic Compass plus the existing mental-map gap audit.",
+        "Evaluate orientation, trajectory/replay, Evidence drilldown and open-state views as one researcher journey against every mental-map requirement.",
+        "Update the repository audit and perform capability discovery/admission for at most one demonstrated next target; do not implement before the audit decision."
+      ],
+      "blockers": []
+    },
+    {
+      "workstream_id": "researcher-explicit-open-state-projection",
+      "role": "supporting_quality_gate",
+      "parent_goal_ref": "strategic_horizon.medium_term_goal",
+      "status": "completed_and_full_ci_proven",
+      "summary": "CAP-0003/CAP-0005/CAP-0006 now expose a dual-lane researcher open-state view. Historical source disagreement uses member first_known_at and distinct-source provenance; Judgment controversy reuses typed replay; current Memory disagreement/hypothesis/model-memory coverage appears only as an opt-in research-only overlay. No new schema or truth owner. Exact implementation head 7f2848d2411b59e1b851ba39c3c6dc3b09706500 passed full CI run 32659130676.",
+      "next_actions": [
+        "Treat the open-state surface as closed; reopen only if a future cross-industry audit demonstrates a concrete semantic defect."
       ],
       "blockers": []
     },
@@ -107,9 +119,9 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "completed_and_full_ci_proven",
-      "summary": "CAP-0001/CAP-0002 now expose a typed researcher Evidence read path from EvidenceFragment id plus cutoff to claim-scoped content, source identity, historical timing, retrieval and truthful representation/current-preservation provenance. No new schema or truth owner was introduced. Exact implementation head f2c325580a6d96ce145f7178508e526f5e0bdb1a passed full CI run 32657062146.",
+      "summary": "CAP-0001/CAP-0002 expose a typed researcher Evidence path from fragment id plus cutoff to claim-scoped content, source identity, historical timing and truthful representation/current-preservation provenance. No new schema or truth owner. Exact implementation head f2c325580a6d96ce145f7178508e526f5e0bdb1a passed full CI run 32657062146.",
       "next_actions": [
-        "Treat Evidence drilldown as the source-inspection primitive used by orientation/replay; reopen only if a future cross-industry benchmark demonstrates a concrete semantic defect."
+        "Treat Evidence drilldown as closed; reopen only if a future cross-industry audit demonstrates a concrete semantic defect."
       ],
       "blockers": []
     },
@@ -118,9 +130,9 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "completed_and_full_ci_proven",
-      "summary": "CAP-0005 industry orientation remains the source-grounded industry entry primitive and delegates subject replay visibility to the existing no-lookahead reader.",
+      "summary": "CAP-0005 industry orientation is the source-grounded industry entry primitive and delegates historical memory visibility to the existing no-lookahead reader. Exact implementation checkpoint 43713d4d5773ba6aebe9bd1e71bb510bc6731393 passed full CI run 32656203825.",
       "next_actions": [
-        "Do not reopen orientation unless a future cross-industry benchmark demonstrates a concrete semantic or navigation defect."
+        "Treat orientation as closed; reopen only if a future cross-industry audit demonstrates a concrete semantic or navigation defect."
       ],
       "blockers": []
     },
@@ -128,10 +140,10 @@
       "workstream_id": "capability-governance",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "evidence_drilldown_extend_cap0001_cap0002_proven_next_admission_required",
-      "summary": "Evidence drilldown was admitted and proven as EXTEND CAP-0001 + CAP-0002. Source identity/current preservation reads stay in CAP-0001; Evidence fragment read/historical visibility stay in CAP-0002; CAP-0005 remains replay/navigation. The next open-state intent requires a fresh admission decision.",
+      "status": "open_states_extend_cap0003_cap0005_cap0006_proven",
+      "summary": "The open-state intent was admitted and proven as EXTEND CAP-0003 + CAP-0005 + CAP-0006 with CAP-0004 reused. Reality conflict ownership, researcher composition and current research-only Memory state remain separate. Do not create another capability admission until the consolidation audit demonstrates the next material gap.",
       "next_actions": [
-        "Run a fresh capability discovery/admission for explicit open/conflict states before material implementation."
+        "After the consolidation audit identifies one material next target, run capability discovery/admission before implementation."
       ],
       "blockers": []
     },
@@ -159,25 +171,29 @@
   ],
   "deep_reference_paths": [
     "docs/development/researcher-mental-map-gap-audit-v1.md",
+    "src/longcycle/application/industry_orientation.py",
+    "src/longcycle/application/trajectory_view.py",
     "src/longcycle/domain/evidence.py",
     "src/longcycle/ports/evidence.py",
     "src/longcycle/adapters/storage/postgres_evidence.py",
     "src/longcycle/application/evidence_drilldown.py",
-    "tests/test_evidence_drilldown.py",
-    "scripts/smoke_postgres_evidence_drilldown.py",
-    "src/longcycle/cli.py",
-    ".longcycle/capabilities/cards/CAP-0001.json",
-    ".longcycle/capabilities/cards/CAP-0002.json"
+    "src/longcycle/domain/open_states.py",
+    "src/longcycle/ports/open_states.py",
+    "src/longcycle/adapters/storage/postgres_open_states.py",
+    "src/longcycle/application/open_state_view.py",
+    "tests/test_open_state_view.py",
+    "scripts/smoke_postgres_open_states.py",
+    "src/longcycle/cli.py"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Which existing owner/read contract truthfully represents unresolved canonical or typed conflict without inferring controversy from counts or prose?",
-    "Where are research-only unresolved questions/hypotheses queryable with their non-Evidence authority intact?",
-    "How should simple lack of coverage be represented so it remains distinct from contradiction, unresolved research and a false negative fact?"
+    "After orientation, Evidence drilldown and open-state visibility, which Strategic Compass mental-map requirement remains materially underserved for a first-time researcher across industries?",
+    "Is the next remaining gap only read composition/navigation, or does it demonstrate a genuinely missing semantic owner?",
+    "Can the next product increment be justified without reopening already-proven surfaces or collecting new sources merely for a demo?"
   ],
   "ordered_next_actions": [
-    "Refresh live PR HEAD and exact-head status; reconcile only commits after verified checkpoint f2c325580a6d96ce145f7178508e526f5e0bdb1a.",
-    "Run capability discovery/admission for explicit researcher open/conflict states and record reuse/extend/replace/new disposition before material work.",
-    "Inspect admitted owner paths, run path-scoped Repair Memory lookup, and execute the smallest truthful read-only open-state projection or persist the semantic blocker."
+    "Refresh live PR HEAD and exact-head status; reconcile only commits after verified checkpoint 7f2848d2411b59e1b851ba39c3c6dc3b09706500.",
+    "Refresh the repository mental-map gap audit against the now-proven orientation, trajectory/replay, Evidence drilldown and open-state surfaces; retire closed gaps explicitly.",
+    "If one material gap remains, run capability discovery/admission and record exactly one next target before any new implementation work."
   ]
 }
