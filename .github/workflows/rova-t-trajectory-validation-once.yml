@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 20
     env:
       GH_TOKEN: ${{ github.token }}
+      SOURCE_RUN_ID: '32581980862'
       SOURCE_ARTIFACT_ID: '9478039751'
       SOURCE_OUTER_SHA256: '28ef7d372909c76bc404365d115f92a4413b9f4bb21966af434304b9c831c602'
       DUCKDB_SHA256: 'f07490c7b52c4c5ba02185fa748cf7236b8f376573939ea2322954873a722619'
@@ -50,6 +51,9 @@ jobs:
       - name: Download sealed first-pair replay artifact
         uses: actions/download-artifact@v4
         with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SOURCE_RUN_ID }}
           artifact-ids: ${{ env.SOURCE_ARTIFACT_ID }}
           path: /tmp/rova-replay/unpacked
 
@@ -127,6 +131,7 @@ jobs:
               'status': 'pass',
               'implementation_head_sha': '${{ steps.resolve.outputs.head_sha }}',
               'source_artifact': {
+                  'workflow_run_id': int('${{ env.SOURCE_RUN_ID }}'),
                   'artifact_id': int('${{ env.SOURCE_ARTIFACT_ID }}'),
                   'artifact_digest_recorded_in_durable_receipt': 'sha256:${{ env.SOURCE_OUTER_SHA256 }}',
                   'duckdb_sha256_verified_at_runtime': '${{ env.DUCKDB_SHA256 }}',
@@ -165,5 +170,5 @@ jobs:
           HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
         run: |
           set -euo pipefail
-          body=$(printf 'ROVA_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nThe exact historical artifact id is restored through the official artifact action; the internal DuckDB SHA is verified before current `longcycle research replay` runs at pre-termination, termination-known, and later-accounting-known cutoffs. The durable receipt and separately restored Drive capsule carry the recorded outer digest.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
+          body=$(printf 'ROVA_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nThe exact historical run/artifact id is restored through the official artifact action; the internal DuckDB SHA is verified before current `longcycle research replay` runs at pre-termination, termination-known, and later-accounting-known cutoffs. The durable receipt and separately restored Drive capsule carry the recorded outer digest.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
