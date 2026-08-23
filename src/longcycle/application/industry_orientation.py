@@ -6,11 +6,11 @@ from typing import Any
 from uuid import UUID
 
 from longcycle.domain.epistemic import MemorySubjectRef, PointInTimeMemorySnapshot
+from longcycle.domain.models import require_aware_datetime
 from longcycle.domain.orientation import (
     IndustryOrientationCatalog,
     IndustrySubjectMembershipRecord,
 )
-from longcycle.domain.models import require_aware_datetime
 from longcycle.ports.epistemic import EpistemicMemoryReader
 from longcycle.ports.orientation import IndustryOrientationReader
 
@@ -80,36 +80,44 @@ def _memory_counts(snapshot: PointInTimeMemorySnapshot) -> dict[str, dict[str, i
     counts: dict[str, dict[str, int]] = defaultdict(
         lambda: {"reality": 0, "judgments": 0, "outcomes": 0}
     )
-    for item in snapshot.reality:
-        counts[item.subject.key]["reality"] += 1
-    for item in snapshot.judgments:
-        counts[item.subject.key]["judgments"] += 1
-    for item in snapshot.outcomes:
-        counts[item.subject.key]["outcomes"] += 1
+    for reality in snapshot.reality:
+        counts[reality.subject.key]["reality"] += 1
+    for judgment in snapshot.judgments:
+        counts[judgment.subject.key]["judgments"] += 1
+    for outcome in snapshot.outcomes:
+        counts[outcome.subject.key]["outcomes"] += 1
     return counts
 
 
 def _evidence_by_subject(snapshot: PointInTimeMemorySnapshot) -> dict[str, set[str]]:
     evidence: dict[str, set[str]] = defaultdict(set)
-    judgment_subjects = {item.judgment_id: item.subject.key for item in snapshot.judgments}
-    for item in snapshot.reality:
-        evidence[item.subject.key].update(str(value) for value in item.evidence_fragment_ids)
-    for item in snapshot.judgments:
-        evidence[item.subject.key].update(str(value) for value in item.evidence_fragment_ids)
-    for item in snapshot.judgment_rationales:
-        subject_key = judgment_subjects.get(item.judgment_id)
-        if subject_key is not None and item.evidence_fragment_id is not None:
-            evidence[subject_key].add(str(item.evidence_fragment_id))
-    for item in snapshot.outcomes:
-        if item.outcome_evidence_fragment_id is not None:
-            evidence[item.subject.key].add(str(item.outcome_evidence_fragment_id))
+    judgment_subjects = {
+        judgment.judgment_id: judgment.subject.key for judgment in snapshot.judgments
+    }
+    for reality in snapshot.reality:
+        evidence[reality.subject.key].update(
+            str(value) for value in reality.evidence_fragment_ids
+        )
+    for judgment in snapshot.judgments:
+        evidence[judgment.subject.key].update(
+            str(value) for value in judgment.evidence_fragment_ids
+        )
+    for rationale in snapshot.judgment_rationales:
+        subject_key = judgment_subjects.get(rationale.judgment_id)
+        if subject_key is not None and rationale.evidence_fragment_id is not None:
+            evidence[subject_key].add(str(rationale.evidence_fragment_id))
+    for outcome in snapshot.outcomes:
+        if outcome.outcome_evidence_fragment_id is not None:
+            evidence[outcome.subject.key].add(str(outcome.outcome_evidence_fragment_id))
     return evidence
 
 
 def _judgment_relation_markers(
     snapshot: PointInTimeMemorySnapshot,
 ) -> dict[str, list[dict[str, Any]]]:
-    judgment_subjects = {item.judgment_id: item.subject.key for item in snapshot.judgments}
+    judgment_subjects = {
+        judgment.judgment_id: judgment.subject.key for judgment in snapshot.judgments
+    }
     result: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for relation in snapshot.judgment_relations:
         payload = {
