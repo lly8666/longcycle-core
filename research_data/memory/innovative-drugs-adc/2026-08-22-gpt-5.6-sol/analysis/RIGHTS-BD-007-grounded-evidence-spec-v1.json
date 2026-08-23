@@ -44,7 +44,7 @@
       "original_source_url": "https://news.bms.com/news/details/2023/SystImmune-and-Bristol-Myers-Squibb-Announce-a-Global-Strategic-Collaboration-Agreement-for-the-Development-and-Commercialization-of-BL-B01D1/default.aspx",
       "external_id": "BMS-NEWS-2023-12-11-BL-B01D1",
       "title": "SystImmune and Bristol Myers Squibb Announce a Global Strategic Collaboration Agreement for the Development and Commercialization of BL-B01D1",
-      "first_known_at": "2026-08-23T14:36:00+08:00",
+      "first_known_at": "2023-12-12T12:00:00Z",
       "expected_sha256": "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
       "material_path": "bms-2023-12-11-joint-announcement.capture.txt",
       "content_type": "text/plain; charset=utf-8",
@@ -59,6 +59,7 @@
           "precision": "day",
           "basis": "publisher_date_label"
         },
+        "first_known_at_basis": "conservative_global_end-of-day_upper_bound_derived_from_2023-12-11_publisher_date_label; not an asserted publication instant",
         "capture_recorded_at": "2026-08-23T14:36:00+08:00",
         "manifest_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/manifest-v1.json"
       }
@@ -71,7 +72,7 @@
       "original_source_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/bmy-20231231.htm",
       "external_id": "0000014272-24-000044",
       "title": "Bristol-Myers Squibb Company 2023 Form 10-K — SystImmune alliance section",
-      "first_known_at": "2026-08-23T14:36:00+08:00",
+      "first_known_at": "2024-02-14T12:00:00Z",
       "expected_sha256": "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
       "material_path": "sec-bms-2023-10k-systimmune-note.capture.txt",
       "content_type": "text/plain; charset=utf-8",
@@ -87,6 +88,7 @@
           "filing_date": "2024-02-13",
           "period_of_report": "2023-12-31"
         },
+        "first_known_at_basis": "conservative_global_end-of-day_upper_bound_derived_from_2024-02-13_SEC_filing_date; not an asserted filing instant",
         "capture_recorded_at": "2026-08-23T14:36:00+08:00",
         "manifest_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/manifest-v1.json"
       }
@@ -106,6 +108,11 @@
           "precision": "day",
           "basis": "publisher_date_label"
         },
+        "known_time": {
+          "upper_bound": "2023-12-12T12:00:00Z",
+          "precision": "derived_conservative_upper_bound",
+          "basis": "publisher page provides 2023-12-11 date without a source-supported exact publication instant"
+        },
         "sealed_memory_time_before_search": "2023-era",
         "temporal_rule": "This event time refines post-seal discovery and must not rewrite the sealed memory wording."
       }
@@ -122,6 +129,11 @@
           "value": "2024-02",
           "precision": "month",
           "basis": "SEC-filed BMS 2023 Form 10-K"
+        },
+        "known_time": {
+          "upper_bound": "2024-02-14T12:00:00Z",
+          "precision": "derived_conservative_upper_bound",
+          "basis": "SEC filing index provides 2024-02-13 filing date without relying on an unverified timezone-specific acceptance instant"
         },
         "evidence_public_record_date": {
           "value": "2024-02-13",
