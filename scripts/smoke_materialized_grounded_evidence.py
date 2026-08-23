@@ -16,6 +16,12 @@ HTML = f"<html><body>{TEXT}</body></html>".encode()
 RAW_SHA256 = hashlib.sha256(HTML).hexdigest()
 VISIBLE_SHA256 = hashlib.sha256(TEXT.encode()).hexdigest()
 
+CAPTURE_TEXT = (
+    "Faithful visible-text capture says the transaction became effective in February 2024."
+)
+CAPTURE_BYTES = CAPTURE_TEXT.encode("utf-8")
+CAPTURE_SHA256 = hashlib.sha256(CAPTURE_BYTES).hexdigest()
+
 
 def main() -> None:
     database_url = os.environ.get("LONGCYCLE_DATABASE_URL")
@@ -29,12 +35,15 @@ def main() -> None:
         material_root.mkdir()
         material_path = material_root / "filing.htm"
         material_path.write_bytes(HTML)
+        capture_path = material_root / "capture.txt"
+        capture_path.write_bytes(CAPTURE_BYTES)
 
         retrieval_url = (
             "https://www.prnewswire.com/news-releases/materialized-smoke-results-300000000.html"
         )
         upstream_url = "https://www.sec.gov/Archives/edgar/data/0/materialized-smoke.htm"
         upstream_accession = "0000000000-19-000001"
+        capture_url = "https://example.com/source/captured.html"
         spec = {
             "schema_version": "longcycle-grounded-evidence-spec/v2",
             "task_id": "MATERIALIZED-GROUNDED-EVIDENCE-SMOKE-V2",
@@ -57,7 +66,27 @@ def main() -> None:
                             ),
                         }
                     ],
-                }
+                },
+                {
+                    "key": "direct-visible-capture",
+                    "name": "Faithful direct-source visible-text capture smoke",
+                    "publisher_domain": "example.com",
+                    "kind": "company",
+                    "quality_grade": "A",
+                    "transport": "materialized",
+                    "authority_profiles": [
+                        {
+                            "claim_scope": "self_statement",
+                            "authority_class": "primary_self_statement",
+                            "authority_basis": "direct_speaker_record",
+                            "rationale": (
+                                "The materialized bytes are a faithful visible-text transcription "
+                                "of a directly readable publisher page; capture transport does not "
+                                "change the publisher's claim-scoped authority."
+                            ),
+                        }
+                    ],
+                },
             ],
             "documents": [
                 {
@@ -85,7 +114,29 @@ def main() -> None:
                             "original_url": upstream_url,
                         },
                     },
-                }
+                },
+                {
+                    "key": "visible-text-capture",
+                    "vintage_id": "VISIBLE-TEXT-CAPTURE-SMOKE-2024Q1",
+                    "source_key": "direct-visible-capture",
+                    "retrieval_url": capture_url,
+                    "original_source_url": capture_url,
+                    "external_id": "capture-smoke-2024-02",
+                    "title": "Example Direct Source",
+                    "published_at": "2024-02-13T12:00:00Z",
+                    "first_known_at": "2024-02-13T12:00:30Z",
+                    "expected_sha256": CAPTURE_SHA256,
+                    "material_path": "capture.txt",
+                    "content_type": "text/plain; charset=utf-8",
+                    "retrieval_provenance": {
+                        "mode": "faithful_visible_text_capture",
+                        "capture_mode": "verbatim_visible_text_transcription",
+                        "transport_is_not_source_authority": True,
+                        "full_readable_source": True,
+                        "capture_limitations": [],
+                        "original_url": capture_url,
+                    },
+                },
             ],
             "fragments": [
                 {
@@ -100,11 +151,24 @@ def main() -> None:
                             "basis": "authoritative_redistributor_publication_time",
                         },
                     },
-                }
+                },
+                {
+                    "fragment_key": "visible-text-capture-event",
+                    "document_key": "visible-text-capture",
+                    "excerpt": CAPTURE_TEXT,
+                    "claim_context": {
+                        "claim_role": "historical_event",
+                        "known_time": {
+                            "upper_bound": "2024-02-13T12:00:30Z",
+                            "precision": "minute",
+                            "basis": "direct_source_visible_text_capture",
+                        },
+                    },
+                },
             ],
             "acceptance": {
-                "required_documents": 1,
-                "required_fragments": 1,
+                "required_documents": 2,
+                "required_fragments": 2,
                 "facts_created": 0,
                 "judgments_created": 0,
             },
@@ -143,8 +207,10 @@ def main() -> None:
         if payload.get("ok") is not True:
             raise AssertionError(f"materialized execution did not report success: {payload}")
         result = payload["result"]
-        document = result["documents"][0]
-        artifact = result["artifacts"][0]
+        documents = {item["document_key"]: item for item in result["documents"]}
+        document = documents["filing"]
+        capture_document = documents["visible-text-capture"]
+        artifact = next(item for item in result["artifacts"] if item["document_key"] == "filing")
         acceptance = result["acceptance"]
         if result["spec_schema_version"] != "longcycle-grounded-evidence-spec/v2":
             raise AssertionError("materialized execution lost v2 spec identity")
@@ -163,7 +229,26 @@ def main() -> None:
             raise AssertionError("materialized HTML did not use the normal parser artifact path")
         if artifact["artifact_sha256"] != VISIBLE_SHA256:
             raise AssertionError("visible-text parser artifact hash was not preserved")
-        if len(result["fragments"]) != 1:
+
+        if capture_document["transport_plugin"] != "materialized_file":
+            raise AssertionError("visible-text capture did not stay on materialized transport")
+        if capture_document["canonical_retrieval_url"] != capture_url:
+            raise AssertionError("visible-text capture lost direct source identity")
+        if capture_document["content_sha256"] != CAPTURE_SHA256:
+            raise AssertionError("visible-text capture bytes were not hash preserved")
+        capture_profiles = capture_document["source_authority_profiles"]
+        if (
+            len(capture_profiles) != 1
+            or capture_profiles[0]["authority_class"] != "primary_self_statement"
+        ):
+            raise AssertionError("visible-text capture lost source authority profile")
+        capture_provenance = capture_document["retrieval_provenance"]
+        if capture_provenance.get("capture_mode") != "verbatim_visible_text_transcription":
+            raise AssertionError("visible-text capture mode was not preserved")
+        if capture_provenance.get("transport_is_not_source_authority") is not True:
+            raise AssertionError("capture transport was allowed to become source authority")
+
+        if len(result["fragments"]) != 2:
             raise AssertionError("materialized Evidence fragment count mismatch")
         if acceptance["fact_assertions_created"] != 0:
             raise AssertionError("materialized Evidence execution promoted a FactAssertion")
@@ -171,7 +256,7 @@ def main() -> None:
             raise AssertionError("materialized Evidence execution promoted a Judgment")
 
         with psycopg.connect(database_url) as connection:
-            row = connection.execute(
+            filing_row = connection.execute(
                 """
                 SELECT authority_class, authority_basis, claim_scope
                 FROM evidence.source_authority_profiles
@@ -179,16 +264,37 @@ def main() -> None:
                 """,
                 (document["source_id"],),
             ).fetchone()
-        if row != (
+            capture_row = connection.execute(
+                """
+                SELECT authority_class, authority_basis, claim_scope
+                FROM evidence.source_authority_profiles
+                WHERE source_connector_id = %s
+                """,
+                (capture_document["source_id"],),
+            ).fetchone()
+        if filing_row != (
             "authoritative_redistributor",
             "verbatim_official_redistribution",
             "legal_disclosure",
         ):
-            raise AssertionError(f"source authority profile was not persisted correctly: {row}")
+            raise AssertionError(
+                f"source authority profile was not persisted correctly: {filing_row}"
+            )
+        if capture_row != (
+            "primary_self_statement",
+            "direct_speaker_record",
+            "self_statement",
+        ):
+            raise AssertionError(
+                f"visible-text capture authority profile was not persisted correctly: {capture_row}"
+            )
 
         archived = blob_root / document["blob_key"]
         if archived.read_bytes() != HTML:
             raise AssertionError("content-addressed archive does not contain exact materialized bytes")
+        archived_capture = blob_root / capture_document["blob_key"]
+        if archived_capture.read_bytes() != CAPTURE_BYTES:
+            raise AssertionError("archive does not contain exact visible-text capture bytes")
 
     print("MATERIALIZED_GROUNDED_EVIDENCE_SMOKE_PASS")
 
