@@ -16,6 +16,7 @@ from longcycle.application.research_orchestration import (
     immutable_path_digest,
     materialize_evidence_spec,
     verify_and_extract_source_pack,
+    verify_material_root,
 )
 
 
@@ -108,10 +109,17 @@ class ResearchOrchestrationContractTest(unittest.TestCase):
         with zipfile.ZipFile(pack, "w") as archive:
             archive.writestr("doc-a.txt", b"alpha")
             archive.writestr("nested/doc-b.txt", beta)
-            archive.writestr("extra-not-needed.txt", b"still pinned by the outer pack digest")
+            archive.writestr("extra-not-needed.txt", b"legacy outer-pack material")
         return pack
 
-    def test_source_pack_hash_and_required_material_hashes_are_fail_closed(self) -> None:
+    def _write_material_root(self, root: Path, *, beta: bytes = b"beta") -> Path:
+        material = root / "material"
+        (material / "nested").mkdir(parents=True)
+        (material / "doc-a.txt").write_bytes(b"alpha")
+        (material / "nested" / "doc-b.txt").write_bytes(beta)
+        return material
+
+    def test_legacy_source_pack_hash_and_required_material_hashes_are_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             evidence_path = self._write_evidence_spec(root)
@@ -127,11 +135,13 @@ class ResearchOrchestrationContractTest(unittest.TestCase):
                 source_pack_path=pack,
                 source_pack_spec=source_pack,
                 evidence_spec=evidence_spec,
-                material_root=root / "material",
+                material_root=root / "restored",
             )
-            self.assertEqual([item.material_path for item in verified], ["doc-a.txt", "nested/doc-b.txt"])
-            self.assertEqual((root / "material" / "doc-a.txt").read_bytes(), b"alpha")
-            self.assertEqual((root / "material" / "nested" / "doc-b.txt").read_bytes(), b"beta")
+            self.assertEqual(
+                [item.material_path for item in verified],
+                ["doc-a.txt", "nested/doc-b.txt"],
+            )
+            self.assertEqual((root / "restored" / "doc-a.txt").read_bytes(), b"alpha")
 
             bad_outer = source_pack.model_copy(update={"sha256": "0" * 64})
             with self.assertRaisesRegex(ValueError, "source pack digest mismatch"):
@@ -142,15 +152,62 @@ class ResearchOrchestrationContractTest(unittest.TestCase):
                     material_root=root / "bad-outer",
                 )
 
-            bad_pack = self._write_source_pack(root, beta=b"tampered")
-            bad_pack_spec = source_pack.model_copy(update={"sha256": _sha(bad_pack.read_bytes())})
+    def test_v2_material_root_verifies_required_representations_without_source_pack(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            evidence_path = self._write_evidence_spec(root)
+            evidence_spec = json.loads(evidence_path.read_text(encoding="utf-8"))
+            material = self._write_material_root(root)
+
+            verified = verify_material_root(
+                material_root=material,
+                evidence_spec=evidence_spec,
+            )
+
+            self.assertEqual(
+                [item.material_path for item in verified],
+                ["doc-a.txt", "nested/doc-b.txt"],
+            )
+            self.assertEqual(verified[0].sha256, _sha(b"alpha"))
+
+            (material / "nested" / "doc-b.txt").write_bytes(b"tampered")
             with self.assertRaisesRegex(ValueError, "material digest mismatch"):
-                verify_and_extract_source_pack(
-                    source_pack_path=bad_pack,
-                    source_pack_spec=bad_pack_spec,
-                    evidence_spec=evidence_spec,
-                    material_root=root / "bad-material",
-                )
+                verify_material_root(material_root=material, evidence_spec=evidence_spec)
+
+    def test_v2_orchestration_spec_rejects_source_pack_requirement(self) -> None:
+        spec = ResearchOrchestrationSpec.model_validate(
+            {
+                "schema_version": "longcycle-research-orchestration/v2",
+                "task_id": "transport-neutral",
+                "evidence_spec_path": "evidence.json",
+            }
+        )
+        self.assertIsNone(spec.source_pack)
+
+        with self.assertRaisesRegex(ValidationError, "transport-neutral"):
+            ResearchOrchestrationSpec.model_validate(
+                {
+                    "schema_version": "longcycle-research-orchestration/v2",
+                    "task_id": "bad-v2",
+                    "source_pack": {
+                        "transport": "github_release",
+                        "release_tag": "legacy",
+                        "file_name": "pack.zip",
+                        "sha256": "0" * 64,
+                    },
+                    "evidence_spec_path": "evidence.json",
+                }
+            )
+
+    def test_v1_orchestration_remains_replayable_but_requires_legacy_pack_metadata(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "legacy source_pack"):
+            ResearchOrchestrationSpec.model_validate(
+                {
+                    "schema_version": "longcycle-research-orchestration/v1",
+                    "task_id": "missing-pack",
+                    "evidence_spec_path": "evidence.json",
+                }
+            )
 
     def test_explicit_repair_overlay_preserves_acceptance_and_checks_from_value(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -189,14 +246,8 @@ class ResearchOrchestrationContractTest(unittest.TestCase):
         with self.assertRaises(ValidationError):
             ResearchOrchestrationSpec.model_validate(
                 {
-                    "schema_version": "longcycle-research-orchestration/v1",
+                    "schema_version": "longcycle-research-orchestration/v2",
                     "task_id": "bad",
-                    "source_pack": {
-                        "transport": "github_release",
-                        "release_tag": "x",
-                        "file_name": "x.zip",
-                        "sha256": "0" * 64,
-                    },
                     "evidence_spec_path": "evidence.json",
                     "unexpected_semantic_patch": True,
                 }
@@ -204,14 +255,8 @@ class ResearchOrchestrationContractTest(unittest.TestCase):
 
     def test_optional_reality_phase_is_data_driven_not_campaign_specific(self) -> None:
         base = {
-            "schema_version": "longcycle-research-orchestration/v1",
+            "schema_version": "longcycle-research-orchestration/v2",
             "task_id": "synthetic",
-            "source_pack": {
-                "transport": "github_release",
-                "release_tag": "synthetic-release",
-                "file_name": "source-pack.zip",
-                "sha256": "0" * 64,
-            },
             "evidence_spec_path": "evidence.json",
         }
         evidence_only = ResearchOrchestrationSpec.model_validate(base)
