@@ -32,7 +32,7 @@
   "extension_seams": [
     "Add predicate-specific normalization/comparability rules through existing typed profiles.",
     "Add generic Reality projection fields only when real cross-industry evidence cannot be represented truthfully.",
-    "Expose explicit reconciliation conflicts through typed read models while deriving historical visibility only from member source-known time."
+    "Expose explicit reconciliation conflicts through typed read models while deriving historical visibility only from member source-known time and reusing Reconciler source-cluster independence."
   ],
   "guards": [
     {
@@ -55,7 +55,7 @@
     },
     {
       "contains": "POSTGRES_RESEARCHER_OPEN_STATES_SMOKE_PASS",
-      "description": "PostgreSQL smoke requires two distinct sources, Evidence references and source-known cutoff visibility before presenting a Reality source disagreement.",
+      "description": "PostgreSQL smoke requires two independent source clusters, Evidence references and source-known cutoff visibility before presenting a Reality source disagreement; different connectors in one source cluster are rejected as independent corroboration.",
       "kind": "runtime",
       "path": "scripts/smoke_postgres_open_states.py"
     }
@@ -67,6 +67,7 @@
     "Inferring exact occurrence dates from coarse or unknown source time.",
     "Treating an observation/as-of timestamp as the start of a state when onset is unknown.",
     "Treating conflict-case opened_at or other research curation time as historical market-known time.",
+    "Treating multiple connectors from one source_cluster as independent sources.",
     "Researcher presentation/replay formatting."
   ],
   "owned_semantics": [
@@ -77,8 +78,8 @@
     "reality.observation_time_unknown_onset",
     "reality.source_disagreement.reconstruction"
   ],
-  "purpose": "Own typed Fact normalization, comparability, canonical Reality and explicit reconciliation-conflict semantics. This includes source-supported valid-time precision, observation/as-of state with unknown onset, and a typed read boundary for multi-source disagreement whose historical visibility is derived from member assertion known-time rather than later research curation timestamps.",
-  "revisit_when": "Only replace if an equally explicit generic model preserves typed value, comparability, evidence provenance, reconciliation, source precision, observation/unknown-onset semantics, valid/known-time boundaries and multi-source conflict lineage.",
+  "purpose": "Own typed Fact normalization, comparability, canonical Reality and explicit reconciliation-conflict semantics. This includes source-supported valid-time precision, observation/as-of state with unknown onset, and a typed read boundary for multi-source disagreement whose historical visibility is derived from member assertion known-time rather than later research curation timestamps and whose source independence reuses Fact/Reconciler source_cluster semantics.",
+  "revisit_when": "Only replace if an equally explicit generic model preserves typed value, comparability, evidence provenance, reconciliation, source-cluster independence, source precision, observation/unknown-onset semantics, valid/known-time boundaries and multi-source conflict lineage.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/normalization.py",
