@@ -18,6 +18,7 @@ from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryRea
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
+from longcycle.application.epistemic_trajectory import execute_epistemic_trajectory_receipt
 from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.research_orchestration import execute_research_orchestration_receipt
 from longcycle.application.scheduling import SchedulePolicy
@@ -36,6 +37,13 @@ from longcycle.ports.model import ExtractionTarget
 from longcycle.ports.source import DiscoveryContext, FetchContext
 
 
+_EPISTEMIC_TRAJECTORY_V1 = "longcycle-epistemic-trajectory/v1"
+_RESEARCH_ORCHESTRATION_VERSIONS = {
+    "longcycle-research-orchestration/v1",
+    "longcycle-research-orchestration/v2",
+}
+
+
 def _default_migrations_dir() -> Path:
     repository_dir = Path(__file__).resolve().parents[2] / "migrations"
     if repository_dir.is_dir():
@@ -48,6 +56,16 @@ def _parse_aware_datetime(value: str) -> datetime:
     checked = require_aware_datetime(parsed, "knowledge_cutoff")
     assert checked is not None
     return checked
+
+
+def _research_spec_schema_version(path: Path) -> str:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("research run spec must be a JSON object")
+    schema_version = payload.get("schema_version")
+    if not isinstance(schema_version, str) or not schema_version:
+        raise ValueError("research run spec has no schema_version")
+    return schema_version
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -71,22 +89,26 @@ def _parser() -> argparse.ArgumentParser:
     research_sub = research.add_subparsers(dest="research_command", required=True)
     research_run = research_sub.add_parser(
         "run",
-        help="execute one repository-owned fail-closed research orchestration spec",
+        help=(
+            "execute one repository-owned fail-closed research-orchestration or "
+            "epistemic-trajectory spec"
+        ),
     )
     research_run.add_argument("spec", type=Path)
     research_run.add_argument(
         "--source-pack",
         type=Path,
         help=(
-            "legacy v1 source-pack ZIP. New v2 orchestration should use --material-root instead; "
-            "raw PDF download/Release packaging is not an epistemic prerequisite"
+            "legacy research-orchestration/v1 source-pack ZIP. New v2 orchestration and "
+            "epistemic trajectories use --material-root instead; raw PDF download/Release "
+            "packaging is not an epistemic prerequisite"
         ),
     )
     research_run.add_argument(
         "--material-root",
         type=Path,
         help=(
-            "transport-neutral local root containing the preserved source material declared by "
+            "transport-neutral local root containing preserved source material declared by "
             "the Grounded Evidence spec"
         ),
     )
@@ -96,7 +118,7 @@ def _parser() -> argparse.ArgumentParser:
         "--repo-root",
         type=Path,
         default=Path.cwd(),
-        help="repository root used to resolve repo-owned Evidence/Reality/repair specs",
+        help="repository root used to resolve repo-owned Evidence/Reality/Judgment/trajectory specs",
     )
     research_run.add_argument(
         "--skip-db-upgrade",
@@ -243,6 +265,46 @@ async def _research_replay(args: argparse.Namespace) -> dict[str, object]:
     return build_researcher_trajectory_view(snapshot)
 
 
+def _research_run(args: argparse.Namespace) -> dict[str, object]:
+    schema_version = _research_spec_schema_version(args.spec)
+    if schema_version == _EPISTEMIC_TRAJECTORY_V1:
+        if args.source_pack is not None:
+            raise ValueError(
+                "epistemic trajectory is transport-neutral and does not accept --source-pack; "
+                "prepare source material outside the runner and use --material-root"
+            )
+        if args.material_root is None:
+            raise ValueError("epistemic trajectory requires --material-root")
+        payload = execute_epistemic_trajectory_receipt(
+            repo_root=args.repo_root,
+            spec_path=args.spec,
+            material_root_path=args.material_root,
+            work_dir=args.work_dir,
+            output_path=args.output,
+            skip_db_upgrade=bool(args.skip_db_upgrade),
+        )
+    elif schema_version in _RESEARCH_ORCHESTRATION_VERSIONS:
+        payload = execute_research_orchestration_receipt(
+            repo_root=args.repo_root,
+            spec_path=args.spec,
+            source_pack_path=args.source_pack,
+            material_root_path=args.material_root,
+            work_dir=args.work_dir,
+            output_path=args.output,
+            skip_db_upgrade=bool(args.skip_db_upgrade),
+        )
+    else:
+        raise ValueError(f"unsupported research run schema_version: {schema_version}")
+
+    if payload.get("ok") is not True:
+        error = payload.get("error")
+        raise RuntimeError(error if isinstance(error, str) else "research run failed")
+    result = payload.get("result")
+    if not isinstance(result, dict):
+        raise RuntimeError("research run returned no result object")
+    return result
+
+
 async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
     settings = Settings.from_env()
     if args.command == "doctor":
@@ -259,22 +321,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         registry.load_entry_points()
         return list(registry.names)
     if args.command == "research" and args.research_command == "run":
-        payload = execute_research_orchestration_receipt(
-            repo_root=args.repo_root,
-            spec_path=args.spec,
-            source_pack_path=args.source_pack,
-            material_root_path=args.material_root,
-            work_dir=args.work_dir,
-            output_path=args.output,
-            skip_db_upgrade=bool(args.skip_db_upgrade),
-        )
-        if payload.get("ok") is not True:
-            error = payload.get("error")
-            raise RuntimeError(error if isinstance(error, str) else "research orchestration failed")
-        result = payload.get("result")
-        if not isinstance(result, dict):
-            raise RuntimeError("research orchestration returned no result object")
-        return result
+        return _research_run(args)
     if args.command == "research" and args.research_command == "replay":
         return await _research_replay(args)
     if args.command == "schedule":
