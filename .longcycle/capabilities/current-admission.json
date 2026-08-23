@@ -1,48 +1,41 @@
 {
   "closest_existing_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
-    "CAP-0007"
+    "CAP-0003",
+    "CAP-0004",
+    "CAP-0005"
   ],
   "disposition": "extend",
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0001.json",
-    ".longcycle/capabilities/cards/CAP-0002.json",
-    ".longcycle/capabilities/cards/CAP-0007.json",
+    "docs/development/researcher-mental-map-gap-audit-v1.md",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    "migrations/0001_catalog.sql",
     "migrations/0002_evidence_and_facts.sql",
-    "src/longcycle/application/research_orchestration.py",
-    "METHODOLOGY_CORE.md"
+    "migrations/0005_guards_and_indexes.sql",
+    "src/longcycle/ports/epistemic.py",
+    "src/longcycle/application/trajectory_view.py",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json"
   ],
   "governance_mode": "converging",
-  "intent": "Decouple verified PDF source identity and claim-relevant readable content from optional raw-byte materialization across source persistence and research execution, so transport friction does not block historical research while preserving claim-scoped Evidence integrity and one logical document identity.",
-  "intent_id": "SOURCE-PDF-DEFERRED-MATERIALIZATION-001",
+  "intent": "Give a first-time researcher a truthful industry-level entrypoint that enumerates source-grounded member subjects and their typed point-in-time memory coverage, then links into existing subject trajectory replay without inventing value-chain roles, importance, causality, controversy, unknowns or a second knowledge-cutoff rule.",
+  "intent_id": "RESEARCHER-INDUSTRY-ORIENTATION-001",
   "planned_paths": [
-    "METHODOLOGY_CORE.md",
-    "FRESH_AGENT_BOOTSTRAP.md",
-    "CONTINUE_HERE.md",
-    ".longcycle/handoff/data-plane.json",
-    "docs/dev-binary-cache.md",
-    "docs/development/session-handoff-protocol.md",
-    "migrations/0027_source_locator_materialization_state.sql",
-    "migrations/0028_truthful_source_materialization.sql",
-    "migrations/0029_source_representation_fetch_state.sql",
-    "src/longcycle/adapters/storage/postgres_source_locators.py",
-    "src/longcycle/adapters/sources/materialized.py",
-    "src/longcycle/application/handoff_data_plane.py",
-    "src/longcycle/application/research_orchestration.py",
+    "src/longcycle/domain/orientation.py",
+    "src/longcycle/ports/orientation.py",
+    "src/longcycle/adapters/storage/postgres_orientation.py",
+    "src/longcycle/application/industry_orientation.py",
     "src/longcycle/cli.py",
-    "tests/test_source_locator_materialization.py",
-    "tests/test_materialized_source_representation.py",
-    "tests/test_research_orchestration.py",
-    "tests/test_handoff_data_plane.py"
+    "tests/test_industry_orientation.py",
+    "scripts/smoke_postgres_orientation.py",
+    ".github/workflows/ci.yml",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/active-index.json",
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null,
-  "rationale": "CAP-0001 already owns source identity/preservation, CAP-0002 owns claim-level Grounded Evidence, and CAP-0007 owns bounded execution composition. The observed failure was downloader/source-pack coupling across those stages. Extend the existing owners: locator-only remains below Evidence, content-verified readable representations may persist document versions without claiming raw materialization, and orchestration v2 verifies transport-neutral prepared material rather than requiring a Release pack.",
+  "rationale": "The mental-map audit demonstrated a product-navigation gap rather than a missing truth layer. Core catalog already contains industry/entity membership and identity; membership rows are resolution-backed by the existing Fact/Evidence path. CAP-0005 already owns read-only researcher projections and no-lookahead memory visibility, so the safe extension composes a typed catalog reader with the existing EpistemicMemoryReader snapshot at one shared cutoff. Catalog/Evidence/Reality/Judgment/Outcome semantics remain with existing owners.",
   "schema_version": "longcycle-capability-admission/v1",
   "target_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
-    "CAP-0007"
+    "CAP-0005"
   ],
   "unmet_requirement": null
 }
