@@ -20,6 +20,7 @@ CoverageState = Literal["unseen", "thin", "needs_review"]
 
 class RealityConflictAssertionRecord(DomainModel):
     assertion_id: UUID
+    source_id: UUID
     known_at: datetime
     value_kind: str = Field(min_length=1)
     value: dict[str, Any]
@@ -74,6 +75,8 @@ class RealitySourceDisagreementRecord(DomainModel):
     def explicit_multi_source_conflict(self) -> "RealitySourceDisagreementRecord":
         if len(self.assertions) < 2:
             raise ValueError("source disagreement requires at least two visible conflict members")
+        if len({item.source_id for item in self.assertions}) < 2:
+            raise ValueError("source disagreement requires at least two distinct sources")
         expected = max(item.known_at for item in self.assertions)
         if self.archive_disagreement_known_at != expected:
             raise ValueError("archive disagreement known time must equal latest visible member known time")
