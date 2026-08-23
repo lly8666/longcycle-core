@@ -5,31 +5,46 @@
     "research run",
     "source material execution",
     "source pack execution",
-    "portable research receipt"
+    "portable research receipt",
+    "epistemic trajectory",
+    "evidence to replay trajectory"
   ],
   "entrypoints": [
     {
       "contains": "class ResearchOrchestrationSpec(BaseModel):",
-      "description": "Repository-owned orchestration spec composes existing Evidence/Reality executors and preserved-source integrity guards; v2 accepts a transport-neutral prepared material root.",
+      "description": "Repository-owned core orchestration composes preserved-source integrity, Grounded Evidence and optional Reality; v2 accepts a transport-neutral prepared material root.",
       "kind": "application",
       "path": "src/longcycle/application/research_orchestration.py"
     },
     {
+      "contains": "class EpistemicTrajectorySpec(BaseModel):",
+      "description": "Thin CAP-0007 trajectory composition delegates to the existing Evidence, Reality, Judgment, Outcome and typed replay owners and adds fail-closed phase/acceptance/no-rewrite gates without duplicating their semantics.",
+      "kind": "application",
+      "path": "src/longcycle/application/epistemic_trajectory.py"
+    },
+    {
       "contains": "--material-root",
-      "description": "The longcycle research command accepts a transport-neutral material root for v2 while retaining --source-pack only for legacy v1 replay.",
+      "description": "The core longcycle research command accepts a transport-neutral material root for v2 while retaining --source-pack only for legacy v1 replay.",
       "kind": "cli",
       "path": "src/longcycle/cli.py"
+    },
+    {
+      "contains": "execute_epistemic_trajectory_receipt",
+      "description": "Campaign-agnostic CLI executes one declared Evidence -> optional Reality/Judgment/Outcome -> sealed replay trajectory from a prepared material root.",
+      "kind": "cli",
+      "path": "scripts/execute_epistemic_trajectory.py"
     }
   ],
   "extension_seams": [
-    "Add researcher/task invocation adapters by delegation to the same application contract.",
-    "Add new bounded execution phases only when an existing semantic executor already owns the phase.",
-    "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless the claim specifically requires byte-level/source-format verification."
+    "Route researcher/task invocation adapters through the same orchestration and trajectory contracts rather than campaign-specific workflow logic.",
+    "Add a bounded execution phase only when another existing capability already owns the phase semantics; CAP-0007 composes and gates rather than reimplements.",
+    "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless byte-level/source-format verification is itself claim-relevant.",
+    "Add researcher-readable output/presentation after typed CAP-0005 replay rather than changing knowledge-cutoff filtering in the orchestration layer."
   ],
   "guards": [
     {
       "contains": "test_v2_material_root_verifies_required_representations_without_source_pack",
-      "description": "Contract tests prove new orchestration verifies prepared source representations without requiring a Release/source-pack transport.",
+      "description": "Contract tests prove core v2 orchestration verifies prepared source representations without requiring Release/source-pack transport.",
       "kind": "test",
       "path": "tests/test_research_orchestration.py"
     },
@@ -38,29 +53,52 @@
       "description": "Legacy v1 source-pack replay remains hash-checked and fail-closed without becoming the v2 default.",
       "kind": "test",
       "path": "tests/test_research_orchestration.py"
+    },
+    {
+      "contains": "test_sequence_gate_rejects_hindsight_rewrite",
+      "description": "Trajectory contract rejects rewriting an already-known typed Judgment in a later replay snapshot while permitting later Outcome rows to appear separately.",
+      "kind": "test",
+      "path": "tests/test_epistemic_trajectory.py"
+    },
+    {
+      "contains": "test_snapshot_gate_checks_counts_and_future_leakage",
+      "description": "Trajectory contract fails closed if any typed replay row has known_at later than its declared historical cutoff.",
+      "kind": "test",
+      "path": "tests/test_epistemic_trajectory.py"
+    },
+    {
+      "contains": "longcycle-reusable-epistemic-trajectory-validation/v1",
+      "description": "Real PostgreSQL proof run 32640720602 executed the generic contract over BLENREP through Grounded Evidence, Reality, contemporaneous Judgment, related Outcome and three no-lookahead replay cutoffs.",
+      "kind": "validation_receipt",
+      "path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/reusable-epistemic-trajectory-validation-v1.json"
     }
   ],
   "id": "CAP-0007",
   "maturity": "stable",
   "non_goals": [
     "Owning GitHub Release/Drive transport restoration or PDF download machinery.",
-    "Reimplementing Evidence/Reality semantics inside workflow/CLI.",
+    "Reimplementing Grounded Evidence, Reality reconciliation, Judgment identity/precision, Outcome comparability or CAP-0005 knowledge-cutoff semantics inside workflow/CLI.",
     "Owning memory-first historical discovery or treating one execution entrypoint as the whole historical-research lifecycle.",
     "Requiring raw source packs when claim-relevant content is already truthfully content_verified under CAP-0001/CAP-0002.",
-    "Campaign-specific branches in the generic runner."
+    "Campaign-specific branches, product ids, fact keys or replay cutoffs in generic runner code."
   ],
   "owned_semantics": [
     "orchestration.preserved_source_integrity",
     "orchestration.bounded_evidence_reality_composition",
+    "orchestration.epistemic_trajectory_composition",
+    "orchestration.fail_closed_replay_sequence_gate",
     "orchestration.portable_execution_receipt"
   ],
-  "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. V2 is transport-neutral and consumes a verified local material root; legacy v1 source-pack replay is compatibility only and must not turn raw-byte acquisition into an independent research prerequisite.",
-  "revisit_when": "Only replace if source identity, representation integrity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery or transport semantics.",
+  "purpose": "Own campaign-agnostic execution-stage composition from a verified local material root through Grounded Evidence and, when declared, existing Reality, contemporaneous Judgment, later Outcome and sealed point-in-time replay executors. CAP-0007 owns composition, phase ordering, acceptance gates, immutable-path checks and portable receipts; it delegates source truthfulness to CAP-0001/2, Reality to CAP-0003, Judgment/Outcome to CAP-0004 and historical visibility to CAP-0005. Research-orchestration/v2 remains transport-neutral; legacy v1 source-pack replay remains compatibility only.",
+  "revisit_when": "Only replace if source identity, representation integrity, repair auditability, fail-closed phase composition, immutable guards, typed no-lookahead delegation and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery, transport, Reality/Judgment/Outcome or replay semantics from their existing owners.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/research_orchestration.py",
+    "src/longcycle/application/epistemic_trajectory.py",
     "scripts/execute_research_orchestration.py",
+    "scripts/execute_epistemic_trajectory.py",
     "tests/test_research_orchestration.py",
+    "tests/test_epistemic_trajectory.py",
     "src/longcycle/cli.py"
   ],
   "status": "active",
@@ -69,9 +107,11 @@
     "orchestration",
     "source-material",
     "transport-neutral",
+    "epistemic-trajectory",
+    "replay",
     "repair-overlay",
     "receipt",
     "fail-closed"
   ],
-  "title": "Fail-closed research orchestration"
+  "title": "Fail-closed research and epistemic-trajectory orchestration"
 }
