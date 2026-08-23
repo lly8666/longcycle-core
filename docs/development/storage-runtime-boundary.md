@@ -1,114 +1,131 @@
 # Longcycle storage runtime boundary
 
-Status: adopted after the first real Kwinana grounded-evidence benchmark and refined by the Kemerton SEC transport-stability defect.
+Status: adopted after real grounded-evidence/replay benchmarks and refined by the PDF transport/materialization correction.
 
-This decision records what real benchmarks proved. It is intentionally narrower than a full repository rewrite.
+This decision separates **what Longcycle knows/preserves** from **where bytes happen to travel**.
 
 ## Decision
 
-Longcycle separates three storage responsibilities instead of forcing one database to own all of them:
+Longcycle has four distinct storage responsibilities:
 
-1. **Immutable source archive** — original HTML/PDF/attachments and deterministic parser artifacts remain in the content-addressed `ArchiveStore` (filesystem or object storage). Raw source bytes are not copied into analytical database files merely for convenience.
-2. **Transactional collection / operational state** — the current normal write path may continue to use PostgreSQL for migrations, source registration, document versioning, evidence writes, queues, leases and other concurrent operational semantics. PostgreSQL remains an adapter-backed runtime choice rather than the terminal product.
-3. **Portable research / evidence replay package** — DuckDB is the adopted portable durable bundle format for bounded research/evidence handoff, point-in-time replay and local analytical reads. A bundle contains canonical row mirrors, evidence/document indexes and derived hot parser text, while raw source bytes stay in the immutable archive.
+1. **Logical source identity + completeness state** — PostgreSQL `evidence.documents` tracks the upstream document and its `locator_verified → content_verified → materialized` lifecycle.
+2. **Immutable preserved material** — `ArchiveStore` stores the exact bytes Longcycle actually used/preserved. Those bytes may be upstream raw source or a truthful source-derived readable representation; representation provenance must say which.
+3. **Transactional collection / operational state** — PostgreSQL owns migrations, source registration, document/evidence writes, queues, leases, outbox and concurrent write semantics.
+4. **Portable research / replay state** — DuckDB is the durable bounded replay/handoff format for typed industrial memory and may also be used for webpage capture capsules. It is not live transactional authority.
 
-This is a **hybrid boundary**, not a declaration that every existing PostgreSQL repository must immediately be rewritten as DuckDB-native.
+## Raw source bytes are not synonymous with Evidence material
 
-## Why this boundary exists
+Old shorthand used:
 
-The terminal Longcycle mission is temporally truthful industrial memory, not database standardization. Storage is correct when it preserves evidence identity, known-time / valid-time semantics and portable replay with low operational burden.
+```text
+raw source -> parser artifact -> Evidence
+```
 
-The EVT-001 Kwinana benchmark executed four real historical source vintages through the normal PostgreSQL archive/evidence path, persisted two versioned PDF parser artifacts and nine grounded EvidenceFragments, created zero FactAssertions and zero Judgments, then exported the exact bounded evidence state into DuckDB 1.5.5.
+That remains a strong path when raw bytes are available, but it is **not the only truthful path**. The current architecture is:
 
-The resulting DuckDB bundle:
+```text
+upstream source identity
+→ locator/content verification
+→ exact preserved source-derived material
+→ Grounded Evidence
+→ optional later raw-source materialization
+```
 
-- re-opened successfully in read-only mode after the writer closed;
-- contained canonical mirrors for every selected PostgreSQL evidence row;
-- verified per-table row counts and canonical SHA-256 digests;
-- had zero broken document references and zero broken artifact references;
-- preserved queryable `claim_role`, known-time upper bound/precision, valid/effective time and expectation horizon;
-- embedded deterministic page text for hot PDF review while keeping original PDFs outside the database;
-- supported a point-in-time cutoff query directly from the portable file.
+For a PDF whose claim-relevant content was actually read but whose bytes cannot currently be downloaded:
 
-The authoritative machine receipt is:
+```text
+source_media_type = application/pdf
+source_capture_state = content_verified
+representation_content_type = text/plain (or another truthful representation)
+raw_source_materialized = false
+```
 
-`research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-execution-receipt-v1.json`
+The representation bytes go through the normal immutable archive/document-version path. Their presence proves exactly those preserved bytes existed in Longcycle; it does **not** prove byte-identical PDF materialization.
 
-## Raw transport snapshot versus stable grounding identity
+Migration 0028 removes the old generic “document version means raw materialized” trigger. Migration 0029 preserves explicit content-verified representation state from trusted adapter provenance. A later raw PDF is marked `materialized` only through an explicit verified transition tied to the raw document version.
 
-A raw HTTP response and the historical statement carried by that response are related but not always the same identity layer.
+## PostgreSQL
 
-Kemerton exposed a real example. Repeated requests for the same immutable SEC filing URL produced different raw SHA-256 values because SEC/Akamai inserted hidden script and pixel material. Independent raw snapshots differed in byte length and digest, while Longcycle's normalized visible text was byte-for-byte identical after excluding `script`, `style` and `noscript` content.
+PostgreSQL remains the normal live write engine because Longcycle needs:
 
-Therefore:
+- transactional Evidence/Fact/Judgment writes;
+- source/document identity constraints;
+- migration discipline;
+- leases/retries/outbox;
+- reconciliation and audit semantics.
 
-- every fetched raw response remains immutable and content-addressed; its exact SHA proves what Longcycle actually received on that retrieval;
-- raw SHA remains a valid cross-run identity when the transport is demonstrated stable;
-- when transport-only bytes are demonstrated volatile, the executor must not pretend that one historical raw SHA can identify every later retrieval;
-- a deterministic, versioned parser artifact such as `html-visible-text` becomes the stable grounding identity for textual EvidenceFragments;
-- the artifact must retain lineage to its exact raw `SourceDocument`, parser name/version and input digest;
-- Evidence never discards or overwrites the raw snapshot merely because a stable artifact exists.
+A live PostgreSQL cluster is never session-handoff authority. Recreate it in a service-capable runtime when needed. A generated snapshot may be transported through Drive, but remains a snapshot.
 
-This is the same architecture already used for PDF evidence: immutable raw source -> deterministic parser artifact -> grounded fragment.
+## ArchiveStore
 
-## Canonical row reconciliation rule
+ArchiveStore is content-addressed preservation, not an authority classifier.
 
-A portable DuckDB bundle is not authoritative merely because rows were copied into it. Export is accepted only when the selected PostgreSQL rows are canonicalized deterministically and the DuckDB mirror reproduces the same row digests and table digests.
+It may contain:
 
-The current bundle schema uses:
+- upstream raw HTML/PDF/JSON/attachments;
+- parser artifacts;
+- faithful webpage visible-text captures;
+- content-verified PDF readable representations;
+- generated execution artifacts when a caller explicitly stores them there.
 
-- `canonical_rows` — canonical JSON row mirror plus row SHA-256;
-- `document_index` — portable source-version identity, archive locator and source/retrieval provenance;
-- `evidence_index` — fragment identity, locator and first-class temporal/claim context;
-- `page_text` — deterministic PDF parser output for bounded hot review;
-- `evidence_timeline` — point-in-time-oriented analytical view.
+Every stored object must retain enough lineage to distinguish source bytes, source-derived representation and generated output.
 
-A bundle must fail closed on digest mismatch or broken document/artifact references.
+## DuckDB / SQLite capture capsules
 
-## Publisher authority is not retrieval transport
+### Typed replay
 
-Historical recovery may retrieve a publisher's original bytes through a third-party archival transport. The publisher/source authority and the retrieval route must remain distinguishable.
+Portable DuckDB replay packages contain typed Reality/Judgment/Outcome/evidence indexes needed for point-in-time reads. They open read-only by default after handoff.
 
-For example, the Kwinana 2018/2019 Tianqi pages were unavailable from the GitHub runner's direct route but their exact original Tianqi pages were recoverable from verified Internet Archive captures. Tianqi remains the publisher whose wording carries the claim; Internet Archive is retrieval/capture provenance. The archive capture timestamp must not be substituted for historical `known_time`.
+### Web capture
 
-Likewise, an SEC-hosted filing can be authoritative filing transport while hidden SEC/Akamai delivery bytes remain non-semantic transport material. Retrieval provenance and publisher/filing authority must remain separate from parser-level textual identity.
+Readable webpages can be batched into a bounded DuckDB/SQLite capsule containing faithful claim-scoped visible text and provenance, then handed off through Google Drive. This is source capture, not Fact/Judgment publication.
 
-## Time semantics remain above storage
+Raw webpage HTML is not required merely because a tool could fetch it; the capture mode must state what was actually preserved.
 
-Neither PostgreSQL nor DuckDB determines historical truth. Evidence must preserve separately when information was knowable, when a milestone applied or became effective, and what future horizon an expectation targeted.
+## PDF handoff/materialization
 
-Storage must not collapse:
+Default new-PDF path:
 
-- source/body dateline into exact first-publication time;
-- archival capture time into historical known-time;
-- milestone effective date into disclosure time;
-- month-level forward expectation into a day-level outcome declaration;
-- commissioning, continuous operation, commercial-production capability, customer qualification and nameplate capacity into one status.
+```text
+verify document identity + locator
+→ if content unread: locator_verified only
+→ if claim content read/preserved: content_verified + Grounded Evidence allowed
+→ later normal-network Agent optionally downloads raw PDF
+→ verify identity/content
+→ record raw size/SHA/storage locator
+→ explicit materialized transition
+```
 
-## Why DuckDB does not replace PostgreSQL wholesale now
+Do not create GitHub Actions just to download new PDFs. Existing GitHub Release source packs remain immutable historical materializations and may be reused.
 
-Longcycle should optimize for semantic clarity, not the minimum number of database products.
+## Research orchestration boundary
 
-The research/evidence side is increasingly compatible with immutable or append-oriented portable materialization, which makes DuckDB a strong long-term format there. The operational side already uses server-style coordination semantics such as concurrent job claiming, lease fencing, retries/dead-letter state and outbox processing. Reimplementing those semantics merely to say that Longcycle uses one database would increase coupling and migration risk without improving historical replay.
+`research-orchestration/v2` consumes an already prepared local material root and verifies the per-document SHA declared by the Grounded Evidence spec. It does not care whether those bytes arrived from Drive, a legacy Release, local capture, or later raw materialization.
 
-Development time being available is not itself a reason to rewrite the wrong layer. Extra time should first buy stronger evidence identity, replay tests, cross-company comparability and failure drills.
+`research-orchestration/v1` remains supported only for replay of old source-pack-based executions.
 
-Reconsider a wider PostgreSQL retirement only when real benchmarks show all of the following:
+Transport restore therefore remains outside epistemic execution:
 
-1. research truth can be rebuilt and audited entirely from sealed archive/artifact/bundle materializations across multiple industries and trajectories;
-2. mutable operational coordination has become small enough to replace cleanly, or DuckDB's supported remote/multi-writer coordination is mature enough for the required semantics;
-3. PostgreSQL is a measured operational burden rather than a theoretical source of architectural impurity;
-4. parity and failure-recovery drills show no loss of transaction, constraint, lease/fencing or audit guarantees;
-5. the migration materially simplifies the system instead of moving server coordination complexity into application code.
+```text
+transport / restore / representation preparation
+             ↓
+verified local material root
+             ↓
+Grounded Evidence / Reality / replay
+```
 
-Until those gates are met, the elegant architecture is **shared semantics with deliberately different storage roles**.
+## Fail-closed boundaries
 
-## Operational boundary
+Fail closed when:
 
-Do not now add a generic DuckDB write repository, distributed orchestration layer or cross-database synchronization service merely because the portable bundle worked.
+- a claim relies on PDF content that was never actually read/preserved;
+- representation bytes do not match their declared digest;
+- representation provenance pretends text is raw PDF;
+- later raw materialization contradicts earlier source identity/content;
+- PostgreSQL / replay integrity gates fail.
 
-The next benchmark work should reuse the proven path:
+Do **not** fail merely because raw PDF bytes are pending after `content_verified`.
 
-`primary source -> immutable archive -> deterministic grounding artifact when needed -> grounded EvidenceFragment -> portable reconciled DuckDB bundle/replay`
+## Canonical row reconciliation
 
-Add further storage abstraction only when a real industry trajectory exposes a concrete repeated need. After EVT-002 Kemerton, the next mainline target is the first small no-lookahead replay fixture.
+Portable DuckDB data is not authoritative because it was copied. Export/replay must remain deterministic and typed, preserve source/evidence identities, and reproduce required canonical row semantics/digests. Storage convenience never bypasses Evidence/Reconciliation.
