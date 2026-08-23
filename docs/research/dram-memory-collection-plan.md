@@ -10,13 +10,15 @@ Longcycle 的第二个跨行业 benchmark 选择：**DRAM 存储半导体**。
 - Judgment：管理层、客户、行业机构和研究者当时对供需、价格、节点迁移、HBM、资本开支的判断；
 - Outcome：后来实际供需、价格、产品 ramp、份额/利润与当时 Judgment 如何分叉。
 
-第一阶段主时间范围：
+第一阶段历史恢复范围：
 
 ```text
-2016-01-01 → 2026-12-31
+2016-01-01 → 2026-08-24
 ```
 
-2016 作为上一轮大周期前的基线；2017–2018 覆盖强景气与紧缺；2019 覆盖下行；2020–2021 覆盖疫情冲击、数字化需求与供应约束；2022–2023 覆盖库存/价格深度调整；2024–2026 覆盖 AI/HBM 对 DRAM 产品结构、产能分配和资本开支的重塑。
+2016 作为上一轮大周期前的基线；2017–2018 覆盖强景气与紧缺；2019 覆盖下行；2020–2021 覆盖疫情冲击、数字化需求与供应约束；2022–2023 覆盖库存/价格深度调整；2024–2026-08-24 覆盖 AI/HBM 对 DRAM 产品结构、产能分配和资本开支的重塑。
+
+`2026-08-24` 之后只能进入 current source watch；未来材料不得提前进入历史 campaign。
 
 不预先把任何阶段写成“超级周期”“结构性短缺”等结论。那些词只有在保存当时 Judgment 时才能作为当时认知进入。
 
@@ -238,6 +240,7 @@ Outcome 不用后来结果重写 Judgment。应保存：
 2025-06-30
 2025-12-31
 2026-06-30
+2026-08-24
 ```
 
 每个 snapshot 尽量回答同一组问题：
@@ -299,7 +302,7 @@ Outcome 不用后来结果重写 Judgment。应保存：
 
 ## 7. 当前已验证的 benchmark boundary
 
-截至 campaign 初始化时，公开 primary/current source 已足以确认：
+截至 `2026-08-24` campaign 初始化时，公开 primary/current source 已足以确认：
 
 - Samsung 把 HBM、server DDR5 等作为其 DRAM/Memory 产品组合的一部分，并明确讨论 AI demand、有限供给和产品 mix；
 - SK hynix 同时讨论 HBM、AI server DRAM、价格、长期供货与产能/工艺安排；
@@ -307,7 +310,7 @@ Outcome 不用后来结果重写 Judgment。应保存：
 - CXMT 官方定位为 DRAM 设计、制造、销售和研发厂商，已有 DDR5、LPDDR5/5X、DDR4、LPDDR4X 产品；
 - JEDEC 将 DDR SDRAM 与 HBM 都归于 Main Memory 标准领域。
 
-这只用于定义 research scope，不是把 2026 的公开材料倒灌成历史事实。
+这只用于定义 research scope，不是把 2026 的公开材料倒灌成更早历史事实。
 
 ## 8. Comparability hazards
 
