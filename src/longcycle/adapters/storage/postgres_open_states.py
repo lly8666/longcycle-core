@@ -42,8 +42,10 @@ class PostgresOpenStateReader(PostgresSupport):
     """Read explicit archive conflicts and current research-only open states.
 
     Historical conflict visibility is reconstructed from member assertion ``first_known_at``.
-    Database curation timestamps stay provenance only. Current Memory/coverage state is read
-    separately and must never be presented as historical market knowledge.
+    Database curation timestamps stay provenance only. Source independence reuses CAP-0003's
+    Fact/Reconciler source-cluster semantics. Current Memory/coverage state is read separately
+    from its own industry/campaign provenance and must never be presented as historical market
+    knowledge.
     """
 
     async def historical_source_disagreements(
@@ -80,6 +82,7 @@ class PostgresOpenStateReader(PostgresSupport):
                    fact_key.comparability_hash,
                    assertion.id AS assertion_id,
                    assertion.source_connector_id AS source_id,
+                   assertion.source_cluster,
                    assertion.first_known_at AS known_at,
                    assertion.value_kind,
                    assertion.value_numeric,
@@ -106,10 +109,10 @@ class PostgresOpenStateReader(PostgresSupport):
                      conflict.opened_at, conflict.closed_at,
                      fact_key.subject_entity_id, fact_key.subject_industry_node_id,
                      fact_key.predicate_code, fact_key.comparability_hash,
-                     assertion.id, assertion.source_connector_id, assertion.first_known_at,
-                     assertion.value_kind, assertion.value_numeric, assertion.value_text,
-                     assertion.value_boolean, assertion.value_date, assertion.value_entity_id,
-                     assertion.value_json, assertion.unit_code
+                     assertion.id, assertion.source_connector_id, assertion.source_cluster,
+                     assertion.first_known_at, assertion.value_kind, assertion.value_numeric,
+                     assertion.value_text, assertion.value_boolean, assertion.value_date,
+                     assertion.value_entity_id, assertion.value_json, assertion.unit_code
             ORDER BY conflict.id, assertion.first_known_at, assertion.id
         """
         async with self.connection() as connection:
@@ -125,7 +128,7 @@ class PostgresOpenStateReader(PostgresSupport):
             if len(members) < 2:
                 continue
             assertions = tuple(self._conflict_assertion(row) for row in members)
-            if len({item.source_id for item in assertions}) < 2:
+            if len({item.source_independence_key for item in assertions}) < 2:
                 continue
             first = members[0]
             subject = self._subject(first)
@@ -160,18 +163,15 @@ class PostgresOpenStateReader(PostgresSupport):
         self,
         *,
         industry_node_id: UUID,
-        entity_ids: Sequence[UUID],
     ) -> CurrentResearchOpenStateBundle:
         async with self.connection() as connection:
             disagreements = await self._current_disagreements(
                 connection,
                 industry_node_id=industry_node_id,
-                entity_ids=entity_ids,
             )
             hypotheses = await self._current_hypotheses(
                 connection,
                 industry_node_id=industry_node_id,
-                entity_ids=entity_ids,
             )
             coverage_gaps = await self._current_coverage_gaps(
                 connection,
@@ -188,14 +188,14 @@ class PostgresOpenStateReader(PostgresSupport):
         connection: Any,
         *,
         industry_node_id: UUID,
-        entity_ids: Sequence[UUID],
     ) -> tuple[MemoryDisagreementOpenRecord, ...]:
         cursor = await connection.execute(
             """
             SELECT disagreement.id AS disagreement_case_id,
                    disagreement.lead_id,
                    lead.subject_entity_id,
-                   lead.subject_industry_node_id,
+                   coalesce(lead.subject_industry_node_id, prior_run.industry_node_id)
+                       AS subject_industry_node_id,
                    lead.summary AS lead_summary,
                    disagreement.claim_scope,
                    disagreement.opened_reason,
@@ -208,6 +208,8 @@ class PostgresOpenStateReader(PostgresSupport):
             FROM research.memory_disagreement_cases disagreement
             JOIN research.model_memory_leads lead
               ON lead.id = disagreement.lead_id
+            JOIN research.model_prior_runs prior_run
+              ON prior_run.id = lead.prior_run_id
             LEFT JOIN LATERAL (
                 SELECT resolution.disposition, resolution.rationale, resolution.resolved_at
                 FROM research.memory_disagreement_resolutions resolution
@@ -232,7 +234,7 @@ class PostgresOpenStateReader(PostgresSupport):
             ) evidence ON TRUE
             WHERE (
                     lead.subject_industry_node_id = %s
-                    OR lead.subject_entity_id = ANY(%s::uuid[])
+                    OR prior_run.industry_node_id = %s
                   )
               AND (
                     latest.disposition IS NULL
@@ -240,7 +242,7 @@ class PostgresOpenStateReader(PostgresSupport):
                   )
             ORDER BY coalesce(latest.resolved_at, disagreement.opened_at), disagreement.id
             """,
-            (industry_node_id, list(entity_ids), list(_OPEN_MEMORY_DISPOSITIONS)),
+            (industry_node_id, industry_node_id, list(_OPEN_MEMORY_DISPOSITIONS)),
         )
         rows = await cursor.fetchall()
         return tuple(
@@ -269,14 +271,14 @@ class PostgresOpenStateReader(PostgresSupport):
         connection: Any,
         *,
         industry_node_id: UUID,
-        entity_ids: Sequence[UUID],
     ) -> tuple[MemoryHypothesisOpenRecord, ...]:
         cursor = await connection.execute(
             """
             SELECT assessment.id AS assessment_id,
                    assessment.lead_id,
                    lead.subject_entity_id,
-                   lead.subject_industry_node_id,
+                   coalesce(lead.subject_industry_node_id, prior_run.industry_node_id)
+                       AS subject_industry_node_id,
                    lead.summary AS lead_summary,
                    assessment.disposition,
                    assessment.direct_source_search_status,
@@ -288,6 +290,8 @@ class PostgresOpenStateReader(PostgresSupport):
                    evidence.supporting_evidence_ids,
                    evidence.contradicting_evidence_ids
             FROM research.model_memory_leads lead
+            JOIN research.model_prior_runs prior_run
+              ON prior_run.id = lead.prior_run_id
             JOIN LATERAL (
                 SELECT candidate.*
                 FROM research.memory_hypothesis_assessments candidate
@@ -311,12 +315,12 @@ class PostgresOpenStateReader(PostgresSupport):
             ) evidence ON TRUE
             WHERE (
                     lead.subject_industry_node_id = %s
-                    OR lead.subject_entity_id = ANY(%s::uuid[])
+                    OR prior_run.industry_node_id = %s
                   )
               AND assessment.disposition = ANY(%s::text[])
             ORDER BY assessment.assessed_at, assessment.id
             """,
-            (industry_node_id, list(entity_ids), list(_OPEN_HYPOTHESIS_DISPOSITIONS)),
+            (industry_node_id, industry_node_id, list(_OPEN_HYPOTHESIS_DISPOSITIONS)),
         )
         rows = await cursor.fetchall()
         return tuple(
@@ -348,7 +352,15 @@ class PostgresOpenStateReader(PostgresSupport):
     ) -> tuple[MemoryCoverageGapRecord, ...]:
         cursor = await connection.execute(
             """
-            WITH ranked AS (
+            WITH latest_sealed_campaign AS (
+                SELECT campaign.id
+                FROM research.model_memory_campaigns campaign
+                JOIN research.model_memory_campaign_seals seal
+                  ON seal.campaign_id = campaign.id
+                WHERE campaign.industry_node_id = %s
+                ORDER BY seal.sealed_at DESC, campaign.created_at DESC, campaign.id DESC
+                LIMIT 1
+            ), ranked AS (
                 SELECT cell.*,
                        row_number() OVER (
                            PARTITION BY cell.dimension_type, cell.dimension_key,
@@ -356,9 +368,8 @@ class PostgresOpenStateReader(PostgresSupport):
                            ORDER BY cell.created_at DESC, cell.id DESC
                        ) AS rank_no
                 FROM research.model_memory_coverage_cells cell
-                JOIN research.model_memory_campaigns campaign
-                  ON campaign.id = cell.campaign_id
-                WHERE campaign.industry_node_id = %s
+                JOIN latest_sealed_campaign selected
+                  ON selected.id = cell.campaign_id
             )
             SELECT campaign_id, snapshot_label, dimension_type, dimension_key,
                    period_from, period_to, coverage_state, notes, created_at
@@ -408,6 +419,7 @@ class PostgresOpenStateReader(PostgresSupport):
         return RealityConflictAssertionRecord(
             assertion_id=row["assertion_id"],
             source_id=row["source_id"],
+            source_cluster=row["source_cluster"],
             known_at=row["known_at"],
             value_kind=row["value_kind"],
             value=value,
