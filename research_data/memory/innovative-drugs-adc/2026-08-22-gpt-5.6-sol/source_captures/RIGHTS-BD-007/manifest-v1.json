@@ -2,10 +2,11 @@
   "schema_version": "longcycle-source-capture-manifest/v1",
   "lead_id": "RIGHTS-BD-007",
   "policy": {
-    "preferred_capture": "original_source_bytes",
-    "fallback_capture": "faithful_readable_source_capture",
+    "readable_webpage_default": "interactive_read_to_faithful_visible_text_provenance_to_bounded_local_database_to_google_drive",
+    "pdf_raw_bytes_default": "github_actions_to_hash_verified_immutable_github_release_asset",
+    "legacy_capture_status": "These two repository-pinned faithful webpage captures and their source-pack.zip predate the local-database-to-Drive webpage default. They remain immutable valid legacy material for this already-started lifecycle and are not a template for new webpage acquisition.",
     "tool_limit_rule": "A missing preferred acquisition mechanism may change capture representation but must never justify skipping readable source information.",
-    "evidence_boundary": "Search snippets and discovery summaries are not source captures. A fallback capture must preserve directly read source content, source identity, capture mode, limitations and a digest of the immutable captured representation."
+    "evidence_boundary": "Search snippets and discovery summaries are not source captures. A faithful webpage capture must preserve directly read source content, source identity, capture mode, limitations and a digest of the immutable captured representation. Transport never changes source authority."
   },
   "source_pack": {
     "path": "source-pack.zip",
@@ -15,7 +16,7 @@
       "bms-2023-12-11-joint-announcement.capture.txt",
       "sec-bms-2023-10k-systimmune-note.capture.txt"
     ],
-    "purpose": "Portable immutable packaging of the two faithful captured representations. The pack digest authenticates the capture package; it does not claim the transcript bytes are byte-identical to the original HTML responses."
+    "purpose": "Legacy portable immutable packaging of the two faithful captured representations for this already-started lifecycle. The pack digest authenticates the capture package; it does not claim the transcript bytes are byte-identical to the original HTML responses. New readable webpages use bounded local capture DB -> Google Drive by default."
   },
   "captures": [
     {
