@@ -1,0 +1,183 @@
+name: One-shot Kemerton researcher trajectory validation
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+jobs:
+  validate:
+    if: >-
+      github.event.issue.title == '[longcycle-kemerton-trajectory-validation-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SOURCE_RUN_ID: '32552206834'
+      SOURCE_ARTIFACT_ID: '9470379980'
+      SOURCE_OUTER_SHA256: 'f3a039bbe2a38df2e9fc2f6c4ea2a2d89447917f8e9d6f3f68242c4719617448'
+      DUCKDB_SHA256: 'f3d110b03a07c9ed0c57345a9051b59a9149ce6544ab347171e26999844b84e2'
+      KEMERTON_I_SUBJECT_ID: 'ba9bcc13-482f-548d-a450-9d9089012778'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Resolve immutable implementation head
+        id: resolve
+        shell: bash
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          head_sha="$(printf '%s\n' "$ISSUE_BODY" | sed -nE 's/^head=([0-9a-f]{40})$/\1/p' | head -n1)"
+          test -n "$head_sha" || { echo 'missing exact head=<40 lowercase hex> line' >&2; exit 2; }
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.head_sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install current implementation
+        run: python -m pip install -e '.[duckdb]'
+
+      - name: Download historical integrated generation
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          artifact-ids: ${{ env.SOURCE_ARTIFACT_ID }}
+          path: /tmp/kemerton-source
+
+      - name: Verify historical DuckDB identity
+        id: restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          db="$(find /tmp/kemerton-source -type f -name 'kemerton-integrated.duckdb' -print -quit)"
+          test -n "$db"
+          actual="$(sha256sum "$db" | awk '{print $1}')"
+          echo "duckdb_sha256=$actual"
+          test "$actual" = "$DUCKDB_SHA256"
+          echo "db=$db" >> "$GITHUB_OUTPUT"
+
+      - name: Replay direct-match historical cutoffs through current CAP-0005
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/kemerton-clean
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2022-08-03T16:27:48Z' --subject-id "$KEMERTON_I_SUBJECT_ID" > /tmp/kemerton-clean/replay-before-outcome.json
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2022-08-03T16:27:49Z' --subject-id "$KEMERTON_I_SUBJECT_ID" > /tmp/kemerton-clean/replay-at-outcome.json
+          cp "${{ steps.restore.outputs.db }}" /tmp/kemerton-clean/kemerton-integrated.duckdb
+
+      - name: Assert direct Outcome chronology and build clean receipt
+        id: assert
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('/tmp/kemerton-clean')
+          before = json.loads((root/'replay-before-outcome.json').read_text())['result']
+          at = json.loads((root/'replay-at-outcome.json').read_text())['result']
+
+          assert before['counts']['judgments'] == 1, before['counts']
+          assert before['counts']['reality'] == 0, before['counts']
+          assert before['counts']['outcomes'] == 0, before['counts']
+          assert len(before['entries']) == 1
+          judgment = before['entries'][0]
+          assert judgment['layer'] == 'judgment'
+          assert judgment['target_time']['source_text'] == 'May 2022'
+          assert judgment['known_at'] == '2022-05-04T16:48:41+00:00'
+
+          assert at['counts']['judgments'] == 1, at['counts']
+          assert at['counts']['reality'] == 1, at['counts']
+          assert at['counts']['outcomes'] == 1, at['counts']
+          judgments = [e for e in at['entries'] if e['layer'] == 'judgment']
+          realities = [e for e in at['entries'] if e['layer'] == 'reality']
+          outcomes = [e for e in at['entries'] if e['layer'] == 'outcome']
+          assert len(judgments) == len(realities) == len(outcomes) == 1
+          assert judgments[0]['entry_id'] == judgment['entry_id']
+          assert realities[0]['predicate_code'] == 'project.first_product_status'
+          assert realities[0]['historical_time']['source_text'] == 'July 2022'
+          assert realities[0]['known_at'] == '2022-08-03T16:27:49+00:00'
+          assert outcomes[0]['evaluation_status'] == 'realized'
+          assert outcomes[0]['semantic_relation'] == 'direct_match'
+          assert outcomes[0]['timing_relation'] == 'after_target_window'
+          assert outcomes[0]['timing_delta_value'] == '2'
+          assert outcomes[0]['timing_delta_unit'] == 'calendar_months'
+          assert outcomes[0]['links']['judgment_entry_id'] == judgment['entry_id']
+          assert outcomes[0]['links']['reality_entry_id'] == realities[0]['entry_id']
+
+          for payload in (before, at):
+              assert payload['boundary']['ordered_by_knowledge_time'] is True
+              assert payload['boundary']['historical_time_kept_separate_from_known_at'] is True
+              assert payload['boundary']['source_temporal_precision_preserved'] is True
+              assert payload['boundary']['judgment_not_rewritten_by_outcome'] is True
+              assert payload['boundary']['no_new_epistemic_records_created'] is True
+
+          receipt = {
+              'schema_version': 'longcycle-kemerton-researcher-trajectory-validation/v1',
+              'status': 'pass',
+              'implementation_head_sha': '${{ steps.resolve.outputs.head_sha }}',
+              'source_generation': {
+                  'workflow_run_id': int('${{ env.SOURCE_RUN_ID }}'),
+                  'artifact_id': int('${{ env.SOURCE_ARTIFACT_ID }}'),
+                  'artifact_digest': 'sha256:${{ env.SOURCE_OUTER_SHA256 }}',
+                  'duckdb_sha256_verified_at_runtime': '${{ env.DUCKDB_SHA256 }}',
+                  'source_artifact_contains_external_source_bytes': True,
+              },
+              'subject_id': '${{ env.KEMERTON_I_SUBJECT_ID }}',
+              'cutoffs': [
+                  {'cutoff':'2022-08-03T16:27:48Z','counts':before['counts']},
+                  {'cutoff':'2022-08-03T16:27:49Z','counts':at['counts']},
+              ],
+              'direct_outcome': {
+                  'evaluation_status': outcomes[0]['evaluation_status'],
+                  'semantic_relation': outcomes[0]['semantic_relation'],
+                  'timing_relation': outcomes[0]['timing_relation'],
+                  'timing_delta_value': outcomes[0]['timing_delta_value'],
+                  'timing_delta_unit': outcomes[0]['timing_delta_unit'],
+              },
+              'assertions': {
+                  'outcome_absent_one_second_before_known_time': True,
+                  'original_judgment_entry_identity_preserved_after_outcome': True,
+                  'direct_reality_and_outcome_appear_when_known': True,
+                  'month_precision_preserved_without_fake_day_delay': True,
+                  'trajectory_is_read_only_presentation_over_cap_0005': True,
+                  'clean_capsule_excludes_external_source_bytes': True,
+              },
+          }
+          (root/'validation-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt))
+          PY
+
+      - name: Upload generated-only clean capsule
+        uses: actions/upload-artifact@v4
+        with:
+          name: kemerton-researcher-trajectory-${{ github.run_id }}
+          path: /tmp/kemerton-clean
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Report validation
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ASSERT_OUTCOME: ${{ steps.assert.outcome }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          body=$(printf 'KEMERTON_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nCurrent CAP-0005 replayed the integrity-verified historical integrated DuckDB at one second before and exactly at the direct first-product Outcome knowledge boundary. On success the uploaded capsule contains generated DuckDB/replay/receipt files only, not archived source bytes.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
