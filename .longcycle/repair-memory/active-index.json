@@ -13,12 +13,7 @@
         "scripts/*handoff*.py",
         "scripts/*refactor*.py"
       ],
-      "tags": [
-        "github-actions",
-        "handoff",
-        "truth-hierarchy",
-        "false-pass"
-      ],
+      "tags": ["github-actions", "handoff", "truth-hierarchy", "false-pass"],
       "card_path": ".longcycle/repair-memory/invariants/RI-0001-live-ref-authority.json"
     },
     {
@@ -34,13 +29,7 @@
         "src/longcycle/adapters/storage/duckdb_epistemic.py",
         ".github/workflows/ci.yml"
       ],
-      "tags": [
-        "epistemic-memory",
-        "postgres",
-        "duckdb",
-        "integration-test",
-        "storage-boundary"
-      ],
+      "tags": ["epistemic-memory", "postgres", "duckdb", "integration-test", "storage-boundary"],
       "card_path": ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json"
     },
     {
@@ -60,16 +49,7 @@
         "tests/test_fact_temporal_precision.py",
         "scripts/smoke_postgres_epistemic.py"
       ],
-      "tags": [
-        "reality",
-        "judgment",
-        "outcome",
-        "valid-time",
-        "observation-time",
-        "known-time",
-        "temporal-precision",
-        "no-lookahead"
-      ],
+      "tags": ["reality", "judgment", "outcome", "valid-time", "observation-time", "known-time", "temporal-precision", "no-lookahead"],
       "card_path": ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
     },
     {
@@ -87,14 +67,30 @@
         "scripts/execute_grounded_reality_projection.py",
         "scripts/smoke_postgres_epistemic.py"
       ],
-      "tags": [
-        "fact",
-        "evidence",
-        "provenance",
-        "multi-fragment",
-        "source-boundary"
-      ],
+      "tags": ["fact", "evidence", "provenance", "multi-fragment", "source-boundary"],
       "card_path": ".longcycle/repair-memory/invariants/RI-0004-fact-provenance-multi-fragment.json"
+    },
+    {
+      "id": "RI-0005",
+      "title": "Preserved source representation is not automatically raw-source materialization",
+      "kind": "architecture",
+      "severity": "critical",
+      "scope": [
+        "migrations/0027_source_locator_materialization_state.sql",
+        "migrations/0028_truthful_source_materialization.sql",
+        "migrations/0029_source_representation_fetch_state.sql",
+        "migrations/0030_source_representation_fetch_state_unambiguous.sql",
+        "src/longcycle/adapters/sources/materialized.py",
+        "src/longcycle/adapters/storage/postgres_source_locators.py",
+        "src/longcycle/application/research_orchestration.py",
+        "src/longcycle/cli.py",
+        "scripts/execute_research_orchestration.py",
+        "tests/test_source_locator_materialization.py",
+        "tests/test_materialized_source_representation.py",
+        "tests/test_research_orchestration.py"
+      ],
+      "tags": ["source", "pdf", "representation", "materialization", "grounded-evidence", "orchestration", "transport"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0005-source-representation-not-raw-materialization.json"
     }
   ]
 }
