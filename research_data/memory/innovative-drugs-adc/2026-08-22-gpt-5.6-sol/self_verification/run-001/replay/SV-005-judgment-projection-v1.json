@@ -1,0 +1,42 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "ADC-SV-005-BLENREP-JUDGMENT-V1",
+  "source_evidence_task_id": "ADC-SV-005-BLENREP-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "post_failure_development_commitment"
+  ],
+  "subjects": [
+    {
+      "id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "entity_type": "product",
+      "canonical_name": "belantamab mafodotin / BLENREP"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2022-post-failure-dreamm-programme-continuation",
+      "evidence_refs": [
+        {
+          "fragment_key": "gsk-post-failure-development-commitment",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8",
+      "speaker_name_text": "GSK / Sabine Luik",
+      "speaker_role": "Chief Medical Officer",
+      "topic_code": "clinical.blenrep_development_continuation",
+      "judgment_kind": "commitment",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "future DREAMM clinical trial programme; no exact completion, success or regulatory re-entry date stated",
+      "value_kind": "text",
+      "value_text": "We will continue the DREAMM clinical trial programme.",
+      "summary": "On November 22, 2022, after the DREAMM-3 monotherapy failure and while the U.S. withdrawal process was being discussed publicly, GSK committed to continue the DREAMM clinical trial programme. This contemporaneous Judgment predates and therefore excludes the later DREAMM-7 and DREAMM-8 positive combination readouts.",
+      "metadata": {
+        "hindsight_guard": "DREAMM-7 and DREAMM-8 outcomes were not knowable at this Judgment vintage and must not be embedded in the original commitment.",
+        "target_guard": "The source commits to continued development but does not state an exact success probability, completion date, regulatory outcome or monotherapy efficacy target.",
+        "comparability_guard": "Later BVd/BPd successes are related milestones for the development programme, not direct realization of BLENREP monotherapy efficacy."
+      }
+    }
+  ]
+}
