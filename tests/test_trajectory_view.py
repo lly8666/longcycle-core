@@ -16,7 +16,12 @@ from longcycle.domain.epistemic import (
     TemporalExtent,
     snapshot_from_timeline,
 )
-from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType, TemporalPrecision
+from longcycle.domain.enums import (
+    JudgmentRationaleKind,
+    JudgmentRelationType,
+    OutcomeSemanticRelation,
+    TemporalPrecision,
+)
 
 
 SUBJECT = MemorySubjectRef(entity_id=UUID("11111111-1111-1111-1111-111111111111"))
@@ -145,6 +150,19 @@ def test_trajectory_view_keeps_knowledge_time_and_historical_time_separate() -> 
     assert _iso(early_time["end"]) == datetime(2022, 6, 1, tzinfo=UTC)
     assert early_time["precision"] == "month"
 
+    assert len(before_view["knowledge_progression"]) == 1
+    assert before_view["knowledge_progression"][0]["counts_after"] == {
+        "reality": 0,
+        "judgments": 1,
+        "outcomes": 0,
+    }
+    assert len(before_view["judgment_storylines"]) == 1
+    early_story = before_view["judgment_storylines"][0]
+    assert early_story["status_as_of_cutoff"] == "judgment_visible_no_outcome"
+    assert early_story["later_outcomes"] == []
+    assert "No Outcome evaluation" in early_story["researcher_summary"]
+    assert "achieved first product" not in early_story["researcher_summary"]
+
     at = snapshot_from_timeline(timeline, knowledge_cutoff=LATER_KNOWN)
     view = build_researcher_trajectory_view(at)
     assert view["counts"] == {
@@ -171,4 +189,63 @@ def test_trajectory_view_keeps_knowledge_time_and_historical_time_separate() -> 
     assert _iso(occurrence["end"]) == datetime(2022, 8, 1, tzinfo=UTC)
     assert occurrence["precision"] == "month"
     assert outcome["known_at"] == LATER_KNOWN.isoformat()
+
+    assert len(view["knowledge_progression"]) == 2
+    later_point = view["knowledge_progression"][1]
+    assert later_point["introduced_counts"] == {
+        "reality": 1,
+        "judgments": 1,
+        "outcomes": 1,
+    }
+    assert later_point["counts_after"] == {
+        "reality": 1,
+        "judgments": 2,
+        "outcomes": 1,
+    }
+
+    stories = {row["at_the_time"]["judgment_id"]: row for row in view["judgment_storylines"]}
+    early_story = stories[str(EARLY_JUDGMENT)]
+    revised_story = stories[str(REVISED_JUDGMENT)]
+    assert early_story["status_as_of_cutoff"] == "outcome_visible"
+    assert early_story["later_outcomes"][0]["evaluation_status"] == "realized"
+    assert early_story["later_outcomes"][0]["linked_reality"]["predicate_code"] == "project.first_product_status"
+    assert early_story["revision_context"]["incoming_relations"][0]["relation_type"] == "revises"
+    assert revised_story["status_as_of_cutoff"] == "judgment_visible_no_outcome"
+    assert revised_story["revision_context"]["outgoing_relations"][0]["to_judgment_id"] == str(EARLY_JUDGMENT)
+    assert view["boundary"]["storylines_derive_only_from_filtered_snapshot"] is True
+    assert view["boundary"]["presentation_adds_no_causality_or_realization_inference"] is True
     assert view["boundary"]["judgment_not_rewritten_by_outcome"] is True
+
+
+def test_trajectory_storyline_preserves_related_milestone_as_indeterminate() -> None:
+    base = _timeline()
+    original = base.outcomes[0]
+    related = original.model_copy(
+        update={
+            "evaluation_status": "indeterminate",
+            "semantic_relation": OutcomeSemanticRelation.RELATED_MILESTONE,
+            "timing_relation": "not_comparable",
+            "timing_delta_value": None,
+            "timing_delta_unit": None,
+            "explanation": "Later Reality is related context, not the same milestone.",
+        }
+    )
+    timeline = IndustrialMemoryTimeline(
+        reality=base.reality,
+        judgments=base.judgments,
+        judgment_rationales=base.judgment_rationales,
+        judgment_relations=base.judgment_relations,
+        outcomes=(related,),
+    )
+    view = build_researcher_trajectory_view(
+        snapshot_from_timeline(timeline, knowledge_cutoff=LATER_KNOWN)
+    )
+    stories = {row["at_the_time"]["judgment_id"]: row for row in view["judgment_storylines"]}
+    early_story = stories[str(EARLY_JUDGMENT)]
+    later = early_story["later_outcomes"][0]
+    assert later["evaluation_status"] == "indeterminate"
+    assert later["semantic_relation"] == "related_milestone"
+    assert later["timing_relation"] == "not_comparable"
+    assert "indeterminate" in early_story["researcher_summary"]
+    assert "related_milestone" in early_story["researcher_summary"]
+    assert "realized" not in early_story["researcher_summary"]
