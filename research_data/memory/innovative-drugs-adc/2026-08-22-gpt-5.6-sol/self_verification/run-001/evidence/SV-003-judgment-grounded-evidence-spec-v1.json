@@ -1,0 +1,84 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "ADC-SV-003-ENHERTU-JUDGMENT-EVIDENCE-V1",
+  "acquisition_provenance": {
+    "source_evidence_family": "ADC-SV-003-ENHERTU-GROUNDED-EVIDENCE-V1",
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset_file_name": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+    "release_asset_sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
+    "reuse_rule": "Reuse the already archived 2019 collaboration PDF; this task adds one claim-scoped Judgment fragment and does not reacquire or reinterpret the source as later Reality."
+  },
+  "epistemic_guardrails": [
+    "The source statement is a contemporaneous executive thesis from March 2019, before ENHERTU was approved for any indication.",
+    "Do not use the 2022 DESTINY-Breast04 topline or HER2-low approval to strengthen, rewrite or backdate the 2019 Judgment.",
+    "The phrase 'potential to redefine breast cancer treatment' has no source-supported target date, probability or guaranteed regulatory milestone; preserve target time as unknown.",
+    "The later 2022 HER2-low approval may be evaluated only as a related milestone, not as direct realization of the broader treatment-redefinition thesis."
+  ],
+  "sources": [
+    {
+      "key": "daiichi-issuer",
+      "name": "Daiichi Sankyo original press releases",
+      "publisher_domain": "daiichisankyo.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "The original joint collaboration release preserves Pascal Soriot's contemporaneous stated thesis about the future treatment role of trastuzumab deruxtecan."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "collaboration-2019",
+      "vintage_id": "SV003-2019-03-COLLABORATION",
+      "source_key": "daiichi-issuer",
+      "retrieval_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/006988/190329_886_E.pdf",
+      "original_source_url": "https://www.daiichisankyo.com/media/press_release/detail/index_3199.html",
+      "external_id": "ONP-19-0013",
+      "title": "Daiichi Sankyo and AstraZeneca Announce Global Development and Commercialization Collaboration for DS-8201",
+      "published_at": null,
+      "first_known_at": "2019-03-30T00:00:00Z",
+      "expected_sha256": "ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e",
+      "material_path": "daiichi-astrazeneca-enhertu-collaboration-2019.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.daiichisankyo.com",
+        "published_date_only": "2019-03-29",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "daiichi-enhertu-collaboration-2019"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2019-her2-low-treatment-redefinition-thesis",
+      "document_key": "collaboration-2019",
+      "page": 2,
+      "excerpt": "has the potential to redefine breast cancer treatment as the first therapy for HER2 low expressing tumors.",
+      "claim_context": {
+        "claim_id": "SV003-J01",
+        "epistemic_layer": "judgment",
+        "claim_role": "executive_her2_low_treatment_thesis",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-collaboration-2019",
+        "speaker_name": "Pascal Soriot",
+        "speaker_role": "Chief Executive Officer, AstraZeneca",
+        "target_scope": "future treatment role in HER2-low breast cancer",
+        "target_time": {"kind": "unknown", "precision": "unknown"},
+        "known_time": {"upper_bound": "2019-03-30T00:00:00Z", "precision": "day"},
+        "hindsight_guard": "At this source vintage trastuzumab deruxtecan was investigational and not approved for any indication; later HER2-low readout and approval evidence are excluded from this Judgment Evidence task."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 1,
+    "required_fragments": 1,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
