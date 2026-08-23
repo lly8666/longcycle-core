@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 57,
+  "continuity_sequence": 58,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "9e73695637f75f96b5987eadab6fc33734ca24da",
+  "checkpoint_based_on_head_sha": "6ecea2848330bcb16e16cee6ff88ab28dbc14047",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head. Capability governance remains a permanent supporting constraint: discover existing semantic owners before material development and prefer reuse/extend. Researcher-facing trajectory work remains an extension of CAP-0005, never a second replay engine. Legacy sealed portable generations are immutable; additive reader compatibility may interpret absence of later optional tables/columns, but must not rewrite historical bytes or weaken knowledge-cutoff semantics.",
+  "bootstrap_instruction": "Resume from live PR/head. Longcycle historical recovery remains memory-first and Evidence-final: CAP-0006 owns blind/fragmentary Model Memory, including approximate periods, while CAP-0007 begins only after source acquisition has produced an immutable source pack/spec. Temporal semantics remain source-precision preserving across Judgment/Reality/Outcome; computational range bounds are not occurrence dates, observation/as-of does not fabricate onset, and known-time stays conservative. Capability governance is permanent. Historical project memory is latent/on-demand: do not preload old history; when a fuzzy prior-history cue or core_locked semantic change appears, follow the CAP-0009 historical-recall protocol through capability owner -> Repair Memory -> exact origin refs -> bounded Git/Issue history.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,65 +16,70 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Make Longcycle reusable for researchers across many Agent and implementation vintages while one stable semantic owner remains authoritative for each capability and historical portable state stays replayable without hindsight mutation.",
-    "short_term_goal": "Finish product validation of the CAP-0005 researcher trajectory across both non-direct/indeterminate and direct-match/realized Outcome cases using integrity-verified historical industrial memory.",
-    "next_big_step": "After final full CI, use the existing lithium EVT-002 Kemerton first-product trajectory as the direct-match counter-case to Rova-T and Kwinana: restore only its existing portable state, then compare pre-outcome and post-outcome views through the current CAP-0005 reader/trajectory path.",
-    "local_optimization_stop_rule": "Do not add schema for implication polarity from interpretive discomfort, do not create a replay v2, do not mutate old DuckDB generations to look current, and do not turn the handoff/data-plane manifest into an exhaustive asset ledger.",
+    "medium_term_goal": "Make Longcycle a durable point-in-time industrial-memory research system that remains understandable and trustworthy across years of short Agent sessions: memory-first historical discovery, Evidence-final publication, source-supported temporal uncertainty, one semantic owner per capability, backward-readable generated state and bounded on-demand recovery of old design rationale.",
+    "short_term_goal": "Prove the normal researcher lifecycle still begins from sealed Model Memory rather than benchmark-selected sources by taking one existing high-value, temporally approximate Memory Lead through the existing CAP-0006 -> source/archive/Evidence -> CAP-0007 -> CAP-0005 path without adding architecture.",
+    "next_big_step": "Select one unresolved high-value lead from an existing sealed Memory Atlas whose recalled timing is approximate or partly unknown, preserve that uncertainty while using it to drive post-seal source discovery, then run the already-owned evidence/orchestration/replay capabilities. Treat any friction as a product-contract test before proposing new semantics.",
+    "local_optimization_stop_rule": "Do not add a new research-orchestration layer, long-term-memory database, vector-store authority, replay v2 or temporal schema merely for convenience. Do not force fuzzy Memory Leads into exact dates. Do not broaden historical archaeology unless the on-demand recall trigger fires. Promote new architecture only from a demonstrated truthful/product failure against existing owners."
+  ,
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "researcher-facing-read-side",
-    "last_completed_action": "Real-history researcher trajectory validation now passes in two industries. Rova-T run 32612727213 showed commercial expectation -> clinical/economic deterioration -> termination without lookahead, while retaining the non-direct termination Outcome as related_milestone + indeterminate. Kwinana initially exposed a real backward-read defect: integrity-verified legacy v1 DuckDB b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd failed because the current reader required later-added judgment context tables. Commit 58c648ba5c9420937a7640960b4b3f44460a70be made those additive tables optional at read time and mapped absent legacy observation columns to observed_time=null; regression test commit c5e05b913fd4576adf8d9156baccb0e9bb03a913 locked the behavior. Real Kwinana replay run 32614041360 then passed all three historical cutoffs. The original generated Kwinana capsule was migrated to Drive file 18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa and download-back verified against outer SHA b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e and internal DuckDB SHA b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd.",
-    "current_task": "Run full CI on this sequence-57 final control-plane state. If green, validate one existing direct-match lithium Outcome through the same CAP-0005 researcher trajectory, preferring EVT-002 Kemerton first product because repository receipts already record a grounded first-product Outcome evaluation.",
-    "why_now": "Rova-T and Kwinana prove the conservative non-direct side and no-lookahead behavior, and Kwinana proves backward readability across a real implementation vintage. The remaining product question is the opposite semantic case: whether a direct matched Reality/Outcome with an evaluable timing relation is equally legible without adding presentation-only epistemic semantics.",
-    "done_when": "Final full CI is green; an integrity-verified existing Kemerton portable generation is restored or its absence is reported fail-closed; at least one pre-outcome and one post-outcome cutoff are rendered through CAP-0005; direct Outcome status/timing is legible and linked without rewriting the original Judgment; and any remaining gap is classified against existing owners before architecture changes.",
+    "parent_workstream_id": "memory-first-lifecycle-validation",
+    "last_completed_action": "Architecture-fidelity audit found no evidence that benchmark work removed Model Memory or coarse historical time. Memory Lead v2 already preserves approximate_period, precision_risk and uncertain_fields; new regressions now lock open-ended approximate periods and blind prompts that forbid fabricated exact dates. CAP-0006 explicitly owns fragmentary temporal recall, while CAP-0007 is explicitly execution-stage only. RI-0003 and CAP-0003/CAP-0004 now consolidate the full temporal contract across migrations 0018/0019/0020/0021/0024: source-supported range/precision, period/timeless/unknown, observed-as-of with unknown onset, conservative known-time and precision-aware Outcome timing. CAP-0009 now owns an on-demand historical-recall protocol: default bootstrap does not preload old history; fuzzy prior-history/core semantic cues route through capability owner, Repair Memory and exact origin refs before bounded Git/Issue archaeology. Kemerton direct-match trajectory is complete and durable in EVT-002-kemerton-researcher-trajectory-validation-receipt-v1.json; Drive clean capsule 1AqRDWi_7vfE0Rno4zgCnkgxMfF-dXCJr was download-back verified at outer SHA e2bb73d7fcd43eca27847771036ce071ff9e4cc1843703ddbe3df5fd06b06b7c and current sealed DuckDB SHA 325098a31ab542d4b01443613b53654b502afa3c3f094af99c2cca7d59cac8c6. Substantive governance/memory/temporal changes passed exact-head full CI run 32620178434 at a6b1b506022355ce0f65c891518533fc7406a1d7.",
+    "current_task": "Validate the normal memory-first product lifecycle on one existing sealed, high-value Memory Lead with approximate or partly unknown recalled time. Start from the lead as discovery memory, preserve its uncertainty, perform only post-seal source discovery and normal Evidence acquisition, then reuse CAP-0007 execution and CAP-0005 replay if sufficient grounded material is recovered.",
+    "why_now": "Recent benchmark/productization work correctly proved Evidence/Reality/replay, but its visible entrypoint starts from an already acquired source pack. A real memory-led run is the best way to prove future Agents will not confuse the execution stage with the whole historical-recovery method and will not discard useful fuzzy memories simply because they lack an exact date.",
+    "done_when": "One already sealed Memory Lead with coarse/partial time is selected without mutating blind memory; its original approximate timing remains visible; post-seal discovery is driven from aliases/query families rather than invented dates; any recovered publishable history passes normal source/archive/Evidence boundaries; CAP-0007/CAP-0005 are reused rather than duplicated when applicable; and any failure is classified as discovery/product friction versus a true representation defect before architecture changes.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Run the repository full validation on live sequence-57 HEAD. On green, inspect existing EVT-002 Kemerton execution/Outcome receipts for an integrity-restorable portable DuckDB identity before acquiring or rebuilding anything."
+    "next_atomic_action": "From an existing sealed Memory Atlas, select one unresolved high-value lead whose approximate_period or recalled statement is intentionally coarse. Before searching, record the existing CAP-0006 owner and its uncertainty fields; then open only the lead's existing post-seal verification/search context and begin bounded source discovery without guessing an exact date."
   },
   "active_context": {
-    "context_id": "researcher-trajectory-direct-match-validation-v1",
-    "context_kind": "researcher_facing_point_in_time_replay_validation",
-    "label": "cross-industry direct-match Outcome validation under CAP-0005",
-    "root_path": "src/longcycle/application/trajectory_view.py",
+    "context_id": "memory-first-lifecycle-validation-v1",
+    "context_kind": "historical_memory_first_product_validation",
+    "label": "sealed fuzzy Memory Lead to Evidence/replay using existing capability owners",
+    "root_path": "src/longcycle/application/memory_campaign.py",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      ".longcycle/capabilities/active-index.json",
-      ".longcycle/capabilities/current-admission.json",
-      "src/longcycle/adapters/storage/duckdb_epistemic.py",
-      "tests/test_duckdb_legacy_compat.py",
-      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-researcher-trajectory-validation-receipt-v1.json"
+      ".longcycle/capabilities/cards/CAP-0006.json",
+      ".longcycle/capabilities/cards/CAP-0007.json",
+      ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json",
+      "docs/development/on-demand-history-recall.md",
+      "tests/test_memory_campaign.py",
+      "tests/test_memory_ingest.py"
     ],
     "core_exclusion_terms": [
-      "new replay engine",
-      "legacy byte mutation",
-      "hindsight rewrite",
-      "unearned implication polarity"
+      "source-first historical recovery",
+      "invented exact memory date",
+      "new orchestration subsystem",
+      "always-loaded project history",
+      "vector memory authority"
     ]
   },
   "pending_user_directives": [
     "Use independent professional judgment; routine architecture/research decisions should be made from mission and evidence rather than pushed back to the user.",
     "Model memory/search are discovery instruments, not publishable Evidence; preserve no-lookahead and claim-scoped authority.",
+    "Historical recovery must not let benchmark convenience erase the original high-capability Model Memory export or useful facts whose timing is only approximate; preserve uncertainty instead of forcing exact dates.",
     "Development storage boundary: external source packs in GitHub Release; generated binary state in Google Drive; live PostgreSQL is not session authority.",
     "Every substantive work session must update the repository handoff before returning control.",
     "Maintain a repository-backed sparse inventory of stable developed capabilities and require Agents to discover existing ownership before material new development.",
     "Capability governance must itself survive frequent handoffs and evolve with the system: its short/medium/long evolution belongs in the permanent compact capability index, while ordinary handoff horizons remain concise and task-specific.",
     "As architecture matures, overlapping new semantic ownership should become exceptional and require a real unmet truthful/product requirement or explicit supersession, not architectural preference.",
+    "Project long-term memory should be latent and on-demand: old discussions/research remain durable and discoverable, but normal fresh Agents should not preload them or let summaries become a second authority plane.",
     "Validation repetition is discretionary: run another pass when it exercises a meaningfully different state rather than mechanically repeating identical CI."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32614041360,
-    "observed_head_sha": "c5e05b913fd4576adf8d9156baccb0e9bb03a913",
-    "conclusion": "Targeted real-history Kwinana validation succeeded after the additive legacy-reader repair. The exact historical Actions artifact digest and internal DuckDB SHA were verified, and current CAP-0005 replay passed the 2021-12-31, 2022-12-02 and 2022-12-03 knowledge cutoffs. Final repository-wide CI is still required on the sequence-57 handoff head.",
-    "mypy_summary": "Latest repository-wide hard-gate Mypy success predates the legacy-reader repair; final full CI must refresh this authority.",
-    "pytest_summary": "A dedicated legacy-v1 compatibility regression test is now present; final full CI must prove it together with the complete suite.",
+    "last_observed_run": 32620178434,
+    "observed_head_sha": "a6b1b506022355ce0f65c891518533fc7406a1d7",
+    "conclusion": "Exact-head full validation passed after the architecture-fidelity, temporal-invariant and on-demand-history changes: Repair Memory, Capability Registry, PostgreSQL repository/Judgment/Reality/typed-memory/Evidence smokes, no-lookahead replays, Mypy, Pytest, compact-index build and memory-history audit all succeeded. A final full validation is still required on the sequence-58 handoff head because this checkpoint/receipt commit changes repository state.",
+    "mypy_summary": "Mypy src passed in full validation run 32620178434.",
+    "pytest_summary": "Full Pytest including new fragmentary-memory and historical-recall bootstrap regressions passed in run 32620178434.",
     "ruff_summary": "Diagnostic-only in normal CI; not a correctness gate.",
-    "refresh_instruction": "Refresh live PR/head and require one full repository validation on the sequence-57 handoff state before starting Kemerton direct-match validation."
+    "refresh_instruction": "Refresh live PR/head and run the owner-only full validator on the exact sequence-58 handoff HEAD before beginning the next Memory Lead search."
   },
   "workstreams": [
     {
@@ -82,23 +87,23 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "established_and_guarded",
-      "summary": "Sparse capability ownership/admission remains a permanent bootstrap and CI constraint; this session correctly extended CAP-0005 instead of creating a legacy replay subsystem.",
+      "summary": "Capability ownership/admission remains a permanent bootstrap/CI constraint. Temporal semantics, fragmentary Memory recall and on-demand historical recall are now assigned to existing owners rather than new subsystems.",
       "next_actions": [
         "Keep active-index in every bounded handoff resume set.",
-        "Classify direct-match trajectory work as reuse/extend CAP-0005 unless a real unmet semantic requirement appears."
+        "Use on-demand historical recall before modifying core_locked semantics when a plausible prior design history exists."
       ],
       "blockers": []
     },
     {
-      "workstream_id": "researcher-facing-read-side",
+      "workstream_id": "memory-first-lifecycle-validation",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "non_direct_cross_industry_pass_direct_match_next",
-      "summary": "Rova-T and Kwinana real cutoffs are researcher-readable and no-lookahead safe. Legacy Kwinana portable memory is now backward-readable without mutation. Non-direct implication polarity remains deliberately untyped because the independent Kwinana case does not provide enough grounded evidence to distinguish supports/undermines safely.",
+      "status": "fuzzy_memory_lead_validation_next",
+      "summary": "Benchmark architecture remains aligned: Memory Atlas is still first-class discovery input and approximate time is preserved. The remaining product proof is to exercise that upstream path explicitly with one existing sealed fuzzy-time lead before source acquisition/Evidence/replay.",
       "next_actions": [
-        "Run final full CI on sequence 57.",
-        "Inspect EVT-002 Kemerton receipts for existing portable generated-state identity.",
-        "Replay a direct-match Outcome before/after its knowledge cutoff through CAP-0005 and assess timing/status readability."
+        "Select one existing sealed high-value lead with approximate/partial time.",
+        "Preserve the recalled uncertainty while running only post-seal bounded source discovery.",
+        "Reuse source/archive/Evidence, CAP-0007 and CAP-0005 only if recovered evidence justifies those phases."
       ],
       "blockers": []
     },
@@ -122,32 +127,30 @@
     ".longcycle/handoff/current.json",
     ".longcycle/handoff/data-plane.json",
     ".longcycle/capabilities/active-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-researcher-trajectory-validation-receipt-v1.json"
+    ".longcycle/repair-memory/active-index.json"
   ],
   "deep_reference_paths": [
     "docs/development/capability-governance.md",
+    "docs/development/on-demand-history-recall.md",
     ".longcycle/capabilities/current-admission.json",
-    "src/longcycle/adapters/storage/duckdb_epistemic.py",
-    "tests/test_duckdb_legacy_compat.py",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-typed-trajectory-receipt-v1.json",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/ADC-first-pair-replay-receipt-v1.json",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/first-pair-outcome-polarity-pressure-v1.json",
-    ".longcycle/repair-memory/invariants/RI-0001-live-ref-authority.json",
-    ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json",
-    ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
+    ".longcycle/capabilities/cards/CAP-0006.json",
+    ".longcycle/capabilities/cards/CAP-0007.json",
+    ".longcycle/capabilities/cards/CAP-0009.json",
+    ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-researcher-trajectory-validation-receipt-v1.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Does a direct-match Kemerton Outcome render status and timing as clearly as the non-direct Rova-T/Kwinana cases render conservative indeterminacy?",
-    "The deferred non-direct Outcome implication-polarity pressure remains outside schema. Kwinana is an independent non-pharma tension case but does not meet the promotion gate because the later Reality is not the same milestone and does not by itself prove the earlier target outcome.",
-    "Additive legacy portable-memory compatibility must remain read-only and conservative: missing later optional fields mean unavailable context, not inferred facts.",
-    "Raise governance maturity or add semantics only from actual repeated product/representation failures, not from desire for cleaner labels."
+    "Does the visible end-to-end researcher workflow naturally preserve a coarse Model Memory lead all the way through post-seal discovery without future Agents overfitting it to a guessed exact date?",
+    "The deferred non-direct Outcome implication-polarity pressure remains outside schema; neither Rova-T nor Kwinana justifies promotion beyond related_milestone + indeterminate.",
+    "On-demand historical recall is deliberately deterministic and repository-pointer based in v1. Consider semantic/embedding routing only if real project scale later proves capability/repair/origin lookup insufficient; any such router must resolve to exact original history and never become authority.",
+    "Continue treating additive legacy portable-memory compatibility conservatively: support lawful old typed generations, upgrade obsolete prototypes deterministically when provenance permits, and never rewrite historical bytes."
   ],
   "ordered_next_actions": [
-    "Refresh live PR/head and run one full repository validation on the sequence-57 state.",
-    "Inspect existing EVT-002 Kemerton execution, Judgment replay and first-product Outcome receipts for an integrity-restorable portable generated-state identity.",
-    "Restore only that generated state from its durable transport or existing unexpired artifact, verifying identity/SHA fail-closed before replay.",
-    "Run CAP-0005 researcher trajectory immediately before and at/after the direct Outcome knowledge cutoff; inspect researcher readability of realized status and timing relation.",
-    "Update handoff again only after the direct-match validation materially changes the continuation cursor."
+    "Refresh live PR/head and run one full repository validation on the exact sequence-58 handoff state.",
+    "Select one existing sealed Memory Lead whose recalled time is approximate/partial and whose verification remains unresolved or useful.",
+    "Read only that lead's bounded campaign/verification context; do not crawl old histories unless the on-demand historical-recall trigger fires.",
+    "Run post-seal source discovery from aliases/query families and approximate period without guessing an exact date; archive any recovered source through existing boundaries.",
+    "Reuse existing Evidence/orchestration/replay owners as justified, and update handoff only after the real memory-led run changes the continuation cursor."
   ]
 }
