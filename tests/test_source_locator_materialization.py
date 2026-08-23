@@ -28,6 +28,8 @@ class _Connection:
         self.publisher_id = publisher_id
         self.queries: list[str] = []
         self.pending_rows: list[dict[str, Any]] = []
+        self.version_documents: dict[UUID, UUID] = {}
+        self.logical_rows: dict[UUID, dict[str, Any]] = {}
 
     async def execute(self, query: str, params: Any = None) -> _Cursor:
         normalized = " ".join(query.split())
@@ -36,22 +38,40 @@ class _Connection:
             return _Cursor([{"publisher_id": self.publisher_id}])
         if "INSERT INTO evidence.documents" in normalized:
             assert isinstance(params, dict)
-            return _Cursor(
-                [
-                    {
-                        "id": params["id"],
-                        "canonical_url": params["canonical_url"],
-                        "external_id": params["external_id"],
-                        "logical_title": params["logical_title"],
-                        "source_media_type": params["source_media_type"],
-                        "source_capture_state": params["source_capture_state"],
-                        "source_locator_metadata": params["source_locator_metadata"],
-                        "locator_verified_at": params["locator_verified_at"],
-                        "content_verified_at": params["content_verified_at"],
-                        "materialized_at": None,
-                    }
-                ]
-            )
+            row = {
+                "id": params["id"],
+                "canonical_url": params["canonical_url"],
+                "external_id": params["external_id"],
+                "logical_title": params["logical_title"],
+                "source_media_type": params["source_media_type"],
+                "source_capture_state": params["source_capture_state"],
+                "source_locator_metadata": params["source_locator_metadata"],
+                "locator_verified_at": params["locator_verified_at"],
+                "content_verified_at": params["content_verified_at"],
+                "materialized_at": None,
+                "raw_materialized_document_version_id": None,
+            }
+            self.logical_rows[row["id"]] = row
+            return _Cursor([row])
+        if "SELECT document_id FROM evidence.document_versions WHERE id" in normalized:
+            version_id = params[0]
+            document_id = self.version_documents.get(version_id)
+            return _Cursor([{"document_id": document_id}]) if document_id is not None else _Cursor([])
+        if "UPDATE evidence.documents SET source_capture_state = 'materialized'" in normalized:
+            assert isinstance(params, dict)
+            row = self.logical_rows.get(params["document_id"])
+            if row is None:
+                return _Cursor([])
+            updated = dict(row)
+            updated["source_capture_state"] = "materialized"
+            updated["materialized_at"] = params["verified_at"]
+            updated["raw_materialized_document_version_id"] = params["document_version_id"]
+            updated["source_locator_metadata"] = {
+                **dict(row["source_locator_metadata"]),
+                **dict(params["metadata"]),
+            }
+            self.logical_rows[params["document_id"]] = updated
+            return _Cursor([updated])
         if "FROM evidence.documents" in normalized and "source_capture_state <> 'materialized'" in normalized:
             return _Cursor(self.pending_rows)
         raise AssertionError(f"unexpected SQL: {normalized}")
@@ -75,11 +95,10 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
     async def test_content_verified_pdf_registers_without_fetch_or_blob_rows(self) -> None:
         connection = _Connection(uuid4())
         registry = _Registry(connection)
-        source_id = uuid4()
         verified_at = datetime(2026, 8, 23, 9, 0, tzinfo=UTC)
 
         row = await registry.register(
-            source_id=source_id,
+            source_id=uuid4(),
             canonical_url="https://regulator.example/report.pdf",
             external_id="REPORT-2020-001",
             logical_title="Official report",
@@ -99,15 +118,13 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(row.source_capture_state, "content_verified")
         self.assertEqual(row.locator_verified_at, verified_at)
         self.assertEqual(row.content_verified_at, verified_at)
-        self.assertEqual(
-            row.source_locator_metadata["materialization_status"],
-            "pending_materialization",
-        )
+        self.assertIsNone(row.raw_materialized_document_version_id)
+        self.assertEqual(row.source_locator_metadata["materialization_status"], "pending_materialization")
         sql = "\n".join(connection.queries)
         self.assertIn("INSERT INTO evidence.documents", sql)
         self.assertNotIn("document_fetches", sql)
         self.assertNotIn("content_blobs", sql)
-        self.assertNotIn("document_versions", sql)
+        self.assertNotIn("INSERT INTO evidence.document_versions", sql)
 
     async def test_content_verified_requires_preserved_claim_relevant_content(self) -> None:
         registry = _Registry(_Connection(uuid4()))
@@ -122,12 +139,55 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
 
     async def test_locator_registry_refuses_to_manufacture_materialized_state(self) -> None:
         registry = _Registry(_Connection(uuid4()))
-        with self.assertRaisesRegex(ValueError, "locator_verified/content_verified"):
+        with self.assertRaisesRegex(ValueError, "explicit verified raw-source materialization"):
             await registry.register(
                 source_id=uuid4(),
                 canonical_url="https://issuer.example/filing.pdf",
                 source_capture_state="materialized",
                 verified_at=datetime(2026, 8, 23, 9, 0, tzinfo=UTC),
+            )
+
+    async def test_raw_materialization_is_explicit_and_version_scoped(self) -> None:
+        connection = _Connection(uuid4())
+        registry = _Registry(connection)
+        verified_at = datetime(2026, 8, 23, 9, 0, tzinfo=UTC)
+        row = await registry.register(
+            source_id=uuid4(),
+            canonical_url="https://issuer.example/filing.pdf",
+            source_capture_state="content_verified",
+            locator_metadata={
+                "content_verification_mode": "interactive_pdf_read",
+                "claim_relevant_content_preserved": True,
+            },
+            verified_at=verified_at,
+        )
+        raw_version_id = uuid4()
+        connection.version_documents[raw_version_id] = row.document_id
+
+        materialized = await registry.mark_materialized(
+            document_id=row.document_id,
+            document_version_id=raw_version_id,
+            verified_at=verified_at,
+            materialization_metadata={
+                "raw_source_identity_verified": True,
+                "raw_sha256": "b" * 64,
+                "materialization_status": "materialized",
+            },
+        )
+
+        self.assertEqual(materialized.source_capture_state, "materialized")
+        self.assertEqual(materialized.raw_materialized_document_version_id, raw_version_id)
+        self.assertEqual(materialized.source_locator_metadata["raw_sha256"], "b" * 64)
+
+    async def test_materialization_requires_explicit_raw_identity_verification(self) -> None:
+        connection = _Connection(uuid4())
+        registry = _Registry(connection)
+        with self.assertRaisesRegex(ValueError, "raw_source_identity_verified=true"):
+            await registry.mark_materialized(
+                document_id=uuid4(),
+                document_version_id=uuid4(),
+                verified_at=datetime(2026, 8, 23, 9, 0, tzinfo=UTC),
+                materialization_metadata={"raw_source_identity_verified": False},
             )
 
     async def test_pending_pdf_materializations_are_queryable_for_later_agents(self) -> None:
@@ -145,6 +205,7 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
                 "locator_verified_at": datetime(2026, 8, 23, 9, 0, tzinfo=UTC),
                 "content_verified_at": None,
                 "materialized_at": None,
+                "raw_materialized_document_version_id": None,
             }
         ]
         registry = _Registry(connection)
@@ -156,18 +217,19 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(rows[0].source_capture_state, "locator_verified")
         self.assertEqual(rows[0].source_locator_metadata["file_name"], "filing.pdf")
 
-    def test_migration_preserves_one_document_identity_and_marks_later_versions_materialized(self) -> None:
-        body = (ROOT / "migrations" / "0027_source_locator_materialization_state.sql").read_text(
+    def test_migrations_keep_representation_versions_below_raw_materialized_state(self) -> None:
+        v27 = (ROOT / "migrations" / "0027_source_locator_materialization_state.sql").read_text(
+            encoding="utf-8"
+        )
+        v28 = (ROOT / "migrations" / "0028_truthful_source_materialization.sql").read_text(
             encoding="utf-8"
         )
 
-        self.assertIn("ALTER TABLE evidence.documents", body)
-        self.assertIn("locator_verified", body)
-        self.assertIn("content_verified", body)
-        self.assertIn("materialized", body)
-        self.assertIn("source_locator_metadata jsonb", body)
-        self.assertIn("AFTER INSERT ON evidence.document_versions", body)
-        self.assertNotIn("CREATE TABLE evidence.source_locator", body)
+        self.assertIn("AFTER INSERT ON evidence.document_versions", v27)
+        self.assertIn("DROP TRIGGER IF EXISTS evidence_document_version_marks_materialized", v28)
+        self.assertIn("raw_materialized_document_version_id", v28)
+        self.assertIn("readable representation", v28)
+        self.assertNotIn("CREATE TABLE evidence.source_locator", v27 + v28)
 
 
 if __name__ == "__main__":
