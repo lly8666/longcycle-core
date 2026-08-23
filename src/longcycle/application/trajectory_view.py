@@ -87,7 +87,7 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             snapshot.judgment_rationales,
             snapshot.judgment_relations,
         )
-        entry = {
+        judgment_entry: dict[str, Any] = {
             "entry_id": f"judgment:{judgment.judgment_id}",
             "layer": "judgment",
             "subject": judgment.subject.model_dump(mode="json"),
@@ -109,12 +109,12 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
                 str(value) for value in judgment.evidence_fragment_ids
             ],
         }
-        entries.append(entry)
+        entries.append(judgment_entry)
         subject_counts[judgment.subject.key]["judgment"] += 1
 
     for reality_item in snapshot.reality:
         display_value = reality_item.value_text or reality_item.value_payload or "[structured value]"
-        entry = {
+        reality_entry: dict[str, Any] = {
             "entry_id": f"reality:{reality_item.canonical_fact_version_id}",
             "layer": "reality",
             "subject": reality_item.subject.model_dump(mode="json"),
@@ -136,7 +136,7 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
                 str(value) for value in reality_item.evidence_fragment_ids
             ],
         }
-        entries.append(entry)
+        entries.append(reality_entry)
         subject_counts[reality_item.subject.key]["reality"] += 1
 
     for outcome in snapshot.outcomes:
@@ -147,7 +147,7 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             else None
         )
         headline = f"{outcome.evaluation_status}: {original.summary}"
-        entry = {
+        outcome_entry: dict[str, Any] = {
             "entry_id": f"outcome:{outcome.evaluation_id}",
             "layer": "outcome",
             "subject": outcome.subject.model_dump(mode="json"),
@@ -183,7 +183,7 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
                 else None
             ),
         }
-        entries.append(entry)
+        entries.append(outcome_entry)
         subject_counts[outcome.subject.key]["outcome"] += 1
 
     entries.sort(
