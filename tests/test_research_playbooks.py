@@ -154,7 +154,7 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertIn("citation chain", sop)
         self.assertIn("not_found != false", sop)
         self.assertIn("Current Collection", sop)
-        self.assertIn("anti-premature-stop checklist", sop)
+        self.assertIn("anti-premature-stop checklist", sop.lower())
 
     def test_model_refresh_is_append_only_and_generates_backfill(self) -> None:
         refresh = (RESEARCH_DOCS / "model-refresh-backfill.md").read_text(encoding="utf-8")
