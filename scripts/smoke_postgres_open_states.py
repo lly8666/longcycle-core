@@ -142,6 +142,7 @@ def _seed_current_research_overlay(dsn: str) -> tuple[UUID, UUID]:
     assessment_id = stable_uuid_exact("open-state-smoke", "hypothesis")
     sealed_campaign_id = stable_uuid_exact("open-state-smoke", "sealed-campaign")
     sealed_coverage_id = stable_uuid_exact("open-state-smoke", "sealed-coverage")
+    post_seal_coverage_id = stable_uuid_exact("open-state-smoke", "post-seal-coverage")
     unsealed_campaign_id = stable_uuid_exact("open-state-smoke", "unsealed-campaign")
     unsealed_coverage_id = stable_uuid_exact("open-state-smoke", "unsealed-coverage")
     digest_a = "a" * 64
@@ -253,6 +254,27 @@ def _seed_current_research_overlay(dsn: str) -> tuple[UUID, UUID]:
             ON CONFLICT (campaign_id) DO NOTHING
             """,
             (sealed_campaign_id, RESEARCH_RECORDED_AT, digest_d),
+        )
+
+        # The append-only schema permits a coverage row to be inserted after the seal.
+        # The sealed snapshot must ignore this late row rather than letting it rewrite
+        # what the campaign actually contained at seal time.
+        connection.execute(
+            """
+            INSERT INTO research.model_memory_coverage_cells (
+                id, campaign_id, snapshot_label, dimension_type, dimension_key,
+                coverage_state, notes, created_at
+            ) VALUES (
+                %s, %s, 'late-after-seal', 'mechanism', 'qualification_delay',
+                'dense', 'Must be ignored because it was recorded after seal', %s
+            )
+            ON CONFLICT (id) DO NOTHING
+            """,
+            (
+                post_seal_coverage_id,
+                sealed_campaign_id,
+                RESEARCH_RECORDED_AT + timedelta(minutes=30),
+            ),
         )
 
         # Deliberately create a newer UNSEALED campaign with the same coverage dimension.
@@ -480,6 +502,7 @@ async def main() -> None:
         "current_research_overlay_is_not_cutoff_filtered",
         "current_research_scope_uses_own_run_provenance",
         "model_memory_coverage_uses_latest_sealed_campaign",
+        "model_memory_coverage_respects_seal_time",
         "model_memory_coverage_is_not_archive_absence",
         "absence_of_records_does_not_create_an_unknown_state",
         "not_found_is_not_false",
