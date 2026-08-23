@@ -18,9 +18,11 @@ from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryRea
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
 from longcycle.adapters.storage.postgres_epistemic import PostgresEpistemicMemoryReader
+from longcycle.adapters.storage.postgres_evidence import PostgresEvidenceDrilldownReader
 from longcycle.adapters.storage.postgres_orientation import PostgresIndustryOrientationReader
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
 from longcycle.application.epistemic_trajectory import execute_epistemic_trajectory_receipt
+from longcycle.application.evidence_drilldown import build_researcher_evidence_drilldown
 from longcycle.application.industry_orientation import build_researcher_industry_orientation
 from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.research_orchestration import execute_research_orchestration_receipt
@@ -28,8 +30,8 @@ from longcycle.application.scheduling import SchedulePolicy
 from longcycle.application.trajectory_view import build_researcher_trajectory_view
 from longcycle.config import Settings
 from longcycle.database import MigrationRunner
-from longcycle.domain.epistemic import MemorySubjectRef
 from longcycle.domain.enums import Cadence, QualityGrade, SourceKind
+from longcycle.domain.epistemic import MemorySubjectRef
 from longcycle.domain.models import (
     CollectionPolicy,
     SourceDefinition,
@@ -146,6 +148,12 @@ def _parser() -> argparse.ArgumentParser:
         default=[],
         help="industry taxonomy-node UUID to include in the point-in-time trajectory",
     )
+    research_evidence = research_sub.add_parser(
+        "evidence",
+        help="read one claim-scoped Evidence fragment and its truthful source provenance",
+    )
+    research_evidence.add_argument("evidence_fragment_id", type=UUID)
+    research_evidence.add_argument("cutoff", type=_parse_aware_datetime)
     research_orient = research_sub.add_parser(
         "orient",
         help="enter an industry through source-grounded membership and no-lookahead memory",
@@ -274,6 +282,20 @@ async def _research_replay(args: argparse.Namespace) -> dict[str, object]:
     return build_researcher_trajectory_view(snapshot)
 
 
+async def _research_evidence(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
+    if not settings.database_url:
+        raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
+    reader = PostgresEvidenceDrilldownReader(settings.database_url)
+    try:
+        return await build_researcher_evidence_drilldown(
+            reader=reader,
+            evidence_fragment_id=args.evidence_fragment_id,
+            knowledge_cutoff=args.cutoff,
+        )
+    finally:
+        await reader.close()
+
+
 async def _research_orient(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
     if not settings.database_url:
         raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
@@ -350,6 +372,8 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         return _research_run(args)
     if args.command == "research" and args.research_command == "replay":
         return await _research_replay(args)
+    if args.command == "research" and args.research_command == "evidence":
+        return await _research_evidence(args, settings)
     if args.command == "research" and args.research_command == "orient":
         return await _research_orient(args, settings)
     if args.command == "schedule":
