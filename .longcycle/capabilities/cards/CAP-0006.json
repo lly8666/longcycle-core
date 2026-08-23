@@ -5,7 +5,11 @@
     "memory atlas",
     "self verification",
     "verification depth",
-    "fragmentary historical recall"
+    "fragmentary historical recall",
+    "research open state",
+    "memory disagreement",
+    "research hypothesis",
+    "coverage gap"
   ],
   "entrypoints": [
     {
@@ -13,11 +17,18 @@
       "description": "Memory campaign application primitives own blind/search separation and bounded saturation/depth rules.",
       "kind": "application",
       "path": "src/longcycle/application/memory_campaign.py"
+    },
+    {
+      "contains": "class CurrentResearchOpenStateReader(Protocol):",
+      "description": "Typed reader exposes current Memory disagreement, research-only hypothesis and explicit model-memory coverage state without promoting them into historical truth.",
+      "kind": "port",
+      "path": "src/longcycle/ports/open_states.py"
     }
   ],
   "extension_seams": [
     "Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.",
-    "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite."
+    "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite.",
+    "Expose explicit current research-only disagreement/hypothesis/coverage state through typed readers while preserving its non-Evidence authority class."
   ],
   "guards": [
     {
@@ -31,6 +42,18 @@
       "description": "Typed memory ingest accepts open-ended approximate periods while keeping precision risk explicit.",
       "kind": "test",
       "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_opt_in_overlay_is_explicitly_current_and_not_cutoff_filtered",
+      "description": "Researcher projection test keeps current research state opt-in, non-historical and outside the historical cutoff filter.",
+      "kind": "test",
+      "path": "tests/test_open_state_view.py"
+    },
+    {
+      "contains": "POSTGRES_RESEARCHER_OPEN_STATES_SMOKE_PASS",
+      "description": "PostgreSQL smoke proves explicit Memory disagreement, unresolved hypothesis and model-memory coverage gap appear only in the opt-in current research overlay.",
+      "kind": "runtime",
+      "path": "scripts/smoke_postgres_open_states.py"
     }
   ],
   "id": "CAP-0006",
@@ -38,24 +61,34 @@
   "non_goals": [
     "Publishing Memory Leads as Fact/Judgment.",
     "Treating search not-found as contradiction.",
+    "Presenting current research disagreement/hypothesis/model-memory coverage state as historical market knowledge.",
+    "Treating model-memory coverage cells as proof that the archive or the real world lacks an event.",
     "Forcing fragmentary recollection into exact dates or dropping useful leads because their time is only approximate."
   ],
   "owned_semantics": [
     "memory.blind_recall_isolation",
     "memory.fragmentary_temporal_recall",
     "memory.campaign_saturation_and_seal",
-    "memory.post_seal_verification_depth"
+    "memory.post_seal_verification_depth",
+    "memory.current_disagreement_hypothesis_coverage_state"
   ],
-  "purpose": "Own blind memory-exhaustion, including fragmentary/approximate historical recall, sealing/saturation and post-seal self-verification/delegated search depth while keeping Model Memory permanently below Evidence authority.",
-  "revisit_when": "Only replace if blind recall, approximate/uncertain lead preservation, immutable seal, search-enabled verification and Evidence-final authority remain auditable and append-only.",
+  "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and the explicitly research-only state that remains around Memory Leads: disagreement cases, hypothesis assessments and model-memory campaign coverage. These states guide research but remain below Evidence authority and are never backdated into historical market knowledge.",
+  "revisit_when": "Only replace if blind recall, approximate/uncertain lead preservation, immutable seal, search-enabled verification, explicit current research uncertainty and Evidence-final authority remain auditable and append-only.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/memory_campaign.py",
     "src/longcycle/application/memory_ingest.py",
     "src/longcycle/application/memory_audit.py",
     "src/longcycle/application/memory_history.py",
+    "src/longcycle/domain/open_states.py",
+    "src/longcycle/ports/open_states.py",
+    "src/longcycle/adapters/storage/postgres_open_states.py",
+    "migrations/0014_memory_leads_and_authority.sql",
+    "migrations/0015_memory_campaigns_and_model_refresh.sql",
+    "migrations/0017_memory_hypothesis_assessments.sql",
     "tests/test_memory_campaign.py",
     "tests/test_memory_ingest.py",
+    "tests/test_open_state_view.py",
     "docs/research/**memory**"
   ],
   "status": "active",
@@ -67,7 +100,10 @@
     "uncertainty",
     "seal",
     "saturation",
-    "self-verification"
+    "self-verification",
+    "research-only",
+    "coverage-gap",
+    "disagreement"
   ],
   "title": "Historical model-memory campaign and verification"
 }
