@@ -8,7 +8,6 @@ on:
       - '.github/workflows/rights-bd-007-evidence-probe.yml'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/bms-2023-12-11-joint-announcement.capture.txt'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/sec-bms-2023-10k-systimmune-note.capture.txt'
-      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/source-pack.zip'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
       - 'scripts/execute_grounded_evidence_spec.py'
       - 'src/longcycle/adapters/sources/materialized.py'
@@ -17,7 +16,6 @@ on:
       - '.github/workflows/rights-bd-007-evidence-probe.yml'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/bms-2023-12-11-joint-announcement.capture.txt'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/sec-bms-2023-10k-systimmune-note.capture.txt'
-      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/source-pack.zip'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
       - 'scripts/execute_grounded_evidence_spec.py'
       - 'src/longcycle/adapters/sources/materialized.py'
@@ -69,7 +67,7 @@ jobs:
       - name: Migrate database
         run: longcycle --json db upgrade
 
-      - name: Verify capture pack and spec pins
+      - name: Verify capture materials and spec pins
         shell: bash
         run: |
           set -euo pipefail
@@ -90,9 +88,11 @@ jobs:
             fi
           }
 
+          # The two independently pinned faithful captures are the Grounded Evidence inputs.
+          # A legacy source-pack.zip wrapper was found corrupt at runtime and is not an
+          # Evidence identity or executor input; its failure is recorded in the capture manifest.
           check_sha "$MATERIAL_ROOT/bms-2023-12-11-joint-announcement.capture.txt" "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186"
           check_sha "$MATERIAL_ROOT/sec-bms-2023-10k-systimmune-note.capture.txt" "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3"
-          check_sha "$MATERIAL_ROOT/source-pack.zip" "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350"
 
           python - <<'PY'
           import hashlib
