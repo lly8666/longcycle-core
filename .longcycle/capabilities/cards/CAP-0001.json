@@ -37,9 +37,15 @@
     },
     {
       "contains": "class SourceLocatorMaterializationTest",
-      "description": "Locator lifecycle tests prevent raw-byte availability from becoming a prerequisite while preserving one logical document identity and deferred materialization integrity.",
+      "description": "Locator lifecycle tests prevent document-version persistence from being mistaken for raw-byte materialization and keep later raw materialization explicit/version-scoped.",
       "kind": "test",
       "path": "tests/test_source_locator_materialization.py"
+    },
+    {
+      "contains": "class MaterializedSourceRepresentationTest",
+      "description": "Materialized-source tests require truthful provenance when local bytes are a readable representation of an upstream PDF rather than the raw PDF itself.",
+      "kind": "test",
+      "path": "tests/test_materialized_source_representation.py"
     }
   ],
   "id": "CAP-0001",
@@ -56,7 +62,7 @@
     "source.raw_version_identity",
     "source.deferred_raw_materialization_integrity"
   ],
-  "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction, while later raw-byte materialization enriches the same logical document identity instead of creating a competing source record.",
+  "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction. Preserved readable representations may create document versions without claiming raw-source materialization; later verified raw bytes enrich the same logical document explicitly.",
   "revisit_when": "Replace only if a stronger source-version authority preserves one logical document identity across locator/content/raw states, truthful representation provenance, immutable materialized bytes and contradiction-aware enrichment.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
@@ -66,7 +72,9 @@
     "src/longcycle/adapters/sources/**",
     "src/longcycle/adapters/storage/filesystem.py",
     "src/longcycle/adapters/storage/postgres_source_locators.py",
-    "migrations/0027_source_locator_materialization_state.sql"
+    "migrations/0027_source_locator_materialization_state.sql",
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0029_source_representation_fetch_state.sql"
   ],
   "status": "active",
   "supersedes": [],
