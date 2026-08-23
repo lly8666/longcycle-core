@@ -3,16 +3,20 @@ from __future__ import annotations
 import hashlib
 from collections.abc import AsyncIterator
 from pathlib import Path
+from typing import Any
 
 from longcycle.domain.models import DiscoveryItem, RawPayload, SourceDefinition
 from longcycle.ports.source import DiscoveryContext, FetchContext
 
 
 class MaterializedDocumentSource:
-    """Read externally acquired source bytes from a bounded local material root.
+    """Read preserved source material from a bounded local material root.
 
-    The local file is only a transport. Source identity remains the canonical URL,
-    publisher domain and external identifier carried by the DiscoveryItem/SourceDefinition.
+    The local file is only a transport/representation. Source identity remains the canonical URL,
+    publisher domain and external identifier carried by the DiscoveryItem/SourceDefinition. A
+    material file may be byte-identical upstream source content or a truthful readable
+    representation of claim-relevant content; the latter must carry explicit provenance and must
+    never be reported as raw-source materialization.
     """
 
     plugin_name = "materialized_file"
@@ -44,6 +48,42 @@ class MaterializedDocumentSource:
             raise ValueError(f"materialized source file does not exist: {relative_value}")
         return resolved
 
+    @staticmethod
+    def _representation_headers(item: DiscoveryItem) -> dict[str, str]:
+        provenance = item.metadata.get("retrieval_provenance")
+        if not isinstance(provenance, dict):
+            return {}
+
+        raw_materialized = provenance.get("raw_source_materialized")
+        capture_state = provenance.get("source_capture_state")
+        source_media_type = provenance.get("source_media_type")
+        if raw_materialized is False:
+            if capture_state != "content_verified":
+                raise ValueError(
+                    "non-raw source material requires retrieval_provenance."
+                    "source_capture_state=content_verified"
+                )
+            if provenance.get("claim_relevant_content_preserved") is not True:
+                raise ValueError(
+                    "content_verified representation requires "
+                    "claim_relevant_content_preserved=true"
+                )
+            verification_mode = provenance.get("content_verification_mode")
+            if not isinstance(verification_mode, str) or not verification_mode.strip():
+                raise ValueError(
+                    "content_verified representation requires content_verification_mode"
+                )
+            if not isinstance(source_media_type, str) or not source_media_type.strip():
+                raise ValueError("content_verified representation requires source_media_type")
+            return {
+                "x-longcycle-raw-source-materialized": "false",
+                "x-longcycle-source-capture-state": "content_verified",
+                "x-longcycle-source-media-type": source_media_type.strip(),
+                "x-longcycle-content-verification-mode": verification_mode.strip(),
+                "x-longcycle-claim-content-preserved": "true",
+            }
+        return {}
+
     async def fetch(self, item: DiscoveryItem, context: FetchContext) -> RawPayload:
         if item.source_id != self.definition.id or context.source != self.definition:
             raise ValueError("materialized fetch source identity mismatch")
@@ -68,14 +108,16 @@ class MaterializedDocumentSource:
             raise ValueError(
                 f"materialized source digest mismatch: expected {expected_sha256}, got {digest}"
             )
+        headers: dict[str, str] = {
+            "x-longcycle-transport": self.plugin_name,
+            "x-longcycle-material-sha256": digest,
+        }
+        headers.update(self._representation_headers(item))
         return RawPayload(
             content=content,
             content_type=content_type.strip(),
             canonical_url=item.url,
-            headers={
-                "x-longcycle-transport": self.plugin_name,
-                "x-longcycle-material-sha256": digest,
-            },
+            headers=headers,
         )
 
 
