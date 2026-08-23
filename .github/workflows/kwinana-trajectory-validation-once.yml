@@ -74,7 +74,15 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/kwinana-trajectory
+          set +e
           longcycle --json research replay "${{ steps.restore.outputs.db }}" '2021-12-31T23:59:59Z' --subject-id "$KWINANA_SUBJECT_ID" > /tmp/kwinana-trajectory/before-2022.json
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo '--- exact replay error payload ---'
+            cat /tmp/kwinana-trajectory/before-2022.json
+            exit "$status"
+          fi
           longcycle --json research replay "${{ steps.restore.outputs.db }}" '2022-12-02T23:59:59Z' --subject-id "$KWINANA_SUBJECT_ID" > /tmp/kwinana-trajectory/pre-disclosure.json
           longcycle --json research replay "${{ steps.restore.outputs.db }}" '2022-12-03T23:59:59Z' --subject-id "$KWINANA_SUBJECT_ID" > /tmp/kwinana-trajectory/disclosed.json
 
