@@ -30,6 +30,9 @@ class MemoryCampaignTest(unittest.TestCase):
         self.assertIn("Fresh web search results are forbidden", prompt)
         self.assertIn("long-tail leads", prompt)
         self.assertIn("What was it likely called at the time?", prompt)
+        self.assertIn("approximate period", prompt)
+        self.assertIn("instead of fabricating precision", prompt)
+        self.assertIn("Do not invent citations, URLs, exact report titles, exact dates", prompt)
 
     def test_atlas_only_pass_requires_atlas(self) -> None:
         spec = RecallPassSpec(
