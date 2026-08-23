@@ -10,7 +10,9 @@
     "judgment storyline",
     "industry orientation",
     "research orient",
-    "researcher industry entry"
+    "researcher industry entry",
+    "open states",
+    "researcher controversy"
   ],
   "entrypoints": [
     {
@@ -36,12 +38,19 @@
       "description": "Researcher entry projection composes source-grounded industry membership with the existing typed snapshot at one shared knowledge cutoff and links subjects into trajectory replay.",
       "kind": "application",
       "path": "src/longcycle/application/industry_orientation.py"
+    },
+    {
+      "contains": "async def build_researcher_open_state_view(",
+      "description": "Researcher projection keeps historical conflict/Judgment controversy separate from an explicit opt-in current research-only overlay.",
+      "kind": "application",
+      "path": "src/longcycle/application/open_state_view.py"
     }
   ],
   "extension_seams": [
     "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
     "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
     "Compose source-grounded catalog identity/membership through a typed read boundary while leaving membership truth and reconciliation in their existing owners.",
+    "Compose explicit historical controversy with a separately labelled current research-only overlay without collapsing their time/authority classes.",
     "Additional storage adapters implementing the same typed reader contracts."
   ],
   "guards": [
@@ -70,10 +79,22 @@
       "path": "tests/test_industry_orientation.py"
     },
     {
+      "contains": "test_default_view_keeps_current_research_out_of_historical_cutoff",
+      "description": "Open-state projection regression proves the default historical lane excludes current research state and reuses the same industry membership cutoff owner.",
+      "kind": "test",
+      "path": "tests/test_open_state_view.py"
+    },
+    {
       "contains": "POSTGRES_INDUSTRY_ORIENTATION_SMOKE_PASS",
       "description": "Service-capable synthetic smoke proves grounded resolution-backed membership through PostgreSQL, the orientation adapter and the researcher CLI without creating real industry research data.",
       "kind": "runtime",
       "path": "scripts/smoke_postgres_orientation.py"
+    },
+    {
+      "contains": "POSTGRES_RESEARCHER_OPEN_STATES_SMOKE_PASS",
+      "description": "Service-capable synthetic smoke proves the researcher CLI separates source-known historical conflict from opt-in current research-only state.",
+      "kind": "runtime",
+      "path": "scripts/smoke_postgres_open_states.py"
     },
     {
       "contains": "RESEARCHER_READABLE_REPLAY_SURFACE_PASS",
@@ -88,6 +109,7 @@
     "Direct SQL as product replay semantics.",
     "Creating new Fact/Judgment/Outcome or industry-membership truth records in presentation code.",
     "Presentation code deciding its own Reality/Judgment/Outcome knowledge-cutoff eligibility.",
+    "Applying the historical knowledge cutoff to current research-only Memory/coverage state or presenting that state as contemporaneous market knowledge.",
     "Inferring value-chain role, participant importance, causality, consensus, controversy or unknowns from counts, filenames or co-occurrence.",
     "Treating current catalog canonical names as historical-name replay.",
     "Inferring causality, realization or success/failure beyond the stored Outcome semantics.",
@@ -99,10 +121,11 @@
     "replay.typed_reality_judgment_outcome_snapshot",
     "replay.researcher_knowledge_progression_projection",
     "replay.researcher_judgment_storyline_projection",
-    "replay.researcher_industry_orientation_projection"
+    "replay.researcher_industry_orientation_projection",
+    "replay.researcher_open_state_projection"
   ],
-  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that filtered memory. This includes a bounded industry-entry projection that composes already-grounded catalog membership with the same typed memory cutoff, while source/catalog membership truth remains owned by existing Evidence/reconciliation semantics. Presentation never manufactures causality, importance, controversy, unknowns or historical labels.",
-  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics while keeping researcher presentation downstream of knowledge-cutoff filtering and catalog membership authority outside presentation.",
+  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that filtered memory. Researcher entry includes source-grounded industry orientation and an open-state view that keeps source-known historical conflict/Judgment controversy separate from an explicit current research-only overlay. Presentation never manufactures causality, importance, controversy, unknowns or historical labels.",
+  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics, keeps catalog membership authority outside presentation, and preserves the historical-versus-current-research authority boundary.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/ports/epistemic.py",
@@ -114,10 +137,12 @@
     "src/longcycle/application/judgment_replay.py",
     "src/longcycle/application/trajectory_view.py",
     "src/longcycle/application/industry_orientation.py",
+    "src/longcycle/application/open_state_view.py",
     "scripts/replay_integrated_history.py",
     "scripts/smoke_postgres_orientation.py",
     "tests/test_trajectory_view.py",
     "tests/test_industry_orientation.py",
+    "tests/test_open_state_view.py",
     "src/longcycle/cli.py"
   ],
   "status": "active",
@@ -132,7 +157,9 @@
     "knowledge-progression",
     "judgment-storyline",
     "industry-orientation",
-    "researcher-entry"
+    "researcher-entry",
+    "open-state",
+    "controversy"
   ],
   "title": "Typed point-in-time industrial-memory replay"
 }
