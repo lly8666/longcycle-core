@@ -45,7 +45,8 @@ class PostgresOpenStateReader(PostgresSupport):
     Database curation timestamps stay provenance only. Source independence reuses CAP-0003's
     Fact/Reconciler source-cluster semantics. Current Memory/coverage state is read separately
     from its own industry/campaign provenance and must never be presented as historical market
-    knowledge.
+    knowledge. Coverage from a sealed campaign is bounded by the immutable seal timestamp so
+    later append-only rows cannot retroactively alter the sealed research snapshot.
     """
 
     async def historical_source_disagreements(
@@ -353,7 +354,7 @@ class PostgresOpenStateReader(PostgresSupport):
         cursor = await connection.execute(
             """
             WITH latest_sealed_campaign AS (
-                SELECT campaign.id
+                SELECT campaign.id, seal.sealed_at
                 FROM research.model_memory_campaigns campaign
                 JOIN research.model_memory_campaign_seals seal
                   ON seal.campaign_id = campaign.id
@@ -370,6 +371,7 @@ class PostgresOpenStateReader(PostgresSupport):
                 FROM research.model_memory_coverage_cells cell
                 JOIN latest_sealed_campaign selected
                   ON selected.id = cell.campaign_id
+                WHERE cell.created_at <= selected.sealed_at
             )
             SELECT campaign_id, snapshot_label, dimension_type, dimension_key,
                    period_from, period_to, coverage_state, notes, created_at
