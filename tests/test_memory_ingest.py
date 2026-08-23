@@ -45,6 +45,19 @@ class MemoryIngestTest(unittest.TestCase):
         self.assertEqual(candidate.lead_kind.value, "mechanism")
         self.assertEqual(candidate.claim_scope.value, "technical_specification")
 
+    def test_fragmentary_recall_can_keep_an_open_ended_approximate_period(self) -> None:
+        payload = self._valid_payload()
+        payload["approximate_period"] = [None, "2022-12-31"]
+        payload["precision_risk"] = "high"
+        payload["uncertain_fields"] = ["approximate_period"]
+
+        candidate = MemoryLeadCandidate.model_validate(payload)
+
+        self.assertIsNone(candidate.approximate_period[0])
+        self.assertEqual(candidate.approximate_period[1].isoformat(), "2022-12-31")
+        self.assertEqual(candidate.precision_risk.value, "high")
+        self.assertIn("approximate_period", candidate.uncertain_fields)
+
     def test_semantic_enum_mixup_is_rejected_not_silently_coerced(self) -> None:
         payload = self._valid_payload()
         payload["lead_kind"] = "technical_specification"
