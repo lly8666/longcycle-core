@@ -29,7 +29,7 @@
     {
       "asset_id": "adc-sv005-blenrep-pdf-acquisition-run32630536037",
       "role": "legacy_materialized_pdf_source_cache",
-      "required_for_current_task": true,
+      "required_for_current_task": false,
       "transport": "github_release_legacy_materialization",
       "release_tag": "longcycle-dev-binary-cache",
       "google_drive_file_id": null,
@@ -37,7 +37,7 @@
       "size_bytes": 395045,
       "sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998",
       "materialization_status": "materialized_legacy_reusable_not_new_default",
-      "content_summary": "Already-acquired materialized copies of two BLENREP PDFs: the FDA/Federal Register legal revocation notice and GSK DREAMM-7 announcement. They may be reused because the bytes already exist and were verified, but no future Agent should infer that comparable new PDFs require Actions/Release before research can continue.",
+      "content_summary": "Already-acquired materialized copies of two BLENREP PDFs: the FDA/Federal Register legal revocation notice and GSK DREAMM-7 announcement. They remain a reusable historical cache, but BLENREP research is complete and a fresh Agent should not restore them merely to resume CAP-0007 productization.",
       "components": [
         {
           "path": "federal-register-blenrep-revocation-2023.pdf",
@@ -52,19 +52,19 @@
           "role": "primary participant DREAMM-7 regimen/readout record"
         }
       ],
-      "restore_instruction": "Reuse only if the current execution genuinely benefits from the already-materialized bytes. Restore exact Release tag/name and verify the recorded hashes. Do not create a replacement/new PDF acquisition Action if this cache is unavailable; fall back to the source locator/content-verification policy."
+      "restore_instruction": "Reuse only when an explicit regression or historical receipt genuinely requires these already-materialized bytes. Restore exact Release tag/name and verify the recorded hashes. Do not create a replacement/new PDF acquisition Action if this cache is unavailable; fall back to the source locator/content-verification policy."
     },
     {
       "asset_id": "adc-sv005-blenrep-web-capture-v1",
       "role": "webpage_source_capture_capsule",
-      "required_for_current_task": true,
+      "required_for_current_task": false,
       "transport": "google_drive",
       "release_tag": null,
       "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
       "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
       "size_bytes": 24576,
       "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
-      "content_summary": "Bounded SQLite handoff capsule containing three claim-scoped faithful visible-text captures and provenance records: FDA 2020 accelerated approval/ocular-risk/REMS/confirmatory condition; GSK 2022-11-07 DREAMM-3 failure; GSK 2022-11-22 withdrawal-process statement plus contemporaneous favourable benefit-risk and continue-DREAMM/work-with-FDA Judgment candidate. It contains no raw HTML and performs no automatic Evidence/Fact/Judgment promotion.",
+      "content_summary": "Bounded SQLite handoff capsule containing three claim-scoped faithful visible-text captures and provenance records used by the completed BLENREP trajectory. It contains no raw HTML and performs no automatic Evidence/Fact/Judgment promotion.",
       "components": [
         {
           "path": "webpage_capture:fda-blenrep-accelerated-approval-2020",
@@ -85,7 +85,33 @@
           "role": "GSK withdrawal/process and contemporaneous Judgment claim-scoped visible text"
         }
       ],
-      "restore_instruction": "Restore from Google Drive file id 1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt; verify outer SHA a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833, open the SQLite capsule read-only, verify the three row text hashes, and materialize only the claim-scoped visible_text fields required by the Grounded Evidence spec. The capsule is source transport, not live database authority."
+      "restore_instruction": "Restore only when an explicit BLENREP replay/regression needs the source capture. Use Google Drive file id 1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt, verify outer SHA a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833, open read-only and verify row text hashes before materializing claim-scoped visible_text."
+    },
+    {
+      "asset_id": "adc-sv005-blenrep-integrated-memory-v1",
+      "role": "sealed_integrated_replay_duckdb",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1hG6UCJSPlVgobyFwhFWwMOzXhpUrLrvP",
+      "file_name": "longcycle-sv005-blenrep-integrated-memory-v1.duckdb",
+      "size_bytes": 2895872,
+      "sha256": "f44a33d291cbf049986cb8452bd85f6b2fd640f07661267b04dad2ce60d06bbf",
+      "content_summary": "Sealed typed epistemic replay generation from successful BLENREP runtime run 32637913005: 8 canonical Reality rows, 1 contemporaneous Judgment and 1 later Outcome; typed round-trip passed. This is generated portable replay state, not live PostgreSQL authority and not source Evidence.",
+      "restore_instruction": "Restore from Google Drive file id 1hG6UCJSPlVgobyFwhFWwMOzXhpUrLrvP only when replay/regression needs the completed BLENREP generation. Verify SHA f44a33d291cbf049986cb8452bd85f6b2fd640f07661267b04dad2ce60d06bbf and size 2895872, then open read-only by default."
+    },
+    {
+      "asset_id": "adc-sv005-blenrep-trajectory-runtime-v1",
+      "role": "generated_epistemic_trajectory_runtime_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1vj7r_KaS_SNFgBMuebhf75IDuzgs5Y97",
+      "file_name": "longcycle-sv005-blenrep-trajectory-runtime-v1.zip",
+      "size_bytes": 47133,
+      "sha256": "0c39c627561a34ab8c5ac5827976d1987199f38d8dc0ab55b70d42f2a7fb21f8",
+      "content_summary": "Generated runtime capsule from successful BLENREP trajectory run 32637913005 containing Grounded Evidence, Reality, Judgment, Outcome, sealed-memory manifest and three point-in-time replay outputs. Source materials themselves remain governed by their source-plane receipts.",
+      "restore_instruction": "Restore from Google Drive file id 1vj7r_KaS_SNFgBMuebhf75IDuzgs5Y97 only for audit/regression. Verify SHA 0c39c627561a34ab8c5ac5827976d1987199f38d8dc0ab55b70d42f2a7fb21f8 before use. The durable semantic summary is research_data/.../replay/SV-005-blenrep-trajectory-runtime-receipt-v1.json."
     }
   ]
 }
