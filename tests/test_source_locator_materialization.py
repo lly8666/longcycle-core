@@ -4,7 +4,7 @@ import unittest
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, AsyncIterator
 from uuid import UUID, uuid4
 
 from longcycle.adapters.storage.postgres_source_locators import PostgresSourceLocatorRegistry
@@ -63,7 +63,7 @@ class _Registry(PostgresSourceLocatorRegistry):
         self.fake_connection = connection
 
     @asynccontextmanager
-    async def connection(self):  # type: ignore[override]
+    async def connection(self) -> AsyncIterator[_Connection]:  # type: ignore[override]
         yield self.fake_connection
 
     @staticmethod
@@ -90,6 +90,8 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
                 "file_name": "report.pdf",
                 "materialization_status": "pending_materialization",
                 "content_verification_mode": "interactive_pdf_read",
+                "claim_relevant_content_preserved": True,
+                "readable_representation_sha256": "a" * 64,
             },
             verified_at=verified_at,
         )
@@ -106,6 +108,17 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
         self.assertNotIn("document_fetches", sql)
         self.assertNotIn("content_blobs", sql)
         self.assertNotIn("document_versions", sql)
+
+    async def test_content_verified_requires_preserved_claim_relevant_content(self) -> None:
+        registry = _Registry(_Connection(uuid4()))
+        with self.assertRaisesRegex(ValueError, "claim_relevant_content_preserved=true"):
+            await registry.register(
+                source_id=uuid4(),
+                canonical_url="https://issuer.example/filing.pdf",
+                source_capture_state="content_verified",
+                locator_metadata={"content_verification_mode": "interactive_pdf_read"},
+                verified_at=datetime(2026, 8, 23, 9, 0, tzinfo=UTC),
+            )
 
     async def test_locator_registry_refuses_to_manufacture_materialized_state(self) -> None:
         registry = _Registry(_Connection(uuid4()))
