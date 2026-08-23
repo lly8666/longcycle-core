@@ -1,49 +1,24 @@
 {
-  "closest_existing_capability_ids": [
-    "CAP-0003",
-    "CAP-0004",
-    "CAP-0005",
-    "CAP-0006"
-  ],
-  "disposition": "extend",
-  "evidence_refs": [
-    "docs/development/researcher-mental-map-gap-audit-v1.md",
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0004.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0006.json",
-    "migrations/0002_evidence_and_facts.sql",
-    "migrations/0014_memory_leads_and_authority.sql",
-    "migrations/0015_memory_campaigns_and_model_refresh.sql",
-    "migrations/0017_memory_hypothesis_assessments.sql",
-    "src/longcycle/domain/epistemic.py",
-    "src/longcycle/domain/memory.py"
-  ],
-  "governance_mode": "converging",
-  "intent": "Give a researcher an explicit industry-level view of open/conflict states without collapsing different epistemic meanings. The default historical lane must show only archive-reconstructed Reality source disagreements and typed Judgment contradictions/counterarguments visible from source-known records by the requested cutoff. An optional current research-only overlay may show unresolved Memory disagreements/hypotheses and explicitly recorded model-memory coverage gaps, but must be labelled as present research state rather than historical market knowledge. Missing rows or search not-found must never be converted into a negative fact or synthetic unknown.",
-  "intent_id": "RESEARCHER-EXPLICIT-OPEN-STATES-001",
-  "planned_paths": [
-    "src/longcycle/domain/open_states.py",
-    "src/longcycle/ports/open_states.py",
-    "src/longcycle/adapters/storage/postgres_open_states.py",
-    "src/longcycle/application/open_state_view.py",
-    "src/longcycle/cli.py",
-    "tests/test_open_state_view.py",
-    "scripts/smoke_postgres_open_states.py",
-    ".github/workflows/ci.yml",
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0006.json",
-    ".longcycle/capabilities/active-index.json",
-    ".longcycle/handoff/current.json"
-  ],
-  "proposed_capability_id": null,
-  "rationale": "The required truth primitives already exist, but the read/composition boundary is incomplete. CAP-0003 owns explicit Fact reconciliation/conflict semantics and needs a typed source-disagreement read boundary; CAP-0004 Judgment contradicts/counterargument records are already available through the CAP-0005 typed replay snapshot and can be reused unchanged; CAP-0006 owns research-only Memory disagreement, hypothesis and campaign coverage states and needs a typed read boundary; CAP-0005 is the existing researcher projection/navigation owner and should compose these lanes without changing their authority. A dual-lane contract is required because current research-only state is not historical market knowledge and must never leak into the default point-in-time replay experience.",
   "schema_version": "longcycle-capability-admission/v1",
+  "intent_id": "DRAM-CROSS-INDUSTRY-BENCHMARK-001",
+  "intent": "Initialize the second cross-industry benchmark as a DRAM historical model-memory campaign. Reuse the existing CAP-0006 sealed blind-recall, saturation, fresh-context, post-seal verification and Evidence-final authority boundaries. The benchmark may expose future semantic gaps, but initialization must not add product code, a new capability, a new truth owner, or semiconductor-specific core schema.",
+  "governance_mode": "converging",
+  "disposition": "reuse",
   "target_capability_ids": [
-    "CAP-0003",
-    "CAP-0005",
     "CAP-0006"
   ],
-  "unmet_requirement": null
+  "closest_existing_capability_ids": [
+    "CAP-0006"
+  ],
+  "rationale": "CAP-0006 already owns memory campaign isolation, fragmentary recall, campaign saturation/seal, post-seal verification depth and research-only coverage state. DRAM changes the industrial subject matter, not those semantics. The readiness audit explicitly freezes new researcher product work until the second industry demonstrates a concrete cross-industry failure. Therefore the truthful admission is reuse, not extend/new.",
+  "unmet_requirement": null,
+  "evidence_refs": [
+    "docs/development/researcher-mental-map-gap-audit-v2.md",
+    "docs/research/dram-memory-collection-plan.md",
+    "docs/research/dram-memory-exhaustion-manifest.json",
+    "docs/research/model-memory-exhaustion-protocol.md",
+    ".longcycle/capabilities/cards/CAP-0006.json"
+  ],
+  "planned_paths": [],
+  "proposed_capability_id": null
 }
