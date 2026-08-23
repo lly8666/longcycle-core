@@ -112,7 +112,8 @@ async def build_researcher_open_state_view(
     visibility is reconstructed from source assertion known-time, never conflict-case
     curation time, and source independence reuses CAP-0003 source-cluster semantics.
     Current Memory state is opt-in, scoped by its own current research provenance rather
-    than historical membership, and coverage is taken only from the latest sealed campaign.
+    than historical membership, and coverage is taken only from the latest sealed campaign
+    as it existed at that campaign's immutable seal timestamp.
     """
 
     checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
@@ -257,6 +258,7 @@ async def build_researcher_open_state_view(
             "current_research_overlay_is_not_cutoff_filtered": True,
             "current_research_scope_uses_own_run_provenance": True,
             "model_memory_coverage_uses_latest_sealed_campaign": True,
+            "model_memory_coverage_respects_seal_time": True,
             "model_memory_coverage_is_not_archive_absence": True,
             "absence_of_records_does_not_create_an_unknown_state": True,
             "not_found_is_not_false": True,
