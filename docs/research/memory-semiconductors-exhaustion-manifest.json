@@ -1,0 +1,286 @@
+{
+  "schema_version": "longcycle-memory-exhaustion/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "industry": "存储半导体（DRAM + NAND）",
+  "industry_slug": "memory-semiconductors",
+  "benchmark_sequence": 3,
+  "benchmark_lineage": ["lithium-battery", "innovative-drugs", "memory-semiconductors"],
+  "default_period": ["2016-01-01", "2026-08-24"],
+  "protocol": "docs/research/model-memory-exhaustion-protocol.md",
+  "collection_plan": "docs/research/memory-semiconductors-collection-plan.md",
+  "status": "initialized_blind_recall_not_started",
+  "initialization_boundary": {
+    "scope_verification_used_current_public_sources": true,
+    "blind_recall_must_start_in_fresh_context": true,
+    "reason": "The initialization session inspected current public sources only to verify benchmark scope. Those observations must not anchor the sealed blind atlas.",
+    "future_material_after": "2026-08-24",
+    "future_material_route": "current_source_watch_not_historical_blind_recall"
+  },
+  "core_product_lines": ["DRAM", "NAND"],
+  "cycle_hypothesis": {
+    "statement": "DRAM and NAND share major suppliers, capital-allocation constraints and broad memory-cycle forces, but may lead, lag or diverge at specific turning points.",
+    "authority": "research_hypothesis_not_reality",
+    "test_rule": "Use one historical time grid and shared-company view, while preserving product-line-specific price, inventory, technology, demand and supply metrics."
+  },
+  "blind_stage": {
+    "source_visibility": "none",
+    "fresh_search_forbidden": true,
+    "archive_results_forbidden": true,
+    "required_output_classes": [
+      "obvious_landmarks",
+      "long_tail_leads",
+      "forgotten_actors",
+      "mechanism_leads",
+      "search_keys",
+      "uncertain_fragments"
+    ],
+    "long_tail_token_share_min": 0.5
+  },
+  "passes": [
+    {
+      "pass_id": "MEMORY-TIME-2016-2018",
+      "family": "time_slice",
+      "period": ["2016-01-01", "2018-12-31"],
+      "focus": "shared memory upswing, tight supply, pricing power and supplier investment response",
+      "questions": [
+        "Recall DRAM and NAND price, inventory, bit supply/demand, technology transitions, capex, supplier actions and contemporaneous narratives on the same time grid.",
+        "Where did the two product lines move together, and where did one lead or lag the other?"
+      ]
+    },
+    {
+      "pass_id": "MEMORY-TIME-2019-2021",
+      "family": "time_slice",
+      "period": ["2019-01-01", "2021-12-31"],
+      "focus": "downcycle, pandemic demand shifts, inventory and renewed tightness",
+      "questions": [
+        "Separate PC, server, mobile and storage demand narratives from comparable observations for each product line.",
+        "Recall supplier cuts, capex decisions, node/layer transitions and forecasts that were later revised."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-TIME-2022-2023",
+      "family": "time_slice",
+      "period": ["2022-01-01", "2023-12-31"],
+      "focus": "inventory correction, price decline, production cuts and capex discipline",
+      "questions": [
+        "Recall when different actors recognized DRAM and NAND inventory problems and how expected normalization timing changed.",
+        "Look for product-line lead/lag, write-downs, utilization changes, failed demand narratives and cross-product capital-allocation responses."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-TIME-2024-2026",
+      "family": "time_slice",
+      "period": ["2024-01-01", "2026-08-24"],
+      "focus": "HBM/AI mix shift, conventional DRAM interaction, enterprise SSD/NAND demand, capacity allocation and technology constraints",
+      "questions": [
+        "Recall HBM qualification/ramp expectations separately from later outcomes.",
+        "Recall NAND/SSD demand, layer/QLC transitions, bit supply, capex and inventory alongside DRAM/HBM conditions without merging the metrics."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-DRAM-PRODUCTS",
+      "family": "chain_slice",
+      "focus_nodes": ["DDR4", "DDR5", "LPDDR4X", "LPDDR5/5X", "GDDR", "HBM2/2E", "HBM3/3E", "HBM4"],
+      "questions": [
+        "Recall DRAM product-generation transitions, applications, qualification timing, supply constraints and pricing/mix implications.",
+        "Do not assume product generations or supplier node labels are directly comparable."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-NAND-PRODUCTS",
+      "family": "chain_slice",
+      "focus_nodes": ["3D NAND generations", "TLC", "QLC", "raw NAND", "client SSD", "enterprise SSD", "UFS/eMMC"],
+      "questions": [
+        "Recall NAND layer/generation, bits-per-cell, product and qualification transitions by period.",
+        "Keep raw NAND, packaged flash and finished SSD metrics distinct; do not assume layer labels across suppliers are equivalent."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-SHARED-ACTORS",
+      "family": "actor_exhaustion",
+      "questions": [
+        "Exhaust Samsung, SK hynix and Micron by period across both DRAM and NAND, splitting product-line facts where the source allows.",
+        "Recall company-level capex, inventory, utilization, cuts and product-mix choices that require cross-product interpretation."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-PRODUCT-SPECIFIC-ACTORS",
+      "family": "actor_exhaustion",
+      "questions": [
+        "Recall DRAM-specific actors including CXMT, Nanya and specialty suppliers, and NAND-specific actors including Kioxia, Western Digital/SanDisk and YMTC.",
+        "Preserve actor membership by product line rather than forcing a single shared supplier list."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-METRICS",
+      "family": "metric_exhaustion",
+      "metrics": [
+        "DRAM spot price",
+        "DRAM contract price",
+        "NAND wafer/die price",
+        "NAND contract/spot price",
+        "client SSD price",
+        "enterprise SSD price",
+        "wafer capacity",
+        "wafer starts",
+        "DRAM bit shipments",
+        "NAND bit shipments",
+        "bit supply growth",
+        "bit demand growth",
+        "yield",
+        "inventory",
+        "days of inventory",
+        "capex",
+        "utilization",
+        "cost per bit",
+        "memory content per device",
+        "HBM stack output",
+        "SSD shipment/capacity",
+        "qualification cycle"
+      ],
+      "questions": [
+        "Recall definitions and periods where each metric became non-comparable or especially important.",
+        "Identify likely primary or methodology-bearing source families for later verification without searching now."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-MECHANISMS",
+      "family": "mechanism_exhaustion",
+      "questions": [
+        "Recall mechanisms linking price, inventory, utilization, capex, technology migration, bit growth, qualification and effective supply for DRAM and NAND separately.",
+        "Recall cross-product mechanisms through shared company capital budgets, cleanroom/equipment constraints, customer cycles and supply-discipline decisions.",
+        "Treat DRAM/NAND co-cycling as a hypothesis to test, not a preloaded conclusion."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-NARRATIVES",
+      "family": "contemporaneous_narrative",
+      "questions": [
+        "Recall consensus, minority views, shortage/oversupply narratives, inventory normalization forecasts and capex-discipline claims by product line and period.",
+        "Recall contemporaneous views on whether DRAM and NAND were synchronized, decoupling, or expected to recover at different times."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-TERMINOLOGY",
+      "family": "old_vocabulary",
+      "questions": [
+        "Recall DRAM node labels, NAND layer/generation labels, old product names, fab/JV/company names, pricing terms, report-title phrases and terminology useful for lost-web search.",
+        "Prefer vocabulary that a current searcher would not naturally guess."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-FAILURES",
+      "family": "failure_dead_end",
+      "questions": [
+        "Recall delayed fabs, failed/slow ramps, qualification misses, utilization cuts, write-downs, cancelled investments and product narratives that did not materialize across DRAM and NAND.",
+        "Include technologies or actors that mattered historically but later became marginal."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-REVERSE-2023",
+      "family": "reverse_causality",
+      "anchor": "2022-2023 memory price and inventory downturn",
+      "lookback_months": [6, 12, 18, 24, 36],
+      "questions": [
+        "Work backward to earlier demand, inventory, capex, technology, supply and customer-ordering conditions for both DRAM and NAND.",
+        "Use the later downturn only to activate leads; never present the later outcome as information already known earlier."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-REVERSE-AI",
+      "family": "reverse_causality",
+      "anchor": "2024-2026 AI-driven HBM and storage mix changes",
+      "lookback_months": [6, 12, 24, 36, 60],
+      "questions": [
+        "Recall earlier HBM, packaging, NAND/SSD, customer, accelerator and supplier decisions that may have set up later product-mix changes.",
+        "Separate what was genuinely anticipated from what only became obvious later."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-CROSS-INDUSTRY",
+      "family": "cross_industry",
+      "questions": [
+        "Recall semiconductor equipment, packaging, foundry/base-die, cloud capex, GPU/platform, handset/PC, storage systems, geopolitics, export controls and financing variables that directly changed DRAM or NAND conditions.",
+        "Do not expand adjacent sectors beyond claim-scoped memory effects."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-COUNTERFACTUAL",
+      "family": "counterfactual",
+      "questions": [
+        "For each famous memory-cycle explanation generate at least two contemporaneously plausible alternatives.",
+        "State what historical evidence would distinguish common-cycle explanations from product-line-specific explanations."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-NEGATIVE-SPACE",
+      "family": "negative_space",
+      "requires_atlas_only": true,
+      "questions": [
+        "Inspect the time × actor × product-line × metric matrix for suspicious blanks.",
+        "Ask what long-tenured DRAM and NAND operators would each say is missing if the atlas looks too much like a public market report."
+      ]
+    },
+    {
+      "pass_id": "MEMORY-SATURATION",
+      "family": "saturation_review",
+      "requires_atlas_only": true,
+      "questions": [
+        "Cluster duplicate leads and classify remaining gaps.",
+        "Judge whether three consecutive orthogonal passes have produced few new high-importance non-duplicate leads across both product lines."
+      ]
+    }
+  ],
+  "recursive_questions_for_high_importance_lead": [
+    "Who else? Which other actors or product lines are connected?",
+    "What preceded it? Which earlier indicators or decisions existed?",
+    "What followed it? Which later actions or observations may be connected?",
+    "What was it called then? Which historical vocabulary should later search use?"
+  ],
+  "comparability_hazards": [
+    "dram_vs_nand_price_scope",
+    "spot_vs_contract_price",
+    "raw_die_vs_finished_product_price",
+    "product_generation_density_and_application",
+    "fab_capacity_vs_wafer_starts_vs_bit_output",
+    "dram_node_names_not_equivalent",
+    "nand_layer_generation_names_not_equivalent",
+    "financial_inventory_vs_physical_product_inventory",
+    "device_units_vs_memory_content_vs_bit_demand",
+    "HBM_mix_value_vs_total_dram_bit_growth",
+    "SSD_mix_value_vs_total_nand_bit_growth",
+    "sample_vs_qualification_vs_mass_production_vs_mass_shipment",
+    "company_memory_segment_vs_product_line_scope",
+    "shared_cycle_vs_product_specific_lead_lag"
+  ],
+  "self_verification_stage": {
+    "enabled": true,
+    "must_start_new_run": true,
+    "source_visibility": "search_results",
+    "objectives": [
+      "resolve vague memory leads into exact company, fab, product, report and historical terminology",
+      "locate claim-scoped primary sources before secondary summaries",
+      "separate independent sources from repeated syndication",
+      "generate precise delegated verification packets"
+    ],
+    "forbidden": [
+      "modify sealed blind atlas",
+      "promote search snippets into Fact or Judgment",
+      "delete a lead because search returns not found",
+      "treat repeated secondary coverage as independent proof",
+      "merge DRAM and NAND metrics merely because they co-move"
+    ]
+  },
+  "saturation_rule": {
+    "consecutive_low_novelty_passes": 3,
+    "must_review_coverage_matrix": true,
+    "must_include_long_tail_categories": [
+      "forgotten_actors",
+      "failure_dead_end",
+      "old_vocabulary",
+      "mechanism",
+      "negative_space"
+    ],
+    "must_cover_each_core_product_line": true
+  }
+}
