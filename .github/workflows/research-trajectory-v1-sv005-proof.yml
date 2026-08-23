@@ -1,0 +1,234 @@
+name: Research trajectory v1 SV-005 proof
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/research-trajectory-v1-sv005-proof.yml'
+      - 'src/longcycle/application/epistemic_trajectory.py'
+      - 'src/longcycle/application/research_orchestration.py'
+      - 'scripts/execute_epistemic_trajectory.py'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'scripts/execute_grounded_judgment_persistence.py'
+      - 'scripts/execute_grounded_outcome_evaluation.py'
+      - 'scripts/export_integrated_replay_duckdb.py'
+      - 'scripts/replay_integrated_history.py'
+      - 'tests/test_epistemic_trajectory.py'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-reality-projection-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-judgment-projection-v1.json'
+  pull_request:
+    paths:
+      - '.github/workflows/research-trajectory-v1-sv005-proof.yml'
+      - 'src/longcycle/application/epistemic_trajectory.py'
+      - 'scripts/execute_epistemic_trajectory.py'
+      - 'tests/test_epistemic_trajectory.py'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  trajectory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/generic-trajectory-blobs
+      SOURCE_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json
+      WEB_VERIFY_RECEIPT: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json
+      TRAJECTORY_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json
+      RUNTIME_INPUT_ROOT: ${{ github.workspace }}/.artifacts/sv005-generic-proof
+      RUNTIME_SPEC: ${{ github.workspace }}/.artifacts/sv005-generic-proof/SV-005-grounded-evidence-runtime-spec.json
+      MATERIAL_ROOT: ${{ github.workspace }}/.artifacts/sv005-generic-materials
+      WORK_DIR: ${{ github.workspace }}/.artifacts/sv005-generic-trajectory-work
+      RECEIPT: ${{ github.workspace }}/.artifacts/SV-005-generic-trajectory-receipt.json
+      RELEASE_TAG: longcycle-dev-binary-cache
+      RELEASE_ASSET: longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip
+      RELEASE_SHA256: eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install -e '.[dev,postgres,s3,duckdb]'
+          python -m pip install 'pypdf==6.15.0'
+
+      - name: Unit contract
+        run: python -m pytest -q tests/test_epistemic_trajectory.py tests/test_research_orchestration.py
+
+      - name: Restore already-materialized legacy PDF bytes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$MATERIAL_ROOT/pdf" "$MATERIAL_ROOT/web" "$RUNTIME_INPUT_ROOT" .artifacts/release
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir .artifacts/release
+          actual="$(sha256sum ".artifacts/release/$RELEASE_ASSET" | awk '{print $1}')"
+          test "$actual" = "$RELEASE_SHA256"
+          unzip -q ".artifacts/release/$RELEASE_ASSET" -d .artifacts/release/unpacked
+          cp .artifacts/release/unpacked/federal-register-blenrep-revocation-2023.pdf "$MATERIAL_ROOT/pdf/"
+          cp .artifacts/release/unpacked/gsk-dreamm7-readout-2024-02-05.pdf "$MATERIAL_ROOT/pdf/"
+          echo "GENERIC_TRAJECTORY_LEGACY_PDF_RESTORE_PASS sha=$actual"
+
+      - name: Prepare truthful webpage representations from verified capsule receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import copy
+          import hashlib
+          import json
+          import os
+          from collections import defaultdict
+          from pathlib import Path
+
+          spec_path = Path(os.environ['SOURCE_SPEC'])
+          receipt_path = Path(os.environ['WEB_VERIFY_RECEIPT'])
+          prepared_path = Path(os.environ['RUNTIME_SPEC'])
+          root = Path(os.environ['MATERIAL_ROOT'])
+          spec = json.loads(spec_path.read_text(encoding='utf-8'))
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          capsule = spec['acquisition_provenance']['webpage_capsule']
+          assert receipt['google_drive_file_id'] == capsule['google_drive_file_id']
+          assert receipt['sha256'] == capsule['sha256']
+          assert receipt['capture_count'] == capsule['capture_count'] == 3
+          assert all(receipt['acceptance'].values())
+
+          docs = {row['key']: row for row in spec['documents']}
+          fragments_by_doc = defaultdict(list)
+          for fragment in spec['fragments']:
+              fragments_by_doc[fragment['document_key']].append(fragment)
+          source_id_by_document = {
+              'fda-initial-approval-2020': 'fda-blenrep-accelerated-approval-2020',
+              'gsk-dreamm3-2022': 'gsk-dreamm3-2022-11-07',
+              'gsk-withdrawal-judgment-2022': 'gsk-blenrep-withdrawal-2022-11-22',
+          }
+          receipt_by_source = {row['source_id']: row for row in receipt['capture_checks']}
+          runtime_spec = copy.deepcopy(spec)
+          runtime_docs = {row['key']: row for row in runtime_spec['documents']}
+          for document_key, source_id in source_id_by_document.items():
+              doc = docs[document_key]
+              check = receipt_by_source[source_id]
+              assert check['visible_text_sha256'] == doc['retrieval_provenance']['capture_row_text_sha256']
+              fragment_checks = {row['fragment_key']: row for row in check['fragment_checks']}
+              excerpts = []
+              for fragment in fragments_by_doc[document_key]:
+                  excerpt = fragment['excerpt']
+                  recorded = fragment_checks[fragment['fragment_key']]
+                  assert recorded['present'] is True
+                  assert hashlib.sha256(excerpt.encode('utf-8')).hexdigest() == recorded['excerpt_sha256']
+                  excerpts.append(excerpt)
+              material = '\n'.join(excerpts)
+              path = root / doc['material_path']
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(material, encoding='utf-8')
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == doc['expected_sha256'] == check['runtime_material_sha256']
+              runtime_docs[document_key]['retrieval_provenance'].update({
+                  'mode': 'verified_private_drive_capsule_receipt',
+                  'drive_reverification_receipt': str(receipt_path),
+                  'raw_source_materialized': False,
+                  'source_capture_state': 'content_verified',
+                  'source_media_type': 'text/html',
+                  'content_verification_mode': 'authorized_drive_capsule_reverification',
+                  'claim_relevant_content_preserved': True,
+              })
+          prepared_path.parent.mkdir(parents=True, exist_ok=True)
+          prepared_path.write_text(json.dumps(runtime_spec, indent=2) + '\n', encoding='utf-8')
+          print('GENERIC_TRAJECTORY_WEB_REPRESENTATION_PASS')
+          PY
+
+      - name: Execute generic epistemic trajectory
+        run: >-
+          python scripts/execute_epistemic_trajectory.py
+          "$TRAJECTORY_SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --work-dir "$WORK_DIR"
+          --output "$RECEIPT"
+
+      - name: Assert generic receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ['RECEIPT']).read_text(encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert result['schema_version'] == 'longcycle-epistemic-trajectory-execution/v1'
+          assert result['phases'] == [
+              'grounded_evidence',
+              'reality_projection',
+              'judgment_persistence',
+              'outcome_evaluation',
+              'seal_integrated_memory',
+              'point_in_time_replay',
+          ]
+          assert result['core_orchestration']['evidence']['acceptance'] == {
+              'persisted_document_versions': 5,
+              'persisted_evidence_fragments': 9,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }
+          assert result['core_orchestration']['reality']['verification']['canonical_reality_count'] == 8
+          assert result['judgment']['verification']['judgment_count'] == 1
+          assert len(result['outcomes']) == 1
+          assert result['outcomes'][0]['semantic_relation'] == 'related_milestone'
+          replay = result['replay']
+          assert replay['manifest']['counts'] == {'reality': 8, 'judgments': 1, 'outcomes': 1}
+          assert replay['no_lookahead_sequence_verified'] is True
+          assert [row['counts'] for row in replay['snapshots']] == [
+              {'reality': 4, 'judgments': 1, 'outcomes': 0},
+              {'reality': 6, 'judgments': 1, 'outcomes': 0},
+              {'reality': 8, 'judgments': 1, 'outcomes': 1},
+          ]
+          print('GENERIC_EPISTEMIC_TRAJECTORY_PASS')
+          PY
+
+      - name: Upload generated proof artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: generic-epistemic-trajectory-${{ github.run_id }}
+          path: |
+            .artifacts/SV-005-generic-trajectory-receipt.json
+            .artifacts/sv005-generic-proof/SV-005-grounded-evidence-runtime-spec.json
+            .artifacts/sv005-generic-trajectory-work/
+          if-no-files-found: warn
+          retention-days: 14
