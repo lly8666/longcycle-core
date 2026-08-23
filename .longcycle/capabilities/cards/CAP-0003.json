@@ -4,7 +4,8 @@
     "fact normalization",
     "fact reconciliation",
     "reality projection",
-    "comparability"
+    "comparability",
+    "state as of"
   ],
   "entrypoints": [
     {
@@ -32,6 +33,12 @@
       "path": "migrations/0021_canonical_valid_time_kind.sql"
     },
     {
+      "contains": "state is true as of T; onset unknown",
+      "description": "Observation/as-of time is preserved separately from unknown occurrence onset.",
+      "kind": "schema",
+      "path": "migrations/0024_canonical_observation_time.sql"
+    },
+    {
       "contains": "def _fact_payload()",
       "description": "Temporal precision tests protect source-supported fact time semantics.",
       "kind": "test",
@@ -43,16 +50,18 @@
   "non_goals": [
     "Management guidance as Reality.",
     "Inferring exact occurrence dates from coarse or unknown source time.",
+    "Treating an observation/as-of timestamp as the start of a state when onset is unknown.",
     "Researcher presentation/replay formatting."
   ],
   "owned_semantics": [
     "reality.fact.normalization",
     "reality.fact.comparability",
     "reality.canonical.reconciliation",
-    "reality.valid_time_precision"
+    "reality.valid_time_precision",
+    "reality.observation_time_unknown_onset"
   ],
-  "purpose": "Own typed Fact normalization, comparability and canonical Reality semantics, including source-supported temporal precision and reconciliation rather than direct assertion copying.",
-  "revisit_when": "Only replace if an equally explicit generic model preserves typed value, comparability, evidence provenance, reconciliation and valid/known-time boundaries.",
+  "purpose": "Own typed Fact normalization, comparability and canonical Reality semantics, including source-supported valid-time precision, explicit period/timeless/unknown kind, observation/as-of state with unknown onset, and reconciliation rather than direct assertion copying.",
+  "revisit_when": "Only replace if an equally explicit generic model preserves typed value, comparability, evidence provenance, reconciliation, source precision, observation/unknown-onset semantics and valid/known-time boundaries.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/normalization.py",
@@ -60,7 +69,8 @@
     "src/longcycle/application/reconciliation.py",
     "src/longcycle/domain/models.py",
     "migrations/0020_fact_valid_time_precision.sql",
-    "migrations/0021_canonical_valid_time_kind.sql"
+    "migrations/0021_canonical_valid_time_kind.sql",
+    "migrations/0024_canonical_observation_time.sql"
   ],
   "status": "active",
   "supersedes": [],
@@ -69,7 +79,8 @@
     "fact",
     "normalization",
     "reconciliation",
-    "temporal-precision"
+    "temporal-precision",
+    "observation-time"
   ],
   "title": "Canonical Reality normalization and reconciliation"
 }
