@@ -31,28 +31,57 @@ Git / current.json / receipts / data-plane manifest
     = control plane
     = 使命、状态、任务、资产身份、transport、SHA、恢复规则
 
-GitHub Release + Google Drive
-    = development data plane transports
+Google Drive + GitHub Release
+    = development data-plane transports
     = 不改变 Evidence/source authority，也不替代数据库语义
 ```
 
-### 1. GitHub Release：外部获得的原始来源
+### 1. 网页：优先本地数据库 → Google Drive
 
-开发期内，**externally acquired immutable source payloads** 放 GitHub Release，例如：
+对**当前 Agent 能完整读取的网页**，默认开发路径是：
 
-- PDF / HTML / filing / formal announcement bytes；
-- 含这些 raw source bytes 的 source-acquisition pack。
+```text
+读取网页可见内容
+→ 忠实保存 visible text + source/provenance metadata
+→ 批量写入 bounded local DuckDB capture capsule
+→ checkpoint / close / SHA-256
+→ 上传 Google Drive
+→ Git handoff 只保存 Drive file id + SHA + schema/source count + restore instruction
+```
 
 规则：
 
-- Release asset 必须唯一命名、不可静默覆盖；
-- manifest 保存 Release tag、filename、outer SHA-256；receipt 再保存需要的 raw document hash / upstream identity；
-- Release 只是 transport/cache，不让转载站自动变成原始发行人，也不改变 claim-scoped authority；
-- 需要重新 grounding 时，只恢复当前任务所需 source pack，验 hash 后进入正常 archive/parser/Evidence 路径；不要把整个历史 source 库搬进 session。
+- **不要为了保存网页 HTML 而专门启动 GitHub Actions。** 新网页默认不走 Action → Release；
+- 不要为了 handoff 把每一页网页正文逐页 commit 到 Git；网页多时优先本地数据库批量写入，再一次性 Drive handoff；
+- 每条网页 capture 至少保留原始 URL、publisher/source identity、source-displayed date/title（有可靠支持时）、`captured_at`、truthful `capture_mode`、faithful visible text、文本/记录 digest，以及重要缺失说明；
+- 网页 capture DB 是 capture/handoff envelope，不是 live PostgreSQL，也不是 Fact/Judgment 自动发布；
+- Drive 只是 transport，不能因为内容在 Drive 就降低或提高 source authority；恢复后仍走正常 archive/Evidence 语义；
+- 已经存在的历史 Release source pack 如果含 HTML/web bytes，保持 immutable、继续按旧 receipt 使用，不迁移、不重写；但它们不再代表新网页的默认 acquisition 路线。
 
-### 2. Google Drive：Longcycle 自己生成的二进制状态
+### 2. PDF：GitHub Actions → GitHub Release
 
-**Longcycle-generated binary state** 放 Google Drive，例如：
+对于需要保留原始字节的 **PDF**：
+
+```text
+GitHub Action 直接抓取 PDF
+→ 校验 HTTP / 类型 / 语义
+→ SHA-256
+→ immutable source pack
+→ GitHub Release
+→ 回下载校验 SHA
+```
+
+规则：
+
+- Release asset 唯一命名、不可静默覆盖；
+- manifest/receipt 保存 Release tag、filename、outer/raw SHA 与 upstream identity；
+- Release 只是 transport/cache，不改变 claim-scoped authority；
+- 重新 grounding 时只恢复当前任务需要的 PDF/source pack，不把整个历史 source 库搬进 session；
+- 不因为 interactive Agent 自己不擅长上传 Release asset 就误判 Longcycle 没有 PDF acquisition 能力；PDF lane 本来就由 Actions 承担。
+
+### 3. 其他生成型状态：Google Drive
+
+**Longcycle-generated binary state** 也放 Google Drive，例如：
 
 - DuckDB replay materialization；
 - generated execution / reconciliation output；
@@ -63,16 +92,17 @@ GitHub Release + Google Drive
 
 - manifest 中的 Drive file id + SHA-256 才定义对象；文件名、分享链接、修改时间都不是完整性依据；
 - DuckDB/replay 默认 read-only；
-- generated capsule 不能伪装成原始 Evidence archive；真正需要原始 source bytes 时，从 Release 单独恢复；
-- Drive 是 portable generated-state relay，不是 live PostgreSQL authority，也不是终局 archive。
+- generated capsule 不能伪装成原始 Evidence archive；
+- 网页 capture capsule 虽然也走 Drive，但里面的可见文本是 source-derived capture，不应被误称为“模型生成结论”；
+- Drive 是 portable relay，不是 live PostgreSQL authority，也不是终局 archive。
 
-### 3. PostgreSQL 不做 session 搬运
+### 4. PostgreSQL 不做 session 搬运
 
 不要把 live PostgreSQL cluster 放 Release 或 Drive 当 session state。需要 transaction / lease / outbox / write semantics 时，在 GitHub Actions 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
 
 如果未来确有 handoff 用的**生成型 DB snapshot**，它属于 Drive，且必须明确是 snapshot，不是 live authority。
 
-### 4. Fail closed
+### 5. Fail closed
 
 Required asset 缺失、outer SHA 不匹配、内部 component digest 不匹配、runtime ABI 不兼容时，按 `stop_and_report_integrity_blocker` 处理；不能从聊天记忆、文件名或旧网盘对象猜。
 
