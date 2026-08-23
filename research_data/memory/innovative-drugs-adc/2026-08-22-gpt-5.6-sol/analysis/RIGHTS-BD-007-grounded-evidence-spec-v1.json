@@ -1,0 +1,141 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "RIGHTS-BD-007-GROUNDED-EVIDENCE-V1",
+  "sources": [
+    {
+      "key": "bms-direct-announcement",
+      "name": "Bristol Myers Squibb direct announcement capture",
+      "publisher_domain": "news.bms.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Direct BMS publisher-page wording captured faithfully; materialization mode is transport provenance and does not replace publisher authority."
+        }
+      ]
+    },
+    {
+      "key": "sec-bms-10k",
+      "name": "SEC-filed Bristol-Myers Squibb 2023 Form 10-K capture",
+      "publisher_domain": "sec.gov",
+      "kind": "regulator",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "legal_disclosure",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "Issuer Form 10-K filed on SEC EDGAR is the authoritative legal disclosure for the transaction-effectiveness statement."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "bms-announcement-capture",
+      "vintage_id": "RIGHTS-BD-007-BMS-2023-12-11",
+      "source_key": "bms-direct-announcement",
+      "retrieval_url": "https://news.bms.com/news/details/2023/SystImmune-and-Bristol-Myers-Squibb-Announce-a-Global-Strategic-Collaboration-Agreement-for-the-Development-and-Commercialization-of-BL-B01D1/default.aspx",
+      "original_source_url": "https://news.bms.com/news/details/2023/SystImmune-and-Bristol-Myers-Squibb-Announce-a-Global-Strategic-Collaboration-Agreement-for-the-Development-and-Commercialization-of-BL-B01D1/default.aspx",
+      "external_id": "BMS-NEWS-2023-12-11-BL-B01D1",
+      "title": "SystImmune and Bristol Myers Squibb Announce a Global Strategic Collaboration Agreement for the Development and Commercialization of BL-B01D1",
+      "first_known_at": "2026-08-23T14:36:00+08:00",
+      "expected_sha256": "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
+      "material_path": "bms-2023-12-11-joint-announcement.capture.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "mode": "faithful_visible_text_capture",
+        "capture_mode": "verbatim_visible_text_transcription",
+        "capture_scope": "claim_relevant_complete",
+        "transport_is_not_source_authority": true,
+        "source_cluster": "2023-12-11-joint-announcement",
+        "source_date": {
+          "value": "2023-12-11",
+          "precision": "day",
+          "basis": "publisher_date_label"
+        },
+        "capture_recorded_at": "2026-08-23T14:36:00+08:00",
+        "manifest_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/manifest-v1.json"
+      }
+    },
+    {
+      "key": "sec-10k-capture",
+      "vintage_id": "RIGHTS-BD-007-SEC-BMS-2023-10K",
+      "source_key": "sec-bms-10k",
+      "retrieval_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/bmy-20231231.htm",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/bmy-20231231.htm",
+      "external_id": "0000014272-24-000044",
+      "title": "Bristol-Myers Squibb Company 2023 Form 10-K — SystImmune alliance section",
+      "first_known_at": "2026-08-23T14:36:00+08:00",
+      "expected_sha256": "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
+      "material_path": "sec-bms-2023-10k-systimmune-note.capture.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "mode": "faithful_visible_text_capture",
+        "capture_mode": "verbatim_visible_text_transcription",
+        "capture_scope": "claim_relevant_complete",
+        "transport_is_not_source_authority": true,
+        "source_cluster": "bms-2023-form-10k",
+        "filing_identity": {
+          "form": "10-K",
+          "accession": "0000014272-24-000044",
+          "filing_date": "2024-02-13",
+          "period_of_report": "2023-12-31"
+        },
+        "capture_recorded_at": "2026-08-23T14:36:00+08:00",
+        "manifest_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/manifest-v1.json"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "announcement-and-territory",
+      "document_key": "bms-announcement-capture",
+      "excerpt": "SystImmune, a clinical-stage biopharmaceutical company, and Bristol Myers Squibb (NYSE: BMY) today announced an exclusive license and collaboration agreement for SystImmune’s BL-B01D1, a potentially first-in-class EGFRxHER3 bispecific antibody-drug conjugate (ADC). Under the terms of the agreement, the companies will jointly develop and commercialize BL-B01D1 in the United States. Through its affiliates, SystImmune will be solely responsible for development, commercialization, and manufacturing in Mainland China and will be responsible for manufacturing certain drug supplies for use outside of Mainland China. Bristol Myers Squibb will assume sole responsibility for development and commercialization in the rest of the world.",
+      "claim_context": {
+        "lead_id": "RIGHTS-BD-007",
+        "claim_role": "historical_event",
+        "event_type": "collaboration_announcement",
+        "event_time": {
+          "value": "2023-12-11",
+          "precision": "day",
+          "basis": "publisher_date_label"
+        },
+        "sealed_memory_time_before_search": "2023-era",
+        "temporal_rule": "This event time refines post-seal discovery and must not rewrite the sealed memory wording."
+      }
+    },
+    {
+      "fragment_key": "transaction-effective-february-2024",
+      "document_key": "sec-10k-capture",
+      "excerpt": "The transaction became effective in February 2024 and included an upfront payment of $800 million, which will be included in Acquired IPRD during the first quarter of 2024. BMS is also obligated to pay up to $7.6 billion upon the achievement of contingent development, regulatory and sales-based milestones.",
+      "claim_context": {
+        "lead_id": "RIGHTS-BD-007",
+        "claim_role": "historical_event",
+        "event_type": "transaction_effective",
+        "event_time": {
+          "value": "2024-02",
+          "precision": "month",
+          "basis": "SEC-filed BMS 2023 Form 10-K"
+        },
+        "evidence_public_record_date": {
+          "value": "2024-02-13",
+          "precision": "day",
+          "basis": "SEC filing index"
+        },
+        "temporal_rule": "Transaction effectiveness is a distinct event from the 2023-12-11 announcement and must not be collapsed into one exact date."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 2,
+    "required_fragments": 2,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
