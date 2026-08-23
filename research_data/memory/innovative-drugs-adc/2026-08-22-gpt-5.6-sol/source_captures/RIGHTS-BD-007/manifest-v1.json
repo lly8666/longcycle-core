@@ -1,0 +1,62 @@
+{
+  "schema_version": "longcycle-source-capture-manifest/v1",
+  "lead_id": "RIGHTS-BD-007",
+  "policy": {
+    "preferred_capture": "original_source_bytes",
+    "fallback_capture": "faithful_readable_source_capture",
+    "tool_limit_rule": "A missing preferred acquisition mechanism may change capture representation but must never justify skipping readable source information.",
+    "evidence_boundary": "Search snippets and discovery summaries are not source captures. A fallback capture must preserve directly read source content, source identity, capture mode, limitations and a digest of the immutable captured representation."
+  },
+  "captures": [
+    {
+      "key": "bms-joint-announcement",
+      "material_path": "bms-2023-12-11-joint-announcement.capture.txt",
+      "sha256": "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
+      "capture_mode": "verbatim_visible_text_transcription",
+      "capture_scope": "claim_relevant_complete",
+      "original_url": "https://news.bms.com/news/details/2023/SystImmune-and-Bristol-Myers-Squibb-Announce-a-Global-Strategic-Collaboration-Agreement-for-the-Development-and-Commercialization-of-BL-B01D1/default.aspx",
+      "publisher_domain": "news.bms.com",
+      "source_cluster": "2023-12-11-joint-announcement",
+      "source_date": {
+        "value": "2023-12-11",
+        "precision": "day",
+        "basis": "publisher_date_label"
+      },
+      "captured_at": "2026-08-23T14:36:00+08:00",
+      "visual_status": "Publisher page exposed an image/tracking link that the reader could not fetch. No claim-relevant visual content was confirmed from that link; the limitation is retained rather than silently ignored."
+    },
+    {
+      "key": "sec-bms-2023-10k-systimmune-note",
+      "material_path": "sec-bms-2023-10k-systimmune-note.capture.txt",
+      "sha256": "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
+      "capture_mode": "verbatim_visible_text_transcription",
+      "capture_scope": "claim_relevant_complete",
+      "original_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/bmy-20231231.htm",
+      "publisher_domain": "sec.gov",
+      "issuer": "Bristol-Myers Squibb Company",
+      "filing_type": "10-K",
+      "accession": "0000014272-24-000044",
+      "filing_date": {
+        "value": "2024-02-13",
+        "precision": "day",
+        "basis": "SEC filing index"
+      },
+      "period_of_report": "2023-12-31",
+      "source_cluster": "bms-2023-form-10k",
+      "captured_at": "2026-08-23T14:36:00+08:00",
+      "visual_status": "No claim-relevant figure is required for the captured SystImmune alliance section. Unrelated filing graphics remain outside this claim-scoped capture."
+    }
+  ],
+  "temporal_separation": {
+    "sealed_memory_wording": "2023-era",
+    "announcement_event": {
+      "value": "2023-12-11",
+      "precision": "day"
+    },
+    "transaction_effective_event": {
+      "value": "2024-02",
+      "precision": "month"
+    },
+    "rule": "Do not collapse announcement and effectiveness into one sharpened date and do not rewrite sealed memory."
+  }
+}
