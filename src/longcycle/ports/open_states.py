@@ -30,5 +30,4 @@ class CurrentResearchOpenStateReader(Protocol):
         self,
         *,
         industry_node_id: UUID,
-        entity_ids: Sequence[UUID],
     ) -> CurrentResearchOpenStateBundle: ...
