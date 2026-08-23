@@ -47,19 +47,31 @@ jobs:
       - name: Install current implementation
         run: python -m pip install -e '.[duckdb]'
 
-      - name: Restore and verify sealed first-pair replay
+      - name: Verify source artifact metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          metadata="$(gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$SOURCE_ARTIFACT_ID")"
+          test "$(printf '%s' "$metadata" | jq -r '.expired')" = 'false'
+          test "$(printf '%s' "$metadata" | jq -r '.digest')" = "sha256:$SOURCE_OUTER_SHA256"
+          test "$(printf '%s' "$metadata" | jq -r '.name')" = 'adc-first-pair-replay-32581980862'
+
+      - name: Download sealed first-pair replay artifact
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ env.SOURCE_ARTIFACT_ID }}
+          path: /tmp/rova-replay/unpacked
+
+      - name: Verify internal DuckDB
         id: restore
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/rova-replay
-          gh api "/repos/$GITHUB_REPOSITORY/actions/artifacts/$SOURCE_ARTIFACT_ID/zip" > /tmp/rova-replay/source.zip
-          test "$(sha256sum /tmp/rova-replay/source.zip | awk '{print $1}')" = "$SOURCE_OUTER_SHA256"
-          unzip -q /tmp/rova-replay/source.zip -d /tmp/rova-replay/unpacked
           db="$(find /tmp/rova-replay/unpacked -type f -path '*/execution/adc-first-pair-memory.duckdb' -print -quit)"
           test -n "$db"
           test "$(sha256sum "$db" | awk '{print $1}')" = "$DUCKDB_SHA256"
           echo "db=$db" >> "$GITHUB_OUTPUT"
+          echo "verified_db=$db"
 
       - name: Replay three historical knowledge cutoffs through CAP-0005
         shell: bash
@@ -124,7 +136,7 @@ jobs:
               'implementation_head_sha': '${{ steps.resolve.outputs.head_sha }}',
               'source_artifact': {
                   'artifact_id': int('${{ env.SOURCE_ARTIFACT_ID }}'),
-                  'outer_sha256': '${{ env.SOURCE_OUTER_SHA256 }}',
+                  'artifact_digest': 'sha256:${{ env.SOURCE_OUTER_SHA256 }}',
                   'duckdb_sha256': '${{ env.DUCKDB_SHA256 }}',
               },
               'subject_id': '${{ env.ROVA_T_SUBJECT_ID }}',
@@ -161,5 +173,5 @@ jobs:
           HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
         run: |
           set -euo pipefail
-          body=$(printf 'ROVA_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nExact old replay artifact and internal DuckDB hashes were verified before running current `longcycle research replay` at pre-termination, termination-known, and later-accounting-known cutoffs.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
+          body=$(printf 'ROVA_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nSource artifact id/digest/expiry and internal DuckDB SHA are checked before current `longcycle research replay` runs at pre-termination, termination-known, and later-accounting-known cutoffs.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
