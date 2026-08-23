@@ -81,6 +81,10 @@ jobs:
         id: industry_orientation
         run: python scripts/smoke_postgres_orientation.py
 
+      - name: PostgreSQL researcher Evidence drilldown (hard gate)
+        id: evidence_drilldown
+        run: python scripts/smoke_postgres_evidence_drilldown.py
+
       - name: Materialized grounded Evidence integration (hard gate)
         id: materialized_evidence
         run: python scripts/smoke_materialized_grounded_evidence.py
@@ -147,6 +151,7 @@ jobs:
           echo "postgres_reality=${{ steps.postgres_reality.outcome }} (hard gate)"
           echo "epistemic_memory=${{ steps.epistemic_memory.outcome }} (hard gate)"
           echo "industry_orientation=${{ steps.industry_orientation.outcome }} (hard gate)"
+          echo "evidence_drilldown=${{ steps.evidence_drilldown.outcome }} (hard gate)"
           echo "materialized_evidence=${{ steps.materialized_evidence.outcome }} (hard gate)"
           echo "replay=${{ steps.replay.outcome }} (hard gate)"
           echo "judgment_replay=${{ steps.judgment_replay.outcome }} (hard gate)"
