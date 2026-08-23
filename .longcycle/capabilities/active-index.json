@@ -26,7 +26,7 @@
         "source.raw_version_identity",
         "source.deferred_raw_materialization_integrity"
       ],
-      "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not blocked by transport friction, while later raw-byte materialization enriches the same logical document identity.",
+      "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction, while later raw-byte materialization enriches the same logical document identity instead of creating a competing source record.",
       "scope": [
         "src/longcycle/application/source_archive.py",
         "src/longcycle/ports/source.py",
@@ -59,7 +59,7 @@
       "card_path": ".longcycle/capabilities/cards/CAP-0002.json",
       "extension_seams": [
         "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
-        "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve upstream PDF identity/media type separately.",
+        "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve the upstream PDF identity/media type separately and never call the representation byte-identical PDF.",
         "Add claim_context annotations without silently promoting them into Reality/Judgment."
       ],
       "id": "CAP-0002",
@@ -70,7 +70,7 @@
         "evidence.readable_representation_truthfulness",
         "evidence.structured_json_pointer_exactness"
       ],
-      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion. Locator existence alone is never claim Evidence.",
+      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion. Grounding may use archived raw PDF/HTML/JSON or a truthful readable representation of content the Agent actually read; locator existence alone is never claim Evidence.",
       "scope": [
         "src/longcycle/application/evidence_recording.py",
         "src/longcycle/adapters/parsers.py",
@@ -282,7 +282,7 @@
         "orchestration.bounded_evidence_reality_composition",
         "orchestration.portable_execution_receipt"
       ],
-      "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. It must not turn raw-byte acquisition into an independent research prerequisite.",
+      "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. It consumes CAP-0001/CAP-0002 source/Evidence state and must not turn raw-byte acquisition into an independent research prerequisite.",
       "scope": [
         "src/longcycle/application/research_orchestration.py",
         "scripts/execute_research_orchestration.py",
@@ -359,7 +359,7 @@
         "continuity.resume_asset_identity",
         "continuity.on_demand_history_recall"
       ],
-      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant source/data identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
+      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
       "scope": [
         "src/longcycle/application/session_handoff.py",
         "src/longcycle/application/handoff_data_plane.py",
