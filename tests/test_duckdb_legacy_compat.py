@@ -103,6 +103,11 @@ async def test_reader_accepts_additive_legacy_v1_generation(tmp_path) -> None:
     try:
         connection.execute("DROP TABLE judgment_rationale_memory")
         connection.execute("DROP TABLE judgment_relation_memory")
+        # DuckDB currently blocks DROP COLUMN while any index exists on the table,
+        # even when that index does not reference the removed columns. The legacy
+        # generation predates the observation columns entirely, so remove the
+        # current-generation lookup index before downgrading this synthetic fixture.
+        connection.execute("DROP INDEX reality_known_idx")
         connection.execute("ALTER TABLE reality_memory DROP COLUMN observed_at")
         connection.execute("ALTER TABLE reality_memory DROP COLUMN observed_at_precision")
         connection.execute("ALTER TABLE reality_memory DROP COLUMN observed_at_text")
