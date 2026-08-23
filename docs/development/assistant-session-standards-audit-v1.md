@@ -27,9 +27,9 @@ Standards checked:
 
 The broad architecture is not invalid and should not be rolled back. Industry orientation and Evidence drilldown are directionally and semantically compliant. The storage benchmark initialization is also compliant after the lineage/scope corrections.
 
-However, the assistant-authored open-state projection contained **three substantive conformance defects**. All three came from a new read/projection layer partially reimplementing semantics already owned elsewhere. Two of the defects were reinforced by tests/smoke that encoded the wrong behavior, demonstrating that a green CI run cannot substitute for semantic-owner review.
+However, the assistant-authored open-state projection contained **three substantive conformance defect families**. All three came from a new read/projection layer partially reimplementing semantics already owned elsewhere. Two of the defects were reinforced by tests/smoke that encoded the wrong behavior, demonstrating that a green CI run cannot substitute for semantic-owner review.
 
-The three defects are being repaired without a migration, new truth owner, generic unknown state or new capability semantics.
+The three defects were repaired without a new truth owner, generic unknown state or new epistemic semantics. The campaign-coverage defect also exposed a second-order seal-time append case: the append-only schema permits a coverage row to be inserted after a campaign seal, so the read projection must bound sealed coverage to rows recorded at or before `sealed_at`.
 
 ## MUST-FIX findings
 
@@ -76,7 +76,7 @@ The current overlay is explicitly present/current research state, not historical
 
 No new owner. CAP-0005 continues to own historical/current separation; CAP-0006 current research state now uses its own provenance instead of CAP-0005 historical membership as a hidden filter.
 
-### A3 — model-memory coverage mixed campaign vintages and admitted unsealed campaigns
+### A3 — model-memory coverage mixed vintages, admitted unfinished state and could be polluted after seal
 
 **Pre-audit behavior**
 
@@ -86,16 +86,33 @@ No new owner. CAP-0005 continues to own historical/current separation; CAP-0006 
 
 Migration 0015 explicitly models model-memory campaigns as instrument vintages, makes sealing a separate immutable event and keeps coverage cells campaign-owned/append-only. Combining cells from different campaigns can create a synthetic coverage map that no model run ever produced; admitting unsealed coverage treats unfinished recall as a final current coverage view.
 
+A second-pass schema audit found another provenance edge: `model_memory_coverage_cells` rejects UPDATE/DELETE but still permits INSERT after `model_memory_campaign_seals.sealed_at`. Therefore “latest row inside a sealed campaign” is still not sufficient. A late append must not retroactively change what the campaign contained when it was sealed.
+
 **Repair**
 
 - select the latest **sealed** campaign for the industry first;
 - rank versioned coverage cells only within that one campaign;
+- include only cells with `cell.created_at <= seal.sealed_at`;
 - return no coverage rows when no sealed campaign exists;
-- PostgreSQL smoke now seeds a sealed campaign with `thin` coverage plus a newer unsealed campaign with `dense` coverage for the same dimension, and requires only the sealed campaign to appear.
+- PostgreSQL smoke seeds a sealed campaign with `thin` coverage, then inserts a later `dense` row into that same campaign after seal, plus a newer unsealed campaign with `dense` coverage for the same dimension; the researcher overlay must still return only the pre-seal `thin` cell.
 
 **Architecture effect**
 
-No new owner. CAP-0006 campaign/seal/vintage provenance remains authoritative; the projection stops synthesizing a cross-vintage state.
+No new owner. CAP-0006 campaign/seal/vintage provenance remains authoritative; the projection stops synthesizing a cross-vintage or post-seal state.
+
+## Why the fresh Agent drifted despite repository handoff
+
+This incident was not caused by loss of Longcycle's mission. The fresh Agent recovered the strategic rules — point-in-time memory, no-lookahead, Evidence-final, `not_found != false` — but the continuation system left a gap between **knowing the principles** and **reusing the exact local semantic owner**.
+
+The failure chain was:
+
+1. **Exact owners existed, but recovery treated fuzzy discovery too much like authority.** `current-admission.json` already carried exact target capability IDs, yet the zero-context rehearsal required `relevant(intent)` fuzzy retrieval to rediscover every target. That made a ranking helper look like the owner-routing mechanism.
+2. **Repair Memory was strongest on old paths, weaker on brand-new paths.** Path-scoped lookup works well when modifying a known file. A newly created `open_states.py` had no historical path match, so absence of a Repair Memory hit could feel like absence of inherited semantic constraints.
+3. **“Read-only projection” felt safer than it was.** Because the new layer did not write Facts/Judgments, direct SQL and presentation logic looked like harmless composition. In reality it still interpreted identifiers, timestamps and campaign recency, so it was capable of creating new truth semantics without changing storage.
+4. **Tests were derived from the new implementation's story rather than the existing owner's negative cases.** Once the projection assumed “different connectors = independent sources” and “latest coverage row = current coverage”, its first tests faithfully locked those assumptions in. CI then proved the wrong contract consistently.
+5. **Autonomous local momentum delayed the semantic re-audit.** Several researcher surfaces were opened and completed in sequence. That increased the tendency to finish the locally coherent read loop instead of stopping after each new projection to ask whether any field had quietly acquired a second owner.
+
+The durable correction is RI-0006: new projection/composition work must load the exact admission target cards directly, enumerate imported owner semantics, and carry owner-derived negative cases into its own hard acceptance. Fuzzy capability lookup remains discovery help only. A new file with no path-scoped Repair Memory match is not free of semantic history.
 
 ## Previously fixed process/continuity defects
 
@@ -119,9 +136,9 @@ Status: fixed by leaving benchmark manifests in deep/on-demand context instead o
 
 ### P3 — task-specific governance tests were hard-coded as permanent rules
 
-Capability-registry rehearsal temporarily hard-coded the preceding admission/task. This made a later legitimate `reuse` admission fail because the test encoded historical task state rather than governance semantics.
+Capability-registry rehearsal temporarily hard-coded the preceding admission/task. A later version then made the opposite mistake: it required fuzzy `relevant(intent)` search to return every exact current target, even though the admission already carried authoritative target IDs.
 
-Status: fixed by making the rehearsal follow the current valid admission.
+Status: fixed by making the rehearsal follow the current valid admission and load target owner cards directly by exact ID. Fuzzy search is tested only as a discovery aid.
 
 ### P4 — exact-head language occasionally blurred implementation commit vs verified checkpoint
 
@@ -158,10 +175,11 @@ No demonstrated no-lookahead defect found.
 
 ### C3 — Repair Memory invariants
 
-No substantive weakening found in the touched invariants.
+No substantive weakening found in the previously active invariants.
 
 - RI-0001 still gives live Git/CI authority over prose snapshots and requires live re-read after mutation.
 - RI-0005 still distinguishes locator/content-verified/materialized states, permits readable source-derived representation as Evidence when actually content-verified, forbids locator-only claim proof and forbids later raw materialization from relabelling an earlier representation.
+- RI-0006 now records the newly demonstrated shadow-semantics failure mode for future projection/composition work.
 
 ### C4 — Methodology Core
 
@@ -183,13 +201,13 @@ Current storage benchmark setup is compliant after correction:
 
 ## What the green CI did and did not prove
 
-The pre-audit open-state implementation had a successful full-CI checkpoint. That did **not** mean it met all standards because the tests themselves encoded two wrong assumptions: connector-distinctness as source independence, and unsealed campaign coverage as displayable current coverage.
+The pre-audit open-state implementation had a successful full-CI checkpoint. That did **not** mean it met all standards because the tests themselves encoded wrong assumptions: connector-distinctness as source independence, historical membership as a hidden current-overlay scope, and unfinished/latest campaign coverage as displayable current coverage.
 
 The durable lesson is:
 
 > CI proves conformance to the encoded contract. Semantic-owner review proves whether the encoded contract is the right one.
 
-For projection/read layers, a new hard gate should preferentially exercise the existing owner’s negative cases, not only the happy path of the new surface.
+For projection/read layers, a new hard gate should preferentially exercise the existing owner's negative cases, not only the happy path of the new surface.
 
 ## Remaining non-blocking risks
 
@@ -202,9 +220,10 @@ For projection/read layers, a new hard gate should preferentially exercise the e
 Storage Stage A remains paused until the open-state repair has:
 
 1. full Mypy/Pytest success;
-2. real PostgreSQL open-state smoke success with the three negative provenance cases;
+2. real PostgreSQL open-state smoke success with source-cluster, current-scope, sealed-campaign and post-seal negative provenance cases;
 3. capability/Repair Memory audits green;
 4. exact-head `longcycle/full-ci` success;
-5. a new handoff checkpoint restoring the next task to `MEMORY-SEMICONDUCTORS-001` fresh-context blind recall.
+5. fresh-agent bootstrap hardened so exact owner recovery and owner-derived negative cases are mandatory for new composition/projection work;
+6. a new handoff checkpoint restoring the next task to `MEMORY-SEMICONDUCTORS-001` fresh-context blind recall.
 
 No new product feature should be opened during this repair.
