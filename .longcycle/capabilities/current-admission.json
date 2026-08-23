@@ -15,7 +15,7 @@
     "CAP-0006"
   ],
   "rationale": "Audit of the assistant-authored open-state implementation found three implementation drifts from existing owners: source disagreement used connector identity instead of the Reconciler's source-cluster independence semantics; the current research overlay inherited a historical membership-cutoff entity filter despite being labelled current/non-cutoff; and model-memory coverage mixed campaign vintages and admitted unsealed campaigns despite CAP-0006's immutable campaign/seal provenance. The repair changes typed read/projection implementation and tests but introduces no new truth semantics.",
-  "unmet_requirement": "The existing open-state implementation is not fully conformant with CAP-0003 source independence, CAP-0005 historical-vs-current separation, and CAP-0006 sealed campaign/vintage coverage provenance.",
+  "unmet_requirement": null,
   "evidence_refs": [
     "src/longcycle/application/reconciliation.py",
     "migrations/0002_evidence_and_facts.sql",
