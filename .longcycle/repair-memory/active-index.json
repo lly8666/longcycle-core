@@ -45,23 +45,30 @@
     },
     {
       "id": "RI-0003",
-      "title": "Canonical Reality preserves valid-time kind and source precision",
+      "title": "Historical time preserves source precision, observation and knowledge boundaries",
       "kind": "data",
       "severity": "critical",
       "scope": [
+        "migrations/0018_judgment_temporal_precision.sql",
+        "migrations/0019_precision_aware_outcome_timing.sql",
         "migrations/0020_fact_valid_time_precision.sql",
         "migrations/0021_canonical_valid_time_kind.sql",
+        "migrations/0024_canonical_observation_time.sql",
         "src/longcycle/domain/epistemic.py",
         "src/longcycle/adapters/storage/postgres_epistemic.py",
         "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        "tests/test_fact_temporal_precision.py",
         "scripts/smoke_postgres_epistemic.py"
       ],
       "tags": [
         "reality",
+        "judgment",
+        "outcome",
         "valid-time",
+        "observation-time",
+        "known-time",
         "temporal-precision",
-        "no-lookahead",
-        "canonical-fact"
+        "no-lookahead"
       ],
       "card_path": ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
     },
