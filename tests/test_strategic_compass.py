@@ -74,7 +74,7 @@ class StrategicCompassContractTest(unittest.TestCase):
         self.assertLessEqual(len(text.splitlines()), 250)
         for fragment in (
             "Memory-first, Evidence-final",
-            "Source-first, Archive-now",
+            "Source-first, Preserve-now",
             "not_found != false",
             "claim scope",
             "Point-in-time",
