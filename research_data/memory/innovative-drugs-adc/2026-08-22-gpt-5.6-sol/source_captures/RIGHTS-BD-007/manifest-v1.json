@@ -4,19 +4,27 @@
   "policy": {
     "readable_webpage_default": "interactive_read_to_faithful_visible_text_provenance_to_bounded_local_database_to_google_drive",
     "pdf_raw_bytes_default": "github_actions_to_hash_verified_immutable_github_release_asset",
-    "legacy_capture_status": "These two repository-pinned faithful webpage captures and their source-pack.zip predate the local-database-to-Drive webpage default. They remain immutable valid legacy material for this already-started lifecycle and are not a template for new webpage acquisition.",
+    "legacy_capture_status": "The two repository-pinned faithful webpage text captures predate the local-database-to-Drive webpage default and remain valid immutable legacy capture material for this already-started lifecycle. Their former source-pack.zip binary wrapper was found structurally corrupt at runtime and has been retired from the live tree; Git history preserves the failed wrapper for audit, but it is not Evidence and is not an execution input.",
     "tool_limit_rule": "A missing preferred acquisition mechanism may change capture representation but must never justify skipping readable source information.",
     "evidence_boundary": "Search snippets and discovery summaries are not source captures. A faithful webpage capture must preserve directly read source content, source identity, capture mode, limitations and a digest of the immutable captured representation. Transport never changes source authority."
   },
   "source_pack": {
-    "path": "source-pack.zip",
-    "sha256": "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350",
+    "status": "retired_corrupt_binary_wrapper",
+    "historical_path": "source-pack.zip",
+    "active_execution_input": false,
+    "previously_recorded_sha256": "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350",
+    "observed_repository_sha256": "efc1447d874a9e5e315bbeb7a45dfde5b53d6f80036047d56e9f4a48df67faf3",
     "format": "zip",
-    "members": [
+    "members_intended": [
       "bms-2023-12-11-joint-announcement.capture.txt",
       "sec-bms-2023-10k-systimmune-note.capture.txt"
     ],
-    "purpose": "Legacy portable immutable packaging of the two faithful captured representations for this already-started lifecycle. The pack digest authenticates the capture package; it does not claim the transcript bytes are byte-identical to the original HTML responses. New readable webpages use bounded local capture DB -> Google Drive by default."
+    "integrity_observation": "GitHub Actions run 32627734185 proved both standalone capture SHA-256 pins matched while source-pack.zip did not match its recorded digest. Independent structural inspection of the exact repository bytes showed the ZIP central-directory structure was invalid. The wrapper was therefore retired rather than re-certified with the observed bad digest.",
+    "retirement_rule": "Do not reconstruct or upload a replacement binary wrapper from the interactive Agent. Grounded Evidence consumes the two independently pinned text captures directly. If a future portable webpage-capture bundle is required, use the current bounded local capture DB -> Google Drive handoff path.",
+    "audit_runs": [
+      32627545662,
+      32627734185
+    ]
   },
   "captures": [
     {
