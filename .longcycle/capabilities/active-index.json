@@ -57,15 +57,15 @@
       "title": "Judgment, expectation revision and Outcome memory"
     },
     {
-      "aliases": ["point-in-time replay", "historical replay", "epistemic replay", "trajectory view", "research replay", "historical snapshot"],
+      "aliases": ["point-in-time replay", "historical replay", "epistemic replay", "trajectory view", "research replay", "historical snapshot", "knowledge progression", "judgment storyline"],
       "card_path": ".longcycle/capabilities/cards/CAP-0005.json",
       "extension_seams": ["Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.", "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.", "Additional storage adapters implementing the same typed reader contract."],
       "id": "CAP-0005",
       "maturity": "core_locked",
-      "owned_semantics": ["replay.knowledge_cutoff_visibility", "replay.no_lookahead_boundary", "replay.typed_reality_judgment_outcome_snapshot"],
-      "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff; presentation layers must delegate to this typed read boundary.",
-      "scope": ["src/longcycle/ports/epistemic.py", "src/longcycle/adapters/storage/postgres_epistemic.py", "src/longcycle/adapters/storage/duckdb_epistemic.py", "src/longcycle/application/historical_replay.py", "src/longcycle/application/judgment_replay.py", "src/longcycle/application/trajectory_view.py", "scripts/replay_integrated_history.py", "src/longcycle/cli.py"],
-      "tags": ["replay", "knowledge-cutoff", "no-lookahead", "duckdb", "trajectory"],
+      "owned_semantics": ["replay.knowledge_cutoff_visibility", "replay.no_lookahead_boundary", "replay.typed_reality_judgment_outcome_snapshot", "replay.researcher_knowledge_progression_projection", "replay.researcher_judgment_storyline_projection"],
+      "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that already-filtered snapshot. Knowledge progression and Judgment storylines may reorganize visible records for comprehension but never decide eligibility, manufacture causality, promote non-direct Outcomes, or rewrite the original historical Judgment.",
+      "scope": ["src/longcycle/ports/epistemic.py", "src/longcycle/adapters/storage/postgres_epistemic.py", "src/longcycle/adapters/storage/duckdb_epistemic.py", "src/longcycle/application/historical_replay.py", "src/longcycle/application/judgment_replay.py", "src/longcycle/application/trajectory_view.py", "scripts/replay_integrated_history.py", "tests/test_trajectory_view.py", "src/longcycle/cli.py"],
+      "tags": ["replay", "knowledge-cutoff", "no-lookahead", "duckdb", "trajectory", "researcher-view", "knowledge-progression", "judgment-storyline"],
       "title": "Typed point-in-time industrial-memory replay"
     },
     {
