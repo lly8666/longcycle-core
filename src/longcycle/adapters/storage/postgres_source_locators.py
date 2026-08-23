@@ -24,14 +24,17 @@ class RegisteredSourceLocator:
     locator_verified_at: datetime | None
     content_verified_at: datetime | None
     materialized_at: datetime | None
+    raw_materialized_document_version_id: UUID | None = None
 
 
 class PostgresSourceLocatorRegistry(PostgresSupport):
-    """Persist source identity/locator state before raw-file materialization.
+    """Persist source identity/locator state independently from raw-file materialization.
 
-    This registry reuses ``evidence.documents`` as the one logical document identity.
-    It intentionally does not create ``document_fetches`` or ``document_versions`` until
-    actual source-derived content is archived through the normal archive path.
+    The registry reuses ``evidence.documents`` as the one logical document identity. A caller may
+    establish ``locator_verified`` or ``content_verified`` before raw bytes exist. A later raw-byte
+    acquisition must call :meth:`mark_materialized` explicitly after verifying that the archived
+    document version really is the upstream raw source. Merely creating a document version from a
+    faithful readable representation never means that the raw PDF has been materialized.
     """
 
     async def register(
@@ -50,7 +53,7 @@ class PostgresSourceLocatorRegistry(PostgresSupport):
         if source_capture_state not in _ALLOWED_CAPTURE_STATES:
             raise ValueError(
                 "source locator registration supports only locator_verified/content_verified; "
-                "materialized is assigned by the normal archived document-version path"
+                "materialized requires explicit verified raw-source materialization"
             )
         if verified_at.tzinfo is None or verified_at.utcoffset() is None:
             raise ValueError("verified_at must be timezone-aware")
@@ -159,7 +162,8 @@ class PostgresSourceLocatorRegistry(PostgresSupport):
                     source_locator_metadata,
                     locator_verified_at,
                     content_verified_at,
-                    materialized_at
+                    materialized_at,
+                    raw_materialized_document_version_id
                 """,
                 {
                     "id": proposed_id,
@@ -179,6 +183,71 @@ class PostgresSourceLocatorRegistry(PostgresSupport):
             row = await cursor.fetchone()
         if row is None:
             raise RuntimeError("source locator upsert returned no document")
+        return self._from_row(row)
+
+    async def mark_materialized(
+        self,
+        *,
+        document_id: UUID,
+        document_version_id: UUID,
+        verified_at: datetime,
+        materialization_metadata: dict[str, Any] | None = None,
+    ) -> RegisteredSourceLocator:
+        """Mark raw upstream bytes materialized only after caller-side identity verification.
+
+        ``document_version_id`` must belong to the same logical document. This explicit transition
+        is deliberately separate from ordinary document-version persistence because a document
+        version may contain a faithful readable representation rather than byte-identical raw PDF.
+        """
+
+        if verified_at.tzinfo is None or verified_at.utcoffset() is None:
+            raise ValueError("verified_at must be timezone-aware")
+        metadata = dict(materialization_metadata or {})
+        if metadata.get("raw_source_identity_verified") is not True:
+            raise ValueError("materialization requires raw_source_identity_verified=true")
+
+        async with self.connection() as connection:
+            version_cursor = await connection.execute(
+                "SELECT document_id FROM evidence.document_versions WHERE id = %s",
+                (document_version_id,),
+            )
+            version_row = await version_cursor.fetchone()
+            if version_row is None:
+                raise KeyError(f"document version does not exist: {document_version_id}")
+            if version_row["document_id"] != document_id:
+                raise ValueError("raw materialization document version belongs to another document")
+
+            cursor = await connection.execute(
+                """
+                UPDATE evidence.documents
+                SET source_capture_state = 'materialized',
+                    materialized_at = coalesce(materialized_at, %(verified_at)s),
+                    raw_materialized_document_version_id = %(document_version_id)s,
+                    source_locator_metadata = source_locator_metadata || %(metadata)s
+                WHERE id = %(document_id)s
+                RETURNING
+                    id,
+                    canonical_url,
+                    external_id,
+                    logical_title,
+                    source_media_type,
+                    source_capture_state,
+                    source_locator_metadata,
+                    locator_verified_at,
+                    content_verified_at,
+                    materialized_at,
+                    raw_materialized_document_version_id
+                """,
+                {
+                    "verified_at": verified_at,
+                    "document_version_id": document_version_id,
+                    "document_id": document_id,
+                    "metadata": self.jsonb(metadata),
+                },
+            )
+            row = await cursor.fetchone()
+        if row is None:
+            raise KeyError(f"logical document does not exist: {document_id}")
         return self._from_row(row)
 
     async def pending_pdf_materializations(
@@ -201,7 +270,8 @@ class PostgresSourceLocatorRegistry(PostgresSupport):
                     source_locator_metadata,
                     locator_verified_at,
                     content_verified_at,
-                    materialized_at
+                    materialized_at,
+                    raw_materialized_document_version_id
                 FROM evidence.documents
                 WHERE source_media_type = 'application/pdf'
                   AND source_capture_state <> 'materialized'
@@ -228,4 +298,5 @@ class PostgresSourceLocatorRegistry(PostgresSupport):
             locator_verified_at=row["locator_verified_at"],
             content_verified_at=row["content_verified_at"],
             materialized_at=row["materialized_at"],
+            raw_materialized_document_version_id=row.get("raw_materialized_document_version_id"),
         )
