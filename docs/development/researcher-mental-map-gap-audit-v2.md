@@ -76,8 +76,10 @@ The next benchmark is **DRAM memory semiconductors**, with HBM treated as a DRAM
 Initial historical window:
 
 ```text
-2016-01-01 → 2026-12-31
+2016-01-01 → 2026-08-24
 ```
+
+Material first known after 2026-08-24 belongs to current collection, not to this initialized historical window.
 
 Why DRAM:
 
