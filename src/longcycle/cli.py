@@ -17,8 +17,11 @@ from longcycle.adapters.sources.registry import SourceRegistry
 from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
+from longcycle.adapters.storage.postgres_epistemic import PostgresEpistemicMemoryReader
+from longcycle.adapters.storage.postgres_orientation import PostgresIndustryOrientationReader
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
 from longcycle.application.epistemic_trajectory import execute_epistemic_trajectory_receipt
+from longcycle.application.industry_orientation import build_researcher_industry_orientation
 from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.research_orchestration import execute_research_orchestration_receipt
 from longcycle.application.scheduling import SchedulePolicy
@@ -143,6 +146,12 @@ def _parser() -> argparse.ArgumentParser:
         default=[],
         help="industry taxonomy-node UUID to include in the point-in-time trajectory",
     )
+    research_orient = research_sub.add_parser(
+        "orient",
+        help="enter an industry through source-grounded membership and no-lookahead memory",
+    )
+    research_orient.add_argument("industry_node_id", type=UUID)
+    research_orient.add_argument("cutoff", type=_parse_aware_datetime)
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
     schedule.add_argument("--industry-id", type=UUID, required=True)
@@ -265,6 +274,23 @@ async def _research_replay(args: argparse.Namespace) -> dict[str, object]:
     return build_researcher_trajectory_view(snapshot)
 
 
+async def _research_orient(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
+    if not settings.database_url:
+        raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
+    catalog_reader = PostgresIndustryOrientationReader(settings.database_url)
+    memory_reader = PostgresEpistemicMemoryReader(settings.database_url)
+    try:
+        return await build_researcher_industry_orientation(
+            catalog_reader=catalog_reader,
+            memory_reader=memory_reader,
+            industry_node_id=args.industry_node_id,
+            knowledge_cutoff=args.cutoff,
+        )
+    finally:
+        await catalog_reader.close()
+        await memory_reader.close()
+
+
 def _research_run(args: argparse.Namespace) -> dict[str, object]:
     schema_version = _research_spec_schema_version(args.spec)
     if schema_version == _EPISTEMIC_TRAJECTORY_V1:
@@ -324,6 +350,8 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         return _research_run(args)
     if args.command == "research" and args.research_command == "replay":
         return await _research_replay(args)
+    if args.command == "research" and args.research_command == "orient":
+        return await _research_orient(args, settings)
     if args.command == "schedule":
         collection_policy = CollectionPolicy(
             industry_id=args.industry_id,
