@@ -3,7 +3,6 @@ from __future__ import annotations
 import hashlib
 from collections.abc import AsyncIterator
 from pathlib import Path
-from typing import Any
 
 from longcycle.domain.models import DiscoveryItem, RawPayload, SourceDefinition
 from longcycle.ports.source import DiscoveryContext, FetchContext
@@ -52,7 +51,7 @@ class MaterializedDocumentSource:
     def _representation_headers(item: DiscoveryItem) -> dict[str, str]:
         provenance = item.metadata.get("retrieval_provenance")
         if not isinstance(provenance, dict):
-            return {}
+            return {"x-longcycle-raw-source-materialized": "true"}
 
         raw_materialized = provenance.get("raw_source_materialized")
         capture_state = provenance.get("source_capture_state")
@@ -82,7 +81,9 @@ class MaterializedDocumentSource:
                 "x-longcycle-content-verification-mode": verification_mode.strip(),
                 "x-longcycle-claim-content-preserved": "true",
             }
-        return {}
+        if raw_materialized not in {None, True}:
+            raise ValueError("retrieval_provenance.raw_source_materialized must be boolean")
+        return {"x-longcycle-raw-source-materialized": "true"}
 
     async def fetch(self, item: DiscoveryItem, context: FetchContext) -> RawPayload:
         if item.source_id != self.definition.id or context.source != self.definition:
