@@ -1,0 +1,131 @@
+{
+  "schema_version": "longcycle-reusable-epistemic-trajectory-validation/v1",
+  "capability_id": "CAP-0007",
+  "proof_case": "ADC-SV-005-BLENREP-EPISTEMIC-TRAJECTORY-V1",
+  "purpose": "Prove that the completed BLENREP Evidence -> Reality -> contemporaneous Judgment -> later Outcome -> sealed portable memory -> point-in-time replay path is executable through one campaign-agnostic CAP-0007 composition contract rather than benchmark-specific stage glue.",
+  "implementation": {
+    "application": "src/longcycle/application/epistemic_trajectory.py",
+    "cli": "scripts/execute_epistemic_trajectory.py",
+    "core_orchestration_spec": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json",
+    "trajectory_spec": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json",
+    "tests": "tests/test_epistemic_trajectory.py",
+    "workflow": ".github/workflows/research-trajectory-v1-sv005-proof.yml"
+  },
+  "execution": {
+    "head_sha": "d43f12e26aedecc1d459fc8795e6d479d2f5b46f",
+    "workflow_run_id": 32640720602,
+    "workflow_job_id": 97197283852,
+    "workflow_conclusion": "success",
+    "commit_status_context": "longcycle/generic-epistemic-trajectory",
+    "commit_status_state": "success",
+    "artifact_id": 9493526832,
+    "artifact_name": "generic-epistemic-trajectory-32640720602",
+    "artifact_zip_sha256": "2ed6c7a76d7fb61eb12cd7ee481931d9ed0ce6a0a52ab8c752d938562fe9df7e",
+    "artifact_size_bytes": 44595
+  },
+  "runner_result": {
+    "schema_version": "longcycle-epistemic-trajectory-execution/v1",
+    "phases": [
+      "grounded_evidence",
+      "reality_projection",
+      "judgment_persistence",
+      "outcome_evaluation",
+      "seal_integrated_memory",
+      "point_in_time_replay"
+    ],
+    "transport_neutral_material_root": true,
+    "grounded_evidence": {
+      "persisted_document_versions": 5,
+      "persisted_evidence_fragments": 9,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    },
+    "reality": {
+      "fact_count": 8,
+      "canonical_reality_count": 8,
+      "all_reconciled_accept": true,
+      "all_fact_evidence_ids_persisted": true,
+      "all_known_times_derived_from_grounded_evidence": true,
+      "stable_assertion_to_canonical_mapping": true,
+      "valid_time_semantics_preserved": true,
+      "observation_semantics_preserved": true
+    },
+    "judgment": {
+      "judgment_count": 1,
+      "evidence_link_count": 1,
+      "judgment_key": "2022-post-failure-dreamm-programme-continuation",
+      "known_at": "2022-11-23T12:00:00Z",
+      "idempotent_reappend_passed": true,
+      "target_precision_preserved": true
+    },
+    "outcome": {
+      "count": 1,
+      "key": "dreamm7-related-milestone",
+      "reality_fact_key": "2024-dreamm7-positive-pfs",
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "timing_relation": "not_comparable",
+      "known_at": "2024-02-06T12:00:00Z",
+      "non_direct_never_claims_realization": true,
+      "no_fake_day_level_timing_error": true
+    },
+    "sealed_memory": {
+      "schema_version": "longcycle-sealed-industrial-memory/v1",
+      "duckdb_version": "1.5.5",
+      "size_bytes": 2895872,
+      "sha256": "18c2b988ddc3ee6b4acc833079a7aca1f26f0dbdf53fb235a84ecf8a5c026e97",
+      "typed_round_trip": true,
+      "counts": {
+        "reality": 8,
+        "judgments": 1,
+        "outcomes": 1
+      }
+    },
+    "point_in_time_replay": [
+      {
+        "knowledge_cutoff": "2022-11-23T12:00:00Z",
+        "reality": 4,
+        "judgments": 1,
+        "outcomes": 0
+      },
+      {
+        "knowledge_cutoff": "2023-03-31T12:00:00Z",
+        "reality": 6,
+        "judgments": 1,
+        "outcomes": 0
+      },
+      {
+        "knowledge_cutoff": "2024-02-06T12:00:00Z",
+        "reality": 8,
+        "judgments": 1,
+        "outcomes": 1
+      }
+    ],
+    "no_lookahead_sequence_verified": true
+  },
+  "generic_contract_boundaries": {
+    "source_transport_is_outer_concern": true,
+    "legacy_source_pack_v1_remains_replayable": true,
+    "evidence_semantics_delegated_to_existing_executor": true,
+    "reality_semantics_delegated_to_existing_executor": true,
+    "judgment_semantics_delegated_to_existing_executor": true,
+    "outcome_semantics_delegated_to_existing_executor": true,
+    "portable_replay_semantics_delegated_to_existing_typed_reader": true,
+    "non_direct_outcome_must_remain_indeterminate": true,
+    "future_known_rows_are_rejected_at_each_cutoff": true,
+    "previously_known_typed_rows_may_not_be_rewritten_in_later_snapshots": true,
+    "campaign_specific_ids_and_cutoffs_live_in_specs_not_runner_code": true,
+    "new_semantic_owner_created": false
+  },
+  "artifact_policy": {
+    "actions_artifact_is_ephemeral_proof_material": true,
+    "new_drive_copy_required_for_resume": false,
+    "reason": "The prior completed BLENREP sealed generation and runtime capsule are already durably handed off in Google Drive. This run proves the generic execution contract; its durable semantic result belongs in this repository receipt rather than creating a second resume-required binary generation."
+  },
+  "verdict": {
+    "result": "pass",
+    "capability_extension_validated": true,
+    "selected_adc_pressure_set_remains_closed": true,
+    "next": "Route normal researcher/task execution through this CAP-0007 trajectory contract where Judgment/Outcome/replay are requested; retire campaign-specific trajectory glue as semantic authority rather than selecting another ADC asset."
+  }
+}
