@@ -496,7 +496,7 @@ def _prepare_materials(
             evidence_spec=prepared_spec,
             material_root=material_root,
         )
-        provenance = {
+        provenance: dict[str, Any] = {
             "mode": "legacy_source_pack",
             "source_pack": spec.source_pack.model_dump(mode="json"),
         }
