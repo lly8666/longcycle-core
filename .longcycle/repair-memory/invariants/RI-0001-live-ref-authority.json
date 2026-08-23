@@ -28,8 +28,8 @@
     {
       "kind": "protocol",
       "path": "docs/development/session-handoff-protocol.md",
-      "contains": "live Git graph / HEAD / CI",
-      "description": "Normative implementation/data freshness hierarchy keeps live Git/CI above receipts and checkpoints."
+      "contains": "live HEAD / delta / CI refresh",
+      "description": "Normative cold-start route requires the fresh Agent to refresh live HEAD/delta/CI before executing persisted continuation state."
     }
   ],
   "revisit_when": "Only revisit if repository mutation is moved behind a stronger transactional authority that can atomically prove the target ref update and its verification result.",
