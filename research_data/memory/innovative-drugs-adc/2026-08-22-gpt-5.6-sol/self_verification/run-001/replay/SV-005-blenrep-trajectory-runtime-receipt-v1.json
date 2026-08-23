@@ -1,0 +1,117 @@
+{
+  "schema_version": "longcycle-epistemic-trajectory-runtime-receipt/v1",
+  "task_id": "ADC-SV-005-BLENREP-TRAJECTORY-V1",
+  "source_evidence_spec": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json",
+  "reality_projection_spec": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-reality-projection-v1.json",
+  "judgment_projection_spec": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-judgment-projection-v1.json",
+  "execution": {
+    "head_sha": "5788ab231f00118070df3b9a98cc635546e421b4",
+    "workflow": ".github/workflows/adc-sv005-blenrep-trajectory.yml",
+    "workflow_run_id": 32637913005,
+    "workflow_run_number": 2,
+    "workflow_conclusion": "success",
+    "artifact_id": 9492810486,
+    "artifact_name": "sv005-blenrep-trajectory-32637913005",
+    "artifact_zip_sha256": "0c39c627561a34ab8c5ac5827976d1987199f38d8dc0ab55b70d42f2a7fb21f8",
+    "artifact_size_bytes": 47133,
+    "result": "pass"
+  },
+  "grounded_evidence": {
+    "document_versions": 5,
+    "evidence_fragments": 9,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "gate_passed": true
+  },
+  "reality": {
+    "fact_count": 8,
+    "canonical_reality_count": 8,
+    "all_reconciled_accept": true,
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "valid_time_semantics_preserved": true,
+    "observation_semantics_preserved": true
+  },
+  "judgment": {
+    "judgment_count": 1,
+    "evidence_link_count": 1,
+    "judgment_key": "2022-post-failure-dreamm-programme-continuation",
+    "judgment_kind": "commitment",
+    "target_time_kind": "unknown",
+    "known_at": "2022-11-23T12:00:00Z",
+    "idempotent_reappend_passed": true,
+    "target_precision_preserved": true
+  },
+  "outcome": {
+    "evaluation_count": 1,
+    "judgment_key": "2022-post-failure-dreamm-programme-continuation",
+    "reality_fact_key": "2024-dreamm7-positive-pfs",
+    "semantic_relation": "related_milestone",
+    "evaluation_status": "indeterminate",
+    "timing_relation": "not_comparable",
+    "known_at": "2024-02-06T12:00:00Z",
+    "interpretation": "The later DREAMM-7 BVd combination result is historically related to the 2022 commitment to continue the DREAMM programme, but it is not the same semantic target and does not retroactively realize DREAMM-3 monotherapy efficacy or rewrite the 2022 Judgment."
+  },
+  "sealed_memory": {
+    "schema_version": "longcycle-sealed-industrial-memory/v1",
+    "file_name": "longcycle-sv005-blenrep-integrated-memory-v1.duckdb",
+    "size_bytes": 2895872,
+    "sha256": "f44a33d291cbf049986cb8452bd85f6b2fd640f07661267b04dad2ce60d06bbf",
+    "duckdb_version": "1.5.5",
+    "typed_round_trip": true,
+    "counts": {
+      "reality": 8,
+      "judgments": 1,
+      "outcomes": 1
+    },
+    "google_drive_file_id": "1hG6UCJSPlVgobyFwhFWwMOzXhpUrLrvP"
+  },
+  "runtime_capsule": {
+    "file_name": "longcycle-sv005-blenrep-trajectory-runtime-v1.zip",
+    "sha256": "0c39c627561a34ab8c5ac5827976d1987199f38d8dc0ab55b70d42f2a7fb21f8",
+    "google_drive_file_id": "1vj7r_KaS_SNFgBMuebhf75IDuzgs5Y97"
+  },
+  "point_in_time_replay": [
+    {
+      "knowledge_cutoff": "2022-11-23T12:00:00Z",
+      "reality": 4,
+      "judgments": 1,
+      "outcomes": 0
+    },
+    {
+      "knowledge_cutoff": "2023-03-31T12:00:00Z",
+      "reality": 6,
+      "judgments": 1,
+      "outcomes": 0
+    },
+    {
+      "knowledge_cutoff": "2024-02-06T12:00:00Z",
+      "reality": 8,
+      "judgments": 1,
+      "outcomes": 1
+    }
+  ],
+  "epistemic_boundaries": {
+    "sealed_blind_memory_mutated": false,
+    "valid_time_and_known_time_remain_distinct": true,
+    "future_rows_filtered_before_snapshot_materialization": true,
+    "judgment_not_rewritten_by_later_outcome": true,
+    "outcome_separate_from_original_judgment": true,
+    "monotherapy_failure_not_collapsed_into_combination_revival": true,
+    "transport_does_not_change_source_authority": true
+  },
+  "artifact_integrity": {
+    "runner_manifest_recomputed_locally": true,
+    "runner_manifest_matches_recomputed_file_hashes": true,
+    "sealed_duckdb_sha_recomputed_locally": true,
+    "runtime_capsule_sha_recomputed_locally": true
+  },
+  "architecture_result": {
+    "new_schema_required": false,
+    "new_pharma_specific_subsystem_required": false,
+    "selected_adc_pressure_set_should_expand": false,
+    "next_stage": "reusable_research_orchestration",
+    "decision": "Use this completed trajectory as a regression/proof case for CAP-0007. Productize the already-proven Evidence -> Reality -> Judgment -> Outcome -> sealed replay composition instead of adding another ADC benchmark asset."
+  }
+}
