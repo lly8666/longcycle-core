@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 71,
+  "continuity_sequence": 72,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "6effcb31f423251186f64f5abfc11636dd68ba88",
+  "checkpoint_based_on_head_sha": "4a46f5633680278666641d9369914501d502d159",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head. PDF download is not a research prerequisite. The current invariant is locator_verified -> content_verified -> materialized, with strict representation truthfulness: a preserved readable representation may create an immutable document version and Grounded Evidence while the upstream PDF remains content_verified; document_version existence alone never means byte-identical raw PDF materialization. Migrations 0028-0030 remove the old generic document-version materialization transition and preserve explicit readable-representation state. Raw materialization requires a later verified raw-source transition. CAP-0007 research-orchestration/v2 is transport-neutral and consumes a verified local material root; GitHub Release/source-pack is legacy v1 replay compatibility only. Do not create Actions merely to download new PDFs. RI-0005 owns the anti-regression boundary. Before returning to the BLENREP runtime path, run a repository-only artificial-ignorance rehearsal against the corrected policy and require no contradictions.",
+  "bootstrap_instruction": "Resume from live PR/head and trust durable receipts over stale narrative. BLENREP SV-005 is complete: a real PostgreSQL trajectory proved 5 Grounded Evidence documents / 9 fragments / zero automatic promotion, 8 canonical Reality rows, one 2022 contemporaneous Judgment, one 2024 related_milestone Outcome that remains indeterminate/not_comparable, and no-lookahead replay 4/1/0 -> 6/1/0 -> 8/1/1. CAP-0007 has now been extended with a transport-neutral generic epistemic trajectory composition and real PostgreSQL proof run 32640720602. Do not expand the ADC benchmark or reopen source acquisition. The live task is to route the normal researcher-facing `longcycle research run` entrypoint through the same CAP-0007 trajectory contract when the repo spec is longcycle-epistemic-trajectory/v1, while preserving legacy/core orchestration compatibility. PDF download remains non-prerequisite and Actions remain runtime/CI, not acquisition, infrastructure.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,53 +16,51 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Make Longcycle a durable point-in-time industrial-memory system that truthfully preserves Reality, contemporaneous Judgment and later Outcome across industries, with memory-first historical discovery, Evidence-final publication, source-supported time precision, truthful source representations and bounded repository-backed continuity.",
-    "short_term_goal": "Complete the bounded BLENREP evidence-final trajectory that distinguishes 2020 accelerated monotherapy approval and ocular burden, 2022 DREAMM-3 confirmatory failure and contemporaneous post-failure development Judgment, 2023 U.S. BLA revocation, and later combination-regimen revival without collapsing legal states, regimen identity, source representation or hindsight.",
-    "next_big_step": "After one final repository-only artificial-ignorance check of the corrected PDF representation/materialization boundary, execute the existing BLENREP 5-document/9-fragment Grounded Evidence spec in a PostgreSQL-capable runtime. Do not reopen downloader engineering unless actual claim content is unread or later raw bytes contradict the preserved representation.",
-    "local_optimization_stop_rule": "Stop PDF transport work after the corrected policy passes the cold-start rehearsal. Do not prove downloader compatibility for mainstream PDF hosts; do not treat locator-only as Evidence; do not treat any document_version as proof of raw materialization; do not require Release/source-pack in new orchestration; do not reopen migration 0026 from ADC pressure alone; do not collapse monotherapy and combination-regimen states.",
+    "medium_term_goal": "Make Longcycle a durable point-in-time industrial-memory system whose normal research execution path can preserve and replay source-grounded Reality, contemporaneous Judgment and later Outcome across industries without hindsight, transport coupling or campaign-specific semantic glue.",
+    "short_term_goal": "Productize the now-proven CAP-0007 Evidence-to-replay trajectory behind the existing researcher entrypoint so one repo-owned spec can drive Grounded Evidence, optional Reality/Judgment/Outcome and sealed point-in-time replay while all underlying epistemic semantics remain owned by CAP-0001 through CAP-0005.",
+    "next_big_step": "Extend the existing `longcycle research run` surface to schema-dispatch between historical/core research-orchestration v1/v2 and the new longcycle-epistemic-trajectory/v1 contract, add regression tests, then validate the same BLENREP proof through that normal entrypoint rather than a dedicated stage script.",
+    "local_optimization_stop_rule": "Do not add another ADC asset, another orchestration capability, pharma-specific schema, transport requirement or duplicate Judgment/Outcome/replay implementation. Stop after the normal researcher entrypoint delegates correctly and a real runtime proves it; only then inspect observed researcher-facing output friction or move to the next cross-industry product surface.",
     "parallel_permanent_tracks": [
-      "Current collection remains source-first/preserve-now: readable webpages use bounded local capture DB -> Drive; PDFs persist verified identity/locator immediately, may enter Evidence only after claim-relevant content is actually read/preserved, and defer raw-byte materialization to a later verified transition. Actions remain available for service-capable runtime execution, not source downloading."
+      "Current collection remains source-first/preserve-now: readable webpages use bounded local capture DB -> Drive; PDFs persist verified identity/locator immediately, may enter Evidence only after claim-relevant content is actually read/preserved, and defer raw-byte materialization. Actions remain valid for service-capable runtime/CI, not source downloading."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "adc-blenrep-lifecycle-validation",
-    "last_completed_action": "A full PDF-download policy sweep found and repaired two live semantic leaks beyond prose: the old document-version-equals-materialized trigger and CAP-0007's source-pack-first orchestration contract. Migrations 0028-0030 now preserve content-verified readable representations without claiming raw bytes, explicit raw materialization remains version-scoped, research-orchestration/v2 verifies a transport-neutral material root, Research Agent contracts were aligned, legacy receipts were preserved with supersession routing, and RI-0005 records the invariant. Exact-head status checks remain unobserved/empty, not passing.",
-    "current_task": "Run one repository-only artificial-ignorance rehearsal using only the bounded bootstrap/current policy/control files. The reconstructed fresh-Agent answer must distinguish locator_verified, content_verified and materialized; refuse locator-only claim promotion; allow content-verified readable PDF representations to create document versions/Evidence without raw bytes; state that document_version does not imply raw materialization; use research-orchestration/v2 material-root without requiring Release/source-pack; preserve legacy v1 replay; and refuse downloader Actions. If it passes, immediately resume BLENREP Grounded Evidence runtime execution.",
-    "why_now": "The user explicitly requested that PDF downloading be rechecked completely and then retested in artificial-ignorance mode before development continues. The code sweep found real execution-layer coupling, so the previous sequence-69 rehearsal is insufficient for the corrected implementation. A fresh bounded reconstruction is the last gate before leaving transport work.",
-    "done_when": "A repository-only rehearsal on the corrected live head reports no contradictions across bootstrap, Method Core, current handoff, data-plane, capability and RI-0005; its answer explicitly preserves the representation-versus-raw boundary and transport-neutral orchestration. After that, the PDF workstream closes and the main cursor returns to the BLENREP PostgreSQL 5-document/9-fragment Evidence proof.",
+    "parent_workstream_id": "reusable-research-orchestration",
+    "last_completed_action": "Completed and durably recorded the BLENREP epistemic trajectory, uploaded its generated sealed DuckDB/runtime capsule to Drive, implemented a thin campaign-agnostic CAP-0007 `longcycle-epistemic-trajectory/v1` composition over existing Evidence/Reality/Judgment/Outcome/replay owners, and proved it in PostgreSQL run 32640720602 at head d43f12e26aedecc1d459fc8795e6d479d2f5b46f. The generic runner itself produced 5/9/0/0 Evidence acceptance, 8 Reality, 1 Judgment, related_milestone indeterminate Outcome, sealed 8/1/1 and no-lookahead 4/1/0 -> 6/1/0 -> 8/1/1. CAP-0007 card and active index were extended without creating a new semantic owner.",
+    "current_task": "Wire the existing researcher-facing `longcycle research run` CLI to detect the repo spec schema. Preserve current research-orchestration/v1 and v2 behavior; when schema_version is longcycle-epistemic-trajectory/v1, delegate to execute_epistemic_trajectory_receipt using the same --material-root/--work-dir/--output surface and reject --source-pack for the trajectory path. Keep failure receipts fail-closed and do not introduce a second top-level researcher execution command.",
+    "why_now": "The generic trajectory contract and PostgreSQL runtime are already proven. The remaining product gap is that the normal user entrypoint still always invokes only the core Evidence/Reality orchestrator, forcing Judgment/Outcome/replay users back to a script or benchmark workflow. Closing this dispatch gap converts a successful internal capability into the existing researcher product surface without inventing new semantics.",
+    "done_when": "`longcycle research run` supports both legacy/core research-orchestration specs and longcycle-epistemic-trajectory/v1 by schema dispatch; existing CLI compatibility tests pass; new tests prove trajectory delegation, transport argument rejection and fail-closed receipt propagation; and one service-capable BLENREP regression through the normal CLI reproduces the generic trajectory proof without campaign-specific stage invocation.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Perform the repository-only artificial-ignorance reconstruction now; persist its receipt. On pass, refresh live HEAD/CI and execute or inspect BLENREP Grounded Evidence with exactly 5 documents, 9 fragments and zero Fact/Judgment promotion."
+    "next_atomic_action": "Modify `src/longcycle/cli.py` and `tests/test_cli_research.py` so the existing `research run` command schema-dispatches to CAP-0007 core or epistemic-trajectory receipt executors; run focused tests, then validate the trajectory through the same CLI in PostgreSQL."
   },
   "active_context": {
-    "context_id": "adc-blenrep-evidence-final-v1",
-    "context_kind": "historical_memory_first_product_validation",
-    "label": "BLENREP monotherapy failure, withdrawal, safety and combination-regimen revision",
-    "root_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol",
+    "context_id": "reusable-epistemic-trajectory-productization-v1",
+    "context_kind": "cross_industry_research_execution_productization",
+    "label": "CAP-0007 researcher entrypoint over Evidence -> Reality/Judgment/Outcome -> point-in-time replay",
+    "root_path": "src/longcycle/application",
     "campaign_root": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol",
     "coverage_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/coverage-index.json",
     "deep_context_paths": [
-      "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json",
-      "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-source-plane-receipt-v1.json",
-      "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-source-policy-supersession-v1.json",
       "src/longcycle/application/research_orchestration.py",
-      "src/longcycle/adapters/sources/materialized.py",
-      "src/longcycle/adapters/storage/postgres_source_locators.py",
-      "migrations/0028_truthful_source_materialization.sql",
-      "migrations/0030_source_representation_fetch_state_unambiguous.sql",
-      ".longcycle/repair-memory/invariants/RI-0005-source-representation-not-raw-materialization.json"
+      "src/longcycle/application/epistemic_trajectory.py",
+      "src/longcycle/cli.py",
+      "tests/test_research_orchestration.py",
+      "tests/test_epistemic_trajectory.py",
+      "tests/test_cli_research.py",
+      ".longcycle/capabilities/cards/CAP-0007.json",
+      "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/reusable-epistemic-trajectory-validation-v1.json"
     ],
     "core_exclusion_terms": [
-      "search-snippet-as-Evidence",
-      "locator-only-as-claim-Evidence",
+      "new-orchestration-owner",
+      "campaign-specific-generic-runner-branch",
+      "duplicate-replay-filtering",
+      "duplicate-judgment-outcome-semantics",
       "raw-pdf-download-as-research-prerequisite",
-      "document-version-equals-raw-materialized",
-      "source-text-capture-pretends-raw-pdf",
-      "new-v2-release-source-pack-requirement",
-      "single-withdrawal-date-collapse",
+      "source-pack-required-for-v2",
+      "new-adc-pressure-case",
       "monotherapy-combination-collapse",
-      "later-success-backfilled-into-2022-judgment",
-      "migration-0026-from-adc-only"
+      "later-success-backfilled-into-original-judgment"
     ]
   },
   "pending_user_directives": [
@@ -87,56 +85,45 @@
     "total_raw_leads": 78,
     "sealed_shards": ["ADC-STACK", "ASSET-TRIAL", "RIGHTS-BD", "REG-COMM", "FAILURE-REV", "GAP-AUDIT"],
     "shard_count": 6,
-    "seal_rule": "All six blind shards are sealed; blind/passes-v1.jsonl remains immutable memory authority. Post-seal discovery may verify but never rewrite sealed memory.",
+    "seal_rule": "All six blind shards remain sealed; blind/passes-v1.jsonl is immutable memory authority. Post-seal proof activity may verify and productize but never rewrite sealed memory.",
     "next_research_actions": [
-      "Finish the corrected PDF-policy artificial-ignorance gate without further acquisition work.",
-      "Execute the bounded BLENREP Grounded Evidence spec from the preserved source plane.",
-      "Project source-backed Reality/Judgment and run precision-aware no-lookahead Outcome/replay only after Evidence passes."
+      "Keep the selected ADC pressure set closed; use completed SV-005 only as a regression fixture for the generic execution path.",
+      "Route future historical tasks through memory-first discovery and claim-scoped Evidence, then use CAP-0007 only after source material is truthfully prepared.",
+      "Do not select another ADC asset merely to exercise the newly generic trajectory runner."
     ]
   },
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": null,
-    "observed_head_sha": null,
-    "conclusion": "Combined status for live corrective head 6effcb31f423251186f64f5abfc11636dd68ba88 returned zero contexts. No exact-head pull-request workflow run has been observed for the corrected PDF representation/orchestration implementation. This is unobserved CI, not pass or fail.",
-    "mypy_summary": "No exact-head Mypy result observed for the corrected policy/schema head.",
-    "pytest_summary": "Regression tests for source representation, locator/materialization and orchestration v2 are committed but no exact-head Pytest result is yet observed.",
-    "ruff_summary": "No exact-head Ruff result observed; Ruff is not used as a substitute for the missing runtime gate.",
-    "refresh_instruction": "Refresh live PR HEAD and exact-head code/DB CI before claiming correctness. Actions may be used for code/PostgreSQL runtime validation; do not create source-download Actions."
+    "last_observed_run": 32640720602,
+    "observed_head_sha": "d43f12e26aedecc1d459fc8795e6d479d2f5b46f",
+    "conclusion": "Exact-head status `longcycle/generic-epistemic-trajectory` was observed success at d43f12e26aedecc1d459fc8795e6d479d2f5b46f. Run 32640720602 completed every step, including focused unit contracts, PostgreSQL generic trajectory execution, receipt assertion and artifact upload. The current checkpoint base is three control/receipt/capability commits later; compare shows only the durable validation receipt plus CAP-0007 card/index changes, so the runtime proof remains applicable to the unchanged implementation but is not mislabeled as an exact-latest-head full CI run.",
+    "mypy_summary": "No new full Mypy result was observed for the latest capability-metadata head; the generic trajectory proof does not substitute for full project Mypy.",
+    "pytest_summary": "Run 32640720602 passed focused `tests/test_epistemic_trajectory.py` and `tests/test_research_orchestration.py` before executing the real PostgreSQL trajectory. CLI schema-dispatch tests are the next focused gate.",
+    "ruff_summary": "No new Ruff result observed; Ruff remains technical debt and is not used as a substitute for the epistemic/runtime gates.",
+    "refresh_instruction": "After CLI dispatch changes, refresh live PR HEAD and run focused CLI/orchestration tests plus one PostgreSQL trajectory through `longcycle research run`; do not claim full CI from the prior d43f proof."
   },
   "workstreams": [
     {
-      "workstream_id": "adc-blenrep-lifecycle-validation",
+      "workstream_id": "reusable-research-orchestration",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "pdf_semantics_rehearsal_then_grounded_evidence_runtime",
-      "summary": "The BLENREP source plane and 5-document/9-fragment Evidence spec remain ready. The last blocker is not source acquisition but a requested cold-start regression of the corrected representation/materialization semantics; on pass, Grounded Evidence runtime resumes immediately.",
+      "status": "generic_epistemic_trajectory_runtime_pass_researcher_entrypoint_pending",
+      "summary": "CAP-0007 now has a transport-neutral generic trajectory composition with real PostgreSQL proof. The only immediate product gap is that the normal `longcycle research run` entrypoint still dispatches exclusively to core Evidence/Reality orchestration.",
       "next_actions": [
-        "Persist the corrected artificial-ignorance rehearsal receipt.",
-        "Execute or inspect the existing BLENREP Grounded Evidence runtime with exactly 5 documents, 9 fragments and zero automatic promotion.",
-        "Then project only grounded Reality/Judgment and run no-lookahead Outcome/replay."
+        "Schema-dispatch the existing researcher `research run` entrypoint to core orchestration or the epistemic trajectory contract.",
+        "Prove compatibility and fail-closed argument handling with focused CLI tests.",
+        "Execute the BLENREP regression through the normal CLI, then stop benchmark-specific execution glue from acting as semantic authority."
       ],
       "blockers": []
     },
     {
-      "workstream_id": "pdf-source-materialization-policy",
+      "workstream_id": "adc-blenrep-lifecycle-validation",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "corrected_execution_semantics_rehearsal_pending",
-      "summary": "A full sweep repaired the hidden execution couplings: document versions no longer imply raw materialization, readable representations preserve content_verified state, explicit raw materialization is version-scoped, and orchestration v2 no longer requires Release/source-pack. RI-0005 now owns the anti-regression invariant.",
+      "status": "completed_regression_fixture",
+      "summary": "SV-005 is complete and durably receipted. Its bespoke and generic PostgreSQL runs agree on 5/9 Grounded Evidence, 8 Reality, one 2022 Judgment, one related-milestone indeterminate Outcome and no-lookahead replay. Source and generated assets are no longer required for normal resume.",
       "next_actions": [
-        "Run one corrected repository-only artificial-ignorance rehearsal, then close this workstream unless a real content-integrity failure exposes a distinct problem."
-      ],
-      "blockers": []
-    },
-    {
-      "workstream_id": "session-continuity",
-      "role": "supporting_quality_gate",
-      "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "corrected_pdf_policy_rehearsal_pending",
-      "summary": "Earlier sequence-69 tested the three-state policy before the deeper execution-layer coupling was found. One new repository-only rehearsal is required against the corrected live contracts.",
-      "next_actions": [
-        "Persist the new rehearsal result and route historical sequence-64/69 as observations rather than live authority."
+        "Use SV-005 only as a bounded regression fixture when a productized execution surface changes; do not expand the ADC pressure set."
       ],
       "blockers": []
     },
@@ -144,10 +131,21 @@
       "workstream_id": "capability-governance",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "existing_owners_extended_repair_memory_guarded",
-      "summary": "CAP-0001/2/7 remain the semantic owners. Corrective migration 0030 is intentionally tracked by RI-0005 rather than churning stable capability scope/index because it changes no capability responsibility.",
+      "status": "cap0007_extended_single_owner",
+      "summary": "CAP-0007 was extended rather than duplicated. It owns composition/phase gates/portable receipts and explicitly delegates source, Reality, Judgment/Outcome and replay semantics to CAP-0001 through CAP-0005.",
       "next_actions": [
-        "Keep owner uniqueness; audit when exact-head CI becomes observable."
+        "Keep CAP-0007 card and active index synchronized as the researcher entrypoint is wired; do not create CAP-0011 for the same execution responsibility."
+      ],
+      "blockers": []
+    },
+    {
+      "workstream_id": "session-continuity",
+      "role": "supporting_quality_gate",
+      "parent_goal_ref": "strategic_horizon.medium_term_goal",
+      "status": "blenrep_completion_and_generic_proof_persisted",
+      "summary": "BLENREP runtime, Drive generated-state locators, generic trajectory proof and the new productization cursor are now repository-backed. PDF transport work is no longer on the main path.",
+      "next_actions": [
+        "After the researcher entrypoint proof, update the cursor again so a fresh Agent does not return to benchmark-specific execution."
       ],
       "blockers": []
     },
@@ -174,23 +172,24 @@
     ".longcycle/repair-memory/active-index.json"
   ],
   "deep_reference_paths": [
-    ".longcycle/repair-memory/invariants/RI-0005-source-representation-not-raw-materialization.json",
-    "migrations/0028_truthful_source_materialization.sql",
-    "migrations/0029_source_representation_fetch_state.sql",
-    "migrations/0030_source_representation_fetch_state_unambiguous.sql",
     "src/longcycle/application/research_orchestration.py",
-    "tests/test_materialized_source_representation.py",
-    "tests/test_research_orchestration.py",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json"
+    "src/longcycle/application/epistemic_trajectory.py",
+    "src/longcycle/cli.py",
+    "tests/test_cli_research.py",
+    "tests/test_epistemic_trajectory.py",
+    ".longcycle/capabilities/cards/CAP-0007.json",
+    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/reusable-epistemic-trajectory-validation-v1.json",
+    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-blenrep-trajectory-runtime-receipt-v1.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Will a service-capable exact-head runtime expose any migration/runtime defect in 0028-0030 or orchestration v2 that repository-only checks cannot observe?"
+    "Can the existing `longcycle research run` user surface schema-dispatch to the trajectory receipt executor without breaking historical v1 source-pack or current v2 material-root callers?",
+    "After the CLI route is proven, is the next material researcher friction presentation/trajectory comprehension rather than execution plumbing?"
   ],
   "ordered_next_actions": [
-    "Run and persist the corrected repository-only artificial-ignorance rehearsal.",
-    "On pass, refresh live PR HEAD and exact-head CI/runtime visibility without creating any PDF downloader Action.",
-    "Execute or inspect BLENREP Grounded Evidence; require exactly 5 documents, 9 Evidence fragments and zero Fact/Judgment promotion.",
-    "After Evidence passes, project only source-backed Reality/Judgment and run no-lookahead Outcome/replay with monotherapy/combination separation."
+    "Modify the existing `longcycle research run` dispatch to recognize longcycle-epistemic-trajectory/v1 while preserving research-orchestration/v1/v2 compatibility.",
+    "Update focused CLI tests for core v1/v2 delegation, trajectory delegation, argument boundaries and fail-closed receipt propagation.",
+    "Run a service-capable BLENREP generic trajectory through the normal `longcycle research run` entrypoint and persist its proof.",
+    "If that passes, stop execution-plumbing work and inspect the researcher-facing trajectory/output surface for the next cross-industry product bottleneck."
   ]
 }
