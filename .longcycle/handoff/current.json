@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 74,
+  "continuity_sequence": 75,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "5585f1e01b39392f66b067ffa2503ac6f00d794a",
+  "checkpoint_based_on_head_sha": "87437a70143f580abf7ad0e628dddc64062426f0",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head and reconcile only commits after checkpoint 5585f1e01b39392f66b067ffa2503ac6f00d794a. The execution and reading stack is now product-proven: `longcycle research run` can execute a repo-owned Evidence -> Reality -> Judgment -> Outcome -> sealed replay trajectory, and `longcycle research replay` now exposes deterministic knowledge progression plus Judgment-centered storylines over the already-filtered CAP-0005 snapshot. Exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 passed service-capable run 32647898143; the three later commits are only the durable validation receipt and CAP-0005 capability metadata/index. Do not reopen BLENREP, PDF acquisition, ADC sampling, orchestration plumbing or storyline polish. The next task is a higher-level researcher-product gap audit against the Strategic Compass mental-map success criterion.",
+  "bootstrap_instruction": "Resume from live PR/head and reconcile only commits after checkpoint 87437a70143f580abf7ad0e628dddc64062426f0. The researcher mental-map gap audit is complete in docs/development/researcher-mental-map-gap-audit-v1.md. It found the highest-value cross-industry gap above subject replay: a first-time researcher has no industry-level orientation entrypoint and must already know subject/industry-node UUIDs before CAP-0005 becomes useful. The audit classified the next target as EXTEND CAP-0005, not a new capability: build a read-only industry orientation projection that composes existing owners without inferring value-chain roles, causal drivers, importance, controversy or unknowns. Before code, prove that a truthful industry-to-subject discovery/label relation already exists in catalog/storage semantics; if it does not, stop and record that semantic gap instead of fabricating it in presentation. Do not reopen BLENREP/ADC storyline polish, PDF acquisition, orchestration plumbing or new source research.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,47 +17,57 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Turn the proven point-in-time memory engine into a cross-industry research product that lets a first-time researcher quickly build a defensible industry mental map: structure and participants, real drivers/constraints, historical trajectories, contemporaneous disputes/Judgments, later Outcomes, evidence boundaries and explicit unknowns.",
-    "short_term_goal": "Audit the current researcher journey against that mental-map standard and identify the single highest-value cross-industry product gap above subject-level trajectory replay before implementing another surface.",
-    "next_big_step": "Using capability discovery plus existing completed research artifacts, map each mental-map requirement to an existing semantic/read owner or a demonstrated missing product projection. Prefer one already-completed non-pharma/lithium context as an observation fixture so the audit is not biased by BLENREP. Do not collect new sources merely to perform this audit.",
-    "local_optimization_stop_rule": "Do not add more CAP-0005 fields, another ADC example, another orchestration layer, another PDF transport mechanism or domain-specific narrative. The next code change must follow from a demonstrated cross-industry researcher-comprehension gap, not from a desire to make the current benchmark prettier.",
+    "short_term_goal": "Prove the smallest truthful CAP-0005 industry-orientation surface that lets a researcher enter from an industry identity, discover the available typed subjects/memory coverage and navigate into existing no-lookahead trajectories without adding new truth semantics.",
+    "next_big_step": "Inspect existing catalog/domain/storage ownership for a source-grounded industry-to-subject discovery relation and researcher-usable labels. If those semantics already exist, extend CAP-0005 with a read-only orientation port/projection/CLI and focused contracts. If they do not exist, stop and persist the demonstrated semantic gap before proposing schema or a new owner.",
+    "local_optimization_stop_rule": "Do not infer participant roles, value-chain position, causal drivers, importance, consensus, controversy or unknowns from filenames, counts, co-occurrence or presentation heuristics. Do not create a second knowledge-cutoff filter, duplicate Evidence/Reality/Judgment/Outcome ownership, collect new sources for the demo, add another ADC example, or polish subject storylines. The orientation layer may only expose semantics already owned elsewhere and link into CAP-0005 replay.",
     "parallel_permanent_tracks": [
       "Current collection remains source-first/preserve-now; readable webpages use bounded capture DB -> Drive, and PDF raw-byte materialization remains optional after truthful content verification unless byte-level verification is claim-critical."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "researcher-industry-mental-map-gap-audit",
-    "last_completed_action": "Extended CAP-0005's existing read-only trajectory projection with additive `knowledge_progression`, `judgment_storylines` and `unlinked_reality_entry_ids` while preserving flat entries and typed knowledge-cutoff semantics. The first real regression run 32647650765 proved the product code, focused tests and full PostgreSQL trajectory but exposed one workflow-only predicate assertion typo. After correcting only that assertion, exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 passed run 32647898143, including focused contracts, full `longcycle research run`, and three historical `longcycle research replay` cutoffs. The replay proved 2022 4/1/0, 2023 6/1/0, 2024 8/1/1; the original 2022 Judgment remained unchanged; the later Outcome remained related_milestone + indeterminate + not_comparable. A durable validation receipt was added, then CAP-0005 card and compact index were synchronized.",
-    "current_task": "Perform a bounded researcher-product gap audit against STRATEGIC_COMPASS section 3/5. For a first-time industry researcher, assess whether existing capabilities already provide: value-chain/participant structure; key drivers and constraints; long historical trajectories; contemporaneous Judgment/disagreement and revisions; later Outcome; evidence drill-down; and explicit unknown/controversy. Discover existing capability owners first. Use existing completed non-pharma research artifacts as observation where practical, but do not start new source research or create a new capability during the audit.",
-    "why_now": "Point-in-time execution and subject-level researcher reading are now proven. Continuing to polish the same trajectory would be local benchmark optimization. The Strategic Compass says the real product passes only when a researcher can rapidly form an evidence-bounded industry mental map, so the next decision must move one level up from a single-subject storyline.",
-    "done_when": "A repository-backed product-gap note classifies each mental-map requirement as already served, partially served or missing; names the existing semantic owner where one exists; uses at least one non-pharma observation to avoid ADC-specific conclusions; and selects exactly one next implementation target only if a truthful cross-industry gap remains. No code is required merely to complete the audit.",
+    "parent_workstream_id": "researcher-industry-orientation-surface",
+    "last_completed_action": "Completed the bounded Strategic Compass mental-map product audit and persisted `docs/development/researcher-mental-map-gap-audit-v1.md` at commit 87437a70143f580abf7ad0e628dddc64062426f0. The audit mapped every mental-map requirement to existing owners, used the completed lithium `UP-CHEMICALS-SV-001` discovery as a non-pharma observation without promoting it to Evidence, and identified one cross-industry product gap: CAP-0005 starts after the researcher already knows the subjects worth replaying. Capability admission is EXTEND CAP-0005, not NEW, because the missing behavior is a read-only researcher projection/navigation layer over existing semantic owners.",
+    "current_task": "Execute the admitted CAP-0005 industry-orientation target beginning with a semantic feasibility gate. Determine whether existing catalog/domain/storage semantics can truthfully enumerate and label subjects belonging to an industry at a requested knowledge cutoff without presentation inference. If yes, implement the smallest read-only orientation projection/CLI that exposes named/typed subject inventory and typed Reality/Judgment/Outcome coverage, existing typed dispute/revision markers, Evidence references, explicitly owned unknown/open states when available, and direct links/IDs into existing trajectory replay. If the required industry-to-subject relation is absent, stop before code and persist that demonstrated semantic gap instead of inventing one.",
+    "why_now": "Subject-level replay, knowledge progression and Judgment storylines are already proven. The audit shows the remaining first-time-researcher friction occurs one level earlier: the user cannot enter an unfamiliar industry and discover what subjects and memory deserve attention. Fixing that navigation gap advances the researcher mental-map success criterion; adding more detail to a known subject would be local benchmark optimization.",
+    "done_when": "Either (A) an existing truthful industry-to-subject relation is found and one bounded CAP-0005 orientation surface is implemented with focused tests proving it reuses the existing no-lookahead boundary, adds no epistemic inference, and links into existing trajectories; or (B) the relation is demonstrably absent and a repository-backed semantic-gap note records exactly what missing owner/contract blocks truthful orientation. No new source collection is required. Any implementation must keep source/Evidence/Reality/Judgment/Outcome authority in CAP-0001/2/3/4 and research-only Memory state in CAP-0006.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh live HEAD, read STRATEGIC_COMPASS plus the compact capability index and current researcher surfaces, then locate one already-completed non-pharma/lithium research trajectory or receipt for a bounded researcher-journey observation. Produce the gap map before proposing code."
+    "next_atomic_action": "Refresh live HEAD, inspect the catalog/domain/replay ports and storage adapters for industry-to-subject membership plus researcher labels, and run a path-scoped Repair Memory lookup before modifying any identified implementation path. Only then either implement the CAP-0005 orientation extension or record the semantic blocker."
   },
   "active_context": {
-    "context_id": "cross-industry-researcher-mental-map-gap-audit-v1",
-    "context_kind": "cross_industry_product_discovery",
-    "label": "Researcher mental-map product gap above point-in-time trajectory replay",
+    "context_id": "cross-industry-researcher-orientation-v1",
+    "context_kind": "cross_industry_read_only_product_surface",
+    "label": "Industry-level researcher orientation above point-in-time subject replay",
     "root_path": "src/longcycle/application",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
+      "docs/development/researcher-mental-map-gap-audit-v1.md",
       "STRATEGIC_COMPASS.md",
+      ".longcycle/capabilities/cards/CAP-0005.json",
+      ".longcycle/capabilities/cards/CAP-0010.json",
+      "src/longcycle/ports/epistemic.py",
       "src/longcycle/application/trajectory_view.py",
       "src/longcycle/cli.py",
-      ".longcycle/capabilities/cards/CAP-0005.json",
-      ".longcycle/capabilities/cards/CAP-0007.json",
-      "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/researcher-readable-trajectory-validation-v1.json"
+      "src/longcycle/domain/models.py",
+      "src/longcycle/domain/epistemic.py",
+      "migrations/0001_catalog.sql",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json"
     ],
     "core_exclusion_terms": [
-      "new-capability-before-gap-audit",
+      "new-capability-without-semantic-gap",
+      "presentation-infers-value-chain-role",
+      "presentation-infers-causality",
+      "presentation-ranks-importance-from-counts",
+      "presentation-invents-unknowns",
+      "presentation-decides-knowledge-visibility",
+      "duplicate-replay-owner",
+      "duplicate-evidence-owner",
       "adc-benchmark-expansion",
       "subject-storyline-polish",
-      "presentation-infers-causality",
-      "presentation-decides-knowledge-visibility",
       "pdf-downloader-work",
-      "duplicate-replay-owner",
-      "duplicate-orchestration-owner"
+      "new-source-research-for-orientation-demo"
     ]
   },
   "pending_user_directives": [
@@ -75,23 +85,34 @@
     "authority": "snapshot_not_authoritative",
     "last_observed_run": 32647898143,
     "observed_head_sha": "786116f1e425e4ab43a00f69bb09f04f210cc701",
-    "conclusion": "Exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 has explicit success status `longcycle/generic-epistemic-trajectory`. Run 32647898143 completed focused unit contracts, PostgreSQL trajectory execution through `longcycle research run`, generic receipt assertions, three-cutoff researcher replay assertions and artifact upload. Compare from that head to checkpoint base 5585f1e01b39392f66b067ffa2503ac6f00d794a shows only three non-runtime files: the durable validation receipt, CAP-0005 card and compact capability index.",
-    "mypy_summary": "No full-project exact-head Mypy run was observed for this presentation extension; the service-capable focused regression is not claimed as full CI.",
+    "conclusion": "Exact implementation head 786116f1e425e4ab43a00f69bb09f04f210cc701 has explicit success status `longcycle/generic-epistemic-trajectory`. Run 32647898143 completed focused unit contracts, PostgreSQL trajectory execution through `longcycle research run`, generic receipt assertions, three-cutoff researcher replay assertions and artifact upload. The subsequent capability/validation/handoff commits and the mental-map audit at 87437a70143f580abf7ad0e628dddc64062426f0 are non-runtime control-plane/documentation changes; the live audit head had no combined status checks when refreshed.",
+    "mypy_summary": "No full-project exact-head Mypy run was observed for the researcher-readable presentation extension; the service-capable focused regression is not claimed as full CI.",
     "pytest_summary": "Run 32647898143 passed the focused contract set including tests/test_trajectory_view.py before executing the real PostgreSQL/DuckDB/CLI replay path.",
     "ruff_summary": "No new full-project Ruff result observed; Ruff remains technical debt and is not a substitute for the epistemic/runtime proof.",
-    "refresh_instruction": "On resume refresh live HEAD/status. Do not expect the handoff/capability metadata commits to have an exact runtime status; the implementation proof is run 32647898143 at 786116f1e425e4ab43a00f69bb09f04f210cc701, with a verified metadata-only delta afterward."
+    "refresh_instruction": "On resume refresh live PR HEAD/status. Do not expect documentation/handoff-only commits to carry the runtime trajectory status; the latest runtime proof remains run 32647898143 at 786116f1e425e4ab43a00f69bb09f04f210cc701 until orientation code is introduced and validated."
   },
   "workstreams": [
     {
-      "workstream_id": "researcher-industry-mental-map-gap-audit",
+      "workstream_id": "researcher-industry-orientation-surface",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "ready_for_bounded_cross_industry_product_audit",
-      "summary": "Execution and point-in-time reading are proven. The main path now asks what a first-time researcher still cannot understand quickly at the industry level, before another implementation is admitted.",
+      "status": "ready_for_semantic_feasibility_gate",
+      "summary": "The mental-map audit proved a cross-industry first-time-researcher navigation gap and admitted exactly one CAP-0005 extension: industry-level read-only orientation above subject trajectory replay. The next gate is to prove an existing truthful industry-to-subject discovery/label relation before code.",
       "next_actions": [
-        "Inventory current product surfaces against the Strategic Compass mental-map requirements.",
-        "Use one existing non-pharma completed trajectory/receipt as a bounded transfer observation.",
-        "Classify the highest-value missing cross-industry researcher capability before writing code."
+        "Inspect existing catalog/domain/storage ownership for industry-to-subject membership and researcher labels.",
+        "Run path-scoped Repair Memory lookup before modifying any identified replay/catalog paths.",
+        "If the relation exists, implement one minimal read-only CAP-0005 orientation projection/CLI with focused contracts; otherwise persist the semantic blocker and stop."
+      ],
+      "blockers": []
+    },
+    {
+      "workstream_id": "researcher-industry-mental-map-gap-audit",
+      "role": "supporting_quality_gate",
+      "parent_goal_ref": "strategic_horizon.medium_term_goal",
+      "status": "completed_repository_backed",
+      "summary": "`docs/development/researcher-mental-map-gap-audit-v1.md` classifies every mental-map requirement, uses lithium UP-CHEMICALS as a non-pharma observation with its research-only authority intact, and selects industry orientation as the single next target under CAP-0005.",
+      "next_actions": [
+        "Use the audit as the product acceptance contract; revise only if implementation evidence contradicts its ownership or gap classification."
       ],
       "blockers": []
     },
@@ -100,9 +121,9 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "completed_and_runtime_proven",
-      "summary": "CAP-0005 researcher reading now preserves typed entries while adding deterministic knowledge progression and Judgment storylines. Run 32647898143 proved no-lookahead cutoffs and non-direct Outcome wording through the normal replay CLI.",
+      "summary": "CAP-0005 researcher reading preserves typed entries while adding deterministic knowledge progression and Judgment storylines. Run 32647898143 proved no-lookahead cutoffs and non-direct Outcome wording through the normal replay CLI.",
       "next_actions": [
-        "Treat this as a reusable product primitive; extend only when a future cross-industry researcher journey exposes a concrete general gap."
+        "Treat this as the drill-down primitive used by industry orientation; do not reopen subject storyline polish without a new cross-industry failure."
       ],
       "blockers": []
     },
@@ -121,10 +142,10 @@
       "workstream_id": "capability-governance",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "cap0005_cap0007_single_owner_boundaries_current",
-      "summary": "CAP-0005 owns typed no-lookahead replay and researcher read projections; CAP-0007 owns execution composition. The compact index is synchronized after the CAP-0005 extension.",
+      "status": "mental_map_audit_admits_extend_cap0005",
+      "summary": "The audit classified industry orientation as EXTEND CAP-0005 rather than NEW. Existing source/Evidence/Reality/Judgment/Outcome/Memory semantic owners remain unchanged; a new owner is allowed only if implementation proves a missing semantic contract rather than a presentation gap.",
       "next_actions": [
-        "Run capability admission before any implementation selected by the mental-map gap audit."
+        "If orientation implementation succeeds, synchronize CAP-0005 card/index. If a semantic blocker is proven, rerun capability admission before proposing schema or ownership changes."
       ],
       "blockers": []
     },
@@ -151,22 +172,27 @@
     ".longcycle/repair-memory/active-index.json"
   ],
   "deep_reference_paths": [
+    "docs/development/researcher-mental-map-gap-audit-v1.md",
+    "src/longcycle/ports/epistemic.py",
     "src/longcycle/application/trajectory_view.py",
     "tests/test_trajectory_view.py",
+    "src/longcycle/cli.py",
     ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0007.json",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/researcher-readable-trajectory-validation-v1.json"
+    ".longcycle/capabilities/cards/CAP-0010.json",
+    "migrations/0001_catalog.sql",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/discovery-v1.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Which existing capability or missing read model should own the first-time researcher industry mental map without duplicating CAP-0003/4/5 semantics?",
-    "Does an existing non-pharma completed trajectory expose researcher friction that the BLENREP subject-level storyline did not?",
-    "Can industry structure, drivers/constraints, disputes and explicit unknowns be composed from current typed memory, or is a new read-only aggregation contract demonstrably required?"
+    "Does the current catalog/domain/storage model already expose a truthful industry-to-subject membership relation and researcher-usable labels at the replay boundary, or is that a real missing semantic contract?",
+    "Which explicit unknown/open states are already owned and queryable without collapsing archived conflict, research-only unresolved questions and simple lack of coverage?",
+    "Can the first orientation surface remain a pure CAP-0005 read projection while delegating subject identity/catalog lookup to an existing owner, or does implementation evidence require a narrower catalog extension?"
   ],
   "ordered_next_actions": [
-    "Refresh live PR HEAD and reconcile any post-checkpoint commits.",
-    "Read Strategic Compass and capability index, then inventory the current researcher journey against the mental-map success criteria.",
-    "Locate one existing completed non-pharma/lithium trajectory or receipt for a bounded transfer observation without new source research.",
-    "Persist a product-gap audit and select at most one next implementation target after capability admission."
+    "Refresh live PR HEAD and reconcile the audit/handoff commits against checkpoint 87437a70143f580abf7ad0e628dddc64062426f0.",
+    "Inspect catalog/domain/replay ports and storage adapters for industry-to-subject membership plus researcher labels; run path-scoped Repair Memory lookup before modifying identified code.",
+    "If existing semantics are sufficient, implement the smallest CAP-0005 read-only industry orientation projection/CLI with focused no-lookahead/non-inference contracts. If insufficient, persist the semantic blocker and stop before presentation inference.",
+    "After implementation or blocker proof, update CAP-0005/capability admission metadata as appropriate, refresh live CI if runtime code changed, and synchronize handoff."
   ]
 }
