@@ -25,6 +25,15 @@ def _subject_payload(subject: MemorySubjectRef) -> dict[str, str | None]:
     }
 
 
+def _subject_with_current_label_payload(
+    subject: MemorySubjectRef,
+    current_catalog_label: str | None,
+) -> dict[str, str | None]:
+    payload = _subject_payload(subject)
+    payload["current_catalog_label"] = current_catalog_label
+    return payload
+
+
 def _current_overlay_payload(bundle: CurrentResearchOpenStateBundle) -> dict[str, Any]:
     return {
         "disagreements": [
@@ -172,10 +181,10 @@ async def build_researcher_open_state_view(
         {
             "conflict_case_id": str(item.conflict_case_id),
             "fact_key_id": str(item.fact_key_id),
-            "subject": {
-                **_subject_payload(item.subject),
-                "current_catalog_label": current_labels.get(item.subject.key),
-            },
+            "subject": _subject_with_current_label_payload(
+                item.subject,
+                current_labels.get(item.subject.key),
+            ),
             "predicate_code": item.predicate_code,
             "comparability_hash": item.comparability_hash,
             "archive_disagreement_known_at": item.archive_disagreement_known_at.isoformat(),
