@@ -1,285 +1,212 @@
 # Longcycle Core
 
-行业长期记忆的数据库与采集内核。
-
-Longcycle 的目标不是自动生成更多研报，而是保存一个行业最关键、最真实、可回放的历史：
+Longcycle 是一个**可按历史时点回放的产业长期记忆系统内核**。目标不是自动生成更多研报，也不是把网页抓取数量当成果，而是长期保存：
 
 ```text
 Reality      当时真实发生了什么
-Expectation  当时的人认为未来会发生什么，为什么
-Outcome      后来实际发生了什么，预期与现实为何偏离
+Judgment     当时的人如何判断未来、为什么
+Outcome      后来发生了什么，和此前 Judgment 有何关系
 ```
-
-同时允许高级模型已有知识进入一个**永远不可直接发布的历史侦察层**，用于尽可能恢复“我们应该去找哪些历史”，再由原始资料完成最终取证。
 
 核心认识：
 
-> **过去的资料恢复和今天的资料采集不是同一个问题。**
+> **历史本身就是分析。**
 >
-> 对历史：`memory-first, evidence-final`。
+> 对历史恢复：`memory-first, Evidence-final`。
 >
-> 对当下：`source-first, archive-now`。
+> 对当下采集：`source-first, preserve-now`。
 
-历史互联网天然残缺、旧网页难搜、附件丢失、术语变化、搜索结果偏新；因此不能指望低成本 Agent 从一个宽泛指令自动搜出完整历史。高级模型应先通过多轮正交 recall 尽可能建立产业历史目录和长尾线索，再让高级模型/低成本 Agent 逐条寻找 primary source。
+## 第一性边界
 
-对于今天仍在线的资料，则应主动持续归档，避免未来再做历史抢救。
+1. **Evidence 决定可发布历史。** 搜索结果、AI 摘要和 Model Memory 只能发现线索，不能直接成为 Fact/Judgment。
+2. **Reality 与 Judgment 分开。** “公司当时预计 X”是真实的历史 Judgment，不等于 X 后来真的发生。
+3. **No-lookahead。** 历史 replay 只能使用当时已经可知的信息；后来结果不能回填早期判断。
+4. **权威按 claim scope 判断。** 监管机构、issuer、行业机构、媒体各自只能在适合的 claim 范围内提供证明力。
+5. **同源不等于独立 corroboration。** 同一原始公告/PDF 的多个镜像仍属于一个 evidence cluster。
+6. **时间精度服从来源。** 不制造伪精度；known-time 仍使用保守、可证明的上界。
+7. **运输方式不改变 authority。** GitHub Release、Google Drive、本地文件、对象存储只是 transport / materialization 手段。
 
-当前仓库只做后端。网页端不在本仓库范围内。
-
-## 核心原则
-
-1. **原文先于结构化数据。** 所有可发布事实和判断都必须能回溯到归档原文和精确 locator。
-2. **AI 只能产生候选。** AI 不能直接写可信事实，也不能把多人观点一致当成现实真相。
-3. **事实与判断分开。** `FactAssertion` 保存“来源声称现实是什么”；Judgment 保存“某人在当时如何判断未来”。
-4. **历史不可重写。** 修订、延期、改口、统计更新采用 append-only，不覆盖旧版本。
-5. **不让后见之明污染历史。** 文档、事实、判断和派生结果都保留 point-in-time 时间语义。
-6. **可比性优先于数据量。** 产品规格、地区、税费、运费、合同、单位、统计范围和时间口径不完整时，不自动互证或判冲突。
-7. **理由是一等数据。** 预测数字之外，还保存 premise、mechanism、condition、risk 和 caveat。
-8. **模型记忆可以挑战档案，但不能覆盖档案。** Memory Lead 永远不是 Fact/Judgment。
-9. **搜不到不是反证。** 对历史任务，`not_found != false`；只能得到 `not_yet_verified`。
-10. **搜索结果数量不是证据强度。** 十篇转载可能仍然只有一个原始信息源。
-11. **权威必须与 claim scope 匹配。** 公司公告、政府统计、券商报告分别只对其有资格证明的问题具有高证明力。
-12. **先保存历史，再做复杂分析。** 复杂预测模型不是当前优先级。
-
-## 双轨研究架构
-
-### A. Historical Recovery：高级模型先建立目录
+## 历史恢复
 
 ```text
-Memory Exhaustion Campaign
-→ Sealed Blind Memory Atlas
-→ High-model Self Verification
-→ Delegated Verification Tasks
-→ archived primary material
-→ authority audit
-→ Fact / Judgment
+Blind Memory Exhaustion
+→ saturation / seal
+→ high-capability self-verification / search discovery
+→ claim-scoped evidence tasks
+→ source identity + claim-relevant content verification
+→ Evidence / Assertion / Reconciliation
+→ deferred raw-byte materialization where useful
 ```
 
-这里不是只问高级模型一次“你记得什么”。
+Blind Memory Atlas 在 seal 前不能被本轮 fresh search 污染；`not_found != false`。Memory Lead 永远低于 Evidence。
 
-模型需要通过多轮互相正交的 pass，持续激活不同知识区域：
-
-- 时间切片；
-- 产业链切片；
-- actor exhaustion；
-- metric exhaustion；
-- 定价与合同机制；
-- 有效供给工程瓶颈；
-- 库存位置；
-- 资本循环；
-- 技术与单位耗用；
-- 当时叙事；
-- 旧称和历史检索词；
-- 失败/取消/延期项目；
-- reverse causality；
-- 跨产业关联；
-- counterfactual；
-- negative space；
-- saturation review。
-
-第一阶段禁止看本轮搜索结果，封存 blind atlas；之后同一个高级模型可以进入新的 `self_verification` run 自己搜索，把模糊记忆转化成更准确的项目名、旧称、报告名和 primary-source 目标，但不能回头改写 blind recall。
-
-低成本 Agent 的角色因此主要是**证据工程**，而不是自由研究。
-
-### B. Current Collection：今天能保存的今天保存
+## 当下采集
 
 ```text
-source watchlist
-→ periodic/event-driven discovery
-→ archive original HTML/PDF/attachment immediately
-→ Reality / Expectation role detection
-→ extract / reconcile / review
-→ source inventory expansion
+source/watchlist
+→ proactive collection
+→ faithful content/version capture or verified source locator
+→ Reality / Judgment extraction
+→ revision tracking
+→ raw-file materialization when useful/available
 ```
 
-当前资料采集必须有细 SOP：检查固定高价值来源、识别新增文件、归档附件、追踪修订、保存 guidance/预测、更新 source watchlist。
+`preserve-now` 的第一要求是**不要丢失现在可读、可定位、可证明的 source information**，而不是为了 byte-identical 下载阻塞研究。
 
-目标是以后不再依赖搜索引擎抢救今天的历史。
+## PDF：identity / content / raw bytes 分开
 
-## 数据架构
-
-PostgreSQL 16+ 使用四个 schema：
+PDF 使用三个显式状态：
 
 ```text
-core      稳定身份、分类、产品、设施、单位和 predicate 语义
-evidence  原文、抓取、Blob、文档版本、artifact、证据、来源 authority profile
-research  Reality + Expectation + Outcome + unsourced Model Memory Leads
-ops       队列、租约、断点、复核、验证任务、Outbox、成本和审计
+locator_verified
+→ content_verified
+→ materialized
 ```
+
+### `locator_verified`
+
+已经确认 publisher/document identity、原始 URL、文件名（能确定时）、title/date/文档号等。对于主流官方、监管、issuer、机构网站，这足以承认“这份 source document 确实存在”，不需要再证明某个 GitHub runner 能下载它。
+
+**但只确认链接存在不能证明具体 claim。**
+
+### `content_verified`
+
+当前 Agent 已通过可信界面实际读到 claim-relevant 内容，并保存了页码/章节/摘录或等价的忠实 readable representation。此时可以进入 Grounded Evidence，即使 raw PDF bytes 尚未下载。
+
+忠实文本表示必须保留：
+
+- upstream PDF identity / URL；
+- `source_media_type = application/pdf`；
+- truthful `content_verification_mode`；
+- `claim_relevant_content_preserved = true`；
+- representation byte/text digest；
+- 不能把 text representation 伪装成 raw PDF。
+
+### `materialized`
+
+以后有正常网络的 Agent 再下载 raw PDF，验证 document identity 与此前 content，补 raw size / SHA-256 / durable storage locator。这个状态是 completeness/integrity enrichment，不是 Evidence 的前置条件。
+
+如果 later raw bytes 与 earlier `content_verified` 身份/内容冲突，必须 fail closed，不能静默覆盖。
+
+**不要创建 GitHub Actions 仅仅为了下载新 PDF。** Actions 仍然可以用于 PostgreSQL、CI、runtime execution。已经存在的 Release source packs 是可复用的历史 materialization，但不是新 PDF 的默认 acquisition 路径。
+
+## 网页：本地 capture DB → Google Drive
+
+对当前 Agent 可以完整读取的网页：
+
+```text
+interactive read
+→ faithful claim-scoped visible text + provenance
+→ bounded local DuckDB/SQLite capture capsule
+→ checkpoint / SHA-256
+→ Google Drive handoff
+```
+
+网页 capture DB 是 source-derived capture/handoff envelope，不是 live PostgreSQL，也不会自动发布 Fact/Judgment。不要为了网页 HTML 专门启动 Actions，也不要为每一页正文制造 Git commit。
+
+## 数据与存储架构
+
+PostgreSQL 使用四个 schema：
+
+```text
+core      稳定身份、分类、产品、设施、单位、predicate
+evidence  publisher/source/document/material/artifact/Evidence/provenance
+research  Reality + Judgment + Outcome + Model Memory
+ops       queue/lease/checkpoint/review/outbox/audit
+```
+
+长期语义上需要区分：
+
+```text
+logical source document
+├─ verified locator
+├─ one or more preserved readable/material representations
+└─ optional verified raw-source materialization
+```
+
+一个 readable representation 可以形成 `document_version` / Evidence lineage，但这**不等于** raw PDF 已 materialized。Migration 0028/0029 与 `PostgresSourceLocatorRegistry` 专门守住这个区别。
+
+### Grounded Evidence
+
+```text
+preserved source-derived material
+→ immutable archived representation/version
+→ exact locator / artifact verification
+→ EvidenceFragment
+```
+
+Evidence 阶段本身创建 **0 FactAssertions / 0 Judgments**；Reality/Judgment 必须由后续显式 projection/reconciliation 产生。
 
 ### Reality
 
-当前已经实现完整事实链：
-
 ```text
-来源发现
-→ 获取并归档原始字节
-→ 证据片段
+Evidence
 → FactAssertion
-→ 归一与可比性
-→ 质量评分与冲突判断
-→ Resolution
-→ Canonical Fact Version
+→ normalize / comparability
+→ reconciliation
+→ CanonicalFactVersion
 ```
 
-### Expectation
-
-设计中的 point-in-time 认知链：
+### Judgment / Outcome
 
 ```text
-JudgmentAssertion
-→ Evidence
-→ Rationale
-→ Revision / Reaffirm / Withdraw
-→ Expectation Snapshot
+Evidence
+→ JudgmentAssertion + rationale / revision
+→ Expectation snapshot
+→ later Reality
+→ OutcomeEvaluation
 ```
 
-Judgment 保存谁在什么时候、对哪个未来时点、以什么形式作出判断，并保留理由和条件。
+Outcome 不能改写原 Judgment。
 
-### Outcome
+## Research orchestration
 
-```text
-prediction / guidance / target
-        ↓
-canonical outcome
-        ↓
-error / timing / direction / explanation
-```
+`research-orchestration/v2` 是 transport-neutral execution contract：调用方先准备一个本地 material root，里面可以混合：
 
-用于积累产业常识，而不是给分析师排名。
+- Drive webpage capsule 导出的 claim-scoped readable material；
+- 已存在的 legacy Release raw files；
+- 直接保存的 content-verified readable representation；
+- later normal-network Agent materialized 的 raw files。
 
-### Model Memory / Historical Lead Layer
-
-```text
-ModelMemoryCampaign
-→ ModelPriorRun(s)
-→ ModelMemoryLead(s)
-→ LeadRelation graph
-→ Campaign Seal / coverage map
-→ Self Verification / delegated search
-→ Evidence links / disagreement
-```
-
-无论模型有多强，Memory Lead 没有直接发布成 Fact 的路径。
-
-如果模型记忆只和普通二手网页冲突，保持 unresolved 并继续找 primary source；若 matching primary source 明确反驳，则保留这次错误记忆并由正常 Evidence pipeline 建立历史；若权威一手来源彼此冲突，则保留 authoritative conflict。
-
-## 模型更新后的回补
-
-高级模型版本变化被视为新的 **research instrument vintage**，不是覆盖旧模型结果。
-
-```text
-Old Model Memory Atlas
-→ New Model Memory Exhaustion Campaign
-→ Lead Diff: known / refined / novel
-→ Archive Gap Diff
-→ Backfill Task Queue
-```
-
-每次记录模型/provider/version、声明 knowledge cutoff（若可得）、protocol、manifest 和原始输出。
-
-新模型新增的历史记忆可以重新打开过去已经“做过”的年份；旧 atlas 和错误记忆都不删除。这样 Longcycle 可以随着基础模型训练资料更新逐步回补历史盲点。
-
-## 第一真实行业：新能源锂电池
-
-第一个完整样本确定为新能源锂电池产业链，中国为主，第一轮 `2019-01-01 → 2026-12-31`，必要时向 2015–2018 回填。
-
-覆盖：
-
-- 上游锂矿、盐湖、锂精矿和锂盐；
-- LFP、三元、负极、隔膜、电解液等材料；
-- 动力/储能电池和主要电池企业；
-- 新能源汽车与储能；
-- 项目宣布、审批、开工、延期、投产、爬坡、取消；
-- 价格、利润、库存、产能、有效产能、产量、装车、销量、资本开支；
-- 管理层、券商、协会、政府和产业参与者当时的判断与理由；
-- 定价机制、合同变化、认证、设备、公用工程、库存位置等“普通行业数据库不容易保存”的机制历史。
-
-锂电已经有一份固定 Memory Exhaustion Manifest，用于让当前高级模型以及未来新模型跑同一套记忆召回基准。
-
-## 当前实现边界
-
-已实现/已落库设计：
-
-- PostgreSQL 四层数据模型；
-- S3/R2/MinIO 或本地 SHA-256 内容寻址原文库；
-- 可插拔 Source/Model/Repository/Queue/Checkpoint/EventSink；
-- 原文归档 → Evidence → FactAssertion → normalization → reconciliation → trusted/conflict/review；
-- predicate、维度 schema、单位换算和分 predicate 调和策略；
-- PostgreSQL 至少一次任务队列、lease、heartbeat、retry、dead-letter、checkpoint；
-- price/capacity/output/project/event/exposure/cycle 数据结构；
-- Judgment / Expectation / Outcome 数据库设计；
-- Model Prior / Memory Lead / authority / disagreement 数据库设计；
-- Memory Campaign / Campaign Seal / Coverage / Model Refresh / Verification Task 数据库设计；
-- deterministic memory-vs-evidence adjudication；
-- blind/gap prompt isolation；
-- memory-campaign saturation 与 verification-depth application primitives；
-- repo-owned `research-orchestration/v1`：验证 immutable source pack/material hash、应用显式 repair overlay、执行 Grounded Evidence，并可选执行 Reality projection；
-- `longcycle research run` 研究执行入口，以及成功/失败均可落盘的 machine-readable orchestration receipt；
-- 锂电采集协议、工作包、Memory Exhaustion Manifest、Current Watchlist 和机器回传 Schema。
-
-尚未实现：
-
-- 生产 AI connector；
-- 通用 PDF/OCR/Excel parser；
-- judgment extraction target 与 speaker resolution；
-- expectation snapshot builder；
-- judgment outcome evaluator；
-- 生产 `MemoryPriorGateway` / `MemorySelfVerificationGateway` adapter 和完整 campaign orchestration；
-- 高级模型 self-verification 搜索结果进入正常 fetch/archive 的 orchestration；
-- Current source watchlist 的 scheduler/connector 集合；
-- source authority profile 管理工作流；
-- 对外 API / Web；
-- Outbox relay 和真实 telemetry。
-
-`JsonFixtureGateway` 仍是离线黄金测试适配器，不是生产模型。
-
-## 研究执行入口
-
-当 repo 中已经有经过审查的 `longcycle-research-orchestration/v1` spec，且对应的 immutable source pack 已由外层 adapter 从 GitHub Release（或其他明确 transport）恢复到本地后，可以通过统一 CLI 执行：
+然后执行：
 
 ```bash
 longcycle --json research run \
-  path/to/research-orchestration.json \
-  --source-pack path/to/restored-source-pack.zip \
+  path/to/research-orchestration-v2.json \
+  --material-root path/to/prepared-material \
   --work-dir .longcycle/run-work \
   --output .longcycle/run-receipt.json
 ```
 
-执行边界保持刻意简单：
+Longcycle 会验证 Evidence spec 声明的每份 material SHA-256，再执行 Grounded Evidence / optional Reality projection。transport restore 不进入 epistemic authority。
 
-- transport restore 不是 epistemic execution；CLI 不会把“从哪里下载到”偷换成 source authority；
-- CLI 会重新验证 source-pack filename、outer SHA-256，以及 Evidence spec 实际引用的每份 material SHA-256；
-- repair 只能通过 repo-owned、带 `from` guard 的显式 overlay 发生，不能借 repair 改 claim context、locator 或 acceptance；
-- Grounded Evidence 仍不会自动升级为 Fact/Judgment；可选 Reality 仍走现有 reconciliation；
-- sealed/immutable path 在执行前后做 digest guard；
-- 成功输出 `longcycle-research-orchestration-execution/v1` receipt；失败也会尽力把 `ok=false` 的 machine-readable receipt 写到 `--output`，然后 CLI 非零退出。
+历史 `research-orchestration/v1` + `--source-pack` 仍然支持，以保证旧 Release-based receipts 可重放；它是 **legacy compatibility**，不是新研究必须经过的入口。
 
-默认会先运行数据库 migration。只有调用方已经明确完成 migration 时才应使用 `--skip-db-upgrade`。
+## 当前实现方向
 
-## 研究 Agent 的最低要求
+已经具备的核心能力包括：
 
-历史验证任务不能因为“搜了几个结果”就结束。
+- PostgreSQL 四层 schema 与 migration runner；
+- immutable/archive abstraction；
+- Grounded Evidence 与 exact locator integrity；
+- Fact normalization / reconciliation / canonical Reality；
+- Judgment / Expectation / Outcome；
+- Model Memory campaign / seal / post-seal verification；
+- point-in-time no-lookahead replay；
+- PostgreSQL ↔ portable DuckDB replay materialization；
+- source locator/content/materialized lifecycle；
+- repository-backed session handoff、Capability Registry、Repair Memory；
+- transport-neutral research orchestration v2 与 legacy v1 replay。
 
-默认 minimum search depth 包括：
+当前行业 benchmark 只是跨行业架构的 proving ground，不是 Longcycle 的终局。
 
-- 至少 6 类不同 query family；
-- 至少检查 3 类不同来源；
-- 至少检查最可能的 primary domain；
-- 二手来源有 citation 时必须追一次原始 citation；
-- 高影响 lead 至少做一次反向查询；
-- 只有 primary verified / primary contradicted / exhausted but unresolved 三类结果可以正常交工。
+## Fresh session
 
-## 文档入口
+新的 Agent 不应从 README 猜 live task。按以下入口恢复：
 
-- [总体架构](docs/architecture.md)
-- [开发方案](docs/development-plan.md)
-- [Schema 与时间契约](docs/schema-contracts.md)
-- [锂电池历史资料采集方案](docs/research/lithium-battery-collection-plan.md)
-- [Research Agent SOP](docs/research/research-agent-sop.md)
-- [采集 Agent 基础契约](docs/research/agent-collection-contract.md)
-- [高级模型记忆榨取协议](docs/research/model-memory-exhaustion-protocol.md)
-- [模型记忆与历史缺口审计](docs/research/model-memory-audit.md)
-- [模型更新后的历史回补](docs/research/model-refresh-backfill.md)
-- [Claim-scoped 来源权威策略](docs/research/source-authority-policy.md)
-- [锂电 Memory Exhaustion Manifest](docs/research/lithium-battery-memory-exhaustion-manifest.json)
+1. `FRESH_AGENT_BOOTSTRAP.md`
+2. `CONTINUE_HERE.md`
+3. `.longcycle/handoff/current.json`
+4. live PR HEAD / CI
+
+不要让用户重复已经持久化的背景。
