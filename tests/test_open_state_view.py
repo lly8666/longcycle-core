@@ -4,6 +4,8 @@ from collections.abc import Sequence
 from datetime import UTC, date, datetime
 from uuid import UUID
 
+import pytest
+
 from longcycle.application.open_state_view import build_researcher_open_state_view
 from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType
 from longcycle.domain.epistemic import (
@@ -115,17 +117,14 @@ class FakeCurrentResearchReader:
     def __init__(self, bundle: CurrentResearchOpenStateBundle) -> None:
         self.bundle = bundle
         self.calls = 0
-        self.last_entity_ids: tuple[UUID, ...] = ()
 
     async def current_open_states(
         self,
         *,
         industry_node_id: UUID,
-        entity_ids: Sequence[UUID],
     ) -> CurrentResearchOpenStateBundle:
         assert industry_node_id == INDUSTRY_ID
         self.calls += 1
-        self.last_entity_ids = tuple(entity_ids)
         return self.bundle
 
 
@@ -225,6 +224,7 @@ def _historical_conflict() -> RealitySourceDisagreementRecord:
     first = RealityConflictAssertionRecord(
         assertion_id=UUID("99000000-0000-0000-0000-000000000001"),
         source_id=UUID("aa000000-0000-0000-0000-000000000001"),
+        source_cluster="official-source-a",
         known_at=datetime(2022, 3, 1, tzinfo=UTC),
         value_kind="text",
         value={"text": "commissioning"},
@@ -233,6 +233,7 @@ def _historical_conflict() -> RealitySourceDisagreementRecord:
     second = RealityConflictAssertionRecord(
         assertion_id=UUID("99000000-0000-0000-0000-000000000002"),
         source_id=UUID("aa000000-0000-0000-0000-000000000002"),
+        source_cluster="official-source-b",
         known_at=datetime(2022, 4, 1, tzinfo=UTC),
         value_kind="text",
         value={"text": "construction"},
@@ -253,7 +254,9 @@ def _historical_conflict() -> RealitySourceDisagreementRecord:
 
 
 def _current_bundle() -> CurrentResearchOpenStateBundle:
-    subject = MemorySubjectRef(entity_id=EARLY_ENTITY_ID)
+    # Deliberately use an entity whose historical membership is after CUTOFF. Current
+    # research scope must come from its own current run provenance, not the old snapshot.
+    subject = MemorySubjectRef(entity_id=FUTURE_ENTITY_ID)
     recorded = datetime(2026, 8, 24, tzinfo=UTC)
     return CurrentResearchOpenStateBundle(
         disagreements=(
@@ -322,7 +325,11 @@ async def test_default_view_keeps_current_research_out_of_historical_cutoff() ->
     assert len(historical["reality_source_disagreements"]) == 1
     assert len(historical["judgment_contradictions"]) == 1
     assert len(historical["judgment_counterarguments"]) == 1
-    curation = historical["reality_source_disagreements"][0]["current_archive_curation"]
+    conflict = historical["reality_source_disagreements"][0]
+    assert {
+        item["source_cluster"] for item in conflict["assertions"]
+    } == {"official-source-a", "official-source-b"}
+    curation = conflict["current_archive_curation"]
     assert curation["is_historical_market_knowledge"] is False
     overlay = view["current_research_overlay"]
     assert overlay["included"] is False
@@ -332,7 +339,7 @@ async def test_default_view_keeps_current_research_out_of_historical_cutoff() ->
     assert view["boundary"]["absence_of_records_does_not_create_an_unknown_state"] is True
 
 
-async def test_opt_in_overlay_is_explicitly_current_and_not_cutoff_filtered() -> None:
+async def test_opt_in_overlay_is_current_and_not_narrowed_by_historical_membership() -> None:
     current = FakeCurrentResearchReader(_current_bundle())
     view = await build_researcher_open_state_view(
         catalog_reader=FakeCatalogReader(_catalog()),
@@ -345,13 +352,52 @@ async def test_opt_in_overlay_is_explicitly_current_and_not_cutoff_filtered() ->
     )
 
     assert current.calls == 1
-    assert current.last_entity_ids == (EARLY_ENTITY_ID,)
     overlay = view["current_research_overlay"]
     assert overlay["included"] is True
     assert overlay["is_historical_market_knowledge"] is False
     assert overlay["cutoff_filter_applied"] is False
+    assert overlay["disagreements"][0]["subject"]["entity_id"] == str(FUTURE_ENTITY_ID)
     assert overlay["disagreements"][0]["research_recorded_at"].startswith("2026-08-24")
     assert overlay["hypotheses"][0]["disposition"] == "unresolved"
     assert overlay["model_memory_coverage_gaps"][0]["coverage_state"] == "thin"
+    assert view["boundary"]["current_research_scope_uses_own_run_provenance"] is True
+    assert view["boundary"]["model_memory_coverage_uses_latest_sealed_campaign"] is True
     assert view["boundary"]["model_memory_coverage_is_not_archive_absence"] is True
     assert view["boundary"]["not_found_is_not_false"] is True
+
+
+def test_same_source_cluster_is_not_promoted_to_multi_source_disagreement() -> None:
+    first = RealityConflictAssertionRecord(
+        assertion_id=UUID("99000000-0000-0000-0000-000000000011"),
+        source_id=UUID("aa000000-0000-0000-0000-000000000011"),
+        source_cluster="same-upstream-source",
+        known_at=datetime(2022, 3, 1, tzinfo=UTC),
+        value_kind="text",
+        value={"text": "commissioning"},
+        evidence_fragment_ids=(UUID("bb000000-0000-0000-0000-000000000011"),),
+    )
+    mirror = first.model_copy(
+        update={
+            "assertion_id": UUID("99000000-0000-0000-0000-000000000012"),
+            "source_id": UUID("aa000000-0000-0000-0000-000000000012"),
+            "known_at": datetime(2022, 4, 1, tzinfo=UTC),
+            "value": {"text": "construction"},
+            "evidence_fragment_ids": (
+                UUID("bb000000-0000-0000-0000-000000000012"),
+            ),
+        }
+    )
+
+    with pytest.raises(ValueError, match="independent source clusters"):
+        RealitySourceDisagreementRecord(
+            conflict_case_id=UUID("cc000000-0000-0000-0000-000000000011"),
+            fact_key_id=UUID("dd000000-0000-0000-0000-000000000011"),
+            subject=MemorySubjectRef(entity_id=EARLY_ENTITY_ID),
+            predicate_code="project.state",
+            comparability_hash="2" * 64,
+            severity="high",
+            current_case_status="open",
+            archive_disagreement_known_at=mirror.known_at,
+            research_case_opened_at=datetime(2026, 8, 24, tzinfo=UTC),
+            assertions=(first, mirror),
+        )
