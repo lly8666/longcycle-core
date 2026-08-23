@@ -3,20 +3,30 @@
     "source archive",
     "source acquisition",
     "archive-now",
+    "preserve-now",
     "document archival",
+    "source locator",
+    "deferred materialization",
     "raw source preservation"
   ],
   "entrypoints": [
     {
       "contains": "class DocumentArchiver:",
-      "description": "Shared source-first application boundary archives immutable source versions without promoting claims.",
+      "description": "Shared source application boundary archives immutable source-derived versions without promoting claims.",
       "kind": "application",
       "path": "src/longcycle/application/source_archive.py"
+    },
+    {
+      "contains": "class PostgresSourceLocatorRegistry",
+      "description": "Registers source/document identity and locator/content-verification state before optional raw-file materialization, reusing the same evidence.documents identity.",
+      "kind": "adapter",
+      "path": "src/longcycle/adapters/storage/postgres_source_locators.py"
     }
   ],
   "extension_seams": [
     "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
-    "Add source discovery/watchlist behavior without changing archive identity semantics."
+    "Add source discovery/watchlist behavior without changing logical document identity semantics.",
+    "Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification."
   ],
   "guards": [
     {
@@ -24,37 +34,50 @@
       "description": "Archive regression tests preserve content-addressed/source-version behavior.",
       "kind": "test",
       "path": "tests/test_archive_and_queue.py"
+    },
+    {
+      "contains": "class SourceLocatorMaterializationTest",
+      "description": "Locator lifecycle tests prevent raw-byte availability from becoming a prerequisite while preserving one logical document identity and deferred materialization integrity.",
+      "kind": "test",
+      "path": "tests/test_source_locator_materialization.py"
     }
   ],
   "id": "CAP-0001",
   "maturity": "stable",
   "non_goals": [
     "Evidence claim grounding or Fact/Judgment promotion.",
-    "Treating retrieval host as claim authority."
+    "Treating retrieval host, a .pdf suffix, or locator existence as claim authority/content proof.",
+    "Requiring byte-identical PDF materialization before claim-relevant content that was actually read can be preserved for Evidence."
   ],
   "owned_semantics": [
+    "source.logical_document_identity",
+    "source.locator_content_materialization_lifecycle",
     "source.fetch_archive_boundary",
     "source.raw_version_identity",
-    "source.archive_before_extraction"
+    "source.deferred_raw_materialization_integrity"
   ],
-  "purpose": "Own source-first discovery/fetch/archive identity so raw external material is preserved before extraction and revisions are not silently overwritten.",
-  "revisit_when": "Replace only if a stronger source-version authority preserves immutable bytes, upstream/retrieval provenance and archive-before-extraction semantics.",
+  "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction, while later raw-byte materialization enriches the same logical document identity instead of creating a competing source record.",
+  "revisit_when": "Replace only if a stronger source-version authority preserves one logical document identity across locator/content/raw states, truthful representation provenance, immutable materialized bytes and contradiction-aware enrichment.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/source_archive.py",
     "src/longcycle/ports/source.py",
     "src/longcycle/ports/archive.py",
     "src/longcycle/adapters/sources/**",
-    "src/longcycle/adapters/storage/filesystem.py"
+    "src/longcycle/adapters/storage/filesystem.py",
+    "src/longcycle/adapters/storage/postgres_source_locators.py",
+    "migrations/0027_source_locator_materialization_state.sql"
   ],
   "status": "active",
   "supersedes": [],
   "tags": [
     "source",
     "archive",
+    "locator",
     "provenance",
+    "materialization",
     "immutable",
     "collection"
   ],
-  "title": "Source acquisition and immutable archival"
+  "title": "Source identity, preservation and deferred materialization"
 }
