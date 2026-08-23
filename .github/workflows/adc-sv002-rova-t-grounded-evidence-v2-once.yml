@@ -102,3 +102,67 @@ jobs:
           set -euo pipefail
           if [[ "$GATE_OUTCOME" == success ]]; then body="ADC_SV002_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"; else tail_text="$(tail -n 220 /tmp/adc-sv002-evidence.log 2>/dev/null || true)"; body=$(printf 'ADC_SV002_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text"); fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
+
+  sv005_evidence:
+    if: github.event.issue.title == '[longcycle-adc-sv005-blenrep-evidence-probe-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      SV005_EXPECTED_HEAD: 4d9d9ede79527711f70b90f7cc9b556e74f9710e
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/sv005-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.SV005_EXPECTED_HEAD }}', fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Execute SV-005 Grounded Evidence gate
+        id: sv005_gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv005-evidence.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$SV005_EXPECTED_HEAD"
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          python -m pip install 'pypdf==6.15.0'
+          longcycle --json db upgrade
+          python scripts/probe_sv005_grounded_evidence.py
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+      - name: Upload SV-005 generated execution relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sv005-blenrep-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          compression-level: 0
+          path: |
+            .artifacts/out
+            /tmp/adc-sv005-evidence.log
+      - name: Report SV-005 result
+        if: always()
+        shell: bash
+        env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.sv005_gate.outcome }}'}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_SV005_GROUNDED_EVIDENCE_PASS head=$SV005_EXPECTED_HEAD run_id=$GITHUB_RUN_ID artifact=sv005-blenrep-grounded-evidence-$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/adc-sv005-evidence.log 2>/dev/null || true)"
+            body=$(printf 'ADC_SV005_GROUNDED_EVIDENCE_FAIL head=%s run_id=%s\n\n```text\n%s\n```' "$SV005_EXPECTED_HEAD" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
