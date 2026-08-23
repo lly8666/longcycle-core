@@ -81,16 +81,21 @@
       "title": "Historical model-memory campaign and verification"
     },
     {
-      "aliases": ["research orchestration", "research runner", "research run", "source material execution", "source pack execution", "portable research receipt"],
+      "aliases": ["research orchestration", "research runner", "research run", "source material execution", "source pack execution", "portable research receipt", "epistemic trajectory", "evidence to replay trajectory"],
       "card_path": ".longcycle/capabilities/cards/CAP-0007.json",
-      "extension_seams": ["Add researcher/task invocation adapters by delegation to the same application contract.", "Add new bounded execution phases only when an existing semantic executor already owns the phase.", "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless the claim specifically requires byte-level/source-format verification."],
+      "extension_seams": [
+        "Route researcher/task invocation adapters through the same orchestration and trajectory contracts rather than campaign-specific workflow logic.",
+        "Add a bounded execution phase only when another existing capability already owns the phase semantics; CAP-0007 composes and gates rather than reimplements.",
+        "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless byte-level/source-format verification is itself claim-relevant.",
+        "Add researcher-readable output/presentation after typed CAP-0005 replay rather than changing knowledge-cutoff filtering in the orchestration layer."
+      ],
       "id": "CAP-0007",
       "maturity": "stable",
-      "owned_semantics": ["orchestration.preserved_source_integrity", "orchestration.bounded_evidence_reality_composition", "orchestration.portable_execution_receipt"],
-      "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. V2 is transport-neutral and consumes a verified local material root; legacy v1 source-pack replay is compatibility only and must not turn raw-byte acquisition into an independent research prerequisite.",
-      "scope": ["src/longcycle/application/research_orchestration.py", "scripts/execute_research_orchestration.py", "tests/test_research_orchestration.py", "src/longcycle/cli.py"],
-      "tags": ["orchestration", "source-material", "transport-neutral", "repair-overlay", "receipt", "fail-closed"],
-      "title": "Fail-closed research orchestration"
+      "owned_semantics": ["orchestration.preserved_source_integrity", "orchestration.bounded_evidence_reality_composition", "orchestration.epistemic_trajectory_composition", "orchestration.fail_closed_replay_sequence_gate", "orchestration.portable_execution_receipt"],
+      "purpose": "Own campaign-agnostic execution-stage composition from a verified local material root through Grounded Evidence and, when declared, existing Reality, contemporaneous Judgment, later Outcome and sealed point-in-time replay executors. CAP-0007 owns composition, phase ordering, acceptance gates, immutable-path checks and portable receipts; it delegates source truthfulness to CAP-0001/2, Reality to CAP-0003, Judgment/Outcome to CAP-0004 and historical visibility to CAP-0005. Research-orchestration/v2 remains transport-neutral; legacy v1 source-pack replay remains compatibility only.",
+      "scope": ["src/longcycle/application/research_orchestration.py", "src/longcycle/application/epistemic_trajectory.py", "scripts/execute_research_orchestration.py", "scripts/execute_epistemic_trajectory.py", "tests/test_research_orchestration.py", "tests/test_epistemic_trajectory.py", "src/longcycle/cli.py"],
+      "tags": ["orchestration", "source-material", "transport-neutral", "epistemic-trajectory", "replay", "repair-overlay", "receipt", "fail-closed"],
+      "title": "Fail-closed research and epistemic-trajectory orchestration"
     },
     {
       "aliases": ["current collection scheduler", "job queue", "scheduler tick", "collection cadence", "leases"],
