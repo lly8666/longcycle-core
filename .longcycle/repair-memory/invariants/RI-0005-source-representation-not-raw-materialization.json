@@ -10,6 +10,9 @@
     "migrations/0028_truthful_source_materialization.sql",
     "migrations/0029_source_representation_fetch_state.sql",
     "migrations/0030_source_representation_fetch_state_unambiguous.sql",
+    "migrations/0031_explicit_raw_source_materialization.sql",
+    "src/longcycle/adapters/sources/http.py",
+    "src/longcycle/adapters/sources/local.py",
     "src/longcycle/adapters/sources/materialized.py",
     "src/longcycle/adapters/storage/postgres_source_locators.py",
     "src/longcycle/application/research_orchestration.py",
@@ -28,11 +31,14 @@
     "orchestration",
     "transport"
   ],
-  "failure_signature": "A content-verified PDF readable representation creates a document version and is silently relabeled materialized; or a research runner requires a GitHub Release/source-pack/raw-PDF download before already preserved claim-relevant content may enter Grounded Evidence; or locator existence alone is treated as claim proof.",
-  "root_cause": "Earlier code conflated three different questions: whether an upstream document/locator is real, whether claim-relevant content was actually read and preserved, and whether byte-identical upstream raw bytes were downloaded. The same coupling leaked into a document-version trigger and source-pack-first orchestration contract, turning transport friction into a research blocker.",
-  "invariant": "Source completeness is monotone but semantically distinct: locator_verified establishes source identity/locator only; content_verified requires actually read claim-relevant content plus a faithful preserved representation and may create document versions/Evidence without raw bytes; materialized requires an explicit verified raw-source version transition. A document_version alone never proves raw materialization. Research orchestration v2 verifies transport-neutral prepared material and must not require GitHub Release/source-pack/PDF download; legacy v1 remains replay compatibility only.",
+  "failure_signature": "A content-verified readable representation creates a document version and is silently relabeled materialized; a new logical document defaults to materialized without an explicitly verified raw version; a raw source adapter omits provenance and the database guesses; a research runner requires Release/source-pack/raw-PDF download before already preserved claim-relevant content may enter Grounded Evidence; or locator existence alone is treated as claim proof.",
+  "root_cause": "Earlier code conflated three questions: whether an upstream document/locator is real, whether claim-relevant content was actually read and preserved, and whether byte-identical upstream raw bytes were downloaded. The coupling leaked into a broad document-version trigger, a materialized database default and a source-pack-first orchestration contract, turning transport mechanics into epistemic state and research blockers.",
+  "invariant": "Source completeness is explicit and semantically distinct: new logical documents begin locator_verified; content_verified requires actually read claim-relevant content plus a faithful preserved representation and may create document versions/Evidence without raw bytes; materialized requires an explicit raw=true source fetch and a bound raw_materialized_document_version_id. A document_version alone never proves raw materialization, and missing raw/representation provenance fails closed. Research orchestration v2 verifies transport-neutral prepared material and must not require GitHub Release/source-pack/PDF download; legacy v1 remains replay compatibility only.",
   "anti_regression": [
+    "Do not default evidence.documents.source_capture_state to materialized.",
     "Do not add a generic document_versions trigger that marks every logical source document materialized.",
+    "Do not allow a materialized document state without raw_materialized_document_version_id.",
+    "Do not infer raw=true from missing adapter provenance for new archived versions; supported source adapters must emit explicit raw=true or raw=false.",
     "Do not treat expected_sha256 of a readable representation as a raw-PDF hash unless raw bytes were actually verified.",
     "Do not let locator_verified support claim-level Evidence when claim-relevant content was never read.",
     "Do not make --source-pack or GitHub Release mandatory for research-orchestration/v2 or future default execution contracts.",
@@ -46,10 +52,22 @@
       "description": "Removes the incorrect document-version-equals-raw-materialization transition."
     },
     {
+      "kind": "schema",
+      "path": "migrations/0031_explicit_raw_source_materialization.sql",
+      "contains": "ALTER COLUMN source_capture_state SET DEFAULT 'locator_verified'",
+      "description": "New logical documents no longer manufacture raw materialized state by default."
+    },
+    {
+      "kind": "schema",
+      "path": "migrations/0031_explicit_raw_source_materialization.sql",
+      "contains": "documents_raw_materialization_state_consistency_check",
+      "description": "Materialized state is structurally tied to an explicit raw document version."
+    },
+    {
       "kind": "runtime",
       "path": "src/longcycle/adapters/storage/postgres_source_locators.py",
       "contains": "raw_source_identity_verified=true",
-      "description": "Raw materialization is an explicit verified transition tied to a document version."
+      "description": "Manual deferred materialization is an explicit verified transition tied to a document version."
     },
     {
       "kind": "runtime",
@@ -61,7 +79,13 @@
       "kind": "test",
       "path": "tests/test_materialized_source_representation.py",
       "contains": "test_content_verified_pdf_representation_emits_truthful_internal_markers",
-      "description": "Readable PDF representations carry truthful non-raw provenance into persistence."
+      "description": "Readable representations carry truthful non-raw provenance into persistence."
+    },
+    {
+      "kind": "test",
+      "path": "tests/test_source_locator_materialization.py",
+      "contains": "test_migrations_make_raw_materialization_explicit_and_version_scoped",
+      "description": "Regression test locks the locator default, explicit raw marker, state/version consistency and version-scoped materialization contract."
     }
   ],
   "revisit_when": "Revisit only if Longcycle adopts a richer source-material graph that still separately preserves logical source identity, actually read claim content, representation bytes and explicit raw-source materialization without transport-specific Evidence prerequisites.",
@@ -70,6 +94,7 @@
     "migration:0028",
     "migration:0029",
     "migration:0030",
+    "migration:0031",
     "capability:CAP-0001",
     "capability:CAP-0002",
     "capability:CAP-0007"
