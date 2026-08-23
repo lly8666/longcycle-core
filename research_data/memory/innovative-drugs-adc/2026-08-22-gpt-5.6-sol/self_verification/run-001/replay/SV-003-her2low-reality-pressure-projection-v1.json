@@ -1,0 +1,34 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "ADC-SV-003-ENHERTU-HER2LOW-REALITY-PRESSURE-V1",
+  "source_evidence_task_id": "ADC-SV-003-ENHERTU-HER2LOW-REALITY-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "issuer_reported_regulatory_approval_scope"
+  ],
+  "subjects": [
+    {
+      "id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "entity_type": "product",
+      "canonical_name": "trastuzumab deruxtecan / ENHERTU"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2022-us-her2-low-approval-scope-pressure",
+      "evidence_fragment_key": "2022-her2-low-us-approval-scope",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "regulatory.us_her2_low_approval_scope",
+      "value_text": "adult unresectable or metastatic HER2-low (IHC 1+ or IHC 2+/ISH-) breast cancer after specified prior chemotherapy",
+      "valid_time_kind": "period",
+      "valid_from": "2022-08-05T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "August 5, 2022",
+      "statistical_scope": "U.S. HER2-low metastatic breast-cancer indication branch",
+      "metadata": {
+        "role_semantics": "regulatory_scope",
+        "branch_identity": "HER2-low U.S. approval",
+        "outcome_pressure_boundary": "This approval is a later related milestone for the 2019 treatment-redefinition thesis, not the same semantic target."
+      }
+    }
+  ]
+}
