@@ -1,41 +1,45 @@
 {
   "closest_existing_capability_ids": [
-    "CAP-0003",
-    "CAP-0004",
+    "CAP-0001",
+    "CAP-0002",
     "CAP-0005"
   ],
   "disposition": "extend",
   "evidence_refs": [
     "docs/development/researcher-mental-map-gap-audit-v1.md",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    "migrations/0001_catalog.sql",
+    ".longcycle/capabilities/cards/CAP-0001.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
     "migrations/0002_evidence_and_facts.sql",
-    "migrations/0005_guards_and_indexes.sql",
-    "src/longcycle/ports/epistemic.py",
-    "src/longcycle/application/trajectory_view.py",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json"
+    "migrations/0027_source_locator_materialization_state.sql",
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0029_source_representation_fetch_state.sql",
+    "migrations/0031_explicit_raw_source_materialization.sql",
+    "src/longcycle/ports/repository.py",
+    "src/longcycle/adapters/storage/postgres.py"
   ],
   "governance_mode": "converging",
-  "intent": "Give a first-time researcher a truthful industry-level entrypoint that enumerates source-grounded member subjects and their typed point-in-time memory coverage, then links into existing subject trajectory replay without inventing value-chain roles, importance, causality, controversy, unknowns or a second knowledge-cutoff rule.",
-  "intent_id": "RESEARCHER-INDUSTRY-ORIENTATION-001",
+  "intent": "Let a researcher start from an already-exposed EvidenceFragment id and read the truthful claim-scoped Evidence content plus logical source identity, historical known-time boundary and source capture/materialization provenance without direct SQL, duplicate Evidence ownership, or pretending a readable representation is raw source bytes.",
+  "intent_id": "RESEARCHER-EVIDENCE-DRILLDOWN-001",
   "planned_paths": [
-    "src/longcycle/domain/orientation.py",
-    "src/longcycle/ports/orientation.py",
-    "src/longcycle/adapters/storage/postgres_orientation.py",
-    "src/longcycle/application/industry_orientation.py",
+    "src/longcycle/domain/evidence.py",
+    "src/longcycle/ports/evidence.py",
+    "src/longcycle/adapters/storage/postgres_evidence.py",
+    "src/longcycle/application/evidence_drilldown.py",
     "src/longcycle/cli.py",
-    "tests/test_industry_orientation.py",
-    "scripts/smoke_postgres_orientation.py",
+    "tests/test_evidence_drilldown.py",
+    "scripts/smoke_postgres_evidence_drilldown.py",
     ".github/workflows/ci.yml",
-    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/cards/CAP-0001.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
     ".longcycle/capabilities/active-index.json",
     ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null,
-  "rationale": "The mental-map audit demonstrated a product-navigation gap rather than a missing truth layer. Core catalog already contains industry/entity membership and identity; membership rows are resolution-backed by the existing Fact/Evidence path. CAP-0005 already owns read-only researcher projections and no-lookahead memory visibility, so the safe extension composes a typed catalog reader with the existing EpistemicMemoryReader snapshot at one shared cutoff. Catalog/Evidence/Reality/Judgment/Outcome semantics remain with existing owners.",
+  "rationale": "The database already stores the required semantics: EvidenceFragment locator/excerpt/structured payload; document-version to logical-document identity; publisher/source identity; source first-known/published time; and explicit locator_verified/content_verified/materialized plus raw-materialization provenance. The demonstrated gap is that the public repository boundary writes Evidence but exposes no typed read-by-fragment contract, forcing any researcher drill-down to couple directly to PostgreSQL internals. Extend CAP-0001 with truthful source-identity/capture-state reading and CAP-0002 with typed Evidence-fragment reading. CAP-0005 remains only the navigation surface that exposes Evidence ids; it does not become the Evidence truth owner.",
   "schema_version": "longcycle-capability-admission/v1",
   "target_capability_ids": [
-    "CAP-0005"
+    "CAP-0001",
+    "CAP-0002"
   ],
   "unmet_requirement": null
 }
