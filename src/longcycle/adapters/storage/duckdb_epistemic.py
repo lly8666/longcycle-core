@@ -203,7 +203,6 @@ def seal_industrial_memory(
                 ],
             )
 
-
         connection.execute(
             """
             CREATE TABLE judgment_rationale_memory (
@@ -469,24 +468,18 @@ class DuckDBEpistemicMemoryReader:
 
             judgment_id_index = judgment_columns.index("judgment_id")
             judgment_ids = [row[judgment_id_index] for row in judgment_rows]
+            table_names = {row[0] for row in connection.execute("SHOW TABLES").fetchall()}
             rationale_rows: list[tuple[Any, ...]] = []
             rationale_columns: list[str] = []
             relation_rows: list[tuple[Any, ...]] = []
             relation_columns: list[str] = []
-            if judgment_ids:
+            if judgment_ids and "judgment_rationale_memory" in table_names:
                 placeholders = ", ".join("?" for _ in judgment_ids)
                 rationale_clause = f"judgment_id IN ({placeholders})"
                 rationale_params: list[Any] = list(judgment_ids)
-                relation_clause = (
-                    f"from_judgment_id IN ({placeholders}) "
-                    f"AND to_judgment_id IN ({placeholders})"
-                )
-                relation_params: list[Any] = [*judgment_ids, *judgment_ids]
                 if cutoff is not None:
                     rationale_clause += " AND known_at <= ?"
                     rationale_params.append(cutoff)
-                    relation_clause += " AND known_at <= ?"
-                    relation_params.append(cutoff)
                 rationale_rows = connection.execute(
                     f"""
                     SELECT * FROM judgment_rationale_memory
@@ -496,6 +489,16 @@ class DuckDBEpistemicMemoryReader:
                     rationale_params,
                 ).fetchall()
                 rationale_columns = [column[0] for column in connection.description]
+            if judgment_ids and "judgment_relation_memory" in table_names:
+                placeholders = ", ".join("?" for _ in judgment_ids)
+                relation_clause = (
+                    f"from_judgment_id IN ({placeholders}) "
+                    f"AND to_judgment_id IN ({placeholders})"
+                )
+                relation_params: list[Any] = [*judgment_ids, *judgment_ids]
+                if cutoff is not None:
+                    relation_clause += " AND known_at <= ?"
+                    relation_params.append(cutoff)
                 relation_rows = connection.execute(
                     f"""
                     SELECT * FROM judgment_relation_memory
@@ -573,11 +576,13 @@ class DuckDBEpistemicMemoryReader:
             observed_time=(
                 TemporalExtent(
                     kind="instant",
-                    at=row["observed_at"],
-                    precision=TemporalPrecision(row["observed_at_precision"]),
-                    source_text=row["observed_at_text"],
+                    at=row.get("observed_at"),
+                    precision=TemporalPrecision(
+                        row.get("observed_at_precision", TemporalPrecision.UNKNOWN.value)
+                    ),
+                    source_text=row.get("observed_at_text"),
                 )
-                if row["observed_at"] is not None
+                if row.get("observed_at") is not None
                 else None
             ),
             known_at=row["known_at"],
@@ -610,7 +615,6 @@ class DuckDBEpistemicMemoryReader:
                 UUID(value) for value in json.loads(row["evidence_fragment_ids"])
             ),
         )
-
 
     @staticmethod
     def _judgment_rationale(row: dict[str, Any]) -> JudgmentRationaleMemoryRecord:
