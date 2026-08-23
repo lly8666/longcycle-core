@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
   "intent_id": "RESEARCHER-OPEN-STATE-STANDARDS-REPAIR-001",
-  "intent": "Repair the researcher open-state projection so it conforms to already-owned source-independence, current-research scoping and sealed model-memory campaign provenance. This is a conformance repair: do not add a new truth owner, migration, generic unknown state or new epistemic semantics.",
+  "intent": "Repair the researcher open-state projection so it conforms to already-owned source-independence, current-research scoping and sealed model-memory campaign provenance, and harden fresh-agent continuation so new composition/projection work must recover exact semantic owners and their negative cases before implementation. This is a conformance repair: do not add a new truth owner, generic unknown state or new epistemic semantics.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -14,7 +14,7 @@
     "CAP-0005",
     "CAP-0006"
   ],
-  "rationale": "Audit of the assistant-authored open-state implementation found three implementation drifts from existing owners: source disagreement used connector identity instead of the Reconciler's source-cluster independence semantics; the current research overlay inherited a historical membership-cutoff entity filter despite being labelled current/non-cutoff; and model-memory coverage mixed campaign vintages and admitted unsealed campaigns despite CAP-0006's immutable campaign/seal provenance. The repair changes typed read/projection implementation and tests but introduces no new truth semantics.",
+  "rationale": "Audit of the assistant-authored open-state implementation found implementation drift from existing owners: source disagreement used connector identity instead of the Reconciler's source-cluster independence semantics; the current research overlay inherited a historical membership-cutoff entity filter despite being labelled current/non-cutoff; model-memory coverage mixed campaign vintages and admitted unfinished or post-seal state; and the zero-context rehearsal incorrectly treated fuzzy capability search as authoritative owner recovery. The repair restores existing owner semantics and strengthens continuation so exact admission target IDs, owner cards and negative cases are loaded directly. No new truth semantics are introduced.",
   "unmet_requirement": null,
   "evidence_refs": [
     "src/longcycle/application/reconciliation.py",
@@ -23,7 +23,10 @@
     "src/longcycle/adapters/storage/postgres_open_states.py",
     "src/longcycle/application/open_state_view.py",
     "tests/test_open_state_view.py",
-    "scripts/smoke_postgres_open_states.py"
+    "scripts/smoke_postgres_open_states.py",
+    "tests/test_capability_registry.py",
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "CONTINUE_HERE.md"
   ],
   "planned_paths": [
     "src/longcycle/domain/open_states.py",
@@ -36,7 +39,12 @@
     ".longcycle/capabilities/cards/CAP-0005.json",
     ".longcycle/capabilities/cards/CAP-0006.json",
     "docs/development/assistant-session-standards-audit-v1.md",
-    ".longcycle/handoff/current.json"
+    ".longcycle/handoff/current.json",
+    "tests/test_capability_registry.py",
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "CONTINUE_HERE.md",
+    ".longcycle/repair-memory/invariants/RI-0006-semantic-owner-reuse.json",
+    ".longcycle/repair-memory/active-index.json"
   ],
   "proposed_capability_id": null
 }
