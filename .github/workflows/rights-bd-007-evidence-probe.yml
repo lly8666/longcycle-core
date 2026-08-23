@@ -6,14 +6,18 @@ on:
       - design/industry-memory
     paths:
       - '.github/workflows/rights-bd-007-evidence-probe.yml'
-      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/**'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/bms-2023-12-11-joint-announcement.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/sec-bms-2023-10k-systimmune-note.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/source-pack.zip'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
       - 'scripts/execute_grounded_evidence_spec.py'
       - 'src/longcycle/adapters/sources/materialized.py'
   pull_request:
     paths:
       - '.github/workflows/rights-bd-007-evidence-probe.yml'
-      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/**'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/bms-2023-12-11-joint-announcement.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/sec-bms-2023-10k-systimmune-note.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/source-pack.zip'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
       - 'scripts/execute_grounded_evidence_spec.py'
       - 'src/longcycle/adapters/sources/materialized.py'
@@ -69,9 +73,27 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(sha256sum "$MATERIAL_ROOT/bms-2023-12-11-joint-announcement.capture.txt" | awk '{print $1}')" = "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186"
-          test "$(sha256sum "$MATERIAL_ROOT/sec-bms-2023-10k-systimmune-note.capture.txt" | awk '{print $1}')" = "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3"
-          test "$(sha256sum "$MATERIAL_ROOT/source-pack.zip" | awk '{print $1}')" = "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350"
+
+          check_sha() {
+            local path="$1"
+            local expected="$2"
+            local actual
+            if [[ ! -f "$path" ]]; then
+              echo "::error file=$path::Required capture material is missing"
+              return 1
+            fi
+            actual="$(sha256sum "$path" | awk '{print $1}')"
+            echo "RIGHTS_BD_007_SHA path=$path actual=$actual expected=$expected"
+            if [[ "$actual" != "$expected" ]]; then
+              echo "::error file=$path::SHA-256 mismatch actual=$actual expected=$expected"
+              return 1
+            fi
+          }
+
+          check_sha "$MATERIAL_ROOT/bms-2023-12-11-joint-announcement.capture.txt" "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186"
+          check_sha "$MATERIAL_ROOT/sec-bms-2023-10k-systimmune-note.capture.txt" "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3"
+          check_sha "$MATERIAL_ROOT/source-pack.zip" "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350"
+
           python - <<'PY'
           import hashlib
           import json
