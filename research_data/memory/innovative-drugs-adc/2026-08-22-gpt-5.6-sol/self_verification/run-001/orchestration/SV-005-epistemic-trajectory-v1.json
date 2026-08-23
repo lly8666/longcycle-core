@@ -1,0 +1,55 @@
+{
+  "schema_version": "longcycle-epistemic-trajectory/v1",
+  "task_id": "ADC-SV-005-BLENREP-EPISTEMIC-TRAJECTORY-V1",
+  "research_orchestration_spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json",
+  "judgment_spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-judgment-projection-v1.json",
+  "outcome_evaluations": [
+    {
+      "key": "dreamm7-related-milestone",
+      "judgment_key": "2022-post-failure-dreamm-programme-continuation",
+      "reality_fact_key": "2024-dreamm7-positive-pfs",
+      "semantic_relation": "related_milestone"
+    }
+  ],
+  "replay": {
+    "subjects": [
+      {
+        "entity_id": "b5254c47-1de6-5850-a99f-5e5b829884a8"
+      }
+    ],
+    "expected_manifest_counts": {
+      "reality": 8,
+      "judgments": 1,
+      "outcomes": 1
+    },
+    "cutoffs": [
+      {
+        "key": "2022-11-23",
+        "knowledge_cutoff": "2022-11-23T12:00:00Z",
+        "expected_counts": {
+          "reality": 4,
+          "judgments": 1,
+          "outcomes": 0
+        }
+      },
+      {
+        "key": "2023-03-31",
+        "knowledge_cutoff": "2023-03-31T12:00:00Z",
+        "expected_counts": {
+          "reality": 6,
+          "judgments": 1,
+          "outcomes": 0
+        }
+      },
+      {
+        "key": "2024-02-06",
+        "knowledge_cutoff": "2024-02-06T12:00:00Z",
+        "expected_counts": {
+          "reality": 8,
+          "judgments": 1,
+          "outcomes": 1
+        }
+      }
+    ]
+  }
+}
