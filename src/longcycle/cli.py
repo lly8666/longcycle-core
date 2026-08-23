@@ -74,7 +74,22 @@ def _parser() -> argparse.ArgumentParser:
         help="execute one repository-owned fail-closed research orchestration spec",
     )
     research_run.add_argument("spec", type=Path)
-    research_run.add_argument("--source-pack", type=Path, required=True)
+    research_run.add_argument(
+        "--source-pack",
+        type=Path,
+        help=(
+            "legacy v1 source-pack ZIP. New v2 orchestration should use --material-root instead; "
+            "raw PDF download/Release packaging is not an epistemic prerequisite"
+        ),
+    )
+    research_run.add_argument(
+        "--material-root",
+        type=Path,
+        help=(
+            "transport-neutral local root containing the preserved source material declared by "
+            "the Grounded Evidence spec"
+        ),
+    )
     research_run.add_argument("--work-dir", type=Path, required=True)
     research_run.add_argument("--output", type=Path, required=True)
     research_run.add_argument(
@@ -171,7 +186,7 @@ async def _demo() -> dict[str, object]:
                     "freight_basis": "delivered",
                     "currency_code": "CNY",
                     "frequency": "daily",
-                    "price_component": "average"
+                    "price_component": "average",
                 },
                 "valid_from": "2025-12-31",
                 "valid_to": "2026-01-01",
@@ -196,7 +211,12 @@ async def _demo() -> dict[str, object]:
         )
         repository = InMemoryResearchRepository([source])
         plugin = LocalFolderSource(source)
-        items = [item async for item in plugin.discover(DiscoveryContext(source=source, industry_id=industry_id))]
+        items = [
+            item
+            async for item in plugin.discover(
+                DiscoveryContext(source=source, industry_id=industry_id)
+            )
+        ]
         pipeline = CollectionPipeline(
             repository=repository,
             archive=FileSystemArchiveStore(root / "blobs"),
@@ -243,6 +263,7 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
             repo_root=args.repo_root,
             spec_path=args.spec,
             source_pack_path=args.source_pack,
+            material_root_path=args.material_root,
             work_dir=args.work_dir,
             output_path=args.output,
             skip_db_upgrade=bool(args.skip_db_upgrade),
