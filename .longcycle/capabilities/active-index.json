@@ -1,35 +1,37 @@
 {
   "active": [
     {
-      "aliases": ["source archive", "source acquisition", "archive-now", "preserve-now", "document archival", "source locator", "deferred materialization", "raw source preservation"],
+      "aliases": ["source archive", "source acquisition", "archive-now", "preserve-now", "document archival", "source locator", "deferred materialization", "raw source preservation", "source identity read", "source provenance drilldown"],
       "card_path": ".longcycle/capabilities/cards/CAP-0001.json",
       "extension_seams": [
         "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
         "Add source discovery/watchlist behavior without changing logical document identity semantics.",
-        "Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification."
+        "Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification.",
+        "Add storage-neutral source-identity/preservation read projections that expose existing provenance without inferring claim authority or rewriting representation identity."
       ],
       "id": "CAP-0001",
       "maturity": "stable",
-      "owned_semantics": ["source.logical_document_identity", "source.locator_content_materialization_lifecycle", "source.fetch_archive_boundary", "source.raw_version_identity", "source.deferred_raw_materialization_integrity"],
-      "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction. Preserved readable representations may create document versions without claiming raw-source materialization; later verified raw bytes enrich the same logical document explicitly.",
-      "scope": ["src/longcycle/application/source_archive.py", "src/longcycle/ports/source.py", "src/longcycle/ports/archive.py", "src/longcycle/adapters/sources/**", "src/longcycle/adapters/storage/filesystem.py", "src/longcycle/adapters/storage/postgres_source_locators.py", "migrations/0027_source_locator_materialization_state.sql", "migrations/0028_truthful_source_materialization.sql", "migrations/0029_source_representation_fetch_state.sql"],
-      "tags": ["source", "archive", "locator", "provenance", "materialization", "immutable", "collection"],
+      "owned_semantics": ["source.logical_document_identity", "source.locator_content_materialization_lifecycle", "source.fetch_archive_boundary", "source.raw_version_identity", "source.deferred_raw_materialization_integrity", "source.researcher_identity_preservation_read"],
+      "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction. Preserved readable representations may create document versions without claiming raw-source materialization; later verified raw bytes enrich the same logical document explicitly. Read projections may expose that existing identity and current preservation provenance without turning operational materialization state into historical market knowledge.",
+      "scope": ["src/longcycle/application/source_archive.py", "src/longcycle/ports/source.py", "src/longcycle/ports/archive.py", "src/longcycle/adapters/sources/**", "src/longcycle/adapters/storage/filesystem.py", "src/longcycle/adapters/storage/postgres_source_locators.py", "src/longcycle/adapters/storage/postgres_evidence.py", "migrations/0027_source_locator_materialization_state.sql", "migrations/0028_truthful_source_materialization.sql", "migrations/0029_source_representation_fetch_state.sql", "migrations/0031_explicit_raw_source_materialization.sql", "scripts/smoke_postgres_evidence_drilldown.py"],
+      "tags": ["source", "archive", "locator", "provenance", "materialization", "immutable", "collection", "researcher-read"],
       "title": "Source identity, preservation and deferred materialization"
     },
     {
-      "aliases": ["grounded evidence", "evidence fragment grounding", "json pointer evidence", "pdf page evidence", "pdf readable representation evidence", "html visible text evidence"],
+      "aliases": ["grounded evidence", "evidence fragment grounding", "json pointer evidence", "pdf page evidence", "pdf readable representation evidence", "html visible text evidence", "evidence drilldown", "evidence fragment read", "researcher evidence provenance"],
       "card_path": ".longcycle/capabilities/cards/CAP-0002.json",
       "extension_seams": [
         "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
         "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve the upstream PDF identity/media type separately and never call the representation byte-identical PDF.",
-        "Add claim_context annotations without silently promoting them into Reality/Judgment."
+        "Add claim_context annotations without silently promoting them into Reality/Judgment.",
+        "Add read-only Evidence navigation by fragment identity through typed ports while preserving claim-scoped content, first-known visibility and exact representation identity."
       ],
       "id": "CAP-0002",
       "maturity": "core_locked",
-      "owned_semantics": ["evidence.fragment.grounding", "evidence.locator.integrity", "evidence.readable_representation_truthfulness", "evidence.structured_json_pointer_exactness"],
-      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion. Grounding may use archived raw PDF/HTML/JSON or a truthful readable representation of content the Agent actually read; locator existence alone is never claim Evidence.",
-      "scope": ["src/longcycle/application/evidence_recording.py", "src/longcycle/adapters/parsers.py", "scripts/execute_grounded_evidence_spec.py", "tests/test_evidence_recording.py", "tests/test_json_evidence_recording.py", "tests/test_handoff_data_plane.py"],
-      "tags": ["evidence", "locator", "provenance", "readable-representation", "json-pointer", "claim-scope"],
+      "owned_semantics": ["evidence.fragment.grounding", "evidence.locator.integrity", "evidence.readable_representation_truthfulness", "evidence.structured_json_pointer_exactness", "evidence.fragment.typed_read_by_id", "evidence.fragment.historical_visibility"],
+      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion, and own the typed read boundary that returns that same fragment without exposing storage internals. Grounding/readback may use archived raw PDF/HTML/JSON or a truthful readable representation of content the Agent actually read; locator existence alone is never claim Evidence, later raw materialization never rewrites the fragment's original representation identity, and readback must fail closed when the fragment was not yet knowable at the requested cutoff.",
+      "scope": ["src/longcycle/application/evidence_recording.py", "src/longcycle/adapters/parsers.py", "scripts/execute_grounded_evidence_spec.py", "tests/test_evidence_recording.py", "tests/test_json_evidence_recording.py", "tests/test_handoff_data_plane.py", "src/longcycle/domain/evidence.py", "src/longcycle/ports/evidence.py", "src/longcycle/adapters/storage/postgres_evidence.py", "src/longcycle/application/evidence_drilldown.py", "tests/test_evidence_drilldown.py", "scripts/smoke_postgres_evidence_drilldown.py"],
+      "tags": ["evidence", "locator", "provenance", "readable-representation", "json-pointer", "claim-scope", "researcher-read", "knowledge-cutoff"],
       "title": "Claim-scoped Grounded Evidence"
     },
     {
