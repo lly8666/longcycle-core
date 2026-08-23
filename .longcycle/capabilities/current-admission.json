@@ -1,18 +1,20 @@
 {
   "closest_existing_capability_ids": [
     "CAP-0001",
-    "CAP-0002"
+    "CAP-0002",
+    "CAP-0007"
   ],
   "disposition": "extend",
   "evidence_refs": [
     ".longcycle/capabilities/cards/CAP-0001.json",
     ".longcycle/capabilities/cards/CAP-0002.json",
+    ".longcycle/capabilities/cards/CAP-0007.json",
     "migrations/0002_evidence_and_facts.sql",
-    "src/longcycle/adapters/storage/postgres.py",
+    "src/longcycle/application/research_orchestration.py",
     "METHODOLOGY_CORE.md"
   ],
   "governance_mode": "converging",
-  "intent": "Decouple verified PDF source identity and claim-relevant readable content from optional raw-byte materialization so transport friction does not block historical research, while preserving claim-scoped Evidence integrity and one logical document identity.",
+  "intent": "Decouple verified PDF source identity and claim-relevant readable content from optional raw-byte materialization across source persistence and research execution, so transport friction does not block historical research while preserving claim-scoped Evidence integrity and one logical document identity.",
   "intent_id": "SOURCE-PDF-DEFERRED-MATERIALIZATION-001",
   "planned_paths": [
     "METHODOLOGY_CORE.md",
@@ -22,17 +24,25 @@
     "docs/dev-binary-cache.md",
     "docs/development/session-handoff-protocol.md",
     "migrations/0027_source_locator_materialization_state.sql",
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0029_source_representation_fetch_state.sql",
     "src/longcycle/adapters/storage/postgres_source_locators.py",
+    "src/longcycle/adapters/sources/materialized.py",
     "src/longcycle/application/handoff_data_plane.py",
+    "src/longcycle/application/research_orchestration.py",
+    "src/longcycle/cli.py",
     "tests/test_source_locator_materialization.py",
+    "tests/test_materialized_source_representation.py",
+    "tests/test_research_orchestration.py",
     "tests/test_handoff_data_plane.py"
   ],
   "proposed_capability_id": null,
-  "rationale": "The existing source/archive capability already owns logical source identity and later immutable raw versions, while Grounded Evidence already owns claim-level content verification. The observed failure was coupling these two stages through a downloader-specific prerequisite. Extend CAP-0001 with locator/content/materialized lifecycle state and preserve CAP-0002's rule that unread locators cannot prove claims; do not create another source or Evidence owner.",
+  "rationale": "CAP-0001 already owns source identity/preservation, CAP-0002 owns claim-level Grounded Evidence, and CAP-0007 owns bounded execution composition. The observed failure was downloader/source-pack coupling across those stages. Extend the existing owners: locator-only remains below Evidence, content-verified readable representations may persist document versions without claiming raw materialization, and orchestration v2 verifies transport-neutral prepared material rather than requiring a Release pack.",
   "schema_version": "longcycle-capability-admission/v1",
   "target_capability_ids": [
     "CAP-0001",
-    "CAP-0002"
+    "CAP-0002",
+    "CAP-0007"
   ],
   "unmet_requirement": null
 }
