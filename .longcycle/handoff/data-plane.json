@@ -12,6 +12,51 @@
   "supersession_policy": "All handoff transports are immutable-by-identity. Never replace bytes behind a recorded Release filename or Drive file id without advancing the repository manifest and SHA-256. Successor PDF source packs get new Release filenames; successor webpage-capture/generated packs get new Drive files/ids. This manifest is deliberately resume-relevant rather than an exhaustive historical asset inventory; durable receipts retain older artifact identities.",
   "assets": [
     {
+      "asset_id": "rights-bd-007-lifecycle-run32628113204",
+      "role": "research_lifecycle_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1PyPRITIlPO4kbqSUlBF1pDeVzkyOBEMr",
+      "file_name": "longcycle-rights-bd-007-lifecycle-run32628113204.zip",
+      "size_bytes": 28484,
+      "sha256": "baf796f5b7dd92b88c04d647b36ef07f5bdf96ca0eaea2ee3907c1cb2a8177fb",
+      "content_summary": "Generated RIGHTS-BD-007 PostgreSQL lifecycle execution from exact head 92a2c5d1404218b50627710e5fb1ad45816bad28: two persisted document versions and two EvidenceFragments with zero Fact/Judgment promotion at Grounded Evidence, two reconciled canonical Reality facts for the 2023-12-11 collaboration announcement and February-2024 transaction effectiveness, plus CAP-0005 no-lookahead replay showing Reality visibility counts 0 -> 1 -> 1 -> 2 across the conservative knowledge cutoffs. Includes the two content-addressed legacy faithful webpage capture blobs used by that execution; the retired corrupt source-pack.zip wrapper is not included or required.",
+      "components": [
+        {
+          "path": "RIGHTS-BD-007-grounded-evidence-execution.json",
+          "sha256": "a21c0a2f6e5d88bea6ffa71e348bcb8bf8c2b6036461224f3cc3859d9b56a7a9",
+          "size_bytes": 7547,
+          "role": "Grounded Evidence execution"
+        },
+        {
+          "path": "RIGHTS-BD-007-reality-execution.json",
+          "sha256": "961e4453b543d39c183d5e28ae28bcc2849e04e70bb629434b0944f7dd625251",
+          "size_bytes": 9656,
+          "role": "canonical Reality projection and reconciliation execution"
+        },
+        {
+          "path": "RIGHTS-BD-007-replay-check.json",
+          "sha256": "7df93a636c7ba4f681e0dcd644dab3fa1683a13ce78b92b70b0880f1235a72ec",
+          "size_bytes": 4931,
+          "role": "CAP-0005 no-lookahead replay verification"
+        },
+        {
+          "path": "rights-bd-007-blobs/raw/sha256/fb/fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
+          "sha256": "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
+          "size_bytes": 2225,
+          "role": "archived faithful BMS visible-text capture used by the execution"
+        },
+        {
+          "path": "rights-bd-007-blobs/raw/sha256/d2/d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
+          "sha256": "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
+          "size_bytes": 2119,
+          "role": "archived faithful SEC visible-text capture used by the execution"
+        }
+      ],
+      "restore_instruction": "Restore from Google Drive file id 1PyPRITIlPO4kbqSUlBF1pDeVzkyOBEMr, verify outer SHA baf796f5b7dd92b88c04d647b36ef07f5bdf96ca0eaea2ee3907c1cb2a8177fb and component hashes above, then inspect generated Evidence/Reality/replay outputs read-only. Re-grounding source identity remains controlled by the Git-pinned capture manifest/spec; do not resurrect or trust the retired corrupt source-pack.zip wrapper."
+    },
+    {
       "asset_id": "adc-sv001-mirvetuximab-acquisition-run32579952518",
       "role": "raw_source_acquisition_cache",
       "required_for_current_task": false,
