@@ -1,0 +1,249 @@
+{
+  "schema_version": "longcycle-memory-exhaustion/v1",
+  "campaign_id": "DRAM-MEMORY-001",
+  "industry": "DRAM 存储半导体",
+  "industry_slug": "dram-memory",
+  "default_period": ["2016-01-01", "2026-08-24"],
+  "protocol": "docs/research/model-memory-exhaustion-protocol.md",
+  "collection_plan": "docs/research/dram-memory-collection-plan.md",
+  "status": "initialized_blind_recall_not_started",
+  "initialization_boundary": {
+    "scope_verification_used_current_public_sources": true,
+    "blind_recall_must_start_in_fresh_context": true,
+    "reason": "The initialization session inspected current public sources only to verify benchmark scope. Those observations must not anchor the sealed blind atlas.",
+    "future_material_after": "2026-08-24",
+    "future_material_route": "current_source_watch_not_historical_blind_recall"
+  },
+  "blind_stage": {
+    "source_visibility": "none",
+    "fresh_search_forbidden": true,
+    "archive_results_forbidden": true,
+    "required_output_classes": [
+      "obvious_landmarks",
+      "long_tail_leads",
+      "forgotten_actors",
+      "mechanism_leads",
+      "search_keys",
+      "uncertain_fragments"
+    ],
+    "long_tail_token_share_min": 0.5
+  },
+  "passes": [
+    {
+      "pass_id": "DRAM-TIME-2016-2018",
+      "family": "time_slice",
+      "period": ["2016-01-01", "2018-12-31"],
+      "focus": "cycle upswing, tight supply, pricing power and supplier investment response",
+      "questions": [
+        "Recall price, inventory, bit supply/demand, node transitions, capex, supplier actions and contemporaneous narratives by half-year or quarter.",
+        "Which actors, constraints or forecasts mattered then but are less salient today?"
+      ]
+    },
+    {
+      "pass_id": "DRAM-TIME-2019-2021",
+      "family": "time_slice",
+      "period": ["2019-01-01", "2021-12-31"],
+      "focus": "downcycle, pandemic demand shifts, inventory and renewed tightness",
+      "questions": [
+        "Separate PC, server and mobile demand narratives from actual comparable observations.",
+        "Recall supplier cuts, capex decisions, node transitions and forecasts that were later revised."
+      ]
+    },
+    {
+      "pass_id": "DRAM-TIME-2022-2023",
+      "family": "time_slice",
+      "period": ["2022-01-01", "2023-12-31"],
+      "focus": "inventory correction, price decline, production cuts and capex discipline",
+      "questions": [
+        "Recall when different actors recognized the inventory problem and how expected normalization timing changed.",
+        "Look for early contrary signals, write-downs, utilization changes and failed demand narratives."
+      ]
+    },
+    {
+      "pass_id": "DRAM-TIME-2024-2026",
+      "family": "time_slice",
+      "period": ["2024-01-01", "2026-08-24"],
+      "focus": "AI/HBM mix shift, conventional DRAM interaction, capacity allocation and advanced packaging constraints",
+      "questions": [
+        "Recall HBM qualification/ramp expectations separately from later outcomes.",
+        "Recall how suppliers described conventional DRAM, HBM trade ratios, bit supply, capex and cleanroom constraints at each stage."
+      ]
+    },
+    {
+      "pass_id": "DRAM-PRODUCTS",
+      "family": "chain_slice",
+      "focus_nodes": ["DDR4", "DDR5", "LPDDR4X", "LPDDR5/5X", "GDDR", "HBM2/2E", "HBM3/3E", "HBM4"],
+      "questions": [
+        "Recall product-generation transitions, applications, qualification timing, supply constraints and pricing/mix implications.",
+        "Do not assume product generations or supplier node labels are directly comparable."
+      ]
+    },
+    {
+      "pass_id": "DRAM-ACTORS",
+      "family": "actor_exhaustion",
+      "questions": [
+        "Exhaust Samsung, SK hynix, Micron, CXMT, Nanya and forgotten/edge suppliers by period.",
+        "For each actor recall fabs, cuts, capex, node moves, product ramps, customer qualification, failures, old names and major strategic reversals.",
+        "Include downstream actors only where they create a specific DRAM demand or qualification lead."
+      ]
+    },
+    {
+      "pass_id": "DRAM-METRICS",
+      "family": "metric_exhaustion",
+      "metrics": [
+        "spot price",
+        "contract price",
+        "wafer capacity",
+        "wafer starts",
+        "bit shipments",
+        "bit supply growth",
+        "bit demand growth",
+        "yield",
+        "inventory",
+        "days of inventory",
+        "capex",
+        "utilization",
+        "cost per bit",
+        "memory content per device",
+        "HBM stack output",
+        "qualification cycle"
+      ],
+      "questions": [
+        "Recall historical definitions and periods where the metric became non-comparable or especially important.",
+        "Identify likely primary or methodology-bearing source families for later verification without searching now."
+      ]
+    },
+    {
+      "pass_id": "DRAM-MECHANISMS",
+      "family": "mechanism_exhaustion",
+      "questions": [
+        "Recall mechanisms linking price, inventory, utilization, capex, node migration, bit-per-wafer growth, qualification and effective supply.",
+        "Recall how HBM die usage, stacking, base die and packaging constraints may alter conventional DRAM supply or economics.",
+        "For every mechanism generate historical examples as leads, not conclusions."
+      ]
+    },
+    {
+      "pass_id": "DRAM-NARRATIVES",
+      "family": "contemporaneous_narrative",
+      "questions": [
+        "Recall consensus, minority views, shortage/oversupply narratives, inventory normalization forecasts and capex-discipline claims by period.",
+        "Recall HBM TAM, AI demand, Chinese supply and conventional DRAM narratives as they were stated at the time, not with hindsight."
+      ]
+    },
+    {
+      "pass_id": "DRAM-TERMINOLOGY",
+      "family": "old_vocabulary",
+      "questions": [
+        "Recall historical node labels, product names, fab names, old company/project names, pricing terms, report-title phrases and terminology useful for lost-web search.",
+        "Prefer vocabulary that a current searcher would not naturally guess."
+      ]
+    },
+    {
+      "pass_id": "DRAM-FAILURES",
+      "family": "failure_dead_end",
+      "questions": [
+        "Recall delayed fabs, failed or slow node ramps, qualification misses, utilization cuts, write-downs, cancelled investments and product narratives that did not materialize.",
+        "Include suppliers or technologies that were important at the time but later became marginal."
+      ]
+    },
+    {
+      "pass_id": "DRAM-REVERSE-2023",
+      "family": "reverse_causality",
+      "anchor": "2022-2023 DRAM price and inventory downturn",
+      "lookback_months": [6, 12, 18, 24, 36],
+      "questions": [
+        "Work backward to potential earlier demand, inventory, capex, node, supply and customer-ordering conditions.",
+        "Use the later downturn only to activate leads; never present the later outcome as information already known earlier."
+      ]
+    },
+    {
+      "pass_id": "DRAM-REVERSE-HBM",
+      "family": "reverse_causality",
+      "anchor": "2024-2026 HBM-driven DRAM product-mix and capacity-allocation shift",
+      "lookback_months": [6, 12, 24, 36, 60],
+      "questions": [
+        "Recall earlier product, packaging, customer, accelerator and supplier decisions that may have set up the later HBM shift.",
+        "Separate what was genuinely anticipated from what only became obvious after AI demand accelerated."
+      ]
+    },
+    {
+      "pass_id": "DRAM-CROSS-INDUSTRY",
+      "family": "cross_industry",
+      "questions": [
+        "Recall semiconductor equipment, advanced packaging, foundry/base-die, cloud capex, GPU/platform, handset/PC, geopolitics, export controls and financing variables that directly changed DRAM conditions.",
+        "Do not expand adjacent sectors beyond claim-scoped DRAM effects."
+      ]
+    },
+    {
+      "pass_id": "DRAM-COUNTERFACTUAL",
+      "family": "counterfactual",
+      "questions": [
+        "For each famous cycle explanation generate at least two contemporaneously plausible alternatives.",
+        "State what historical evidence would distinguish the explanations."
+      ]
+    },
+    {
+      "pass_id": "DRAM-NEGATIVE-SPACE",
+      "family": "negative_space",
+      "requires_atlas_only": true,
+      "questions": [
+        "Inspect the generated time × actor/product × metric matrix for suspicious blanks.",
+        "Ask what a long-tenured DRAM operator would say is missing if the atlas looks too much like a public market report."
+      ]
+    },
+    {
+      "pass_id": "DRAM-SATURATION",
+      "family": "saturation_review",
+      "requires_atlas_only": true,
+      "questions": [
+        "Cluster duplicate leads and classify remaining gaps.",
+        "Judge whether three consecutive orthogonal passes have produced few new high-importance non-duplicate leads."
+      ]
+    }
+  ],
+  "recursive_questions_for_high_importance_lead": [
+    "Who else? Which other actors are connected?",
+    "What preceded it? Which earlier indicators or decisions existed?",
+    "What followed it? Which later actions or observations may be connected?",
+    "What was it called then? Which historical vocabulary should later search use?"
+  ],
+  "comparability_hazards": [
+    "spot_vs_contract_price",
+    "product_generation_density_and_application",
+    "fab_capacity_vs_wafer_starts_vs_bit_output",
+    "supplier_node_names_not_equivalent",
+    "financial_inventory_vs_physical_channel_inventory",
+    "device_units_vs_memory_content_vs_bit_demand",
+    "HBM_mix_value_vs_total_bit_growth",
+    "sample_vs_qualification_vs_mass_production_vs_mass_shipment",
+    "memory_segment_DRAM_NAND_scope_mixing"
+  ],
+  "self_verification_stage": {
+    "enabled": true,
+    "must_start_new_run": true,
+    "source_visibility": "search_results",
+    "objectives": [
+      "resolve vague memory leads into exact company, fab, product, report and historical terminology",
+      "locate claim-scoped primary sources before secondary summaries",
+      "separate independent sources from repeated syndication",
+      "generate precise delegated verification packets"
+    ],
+    "forbidden": [
+      "modify sealed blind atlas",
+      "promote search snippets into Fact or Judgment",
+      "delete a lead because search returns not found",
+      "treat repeated secondary coverage as independent proof"
+    ]
+  },
+  "saturation_rule": {
+    "consecutive_low_novelty_passes": 3,
+    "must_review_coverage_matrix": true,
+    "must_include_long_tail_categories": [
+      "forgotten_actors",
+      "failure_dead_end",
+      "old_vocabulary",
+      "mechanism",
+      "negative_space"
+    ]
+  }
+}
