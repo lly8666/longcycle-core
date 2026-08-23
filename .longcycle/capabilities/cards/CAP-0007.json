@@ -3,13 +3,14 @@
     "research orchestration",
     "research runner",
     "research run",
+    "source material execution",
     "source pack execution",
     "portable research receipt"
   ],
   "entrypoints": [
     {
       "contains": "class ResearchOrchestrationSpec(BaseModel):",
-      "description": "Repository-owned orchestration spec composes existing Evidence/Reality executors and immutable guards.",
+      "description": "Repository-owned orchestration spec composes existing Evidence/Reality executors and preserved-source integrity guards.",
       "kind": "application",
       "path": "src/longcycle/application/research_orchestration.py"
     },
@@ -23,12 +24,12 @@
   "extension_seams": [
     "Add researcher/task invocation adapters by delegation to the same application contract.",
     "Add new bounded execution phases only when an existing semantic executor already owns the phase.",
-    "Historical-recovery discovery stays upstream in CAP-0006; compose its archived outputs here only after normal source acquisition has produced an immutable source pack/spec."
+    "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless the claim specifically requires byte-level/source-format verification."
   ],
   "guards": [
     {
       "contains": "class ResearchOrchestrationContractTest",
-      "description": "Contract tests cover source-pack/material hashes, repair guards and immutable paths.",
+      "description": "Contract tests cover preserved source-material hashes, repair guards and immutable paths.",
       "kind": "test",
       "path": "tests/test_research_orchestration.py"
     }
@@ -36,18 +37,19 @@
   "id": "CAP-0007",
   "maturity": "stable",
   "non_goals": [
-    "Owning GitHub Release/Drive transport restoration.",
+    "Owning GitHub Release/Drive transport restoration or PDF download machinery.",
     "Reimplementing Evidence/Reality semantics inside workflow/CLI.",
-    "Owning memory-first historical discovery or treating the source-pack execution entrypoint as the whole historical-research lifecycle.",
+    "Owning memory-first historical discovery or treating one execution entrypoint as the whole historical-research lifecycle.",
+    "Requiring raw source packs when claim-relevant content is already truthfully content_verified under CAP-0001/CAP-0002.",
     "Campaign-specific branches in the generic runner."
   ],
   "owned_semantics": [
-    "orchestration.source_pack_integrity",
+    "orchestration.preserved_source_integrity",
     "orchestration.bounded_evidence_reality_composition",
     "orchestration.portable_execution_receipt"
   ],
-  "purpose": "Own the execution-stage composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards; historical memory-first discovery remains upstream in CAP-0006.",
-  "revisit_when": "Only replace if source identity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery semantics.",
+  "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. It consumes CAP-0001/CAP-0002 source/Evidence state and must not turn raw-byte acquisition into an independent research prerequisite.",
+  "revisit_when": "Only replace if source identity, representation integrity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery or transport semantics.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/research_orchestration.py",
@@ -60,7 +62,7 @@
   "supersedes": [],
   "tags": [
     "orchestration",
-    "source-pack",
+    "source-material",
     "repair-overlay",
     "receipt",
     "fail-closed"
