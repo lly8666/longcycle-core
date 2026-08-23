@@ -38,7 +38,6 @@ jobs:
           import hashlib
           import io
           import json
-          import re
           import urllib.request
           from pathlib import Path
           from urllib.parse import urlsplit
@@ -48,19 +47,14 @@ jobs:
           ITEMS = [
               {
                   'key': 'fda-blenrep-label-2020-08',
-                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.pdf',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.Pdf',
                   'retrieval_role': 'authoritative_regulator_historical_label',
                   'upstream_system': 'U.S. Food and Drug Administration historical prescribing information',
                   'upstream_external_id': 'BLA-761158-S000-label-2020-08',
                   'upstream_title': 'BLENREP (belantamab mafodotin-blmf) prescribing information, revised 08/2020',
                   'published_date': '2020-08-05',
-                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.pdf',
-                  'required_phrases': [
-                      'ocular toxicity',
-                      'BLENREP REMS',
-                      'at least 4 prior therapies',
-                      'confirmatory trial',
-                  ],
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.Pdf',
+                  'required_phrases': ['ocular toxicity', 'BLENREP REMS', 'at least 4 prior therapies', 'confirmatory trial'],
               },
               {
                   'key': 'federal-register-blenrep-revocation-2023',
@@ -71,12 +65,7 @@ jobs:
                   'upstream_title': 'Revocation of the Biologics License for BLENREP',
                   'published_date': '2023-03-30',
                   'original_url': 'https://public-inspection.federalregister.gov/2023-06576.pdf',
-                  'required_phrases': [
-                      'BLENREP',
-                      'November 18, 2022',
-                      'February 6, 2023',
-                      'DREAMM-3',
-                  ],
+                  'required_phrases': ['BLENREP', 'November 18, 2022', 'February 6, 2023', 'DREAMM-3'],
               },
               {
                   'key': 'gsk-dreamm7-readout-2024-02-05',
@@ -87,25 +76,12 @@ jobs:
                   'upstream_title': 'DREAMM-7 phase III trial shows Blenrep combination nearly tripled median progression-free survival versus standard of care combination',
                   'published_date': '2024-02-05',
                   'original_url': 'https://www.gsk.com/media/41dimrac/20240201-s-ea-blenrep-dreamm-7-final.pdf',
-                  'required_phrases': [
-                      'DREAMM-7',
-                      'hazard ratio',
-                      '0.41',
-                      '36.6 months',
-                      'bortezomib',
-                  ],
+                  'required_phrases': ['DREAMM-7', 'hazard ratio', '0.41', '36.6 months', 'bortezomib'],
               },
           ]
 
           def fetch(url):
-              request = urllib.request.Request(
-                  url,
-                  headers={
-                      'User-Agent': UA,
-                      'Accept': 'application/pdf,*/*;q=0.8',
-                      'Accept-Language': 'en-US,en;q=0.8',
-                  },
-              )
+              request = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'application/pdf,*/*;q=0.8', 'Accept-Language': 'en-US,en;q=0.8'})
               with urllib.request.urlopen(request, timeout=120) as response:
                   return response.read(), response.geturl(), response.status, dict(response.headers.items())
 
@@ -116,18 +92,7 @@ jobs:
 
           rows = []
           for item in ITEMS:
-              base = {
-                  'key': item['key'],
-                  'requested_url': item['url'],
-                  'retrieval_role': item['retrieval_role'],
-                  'upstream_document_identity': {
-                      'system': item['upstream_system'],
-                      'external_id': item['upstream_external_id'],
-                      'title': item['upstream_title'],
-                      'published_date': item['published_date'],
-                      'original_url': item['original_url'],
-                  },
-              }
+              base = {'key': item['key'], 'requested_url': item['url'], 'retrieval_role': item['retrieval_role'], 'upstream_document_identity': {'system': item['upstream_system'], 'external_id': item['upstream_external_id'], 'title': item['upstream_title'], 'published_date': item['published_date'], 'original_url': item['original_url']}}
               try:
                   raw, final_url, status, headers = fetch(item['url'])
                   if status != 200:
@@ -144,22 +109,7 @@ jobs:
                   raw_path.write_bytes(raw)
                   verification_path = Path('acquired') / f"{item['key']}-verification-text.txt"
                   verification_path.write_text(text, encoding='utf-8')
-                  rows.append({
-                      **base,
-                      'ok': True,
-                      'final_url': final_url,
-                      'retrieval_host': urlsplit(final_url).hostname,
-                      'status': status,
-                      'content_type': 'application/pdf',
-                      'archived_file': raw_path.name,
-                      'raw_sha256': hashlib.sha256(raw).hexdigest(),
-                      'raw_bytes': len(raw),
-                      'page_count': page_count,
-                      'verification_text_file': verification_path.name,
-                      'verification_text_sha256_acquisition_only': hashlib.sha256(text.encode('utf-8')).hexdigest(),
-                      'verified_phrases': item['required_phrases'],
-                      'evidence_boundary': 'verification text is acquisition-time semantic checking only and is not automatically publishable Evidence',
-                  })
+                  rows.append({**base, 'ok': True, 'final_url': final_url, 'retrieval_host': urlsplit(final_url).hostname, 'status': status, 'content_type': 'application/pdf', 'archived_file': raw_path.name, 'raw_sha256': hashlib.sha256(raw).hexdigest(), 'raw_bytes': len(raw), 'page_count': page_count, 'verification_text_file': verification_path.name, 'verification_text_sha256_acquisition_only': hashlib.sha256(text.encode('utf-8')).hexdigest(), 'verified_phrases': item['required_phrases'], 'evidence_boundary': 'verification text is acquisition-time semantic checking only and is not automatically publishable Evidence'})
               except Exception as exc:
                   rows.append({**base, 'ok': False, 'error': f'{type(exc).__name__}: {exc}'})
 
@@ -183,27 +133,18 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PY'
-          import hashlib
-          import json
-          import os
-          import zipfile
+          import hashlib, json, os, zipfile
           from pathlib import Path
-
           output = Path(f"longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run{os.environ['GITHUB_RUN_ID']}.zip")
           epoch = (2026, 8, 23, 0, 0, 0)
           with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
               for path in sorted(Path('acquired').rglob('*')):
-                  if not path.is_file():
-                      continue
-                  info = zipfile.ZipInfo(str(path.relative_to('acquired')), date_time=epoch)
-                  info.compress_type = zipfile.ZIP_DEFLATED
-                  info.external_attr = 0o644 << 16
-                  zf.writestr(info, path.read_bytes())
-          receipt = {
-              'file_name': output.name,
-              'size_bytes': output.stat().st_size,
-              'sha256': hashlib.sha256(output.read_bytes()).hexdigest(),
-          }
+                  if path.is_file():
+                      info = zipfile.ZipInfo(str(path.relative_to('acquired')), date_time=epoch)
+                      info.compress_type = zipfile.ZIP_DEFLATED
+                      info.external_attr = 0o644 << 16
+                      zf.writestr(info, path.read_bytes())
+          receipt = {'file_name': output.name, 'size_bytes': output.stat().st_size, 'sha256': hashlib.sha256(output.read_bytes()).hexdigest()}
           Path('release-asset.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
           print(Path('release-asset.json').read_text())
           PY
