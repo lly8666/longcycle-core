@@ -51,7 +51,7 @@ async def main() -> None:
         content_type="text/plain",
         canonical_url="https://judgment-smoke.longcycle.invalid/disclosure.txt",
         status_code=200,
-        headers={},
+        headers={"x-longcycle-raw-source-materialized": "true"},
         retrieved_at=datetime(2022, 6, 1, tzinfo=UTC),
     )
     document = SourceDocument.from_payload(
