@@ -1,19 +1,27 @@
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 AssetRole = Literal[
     "raw_source_acquisition_cache",
+    "legacy_materialized_pdf_source_cache",
+    "webpage_source_capture_capsule",
     "research_evidence_capsule",
+    "research_lifecycle_capsule",
+    "research_outcome_pressure_capsule",
     "typed_replay_capsule",
     "offline_runtime",
     "research_pack",
     "cold_archive_pack",
 ]
-AssetTransport = Literal["github_release", "google_drive"]
+AssetTransport = Literal[
+    "github_release",
+    "github_release_legacy_materialization",
+    "google_drive",
+]
 
 
 class HandoffAssetComponent(BaseModel):
@@ -21,7 +29,7 @@ class HandoffAssetComponent(BaseModel):
 
     path: str = Field(min_length=1)
     role: str = Field(min_length=1)
-    size_bytes: int = Field(ge=0)
+    size_bytes: int | None = Field(default=None, ge=0)
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
@@ -37,44 +45,77 @@ class HandoffBinaryAsset(BaseModel):
     file_name: str = Field(min_length=1)
     size_bytes: int = Field(gt=0)
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    materialization_status: str | None = None
     content_summary: str = Field(min_length=1)
     components: tuple[HandoffAssetComponent, ...] = ()
     restore_instruction: str = Field(min_length=1)
 
     @model_validator(mode="after")
     def transport_matches_asset_role(self) -> HandoffBinaryAsset:
-        if self.transport == "github_release":
+        if self.transport in {"github_release", "github_release_legacy_materialization"}:
             if not self.release_tag:
                 raise ValueError("GitHub Release assets require release_tag")
             if self.google_drive_file_id is not None:
                 raise ValueError("GitHub Release assets cannot carry a Google Drive file id")
-        else:
+        elif self.transport == "google_drive":
             if not self.google_drive_file_id:
                 raise ValueError("Google Drive assets require google_drive_file_id")
             if self.release_tag is not None:
                 raise ValueError("Google Drive assets cannot carry a Release tag")
 
-        if self.role == "raw_source_acquisition_cache":
-            if self.transport != "github_release":
-                raise ValueError("externally acquired raw source packs must use GitHub Release")
-        elif self.transport != "google_drive":
+        if self.role == "webpage_source_capture_capsule" and self.transport != "google_drive":
+            raise ValueError("webpage capture capsules must use Google Drive")
+        if self.role == "legacy_materialized_pdf_source_cache" and self.transport not in {
+            "github_release",
+            "github_release_legacy_materialization",
+        }:
+            raise ValueError("legacy materialized PDF caches must remain on their Release transport")
+        if self.role == "raw_source_acquisition_cache" and self.transport != "github_release":
+            raise ValueError("legacy raw source acquisition caches must remain on GitHub Release")
+        if self.role in {
+            "research_evidence_capsule",
+            "research_lifecycle_capsule",
+            "research_outcome_pressure_capsule",
+            "typed_replay_capsule",
+            "offline_runtime",
+            "research_pack",
+            "cold_archive_pack",
+        } and self.transport != "google_drive":
             raise ValueError("Longcycle-generated binary assets must use Google Drive")
         return self
 
 
 class HandoffDataPlaneManifest(BaseModel):
-    """Resume-relevant binary state that is too large for Git but must remain reproducible."""
+    """Resume-relevant source/data state that is too large or unsuitable for Git.
+
+    v4 deliberately separates PDF source identity/content verification from optional raw-byte
+    materialization. Older v2/v3 manifests remain readable so durable historical receipts do not
+    require migration churn.
+    """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 
-    schema_version: Literal["longcycle-handoff-data-plane/v2"]
-    transport_mode: Literal["github_release_sources_google_drive_generated"]
+    schema_version: Literal[
+        "longcycle-handoff-data-plane/v2",
+        "longcycle-handoff-data-plane/v3",
+        "longcycle-handoff-data-plane/v4",
+    ]
+    transport_mode: Literal[
+        "github_release_sources_google_drive_generated",
+        "github_release_pdf_sources_google_drive_webcapsules_generated",
+        "google_drive_webcapsules_generated_pdf_locator_deferred_materialization",
+    ]
+    webpage_capture_policy: str | None = None
+    pdf_source_policy: dict[str, Any] | None = None
+    github_actions_pdf_policy: str | None = None
     github_release_policy: str = Field(min_length=1)
     google_drive_folder_id: str = Field(min_length=1)
     google_drive_policy: str = Field(min_length=1)
     postgres_policy: str = Field(min_length=1)
     duckdb_policy: str = Field(min_length=1)
-    missing_required_asset_action: Literal["stop_and_report_integrity_blocker"]
+    legacy_release_web_policy: str | None = None
+    historical_asset_index_policy: str | None = None
+    missing_required_asset_action: str = Field(min_length=1)
     supersession_policy: str = Field(min_length=1)
     assets: tuple[HandoffBinaryAsset, ...]
 
@@ -83,4 +124,19 @@ class HandoffDataPlaneManifest(BaseModel):
         ids = [asset.asset_id for asset in self.assets]
         if len(ids) != len(set(ids)):
             raise ValueError("handoff data-plane asset ids must be unique")
+
+        if self.schema_version == "longcycle-handoff-data-plane/v4":
+            if self.transport_mode != (
+                "google_drive_webcapsules_generated_pdf_locator_deferred_materialization"
+            ):
+                raise ValueError("data-plane v4 requires deferred PDF materialization mode")
+            if not self.webpage_capture_policy:
+                raise ValueError("data-plane v4 requires webpage_capture_policy")
+            if not self.pdf_source_policy:
+                raise ValueError("data-plane v4 requires pdf_source_policy")
+            if not self.github_actions_pdf_policy:
+                raise ValueError("data-plane v4 requires github_actions_pdf_policy")
+            states = self.pdf_source_policy.get("states")
+            if states != ["locator_verified", "content_verified", "materialized"]:
+                raise ValueError("data-plane v4 PDF state machine must preserve all three states")
         return self
