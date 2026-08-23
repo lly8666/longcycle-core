@@ -8,6 +8,7 @@ on:
       - '.github/workflows/research-trajectory-v1-sv005-proof.yml'
       - 'src/longcycle/application/epistemic_trajectory.py'
       - 'src/longcycle/application/research_orchestration.py'
+      - 'src/longcycle/cli.py'
       - 'scripts/execute_epistemic_trajectory.py'
       - 'scripts/execute_grounded_evidence_spec.py'
       - 'scripts/execute_grounded_reality_projection.py'
@@ -16,6 +17,8 @@ on:
       - 'scripts/export_integrated_replay_duckdb.py'
       - 'scripts/replay_integrated_history.py'
       - 'tests/test_epistemic_trajectory.py'
+      - 'tests/test_research_orchestration.py'
+      - 'tests/test_cli_research.py'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json'
@@ -26,8 +29,10 @@ on:
     paths:
       - '.github/workflows/research-trajectory-v1-sv005-proof.yml'
       - 'src/longcycle/application/epistemic_trajectory.py'
+      - 'src/longcycle/cli.py'
       - 'scripts/execute_epistemic_trajectory.py'
       - 'tests/test_epistemic_trajectory.py'
+      - 'tests/test_cli_research.py'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json'
   workflow_dispatch:
@@ -86,7 +91,11 @@ jobs:
           python -m pip install 'pypdf==6.15.0'
 
       - name: Unit contract
-        run: python -m pytest -q tests/test_epistemic_trajectory.py tests/test_research_orchestration.py
+        run: >-
+          python -m pytest -q
+          tests/test_epistemic_trajectory.py
+          tests/test_research_orchestration.py
+          tests/test_cli_research.py
 
       - name: Restore already-materialized legacy PDF bytes
         shell: bash
@@ -172,9 +181,9 @@ jobs:
           print('GENERIC_TRAJECTORY_WEB_REPRESENTATION_PASS')
           PY
 
-      - name: Execute generic epistemic trajectory
+      - name: Execute generic epistemic trajectory through researcher CLI
         run: >-
-          python scripts/execute_epistemic_trajectory.py
+          longcycle --json research run
           "$TRAJECTORY_SPEC"
           --material-root "$MATERIAL_ROOT"
           --work-dir "$WORK_DIR"
@@ -219,7 +228,7 @@ jobs:
               {'reality': 6, 'judgments': 1, 'outcomes': 0},
               {'reality': 8, 'judgments': 1, 'outcomes': 1},
           ]
-          print('GENERIC_EPISTEMIC_TRAJECTORY_PASS')
+          print('GENERIC_EPISTEMIC_TRAJECTORY_CLI_PASS')
           PY
 
       - name: Publish success status
@@ -230,7 +239,7 @@ jobs:
           gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
           -f state=success
           -f context=longcycle/generic-epistemic-trajectory
-          -f description='Generic Evidence to replay trajectory passed'
+          -f description='Generic research CLI trajectory passed'
           -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
       - name: Publish failure status
@@ -241,7 +250,7 @@ jobs:
           gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
           -f state=failure
           -f context=longcycle/generic-epistemic-trajectory
-          -f description='Generic Evidence to replay trajectory failed'
+          -f description='Generic research CLI trajectory failed'
           -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
       - name: Upload generated proof artifact
