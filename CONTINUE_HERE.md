@@ -20,8 +20,8 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 6. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不相同，先检查 intervening commits；handoff-only commit 可以在确认无 substantive drift 后继续，不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
 7. 刷新 live CI。checkpoint 内 CI 永远只是 snapshot。
 8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项。不要默认读取旧 devlog、旧行业或全部 raw data。
-9. 开始 material capability / product-surface / architecture 开发前，先运行 capability admission/relevant lookup；默认 reuse/extend，不能因为“更干净”新建第二个 semantic owner。
-10. 修改已知代码路径前，才用 Repair Memory 做 path-scoped invariant lookup。
+9. 开始 material capability / product-surface / architecture 开发前，先读 `current-admission.json`：`target_capability_ids` 是精确 owner 路由，必须直接加载对应 capability card、entrypoint/guard 和相关负例；`relevant` 模糊检索只能辅助发现，不能替代精确 ID。默认 reuse/extend，不能因为“更干净”新建第二个 semantic owner。**新 projection / composition 不能重新解释 owner 已经定义的语义**；要先列出它复用了哪些 owner 语义，并把 owner 的关键反例放进自己的 hard acceptance。
+10. 修改已知代码路径前，用 Repair Memory 做 path-scoped invariant lookup；如果是全新路径、lookup 没命中，也不能推断“没有历史约束”，仍要按 admission 的 owner card 做 semantic-owner/negative-case 检查。
 11. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
 
 ## Handoff 的两层权威
