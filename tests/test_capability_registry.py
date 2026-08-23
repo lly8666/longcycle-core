@@ -94,6 +94,56 @@ class CapabilityRegistryTest(unittest.TestCase):
             payload["resume_read_set"],
         )
 
+    def test_zero_context_rehearsal_recovers_owner_and_extend_disposition(self) -> None:
+        registry = _load_registry_module()
+        fresh_bootstrap = (ROOT / "FRESH_AGENT_BOOTSTRAP.md").read_text(encoding="utf-8")
+        continue_bootstrap = (ROOT / "CONTINUE_HERE.md").read_text(encoding="utf-8")
+        handoff = json.loads(
+            (ROOT / ".longcycle" / "handoff" / "current.json").read_text(encoding="utf-8")
+        )
+        index = json.loads(
+            (ROOT / ".longcycle" / "capabilities" / "active-index.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        admission = json.loads(
+            (ROOT / ".longcycle" / "capabilities" / "current-admission.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertIn(".longcycle/capabilities/active-index.json", fresh_bootstrap)
+        self.assertIn("capability_registry.py relevant", continue_bootstrap)
+        self.assertIn(
+            ".longcycle/capabilities/active-index.json",
+            handoff["resume_read_set"],
+        )
+        replay_owner = next(item for item in index["active"] if item["id"] == "CAP-0005")
+        self.assertIn("trajectory view", replay_owner["aliases"])
+        self.assertEqual(admission["disposition"], "extend")
+        self.assertEqual(admission["target_capability_ids"], ["CAP-0005"])
+
+        output = StringIO()
+        with redirect_stdout(output):
+            registry.relevant("researcher historical trajectory replay knowledge cutoff")
+        self.assertIn("[CAP-0005]", output.getvalue())
+
+    def test_governance_owner_guards_all_cold_start_entrypoints(self) -> None:
+        card = json.loads(
+            (ROOT / ".longcycle" / "capabilities" / "cards" / "CAP-0010.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        protocol_paths = {
+            guard["path"]
+            for guard in card["guards"]
+            if guard["kind"] == "protocol"
+        }
+        self.assertEqual(
+            protocol_paths,
+            {"AGENTS.md", "CONTINUE_HERE.md", "FRESH_AGENT_BOOTSTRAP.md"},
+        )
+
     def test_registry_carries_governance_short_medium_long_horizon(self) -> None:
         index = json.loads(
             (ROOT / ".longcycle" / "capabilities" / "active-index.json").read_text(
