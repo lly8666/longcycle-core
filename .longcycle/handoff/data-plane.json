@@ -1,28 +1,43 @@
 {
-  "schema_version": "longcycle-handoff-data-plane/v3",
-  "transport_mode": "github_release_pdf_sources_google_drive_webcapsules_generated",
+  "schema_version": "longcycle-handoff-data-plane/v4",
+  "transport_mode": "google_drive_webcapsules_generated_pdf_locator_deferred_materialization",
   "webpage_capture_policy": "For a readable webpage, the default development path is interactive read -> faithful claim-scoped visible-text capture plus source/provenance metadata -> bounded local database capture capsule -> Google Drive handoff. Do not invoke GitHub Actions merely to fetch or archive webpage HTML. The local database is a capture/handoff envelope, not live PostgreSQL authority and not automatic Fact/Judgment publication. Preserve original URL, publisher/source identity, title/date when supported, capture timestamp, capture_mode, visible text, text SHA-256 and any material limitation.",
-  "github_release_policy": "During development, PDFs that require raw source-byte preservation use the existing GitHub Actions acquisition lane: fetch the public PDF, validate/hash it, package it under a unique immutable name, publish it to GitHub Release, then verify the published bytes. Do not use Actions/Release as the default path for readable webpages or HTML merely to preserve page text. A runner retrieval failure for one host is not permission to call the source unavailable or to discard other successfully acquired PDF bytes.",
+  "pdf_source_policy": {
+    "default_mode": "locator_first_deferred_materialization",
+    "states": [
+      "locator_verified",
+      "content_verified",
+      "materialized"
+    ],
+    "locator_verified": "Publisher/document identity and PDF locator are verified. Record original URL, publisher/source identity, title/date when supported, filename when known, verification time/mode and materialization_status. Locator existence alone is not sufficient to prove a claim whose content was not read.",
+    "content_verified": "The Agent has actually read claim-relevant PDF content in a trustworthy interactive surface and can preserve a claim-scoped excerpt/page/section or equivalent readable grounding. This is sufficient to enter normal Evidence semantics even if raw PDF bytes have not yet been downloaded or hashed. Record capture/read mode and any representation limitation truthfully.",
+    "materialized": "A later normal-network Agent has downloaded the recorded PDF locator, verified document identity/content, and added raw byte size, SHA-256 and a durable storage locator. Materialization is completeness/integrity enrichment, not a prerequisite for already content-verified claim grounding.",
+    "mainstream_source_rule": "PDFs on mainstream official/regulatory/issuer/institutional publisher sites are accepted as legitimate source documents once publisher/document identity and locator are verified. Do not spend research time proving that GitHub Actions or the current Agent can download the bytes. Claim-scoped authority still comes from publisher/document role and scope; transport or the .pdf suffix never upgrades authority.",
+    "deferred_agent_instruction": "When a later Agent has normal network access, download pending_materialization PDFs from their recorded URLs, verify the document identity and previously grounded content, then append size/SHA/storage metadata. If materialized bytes contradict the earlier verified content or identity, fail closed and open an integrity repair instead of silently replacing the earlier record."
+  },
+  "github_actions_pdf_policy": "Do not create or run GitHub Actions merely to download new PDF source bytes. Actions may still be used for PostgreSQL/runtime execution. Historical one-shot PDF acquisition workflows and immutable Release packs are legacy development artifacts and remain valid under their existing receipts, but they are not the default path for new PDFs.",
+  "github_release_policy": "Existing immutable GitHub Release PDF/source packs remain valid historical materializations and may be reused when already available. Do not require a new Release asset before proceeding with content-verified PDF Evidence. New deferred raw-byte materialization may use an appropriate normal-network Agent and durable object/file transport chosen by the owning receipt; Release is no longer mandatory.",
   "google_drive_folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
-  "google_drive_policy": "Google Drive is the development handoff relay for bounded local webpage-capture databases and Longcycle-generated binary state: DuckDB/SQLite webpage capture capsules, replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. A webpage capture capsule contains source-derived visible text and provenance, so Drive transport does not turn that text into a generated research conclusion or change source authority. Do not put raw PDF source bytes in Drive by default; PDFs use the Actions -> Release lane. Drive is not live transactional database authority.",
+  "google_drive_policy": "Google Drive is the development handoff relay for bounded local webpage-capture databases and Longcycle-generated binary state: DuckDB/SQLite webpage capture capsules, replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. A webpage capture capsule contains source-derived visible text and provenance, so Drive transport does not turn that text into a generated research conclusion or change source authority. Deferred raw PDF materialization is optional and governed by its owning receipt rather than required by this handoff manifest. Drive is not live transactional database authority.",
   "postgres_policy": "Do not transport a live PostgreSQL cluster as session state or place it in GitHub Release. PostgreSQL remains the transactional write/ops engine and is rebuilt in a service-capable runtime when writes, leases or outbox semantics are required. If a generated database snapshot is ever needed for handoff, it belongs in Google Drive and remains a snapshot rather than live authority.",
-  "duckdb_policy": "DuckDB is the preferred bounded local container for webpage visible-text capture capsules and portable read/replay state; SQLite is an acceptable bounded capture envelope when DuckDB is not available in the current interactive runtime. Before handoff, checkpoint/close the capsule, record SHA-256/size/schema/source count, upload the immutable capsule to Google Drive, and verify the downloaded bytes. After restore, research/replay capsules open read-only by default. Raw PDF source bytes required for re-grounding are restored separately from GitHub Release.",
+  "duckdb_policy": "DuckDB is the preferred bounded local container for webpage visible-text capture capsules and portable read/replay state; SQLite is an acceptable bounded capture envelope when DuckDB is not available in the current interactive runtime. Before handoff, checkpoint/close the capsule, record SHA-256/size/schema/source count, upload the immutable capsule to Google Drive, and verify the downloaded bytes. After restore, research/replay capsules open read-only by default.",
   "legacy_release_web_policy": "Previously produced immutable Release assets that include webpage/HTML bytes are grandfathered. Never mutate or silently relocate them. All new readable webpage captures follow local database -> Google Drive unless a future explicit architecture decision supersedes this policy.",
-  "historical_asset_index_policy": "This manifest is resume-relevant, not an exhaustive historical asset inventory. Assets no longer required by the live continuation cursor may be pruned from this file without deleting or invalidating them; durable research/execution receipts plus Git history retain their exact Release/Drive identities and restore hashes. Re-enter an old workstream through its durable receipt rather than keeping every historical binary in fresh-Agent context.",
-  "missing_required_asset_action": "stop_and_report_integrity_blocker",
-  "supersession_policy": "All handoff transports are immutable-by-identity. Never replace bytes behind a recorded Release filename or Drive file id without advancing the repository manifest and SHA-256. Successor PDF source packs get new Release filenames; successor webpage-capture/generated packs get new Drive files/ids.",
+  "historical_asset_index_policy": "This manifest is resume-relevant, not an exhaustive historical asset inventory. Assets no longer required by the live continuation cursor may be pruned from this file without deleting or invalidating them; durable research/execution receipts plus Git history retain their exact identities and restore metadata. Re-enter an old workstream through its durable receipt rather than keeping every historical binary in fresh-Agent context.",
+  "missing_required_asset_action": "Missing raw PDF bytes are not an integrity blocker when the claim-relevant PDF content has already been content_verified and the locator/provenance are preserved. Fail closed only when the claim depends on PDF content that was not actually read, when a required webpage/generated capsule is missing or corrupt, or when later PDF materialization contradicts the verified source identity/content.",
+  "supersession_policy": "Never silently replace a verified source identity, captured visible text, materialized byte object or generated capsule. A later PDF materialization enriches the same source locator with byte metadata only after identity/content verification; contradictory bytes create an integrity repair. Successor webpage/generated capsules get new Drive identities.",
   "assets": [
     {
       "asset_id": "adc-sv005-blenrep-pdf-acquisition-run32630536037",
-      "role": "raw_source_acquisition_cache",
+      "role": "legacy_materialized_pdf_source_cache",
       "required_for_current_task": true,
-      "transport": "github_release",
+      "transport": "github_release_legacy_materialization",
       "release_tag": "longcycle-dev-binary-cache",
       "google_drive_file_id": null,
       "file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
       "size_bytes": 395045,
       "sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998",
-      "content_summary": "Two runner-stable original PDF sources for the bounded SV-005 first replay: the FDA/Federal Register legal revocation notice and GSK's DREAMM-7 stock-exchange announcement. The pack was built deterministically, uploaded under a unique name and downloaded back with outer-SHA verification. The accessdata.fda.gov historical label/approval-package endpoints were deliberately excluded after three fail-closed runner diagnostics; the 2020 FDA approval/safety source is preserved separately through the readable-webpage capsule.",
+      "materialization_status": "materialized_legacy_reusable_not_new_default",
+      "content_summary": "Already-acquired materialized copies of two BLENREP PDFs: the FDA/Federal Register legal revocation notice and GSK DREAMM-7 announcement. They may be reused because the bytes already exist and were verified, but no future Agent should infer that comparable new PDFs require Actions/Release before research can continue.",
       "components": [
         {
           "path": "federal-register-blenrep-revocation-2023.pdf",
@@ -37,7 +52,7 @@
           "role": "primary participant DREAMM-7 regimen/readout record"
         }
       ],
-      "restore_instruction": "Restore from GitHub Release tag longcycle-dev-binary-cache using exact filename longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip; verify outer SHA eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998 and both component hashes before materializing the two PDFs for Grounded Evidence. Acquisition verification text is not publishable Evidence."
+      "restore_instruction": "Reuse only if the current execution genuinely benefits from the already-materialized bytes. Restore exact Release tag/name and verify the recorded hashes. Do not create a replacement/new PDF acquisition Action if this cache is unavailable; fall back to the source locator/content-verification policy."
     },
     {
       "asset_id": "adc-sv005-blenrep-web-capture-v1",
