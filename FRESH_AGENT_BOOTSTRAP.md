@@ -19,8 +19,9 @@ The sentence deliberately contains no current task facts. The repository must su
 3. On the active branch, follow `CONTINUE_HERE.md` and its bounded bootstrap. Recover and semantically calibrate long-term mission/methodology before executing current TODOs.
 4. Read the typed continuation cursor to recover what just finished, what resumes now, why it is current, what ends it, and what follows.
 5. Ensure the bounded `resume_read_set` includes and loads `.longcycle/capabilities/active-index.json`; before material capability/product/architecture work, discover the existing semantic owner and obey the `reuse / extend / replace / new` admission gate rather than relying on chat memory.
-6. Refresh the active branch/PR live HEAD and CI; checkpoint CI is only a snapshot.
-7. Do not ask the user to reconstruct context already persisted by the repository.
+6. Do **not** preload old devlogs/issues/benchmarks. If the user/Agent has a fuzzy signal that a design was discussed before, or a change touches `core_locked` semantics / migration boundaries, use `docs/development/on-demand-history-recall.md`: capability owner → Repair Memory → exact origin refs → bounded Git/Issue history. Historical summaries are routing aids, never authority by themselves.
+7. Refresh the active branch/PR live HEAD and CI; checkpoint CI is only a snapshot.
+8. Do not ask the user to reconstruct context already persisted by the repository.
 
 ## Mutation rule
 
@@ -30,4 +31,4 @@ When a task authorizes only one report or other bounded mutation, write it to th
 
 This pointer may remain on `main` even while active work happens elsewhere. It intentionally contains no current industry, campaign count, branch name, CI run, task list, or research state. Those belong to the active branch handoff.
 
-A fresh Agent failing to follow this pointer, failing to recover stable capability ownership, or treating stale `main` implementation docs as current project intent has **not completed Longcycle bootstrap**.
+A fresh Agent failing to follow this pointer, failing to recover stable capability ownership, failing to use bounded historical recall when a core semantic decision has a plausible prior history, or treating stale `main` implementation docs as current project intent has **not completed Longcycle bootstrap**.
