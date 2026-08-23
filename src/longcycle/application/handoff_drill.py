@@ -242,7 +242,7 @@ def audit_repository_handoff(
             name="methodology_core_preserves_cross_industry_methods",
             passed=(
                 "Memory-first, Evidence-final" in methodology
-                and "Source-first, Archive-now" in methodology
+                and "Source-first, Preserve-now" in methodology
                 and "not_found != false" in methodology
                 and "Point-in-time" in methodology
                 and "主动理解" in methodology
