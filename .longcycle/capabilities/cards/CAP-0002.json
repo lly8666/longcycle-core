@@ -4,18 +4,20 @@
     "evidence fragment grounding",
     "json pointer evidence",
     "pdf page evidence",
+    "pdf readable representation evidence",
     "html visible text evidence"
   ],
   "entrypoints": [
     {
       "contains": "class ArchivedEvidenceRecorder:",
-      "description": "ArchivedEvidenceRecorder owns fail-closed locator/value verification against immutable artifacts.",
+      "description": "ArchivedEvidenceRecorder owns fail-closed locator/value verification against preserved source-derived artifacts.",
       "kind": "application",
       "path": "src/longcycle/application/evidence_recording.py"
     }
   ],
   "extension_seams": [
     "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
+    "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve the upstream PDF identity/media type separately and never call the representation byte-identical PDF.",
     "Add claim_context annotations without silently promoting them into Reality/Judgment."
   ],
   "guards": [
@@ -24,6 +26,12 @@
       "description": "Grounding tests exercise archived excerpt/artifact boundaries.",
       "kind": "test",
       "path": "tests/test_evidence_recording.py"
+    },
+    {
+      "contains": "test_locator_only_is_not_claim_evidence",
+      "description": "Handoff regression keeps locator existence below claim-level Evidence while allowing content-verified readable representations to proceed.",
+      "kind": "test",
+      "path": "tests/test_handoff_data_plane.py"
     }
   ],
   "id": "CAP-0002",
@@ -31,22 +39,26 @@
   "non_goals": [
     "Fact/Judgment publication.",
     "Search-result or model-memory promotion.",
-    "Media-type shortcuts that pretend structured/binary sources are plain text."
+    "Promoting a PDF locator whose claim-relevant content was never read.",
+    "Pretending a text/visible capture is raw PDF bytes or erasing representation provenance.",
+    "Media-type shortcuts that lose exact locator/content integrity."
   ],
   "owned_semantics": [
     "evidence.fragment.grounding",
     "evidence.locator.integrity",
+    "evidence.readable_representation_truthfulness",
     "evidence.structured_json_pointer_exactness"
   ],
-  "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in archived text/PDF/HTML/structured JSON artifacts before any epistemic promotion.",
-  "revisit_when": "Only replace if the successor preserves claim-scoped immutable artifact lineage, exact locator semantics and fail-closed verification across supported media.",
+  "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion. Grounding may use archived raw PDF/HTML/JSON or a truthful readable representation of content the Agent actually read; locator existence alone is never claim Evidence.",
+  "revisit_when": "Only replace if the successor preserves claim-scoped immutable artifact lineage, exact locator semantics, truthful media/representation provenance and fail-closed verification across supported media.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/evidence_recording.py",
     "src/longcycle/adapters/parsers.py",
     "scripts/execute_grounded_evidence_spec.py",
     "tests/test_evidence_recording.py",
-    "tests/test_json_evidence_recording.py"
+    "tests/test_json_evidence_recording.py",
+    "tests/test_handoff_data_plane.py"
   ],
   "status": "active",
   "supersedes": [],
@@ -54,6 +66,7 @@
     "evidence",
     "locator",
     "provenance",
+    "readable-representation",
     "json-pointer",
     "claim-scope"
   ],
