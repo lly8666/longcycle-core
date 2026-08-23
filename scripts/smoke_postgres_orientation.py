@@ -61,6 +61,7 @@ async def _ground_membership_assertion(
         ).encode(),
         content_type="text/plain",
         canonical_url=f"https://orientation-smoke.longcycle.invalid/{entity_id}.txt",
+        headers={"x-longcycle-raw-source-materialized": "true"},
         retrieved_at=known_at,
     )
     document = SourceDocument.from_payload(
