@@ -110,7 +110,9 @@ async def build_researcher_open_state_view(
     Membership visibility reuses the exact CAP-0005 orientation selector. Historical
     Judgment visibility comes from the typed no-lookahead snapshot. Reality conflict
     visibility is reconstructed from source assertion known-time, never conflict-case
-    curation time. Current Memory/coverage state is opt-in and explicitly non-historical.
+    curation time, and source independence reuses CAP-0003 source-cluster semantics.
+    Current Memory state is opt-in, scoped by its own current research provenance rather
+    than historical membership, and coverage is taken only from the latest sealed campaign.
     """
 
     checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
@@ -137,9 +139,7 @@ async def build_researcher_open_state_view(
         knowledge_cutoff=checked,
     )
 
-    judgment_subjects = {
-        item.judgment_id: item.subject for item in snapshot.judgments
-    }
+    judgment_subjects = {item.judgment_id: item.subject for item in snapshot.judgments}
     judgment_contradictions: list[dict[str, Any]] = []
     for relation in snapshot.judgment_relations:
         if relation.relation_type != JudgmentRelationType.CONTRADICTS:
@@ -192,6 +192,8 @@ async def build_researcher_open_state_view(
                 {
                     "assertion_id": str(assertion.assertion_id),
                     "source_id": str(assertion.source_id),
+                    "source_cluster": assertion.source_cluster,
+                    "source_independence_key": assertion.source_independence_key,
                     "known_at": assertion.known_at.isoformat(),
                     "value_kind": assertion.value_kind,
                     "value": assertion.value,
@@ -229,7 +231,6 @@ async def build_researcher_open_state_view(
     if include_current_research:
         bundle = await current_research_reader.current_open_states(
             industry_node_id=industry_node_id,
-            entity_ids=tuple(sorted(entity_subjects, key=str)),
         )
         current_overlay.update(_current_overlay_payload(bundle))
 
@@ -250,9 +251,12 @@ async def build_researcher_open_state_view(
             "membership_visibility_reuses_industry_orientation_owner": True,
             "historical_judgment_visibility_delegated_to_epistemic_snapshot": True,
             "reality_conflict_visibility_uses_member_source_known_at": True,
+            "reality_source_independence_reuses_fact_source_cluster": True,
             "conflict_case_opened_at_is_not_historical_known_at": True,
             "current_research_overlay_is_opt_in": True,
             "current_research_overlay_is_not_cutoff_filtered": True,
+            "current_research_scope_uses_own_run_provenance": True,
+            "model_memory_coverage_uses_latest_sealed_campaign": True,
             "model_memory_coverage_is_not_archive_absence": True,
             "absence_of_records_does_not_create_an_unknown_state": True,
             "not_found_is_not_false": True,
