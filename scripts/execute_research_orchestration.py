@@ -10,13 +10,15 @@ from longcycle.application.research_orchestration import execute_research_orches
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Execute one repository-owned Longcycle research orchestration contract: verify an "
-            "immutable source pack, apply explicit Evidence-spec repairs, execute the existing "
-            "Grounded Evidence path and optionally the existing Reality projection path."
+            "Execute one repository-owned Longcycle research orchestration contract: verify "
+            "preserved source material, apply explicit Evidence-spec repairs, execute Grounded "
+            "Evidence and optionally the existing Reality projection path. V2 accepts a "
+            "transport-neutral material root; --source-pack is legacy v1 compatibility only."
         )
     )
     parser.add_argument("spec", type=Path)
-    parser.add_argument("--source-pack", type=Path, required=True)
+    parser.add_argument("--source-pack", type=Path)
+    parser.add_argument("--material-root", type=Path)
     parser.add_argument("--work-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument(
@@ -33,6 +35,7 @@ def main() -> int:
         repo_root=Path.cwd(),
         spec_path=args.spec,
         source_pack_path=args.source_pack,
+        material_root_path=args.material_root,
         work_dir=args.work_dir,
         output_path=args.output,
         skip_db_upgrade=bool(args.skip_db_upgrade),
