@@ -1,0 +1,116 @@
+{
+  "schema_version": "longcycle-researcher-trajectory-validation-receipt/v1",
+  "status": "pass",
+  "task_id": "SV-002-ROVA-T-RESEARCHER-TRAJECTORY-V1",
+  "capability_disposition": {
+    "disposition": "extend",
+    "target_capability_id": "CAP-0005",
+    "new_semantic_owner_created": false,
+    "new_schema_required": false,
+    "trajectory_layer_role": "read_only_presentation_over_typed_point_in_time_snapshot"
+  },
+  "implementation": {
+    "validated_head_sha": "ba7673cc84c6235e75ad77998e0e9d5a54c79fe1",
+    "validation_workflow_run_id": 32612727213,
+    "control_issue": 117
+  },
+  "source_replay": {
+    "durable_source_receipt": "ADC-first-pair-replay-receipt-v1.json",
+    "source_workflow_run_id": 32581980862,
+    "source_artifact_id": 9478039751,
+    "source_artifact_name": "adc-first-pair-replay-32581980862",
+    "source_artifact_digest": "sha256:28ef7d372909c76bc404365d115f92a4413b9f4bb21966af434304b9c831c602",
+    "google_drive_file_id": "1PFc3X_RFFzTo19UU21JlK0ayLe1h0t4v",
+    "google_drive_file_name": "adc-first-pair-replay-32581980862.zip",
+    "google_drive_size_bytes": 3097585,
+    "google_drive_outer_sha256_verified_during_validation": "28ef7d372909c76bc404365d115f92a4413b9f4bb21966af434304b9c831c602",
+    "duckdb_path": "execution/adc-first-pair-memory.duckdb",
+    "duckdb_size_bytes": 2895872,
+    "duckdb_sha256_verified_at_runtime": "f07490c7b52c4c5ba02185fa748cf7236b8f376573939ea2322954873a722619"
+  },
+  "validation_output": {
+    "actions_artifact_id": 9485968012,
+    "actions_artifact_name": "rova-t-researcher-trajectory-32612727213",
+    "actions_artifact_digest": "sha256:fdeb1b253dac77c6389efb09103069cf06c0973d6365313b39400693e0bf1177",
+    "subject_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+    "subject": "rovalpituzumab tesirine / Rova-T"
+  },
+  "cutoffs": [
+    {
+      "knowledge_cutoff": "2019-08-29T23:59:59Z",
+      "meaning": "immediately before program termination becomes knowable in the grounded replay",
+      "counts": {
+        "reality": 2,
+        "judgments": 1,
+        "outcomes": 0,
+        "judgment_rationales": 0,
+        "judgment_relations": 0
+      },
+      "visible_chronology": [
+        "2016 acquisition-time multi-billion-dollar peak-revenue Judgment",
+        "2018 TAHOE shorter-overall-survival Reality",
+        "2019 approximately $4 billion estimated net-impact Reality"
+      ],
+      "absent_as_required": [
+        "2019-08-29 program-termination Reality",
+        "termination-linked Outcome",
+        "2018 and 2019 annual impairment facts that are not grounded as known until 2020-02-22"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2019-08-30T00:00:00Z",
+      "meaning": "program termination and its linked non-direct Outcome become knowable",
+      "counts": {
+        "reality": 3,
+        "judgments": 1,
+        "outcomes": 1,
+        "judgment_rationales": 0,
+        "judgment_relations": 0
+      },
+      "newly_visible": [
+        "AbbVie terminated the Rova-T research and development program",
+        "Outcome linking that Reality to the 2016 commercial Judgment as related_milestone + indeterminate"
+      ]
+    },
+    {
+      "knowledge_cutoff": "2020-02-22T00:00:00Z",
+      "meaning": "later annual-report accounting facts become knowable while retaining their earlier source-supported valid times",
+      "counts": {
+        "reality": 5,
+        "judgments": 1,
+        "outcomes": 1,
+        "judgment_rationales": 0,
+        "judgment_relations": 0
+      },
+      "newly_visible": [
+        "2018 $5.1 billion intangible impairment Reality with valid-time source text 2018",
+        "2019 $1.0 billion intangible impairment Reality with valid-time source text 2019"
+      ],
+      "known_time_guard": "Both annual impairment facts remain absent before their grounded 2020-02-22 known-time bound even though their valid times are 2018 and 2019."
+    }
+  ],
+  "acceptance": {
+    "pre_termination_has_no_termination_reality_or_outcome": true,
+    "termination_and_related_milestone_outcome_appear_when_known": true,
+    "historical_impairment_valid_times_do_not_leak_before_2020_known_time": true,
+    "historical_time_and_known_time_remain_separate": true,
+    "entries_are_ordered_by_knowledge_time": true,
+    "judgment_is_not_rewritten_by_outcome": true,
+    "no_new_epistemic_records_are_created_by_trajectory_view": true,
+    "researcher_chronology_is_legible": true
+  },
+  "researcher_assessment": {
+    "summary": "The view makes the historical sequence legible without hindsight: a high acquisition-time commercial expectation is followed by randomized clinical disappointment, economic damage, program termination, and only later the annual-report impairment facts that were not knowable earlier.",
+    "strength": "A researcher can compare what was known immediately before termination with what changed when termination became knowable, while still seeing historical-time versus known-time separately.",
+    "bounded_limitation": "The linked Outcome remains correctly related_milestone + indeterminate because termination is not the same semantic target as peak revenue. The typed output does not explicitly encode that termination undermines the earlier commercial thesis.",
+    "current_product_decision": "Accept the trajectory surface for this bounded validation; do not create a second replay engine or new Outcome schema merely to make the Rova-T implication explicit."
+  },
+  "deferred_pressure": {
+    "pressure_id": "non_direct_outcome_implication_polarity",
+    "status": "known_pressure_do_not_change_schema_yet",
+    "existing_artifact": "../../../analysis/first-pair-outcome-polarity-pressure-v1.json",
+    "independent_promotion_gate_met_by_this_validation": false,
+    "reason": "This replay reuses the same Rova-T first-pair evidence that originally exposed the pressure; it is a researcher-facing validation, not an independent non-pharma reproduction."
+  },
+  "next_researcher_validation": "Use the same CAP-0005 trajectory path on a grounded non-pharma trajectory before changing generic Outcome semantics; prefer an existing portable replay rather than creating new schema or a parallel replay subsystem."
+}
