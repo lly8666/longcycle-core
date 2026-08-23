@@ -52,6 +52,10 @@ jobs:
         id: repair_memory
         run: python scripts/repair_memory.py audit
 
+      - name: Capability registry audit (hard gate)
+        id: capabilities
+        run: python scripts/capability_registry.py audit
+
       - name: PostgreSQL migrations (hard gate)
         id: migrations
         run: longcycle --json db upgrade
@@ -131,6 +135,7 @@ jobs:
         if: always()
         run: |
           echo "repair_memory=${{ steps.repair_memory.outcome }} (hard gate)"
+          echo "capabilities=${{ steps.capabilities.outcome }} (hard gate)"
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"

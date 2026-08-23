@@ -71,113 +71,120 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
     time (Reality valid time, Judgment target time, or Outcome occurrence time).
     """
 
-    judgments = {item.judgment_id: item for item in snapshot.judgments}
-    reality = {item.canonical_fact_version_id: item for item in snapshot.reality}
+    judgments = {judgment.judgment_id: judgment for judgment in snapshot.judgments}
+    reality = {
+        reality_item.canonical_fact_version_id: reality_item
+        for reality_item in snapshot.reality
+    }
     entries: list[dict[str, Any]] = []
     subject_counts: dict[str, dict[str, int]] = defaultdict(
         lambda: {"reality": 0, "judgment": 0, "outcome": 0}
     )
 
-    for item in snapshot.judgments:
+    for judgment in snapshot.judgments:
         rationales, relations = _judgment_context(
-            item,
+            judgment,
             snapshot.judgment_rationales,
             snapshot.judgment_relations,
         )
         entry = {
-            "entry_id": f"judgment:{item.judgment_id}",
+            "entry_id": f"judgment:{judgment.judgment_id}",
             "layer": "judgment",
-            "subject": item.subject.model_dump(mode="json"),
-            "known_at": item.known_at.isoformat(),
+            "subject": judgment.subject.model_dump(mode="json"),
+            "known_at": judgment.known_at.isoformat(),
             "historical_time_role": "target_time",
-            "historical_time": _extent_payload(item.target_time),
-            "headline": item.summary,
-            "speaker_name_text": item.speaker_name_text,
-            "topic_code": item.topic_code,
-            "judgment_kind": item.judgment_kind,
+            "historical_time": _extent_payload(judgment.target_time),
+            "headline": judgment.summary,
+            "speaker_name_text": judgment.speaker_name_text,
+            "topic_code": judgment.topic_code,
+            "judgment_kind": judgment.judgment_kind,
             "value": _value_payload(
-                kind=item.value_kind,
-                text=item.value_text,
-                payload=item.value_payload,
+                kind=judgment.value_kind,
+                text=judgment.value_text,
+                payload=judgment.value_payload,
             ),
             "rationales": rationales,
             "relations": relations,
-            "evidence_fragment_ids": [str(value) for value in item.evidence_fragment_ids],
+            "evidence_fragment_ids": [
+                str(value) for value in judgment.evidence_fragment_ids
+            ],
         }
         entries.append(entry)
-        subject_counts[item.subject.key]["judgment"] += 1
+        subject_counts[judgment.subject.key]["judgment"] += 1
 
-    for item in snapshot.reality:
-        display_value = item.value_text or item.value_payload or "[structured value]"
+    for reality_item in snapshot.reality:
+        display_value = reality_item.value_text or reality_item.value_payload or "[structured value]"
         entry = {
-            "entry_id": f"reality:{item.canonical_fact_version_id}",
+            "entry_id": f"reality:{reality_item.canonical_fact_version_id}",
             "layer": "reality",
-            "subject": item.subject.model_dump(mode="json"),
-            "known_at": item.known_at.isoformat(),
+            "subject": reality_item.subject.model_dump(mode="json"),
+            "known_at": reality_item.known_at.isoformat(),
             "historical_time_role": "valid_time",
-            "historical_time": _extent_payload(item.valid_time),
-            "observed_time": _extent_payload(item.observed_time),
-            "headline": f"{item.predicate_code}: {display_value}",
-            "predicate_code": item.predicate_code,
+            "historical_time": _extent_payload(reality_item.valid_time),
+            "observed_time": _extent_payload(reality_item.observed_time),
+            "headline": f"{reality_item.predicate_code}: {display_value}",
+            "predicate_code": reality_item.predicate_code,
             "value": _value_payload(
-                kind=item.value_kind,
-                text=item.value_text,
-                payload=item.value_payload,
+                kind=reality_item.value_kind,
+                text=reality_item.value_text,
+                payload=reality_item.value_payload,
             ),
-            "unit_code": item.unit_code,
-            "confidence": item.confidence,
-            "publication_status": item.publication_status,
-            "evidence_fragment_ids": [str(value) for value in item.evidence_fragment_ids],
+            "unit_code": reality_item.unit_code,
+            "confidence": reality_item.confidence,
+            "publication_status": reality_item.publication_status,
+            "evidence_fragment_ids": [
+                str(value) for value in reality_item.evidence_fragment_ids
+            ],
         }
         entries.append(entry)
-        subject_counts[item.subject.key]["reality"] += 1
+        subject_counts[reality_item.subject.key]["reality"] += 1
 
-    for item in snapshot.outcomes:
-        original = judgments[item.judgment_id]
+    for outcome in snapshot.outcomes:
+        original = judgments[outcome.judgment_id]
         linked_reality = (
-            reality.get(item.canonical_fact_version_id)
-            if item.canonical_fact_version_id is not None
+            reality.get(outcome.canonical_fact_version_id)
+            if outcome.canonical_fact_version_id is not None
             else None
         )
-        headline = f"{item.evaluation_status}: {original.summary}"
+        headline = f"{outcome.evaluation_status}: {original.summary}"
         entry = {
-            "entry_id": f"outcome:{item.evaluation_id}",
+            "entry_id": f"outcome:{outcome.evaluation_id}",
             "layer": "outcome",
-            "subject": item.subject.model_dump(mode="json"),
-            "known_at": item.known_at.isoformat(),
+            "subject": outcome.subject.model_dump(mode="json"),
+            "known_at": outcome.known_at.isoformat(),
             "historical_time_role": "occurrence_time",
-            "historical_time": _extent_payload(item.occurrence_time),
+            "historical_time": _extent_payload(outcome.occurrence_time),
             "headline": headline,
-            "evaluation_status": item.evaluation_status,
-            "semantic_relation": item.semantic_relation.value,
-            "timing_relation": item.timing_relation,
+            "evaluation_status": outcome.evaluation_status,
+            "semantic_relation": outcome.semantic_relation.value,
+            "timing_relation": outcome.timing_relation,
             "timing_delta_value": (
-                str(item.timing_delta_value) if item.timing_delta_value is not None else None
+                str(outcome.timing_delta_value) if outcome.timing_delta_value is not None else None
             ),
-            "timing_delta_unit": item.timing_delta_unit,
-            "explanation": item.explanation,
+            "timing_delta_unit": outcome.timing_delta_unit,
+            "explanation": outcome.explanation,
             "links": {
-                "judgment_id": str(item.judgment_id),
-                "judgment_entry_id": f"judgment:{item.judgment_id}",
+                "judgment_id": str(outcome.judgment_id),
+                "judgment_entry_id": f"judgment:{outcome.judgment_id}",
                 "canonical_fact_version_id": (
-                    str(item.canonical_fact_version_id)
-                    if item.canonical_fact_version_id is not None
+                    str(outcome.canonical_fact_version_id)
+                    if outcome.canonical_fact_version_id is not None
                     else None
                 ),
                 "reality_entry_id": (
-                    f"reality:{item.canonical_fact_version_id}"
+                    f"reality:{outcome.canonical_fact_version_id}"
                     if linked_reality is not None
                     else None
                 ),
             },
             "outcome_evidence_fragment_id": (
-                str(item.outcome_evidence_fragment_id)
-                if item.outcome_evidence_fragment_id is not None
+                str(outcome.outcome_evidence_fragment_id)
+                if outcome.outcome_evidence_fragment_id is not None
                 else None
             ),
         }
         entries.append(entry)
-        subject_counts[item.subject.key]["outcome"] += 1
+        subject_counts[outcome.subject.key]["outcome"] += 1
 
     entries.sort(
         key=lambda entry: (

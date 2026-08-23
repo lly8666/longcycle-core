@@ -61,6 +61,36 @@ Do not preload every repair card. Do not create a card for every bug. Promotion,
 
 If an invariant must change because the architecture genuinely changed, do so deliberately: satisfy its `revisit_when`, update/supersede the card and its guards in the same coherent change. Repair Memory is an anti-accident mechanism, not a ban on better architecture.
 
+## Capability admission gate — do not create parallel semantic owners blindly
+
+Before material capability, product-surface or architecture development, query the compact Capability Registry by the intended researcher/system need:
+
+```bash
+python scripts/capability_registry.py relevant "<intended capability or researcher need>"
+```
+
+Read the closest matching cards under `.longcycle/capabilities/cards/` and classify the intended change in `.longcycle/capabilities/current-admission.json` as exactly one of:
+
+```text
+reuse
+extend
+replace
+new
+```
+
+Default to **reuse or extend**. A new file, CLI/API/UI, adapter, output format or helper is not automatically a new capability. `new` means genuinely new semantic ownership. Under the current `converging` governance mode it requires the closest existing capability, a concrete truthful unmet requirement that its extension seams cannot satisfy, evidence references, planned ownership paths and a proposed capability id. "Cleaner", "more generic" and "future-proof" are not unmet requirements.
+
+The generated `.longcycle/capabilities/active-index.json` is intentionally part of every bounded handoff `resume_read_set`. It carries the current governance mode plus the capability system's short-, medium- and long-horizon evolution, so this constraint survives changing task horizons without copying policy prose into every checkpoint.
+
+After a material capability change, update the owning card only if stable responsibility, entrypoints, extension seams, guards or maturity changed, then run:
+
+```bash
+python scripts/capability_registry.py rebuild-index
+python scripts/capability_registry.py audit
+```
+
+Internal refactors that preserve stable ownership should not churn capability cards. Capability Registry answers **what Longcycle already knows how to do and who owns the semantics**; Repair Memory answers **which non-obvious invariants must not be accidentally regressed**. Do not merge the two into a second architecture encyclopedia.
+
 ## Vertical alignment loop — anti-tunnel rule
 
 Before starting a new substantive subproblem and after completing every coherent subtask, internally restate this parent chain:
@@ -87,6 +117,7 @@ A local task that cannot be connected through those levels, or whose marginal va
 - `STRATEGIC_COMPASS.md` owns mission and anti-drift direction.
 - `METHODOLOGY_CORE.md` owns distilled cross-industry methods.
 - `.longcycle/continuity/mission-fidelity.json` owns semantic calibration prompts, not answers.
+- `.longcycle/capabilities/active-index.json` owns compact stable capability routing, semantic ownership and capability-governance maturity/horizon; detailed cards/current admission live beside it.
 - `.longcycle/handoff/current.json` owns current horizon, continuation cursor, workstreams and snapshot state.
 - active context owns current industry / benchmark details.
 - live Git/CI owns implementation freshness.

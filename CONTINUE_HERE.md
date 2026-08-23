@@ -19,9 +19,10 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 5. 读 `.longcycle/handoff/current.json`，获取当前中期目标、短期目标、continuation cursor、active context、ordered actions 与 `.longcycle/handoff/data-plane.json` 路径。
 6. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不相同，先检查 intervening commits；handoff-only commit 可以在确认无 substantive drift 后继续，不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
 7. 刷新 live CI。checkpoint 内 CI 永远只是 snapshot。
-8. 只读 `resume_read_set` 中当前任务需要的文件；旧行业、旧 devlog、全部 raw data、全部 Repair Memory 默认不加载。**不要默认读取旧 devlog**；需要历史 rationale 时再按路径追溯。
-9. 修改已知代码路径前，才用 `.longcycle/repair-memory/active-index.json` 或 `python scripts/repair_memory.py relevant <paths...>` 做 path-scoped invariant lookup。
-10. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
+8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项，负责告诉新 Agent 系统已有稳定 capability、唯一 semantic owner、extension seams，以及能力治理自身的短/中/长期演进；旧行业、旧 devlog、全部 raw data、全部 Repair Memory 默认不加载。
+9. 开始 material capability / product-surface / architecture 开发前，先运行 `python scripts/capability_registry.py relevant "<intent>"`，再检查 `.longcycle/capabilities/current-admission.json` 是否把当前工作归为 `reuse / extend / replace / new`。默认 reuse/extend；不能因为“更干净、更通用”新建第二个 semantic owner。
+10. 修改已知代码路径前，才用 `.longcycle/repair-memory/active-index.json` 或 `python scripts/repair_memory.py relevant <paths...>` 做 path-scoped invariant lookup。
+11. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
 
 ## Handoff 的两层权威
 
@@ -138,6 +139,7 @@ Longcycle 的 benchmark 用来**打脸架构**，不是训练 Agent 应试。
 - `STRATEGIC_COMPASS.md`：最终使命、真正成功标准、防偏航；
 - `METHODOLOGY_CORE.md`：跨行业方法；
 - `.longcycle/continuity/mission-fidelity.json`：语义校准问题，不存答案；
+- `.longcycle/capabilities/active-index.json`：稳定 capability routing、唯一 semantic owner、governance mode 与能力治理自身短/中/长期演进；详细 cards / current admission 按需读取；
 - `.longcycle/handoff/current.json`：中短期 live cursor；
 - `.longcycle/handoff/data-plane.json`：resume-relevant binary identity / transport / integrity / restore contract；
 - receipts：已完成 benchmark / source / replay / exit 等可审计结果；

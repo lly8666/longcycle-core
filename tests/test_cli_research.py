@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
 import unittest
 from datetime import UTC, datetime
@@ -12,7 +13,7 @@ from longcycle.domain.epistemic import PointInTimeMemorySnapshot
 
 
 class ResearchCliTest(unittest.TestCase):
-    def _args(self) -> object:
+    def _args(self) -> argparse.Namespace:
         return _parser().parse_args(
             [
                 "research",
