@@ -8,6 +8,7 @@ on:
       - '.github/workflows/research-trajectory-v1-sv005-proof.yml'
       - 'src/longcycle/application/epistemic_trajectory.py'
       - 'src/longcycle/application/research_orchestration.py'
+      - 'src/longcycle/application/trajectory_view.py'
       - 'src/longcycle/cli.py'
       - 'scripts/execute_epistemic_trajectory.py'
       - 'scripts/execute_grounded_evidence_spec.py'
@@ -18,6 +19,7 @@ on:
       - 'scripts/replay_integrated_history.py'
       - 'tests/test_epistemic_trajectory.py'
       - 'tests/test_research_orchestration.py'
+      - 'tests/test_trajectory_view.py'
       - 'tests/test_cli_research.py'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json'
@@ -29,9 +31,11 @@ on:
     paths:
       - '.github/workflows/research-trajectory-v1-sv005-proof.yml'
       - 'src/longcycle/application/epistemic_trajectory.py'
+      - 'src/longcycle/application/trajectory_view.py'
       - 'src/longcycle/cli.py'
       - 'scripts/execute_epistemic_trajectory.py'
       - 'tests/test_epistemic_trajectory.py'
+      - 'tests/test_trajectory_view.py'
       - 'tests/test_cli_research.py'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-research-orchestration-v2.json'
       - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json'
@@ -71,6 +75,7 @@ jobs:
       MATERIAL_ROOT: ${{ github.workspace }}/.artifacts/sv005-generic-materials
       WORK_DIR: ${{ github.workspace }}/.artifacts/sv005-generic-trajectory-work
       RECEIPT: ${{ github.workspace }}/.artifacts/SV-005-generic-trajectory-receipt.json
+      REPLAY_SUBJECT_ID: b5254c47-1de6-5850-a99f-5e5b829884a8
       RELEASE_TAG: longcycle-dev-binary-cache
       RELEASE_ASSET: longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip
       RELEASE_SHA256: eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998
@@ -95,6 +100,7 @@ jobs:
           python -m pytest -q
           tests/test_epistemic_trajectory.py
           tests/test_research_orchestration.py
+          tests/test_trajectory_view.py
           tests/test_cli_research.py
 
       - name: Restore already-materialized legacy PDF bytes
@@ -231,6 +237,63 @@ jobs:
           print('GENERIC_EPISTEMIC_TRAJECTORY_CLI_PASS')
           PY
 
+      - name: Assert researcher-readable replay surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          DB="$WORK_DIR/integrated-memory.duckdb"
+          longcycle --json research replay "$DB" '2022-11-23T12:00:00Z' --subject-id "$REPLAY_SUBJECT_ID" > "$WORK_DIR/researcher-view-2022.json"
+          longcycle --json research replay "$DB" '2023-03-31T12:00:00Z' --subject-id "$REPLAY_SUBJECT_ID" > "$WORK_DIR/researcher-view-2023.json"
+          longcycle --json research replay "$DB" '2024-02-06T12:00:00Z' --subject-id "$REPLAY_SUBJECT_ID" > "$WORK_DIR/researcher-view-2024.json"
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path(os.environ['WORK_DIR'])
+          views = {}
+          for year in ('2022', '2023', '2024'):
+              outer = json.loads((root / f'researcher-view-{year}.json').read_text(encoding='utf-8'))
+              assert outer['ok'] is True, outer
+              views[year] = outer['result']
+
+          expected = {
+              '2022': {'reality': 4, 'judgments': 1, 'outcomes': 0},
+              '2023': {'reality': 6, 'judgments': 1, 'outcomes': 0},
+              '2024': {'reality': 8, 'judgments': 1, 'outcomes': 1},
+          }
+          for year, view in views.items():
+              assert view['counts']['reality'] == expected[year]['reality']
+              assert view['counts']['judgments'] == expected[year]['judgments']
+              assert view['counts']['outcomes'] == expected[year]['outcomes']
+              assert view['knowledge_progression'][-1]['counts_after'] == expected[year]
+              assert len(view['judgment_storylines']) == 1
+              assert view['boundary']['storylines_derive_only_from_filtered_snapshot'] is True
+              assert view['boundary']['presentation_adds_no_causality_or_realization_inference'] is True
+              assert view['boundary']['judgment_not_rewritten_by_outcome'] is True
+
+          story_2022 = views['2022']['judgment_storylines'][0]
+          story_2023 = views['2023']['judgment_storylines'][0]
+          story_2024 = views['2024']['judgment_storylines'][0]
+          assert story_2022['status_as_of_cutoff'] == 'judgment_visible_no_outcome'
+          assert story_2023['status_as_of_cutoff'] == 'judgment_visible_no_outcome'
+          assert story_2022['later_outcomes'] == []
+          assert story_2023['later_outcomes'] == []
+          assert story_2022['at_the_time'] == story_2024['at_the_time']
+
+          assert story_2024['status_as_of_cutoff'] == 'outcome_visible'
+          assert len(story_2024['later_outcomes']) == 1
+          outcome = story_2024['later_outcomes'][0]
+          assert outcome['evaluation_status'] == 'indeterminate'
+          assert outcome['semantic_relation'] == 'related_milestone'
+          assert outcome['timing_relation'] == 'not_comparable'
+          assert outcome['linked_reality']['predicate_code'] == 'trial.primary_endpoint_status'
+          assert 'indeterminate' in story_2024['researcher_summary']
+          assert 'related_milestone' in story_2024['researcher_summary']
+          assert 'realized' not in story_2024['researcher_summary']
+          print('RESEARCHER_READABLE_REPLAY_SURFACE_PASS')
+          PY
+
       - name: Publish success status
         if: success()
         env:
@@ -239,7 +302,7 @@ jobs:
           gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
           -f state=success
           -f context=longcycle/generic-epistemic-trajectory
-          -f description='Generic research CLI trajectory passed'
+          -f description='Generic research CLI trajectory and researcher replay passed'
           -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
       - name: Publish failure status
@@ -250,7 +313,7 @@ jobs:
           gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
           -f state=failure
           -f context=longcycle/generic-epistemic-trajectory
-          -f description='Generic research CLI trajectory failed'
+          -f description='Generic research CLI trajectory or researcher replay failed'
           -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 
       - name: Upload generated proof artifact
