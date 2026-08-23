@@ -1,0 +1,393 @@
+{
+  "active": [
+    {
+      "aliases": [
+        "source archive",
+        "source acquisition",
+        "archive-now",
+        "document archival",
+        "raw source preservation"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0001.json",
+      "extension_seams": [
+        "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
+        "Add source discovery/watchlist behavior without changing archive identity semantics."
+      ],
+      "id": "CAP-0001",
+      "maturity": "stable",
+      "owned_semantics": [
+        "source.fetch_archive_boundary",
+        "source.raw_version_identity",
+        "source.archive_before_extraction"
+      ],
+      "purpose": "Own source-first discovery/fetch/archive identity so raw external material is preserved before extraction and revisions are not silently overwritten.",
+      "scope": [
+        "src/longcycle/application/source_archive.py",
+        "src/longcycle/ports/source.py",
+        "src/longcycle/ports/archive.py",
+        "src/longcycle/adapters/sources/**",
+        "src/longcycle/adapters/storage/filesystem.py"
+      ],
+      "tags": [
+        "source",
+        "archive",
+        "provenance",
+        "immutable",
+        "collection"
+      ],
+      "title": "Source acquisition and immutable archival"
+    },
+    {
+      "aliases": [
+        "grounded evidence",
+        "evidence fragment grounding",
+        "json pointer evidence",
+        "pdf page evidence",
+        "html visible text evidence"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0002.json",
+      "extension_seams": [
+        "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
+        "Add claim_context annotations without silently promoting them into Reality/Judgment."
+      ],
+      "id": "CAP-0002",
+      "maturity": "core_locked",
+      "owned_semantics": [
+        "evidence.fragment.grounding",
+        "evidence.locator.integrity",
+        "evidence.structured_json_pointer_exactness"
+      ],
+      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in archived text/PDF/HTML/structured JSON artifacts before any epistemic promotion.",
+      "scope": [
+        "src/longcycle/application/evidence_recording.py",
+        "src/longcycle/adapters/parsers.py",
+        "scripts/execute_grounded_evidence_spec.py",
+        "tests/test_evidence_recording.py",
+        "tests/test_json_evidence_recording.py"
+      ],
+      "tags": [
+        "evidence",
+        "locator",
+        "provenance",
+        "json-pointer",
+        "claim-scope"
+      ],
+      "title": "Claim-scoped Grounded Evidence"
+    },
+    {
+      "aliases": [
+        "canonical reality",
+        "fact normalization",
+        "fact reconciliation",
+        "reality projection",
+        "comparability"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0003.json",
+      "extension_seams": [
+        "Add predicate-specific normalization/comparability rules through existing typed profiles.",
+        "Add generic Reality projection fields only when real cross-industry evidence cannot be represented truthfully."
+      ],
+      "id": "CAP-0003",
+      "maturity": "core_locked",
+      "owned_semantics": [
+        "reality.fact.normalization",
+        "reality.fact.comparability",
+        "reality.canonical.reconciliation",
+        "reality.valid_time_precision"
+      ],
+      "purpose": "Own typed Fact normalization, comparability and canonical Reality semantics, including source-supported temporal precision and reconciliation rather than direct assertion copying.",
+      "scope": [
+        "src/longcycle/application/normalization.py",
+        "src/longcycle/application/reality_projection.py",
+        "src/longcycle/application/reconciliation.py",
+        "src/longcycle/domain/models.py",
+        "migrations/0020_fact_valid_time_precision.sql",
+        "migrations/0021_canonical_valid_time_kind.sql"
+      ],
+      "tags": [
+        "reality",
+        "fact",
+        "normalization",
+        "reconciliation",
+        "temporal-precision"
+      ],
+      "title": "Canonical Reality normalization and reconciliation"
+    },
+    {
+      "aliases": [
+        "judgment memory",
+        "expectation memory",
+        "forecast history",
+        "outcome evaluation",
+        "revision history"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0004.json",
+      "extension_seams": [
+        "Add generic Judgment kinds/relations when cross-industry evidence proves a truthful representation gap.",
+        "Add derived presentation over Judgment/Outcome without mutating original assertions."
+      ],
+      "id": "CAP-0004",
+      "maturity": "core_locked",
+      "owned_semantics": [
+        "judgment.assertion.identity",
+        "judgment.rationale_revision_history",
+        "outcome.judgment_reality_evaluation"
+      ],
+      "purpose": "Own contemporaneous Judgment representation, rationale/revision context and later Outcome evaluation without rewriting the original historical Judgment.",
+      "scope": [
+        "src/longcycle/application/judgment_projection.py",
+        "src/longcycle/application/judgment_context_projection.py",
+        "src/longcycle/application/judgment_replay.py",
+        "src/longcycle/domain/judgments.py",
+        "src/longcycle/domain/outcomes.py"
+      ],
+      "tags": [
+        "judgment",
+        "expectation",
+        "outcome",
+        "rationale",
+        "revision"
+      ],
+      "title": "Judgment, expectation revision and Outcome memory"
+    },
+    {
+      "aliases": [
+        "point-in-time replay",
+        "historical replay",
+        "epistemic replay",
+        "trajectory view",
+        "research replay",
+        "historical snapshot"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0005.json",
+      "extension_seams": [
+        "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
+        "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
+        "Additional storage adapters implementing the same typed reader contract."
+      ],
+      "id": "CAP-0005",
+      "maturity": "core_locked",
+      "owned_semantics": [
+        "replay.knowledge_cutoff_visibility",
+        "replay.no_lookahead_boundary",
+        "replay.typed_reality_judgment_outcome_snapshot"
+      ],
+      "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff; presentation layers must delegate to this typed read boundary.",
+      "scope": [
+        "src/longcycle/ports/epistemic.py",
+        "src/longcycle/adapters/storage/postgres_epistemic.py",
+        "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        "src/longcycle/application/historical_replay.py",
+        "src/longcycle/application/judgment_replay.py",
+        "src/longcycle/application/trajectory_view.py",
+        "scripts/replay_integrated_history.py",
+        "src/longcycle/cli.py"
+      ],
+      "tags": [
+        "replay",
+        "knowledge-cutoff",
+        "no-lookahead",
+        "duckdb",
+        "trajectory"
+      ],
+      "title": "Typed point-in-time industrial-memory replay"
+    },
+    {
+      "aliases": [
+        "memory campaign",
+        "blind recall",
+        "memory atlas",
+        "self verification",
+        "verification depth"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0006.json",
+      "extension_seams": [
+        "Add orthogonal recall/search families without weakening the sealed blind/search boundary.",
+        "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite."
+      ],
+      "id": "CAP-0006",
+      "maturity": "stable",
+      "owned_semantics": [
+        "memory.blind_recall_isolation",
+        "memory.campaign_saturation_and_seal",
+        "memory.post_seal_verification_depth"
+      ],
+      "purpose": "Own blind memory-exhaustion, sealing/saturation and post-seal self-verification/delegated search depth while keeping Model Memory permanently below Evidence authority.",
+      "scope": [
+        "src/longcycle/application/memory_campaign.py",
+        "src/longcycle/application/memory_audit.py",
+        "src/longcycle/application/memory_history.py",
+        "tests/test_memory_campaign.py",
+        "docs/research/**memory**"
+      ],
+      "tags": [
+        "memory",
+        "blind-recall",
+        "seal",
+        "saturation",
+        "self-verification"
+      ],
+      "title": "Historical model-memory campaign and verification"
+    },
+    {
+      "aliases": [
+        "research orchestration",
+        "research runner",
+        "research run",
+        "source pack execution",
+        "portable research receipt"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0007.json",
+      "extension_seams": [
+        "Add researcher/task invocation adapters by delegation to the same application contract.",
+        "Add new bounded execution phases only when an existing semantic executor already owns the phase."
+      ],
+      "id": "CAP-0007",
+      "maturity": "stable",
+      "owned_semantics": [
+        "orchestration.source_pack_integrity",
+        "orchestration.bounded_evidence_reality_composition",
+        "orchestration.portable_execution_receipt"
+      ],
+      "purpose": "Own bounded composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards without duplicating epistemic executors.",
+      "scope": [
+        "src/longcycle/application/research_orchestration.py",
+        "scripts/execute_research_orchestration.py",
+        ".github/workflows/research-orchestration-once.yml",
+        "tests/test_research_orchestration.py",
+        "src/longcycle/cli.py"
+      ],
+      "tags": [
+        "orchestration",
+        "source-pack",
+        "repair-overlay",
+        "receipt",
+        "fail-closed"
+      ],
+      "title": "Fail-closed research orchestration"
+    },
+    {
+      "aliases": [
+        "current collection scheduler",
+        "job queue",
+        "scheduler tick",
+        "collection cadence",
+        "leases"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0008.json",
+      "extension_seams": [
+        "Add source watchlist/scheduler adapters without moving current-source archival semantics into historical recovery.",
+        "Add operational priority signals while preserving lease/idempotency boundaries."
+      ],
+      "id": "CAP-0008",
+      "maturity": "stable",
+      "owned_semantics": [
+        "ops.collection_cadence",
+        "ops.job_dispatch_and_lease",
+        "ops.retry_deadletter_boundary"
+      ],
+      "purpose": "Own cadence selection and due-work dispatch semantics for source-first current collection while keeping operational leases/retries separate from research history.",
+      "scope": [
+        "src/longcycle/application/scheduling.py",
+        "src/longcycle/adapters/storage/postgres_scheduler.py",
+        "src/longcycle/ports/repository.py",
+        "tests/test_archive_and_queue.py",
+        "tests/test_normalization_and_schedule.py"
+      ],
+      "tags": [
+        "scheduler",
+        "queue",
+        "current-collection",
+        "lease",
+        "operations"
+      ],
+      "title": "Current collection scheduling and operational queue"
+    },
+    {
+      "aliases": [
+        "handoff",
+        "session continuity",
+        "fresh agent bootstrap",
+        "resume cursor",
+        "data plane handoff"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0009.json",
+      "extension_seams": [
+        "Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.",
+        "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger."
+      ],
+      "id": "CAP-0009",
+      "maturity": "core_locked",
+      "owned_semantics": [
+        "continuity.resume_cursor",
+        "continuity.live_head_reconciliation",
+        "continuity.resume_asset_identity"
+      ],
+      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, while live Git/CI remains implementation authority.",
+      "scope": [
+        "src/longcycle/application/session_handoff.py",
+        "src/longcycle/application/handoff_data_plane.py",
+        "src/longcycle/application/handoff_freshness.py",
+        "src/longcycle/application/handoff_drill.py",
+        ".longcycle/handoff/**",
+        "CONTINUE_HERE.md",
+        "FRESH_AGENT_BOOTSTRAP.md"
+      ],
+      "tags": [
+        "handoff",
+        "continuity",
+        "bootstrap",
+        "live-head",
+        "data-plane"
+      ],
+      "title": "Repository-backed session continuity and data-plane handoff"
+    },
+    {
+      "aliases": [
+        "capability registry",
+        "feature inventory",
+        "anti duplication gate",
+        "architecture admission",
+        "semantic ownership"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0010.json",
+      "extension_seams": [
+        "Improve deterministic discovery/routing without making opaque similarity a hard blocker.",
+        "Tighten admission requirements as governance_mode matures from converging toward core-locked architecture."
+      ],
+      "id": "CAP-0010",
+      "maturity": "experimental",
+      "owned_semantics": [
+        "governance.capability_inventory",
+        "governance.semantic_owner_uniqueness",
+        "governance.capability_admission"
+      ],
+      "purpose": "Own the sparse machine-readable map of what Longcycle already knows how to do and force material development to classify as reuse/extend/replace/new before creating new semantic ownership.",
+      "scope": [
+        ".longcycle/capabilities/**",
+        "scripts/capability_registry.py",
+        "docs/development/capability-governance.md",
+        "AGENTS.md",
+        "CONTINUE_HERE.md",
+        "tests/test_capability_registry.py",
+        ".github/workflows/ci.yml"
+      ],
+      "tags": [
+        "architecture",
+        "governance",
+        "capability",
+        "ownership",
+        "anti-duplication"
+      ],
+      "title": "Stable capability ownership and admission governance"
+    }
+  ],
+  "governance_horizon": {
+    "long_term": "Promote mature semantic owners to core_locked; overlapping new capabilities require a demonstrated truthful unmet requirement or an explicit supersession path rather than architectural preference.",
+    "medium_term": "Keep one semantic owner per stable capability, grow cards only when stable responsibilities change, and use CI ownership/audit guards to make duplicate parallel implementations increasingly difficult.",
+    "short_term": "Every material capability change discovers existing owners first, records a reuse/extend/replace/new disposition, and keeps the compact registry in the default handoff read set."
+  },
+  "governance_mode": "converging",
+  "policy": "Discover existing owners before material capability work. Prefer reuse/extend; new semantic ownership needs a demonstrated unmet requirement. Exact semantic ownership is unique.",
+  "schema_version": "longcycle-capability-index/v1"
+}

@@ -1,0 +1,27 @@
+{
+  "closest_existing_capability_ids": [
+    "CAP-0005"
+  ],
+  "disposition": "extend",
+  "evidence_refs": [
+    "src/longcycle/application/trajectory_view.py",
+    "src/longcycle/ports/epistemic.py",
+    ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json"
+  ],
+  "governance_mode": "converging",
+  "intent": "Expose a researcher-readable historical trajectory view from portable typed industrial memory at a requested knowledge cutoff.",
+  "intent_id": "RESEARCH-REPLAY-TRAJECTORY-001",
+  "planned_paths": [
+    "src/longcycle/application/trajectory_view.py",
+    "src/longcycle/cli.py",
+    "tests/test_trajectory_view.py",
+    "tests/test_cli_research.py"
+  ],
+  "proposed_capability_id": null,
+  "rationale": "The new researcher trajectory is a presentation/read-model extension over the existing typed EpistemicMemoryReader snapshot. It must reuse the existing knowledge-cutoff and no-lookahead owner rather than create another replay engine.",
+  "schema_version": "longcycle-capability-admission/v1",
+  "target_capability_ids": [
+    "CAP-0005"
+  ],
+  "unmet_requirement": null
+}

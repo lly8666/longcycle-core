@@ -1,0 +1,60 @@
+{
+  "aliases": [
+    "source archive",
+    "source acquisition",
+    "archive-now",
+    "document archival",
+    "raw source preservation"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class DocumentArchiver:",
+      "description": "Shared source-first application boundary archives immutable source versions without promoting claims.",
+      "kind": "application",
+      "path": "src/longcycle/application/source_archive.py"
+    }
+  ],
+  "extension_seams": [
+    "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
+    "Add source discovery/watchlist behavior without changing archive identity semantics."
+  ],
+  "guards": [
+    {
+      "contains": "class ArchiveAndQueueTest",
+      "description": "Archive regression tests preserve content-addressed/source-version behavior.",
+      "kind": "test",
+      "path": "tests/test_archive_and_queue.py"
+    }
+  ],
+  "id": "CAP-0001",
+  "maturity": "stable",
+  "non_goals": [
+    "Evidence claim grounding or Fact/Judgment promotion.",
+    "Treating retrieval host as claim authority."
+  ],
+  "owned_semantics": [
+    "source.fetch_archive_boundary",
+    "source.raw_version_identity",
+    "source.archive_before_extraction"
+  ],
+  "purpose": "Own source-first discovery/fetch/archive identity so raw external material is preserved before extraction and revisions are not silently overwritten.",
+  "revisit_when": "Replace only if a stronger source-version authority preserves immutable bytes, upstream/retrieval provenance and archive-before-extraction semantics.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/source_archive.py",
+    "src/longcycle/ports/source.py",
+    "src/longcycle/ports/archive.py",
+    "src/longcycle/adapters/sources/**",
+    "src/longcycle/adapters/storage/filesystem.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "source",
+    "archive",
+    "provenance",
+    "immutable",
+    "collection"
+  ],
+  "title": "Source acquisition and immutable archival"
+}

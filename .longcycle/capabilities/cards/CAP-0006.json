@@ -1,0 +1,60 @@
+{
+  "aliases": [
+    "memory campaign",
+    "blind recall",
+    "memory atlas",
+    "self verification",
+    "verification depth"
+  ],
+  "entrypoints": [
+    {
+      "contains": "def build_recall_pass_prompt(",
+      "description": "Memory campaign application primitives own blind/search separation and bounded saturation/depth rules.",
+      "kind": "application",
+      "path": "src/longcycle/application/memory_campaign.py"
+    }
+  ],
+  "extension_seams": [
+    "Add orthogonal recall/search families without weakening the sealed blind/search boundary.",
+    "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite."
+  ],
+  "guards": [
+    {
+      "contains": "class MemoryCampaignTest",
+      "description": "Campaign tests preserve blind search isolation, saturation and verification rules.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    }
+  ],
+  "id": "CAP-0006",
+  "maturity": "stable",
+  "non_goals": [
+    "Publishing Memory Leads as Fact/Judgment.",
+    "Treating search not-found as contradiction."
+  ],
+  "owned_semantics": [
+    "memory.blind_recall_isolation",
+    "memory.campaign_saturation_and_seal",
+    "memory.post_seal_verification_depth"
+  ],
+  "purpose": "Own blind memory-exhaustion, sealing/saturation and post-seal self-verification/delegated search depth while keeping Model Memory permanently below Evidence authority.",
+  "revisit_when": "Only replace if blind recall, immutable seal, search-enabled verification and Evidence-final authority remain auditable and append-only.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/memory_campaign.py",
+    "src/longcycle/application/memory_audit.py",
+    "src/longcycle/application/memory_history.py",
+    "tests/test_memory_campaign.py",
+    "docs/research/**memory**"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "memory",
+    "blind-recall",
+    "seal",
+    "saturation",
+    "self-verification"
+  ],
+  "title": "Historical model-memory campaign and verification"
+}

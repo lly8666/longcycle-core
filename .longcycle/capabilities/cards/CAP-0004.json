@@ -1,0 +1,61 @@
+{
+  "aliases": [
+    "judgment memory",
+    "expectation memory",
+    "forecast history",
+    "outcome evaluation",
+    "revision history"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class GroundedJudgmentProjectionItem",
+      "description": "Grounded Judgment projection owns explicit contemporaneous expectation interpretation from Evidence.",
+      "kind": "application",
+      "path": "src/longcycle/application/judgment_projection.py"
+    }
+  ],
+  "extension_seams": [
+    "Add generic Judgment kinds/relations when cross-industry evidence proves a truthful representation gap.",
+    "Add derived presentation over Judgment/Outcome without mutating original assertions."
+  ],
+  "guards": [
+    {
+      "contains": "No-lookahead Judgment replay smoke (hard gate)",
+      "description": "CI requires Judgment replay/no-lookahead smoke before Pytest.",
+      "kind": "runtime",
+      "path": ".github/workflows/ci.yml"
+    }
+  ],
+  "id": "CAP-0004",
+  "maturity": "core_locked",
+  "non_goals": [
+    "Turning consensus Judgment into Reality.",
+    "Backfilling later Outcome knowledge into the original Judgment.",
+    "Using non-direct later Reality implication as a schema field without its recorded promotion gate."
+  ],
+  "owned_semantics": [
+    "judgment.assertion.identity",
+    "judgment.rationale_revision_history",
+    "outcome.judgment_reality_evaluation"
+  ],
+  "purpose": "Own contemporaneous Judgment representation, rationale/revision context and later Outcome evaluation without rewriting the original historical Judgment.",
+  "revisit_when": "Only replace if contemporaneous speaker/target/value/rationale/revision and immutable later Outcome linkage remain separately recoverable at historical cutoffs.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/judgment_projection.py",
+    "src/longcycle/application/judgment_context_projection.py",
+    "src/longcycle/application/judgment_replay.py",
+    "src/longcycle/domain/judgments.py",
+    "src/longcycle/domain/outcomes.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "judgment",
+    "expectation",
+    "outcome",
+    "rationale",
+    "revision"
+  ],
+  "title": "Judgment, expectation revision and Outcome memory"
+}

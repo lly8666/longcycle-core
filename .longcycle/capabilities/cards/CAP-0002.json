@@ -1,0 +1,61 @@
+{
+  "aliases": [
+    "grounded evidence",
+    "evidence fragment grounding",
+    "json pointer evidence",
+    "pdf page evidence",
+    "html visible text evidence"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class ArchivedEvidenceRecorder:",
+      "description": "ArchivedEvidenceRecorder owns fail-closed locator/value verification against immutable artifacts.",
+      "kind": "application",
+      "path": "src/longcycle/application/evidence_recording.py"
+    }
+  ],
+  "extension_seams": [
+    "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
+    "Add claim_context annotations without silently promoting them into Reality/Judgment."
+  ],
+  "guards": [
+    {
+      "contains": "class ArchivedEvidenceRecorderTest",
+      "description": "Grounding tests exercise archived excerpt/artifact boundaries.",
+      "kind": "test",
+      "path": "tests/test_evidence_recording.py"
+    }
+  ],
+  "id": "CAP-0002",
+  "maturity": "core_locked",
+  "non_goals": [
+    "Fact/Judgment publication.",
+    "Search-result or model-memory promotion.",
+    "Media-type shortcuts that pretend structured/binary sources are plain text."
+  ],
+  "owned_semantics": [
+    "evidence.fragment.grounding",
+    "evidence.locator.integrity",
+    "evidence.structured_json_pointer_exactness"
+  ],
+  "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in archived text/PDF/HTML/structured JSON artifacts before any epistemic promotion.",
+  "revisit_when": "Only replace if the successor preserves claim-scoped immutable artifact lineage, exact locator semantics and fail-closed verification across supported media.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/evidence_recording.py",
+    "src/longcycle/adapters/parsers.py",
+    "scripts/execute_grounded_evidence_spec.py",
+    "tests/test_evidence_recording.py",
+    "tests/test_json_evidence_recording.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "evidence",
+    "locator",
+    "provenance",
+    "json-pointer",
+    "claim-scope"
+  ],
+  "title": "Claim-scoped Grounded Evidence"
+}

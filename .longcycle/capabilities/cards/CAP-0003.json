@@ -1,0 +1,75 @@
+{
+  "aliases": [
+    "canonical reality",
+    "fact normalization",
+    "fact reconciliation",
+    "reality projection",
+    "comparability"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class AssertionNormalizer:",
+      "description": "AssertionNormalizer owns typed scalar/unit/dimension normalization before reconciliation.",
+      "kind": "application",
+      "path": "src/longcycle/application/normalization.py"
+    },
+    {
+      "contains": "def build_grounded_reality_facts(",
+      "description": "Grounded Reality projection maps explicit Evidence roles into immutable FactAssertions without inventing occurrence semantics.",
+      "kind": "application",
+      "path": "src/longcycle/application/reality_projection.py"
+    }
+  ],
+  "extension_seams": [
+    "Add predicate-specific normalization/comparability rules through existing typed profiles.",
+    "Add generic Reality projection fields only when real cross-industry evidence cannot be represented truthfully."
+  ],
+  "guards": [
+    {
+      "contains": "ADD COLUMN valid_time_kind text NOT NULL DEFAULT 'unknown'",
+      "description": "Canonical Reality stores valid-time kind explicitly rather than inferring from null bounds.",
+      "kind": "schema",
+      "path": "migrations/0021_canonical_valid_time_kind.sql"
+    },
+    {
+      "contains": "def _fact_payload()",
+      "description": "Temporal precision tests protect source-supported fact time semantics.",
+      "kind": "test",
+      "path": "tests/test_fact_temporal_precision.py"
+    }
+  ],
+  "id": "CAP-0003",
+  "maturity": "core_locked",
+  "non_goals": [
+    "Management guidance as Reality.",
+    "Inferring exact occurrence dates from coarse or unknown source time.",
+    "Researcher presentation/replay formatting."
+  ],
+  "owned_semantics": [
+    "reality.fact.normalization",
+    "reality.fact.comparability",
+    "reality.canonical.reconciliation",
+    "reality.valid_time_precision"
+  ],
+  "purpose": "Own typed Fact normalization, comparability and canonical Reality semantics, including source-supported temporal precision and reconciliation rather than direct assertion copying.",
+  "revisit_when": "Only replace if an equally explicit generic model preserves typed value, comparability, evidence provenance, reconciliation and valid/known-time boundaries.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/normalization.py",
+    "src/longcycle/application/reality_projection.py",
+    "src/longcycle/application/reconciliation.py",
+    "src/longcycle/domain/models.py",
+    "migrations/0020_fact_valid_time_precision.sql",
+    "migrations/0021_canonical_valid_time_kind.sql"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "reality",
+    "fact",
+    "normalization",
+    "reconciliation",
+    "temporal-precision"
+  ],
+  "title": "Canonical Reality normalization and reconciliation"
+}

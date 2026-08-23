@@ -1,0 +1,69 @@
+{
+  "aliases": [
+    "handoff",
+    "session continuity",
+    "fresh agent bootstrap",
+    "resume cursor",
+    "data plane handoff"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class SessionHandoffCheckpoint(BaseModel):",
+      "description": "Typed handoff checkpoint owns bounded current horizon/cursor reconstruction.",
+      "kind": "application",
+      "path": "src/longcycle/application/session_handoff.py"
+    }
+  ],
+  "extension_seams": [
+    "Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.",
+    "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger."
+  ],
+  "guards": [
+    {
+      "contains": "class SessionHandoffContractTest",
+      "description": "Handoff tests enforce bounded bootstrap and live-head delta semantics.",
+      "kind": "test",
+      "path": "tests/test_session_handoff.py"
+    },
+    {
+      "contains": "live Git graph / HEAD / CI",
+      "description": "Continuity protocol keeps live implementation authority above checkpoints and receipts.",
+      "kind": "protocol",
+      "path": "docs/development/session-handoff-protocol.md"
+    }
+  ],
+  "id": "CAP-0009",
+  "maturity": "core_locked",
+  "non_goals": [
+    "Replacing live Git/CI authority.",
+    "Preloading all old industries/devlogs/repair cards.",
+    "Transporting live PostgreSQL as session authority."
+  ],
+  "owned_semantics": [
+    "continuity.resume_cursor",
+    "continuity.live_head_reconciliation",
+    "continuity.resume_asset_identity"
+  ],
+  "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, while live Git/CI remains implementation authority.",
+  "revisit_when": "Only replace if a stronger continuity authority preserves bounded cold-start recovery, live-ref freshness checks and explicit asset integrity without user restatement.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/session_handoff.py",
+    "src/longcycle/application/handoff_data_plane.py",
+    "src/longcycle/application/handoff_freshness.py",
+    "src/longcycle/application/handoff_drill.py",
+    ".longcycle/handoff/**",
+    "CONTINUE_HERE.md",
+    "FRESH_AGENT_BOOTSTRAP.md"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "handoff",
+    "continuity",
+    "bootstrap",
+    "live-head",
+    "data-plane"
+  ],
+  "title": "Repository-backed session continuity and data-plane handoff"
+}

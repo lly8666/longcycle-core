@@ -1,0 +1,72 @@
+{
+  "aliases": [
+    "point-in-time replay",
+    "historical replay",
+    "epistemic replay",
+    "trajectory view",
+    "research replay",
+    "historical snapshot"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class EpistemicMemoryReader(Protocol):",
+      "description": "Storage-neutral typed reader is the semantic replay owner used by PostgreSQL, DuckDB and product-facing replay.",
+      "kind": "port",
+      "path": "src/longcycle/ports/epistemic.py"
+    }
+  ],
+  "extension_seams": [
+    "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
+    "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
+    "Additional storage adapters implementing the same typed reader contract."
+  ],
+  "guards": [
+    {
+      "contains": "DuckDBEpistemicMemoryReader(database)",
+      "description": "Integrated replay consumes the typed DuckDB reader rather than physical tables.",
+      "kind": "runtime",
+      "path": "scripts/replay_integrated_history.py"
+    },
+    {
+      "contains": "seal_industrial_memory(portable, timeline)",
+      "description": "Hard smoke round-trips one typed timeline across PostgreSQL and DuckDB.",
+      "kind": "test",
+      "path": "scripts/smoke_postgres_epistemic.py"
+    }
+  ],
+  "id": "CAP-0005",
+  "maturity": "core_locked",
+  "non_goals": [
+    "Direct SQL as product replay semantics.",
+    "Creating new Fact/Judgment/Outcome records.",
+    "Presentation code deciding its own knowledge-cutoff eligibility."
+  ],
+  "owned_semantics": [
+    "replay.knowledge_cutoff_visibility",
+    "replay.no_lookahead_boundary",
+    "replay.typed_reality_judgment_outcome_snapshot"
+  ],
+  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff; presentation layers must delegate to this typed read boundary.",
+  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/ports/epistemic.py",
+    "src/longcycle/adapters/storage/postgres_epistemic.py",
+    "src/longcycle/adapters/storage/duckdb_epistemic.py",
+    "src/longcycle/application/historical_replay.py",
+    "src/longcycle/application/judgment_replay.py",
+    "src/longcycle/application/trajectory_view.py",
+    "scripts/replay_integrated_history.py",
+    "src/longcycle/cli.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "replay",
+    "knowledge-cutoff",
+    "no-lookahead",
+    "duckdb",
+    "trajectory"
+  ],
+  "title": "Typed point-in-time industrial-memory replay"
+}

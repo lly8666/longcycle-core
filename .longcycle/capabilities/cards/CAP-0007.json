@@ -1,0 +1,67 @@
+{
+  "aliases": [
+    "research orchestration",
+    "research runner",
+    "research run",
+    "source pack execution",
+    "portable research receipt"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class ResearchOrchestrationSpec(BaseModel):",
+      "description": "Repository-owned orchestration spec composes existing Evidence/Reality executors and immutable guards.",
+      "kind": "application",
+      "path": "src/longcycle/application/research_orchestration.py"
+    },
+    {
+      "contains": "\"run\",",
+      "description": "Existing longcycle research command surface delegates to the shared orchestration application logic.",
+      "kind": "cli",
+      "path": "src/longcycle/cli.py"
+    }
+  ],
+  "extension_seams": [
+    "Add researcher/task invocation adapters by delegation to the same application contract.",
+    "Add new bounded execution phases only when an existing semantic executor already owns the phase."
+  ],
+  "guards": [
+    {
+      "contains": "class ResearchOrchestrationContractTest",
+      "description": "Contract tests cover source-pack/material hashes, repair guards and immutable paths.",
+      "kind": "test",
+      "path": "tests/test_research_orchestration.py"
+    }
+  ],
+  "id": "CAP-0007",
+  "maturity": "stable",
+  "non_goals": [
+    "Owning GitHub Release/Drive transport restoration.",
+    "Reimplementing Evidence/Reality semantics inside workflow/CLI.",
+    "Campaign-specific branches in the generic runner."
+  ],
+  "owned_semantics": [
+    "orchestration.source_pack_integrity",
+    "orchestration.bounded_evidence_reality_composition",
+    "orchestration.portable_execution_receipt"
+  ],
+  "purpose": "Own bounded composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards without duplicating epistemic executors.",
+  "revisit_when": "Only replace if source identity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic contract.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/research_orchestration.py",
+    "scripts/execute_research_orchestration.py",
+    ".github/workflows/research-orchestration-once.yml",
+    "tests/test_research_orchestration.py",
+    "src/longcycle/cli.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "orchestration",
+    "source-pack",
+    "repair-overlay",
+    "receipt",
+    "fail-closed"
+  ],
+  "title": "Fail-closed research orchestration"
+}
