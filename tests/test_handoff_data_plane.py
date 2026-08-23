@@ -20,52 +20,70 @@ class HandoffDataPlaneTest(unittest.TestCase):
             (ROOT / ".longcycle" / "handoff" / "data-plane.json").read_text(encoding="utf-8")
         )
 
-    def test_current_handoff_uses_split_binary_transport(self) -> None:
+    def test_current_handoff_uses_deferred_pdf_materialization_contract(self) -> None:
         checkpoint = self._checkpoint()
         manifest = self._manifest()
 
         self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v5")
         self.assertEqual(checkpoint.data_plane_manifest_path, ".longcycle/handoff/data-plane.json")
         self.assertIn(checkpoint.data_plane_manifest_path, checkpoint.resume_read_set)
-        self.assertEqual(manifest.schema_version, "longcycle-handoff-data-plane/v2")
+        self.assertEqual(manifest.schema_version, "longcycle-handoff-data-plane/v4")
         self.assertEqual(
             manifest.transport_mode,
-            "github_release_sources_google_drive_generated",
+            "google_drive_webcapsules_generated_pdf_locator_deferred_materialization",
         )
-        self.assertEqual(manifest.missing_required_asset_action, "stop_and_report_integrity_blocker")
+        self.assertIsNotNone(manifest.pdf_source_policy)
+        assert manifest.pdf_source_policy is not None
+        self.assertEqual(
+            manifest.pdf_source_policy["states"],
+            ["locator_verified", "content_verified", "materialized"],
+        )
+        self.assertIn("Do not create or run GitHub Actions", manifest.github_actions_pdf_policy or "")
+        self.assertIn("not an integrity blocker", manifest.missing_required_asset_action)
 
-    def test_external_sources_use_release_and_generated_state_uses_drive(self) -> None:
+    def test_current_assets_preserve_legacy_pdf_bytes_and_web_capture_without_new_download_gate(
+        self,
+    ) -> None:
         manifest = self._manifest()
-        self.assertTrue(manifest.assets)
+        assets = {asset.asset_id: asset for asset in manifest.assets}
 
-        source_assets = [
-            asset for asset in manifest.assets if asset.role == "raw_source_acquisition_cache"
-        ]
-        generated_assets = [
-            asset for asset in manifest.assets if asset.role != "raw_source_acquisition_cache"
-        ]
-        self.assertTrue(source_assets)
-        self.assertTrue(generated_assets)
+        pdf_cache = assets["adc-sv005-blenrep-pdf-acquisition-run32630536037"]
+        self.assertEqual(pdf_cache.role, "legacy_materialized_pdf_source_cache")
+        self.assertEqual(pdf_cache.transport, "github_release_legacy_materialization")
+        self.assertEqual(
+            pdf_cache.materialization_status,
+            "materialized_legacy_reusable_not_new_default",
+        )
+        self.assertTrue(pdf_cache.release_tag)
+        self.assertIsNone(pdf_cache.google_drive_file_id)
 
-        for asset in source_assets:
-            self.assertEqual(asset.transport, "github_release")
-            self.assertTrue(asset.release_tag)
-            self.assertIsNone(asset.google_drive_file_id)
-            self.assertEqual(len(asset.sha256), 64)
+        web_capture = assets["adc-sv005-blenrep-web-capture-v1"]
+        self.assertEqual(web_capture.role, "webpage_source_capture_capsule")
+        self.assertEqual(web_capture.transport, "google_drive")
+        self.assertTrue(web_capture.google_drive_file_id)
+        self.assertIsNone(web_capture.release_tag)
+        self.assertEqual(len(web_capture.sha256), 64)
 
-        for asset in generated_assets:
-            self.assertEqual(asset.transport, "google_drive")
-            self.assertTrue(asset.google_drive_file_id)
-            self.assertIsNone(asset.release_tag)
-            self.assertEqual(len(asset.sha256), 64)
-
-    def test_manifest_does_not_treat_drive_snapshot_as_live_database_authority(self) -> None:
+    def test_transport_does_not_change_source_authority_or_live_database_boundary(self) -> None:
         manifest = self._manifest()
-        self.assertIn("externally acquired", manifest.github_release_policy)
-        self.assertIn("Longcycle-generated", manifest.google_drive_policy)
+        assert manifest.pdf_source_policy is not None
+        self.assertIn("Claim-scoped authority", manifest.pdf_source_policy["mainstream_source_rule"])
+        self.assertIn("transport", manifest.pdf_source_policy["mainstream_source_rule"])
         self.assertIn("Do not transport a live PostgreSQL cluster", manifest.postgres_policy)
-        self.assertIn("read/replay", manifest.duckdb_policy)
-        self.assertIn("SHA-256", manifest.duckdb_policy)
+        self.assertIn("SQLite", manifest.duckdb_policy)
+        self.assertIn("Google Drive", manifest.google_drive_policy)
+
+    def test_locator_only_is_not_claim_evidence(self) -> None:
+        manifest = self._manifest()
+        assert manifest.pdf_source_policy is not None
+        self.assertIn(
+            "not sufficient to prove a claim",
+            manifest.pdf_source_policy["locator_verified"],
+        )
+        self.assertIn(
+            "sufficient to enter normal Evidence semantics",
+            manifest.pdf_source_policy["content_verified"],
+        )
 
 
 if __name__ == "__main__":
