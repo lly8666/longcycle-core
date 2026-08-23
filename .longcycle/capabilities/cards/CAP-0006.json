@@ -44,14 +44,14 @@
       "path": "tests/test_memory_ingest.py"
     },
     {
-      "contains": "test_opt_in_overlay_is_explicitly_current_and_not_cutoff_filtered",
-      "description": "Researcher projection test keeps current research state opt-in, non-historical and outside the historical cutoff filter.",
+      "contains": "test_opt_in_overlay_is_current_and_not_narrowed_by_historical_membership",
+      "description": "Researcher projection test keeps current research state opt-in, non-historical and scoped by current research provenance instead of the historical membership cutoff.",
       "kind": "test",
       "path": "tests/test_open_state_view.py"
     },
     {
       "contains": "POSTGRES_RESEARCHER_OPEN_STATES_SMOKE_PASS",
-      "description": "PostgreSQL smoke proves explicit Memory disagreement, unresolved hypothesis and model-memory coverage gap appear only in the opt-in current research overlay.",
+      "description": "PostgreSQL smoke proves explicit Memory disagreement, unresolved hypothesis and sealed model-memory coverage gap appear only in the opt-in current research overlay.",
       "kind": "runtime",
       "path": "scripts/smoke_postgres_open_states.py"
     }
