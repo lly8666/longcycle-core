@@ -1,0 +1,95 @@
+{
+  "schema_version": "longcycle-outcome-implication-pressure-receipt/v1",
+  "trajectory": "trastuzumab deruxtecan / ENHERTU",
+  "status": "runtime_grounded_pressure_pass",
+  "authority_class": "curated_research_assessment_over_grounded_judgment_and_canonical_reality",
+  "runtime": {
+    "head_sha": "9cf25f4bad1e6ccd508da6a8a4af06a26b9ece03",
+    "workflow_run_id": 32629166317,
+    "workflow_job_id": 97169135843,
+    "workflow_artifact_id": 9490545283,
+    "workflow_artifact_sha256": "16f8e8afbf6e95c6e78f2fb77185cb0fa12e3066a328c1fca1c65753c295ebbd",
+    "generated_drive_file_id": "1PTKC08Y1tj7uwm_osEw31rHZOOrY8cBV",
+    "generated_drive_file_name": "longcycle-sv003-enhertu-judgment-outcome-pressure-run32629166317.zip",
+    "result": "pass"
+  },
+  "source_reuse": {
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+    "release_asset_sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
+    "new_external_acquisition_required": false,
+    "judgment_source_sha256": "ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e",
+    "later_reality_source_sha256": "cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947"
+  },
+  "earlier_judgment": {
+    "judgment_key": "2019-her2-low-treatment-redefinition-thesis",
+    "judgment_id": "af3973f1-0de2-5961-9f5c-fedc3142ba79",
+    "speaker_name": "Pascal Soriot",
+    "speaker_role": "Chief Executive Officer, AstraZeneca",
+    "judgment_kind": "thesis",
+    "topic_code": "clinical.her2_low_treatment_role",
+    "target_time_kind": "unknown",
+    "target_precision": "unknown",
+    "first_known_at": "2019-03-30T00:00:00Z",
+    "evidence_fragment_id": "3ffa038c-c54c-52af-b9c4-bf902a9e380a",
+    "evidence_fragment_sha256": "dd3b4cc54f015af075de9884f6a695b2935a3a7a7cde56749a524b8f8d860107",
+    "hindsight_guard": "The March-2019 Judgment Evidence task excludes the later DESTINY-Breast04 readout and HER2-low approval. The source vintage described trastuzumab deruxtecan as investigational and not approved for any indication."
+  },
+  "later_reality": {
+    "fact_key": "2022-us-her2-low-approval-scope-pressure",
+    "fact_assertion_id": "9dae3477-2bf2-5439-a23c-1b6fc5d914ed",
+    "canonical_fact_version_id": "60063df6-c6f1-5544-ad73-1735b1c97ccb",
+    "evidence_fragment_id": "47e6fd12-2a54-5503-805a-5fdf66bf37cb",
+    "evidence_fragment_sha256": "b32fcb44c2e5f121f6dc56e7322412e504917eb992c1639d034c8964383659fd",
+    "valid_from": "2022-08-05T00:00:00Z",
+    "valid_time_precision": "day",
+    "market_known_at": "2022-08-06T00:00:00Z",
+    "reconciliation": "accept",
+    "publication_status": "trusted"
+  },
+  "outcome": {
+    "outcome_evaluation_id": "4aa670b5-b7e9-5fdf-ac47-662a7dd8eb3c",
+    "semantic_relation": "related_milestone",
+    "evaluation_status": "indeterminate",
+    "timing_relation": "not_comparable",
+    "timing_delta_value": null,
+    "researcher_implication": "supports",
+    "typed_researcher_implication_persisted": false,
+    "interpretation": "The later U.S. HER2-low approval is directionally consistent with the 2019 treatment-redefinition thesis, but approval is not semantically identical to the broader thesis and therefore cannot be promoted to direct realization."
+  },
+  "no_lookahead_replay": {
+    "before_judgment_known": {"reality": 0, "judgments": 0, "outcomes": 0},
+    "judgment_known": {"reality": 0, "judgments": 1, "outcomes": 0},
+    "before_reality_known": {"reality": 0, "judgments": 1, "outcomes": 0},
+    "reality_known": {"reality": 1, "judgments": 1, "outcomes": 1}
+  },
+  "generated_component_sha256": {
+    "judgment-evidence.json": "4f61cfabfae884964a589abea0c64d0e9b5333a7708ca5718b04cb63253253be",
+    "judgment.json": "4658ad03057e63f44575ed7b13b0ebc6c430979cc11831c1fe39c284893d3a82",
+    "reality-evidence.json": "6d64b5088cd91d88d77345e3d15f0c0638e46610c89333b826c311c1dd30e485",
+    "reality.json": "56978ce8d011aa8cc1dff1f28fac130bd4cd31d29778ba49f3e1ec63a38961ef",
+    "outcome.json": "4027e93095b0e34686d7fe5afabaddc5e76c2fc61cbf3e1b80e08a60a59afe40",
+    "replay.json": "7515ee7dea3725b870700464abad2bb94921069193eca8a4e3148d956f1fbc5a",
+    "implication-pressure.json": "d5ece38970d8a7e5c713068d9a0f62e40a8135b055016e320c5b851f9d6da2e4"
+  },
+  "cross_case_pressure": {
+    "existing_rova_t_case": {
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "researcher_implication": "undermines"
+    },
+    "enhertu_case": {
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "researcher_implication": "supports"
+    },
+    "finding": "Two independently grounded ADC trajectories now demonstrate that semantic_relation plus evaluation_status cannot preserve the direction of a non-direct later Reality's bearing on an earlier Judgment without parsing narrative explanation."
+  },
+  "schema_gate": {
+    "candidate_field": "researcher_implication",
+    "candidate_values": ["supports", "undermines", "mixed", "neutral", "not_assessed"],
+    "migration_0026_decision": "remain_deferred",
+    "reason": "The generic information-loss pressure is now reproduced within a second grounded ADC trajectory, but the previously recorded promotion gate requires a source-grounded non-pharma trajectory or equivalent independent cross-industry pressure before schema commitment.",
+    "next_atomic_test": "Find or ground a non-direct Judgment-to-later-Reality pair in the lithium-battery first industry. Preserve semantic_relation/evaluation_status exactly; assess supports/undermines only if explicit source-backed historical context justifies it. If no suitable pair exists, record the negative result rather than manufacturing an Outcome."
+  }
+}
