@@ -1,0 +1,241 @@
+name: Acquire ADC SV-005 BLENREP PDF sources once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: e944f1b02985f09d2ca9eb20eb858294d0ba6415
+  RELEASE_TAG: longcycle-dev-binary-cache
+
+jobs:
+  acquire:
+    if: github.event.issue.title == '[longcycle-adc-sv005-blenrep-pdf-acquire-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install PDF extraction support
+        run: python -m pip install 'pypdf==6.15.0'
+      - name: Acquire and semantically verify BLENREP PDF sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p acquired
+          python - <<'PY'
+          import hashlib
+          import io
+          import json
+          import re
+          import urllib.request
+          from pathlib import Path
+          from urllib.parse import urlsplit
+          from pypdf import PdfReader
+
+          UA = 'LongcycleCollector/0.2 lly8666@users.noreply.github.com'
+          ITEMS = [
+              {
+                  'key': 'fda-blenrep-label-2020-08',
+                  'url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.pdf',
+                  'retrieval_role': 'authoritative_regulator_historical_label',
+                  'upstream_system': 'U.S. Food and Drug Administration historical prescribing information',
+                  'upstream_external_id': 'BLA-761158-S000-label-2020-08',
+                  'upstream_title': 'BLENREP (belantamab mafodotin-blmf) prescribing information, revised 08/2020',
+                  'published_date': '2020-08-05',
+                  'original_url': 'https://www.accessdata.fda.gov/drugsatfda_docs/label/2020/761158s000lbl.pdf',
+                  'required_phrases': [
+                      'ocular toxicity',
+                      'BLENREP REMS',
+                      'at least 4 prior therapies',
+                      'confirmatory trial',
+                  ],
+              },
+              {
+                  'key': 'federal-register-blenrep-revocation-2023',
+                  'url': 'https://public-inspection.federalregister.gov/2023-06576.pdf',
+                  'retrieval_role': 'authoritative_regulator_legal_notice',
+                  'upstream_system': 'Federal Register / U.S. Food and Drug Administration',
+                  'upstream_external_id': 'FR-2023-06576',
+                  'upstream_title': 'Revocation of the Biologics License for BLENREP',
+                  'published_date': '2023-03-30',
+                  'original_url': 'https://public-inspection.federalregister.gov/2023-06576.pdf',
+                  'required_phrases': [
+                      'BLENREP',
+                      'November 18, 2022',
+                      'February 6, 2023',
+                      'DREAMM-3',
+                  ],
+              },
+              {
+                  'key': 'gsk-dreamm7-readout-2024-02-05',
+                  'url': 'https://www.gsk.com/media/41dimrac/20240201-s-ea-blenrep-dreamm-7-final.pdf',
+                  'retrieval_role': 'primary_self_statement_trial_readout',
+                  'upstream_system': 'GSK stock-exchange announcement',
+                  'upstream_external_id': '2024-02-05-DREAMM-7-readout',
+                  'upstream_title': 'DREAMM-7 phase III trial shows Blenrep combination nearly tripled median progression-free survival versus standard of care combination',
+                  'published_date': '2024-02-05',
+                  'original_url': 'https://www.gsk.com/media/41dimrac/20240201-s-ea-blenrep-dreamm-7-final.pdf',
+                  'required_phrases': [
+                      'DREAMM-7',
+                      'hazard ratio',
+                      '0.41',
+                      '36.6 months',
+                      'bortezomib',
+                  ],
+              },
+          ]
+
+          def fetch(url):
+              request = urllib.request.Request(
+                  url,
+                  headers={
+                      'User-Agent': UA,
+                      'Accept': 'application/pdf,*/*;q=0.8',
+                      'Accept-Language': 'en-US,en;q=0.8',
+                  },
+              )
+              with urllib.request.urlopen(request, timeout=120) as response:
+                  return response.read(), response.geturl(), response.status, dict(response.headers.items())
+
+          def normalize_pdf_text(raw):
+              reader = PdfReader(io.BytesIO(raw), strict=False)
+              text = '\n'.join(page.extract_text() or '' for page in reader.pages)
+              return ' '.join(text.split()), len(reader.pages)
+
+          rows = []
+          for item in ITEMS:
+              base = {
+                  'key': item['key'],
+                  'requested_url': item['url'],
+                  'retrieval_role': item['retrieval_role'],
+                  'upstream_document_identity': {
+                      'system': item['upstream_system'],
+                      'external_id': item['upstream_external_id'],
+                      'title': item['upstream_title'],
+                      'published_date': item['published_date'],
+                      'original_url': item['original_url'],
+                  },
+              }
+              try:
+                  raw, final_url, status, headers = fetch(item['url'])
+                  if status != 200:
+                      raise ValueError(f'unexpected HTTP {status}')
+                  content_type = (headers.get('Content-Type') or headers.get('content-type') or '').lower()
+                  if not raw.startswith(b'%PDF') and 'application/pdf' not in content_type:
+                      raise ValueError(f'expected PDF bytes, got content-type={content_type!r}')
+                  text, page_count = normalize_pdf_text(raw)
+                  normalized = text.casefold()
+                  missing = [phrase for phrase in item['required_phrases'] if phrase.casefold() not in normalized]
+                  if missing:
+                      raise ValueError(f'semantic identity/claim phrases missing: {missing}')
+                  raw_path = Path('acquired') / f"{item['key']}.pdf"
+                  raw_path.write_bytes(raw)
+                  verification_path = Path('acquired') / f"{item['key']}-verification-text.txt"
+                  verification_path.write_text(text, encoding='utf-8')
+                  rows.append({
+                      **base,
+                      'ok': True,
+                      'final_url': final_url,
+                      'retrieval_host': urlsplit(final_url).hostname,
+                      'status': status,
+                      'content_type': 'application/pdf',
+                      'archived_file': raw_path.name,
+                      'raw_sha256': hashlib.sha256(raw).hexdigest(),
+                      'raw_bytes': len(raw),
+                      'page_count': page_count,
+                      'verification_text_file': verification_path.name,
+                      'verification_text_sha256_acquisition_only': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                      'verified_phrases': item['required_phrases'],
+                      'evidence_boundary': 'verification text is acquisition-time semantic checking only and is not automatically publishable Evidence',
+                  })
+              except Exception as exc:
+                  rows.append({**base, 'ok': False, 'error': f'{type(exc).__name__}: {exc}'})
+
+          payload = {
+              'schema_version': 'longcycle-approved-source-acquisition/v2',
+              'task_id': 'ADC-SV-005-BLENREP-PDF-SOURCES-V1',
+              'active_head_sha': 'e944f1b02985f09d2ca9eb20eb858294d0ba6415',
+              'source_role': 'raw original/authoritative PDF acquisition for later claim-scoped Grounded Evidence',
+              'representation_boundary': 'Readable GSK webpage-only DREAMM-3 and 2022 withdrawal sources are intentionally excluded from this PDF Action and remain on the webpage capture -> bounded local DB -> Drive lane.',
+              'success_count': sum(1 for row in rows if row['ok']),
+              'item_count': len(ITEMS),
+              'rows': rows,
+          }
+          Path('acquired/acquisition.json').write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2, ensure_ascii=False))
+          if payload['success_count'] != len(ITEMS):
+              raise SystemExit('not all SV-005 PDF source payloads passed acquisition/semantic verification')
+          PY
+      - name: Build deterministic immutable acquisition pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import zipfile
+          from pathlib import Path
+
+          output = Path(f"longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run{os.environ['GITHUB_RUN_ID']}.zip")
+          epoch = (2026, 8, 23, 0, 0, 0)
+          with zipfile.ZipFile(output, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(Path('acquired').rglob('*')):
+                  if not path.is_file():
+                      continue
+                  info = zipfile.ZipInfo(str(path.relative_to('acquired')), date_time=epoch)
+                  info.compress_type = zipfile.ZIP_DEFLATED
+                  info.external_attr = 0o644 << 16
+                  zf.writestr(info, path.read_bytes())
+          receipt = {
+              'file_name': output.name,
+              'size_bytes': output.stat().st_size,
+              'sha256': hashlib.sha256(output.read_bytes()).hexdigest(),
+          }
+          Path('release-asset.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+          print(Path('release-asset.json').read_text())
+          PY
+      - name: Upload immutable Release asset and download-back verify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          name="$(python -c 'import json; print(json.load(open("release-asset.json"))["file_name"])')"
+          expected="$(python -c 'import json; print(json.load(open("release-asset.json"))["sha256"])')"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | grep -Fxq "$name"; then
+            echo "::error::Release asset already exists and will not be overwritten: $name"
+            exit 1
+          fi
+          gh release upload "$RELEASE_TAG" "$name" --repo "$GITHUB_REPOSITORY"
+          mkdir -p verify
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir verify
+          actual="$(sha256sum "verify/$name" | awk '{print $1}')"
+          echo "SV005_RELEASE_VERIFY actual=$actual expected=$expected"
+          test "$actual" = "$expected"
+      - name: Report acquisition result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f acquired/acquisition.json && -f release-asset.json ]]; then
+            body=$(printf 'ADC_SV005_BLENREP_PDF_ACQUIRE_V1_PASS head=%s run_id=%s release=%s\n\n```json\n%s\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$RELEASE_TAG" "$(cat acquired/acquisition.json)" "$(cat release-asset.json)")
+          else
+            body="ADC_SV005_BLENREP_PDF_ACQUIRE_V1_FAIL head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
