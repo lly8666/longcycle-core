@@ -43,6 +43,7 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   evidence:
@@ -326,3 +327,25 @@ jobs:
           path: .artifacts/out
           if-no-files-found: error
           retention-days: 14
+
+      - name: Publish exact-head runtime status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$JOB_STATUS" == "success" ]]; then
+            state=success
+            description='BLENREP Evidence runtime passed'
+          else
+            state=failure
+            description='BLENREP Evidence runtime failed'
+          fi
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state="$state" \
+            -f context='longcycle/blenrep-grounded-evidence' \
+            -f description="$description" \
+            -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
