@@ -1,0 +1,92 @@
+{
+  "schema_version": "longcycle-researcher-trajectory-validation-receipt/v1",
+  "task_id": "EVT-002-KEMERTON-RESEARCHER-TRAJECTORY-V1",
+  "capability_disposition": {
+    "owner": "CAP-0005",
+    "decision": "reuse_extend",
+    "new_replay_engine": false,
+    "new_schema": false,
+    "reason": "The direct-match researcher view is a read-side projection over the existing typed point-in-time replay owner."
+  },
+  "historical_inputs": {
+    "outcome_receipt": "EVT-002-kemerton-first-product-outcome-evaluation-v1.json",
+    "no_lookahead_receipt": "EVT-002-kemerton-no-lookahead-replay-receipt-v1.json",
+    "legacy_integrated_generation_run_id": 32552206834,
+    "legacy_integrated_artifact_id": 9470379980,
+    "legacy_generation_policy": "The pre-sealed integrated DuckDB remains immutable provenance. It is not promoted back into the current typed reader contract because its Reality table predates complete Evidence-lineage storage."
+  },
+  "deterministic_upgrade": {
+    "policy": "Verify the historical generated artifact, then reconstruct a current typed sealed memory only from generated Judgment/Reality/Outcome execution state that retains Evidence lineage. Never mutate the legacy DuckDB bytes.",
+    "semantic_relation_backfill_basis": "Migration 0023 historically defaulted existing Outcome rows to direct_match; the upgrade therefore does not infer a new relation from hindsight.",
+    "current_sealed_duckdb_sha256": "325098a31ab542d4b01443613b53654b502afa3c3f094af99c2cca7d59cac8c6"
+  },
+  "validation": {
+    "workflow_run_id": 32614751726,
+    "subject_scope": "Kemerton first-product production-line trajectory",
+    "before_cutoff": {
+      "knowledge_cutoff": "2022-08-03T16:27:48Z",
+      "judgments": 1,
+      "reality": 0,
+      "outcomes": 0
+    },
+    "at_cutoff": {
+      "knowledge_cutoff": "2022-08-03T16:27:49Z",
+      "judgments": 1,
+      "reality": 1,
+      "outcomes": 1
+    },
+    "outcome": {
+      "evaluation_status": "realized",
+      "target_text": "May 2022",
+      "target_precision": "month",
+      "outcome_text": "in July 2022",
+      "outcome_precision": "month",
+      "timing_relation": "after_target_window",
+      "timing_delta_value": 2,
+      "timing_delta_unit": "calendar_months",
+      "timing_error_days": null
+    },
+    "no_lookahead": "pass",
+    "original_judgment_rewritten": false,
+    "precision_guard": "The two-calendar-month comparison preserves month-level source support and does not manufacture a day-level delay."
+  },
+  "durable_generated_transport": {
+    "transport": "google_drive",
+    "folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
+    "file_id": "1AqRDWi_7vfE0Rno4zgCnkgxMfF-dXCJr",
+    "file_name": "longcycle-lithium-kemerton-researcher-trajectory-run32614751726.zip",
+    "size_bytes": 13894,
+    "sha256": "e2bb73d7fcd43eca27847771036ce071ff9e4cc1843703ddbe3df5fd06b06b7c",
+    "download_back_verified": true,
+    "contains_archived_external_source_bytes": false,
+    "components": [
+      {
+        "path": "kemerton/current/kemerton-upgraded-memory.duckdb",
+        "size_bytes": 798720,
+        "sha256": "325098a31ab542d4b01443613b53654b502afa3c3f094af99c2cca7d59cac8c6"
+      },
+      {
+        "path": "kemerton/current/replay-before.json",
+        "size_bytes": 974,
+        "sha256": "4940230c1b79d7f812aad377431560a5b88a5f2ace8f30c8427cb6c30b39bad5"
+      },
+      {
+        "path": "kemerton/current/replay-at.json",
+        "size_bytes": 2367,
+        "sha256": "3c2496fb0f20015ef1b5969f1be7dc4f3e1aae3a2443f37dec1f6c2fa7889871"
+      },
+      {
+        "path": "kemerton/current/upgrade-manifest.json",
+        "size_bytes": 804,
+        "sha256": "ab13426ae8e83a7a95514d6774a52851612836183b4a1337e3471f223e3b31fc"
+      },
+      {
+        "path": "kemerton/current/validation-receipt.json",
+        "size_bytes": 1280,
+        "sha256": "67811abb9d90f438ef22f3c16a43298e91598d484890f9d5d5c3089cb965794b"
+      }
+    ]
+  },
+  "product_conclusion": "The same CAP-0005 researcher trajectory that preserves conservative indeterminacy for non-direct later milestones also presents a true direct match as realized with a precision-aware timing relation. No additional Outcome or replay schema is required from this benchmark.",
+  "data_plane_note": "This durable receipt preserves the completed Kemerton asset identity. The resume-relevant handoff data-plane manifest need not become an exhaustive historical asset ledger once the current cursor no longer requires this capsule."
+}
