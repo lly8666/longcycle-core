@@ -1,0 +1,81 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "ADC-SV-003-ENHERTU-HER2LOW-REALITY-EVIDENCE-V1",
+  "acquisition_provenance": {
+    "source_evidence_family": "ADC-SV-003-ENHERTU-GROUNDED-EVIDENCE-V1",
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset_file_name": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+    "release_asset_sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
+    "reuse_rule": "Reuse the already archived August-2022 issuer PDF. This task grounds only the later HER2-low approval Reality needed for the non-direct Outcome pressure test."
+  },
+  "epistemic_guardrails": [
+    "This later Reality task is separate from the March-2019 Judgment Evidence task and must not be used to strengthen or rewrite the earlier Judgment.",
+    "The August-2022 U.S. HER2-low approval is a concrete later regulatory milestone, not the same semantic target as the broader 2019 thesis that treatment could be redefined.",
+    "Preserve the approval event at day precision and the conservative next-day knowledge upper bound used by the already-audited SV-003 source family."
+  ],
+  "sources": [
+    {
+      "key": "daiichi-issuer",
+      "name": "Daiichi Sankyo original press releases",
+      "publisher_domain": "daiichisankyo.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Daiichi Sankyo is a direct development participant and its original release is a primary record for the company-reported U.S. HER2-low approval milestone."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "her2-low-us-approval-2022",
+      "vintage_id": "SV003-2022-08-US-HER2-LOW-APPROVAL",
+      "source_key": "daiichi-issuer",
+      "retrieval_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/202208/20220805_E.pdf",
+      "original_source_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/202208/20220805_E.pdf",
+      "external_id": "2022-08-05-ENHERTU-US-HER2-low-approval",
+      "title": "ENHERTU Approved in the U.S. as the First HER2 Directed Therapy for Patients with HER2 Low Metastatic Breast Cancer",
+      "published_at": null,
+      "first_known_at": "2022-08-06T00:00:00Z",
+      "expected_sha256": "cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947",
+      "material_path": "daiichi-enhertu-us-her2-low-approval-2022.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.daiichisankyo.com",
+        "published_date_only": "2022-08-05",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "daiichi-enhertu-her2-low-us-approval-2022"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2022-her2-low-us-approval-scope",
+      "document_key": "her2-low-us-approval-2022",
+      "page": 1,
+      "excerpt": "for the treatment of adult patients with unresectable or metastatic HER2 low (IHC 1+ or IHC 2+/ISH-) breast cancer who have received a prior chemotherapy in the metastatic setting or developed disease recurrence during or within six months of completing adjuvant chemotherapy.",
+      "claim_context": {
+        "claim_id": "SV003-O01",
+        "epistemic_layer": "reality",
+        "claim_role": "issuer_reported_regulatory_approval_scope",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-her2-low-us-approval-2022",
+        "valid_effective_time": {"date": "2022-08-05", "precision": "day"},
+        "indication_branch": "HER2-low unresectable/metastatic breast cancer after specified prior chemotherapy",
+        "biomarker_scope": "IHC 1+ or IHC 2+/ISH-",
+        "known_time": {"upper_bound": "2022-08-06T00:00:00Z", "precision": "day"}
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 1,
+    "required_fragments": 1,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
