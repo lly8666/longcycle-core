@@ -128,12 +128,19 @@ class CapabilityRegistryTest(unittest.TestCase):
             self.assertTrue(targets)
             self.assertTrue(set(targets).issubset(active_ids))
 
+        # Current admission already carries exact owner IDs. Fresh-agent recovery must use
+        # those exact IDs directly; fuzzy relevant() search is discovery help, not authority.
+        for target in targets:
+            card_path = ROOT / ".longcycle" / "capabilities" / "cards" / f"{target}.json"
+            self.assertTrue(card_path.exists())
+            card = json.loads(card_path.read_text(encoding="utf-8"))
+            self.assertEqual(card["id"], target)
+            self.assertEqual(card["status"], "active")
+
         output = StringIO()
         with redirect_stdout(output):
             registry.relevant(admission["intent"])
-        rendered = output.getvalue()
-        for target in targets:
-            self.assertIn(f"[{target}]", rendered)
+        self.assertIn("CAPABILITY_RELEVANT", output.getvalue())
 
     def test_governance_owner_guards_all_cold_start_entrypoints(self) -> None:
         card = json.loads(
