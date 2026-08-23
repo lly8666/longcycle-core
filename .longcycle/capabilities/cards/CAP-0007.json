@@ -22,7 +22,8 @@
   ],
   "extension_seams": [
     "Add researcher/task invocation adapters by delegation to the same application contract.",
-    "Add new bounded execution phases only when an existing semantic executor already owns the phase."
+    "Add new bounded execution phases only when an existing semantic executor already owns the phase.",
+    "Historical-recovery discovery stays upstream in CAP-0006; compose its archived outputs here only after normal source acquisition has produced an immutable source pack/spec."
   ],
   "guards": [
     {
@@ -37,6 +38,7 @@
   "non_goals": [
     "Owning GitHub Release/Drive transport restoration.",
     "Reimplementing Evidence/Reality semantics inside workflow/CLI.",
+    "Owning memory-first historical discovery or treating the source-pack execution entrypoint as the whole historical-research lifecycle.",
     "Campaign-specific branches in the generic runner."
   ],
   "owned_semantics": [
@@ -44,8 +46,8 @@
     "orchestration.bounded_evidence_reality_composition",
     "orchestration.portable_execution_receipt"
   ],
-  "purpose": "Own bounded composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards without duplicating epistemic executors.",
-  "revisit_when": "Only replace if source identity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic contract.",
+  "purpose": "Own the execution-stage composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards; historical memory-first discovery remains upstream in CAP-0006.",
+  "revisit_when": "Only replace if source identity, repair auditability, fail-closed phase composition, immutable guards and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery semantics.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/research_orchestration.py",
