@@ -4,48 +4,74 @@
   "status": "active",
   "kind": "data",
   "severity": "critical",
-  "title": "Canonical Reality preserves valid-time kind and source precision",
+  "title": "Historical time preserves source precision, observation and knowledge boundaries",
   "scope": [
+    "migrations/0018_judgment_temporal_precision.sql",
+    "migrations/0019_precision_aware_outcome_timing.sql",
     "migrations/0020_fact_valid_time_precision.sql",
     "migrations/0021_canonical_valid_time_kind.sql",
+    "migrations/0024_canonical_observation_time.sql",
     "src/longcycle/domain/epistemic.py",
     "src/longcycle/adapters/storage/postgres_epistemic.py",
     "src/longcycle/adapters/storage/duckdb_epistemic.py",
+    "tests/test_fact_temporal_precision.py",
     "scripts/smoke_postgres_epistemic.py"
   ],
   "tags": [
     "reality",
+    "judgment",
+    "outcome",
     "valid-time",
+    "observation-time",
+    "known-time",
     "temporal-precision",
-    "no-lookahead",
-    "canonical-fact"
+    "no-lookahead"
   ],
-  "failure_signature": "A timeless Fact and an unknown-time Fact become indistinguishable at the canonical/read layer, or a month/quarter/range source is silently represented as a more precise occurrence than the source supports.",
-  "root_cause": "Canonical Fact storage originally preserved nullable bounds and later precision text but not the semantic valid_time_kind; consumers could then infer semantics from NULL bounds or invent precision during replay.",
-  "invariant": "Canonical Reality must carry valid_time_kind, bounds, precision and source time text as first-class inherited semantics. NULL bounds never determine timeless versus unknown, and replay must not manufacture a finer occurrence precision than the supporting source/assertion.",
+  "failure_signature": "A coarse or unknown historical time is silently sharpened into an exact date, a computational range boundary is presented as the occurrence date, unknown onset is confused with an as-of observation, or later-known information becomes visible before its conservative knowledge boundary.",
+  "root_cause": "Temporal semantics arrived incrementally under real Kemerton/Kwinana replay pressure. Treating every stored timestamp as the same kind of time can erase source precision, collapse period/timeless/unknown, backdate an observed state to a fabricated onset, or manufacture day-level Outcome error.",
+  "invariant": "Historical records preserve the source-supported time expression: valid/target/outcome ranges plus precision/text, explicit period/timeless/unknown kind, optional observation/as-of time when onset is unknown, and a separate conservative known-time. Range endpoints may be computational bounds but are never evidence that an event occurred on the boundary day. Outcome timing is compared only at precision supported by both target and outcome.",
   "anti_regression": [
-    "Do not infer timeless/unknown from `valid_from IS NULL AND valid_to IS NULL`.",
-    "Do not coerce month/quarter/range evidence into a fake exact day for convenience.",
-    "Do not let PostgreSQL and DuckDB drop different parts of the temporal extent."
+    "Do not coerce month/quarter/year/range/approximate evidence into a fake exact day or instant for sorting, UI or scoring.",
+    "Do not infer timeless versus unknown from null valid-time bounds.",
+    "Do not set valid_from to an observation/as-of date merely because the state was observed then; unknown onset remains unknown.",
+    "Do not relax conservative known-time/no-lookahead because occurrence time is coarse or uncertain.",
+    "Do not report day-level Outcome delay/error when the Judgment target or realized outcome only supports coarser precision."
   ],
   "guards": [
     {
       "kind": "schema",
-      "path": "migrations/0021_canonical_valid_time_kind.sql",
-      "contains": "ADD COLUMN valid_time_kind text NOT NULL DEFAULT 'unknown'",
-      "description": "Canonical Fact schema stores valid-time kind explicitly."
+      "path": "migrations/0018_judgment_temporal_precision.sql",
+      "contains": "instead of manufacturing false timestamp accuracy",
+      "description": "Judgment targets preserve source-supported temporal precision."
+    },
+    {
+      "kind": "schema",
+      "path": "migrations/0019_precision_aware_outcome_timing.sql",
+      "contains": "must not manufacture day-level timing error",
+      "description": "Outcome timing cannot invent finer error precision than target/outcome support."
+    },
+    {
+      "kind": "schema",
+      "path": "migrations/0024_canonical_observation_time.sql",
+      "contains": "state is true as of T; onset unknown",
+      "description": "Canonical Reality keeps observation/as-of separate from unknown onset."
     },
     {
       "kind": "test",
-      "path": "scripts/smoke_postgres_epistemic.py",
-      "contains": "canonical valid-time kind was lost",
-      "description": "Integrated hard gate checks kind, month precision and source time text on canonical Reality."
+      "path": "tests/test_fact_temporal_precision.py",
+      "contains": "test_month_precision_is_preserved_without_claiming_first_day",
+      "description": "A month represented with computational bounds is not claimed to occur on its first day."
     }
   ],
-  "revisit_when": "Only revisit if TemporalExtent is deliberately replaced by an equally explicit model that can distinguish period/timeless/unknown and round-trip source-supported precision without inference from missing bounds.",
+  "revisit_when": "Only revisit if a replacement temporal model can still round-trip source wording/precision, distinguish period/timeless/unknown, represent observed-as-of with unknown onset, preserve conservative known-time and compare Outcome timing without false precision.",
   "origin_refs": [
+    "migration:0018",
+    "migration:0019",
     "migration:0020",
     "migration:0021",
+    "migration:0024",
+    "issue:42-state-as-of",
+    "issue:46-unknown-onset-reconciliation",
     "benchmark:kemerton-july-2022"
   ],
   "supersedes": []
