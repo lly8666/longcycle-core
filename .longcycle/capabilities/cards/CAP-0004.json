@@ -4,7 +4,8 @@
     "expectation memory",
     "forecast history",
     "outcome evaluation",
-    "revision history"
+    "revision history",
+    "precision aware outcome"
   ],
   "entrypoints": [
     {
@@ -24,6 +25,18 @@
       "description": "CI requires Judgment replay/no-lookahead smoke before Pytest.",
       "kind": "runtime",
       "path": ".github/workflows/ci.yml"
+    },
+    {
+      "contains": "instead of manufacturing false timestamp accuracy",
+      "description": "Judgment targets preserve month/quarter/year/range source precision instead of fake exact dates.",
+      "kind": "schema",
+      "path": "migrations/0018_judgment_temporal_precision.sql"
+    },
+    {
+      "contains": "must not manufacture day-level timing error",
+      "description": "Outcome timing compares only at precision supported by the target and realized outcome.",
+      "kind": "schema",
+      "path": "migrations/0019_precision_aware_outcome_timing.sql"
     }
   ],
   "id": "CAP-0004",
@@ -31,22 +44,27 @@
   "non_goals": [
     "Turning consensus Judgment into Reality.",
     "Backfilling later Outcome knowledge into the original Judgment.",
+    "Manufacturing exact target dates or day-level timing errors from coarse historical guidance/outcomes.",
     "Using non-direct later Reality implication as a schema field without its recorded promotion gate."
   ],
   "owned_semantics": [
     "judgment.assertion.identity",
     "judgment.rationale_revision_history",
-    "outcome.judgment_reality_evaluation"
+    "judgment.target_temporal_precision",
+    "outcome.judgment_reality_evaluation",
+    "outcome.precision_aware_timing"
   ],
-  "purpose": "Own contemporaneous Judgment representation, rationale/revision context and later Outcome evaluation without rewriting the original historical Judgment.",
-  "revisit_when": "Only replace if contemporaneous speaker/target/value/rationale/revision and immutable later Outcome linkage remain separately recoverable at historical cutoffs.",
+  "purpose": "Own contemporaneous Judgment representation, source-supported target precision, rationale/revision context and later precision-aware Outcome evaluation without rewriting the original historical Judgment.",
+  "revisit_when": "Only replace if contemporaneous speaker/target/value/target precision/rationale/revision and immutable later Outcome linkage/timing precision remain separately recoverable at historical cutoffs.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/judgment_projection.py",
     "src/longcycle/application/judgment_context_projection.py",
     "src/longcycle/application/judgment_replay.py",
     "src/longcycle/domain/judgments.py",
-    "src/longcycle/domain/outcomes.py"
+    "src/longcycle/domain/outcomes.py",
+    "migrations/0018_judgment_temporal_precision.sql",
+    "migrations/0019_precision_aware_outcome_timing.sql"
   ],
   "status": "active",
   "supersedes": [],
@@ -55,7 +73,8 @@
     "expectation",
     "outcome",
     "rationale",
-    "revision"
+    "revision",
+    "temporal-precision"
   ],
   "title": "Judgment, expectation revision and Outcome memory"
 }
