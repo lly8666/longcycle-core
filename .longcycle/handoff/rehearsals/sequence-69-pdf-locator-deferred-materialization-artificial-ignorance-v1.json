@@ -1,0 +1,68 @@
+{
+  "schema_version": "longcycle-artificial-ignorance-rehearsal/v1",
+  "continuity_sequence": 69,
+  "tested_head_sha": "6cdcc960f7966ab1cb109caf50c0e8259b5679de",
+  "mode": "repository_only_artificial_ignorance",
+  "chat_history_allowed": false,
+  "challenge": "A fresh Agent must decide, without prior chat memory, how to handle two mainstream official PDF cases: (a) the document identity/URL is verified but claim-relevant content has not been read; (b) claim-relevant PDF content has actually been read and preserved but raw PDF bytes have not been downloaded. It must also decide whether GitHub Actions should be created merely to download the PDFs, what a later normal-network Agent should do, and whether mainstream-site legitimacy changes claim-scoped authority.",
+  "inputs_read": [
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "METHODOLOGY_CORE.md",
+    "CONTINUE_HERE.md",
+    ".longcycle/handoff/current.json",
+    ".longcycle/handoff/data-plane.json",
+    ".longcycle/capabilities/active-index.json"
+  ],
+  "reconstructed_answer": {
+    "locator_only_case": "Record the upstream publisher/document identity, original PDF URL, filename/title/date when supported, verification mode/time and pending materialization state as locator_verified. Treat the PDF as a legitimate source document identity on a mainstream official/regulatory/issuer/institutional site, but do not use the unread locator to prove a claim.",
+    "content_verified_case": "If claim-relevant PDF content was actually read in a trustworthy surface and a page/section/excerpt or equivalent faithful readable representation is preserved with truthful provenance, mark content_verified and allow normal claim-scoped Grounded Evidence even though raw PDF bytes/SHA remain pending.",
+    "raw_byte_requirement": "Raw byte-identical PDF download is completeness/integrity enrichment, not a prerequisite for already content-verified Evidence. Do not wait for it on the research critical path.",
+    "github_actions_for_pdf_download": "No. Do not create or run GitHub Actions merely to download new PDF source bytes. Actions remain valid for PostgreSQL/runtime/code execution.",
+    "later_normal_network_agent": "Query pending PDF materializations, download the recorded locator, verify document identity and earlier grounded content, then enrich the same logical document with raw size/SHA/durable storage metadata. Contradiction triggers an integrity repair rather than silent replacement.",
+    "mainstream_authority_boundary": "Mainstream-site verification establishes a legitimate source/document identity and avoids redundant downloader testing; it does not make every PDF authoritative for every claim. Authority remains claim-scoped to the publisher/document role, and same-origin copies remain one evidence cluster.",
+    "representation_boundary": "A source-derived readable text capture may ground Evidence if content was actually read and provenance is truthful, but it must never be described as byte-identical raw PDF material."
+  },
+  "consistency_checks": [
+    {
+      "check": "bootstrap_route",
+      "result": "pass",
+      "detail": "FRESH_AGENT_BOOTSTRAP explicitly says PDF defaults to locator/content verification, raw bytes are deferred, locator-only cannot prove a claim, and downloader Actions are not the default."
+    },
+    {
+      "check": "method_core_route",
+      "result": "pass",
+      "detail": "METHODOLOGY_CORE makes locator_verified -> content_verified -> materialized a cross-industry method and places Evidence before optional raw-byte materialization while preserving the unread-locator boundary."
+    },
+    {
+      "check": "continue_here_route",
+      "result": "pass",
+      "detail": "CONTINUE_HERE independently reconstructs the same three states, fail-closed conditions and later-agent enrichment workflow."
+    },
+    {
+      "check": "typed_handoff_route",
+      "result": "pass",
+      "detail": "current.json sequence 69 removes the old Actions->Release PDF directive, returns the main cursor to BLENREP Grounded Evidence/replay and explicitly forbids locator-only claim promotion."
+    },
+    {
+      "check": "data_plane_route",
+      "result": "pass",
+      "detail": "data-plane v4 uses google_drive_webcapsules_generated_pdf_locator_deferred_materialization and states that missing raw PDF bytes are not an integrity blocker after content verification."
+    },
+    {
+      "check": "capability_route",
+      "result": "pass",
+      "detail": "The compact capability index routes source locator/materialization lifecycle to CAP-0001, claim grounding to CAP-0002 and orchestration to CAP-0007 without creating a second semantic owner or raw-pack prerequisite."
+    }
+  ],
+  "contradictions_found": [],
+  "result": "pass",
+  "failure_if": [
+    "A fresh Agent creates GitHub Actions merely to prove it can download a mainstream PDF.",
+    "A fresh Agent treats locator_verified with unread claim content as claim Evidence.",
+    "A fresh Agent blocks content-verified Grounded Evidence solely because raw PDF bytes/SHA are pending.",
+    "A fresh Agent calls a readable text representation byte-identical PDF material.",
+    "A fresh Agent treats mainstream hosting or a .pdf suffix as global claim authority.",
+    "A later materialization silently overwrites an earlier content/identity contradiction."
+  ],
+  "next_cursor": "Close the PDF transport-policy workstream and return to the BLENREP first-replay main path: execute/inspect the existing 5-document/9-fragment Grounded Evidence spec in PostgreSQL, require zero automatic promotion, then project source-backed Reality/Judgment and run precision-aware Outcome/no-lookahead replay. Do not reopen downloader engineering unless a future real content-integrity failure specifically requires byte-level verification."
+}
