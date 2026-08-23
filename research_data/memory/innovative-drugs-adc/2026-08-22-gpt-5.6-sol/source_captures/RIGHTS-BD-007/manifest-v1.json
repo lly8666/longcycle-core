@@ -7,6 +7,16 @@
     "tool_limit_rule": "A missing preferred acquisition mechanism may change capture representation but must never justify skipping readable source information.",
     "evidence_boundary": "Search snippets and discovery summaries are not source captures. A fallback capture must preserve directly read source content, source identity, capture mode, limitations and a digest of the immutable captured representation."
   },
+  "source_pack": {
+    "path": "source-pack.zip",
+    "sha256": "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350",
+    "format": "zip",
+    "members": [
+      "bms-2023-12-11-joint-announcement.capture.txt",
+      "sec-bms-2023-10k-systimmune-note.capture.txt"
+    ],
+    "purpose": "Portable immutable packaging of the two faithful captured representations. The pack digest authenticates the capture package; it does not claim the transcript bytes are byte-identical to the original HTML responses."
+  },
   "captures": [
     {
       "key": "bms-joint-announcement",
