@@ -66,6 +66,7 @@ async def main() -> None:
         content=b"Kemerton I achieved first product in July 2022.\n",
         content_type="text/plain",
         canonical_url="https://reality-smoke.longcycle.invalid/kemerton.txt",
+        headers={"x-longcycle-raw-source-materialized": "true"},
         retrieved_at=known_at,
     )
     document = SourceDocument.from_payload(
