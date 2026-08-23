@@ -5,37 +5,47 @@
         "source archive",
         "source acquisition",
         "archive-now",
+        "preserve-now",
         "document archival",
+        "source locator",
+        "deferred materialization",
         "raw source preservation"
       ],
       "card_path": ".longcycle/capabilities/cards/CAP-0001.json",
       "extension_seams": [
         "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
-        "Add source discovery/watchlist behavior without changing archive identity semantics."
+        "Add source discovery/watchlist behavior without changing logical document identity semantics.",
+        "Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification."
       ],
       "id": "CAP-0001",
       "maturity": "stable",
       "owned_semantics": [
+        "source.logical_document_identity",
+        "source.locator_content_materialization_lifecycle",
         "source.fetch_archive_boundary",
         "source.raw_version_identity",
-        "source.archive_before_extraction"
+        "source.deferred_raw_materialization_integrity"
       ],
-      "purpose": "Own source-first discovery/fetch/archive identity so raw external material is preserved before extraction and revisions are not silently overwritten.",
+      "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not blocked by transport friction, while later raw-byte materialization enriches the same logical document identity.",
       "scope": [
         "src/longcycle/application/source_archive.py",
         "src/longcycle/ports/source.py",
         "src/longcycle/ports/archive.py",
         "src/longcycle/adapters/sources/**",
-        "src/longcycle/adapters/storage/filesystem.py"
+        "src/longcycle/adapters/storage/filesystem.py",
+        "src/longcycle/adapters/storage/postgres_source_locators.py",
+        "migrations/0027_source_locator_materialization_state.sql"
       ],
       "tags": [
         "source",
         "archive",
+        "locator",
         "provenance",
+        "materialization",
         "immutable",
         "collection"
       ],
-      "title": "Source acquisition and immutable archival"
+      "title": "Source identity, preservation and deferred materialization"
     },
     {
       "aliases": [
@@ -43,11 +53,13 @@
         "evidence fragment grounding",
         "json pointer evidence",
         "pdf page evidence",
+        "pdf readable representation evidence",
         "html visible text evidence"
       ],
       "card_path": ".longcycle/capabilities/cards/CAP-0002.json",
       "extension_seams": [
         "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
+        "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve upstream PDF identity/media type separately.",
         "Add claim_context annotations without silently promoting them into Reality/Judgment."
       ],
       "id": "CAP-0002",
@@ -55,20 +67,23 @@
       "owned_semantics": [
         "evidence.fragment.grounding",
         "evidence.locator.integrity",
+        "evidence.readable_representation_truthfulness",
         "evidence.structured_json_pointer_exactness"
       ],
-      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in archived text/PDF/HTML/structured JSON artifacts before any epistemic promotion.",
+      "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion. Locator existence alone is never claim Evidence.",
       "scope": [
         "src/longcycle/application/evidence_recording.py",
         "src/longcycle/adapters/parsers.py",
         "scripts/execute_grounded_evidence_spec.py",
         "tests/test_evidence_recording.py",
-        "tests/test_json_evidence_recording.py"
+        "tests/test_json_evidence_recording.py",
+        "tests/test_handoff_data_plane.py"
       ],
       "tags": [
         "evidence",
         "locator",
         "provenance",
+        "readable-representation",
         "json-pointer",
         "claim-scope"
       ],
@@ -250,6 +265,7 @@
         "research orchestration",
         "research runner",
         "research run",
+        "source material execution",
         "source pack execution",
         "portable research receipt"
       ],
@@ -257,16 +273,16 @@
       "extension_seams": [
         "Add researcher/task invocation adapters by delegation to the same application contract.",
         "Add new bounded execution phases only when an existing semantic executor already owns the phase.",
-        "Historical-recovery discovery stays upstream in CAP-0006; compose its archived outputs here only after normal source acquisition has produced an immutable source pack/spec."
+        "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless the claim specifically requires byte-level/source-format verification."
       ],
       "id": "CAP-0007",
       "maturity": "stable",
       "owned_semantics": [
-        "orchestration.source_pack_integrity",
+        "orchestration.preserved_source_integrity",
         "orchestration.bounded_evidence_reality_composition",
         "orchestration.portable_execution_receipt"
       ],
-      "purpose": "Own the execution-stage composition of immutable source-pack verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards; historical memory-first discovery remains upstream in CAP-0006.",
+      "purpose": "Own execution-stage composition of preserved source-material verification, explicit repair overlay, Grounded Evidence execution, optional Reality projection and immutable-path guards. It must not turn raw-byte acquisition into an independent research prerequisite.",
       "scope": [
         "src/longcycle/application/research_orchestration.py",
         "scripts/execute_research_orchestration.py",
@@ -276,7 +292,7 @@
       ],
       "tags": [
         "orchestration",
-        "source-pack",
+        "source-material",
         "repair-overlay",
         "receipt",
         "fail-closed"
@@ -343,7 +359,7 @@
         "continuity.resume_asset_identity",
         "continuity.on_demand_history_recall"
       ],
-      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
+      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant source/data identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
       "scope": [
         "src/longcycle/application/session_handoff.py",
         "src/longcycle/application/handoff_data_plane.py",
