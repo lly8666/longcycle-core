@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 56,
+  "continuity_sequence": 57,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "63e25ead298b5282b893e709d406dcec05861dad",
+  "checkpoint_based_on_head_sha": "9e73695637f75f96b5987eadab6fc33734ca24da",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR/head. Capability governance v1 is established as a permanent handoff constraint, not the current product task: every fresh Agent loads the compact capability index, discovers existing semantic owners before material capability work, and records reuse/extend/replace/new admission. CAP-0009 owns session bootstrap surfaces; CAP-0010 guards that those surfaces continue to recover capability governance. Current researcher trajectory work remains `extend CAP-0005`, never a second replay engine.",
+  "bootstrap_instruction": "Resume from live PR/head. Capability governance remains a permanent supporting constraint: discover existing semantic owners before material development and prefer reuse/extend. Researcher-facing trajectory work remains an extension of CAP-0005, never a second replay engine. Legacy sealed portable generations are immutable; additive reader compatibility may interpret absence of later optional tables/columns, but must not rewrite historical bytes or weaken knowledge-cutoff semantics.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,41 +16,43 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Make Longcycle reusable for researchers across many Agent handoffs while stable system semantics converge toward one auditable owner per capability rather than parallel near-duplicate implementations.",
-    "short_term_goal": "Use the now-established capability governance while validating the admitted CAP-0005 researcher trajectory against real historical cutoffs and researcher utility.",
-    "next_big_step": "Run real point-in-time trajectory replay on existing portable industrial memory, compare pre-outcome and post-outcome cutoffs, and let observed researcher-facing gaps challenge existing owners before proposing any new semantics.",
-    "local_optimization_stop_rule": "Do not catalog every helper, copy governance policy into every checkpoint, use opaque similarity as a hard blocker, or create a new capability because it looks cleaner. Stable semantic ownership is sparse; internal refactors remain code/Git concerns.",
+    "medium_term_goal": "Make Longcycle reusable for researchers across many Agent and implementation vintages while one stable semantic owner remains authoritative for each capability and historical portable state stays replayable without hindsight mutation.",
+    "short_term_goal": "Finish product validation of the CAP-0005 researcher trajectory across both non-direct/indeterminate and direct-match/realized Outcome cases using integrity-verified historical industrial memory.",
+    "next_big_step": "After final full CI, use the existing lithium EVT-002 Kemerton first-product trajectory as the direct-match counter-case to Rova-T and Kwinana: restore only its existing portable state, then compare pre-outcome and post-outcome views through the current CAP-0005 reader/trajectory path.",
+    "local_optimization_stop_rule": "Do not add schema for implication polarity from interpretive discomfort, do not create a replay v2, do not mutate old DuckDB generations to look current, and do not turn the handoff/data-plane manifest into an exhaustive asset ledger.",
     "parallel_permanent_tracks": [
       "Keep current-source collection source-first/archive-now."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "researcher-facing-read-side",
-    "last_completed_action": "Capability governance v1 is permanently wired into AGENTS/CONTINUE/FRESH bootstrap, CI and handoff. Ten sparse capability owners remain unique. CAP-0010 now has protocol guards over all three cold-start entrypoints without taking ownership away from CAP-0009. A zero-context rehearsal proves fresh bootstrap + handoff + compact index + admission routes researcher trajectory intent to `extend CAP-0005`; a synthetic second replay engine without unmet-requirement evidence is rejected. Full validation run 32612139058 passed on substantive head 63e25ead298b5282b893e709d406dcec05861dad.",
-    "current_task": "Validate the researcher trajectory view against real historical cutoffs using existing portable typed memory, starting with Rova-T if the existing generated replay capsule is still integrity-restorable. Preserve CAP-0005 knowledge-cutoff/no-lookahead ownership and treat the trajectory layer as presentation only.",
-    "why_now": "The anti-duplication governance mechanism has passed a real feature admission and full CI. The next highest-value question is product truth: whether the existing typed replay plus trajectory view actually helps a researcher understand what was knowable before and after a consequential outcome.",
-    "done_when": "At least two meaningful historical cutoffs over one existing grounded trajectory can be replayed from integrity-verified portable state; later-known Reality/Outcome is absent before its knowledge cutoff; the resulting chronology is researcher-readable; and any representation gap is classified against existing capability owners before architecture changes are proposed.",
+    "last_completed_action": "Real-history researcher trajectory validation now passes in two industries. Rova-T run 32612727213 showed commercial expectation -> clinical/economic deterioration -> termination without lookahead, while retaining the non-direct termination Outcome as related_milestone + indeterminate. Kwinana initially exposed a real backward-read defect: integrity-verified legacy v1 DuckDB b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd failed because the current reader required later-added judgment context tables. Commit 58c648ba5c9420937a7640960b4b3f44460a70be made those additive tables optional at read time and mapped absent legacy observation columns to observed_time=null; regression test commit c5e05b913fd4576adf8d9156baccb0e9bb03a913 locked the behavior. Real Kwinana replay run 32614041360 then passed all three historical cutoffs. The original generated Kwinana capsule was migrated to Drive file 18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa and download-back verified against outer SHA b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e and internal DuckDB SHA b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd.",
+    "current_task": "Run full CI on this sequence-57 final control-plane state. If green, validate one existing direct-match lithium Outcome through the same CAP-0005 researcher trajectory, preferring EVT-002 Kemerton first product because repository receipts already record a grounded first-product Outcome evaluation.",
+    "why_now": "Rova-T and Kwinana prove the conservative non-direct side and no-lookahead behavior, and Kwinana proves backward readability across a real implementation vintage. The remaining product question is the opposite semantic case: whether a direct matched Reality/Outcome with an evaluable timing relation is equally legible without adding presentation-only epistemic semantics.",
+    "done_when": "Final full CI is green; an integrity-verified existing Kemerton portable generation is restored or its absence is reported fail-closed; at least one pre-outcome and one post-outcome cutoff are rendered through CAP-0005; direct Outcome status/timing is legible and linked without rewriting the original Judgment; and any remaining gap is classified against existing owners before architecture changes.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh live HEAD/CI after this handoff-only commit, run one final full validation because the handoff state itself changed, then restore only the existing Rova-T replay capsule required for real cutoff validation and invoke the admitted CAP-0005 trajectory path."
+    "next_atomic_action": "Run the repository full validation on live sequence-57 HEAD. On green, inspect existing EVT-002 Kemerton execution/Outcome receipts for an integrity-restorable portable DuckDB identity before acquiring or rebuilding anything."
   },
   "active_context": {
-    "context_id": "researcher-trajectory-validation-v1",
+    "context_id": "researcher-trajectory-direct-match-validation-v1",
     "context_kind": "researcher_facing_point_in_time_replay_validation",
-    "label": "real historical cutoff validation under CAP-0005 with capability governance permanently active",
+    "label": "cross-industry direct-match Outcome validation under CAP-0005",
     "root_path": "src/longcycle/application/trajectory_view.py",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
       ".longcycle/capabilities/active-index.json",
       ".longcycle/capabilities/current-admission.json",
-      "tests/test_capability_registry.py",
-      "src/longcycle/application/trajectory_view.py"
+      "src/longcycle/adapters/storage/duckdb_epistemic.py",
+      "tests/test_duckdb_legacy_compat.py",
+      "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-researcher-trajectory-validation-receipt-v1.json"
     ],
     "core_exclusion_terms": [
       "new replay engine",
-      "parallel semantic owner",
-      "hindsight rewrite"
+      "legacy byte mutation",
+      "hindsight rewrite",
+      "unearned implication polarity"
     ]
   },
   "pending_user_directives": [
@@ -61,18 +63,18 @@
     "Maintain a repository-backed sparse inventory of stable developed capabilities and require Agents to discover existing ownership before material new development.",
     "Capability governance must itself survive frequent handoffs and evolve with the system: its short/medium/long evolution belongs in the permanent compact capability index, while ordinary handoff horizons remain concise and task-specific.",
     "As architecture matures, overlapping new semantic ownership should become exceptional and require a real unmet truthful/product requirement or explicit supersession, not architectural preference.",
-    "Validation repetition is discretionary: run another pass when it exercises a meaningfully different state, such as the finalized handoff, rather than mechanically repeating identical CI."
+    "Validation repetition is discretionary: run another pass when it exercises a meaningfully different state rather than mechanically repeating identical CI."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32612139058,
-    "observed_head_sha": "63e25ead298b5282b893e709d406dcec05861dad",
-    "conclusion": "Full owner-only validation succeeded: Repair Memory audit, Capability Registry audit, PostgreSQL migrations/repository/Judgment/Reality/typed-memory/Evidence smokes, both no-lookahead replay smokes, Mypy, Pytest, compact-index build and memory-history audit all passed.",
-    "mypy_summary": "Passed on the admitted trajectory implementation after typing-only repairs; no replay/temporal semantic relaxation was needed.",
-    "pytest_summary": "Passed including zero-context capability-governance rehearsal and duplicate-new-owner rejection tests.",
-    "ruff_summary": "Diagnostic-only in normal CI; not a correctness gate for this validation.",
-    "refresh_instruction": "This checkpoint precedes handoff-only control-plane commits. Refresh live PR/head and run one final full validation on the sequence-56 handoff state; live CI remains authority."
+    "last_observed_run": 32614041360,
+    "observed_head_sha": "c5e05b913fd4576adf8d9156baccb0e9bb03a913",
+    "conclusion": "Targeted real-history Kwinana validation succeeded after the additive legacy-reader repair. The exact historical Actions artifact digest and internal DuckDB SHA were verified, and current CAP-0005 replay passed the 2021-12-31, 2022-12-02 and 2022-12-03 knowledge cutoffs. Final repository-wide CI is still required on the sequence-57 handoff head.",
+    "mypy_summary": "Latest repository-wide hard-gate Mypy success predates the legacy-reader repair; final full CI must refresh this authority.",
+    "pytest_summary": "A dedicated legacy-v1 compatibility regression test is now present; final full CI must prove it together with the complete suite.",
+    "ruff_summary": "Diagnostic-only in normal CI; not a correctness gate.",
+    "refresh_instruction": "Refresh live PR/head and require one full repository validation on the sequence-57 handoff state before starting Kemerton direct-match validation."
   },
   "workstreams": [
     {
@@ -80,11 +82,10 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "established_and_guarded",
-      "summary": "Sparse capability ownership/admission is now a permanent bootstrap and CI constraint. Governance evolution remains in the compact index rather than being recopied into ordinary handoffs.",
+      "summary": "Sparse capability ownership/admission remains a permanent bootstrap and CI constraint; this session correctly extended CAP-0005 instead of creating a legacy replay subsystem.",
       "next_actions": [
         "Keep active-index in every bounded handoff resume set.",
-        "Require relevant lookup and reuse/extend/replace/new admission before material capability work.",
-        "Tune deterministic routing or governance maturity only from observed real misses/duplicate pressure."
+        "Classify direct-match trajectory work as reuse/extend CAP-0005 unless a real unmet semantic requirement appears."
       ],
       "blockers": []
     },
@@ -92,12 +93,12 @@
       "workstream_id": "researcher-facing-read-side",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "real_history_validation_next",
-      "summary": "Research trajectory view is a presentation over the typed EpistemicMemoryReader snapshot and remains admitted as CAP-0005 extension.",
+      "status": "non_direct_cross_industry_pass_direct_match_next",
+      "summary": "Rova-T and Kwinana real cutoffs are researcher-readable and no-lookahead safe. Legacy Kwinana portable memory is now backward-readable without mutation. Non-direct implication polarity remains deliberately untyped because the independent Kwinana case does not provide enough grounded evidence to distinguish supports/undermines safely.",
       "next_actions": [
-        "Run final full validation on the updated handoff state.",
-        "Restore the minimum existing portable replay asset needed for Rova-T cutoff checks.",
-        "Compare pre-outcome/post-outcome trajectory readability and no-lookahead behavior."
+        "Run final full CI on sequence 57.",
+        "Inspect EVT-002 Kemerton receipts for existing portable generated-state identity.",
+        "Replay a direct-match Outcome before/after its knowledge cutoff through CAP-0005 and assess timing/status readability."
       ],
       "blockers": []
     },
@@ -121,30 +122,32 @@
     ".longcycle/handoff/current.json",
     ".longcycle/handoff/data-plane.json",
     ".longcycle/capabilities/active-index.json",
-    "src/longcycle/application/trajectory_view.py"
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-researcher-trajectory-validation-receipt-v1.json"
   ],
   "deep_reference_paths": [
     "docs/development/capability-governance.md",
     ".longcycle/capabilities/current-admission.json",
-    "tests/test_capability_registry.py",
-    "AGENTS.md",
-    "FRESH_AGENT_BOOTSTRAP.md",
+    "src/longcycle/adapters/storage/duckdb_epistemic.py",
+    "tests/test_duckdb_legacy_compat.py",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-typed-trajectory-receipt-v1.json",
+    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/ADC-first-pair-replay-receipt-v1.json",
+    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/first-pair-outcome-polarity-pressure-v1.json",
     ".longcycle/repair-memory/invariants/RI-0001-live-ref-authority.json",
     ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json",
     ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Does the researcher trajectory surface make pre-outcome versus post-outcome cognition legible enough without inventing new epistemic records?",
-    "After real future feature work, tune deterministic relevant routing only when observed misses justify it; do not promote text similarity into semantic authority.",
-    "Raise governance_mode/maturity only from actual architecture convergence and duplicate-development pressure, not by calendar time.",
-    "The deferred non-direct Outcome implication-polarity pressure remains outside schema until its previously recorded independent promotion gate is met."
+    "Does a direct-match Kemerton Outcome render status and timing as clearly as the non-direct Rova-T/Kwinana cases render conservative indeterminacy?",
+    "The deferred non-direct Outcome implication-polarity pressure remains outside schema. Kwinana is an independent non-pharma tension case but does not meet the promotion gate because the later Reality is not the same milestone and does not by itself prove the earlier target outcome.",
+    "Additive legacy portable-memory compatibility must remain read-only and conservative: missing later optional fields mean unavailable context, not inferred facts.",
+    "Raise governance maturity or add semantics only from actual repeated product/representation failures, not from desire for cleaner labels."
   ],
   "ordered_next_actions": [
-    "Refresh live PR/head and run one final full validation on this sequence-56 handoff state.",
-    "Restore only the existing Rova-T portable generated replay asset required for historical cutoff validation, verifying Drive identity/SHA before use.",
-    "Run researcher trajectory replay at meaningful pre-outcome and post-outcome knowledge cutoffs through CAP-0005.",
-    "Assess researcher readability/no-lookahead and classify any actual gap against existing capability owners before proposing architecture changes.",
-    "Update handoff after the real-history validation changes the continuation cursor."
+    "Refresh live PR/head and run one full repository validation on the sequence-57 state.",
+    "Inspect existing EVT-002 Kemerton execution, Judgment replay and first-product Outcome receipts for an integrity-restorable portable generated-state identity.",
+    "Restore only that generated state from its durable transport or existing unexpired artifact, verifying identity/SHA fail-closed before replay.",
+    "Run CAP-0005 researcher trajectory immediately before and at/after the direct Outcome knowledge cutoff; inspect researcher readability of realized status and timing relation.",
+    "Update handoff again only after the direct-match validation materially changes the continuation cursor."
   ]
 }
