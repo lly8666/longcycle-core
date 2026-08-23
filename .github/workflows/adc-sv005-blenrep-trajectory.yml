@@ -323,9 +323,21 @@ jobs:
           replay_2023 = json.loads(Path(os.environ['REPLAY_2023']).read_text(encoding='utf-8'))
           replay_2024 = json.loads(Path(os.environ['REPLAY_2024']).read_text(encoding='utf-8'))
 
+          summary = {
+              'reality_count': len(reality['facts']),
+              'canonical_reality_count': len(reality['canonical_reality']),
+              'judgment_count': len(judgment['judgments']),
+              'outcome_relation': outcome['semantic_relation'],
+              'outcome_status': outcome['persisted_row']['evaluation_status'],
+              'replay_2022_counts': [len(replay_2022['reality']), len(replay_2022['judgments']), len(replay_2022['outcomes'])],
+              'replay_2023_counts': [len(replay_2023['reality']), len(replay_2023['judgments']), len(replay_2023['outcomes'])],
+              'replay_2024_counts': [len(replay_2024['reality']), len(replay_2024['judgments']), len(replay_2024['outcomes'])],
+          }
+          print('SV005_TRAJECTORY_ACTUAL ' + json.dumps(summary, sort_keys=True))
+
           assert len(reality['facts']) == 8, reality
           assert len(reality['canonical_reality']) == 8, reality
-          assert reality['verification']['all_reconciliation_decisions_accept'] is True
+          assert reality['verification']['all_reconciled_accept'] is True
           assert len(judgment['judgments']) == 1, judgment
           assert judgment['verification']['judgment_count'] == 1
           assert judgment['verification']['idempotent_reappend_passed'] is True
@@ -361,7 +373,7 @@ jobs:
           predicates_2024 = {row['predicate_code'] for row in replay_2024['reality']}
           assert 'clinical.dreamm7_regimen_identity' in predicates_2024
           assert 'clinical.dreamm7_pfs_outcome' in predicates_2024
-          assert replay_2024['judgments'][0]['first_known_at'].startswith('2022-11-23T12:00:00')
+          assert replay_2024['judgments'][0]['known_at'].startswith('2022-11-23T12:00:00')
           assert replay_2024['outcomes'][0]['semantic_relation'] == 'related_milestone'
           assert replay_2024['outcomes'][0]['evaluation_status'] == 'indeterminate'
 
