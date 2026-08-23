@@ -33,7 +33,10 @@ async def main() -> None:
         content_type="text/plain",
         canonical_url="https://smoke.longcycle.invalid/document.txt",
         status_code=200,
-        headers={"etag": '"smoke-v1"'},
+        headers={
+            "etag": '"smoke-v1"',
+            "x-longcycle-raw-source-materialized": "true",
+        },
         retrieved_at=datetime(2026, 8, 21, 0, 0, tzinfo=UTC),
     )
     document = SourceDocument.from_payload(
