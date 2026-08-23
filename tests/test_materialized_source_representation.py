@@ -89,7 +89,7 @@ class MaterializedSourceRepresentationTest(unittest.IsolatedAsyncioTestCase):
                     FetchContext(source=source),
                 )
 
-    async def test_legacy_raw_material_remains_compatible(self) -> None:
+    async def test_raw_materialized_file_emits_explicit_true_marker(self) -> None:
         source = self._source()
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -111,7 +111,7 @@ class MaterializedSourceRepresentationTest(unittest.IsolatedAsyncioTestCase):
                 FetchContext(source=source),
             )
 
-            self.assertNotIn("x-longcycle-raw-source-materialized", payload.headers)
+            self.assertEqual(payload.headers["x-longcycle-raw-source-materialized"], "true")
             self.assertEqual(payload.headers["x-longcycle-transport"], "materialized_file")
 
 
