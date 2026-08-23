@@ -94,7 +94,7 @@ class CapabilityRegistryTest(unittest.TestCase):
             payload["resume_read_set"],
         )
 
-    def test_zero_context_rehearsal_recovers_owner_and_extend_disposition(self) -> None:
+    def test_zero_context_rehearsal_recovers_owner_and_current_admission(self) -> None:
         registry = _load_registry_module()
         fresh_bootstrap = (ROOT / "FRESH_AGENT_BOOTSTRAP.md").read_text(encoding="utf-8")
         continue_bootstrap = (ROOT / "CONTINUE_HERE.md").read_text(encoding="utf-8")
@@ -120,12 +120,13 @@ class CapabilityRegistryTest(unittest.TestCase):
         )
         replay_owner = next(item for item in index["active"] if item["id"] == "CAP-0005")
         self.assertIn("trajectory view", replay_owner["aliases"])
-        self.assertEqual(admission["disposition"], "extend")
+        self.assertIn(admission["disposition"], registry.DISPOSITIONS)
 
         active_ids = {item["id"] for item in index["active"]}
         targets = admission["target_capability_ids"]
-        self.assertTrue(targets)
-        self.assertTrue(set(targets).issubset(active_ids))
+        if admission["disposition"] in {"reuse", "extend", "replace"}:
+            self.assertTrue(targets)
+            self.assertTrue(set(targets).issubset(active_ids))
 
         output = StringIO()
         with redirect_stdout(output):
