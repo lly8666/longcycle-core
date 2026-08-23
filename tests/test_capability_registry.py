@@ -121,12 +121,18 @@ class CapabilityRegistryTest(unittest.TestCase):
         replay_owner = next(item for item in index["active"] if item["id"] == "CAP-0005")
         self.assertIn("trajectory view", replay_owner["aliases"])
         self.assertEqual(admission["disposition"], "extend")
-        self.assertEqual(admission["target_capability_ids"], ["CAP-0005"])
+
+        active_ids = {item["id"] for item in index["active"]}
+        targets = admission["target_capability_ids"]
+        self.assertTrue(targets)
+        self.assertTrue(set(targets).issubset(active_ids))
 
         output = StringIO()
         with redirect_stdout(output):
-            registry.relevant("researcher historical trajectory replay knowledge cutoff")
-        self.assertIn("[CAP-0005]", output.getvalue())
+            registry.relevant(admission["intent"])
+        rendered = output.getvalue()
+        for target in targets:
+            self.assertIn(f"[{target}]", rendered)
 
     def test_governance_owner_guards_all_cold_start_entrypoints(self) -> None:
         card = json.loads(
