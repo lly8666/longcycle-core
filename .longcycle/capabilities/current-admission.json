@@ -1,24 +1,42 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "MEMORY-SEMICONDUCTORS-CROSS-INDUSTRY-BENCHMARK-001",
-  "intent": "Initialize the third real-industry benchmark as a joint DRAM + NAND historical model-memory campaign. Reuse the existing CAP-0006 sealed blind-recall, saturation, fresh-context, post-seal verification and Evidence-final authority boundaries. The benchmark may expose future semantic gaps, but initialization must not add product code, a new capability, a new truth owner, or semiconductor-specific core schema.",
+  "intent_id": "RESEARCHER-OPEN-STATE-STANDARDS-REPAIR-001",
+  "intent": "Repair the researcher open-state projection so it conforms to already-owned source-independence, current-research scoping and sealed model-memory campaign provenance. This is a conformance repair: do not add a new truth owner, migration, generic unknown state or new epistemic semantics.",
   "governance_mode": "converging",
-  "disposition": "reuse",
+  "disposition": "extend",
   "target_capability_ids": [
+    "CAP-0003",
+    "CAP-0005",
     "CAP-0006"
   ],
   "closest_existing_capability_ids": [
+    "CAP-0003",
+    "CAP-0005",
     "CAP-0006"
   ],
-  "rationale": "CAP-0006 already owns memory campaign isolation, fragmentary recall, campaign saturation/seal, post-seal verification depth and research-only coverage state. Broadening the benchmark from DRAM-only to DRAM + NAND changes the research subject boundary, not campaign semantics. The storage benchmark deliberately keeps product-line metrics distinct while testing shared-company and shared-cycle hypotheses. Therefore the truthful admission remains reuse, not extend/new.",
-  "unmet_requirement": null,
+  "rationale": "Audit of the assistant-authored open-state implementation found three implementation drifts from existing owners: source disagreement used connector identity instead of the Reconciler's source-cluster independence semantics; the current research overlay inherited a historical membership-cutoff entity filter despite being labelled current/non-cutoff; and model-memory coverage mixed campaign vintages and admitted unsealed campaigns despite CAP-0006's immutable campaign/seal provenance. The repair changes typed read/projection implementation and tests but introduces no new truth semantics.",
+  "unmet_requirement": "The existing open-state implementation is not fully conformant with CAP-0003 source independence, CAP-0005 historical-vs-current separation, and CAP-0006 sealed campaign/vintage coverage provenance.",
   "evidence_refs": [
-    "docs/development/researcher-mental-map-gap-audit-v2.md",
-    "docs/research/memory-semiconductors-collection-plan.md",
-    "docs/research/memory-semiconductors-exhaustion-manifest.json",
-    "docs/research/model-memory-exhaustion-protocol.md",
-    ".longcycle/capabilities/cards/CAP-0006.json"
+    "src/longcycle/application/reconciliation.py",
+    "migrations/0002_evidence_and_facts.sql",
+    "migrations/0015_memory_campaigns_and_model_refresh.sql",
+    "src/longcycle/adapters/storage/postgres_open_states.py",
+    "src/longcycle/application/open_state_view.py",
+    "tests/test_open_state_view.py",
+    "scripts/smoke_postgres_open_states.py"
   ],
-  "planned_paths": [],
+  "planned_paths": [
+    "src/longcycle/domain/open_states.py",
+    "src/longcycle/ports/open_states.py",
+    "src/longcycle/adapters/storage/postgres_open_states.py",
+    "src/longcycle/application/open_state_view.py",
+    "tests/test_open_state_view.py",
+    "scripts/smoke_postgres_open_states.py",
+    ".longcycle/capabilities/cards/CAP-0003.json",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/cards/CAP-0006.json",
+    "docs/development/assistant-session-standards-audit-v1.md",
+    ".longcycle/handoff/current.json"
+  ],
   "proposed_capability_id": null
 }
