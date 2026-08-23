@@ -113,7 +113,7 @@ class CapabilityRegistryTest(unittest.TestCase):
         )
 
         self.assertIn(".longcycle/capabilities/active-index.json", fresh_bootstrap)
-        self.assertIn("capability_registry.py relevant", continue_bootstrap)
+        self.assertIn("capability admission/relevant lookup", continue_bootstrap)
         self.assertIn(
             ".longcycle/capabilities/active-index.json",
             handoff["resume_read_set"],
