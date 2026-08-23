@@ -19,11 +19,13 @@ from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
 from longcycle.adapters.storage.postgres_epistemic import PostgresEpistemicMemoryReader
 from longcycle.adapters.storage.postgres_evidence import PostgresEvidenceDrilldownReader
+from longcycle.adapters.storage.postgres_open_states import PostgresOpenStateReader
 from longcycle.adapters.storage.postgres_orientation import PostgresIndustryOrientationReader
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
 from longcycle.application.epistemic_trajectory import execute_epistemic_trajectory_receipt
 from longcycle.application.evidence_drilldown import build_researcher_evidence_drilldown
 from longcycle.application.industry_orientation import build_researcher_industry_orientation
+from longcycle.application.open_state_view import build_researcher_open_state_view
 from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.research_orchestration import execute_research_orchestration_receipt
 from longcycle.application.scheduling import SchedulePolicy
@@ -160,6 +162,20 @@ def _parser() -> argparse.ArgumentParser:
     )
     research_orient.add_argument("industry_node_id", type=UUID)
     research_orient.add_argument("cutoff", type=_parse_aware_datetime)
+    research_open_states = research_sub.add_parser(
+        "open-states",
+        help="separate historical controversy from opt-in current research-only uncertainty",
+    )
+    research_open_states.add_argument("industry_node_id", type=UUID)
+    research_open_states.add_argument("cutoff", type=_parse_aware_datetime)
+    research_open_states.add_argument(
+        "--include-current-research",
+        action="store_true",
+        help=(
+            "include current Memory disagreement/hypothesis/model-memory coverage state; "
+            "this overlay is not historical market knowledge and is not cutoff-filtered"
+        ),
+    )
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
     schedule.add_argument("--industry-id", type=UUID, required=True)
@@ -313,6 +329,28 @@ async def _research_orient(args: argparse.Namespace, settings: Settings) -> dict
         await memory_reader.close()
 
 
+async def _research_open_states(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
+    if not settings.database_url:
+        raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
+    catalog_reader = PostgresIndustryOrientationReader(settings.database_url)
+    memory_reader = PostgresEpistemicMemoryReader(settings.database_url)
+    open_state_reader = PostgresOpenStateReader(settings.database_url)
+    try:
+        return await build_researcher_open_state_view(
+            catalog_reader=catalog_reader,
+            memory_reader=memory_reader,
+            conflict_reader=open_state_reader,
+            current_research_reader=open_state_reader,
+            industry_node_id=args.industry_node_id,
+            knowledge_cutoff=args.cutoff,
+            include_current_research=bool(args.include_current_research),
+        )
+    finally:
+        await catalog_reader.close()
+        await memory_reader.close()
+        await open_state_reader.close()
+
+
 def _research_run(args: argparse.Namespace) -> dict[str, object]:
     schema_version = _research_spec_schema_version(args.spec)
     if schema_version == _EPISTEMIC_TRAJECTORY_V1:
@@ -376,6 +414,8 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         return await _research_evidence(args, settings)
     if args.command == "research" and args.research_command == "orient":
         return await _research_orient(args, settings)
+    if args.command == "research" and args.research_command == "open-states":
+        return await _research_open_states(args, settings)
     if args.command == "schedule":
         collection_policy = CollectionPolicy(
             industry_id=args.industry_id,
