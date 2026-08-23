@@ -1,250 +1,76 @@
 {
   "schema_version": "longcycle-handoff-data-plane/v3",
   "transport_mode": "github_release_pdf_sources_google_drive_webcapsules_generated",
-  "webpage_capture_policy": "For a readable webpage, the default development path is interactive read -> faithful visible-text capture plus source/provenance metadata -> bounded local database capture capsule -> Google Drive handoff. Do not invoke GitHub Actions merely to fetch or archive webpage HTML. The local database is a capture/handoff envelope, not live PostgreSQL authority and not automatic Fact/Judgment publication. Preserve original URL, publisher/source identity, title/date when supported, capture timestamp, capture_mode, visible text, text SHA-256 and any material limitation. Batch many webpages into a bounded task/industry/time capsule when efficient.",
-  "github_release_policy": "During development, PDFs that require raw source-byte preservation use the existing GitHub Actions acquisition lane: fetch the public PDF, validate/hash it, package it under a unique immutable name, publish it to GitHub Release, then verify the published bytes. Do not use Actions/Release as the default path for readable webpages or HTML merely to preserve page text. Existing historical Release packs that contain HTML/web payloads remain valid immutable legacy assets and may be restored when their old receipts require them; they are not the template for new webpage capture.",
+  "webpage_capture_policy": "For a readable webpage, the default development path is interactive read -> faithful claim-scoped visible-text capture plus source/provenance metadata -> bounded local database capture capsule -> Google Drive handoff. Do not invoke GitHub Actions merely to fetch or archive webpage HTML. The local database is a capture/handoff envelope, not live PostgreSQL authority and not automatic Fact/Judgment publication. Preserve original URL, publisher/source identity, title/date when supported, capture timestamp, capture_mode, visible text, text SHA-256 and any material limitation.",
+  "github_release_policy": "During development, PDFs that require raw source-byte preservation use the existing GitHub Actions acquisition lane: fetch the public PDF, validate/hash it, package it under a unique immutable name, publish it to GitHub Release, then verify the published bytes. Do not use Actions/Release as the default path for readable webpages or HTML merely to preserve page text. A runner retrieval failure for one host is not permission to call the source unavailable or to discard other successfully acquired PDF bytes.",
   "google_drive_folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
-  "google_drive_policy": "Google Drive is the development handoff relay for bounded local webpage-capture databases and Longcycle-generated binary state: DuckDB webpage capture capsules, replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. A webpage capture capsule contains source-derived visible text and provenance, so Drive transport does not turn that text into a generated research conclusion or change source authority. Do not put raw PDF source bytes in Drive by default; PDFs use the Actions -> Release lane. Drive is not live transactional database authority.",
+  "google_drive_policy": "Google Drive is the development handoff relay for bounded local webpage-capture databases and Longcycle-generated binary state: DuckDB/SQLite webpage capture capsules, replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. A webpage capture capsule contains source-derived visible text and provenance, so Drive transport does not turn that text into a generated research conclusion or change source authority. Do not put raw PDF source bytes in Drive by default; PDFs use the Actions -> Release lane. Drive is not live transactional database authority.",
   "postgres_policy": "Do not transport a live PostgreSQL cluster as session state or place it in GitHub Release. PostgreSQL remains the transactional write/ops engine and is rebuilt in a service-capable runtime when writes, leases or outbox semantics are required. If a generated database snapshot is ever needed for handoff, it belongs in Google Drive and remains a snapshot rather than live authority.",
-  "duckdb_policy": "DuckDB is the preferred bounded local container for webpage visible-text capture capsules and the portable read/replay materialization for generated research state. During webpage collection it may be written locally in batches; before handoff checkpoint/close it, record SHA-256/size/schema/source count, upload the immutable capsule to Google Drive, and pin the Drive file id plus digest in the repository manifest. After restore, research/replay capsules open read-only by default. Raw PDF source bytes required for re-grounding are restored separately from GitHub Release. Additive older sealed v1 generations remain immutable and are read compatibly; absence of later optional context tables/observation columns is not permission to rewrite historical bytes.",
-  "legacy_release_web_policy": "Previously produced immutable Release assets that include webpage/HTML bytes are grandfathered. Never mutate or silently relocate them. Restore them only when an existing receipt/current task references them; all new readable webpage captures follow local database -> Google Drive unless a future explicit architecture decision supersedes this policy.",
+  "duckdb_policy": "DuckDB is the preferred bounded local container for webpage visible-text capture capsules and portable read/replay state; SQLite is an acceptable bounded capture envelope when DuckDB is not available in the current interactive runtime. Before handoff, checkpoint/close the capsule, record SHA-256/size/schema/source count, upload the immutable capsule to Google Drive, and verify the downloaded bytes. After restore, research/replay capsules open read-only by default. Raw PDF source bytes required for re-grounding are restored separately from GitHub Release.",
+  "legacy_release_web_policy": "Previously produced immutable Release assets that include webpage/HTML bytes are grandfathered. Never mutate or silently relocate them. All new readable webpage captures follow local database -> Google Drive unless a future explicit architecture decision supersedes this policy.",
+  "historical_asset_index_policy": "This manifest is resume-relevant, not an exhaustive historical asset inventory. Assets no longer required by the live continuation cursor may be pruned from this file without deleting or invalidating them; durable research/execution receipts plus Git history retain their exact Release/Drive identities and restore hashes. Re-enter an old workstream through its durable receipt rather than keeping every historical binary in fresh-Agent context.",
   "missing_required_asset_action": "stop_and_report_integrity_blocker",
-  "supersession_policy": "All handoff transports are immutable-by-identity. Never replace bytes behind a recorded Release filename or Drive file id without advancing the repository manifest and SHA-256. Successor PDF source packs get new Release filenames; successor webpage-capture/generated packs get new Drive files/ids. This manifest is deliberately resume-relevant rather than an exhaustive historical asset inventory; durable receipts retain older artifact identities.",
+  "supersession_policy": "All handoff transports are immutable-by-identity. Never replace bytes behind a recorded Release filename or Drive file id without advancing the repository manifest and SHA-256. Successor PDF source packs get new Release filenames; successor webpage-capture/generated packs get new Drive files/ids.",
   "assets": [
     {
-      "asset_id": "rights-bd-007-lifecycle-run32628113204",
-      "role": "research_lifecycle_capsule",
-      "required_for_current_task": false,
-      "transport": "google_drive",
-      "release_tag": null,
-      "google_drive_file_id": "1PyPRITIlPO4kbqSUlBF1pDeVzkyOBEMr",
-      "file_name": "longcycle-rights-bd-007-lifecycle-run32628113204.zip",
-      "size_bytes": 28484,
-      "sha256": "baf796f5b7dd92b88c04d647b36ef07f5bdf96ca0eaea2ee3907c1cb2a8177fb",
-      "content_summary": "Generated RIGHTS-BD-007 PostgreSQL lifecycle execution from exact head 92a2c5d1404218b50627710e5fb1ad45816bad28: two persisted document versions and two EvidenceFragments with zero Fact/Judgment promotion at Grounded Evidence, two reconciled canonical Reality facts for the 2023-12-11 collaboration announcement and February-2024 transaction effectiveness, plus CAP-0005 no-lookahead replay showing Reality visibility counts 0 -> 1 -> 1 -> 2 across the conservative knowledge cutoffs. Includes the two content-addressed legacy faithful webpage capture blobs used by that execution; the retired corrupt source-pack.zip wrapper is not included or required.",
+      "asset_id": "adc-sv005-blenrep-pdf-acquisition-run32630536037",
+      "role": "raw_source_acquisition_cache",
+      "required_for_current_task": true,
+      "transport": "github_release",
+      "release_tag": "longcycle-dev-binary-cache",
+      "google_drive_file_id": null,
+      "file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+      "size_bytes": 395045,
+      "sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998",
+      "content_summary": "Two runner-stable original PDF sources for the bounded SV-005 first replay: the FDA/Federal Register legal revocation notice and GSK's DREAMM-7 stock-exchange announcement. The pack was built deterministically, uploaded under a unique name and downloaded back with outer-SHA verification. The accessdata.fda.gov historical label/approval-package endpoints were deliberately excluded after three fail-closed runner diagnostics; the 2020 FDA approval/safety source is preserved separately through the readable-webpage capsule.",
       "components": [
         {
-          "path": "RIGHTS-BD-007-grounded-evidence-execution.json",
-          "sha256": "a21c0a2f6e5d88bea6ffa71e348bcb8bf8c2b6036461224f3cc3859d9b56a7a9",
-          "size_bytes": 7547,
-          "role": "Grounded Evidence execution"
+          "path": "federal-register-blenrep-revocation-2023.pdf",
+          "sha256": "2f6059f22be2a2fcc930c0e983881935cca1a1bb5cf02736f8981e5377697bbf",
+          "size_bytes": 235166,
+          "role": "authoritative FDA/Federal Register legal revocation record"
         },
         {
-          "path": "RIGHTS-BD-007-reality-execution.json",
-          "sha256": "961e4453b543d39c183d5e28ae28bcc2849e04e70bb629434b0944f7dd625251",
-          "size_bytes": 9656,
-          "role": "canonical Reality projection and reconciliation execution"
-        },
-        {
-          "path": "RIGHTS-BD-007-replay-check.json",
-          "sha256": "7df93a636c7ba4f681e0dcd644dab3fa1683a13ce78b92b70b0880f1235a72ec",
-          "size_bytes": 4931,
-          "role": "CAP-0005 no-lookahead replay verification"
-        },
-        {
-          "path": "rights-bd-007-blobs/raw/sha256/fb/fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
-          "sha256": "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
-          "size_bytes": 2225,
-          "role": "archived faithful BMS visible-text capture used by the execution"
-        },
-        {
-          "path": "rights-bd-007-blobs/raw/sha256/d2/d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
-          "sha256": "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
-          "size_bytes": 2119,
-          "role": "archived faithful SEC visible-text capture used by the execution"
+          "path": "gsk-dreamm7-readout-2024-02-05.pdf",
+          "sha256": "020add783487f3a1999fca254fa34fc59a63d3c17654a2984307202c43a68178",
+          "size_bytes": 188552,
+          "role": "primary participant DREAMM-7 regimen/readout record"
         }
       ],
-      "restore_instruction": "Restore from Google Drive file id 1PyPRITIlPO4kbqSUlBF1pDeVzkyOBEMr, verify outer SHA baf796f5b7dd92b88c04d647b36ef07f5bdf96ca0eaea2ee3907c1cb2a8177fb and component hashes above, then inspect generated Evidence/Reality/replay outputs read-only. Re-grounding source identity remains controlled by the Git-pinned capture manifest/spec; do not resurrect or trust the retired corrupt source-pack.zip wrapper."
+      "restore_instruction": "Restore from GitHub Release tag longcycle-dev-binary-cache using exact filename longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip; verify outer SHA eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998 and both component hashes before materializing the two PDFs for Grounded Evidence. Acquisition verification text is not publishable Evidence."
     },
     {
-      "asset_id": "adc-sv001-mirvetuximab-acquisition-run32579952518",
-      "role": "raw_source_acquisition_cache",
-      "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
-      "google_drive_file_id": null,
-      "file_name": "longcycle-adc-sv001-mirvetuximab-acquisition-v2-run32579952518.zip",
-      "size_bytes": 780911,
-      "sha256": "1e452435823dfd6af740d811fa3e148cefd3b7ab068fe8eb78652e47cea3893b",
-      "content_summary": "Externally acquired mirvetuximab source pack retained for optional first-pair re-grounding.",
-      "components": [],
-      "restore_instruction": "Restore from GitHub Release only when re-grounding SV-001; verify the outer SHA and document hashes in its durable receipt."
-    },
-    {
-      "asset_id": "adc-sv002-rova-t-acquisition-run32580691882",
-      "role": "raw_source_acquisition_cache",
-      "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
-      "google_drive_file_id": null,
-      "file_name": "longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip",
-      "size_bytes": 2139635,
-      "sha256": "a244ed59d467b2aea8a693f02fa96034ef410f64fc80e777ef69daef226b304d",
-      "content_summary": "Externally acquired Rova-T source pack retained for optional first-pair re-grounding.",
-      "components": [],
-      "restore_instruction": "Restore from GitHub Release only when re-grounding SV-002; verify the outer SHA and document hashes in the durable Evidence receipt."
-    },
-    {
-      "asset_id": "adc-sv003-enhertu-acquisition-run32586650020",
-      "role": "raw_source_acquisition_cache",
-      "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
-      "google_drive_file_id": null,
-      "file_name": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
-      "size_bytes": 2942940,
-      "sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
-      "content_summary": "Seven-source Enhertu trajectory pack: four Daiichi Sankyo original PDFs, ClinicalTrials.gov NCT03734029 JSON, and two official DailyMed/NLM historical SPL archive ZIPs for 2019 and 2022 label vintages. This immutable legacy pack predates the webpage-local-DB default and remains valid by its existing receipt.",
-      "components": [],
-      "restore_instruction": "Restore from GitHub Release only when re-grounding SV-003; verify outer SHA plus source hashes from acquisition run 32586650020. DailyMed archive-member visible text is identity-check material only, not publishable Evidence."
-    },
-    {
-      "asset_id": "adc-sv003-grounded-evidence-run32587776846",
-      "role": "research_evidence_capsule",
-      "required_for_current_task": false,
+      "asset_id": "adc-sv005-blenrep-web-capture-v1",
+      "role": "webpage_source_capture_capsule",
+      "required_for_current_task": true,
       "transport": "google_drive",
       "release_tag": null,
-      "google_drive_file_id": "1yr70T9--ySqBH46qhPiOptcW3vg1wtUj",
-      "file_name": "longcycle-adc-sv003-grounded-evidence-run32587776846.zip",
-      "size_bytes": 76741,
-      "sha256": "2d83ff45146443a2740d9027a51764fbebd5742bbf776b5d4ec58424f3643f3e",
-      "content_summary": "Generated Enhertu Grounded Evidence execution: 5 document versions, 10 claim-scoped EvidenceFragments, exact canonical JSON Pointer grounding for current NCT03734029 identity/sponsor, and zero Fact/Judgment promotion. Includes the audited corrected execution spec and log.",
-      "components": [],
-      "restore_instruction": "Restore from Google Drive file id 1yr70T9--ySqBH46qhPiOptcW3vg1wtUj for SV-003 Evidence execution inspection; source re-grounding must use the separate GitHub Release pack and durable base-spec plus repair overlay."
-    },
-    {
-      "asset_id": "adc-sv003-reality-run32588005301",
-      "role": "typed_replay_capsule",
-      "required_for_current_task": false,
-      "transport": "google_drive",
-      "release_tag": null,
-      "google_drive_file_id": "1LEh4VUlGTFbZp3HRsBYCZ2Rq79zySx7c",
-      "file_name": "longcycle-adc-sv003-reality-run32588005301.zip",
-      "size_bytes": 167922,
-      "sha256": "a104926d817912360dc25cdf8ee9d58635192e9f7c9d1b488c82afe391612504",
-      "content_summary": "Generated Enhertu Evidence plus Reality projection output/log. Ten canonical Reality facts preserve 2019 collaboration/approval/pathway/safety, 2022 DESTINY-Breast04 readout/biomarker/HER2-low approval and 2026 current registry identity/sponsor with valid-time, observed-at and market-known-at separation; all reconciliation gates passed.",
-      "components": [],
-      "restore_instruction": "Restore from Google Drive file id 1LEh4VUlGTFbZp3HRsBYCZ2Rq79zySx7c for SV-003 Reality inspection; verify ZIP SHA before use."
-    },
-    {
-      "asset_id": "adc-sv003-judgment-outcome-pressure-run32629166317",
-      "role": "research_outcome_pressure_capsule",
-      "required_for_current_task": false,
-      "transport": "google_drive",
-      "release_tag": null,
-      "google_drive_file_id": "1PTKC08Y1tj7uwm_osEw31rHZOOrY8cBV",
-      "file_name": "longcycle-sv003-enhertu-judgment-outcome-pressure-run32629166317.zip",
-      "size_bytes": 8649,
-      "sha256": "16f8e8afbf6e95c6e78f2fb77185cb0fa12e3066a328c1fca1c65753c295ebbd",
-      "content_summary": "Generated exact-head Enhertu cognition pressure execution: one March-2019 contemporaneous HER2-low treatment thesis Judgment, one separately grounded August-2022 canonical HER2-low U.S. approval Reality, one related_milestone/indeterminate Outcome, and no-lookahead replay. The research assessment records researcher_implication=supports while proving that the persisted generic Outcome currently has no typed implication-polarity field. Migration 0026 remains deferred because the cross-industry promotion gate is not met.",
+      "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+      "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
+      "size_bytes": 24576,
+      "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+      "content_summary": "Bounded SQLite handoff capsule containing three claim-scoped faithful visible-text captures and provenance records: FDA 2020 accelerated approval/ocular-risk/REMS/confirmatory condition; GSK 2022-11-07 DREAMM-3 failure; GSK 2022-11-22 withdrawal-process statement plus contemporaneous favourable benefit-risk and continue-DREAMM/work-with-FDA Judgment candidate. It contains no raw HTML and performs no automatic Evidence/Fact/Judgment promotion.",
       "components": [
         {
-          "path": "judgment-evidence.json",
-          "sha256": "4f61cfabfae884964a589abea0c64d0e9b5333a7708ca5718b04cb63253253be",
-          "size_bytes": 3896,
-          "role": "2019 Judgment Grounded Evidence execution"
+          "path": "webpage_capture:fda-blenrep-accelerated-approval-2020",
+          "sha256": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+          "size_bytes": null,
+          "role": "FDA 2020 claim-scoped visible text"
         },
         {
-          "path": "judgment.json",
-          "sha256": "4658ad03057e63f44575ed7b13b0ebc6c430979cc11831c1fe39c284893d3a82",
-          "size_bytes": 5226,
-          "role": "persisted contemporaneous Judgment execution"
+          "path": "webpage_capture:gsk-dreamm3-2022-11-07",
+          "sha256": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+          "size_bytes": null,
+          "role": "GSK DREAMM-3 claim-scoped visible text"
         },
         {
-          "path": "reality-evidence.json",
-          "sha256": "6d64b5088cd91d88d77345e3d15f0c0638e46610c89333b826c311c1dd30e485",
-          "size_bytes": 3693,
-          "role": "2022 later Reality Grounded Evidence execution"
-        },
-        {
-          "path": "reality.json",
-          "sha256": "56978ce8d011aa8cc1dff1f28fac130bd4cd31d29778ba49f3e1ec63a38961ef",
-          "size_bytes": 5310,
-          "role": "canonical HER2-low Reality projection and reconciliation execution"
-        },
-        {
-          "path": "outcome.json",
-          "sha256": "4027e93095b0e34686d7fe5afabaddc5e76c2fc61cbf3e1b80e08a60a59afe40",
-          "size_bytes": 2616,
-          "role": "related_milestone indeterminate Outcome execution"
-        },
-        {
-          "path": "replay.json",
-          "sha256": "7515ee7dea3725b870700464abad2bb94921069193eca8a4e3148d956f1fbc5a",
-          "size_bytes": 347,
-          "role": "CAP-0005 no-lookahead replay counts"
-        },
-        {
-          "path": "implication-pressure.json",
-          "sha256": "d5ece38970d8a7e5c713068d9a0f62e40a8135b055016e320c5b851f9d6da2e4",
-          "size_bytes": 1607,
-          "role": "curated researcher-implication pressure assessment"
+          "path": "webpage_capture:gsk-blenrep-withdrawal-2022-11-22",
+          "sha256": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+          "size_bytes": null,
+          "role": "GSK withdrawal/process and contemporaneous Judgment claim-scoped visible text"
         }
       ],
-      "restore_instruction": "Restore from Google Drive file id 1PTKC08Y1tj7uwm_osEw31rHZOOrY8cBV, verify outer SHA 16f8e8afbf6e95c6e78f2fb77185cb0fa12e3066a328c1fca1c65753c295ebbd and component hashes above, then inspect generated Judgment/Reality/Outcome/replay state read-only. Re-grounding the two original PDFs uses the separate immutable Enhertu Release asset; this generated Drive pack contains no external source PDF bytes."
-    },
-    {
-      "asset_id": "adc-sv004-rc48-acquisition-run32582552363",
-      "role": "raw_source_acquisition_cache",
-      "required_for_current_task": false,
-      "transport": "github_release",
-      "release_tag": "longcycle-dev-binary-cache",
-      "google_drive_file_id": null,
-      "file_name": "longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip",
-      "size_bytes": 1739127,
-      "sha256": "51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a",
-      "content_summary": "Externally acquired RC48 source pack retained as an immutable legacy source asset under its existing receipt.",
-      "components": [],
-      "restore_instruction": "Restore from GitHub Release only when re-grounding SV-004; verify the outer SHA and six raw document hashes in the durable Evidence receipt."
-    },
-    {
-      "asset_id": "adc-sv004-grounded-evidence-run32584787738",
-      "role": "research_evidence_capsule",
-      "required_for_current_task": false,
-      "transport": "google_drive",
-      "release_tag": null,
-      "google_drive_file_id": "1jpbUUBjYLjiAyO8M8uCCflZHcc0eqkUQ",
-      "file_name": "longcycle-adc-sv004-grounded-evidence-run32584787738.zip",
-      "size_bytes": 53742,
-      "sha256": "17c996d80cd19f3ddf0ad591aa67ac03358f08edcb972511916dc7d9d543f89d",
-      "content_summary": "Generated RC48 grounded-Evidence execution and log: 6 documents, 8 EvidenceFragments, canonical JSON Pointer grounding, zero Fact/Judgment promotion.",
-      "components": [],
-      "restore_instruction": "Restore from Google Drive file id 1jpbUUBjYLjiAyO8M8uCCflZHcc0eqkUQ only for execution inspection; source re-grounding must use the separate Release pack."
-    },
-    {
-      "asset_id": "adc-sv004-reality-run32584999064",
-      "role": "typed_replay_capsule",
-      "required_for_current_task": false,
-      "transport": "google_drive",
-      "release_tag": null,
-      "google_drive_file_id": "1WwMAW7_ToQgnNYnTm_aVHEL6gMoBDqeP",
-      "file_name": "longcycle-adc-sv004-reality-run32584999064.zip",
-      "size_bytes": 126746,
-      "sha256": "069c29e9e2f05f67622308cc8d65fadc697be6e8319ec9a95b983d5c2815246f",
-      "content_summary": "Generated RC48 Evidence plus Reality projection output/log. Eight namespaced canonical Reality facts preserve territory, development, collaboration, sponsor/collaborator and regulatory-state distinctions; valid-time/known-time no-lookahead gate passed.",
-      "components": [],
-      "restore_instruction": "Restore from Google Drive file id 1WwMAW7_ToQgnNYnTm_aVHEL6gMoBDqeP for RC48 Reality inspection; verify ZIP SHA before use."
-    },
-    {
-      "asset_id": "lithium-kwinana-typed-trajectory-run32557226950",
-      "role": "typed_replay_capsule",
-      "required_for_current_task": false,
-      "transport": "google_drive",
-      "release_tag": null,
-      "google_drive_file_id": "18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa",
-      "file_name": "longcycle-lithium-kwinana-typed-trajectory-run32557226950.zip",
-      "size_bytes": 325964,
-      "sha256": "b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e",
-      "content_summary": "Integrity-verified historical Kwinana generated typed memory migrated from an expiring Actions artifact to durable Drive transport. Internal legacy-v1 kwinana-memory.duckdb SHA is b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd. Current CAP-0005 reader can replay it read-only after additive legacy compatibility repair.",
-      "components": [
-        {
-          "path": "probe/kwinana-memory.duckdb",
-          "sha256": "b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd",
-          "size_bytes": 2633728,
-          "role": "legacy sealed v1 typed point-in-time memory"
-        }
-      ],
-      "restore_instruction": "Restore from Google Drive file id 18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa, verify outer SHA b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e and internal DuckDB SHA b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd, then open read-only through CAP-0005. Do not mutate old bytes to add later optional tables or columns."
+      "restore_instruction": "Restore from Google Drive file id 1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt; verify outer SHA a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833, open the SQLite capsule read-only, verify the three row text hashes, and materialize only the claim-scoped visible_text fields required by the Grounded Evidence spec. The capsule is source transport, not live database authority."
     }
   ]
 }
