@@ -13,6 +13,7 @@ concurrency:
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   test:
@@ -154,3 +155,25 @@ jobs:
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
           echo "compact=${{ steps.compact.outcome }} (hard gate)"
           echo "memory_history=${{ steps.memory_history.outcome }} (hard gate)"
+
+      - name: Publish full CI success status
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          -f state=success
+          -f context=longcycle/full-ci
+          -f description='Full hard-gate CI passed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      - name: Publish full CI failure status
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          -f state=failure
+          -f context=longcycle/full-ci
+          -f description='One or more full CI hard gates failed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
