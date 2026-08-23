@@ -217,11 +217,14 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(rows[0].source_capture_state, "locator_verified")
         self.assertEqual(rows[0].source_locator_metadata["file_name"], "filing.pdf")
 
-    def test_migrations_keep_representation_versions_below_raw_materialized_state(self) -> None:
+    def test_migrations_make_raw_materialization_explicit_and_version_scoped(self) -> None:
         v27 = (ROOT / "migrations" / "0027_source_locator_materialization_state.sql").read_text(
             encoding="utf-8"
         )
         v28 = (ROOT / "migrations" / "0028_truthful_source_materialization.sql").read_text(
+            encoding="utf-8"
+        )
+        v31 = (ROOT / "migrations" / "0031_explicit_raw_source_materialization.sql").read_text(
             encoding="utf-8"
         )
 
@@ -229,7 +232,12 @@ class SourceLocatorMaterializationTest(unittest.IsolatedAsyncioTestCase):
         self.assertIn("DROP TRIGGER IF EXISTS evidence_document_version_marks_materialized", v28)
         self.assertIn("raw_materialized_document_version_id", v28)
         self.assertIn("readable representation", v28)
-        self.assertNotIn("CREATE TABLE evidence.source_locator", v27 + v28)
+        self.assertIn("ALTER COLUMN source_capture_state SET DEFAULT 'locator_verified'", v31)
+        self.assertIn("x-longcycle-raw-source-materialized", v31)
+        self.assertIn("lacks explicit x-longcycle-raw-source-materialized provenance", v31)
+        self.assertIn("documents_raw_materialization_state_consistency_check", v31)
+        self.assertIn("raw_materialized_document_version_id = NEW.id", v31)
+        self.assertNotIn("CREATE TABLE evidence.source_locator", v27 + v28 + v31)
 
 
 if __name__ == "__main__":
