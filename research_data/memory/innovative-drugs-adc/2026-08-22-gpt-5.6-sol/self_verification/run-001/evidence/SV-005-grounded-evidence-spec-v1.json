@@ -1,0 +1,342 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "ADC-SV-005-BLENREP-GROUNDED-EVIDENCE-V1",
+  "acquisition_provenance": {
+    "source_plane_receipt": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-source-plane-receipt-v1.json",
+    "feature_head_source_basis": "e944f1b02985f09d2ca9eb20eb858294d0ba6415",
+    "pdf_release": {
+      "control_issue": 136,
+      "workflow_run_id": 32630536037,
+      "release_tag": "longcycle-dev-binary-cache",
+      "release_asset_file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+      "release_asset_sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998"
+    },
+    "webpage_capsule": {
+      "transport": "google_drive",
+      "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+      "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
+      "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+      "capture_count": 3,
+      "runtime_boundary": "GitHub Actions has no interactive Google Drive OAuth. For this current execution only, the public source pages are re-read and the exact spec fragments must still be visible before ephemeral fragment material is generated. This is a verification/materialization bridge, not a second webpage archive. Durable webpage capture remains the immutable Drive capsule."
+    }
+  },
+  "epistemic_guardrails": [
+    "Grounded Evidence must persist exactly five document versions and nine claim-scoped EvidenceFragments and create zero FactAssertions and zero JudgmentAssertions.",
+    "The current FDA approval webpage contains later withdrawal update text. The runtime materialization may use only the two pinned 2020 fragments below; no later page text may enter the 2020 document material.",
+    "DREAMM-3 is a monotherapy confirmatory failure. Do not infer that later combination success reverses or realizes monotherapy efficacy.",
+    "The 2022-11-22 GSK source supports two distinct things: a public withdrawal-process Reality statement and a contemporaneous development-continuation Judgment. The Judgment fragment must contain no 2024 information.",
+    "The Federal Register valid/event dates 2022-11-18 and 2023-02-06 were not made knowable by this legal notice until the 2023 publication vintage. Preserve valid time separately from market-known time.",
+    "DREAMM-7 is a regimen-level BVd-versus-DVd branch. The positive PFS fragment is not evidence that BLENREP monotherapy met DREAMM-3.",
+    "Transport and runtime materialization do not change authority: FDA/Federal Register owns U.S. legal regulatory state; GSK is a primary participant for its trial readouts and contemporaneous management/development statements."
+  ],
+  "sources": [
+    {
+      "key": "fda-regulator",
+      "name": "U.S. Food and Drug Administration",
+      "publisher_domain": "fda.gov",
+      "kind": "government",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "third_party_fact",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "FDA is the authoritative regulator for the source-supported U.S. accelerated-approval state."
+        }
+      ]
+    },
+    {
+      "key": "gsk-participant",
+      "name": "GSK plc",
+      "publisher_domain": "gsk.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "GSK is the development participant and direct speaker for DREAMM trial readouts, its public withdrawal-process statement and its contemporaneous development commitment."
+        }
+      ]
+    },
+    {
+      "key": "federal-register-fda",
+      "name": "Federal Register / U.S. Food and Drug Administration",
+      "publisher_domain": "federalregister.gov",
+      "kind": "government",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "legal_disclosure",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "The FDA Federal Register notice is the authoritative legal record for the written withdrawal request and BLA revocation/effective date."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "fda-initial-approval-2020",
+      "vintage_id": "SV005-2020-08-05-FDA-INITIAL-APPROVAL",
+      "source_key": "fda-regulator",
+      "retrieval_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-granted-accelerated-approval-belantamab-mafodotin-blmf-multiple-myeloma",
+      "original_source_url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-granted-accelerated-approval-belantamab-mafodotin-blmf-multiple-myeloma",
+      "external_id": "FDA-BLENREP-ACCELERATED-APPROVAL-2020-08-05",
+      "title": "FDA granted accelerated approval to belantamab mafodotin-blmf for multiple myeloma",
+      "published_at": null,
+      "first_known_at": "2020-08-06T12:00:00Z",
+      "expected_sha256": "548ff2ecc10145657e80153733f6d553ad33c5b62bb96215cd8e78f29a720cf7",
+      "material_path": "web/fda-blenrep-accelerated-approval-2020.fragments.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "mode": "pinned_drive_capture_plus_live_exact_fragment_reverification",
+        "capture_mode": "claim_scoped_visible_text_capture",
+        "drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+        "drive_capsule_sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+        "capture_row_text_sha256": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+        "runtime_material_sha256": "548ff2ecc10145657e80153733f6d553ad33c5b62bb96215cd8e78f29a720cf7",
+        "transport_is_not_source_authority": true,
+        "published_date_only": "2020-08-05",
+        "known_time_policy": "conservative_next_day_utc_noon_upper_bound",
+        "source_cluster": "fda-blenrep-initial-approval-2020"
+      }
+    },
+    {
+      "key": "gsk-dreamm3-2022",
+      "vintage_id": "SV005-2022-11-07-DREAMM3-TOPLINE",
+      "source_key": "gsk-participant",
+      "retrieval_url": "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-dreamm-3-phase-iii-trial-for-blenrep/",
+      "original_source_url": "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-dreamm-3-phase-iii-trial-for-blenrep/",
+      "external_id": "GSK-DREAMM3-2022-11-07",
+      "title": "GSK provides update on DREAMM-3 phase III trial for Blenrep in relapsed/refractory multiple myeloma",
+      "published_at": null,
+      "first_known_at": "2022-11-08T12:00:00Z",
+      "expected_sha256": "55c7d54a190a670c1cf3049d4b4cd88f6babc678bea000b23621054f1985165a",
+      "material_path": "web/gsk-dreamm3-2022-11-07.fragments.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "mode": "pinned_drive_capture_plus_live_exact_fragment_reverification",
+        "capture_mode": "claim_scoped_visible_text_capture",
+        "drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+        "drive_capsule_sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+        "capture_row_text_sha256": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+        "runtime_material_sha256": "55c7d54a190a670c1cf3049d4b4cd88f6babc678bea000b23621054f1985165a",
+        "transport_is_not_source_authority": true,
+        "published_date_only": "2022-11-07",
+        "known_time_policy": "conservative_next_day_utc_noon_upper_bound",
+        "source_cluster": "gsk-dreamm3-topline-2022-11-07"
+      }
+    },
+    {
+      "key": "gsk-withdrawal-judgment-2022",
+      "vintage_id": "SV005-2022-11-22-WITHDRAWAL-AND-DEVELOPMENT-JUDGMENT",
+      "source_key": "gsk-participant",
+      "retrieval_url": "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-blenrep-us-marketing-authorisation/",
+      "original_source_url": "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-blenrep-us-marketing-authorisation/",
+      "external_id": "GSK-BLENREP-US-MARKETING-AUTHORISATION-2022-11-22",
+      "title": "GSK provides an update on Blenrep US marketing authorisation",
+      "published_at": null,
+      "first_known_at": "2022-11-23T12:00:00Z",
+      "expected_sha256": "6cd6049d27152ac629a80957e0630bf97c166661e81492a5401c093afb84e726",
+      "material_path": "web/gsk-blenrep-withdrawal-2022-11-22.fragments.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "mode": "pinned_drive_capture_plus_live_exact_fragment_reverification",
+        "capture_mode": "claim_scoped_visible_text_capture",
+        "drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+        "drive_capsule_sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+        "capture_row_text_sha256": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+        "runtime_material_sha256": "6cd6049d27152ac629a80957e0630bf97c166661e81492a5401c093afb84e726",
+        "transport_is_not_source_authority": true,
+        "published_date_only": "2022-11-22",
+        "known_time_policy": "conservative_next_day_utc_noon_upper_bound",
+        "source_cluster": "gsk-blenrep-withdrawal-2022-11-22"
+      }
+    },
+    {
+      "key": "federal-register-revocation-2023",
+      "vintage_id": "SV005-2023-03-30-FEDERAL-REGISTER-REVOCATION",
+      "source_key": "federal-register-fda",
+      "retrieval_url": "https://public-inspection.federalregister.gov/2023-06576.pdf",
+      "original_source_url": "https://public-inspection.federalregister.gov/2023-06576.pdf",
+      "external_id": "FR-2023-06576",
+      "title": "Revocation of the Biologics License for BLENREP",
+      "published_at": null,
+      "first_known_at": "2023-03-31T12:00:00Z",
+      "expected_sha256": "2f6059f22be2a2fcc930c0e983881935cca1a1bb5cf02736f8981e5377697bbf",
+      "material_path": "pdf/federal-register-blenrep-revocation-2023.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "mode": "immutable_github_release_raw_pdf",
+        "release_tag": "longcycle-dev-binary-cache",
+        "release_asset_file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+        "retrieval_host": "public-inspection.federalregister.gov",
+        "published_date_only": "2023-03-30",
+        "known_time_policy": "conservative_next_day_utc_noon_upper_bound",
+        "source_cluster": "federal-register-blenrep-revocation-2023"
+      }
+    },
+    {
+      "key": "gsk-dreamm7-2024",
+      "vintage_id": "SV005-2024-02-05-DREAMM7-READOUT",
+      "source_key": "gsk-participant",
+      "retrieval_url": "https://www.gsk.com/media/41dimrac/20240201-s-ea-blenrep-dreamm-7-final.pdf",
+      "original_source_url": "https://www.gsk.com/media/41dimrac/20240201-s-ea-blenrep-dreamm-7-final.pdf",
+      "external_id": "GSK-DREAMM7-2024-02-05",
+      "title": "DREAMM-7 phase III trial shows Blenrep combination nearly tripled median progression-free survival versus standard of care combination",
+      "published_at": null,
+      "first_known_at": "2024-02-06T12:00:00Z",
+      "expected_sha256": "020add783487f3a1999fca254fa34fc59a63d3c17654a2984307202c43a68178",
+      "material_path": "pdf/gsk-dreamm7-readout-2024-02-05.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "mode": "immutable_github_release_raw_pdf",
+        "release_tag": "longcycle-dev-binary-cache",
+        "release_asset_file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+        "retrieval_host": "www.gsk.com",
+        "published_date_only": "2024-02-05",
+        "known_time_policy": "conservative_next_day_utc_noon_upper_bound",
+        "source_cluster": "gsk-dreamm7-readout-2024-02-05"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "fda-initial-accelerated-approval",
+      "document_key": "fda-initial-approval-2020",
+      "excerpt": "On August 5, 2020, the Food and Drug Administration granted accelerated approval to belantamab mafodotin-blmf",
+      "claim_context": {
+        "lead_ids": ["ASSET-TRIAL-007", "REG-COMM-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "initial_us_accelerated_approval",
+        "valid_effective_time": {"date": "2020-08-05", "precision": "day"},
+        "known_time": {"upper_bound": "2020-08-06T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "regimen_identity": "BLENREP monotherapy",
+        "jurisdiction": "United States"
+      }
+    },
+    {
+      "fragment_key": "fda-ocular-risk-known-at-initial-vintage",
+      "document_key": "fda-initial-approval-2020",
+      "excerpt": "Because of the risks of ocular toxicity",
+      "claim_context": {
+        "lead_ids": ["FAILURE-REV-012"],
+        "epistemic_layer": "reality",
+        "claim_role": "safety_burden_known_at_initial_approval_vintage",
+        "observed_time": {"date": "2020-08-05", "precision": "day"},
+        "known_time": {"upper_bound": "2020-08-06T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "temporal_rule": "Ocular toxicity was already material at the initial U.S. approval vintage and must not be narrated as a later surprise."
+      }
+    },
+    {
+      "fragment_key": "dreamm3-primary-endpoint-failure",
+      "document_key": "gsk-dreamm3-2022",
+      "excerpt": "did not meet its primary endpoint of progression-free survival (PFS).",
+      "claim_context": {
+        "lead_ids": ["ASSET-TRIAL-007", "REG-COMM-003", "FAILURE-REV-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "confirmatory_trial_primary_endpoint_failure",
+        "observed_time": {"date": "2022-11-07", "precision": "day"},
+        "known_time": {"upper_bound": "2022-11-08T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "regimen_identity": "BLENREP monotherapy versus PomDex",
+        "endpoint": "PFS superiority"
+      }
+    },
+    {
+      "fragment_key": "gsk-public-withdrawal-process",
+      "document_key": "gsk-withdrawal-judgment-2022",
+      "excerpt": "initiated the process for withdrawal of the US marketing authorisation",
+      "claim_context": {
+        "lead_ids": ["REG-COMM-003", "FAILURE-REV-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "participant_public_withdrawal_process_statement",
+        "event_time": {"date": "2022-11-22", "precision": "day"},
+        "known_time": {"upper_bound": "2022-11-23T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "authority_boundary": "Participant public-process statement only; not the authoritative legal effective revocation date."
+      }
+    },
+    {
+      "fragment_key": "gsk-post-failure-development-commitment",
+      "document_key": "gsk-withdrawal-judgment-2022",
+      "excerpt": "We will continue the DREAMM clinical trial programme",
+      "claim_context": {
+        "lead_ids": ["FAILURE-REV-003"],
+        "epistemic_layer": "judgment",
+        "claim_role": "post_failure_development_commitment",
+        "speaker": "GSK / Sabine Luik, Chief Medical Officer",
+        "judgment_time": {"date": "2022-11-22", "precision": "day"},
+        "known_time": {"upper_bound": "2022-11-23T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "hindsight_guard": "Predates DREAMM-7 and DREAMM-8 positive readouts; later combination outcomes must not be included in the Judgment."
+      }
+    },
+    {
+      "fragment_key": "federal-register-written-withdrawal-request",
+      "document_key": "federal-register-revocation-2023",
+      "page": 2,
+      "excerpt": "On November 18, 2022, GSK requested withdrawal (revocation), in writing",
+      "claim_context": {
+        "lead_ids": ["REG-COMM-003", "FAILURE-REV-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "written_bla_withdrawal_request",
+        "valid_effective_time": {"date": "2022-11-18", "precision": "day"},
+        "known_time": {"upper_bound": "2023-03-31T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "temporal_rule": "The request date is valid/event time. This Federal Register document does not make that exact date knowable in a 2022 replay."
+      }
+    },
+    {
+      "fragment_key": "federal-register-effective-revocation",
+      "document_key": "federal-register-revocation-2023",
+      "page": 1,
+      "excerpt": "The biologics license application (BLA) is revoked as of February 6, 2023.",
+      "claim_context": {
+        "lead_ids": ["REG-COMM-003", "FAILURE-REV-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "us_bla_revocation_effective",
+        "valid_effective_time": {"date": "2023-02-06", "precision": "day"},
+        "known_time": {"upper_bound": "2023-03-31T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "jurisdiction": "United States"
+      }
+    },
+    {
+      "fragment_key": "dreamm7-bvd-regimen-identity",
+      "document_key": "gsk-dreamm7-2024",
+      "page": 1,
+      "excerpt": "combined with bortezomib plus dexamethasone",
+      "claim_context": {
+        "lead_ids": ["FAILURE-REV-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "later_combination_regimen_identity",
+        "observed_time": {"date": "2024-02-05", "precision": "day"},
+        "known_time": {"upper_bound": "2024-02-06T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "regimen_identity": "belantamab mafodotin + bortezomib + dexamethasone (BVd)",
+        "identity_rule": "Distinct from DREAMM-3 BLENREP monotherapy."
+      }
+    },
+    {
+      "fragment_key": "dreamm7-positive-pfs",
+      "document_key": "gsk-dreamm7-2024",
+      "page": 1,
+      "excerpt": "showing a 59% reduction in the risk of disease progression or death (hazard ratio [HR]: 0.41",
+      "claim_context": {
+        "lead_ids": ["FAILURE-REV-003"],
+        "epistemic_layer": "reality",
+        "claim_role": "later_combination_positive_pfs_readout",
+        "observed_time": {"date": "2024-02-05", "precision": "day"},
+        "known_time": {"upper_bound": "2024-02-06T12:00:00Z", "precision": "derived_conservative_upper_bound"},
+        "regimen_identity": "BVd versus daratumumab + BorDex (DVd)",
+        "outcome_boundary": "Related later milestone for the 2022 development-continuation Judgment, not direct realization of BLENREP monotherapy efficacy."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 5,
+    "required_fragments": 9,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
