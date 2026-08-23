@@ -1,0 +1,134 @@
+name: RIGHTS-BD-007 faithful-capture Evidence probe
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/rights-bd-007-evidence-probe.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/**'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/rights-bd-007-blobs
+      SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json
+      MATERIAL_ROOT: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007
+      OUTPUT: .artifacts/RIGHTS-BD-007-grounded-evidence-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Verify capture pack and spec pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sha256sum "$MATERIAL_ROOT/bms-2023-12-11-joint-announcement.capture.txt" | awk '{print $1}')" = "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186"
+          test "$(sha256sum "$MATERIAL_ROOT/sec-bms-2023-10k-systimmune-note.capture.txt" | awk '{print $1}')" = "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3"
+          test "$(sha256sum "$MATERIAL_ROOT/source-pack.zip" | awk '{print $1}')" = "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350"
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          spec = json.loads(Path(__import__('os').environ['SPEC']).read_text(encoding='utf-8'))
+          root = Path(__import__('os').environ['MATERIAL_ROOT'])
+          by_document = {row['key']: row for row in spec['documents']}
+          for row in by_document.values():
+              material = root / row['material_path']
+              digest = hashlib.sha256(material.read_bytes()).hexdigest()
+              assert digest == row['expected_sha256'], (material, digest, row['expected_sha256'])
+              provenance = row['retrieval_provenance']
+              assert provenance['capture_mode'] == 'verbatim_visible_text_transcription'
+              assert provenance['transport_is_not_source_authority'] is True
+          material_by_key = {
+              'bms-announcement-capture': (root / by_document['bms-announcement-capture']['material_path']).read_text(encoding='utf-8'),
+              'sec-10k-capture': (root / by_document['sec-10k-capture']['material_path']).read_text(encoding='utf-8'),
+          }
+          for fragment in spec['fragments']:
+              assert fragment['excerpt'] in material_by_key[fragment['document_key']], fragment['fragment_key']
+          print('RIGHTS_BD_007_CAPTURE_INTEGRITY_PASS')
+          PY
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$OUTPUT"
+
+      - name: Assert epistemic boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+
+          payload = json.load(open(os.environ['OUTPUT'], encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 2, result
+          assert len(result['fragments']) == 2, result
+          assert result['acceptance'] == {
+              'persisted_document_versions': 2,
+              'persisted_evidence_fragments': 2,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }, result['acceptance']
+          documents = {row['document_key']: row for row in result['documents']}
+          assert documents['bms-announcement-capture']['retrieval_provenance']['capture_mode'] == 'verbatim_visible_text_transcription'
+          assert documents['sec-10k-capture']['retrieval_provenance']['capture_mode'] == 'verbatim_visible_text_transcription'
+          assert documents['bms-announcement-capture']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          assert documents['sec-10k-capture']['source_authority_profiles'][0]['authority_class'] == 'authoritative_primary'
+          print('RIGHTS_BD_007_GROUNDED_EVIDENCE_PASS')
+          PY
+
+      - name: Upload Evidence execution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rights-bd-007-grounded-evidence-${{ github.run_id }}
+          path: |
+            .artifacts/RIGHTS-BD-007-grounded-evidence-execution.json
+            .artifacts/rights-bd-007-blobs
+          if-no-files-found: warn
+          retention-days: 7
