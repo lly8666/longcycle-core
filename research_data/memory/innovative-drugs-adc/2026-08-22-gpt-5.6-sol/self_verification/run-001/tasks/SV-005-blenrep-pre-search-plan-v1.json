@@ -1,0 +1,148 @@
+{
+  "schema_version": "longcycle-post-seal-verification-plan/v1",
+  "task_id": "SV-005-BLENREP-PRE-SEARCH-V1",
+  "trajectory": "belantamab mafodotin / BLENREP",
+  "campaign_id": "ADC-20260822-GPT56SOL-001",
+  "blind_lead_ids": [
+    "ASSET-TRIAL-007",
+    "REG-COMM-003",
+    "FAILURE-REV-003",
+    "FAILURE-REV-012"
+  ],
+  "authority_class": "curated_research_plan_over_sealed_unsourced_memory",
+  "blind_stage": "sealed",
+  "fresh_search_evidence_in_this_plan": false,
+  "purpose": "Prepare a bounded post-seal self-verification campaign that can reconstruct BLENREP as a historical regulatory, clinical, safety and cognition trajectory rather than a final success/failure label.",
+  "why_now": "The first four ADC trajectories and RIGHTS-BD-007 have already pressure-tested failure/recovery, ownership, indication branching, rights, Reality timing and non-direct Outcome semantics. BLENREP is the strongest remaining reserve for a distinct accelerated-approval -> confirmatory-failure -> withdrawal -> safety-burden -> later-combination-revival arc.",
+  "memory_hypotheses_to_verify": [
+    {
+      "hypothesis_id": "BLENREP-H01",
+      "memory_claim": "BLENREP received an accelerated U.S. approval in relapsed/refractory multiple myeloma before later confirmatory evidence was available.",
+      "required_epistemic_layer": "reality",
+      "required_source_scope": "regulator approval state and exact indication/evidence basis",
+      "do_not_assume": "Do not infer the exact approval date, line-of-therapy wording, surrogate endpoint or confirmatory obligation from model memory."
+    },
+    {
+      "hypothesis_id": "BLENREP-H02",
+      "memory_claim": "DREAMM-3 later failed to confirm the expected clinical benefit underlying the U.S. accelerated-approval pathway.",
+      "required_epistemic_layer": "reality_and_possible_prior_judgment",
+      "required_source_scope": "prespecified confirmatory endpoint/result plus contemporaneous sponsor/regulator interpretation",
+      "do_not_assume": "A trial labeled negative is not automatically identical to failure of every earlier scientific or commercial thesis; preserve the exact endpoint and comparator."
+    },
+    {
+      "hypothesis_id": "BLENREP-H03",
+      "memory_claim": "The U.S. monotherapy indication was subsequently withdrawn or otherwise removed after the confirmatory result.",
+      "required_epistemic_layer": "reality",
+      "required_source_scope": "regulatory status transition",
+      "do_not_assume": "Distinguish sponsor market withdrawal, requested withdrawal, formal FDA approval withdrawal, and non-U.S. regulatory status; do not collapse them into one generic discontinuation event."
+    },
+    {
+      "hypothesis_id": "BLENREP-H04",
+      "memory_claim": "Ocular toxicity/keratopathy was a material contemporaneous treatment burden for belantamab mafodotin.",
+      "required_epistemic_layer": "reality_and_risk_context",
+      "required_source_scope": "historical label/regulator safety state and source-supported management burden",
+      "do_not_assume": "Do not backfill later safety wording into the initial approval vintage and do not treat class-level ADC ocular toxicity memory as product-specific Evidence."
+    },
+    {
+      "hypothesis_id": "BLENREP-H05",
+      "memory_claim": "Later combination regimens produced renewed positive development/regulatory momentum after the U.S. monotherapy withdrawal.",
+      "required_epistemic_layer": "reality_and_judgment_revision",
+      "required_source_scope": "specific regimen, trial identity, comparator, endpoint/readout and jurisdictional regulatory state",
+      "do_not_assume": "Combination benefit cannot automatically be attributed to belantamab monotherapy; regimen identity is a separate research object."
+    }
+  ],
+  "claim_scoped_verification_families": [
+    {
+      "family": "initial_us_accelerated_approval",
+      "questions": [
+        "What exact U.S. indication and legal approval pathway existed at the initial approval vintage?",
+        "What evidence basis and confirmatory obligation were contemporaneously stated?",
+        "What ocular-safety state was already knowable at that vintage?"
+      ],
+      "preferred_source_types": [
+        "FDA approval page/action letter and contemporaneous label",
+        "GSK contemporaneous approval release only for participant Judgment/self-statement"
+      ]
+    },
+    {
+      "family": "dreamm3_confirmatory_result",
+      "questions": [
+        "What was the prespecified DREAMM-3 primary endpoint and comparator?",
+        "Did it meet that endpoint, and what exact quantitative/result wording was available at first readout?",
+        "What did GSK and regulators say at that time about next steps?"
+      ],
+      "preferred_source_types": [
+        "ClinicalTrials.gov historical/current trial record with caution about snapshot vintage",
+        "GSK contemporaneous top-line release",
+        "peer-reviewed primary trial report where timing permits"
+      ]
+    },
+    {
+      "family": "us_regulatory_withdrawal_state",
+      "questions": [
+        "Which event was sponsor-requested withdrawal versus formal regulatory withdrawal?",
+        "What were the supported dates and jurisdictional boundaries?",
+        "Did development continue outside the withdrawn U.S. monotherapy indication?"
+      ],
+      "preferred_source_types": [
+        "FDA withdrawal notice/database/federal regulatory record",
+        "GSK contemporaneous corporate disclosure"
+      ]
+    },
+    {
+      "family": "ocular_toxicity_vintages",
+      "questions": [
+        "What keratopathy/ocular-event warnings, monitoring or dose-management requirements were present at each relevant historical label vintage?",
+        "Which safety facts were already knowable before DREAMM-3 failure?"
+      ],
+      "preferred_source_types": [
+        "historical FDA label or regulator-hosted prescribing information",
+        "trial report for observed safety rates within a specified regimen/vintage"
+      ]
+    },
+    {
+      "family": "combination_revival",
+      "questions": [
+        "Which later DREAMM combination trials produced positive results, in what exact regimen and population?",
+        "Which milestones are trial readouts versus regulatory approvals?",
+        "Does any later source provide a contemporaneous Judgment revising the post-DREAMM-3 development thesis?"
+      ],
+      "preferred_source_types": [
+        "GSK original trial readout releases",
+        "ClinicalTrials.gov trial identity records",
+        "regulator approval records for any later jurisdictional approval"
+      ]
+    }
+  ],
+  "judgment_search_targets": [
+    "At initial accelerated approval, capture any explicit sponsor/regulator expectation about confirmatory evidence without treating the approval itself as a Judgment.",
+    "At DREAMM-3 readout, capture contemporaneous management interpretation and development commitment/withdrawal decision only when directly stated.",
+    "For later combinations, capture any source-backed thesis revision that distinguishes monotherapy failure from regimen-level scientific viability."
+  ],
+  "outcome_semantic_guards": [
+    "DREAMM-3 may be a direct or near-direct test only for a precisely defined earlier confirmatory target; do not make every earlier BLENREP thesis direct-match.",
+    "U.S. withdrawal is a regulatory Reality and may undermine broader historical Judgments, but it is not automatically the semantic target of those Judgments.",
+    "Later combination success is related to, but not identical with, prior monotherapy expectations unless the earlier Judgment explicitly targeted that regimen.",
+    "Preserve related_milestone + indeterminate when comparability is non-direct; do not use researcher implication to override realization semantics."
+  ],
+  "what_counts_as_support": [
+    "Regulator-origin material establishing the initial approval state, later withdrawal state and historical safety labeling.",
+    "Contemporaneous trial/sponsor material establishing DREAMM-3 design/result and the then-current interpretation before later combination success was known.",
+    "Regimen-specific later trial/regulatory sources establishing combination revival without attributing the whole regimen outcome to the ADC component alone."
+  ],
+  "what_counts_as_contradiction_or_revision": [
+    "Evidence that the remembered U.S. withdrawal sequence or legal status is materially different from the memory lead.",
+    "Evidence that DREAMM-3 was not the relevant confirmatory study or did not have the remembered result.",
+    "Evidence that the remembered later revival occurred in a materially different asset, regimen, population or jurisdiction.",
+    "Evidence that ocular toxicity was not a material contemporaneous label/trial issue for belantamab mafodotin."
+  ],
+  "refined_queries": [
+    "BLENREP FDA accelerated approval initial indication confirmatory trial belantamab mafodotin",
+    "DREAMM-3 belantamab mafodotin primary endpoint comparator top-line",
+    "BLENREP FDA withdrawal accelerated approval DREAMM-3",
+    "BLENREP historical label keratopathy ocular monitoring REMS",
+    "belantamab mafodotin DREAMM-7 DREAMM-8 combination readout regulatory approval"
+  ],
+  "current_agent_discovery_note": "A fresh public-web search attempt in the current interactive surface returned a transient service-unavailable error. This is not evidence that sources are unavailable and must not be interpreted as a Longcycle acquisition-capability blocker. No search result or guessed URL is persisted in this plan.",
+  "next_atomic_action": "Run post-seal self-verification for the five query families, prefer regulator/GSK/registry originals, and produce a normal longcycle-self-verification-task/v1 only after source identities/dates are actually verified. Search snippets remain discovery-only."
+}
