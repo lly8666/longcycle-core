@@ -1,0 +1,103 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-JUDGMENTS-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-PROMOTION-READY-001",
+  "allowed_claim_roles": [
+    "management_production_cut_commitment",
+    "management_demand_recovery_expectation",
+    "management_investment_production_reduction_guidance"
+  ],
+  "subjects": [
+    {
+      "id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "entity_type": "organization",
+      "canonical_name": "Samsung Electronics Co., Ltd."
+    },
+    {
+      "id": "24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "entity_type": "organization",
+      "canonical_name": "SK hynix Inc."
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2023-samsung-certain-product-production-cut-plan",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-SAMSUNG-CUT-PROMOTION",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "speaker_name_text": "Samsung Electronics",
+      "speaker_role": "management",
+      "topic_code": "operations.memory_production_cut_plan",
+      "judgment_kind": "commitment",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "planned production cuts for certain products; no exact execution date stated",
+      "value_kind": "text",
+      "value_text": "Samsung planned to cut production of certain products after stating that sufficient supply capability had been achieved for those products.",
+      "summary": "On the April 11, 2023 disclosure vintage, Samsung communicated a plan to cut production of certain products. The statement is preserved as a contemporaneous management commitment, not as proof that a specific DRAM/NAND cut percentage had already been executed.",
+      "metadata": {
+        "product_scope_guard": "The source does not identify an exact DRAM/NAND product split.",
+        "magnitude_guard": "The source gives no cut percentage.",
+        "reality_guard": "Do not convert the plan itself into executed production Reality without separate source evidence."
+      }
+    },
+    {
+      "judgment_key": "2023-samsung-second-half-demand-recovery-expectation",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-SAMSUNG-RECOVERY-PROMOTION",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "speaker_name_text": "Samsung Electronics",
+      "speaker_role": "management",
+      "topic_code": "market.memory_demand_recovery",
+      "judgment_kind": "forecast",
+      "target_time_kind": "period",
+      "target_from": "2023-07-01T00:00:00Z",
+      "target_to": "2024-01-01T00:00:00Z",
+      "target_precision": "half_year",
+      "target_text": "second half of 2023",
+      "value_kind": "text",
+      "value_text": "Demand was expected to gradually recover as customer inventory levels declined through inventory adjustments.",
+      "summary": "On the April 27, 2023 results vintage, Samsung expected demand to recover gradually during the second half of 2023 as customer inventories declined. This is an immutable contemporaneous forecast; later recovery evidence must be represented as revision or Outcome rather than inserted into the original expectation.",
+      "metadata": {
+        "mechanism_text": "customer inventory levels decline due to inventory adjustments",
+        "hindsight_guard": "Later 2023/2024 demand, pricing or inventory outcomes are excluded from this Judgment.",
+        "target_precision_guard": "The source supports a half-year window, not an exact recovery date."
+      }
+    },
+    {
+      "judgment_key": "2022-skhynix-2023-investment-and-production-reduction-guidance",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-SKHYNIX-CUT-PROMOTION",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "speaker_name_text": "SK hynix",
+      "speaker_role": "management",
+      "topic_code": "operations.memory_2023_reduction_guidance",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2023-01-01T00:00:00Z",
+      "target_to": "2024-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "2023",
+      "value_kind": "text",
+      "value_text": "SK hynix guided to reduce 2023 investment by more than 50% year on year while reducing production volume with focus on less profitable products.",
+      "summary": "On the October 26, 2022 earnings vintage, SK hynix guided to cut 2023 investment by more than 50% year on year and to reduce production volume focused on less profitable products. The >50% magnitude belongs only to investment and must not be reinterpreted as wafer-start or bit-supply reduction.",
+      "metadata": {
+        "magnitude_scope": "greater than 50% applies only to 2023 investment YoY",
+        "production_scope": "production reduction is stated without a percentage or exact product-line split",
+        "comparability_guard": "Do not compare the investment percentage numerically with Micron's wafer-start reduction."
+      }
+    }
+  ]
+}
