@@ -9,6 +9,7 @@ from longcycle.domain.epistemic import MemorySubjectRef, PointInTimeMemorySnapsh
 from longcycle.domain.models import require_aware_datetime
 from longcycle.domain.orientation import (
     IndustryOrientationCatalog,
+    IndustrySubjectDiscoveryRecord,
     IndustrySubjectMembershipRecord,
 )
 from longcycle.ports.epistemic import EpistemicMemoryReader
@@ -71,6 +72,35 @@ def _visible_memberships(
                 item.canonical_name.casefold(),
                 str(item.subject.entity_id),
                 item.role,
+            ),
+        )
+    )
+
+
+def _visible_discoveries(
+    discoveries: tuple[IndustrySubjectDiscoveryRecord, ...],
+    *,
+    industry_node_id: UUID,
+    knowledge_cutoff: datetime,
+) -> tuple[IndustrySubjectDiscoveryRecord, ...]:
+    """Defensively enforce the same no-lookahead boundary on discovery recall."""
+
+    selected: dict[tuple[str, UUID], IndustrySubjectDiscoveryRecord] = {}
+    for discovery in discoveries:
+        if discovery.industry_node_id != industry_node_id:
+            raise ValueError("industry discovery reader returned a record for another industry")
+        if discovery.known_at > knowledge_cutoff:
+            continue
+        selected[(discovery.basis_kind, discovery.basis_id)] = discovery
+    return tuple(
+        sorted(
+            selected.values(),
+            key=lambda item: (
+                item.canonical_name.casefold(),
+                str(item.subject.entity_id),
+                item.known_at,
+                item.basis_kind,
+                str(item.basis_id),
             ),
         )
     )
@@ -140,6 +170,29 @@ def _judgment_relation_markers(
     return result
 
 
+def _direct_discovery_basis(membership: IndustrySubjectMembershipRecord) -> dict[str, Any]:
+    return {
+        "certainty": "direct",
+        "basis_kind": "industry_membership",
+        "basis_id": str(membership.membership_id),
+        "semantic_code": "industry.membership",
+        "known_at": membership.known_at.isoformat(),
+        "evidence_fragment_ids": [str(value) for value in membership.evidence_fragment_ids],
+    }
+
+
+def _entailed_discovery_basis(discovery: IndustrySubjectDiscoveryRecord) -> dict[str, Any]:
+    return {
+        "certainty": "entailed",
+        "basis_kind": discovery.basis_kind,
+        "basis_id": str(discovery.basis_id),
+        "semantic_code": discovery.semantic_code,
+        "known_at": discovery.known_at.isoformat(),
+        "entailment_rule": discovery.entailment_rule,
+        "evidence_fragment_ids": [str(value) for value in discovery.evidence_fragment_ids],
+    }
+
+
 async def build_researcher_industry_orientation(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -147,52 +200,100 @@ async def build_researcher_industry_orientation(
     industry_node_id: UUID,
     knowledge_cutoff: datetime,
 ) -> dict[str, Any]:
-    """Build one bounded researcher entry view without inventing industry semantics.
+    """Build a broad but auditable researcher entry view at one knowledge cutoff.
 
-    Membership visibility is derived from source-grounded catalog resolutions. Reality,
-    Judgment and Outcome visibility remains delegated to the existing CAP-0005
-    ``EpistemicMemoryReader.snapshot`` boundary at the exact same knowledge cutoff.
+    Direct membership remains source-grounded catalog truth. Separately, already-grounded
+    Reality/Judgment carrying explicit industry scope may deterministically make a subject
+    discoverable. That entailment expands recall only: it never manufactures membership,
+    role, importance, causality or historical timing.
     """
 
     checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
     assert checked is not None
     catalog = await catalog_reader.industry_catalog(industry_node_id)
     visible_memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
+    visible_discoveries = _visible_discoveries(
+        await catalog_reader.deterministic_industry_subjects(
+            industry_node_id,
+            knowledge_cutoff=checked,
+        ),
+        industry_node_id=industry_node_id,
+        knowledge_cutoff=checked,
+    )
 
-    member_subjects: dict[UUID, MemorySubjectRef] = {}
+    subjects: dict[UUID, MemorySubjectRef] = {}
     memberships_by_entity: dict[UUID, list[IndustrySubjectMembershipRecord]] = defaultdict(list)
+    discoveries_by_entity: dict[UUID, list[IndustrySubjectDiscoveryRecord]] = defaultdict(list)
     for membership in visible_memberships:
         assert membership.subject.entity_id is not None
-        member_subjects[membership.subject.entity_id] = membership.subject
+        subjects[membership.subject.entity_id] = membership.subject
         memberships_by_entity[membership.subject.entity_id].append(membership)
+    for discovery in visible_discoveries:
+        assert discovery.subject.entity_id is not None
+        subjects[discovery.subject.entity_id] = discovery.subject
+        discoveries_by_entity[discovery.subject.entity_id].append(discovery)
 
     snapshot_subjects = (
         MemorySubjectRef(industry_node_id=industry_node_id),
-        *(
-            member_subjects[entity_id]
-            for entity_id in sorted(member_subjects, key=str)
-        ),
+        *(subjects[entity_id] for entity_id in sorted(subjects, key=str)),
     )
     snapshot = await memory_reader.snapshot(snapshot_subjects, knowledge_cutoff=checked)
     counts = _memory_counts(snapshot)
     evidence = _evidence_by_subject(snapshot)
     relation_markers = _judgment_relation_markers(snapshot)
 
+    rows_to_render: list[
+        tuple[
+            UUID,
+            str,
+            str,
+            list[IndustrySubjectMembershipRecord],
+            list[IndustrySubjectDiscoveryRecord],
+        ]
+    ] = []
+    for entity_id in subjects:
+        entity_memberships = memberships_by_entity.get(entity_id, [])
+        entity_discoveries = discoveries_by_entity.get(entity_id, [])
+        if entity_memberships:
+            canonical_name = entity_memberships[0].canonical_name
+            entity_type = entity_memberships[0].entity_type
+        elif entity_discoveries:
+            canonical_name = entity_discoveries[0].canonical_name
+            entity_type = entity_discoveries[0].entity_type
+        else:  # pragma: no cover - subjects are populated only from one of these inputs
+            raise RuntimeError("orientation subject has no discovery basis")
+        rows_to_render.append(
+            (
+                entity_id,
+                canonical_name,
+                entity_type,
+                entity_memberships,
+                entity_discoveries,
+            )
+        )
+
     subject_rows: list[dict[str, Any]] = []
-    for entity_id, entity_memberships in sorted(
-        memberships_by_entity.items(),
-        key=lambda pair: (pair[1][0].canonical_name.casefold(), str(pair[0])),
+    for entity_id, canonical_name, entity_type, entity_memberships, entity_discoveries in sorted(
+        rows_to_render,
+        key=lambda item: (item[1].casefold(), str(item[0])),
     ):
-        representative = entity_memberships[0]
-        subject_key = representative.subject.key
+        subject_key = subjects[entity_id].key
         subject_evidence = set(evidence.get(subject_key, set()))
         for membership in entity_memberships:
             subject_evidence.update(str(value) for value in membership.evidence_fragment_ids)
+        for discovery in entity_discoveries:
+            subject_evidence.update(str(value) for value in discovery.evidence_fragment_ids)
+        discovery_bases = [
+            *(_direct_discovery_basis(membership) for membership in entity_memberships),
+            *(_entailed_discovery_basis(discovery) for discovery in entity_discoveries),
+        ]
         subject_rows.append(
             {
                 "subject_id": str(entity_id),
-                "canonical_name": representative.canonical_name,
-                "entity_type": representative.entity_type,
+                "canonical_name": canonical_name,
+                "entity_type": entity_type,
+                "discovery_certainty": "direct" if entity_memberships else "entailed",
+                "discovery_bases": discovery_bases,
                 "memberships": [
                     {
                         "role": membership.role,
@@ -246,10 +347,13 @@ async def build_researcher_industry_orientation(
         "boundary": {
             "membership_requires_fact_resolution_and_evidence": True,
             "membership_visibility_uses_source_known_at": True,
+            "researcher_discovery_allows_deterministic_entailment": True,
+            "entailed_discovery_requires_grounded_explicit_industry_scope": True,
+            "entailed_discovery_does_not_create_membership_or_role": True,
             "system_from_is_not_historical_known_at": True,
             "system_from_only_breaks_ties_between_already_knowable_versions": True,
             "memory_visibility_delegated_to_epistemic_snapshot": True,
-            "same_knowledge_cutoff_used_for_membership_and_memory": True,
+            "same_knowledge_cutoff_used_for_membership_discovery_and_memory": True,
             "canonical_labels_are_current_catalog_identity_not_historical_name_replay": True,
             "presentation_infers_no_value_chain_role": True,
             "presentation_infers_no_importance_or_causality": True,
