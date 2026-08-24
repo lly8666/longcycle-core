@@ -113,7 +113,9 @@ class CapabilityRegistryTest(unittest.TestCase):
         )
 
         self.assertIn(".longcycle/capabilities/active-index.json", fresh_bootstrap)
-        self.assertIn("capability admission/relevant lookup", continue_bootstrap)
+        self.assertIn("Exact admission target IDs are authority", fresh_bootstrap)
+        self.assertIn("`target_capability_ids` 是精确 owner 路由", continue_bootstrap)
+        self.assertIn("`relevant` 模糊检索只能辅助发现", continue_bootstrap)
         self.assertIn(
             ".longcycle/capabilities/active-index.json",
             handoff["resume_read_set"],
@@ -136,6 +138,9 @@ class CapabilityRegistryTest(unittest.TestCase):
             card = json.loads(card_path.read_text(encoding="utf-8"))
             self.assertEqual(card["id"], target)
             self.assertEqual(card["status"], "active")
+            self.assertTrue(card["entrypoints"])
+            self.assertTrue(card["guards"])
+            self.assertTrue(card["non_goals"])
 
         output = StringIO()
         with redirect_stdout(output):
