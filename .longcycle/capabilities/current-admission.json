@@ -1,40 +1,36 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "MEMORY-SEMICONDUCTORS-COMBINED-TRAJECTORY-001",
-  "intent": "Reuse the existing CAP-0002/3/4/7 contracts to execute one fresh-PostgreSQL combined storage-semiconductor trajectory containing the original supplier-cut/recovery vintages and the newly grounded later vintages. The run will project Micron's current wafer-start reduction and Samsung Q3's scoped PC/mobile recovery observation as Reality, preserve the original three Judgments plus the July 2023 SK hynix NAND-reduction decision as a later Judgment, and evaluate the April 2023 Samsung recovery forecast only as an explicit related milestone. Judgment revision-context persistence is intentionally deferred to a subsequent CAP-0007 extension because the current trajectory schema does not yet compose CAP-0004's existing context executor.",
+  "intent_id": "CAP0007-JUDGMENT-CONTEXT-PHASE-001",
+  "intent": "Extend CAP-0007's existing epistemic-trajectory composition with one optional bounded Judgment-context phase that invokes CAP-0004's already-existing grounded rationale/revision persistence executor after Judgment persistence and before Outcome evaluation. The orchestrator must validate the CAP-0004 receipt but must not reimplement Judgment relation semantics. The storage-semiconductor later-vintage run will use this phase to relate the July 2023 SK hynix NAND-reduction Judgment to the earlier October 2022 guidance in the same fresh PostgreSQL execution.",
   "governance_mode": "converging",
-  "disposition": "reuse",
+  "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0002",
-    "CAP-0003",
     "CAP-0004",
     "CAP-0007"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0002",
-    "CAP-0003",
     "CAP-0004",
-    "CAP-0007"
+    "CAP-0007",
+    "CAP-0005"
   ],
-  "rationale": "All required semantics already exist: CAP-0002 grounds the six source fragments, CAP-0003 projects the two scoped Reality facts, CAP-0004 persists four immutable Judgments and evaluates a non-direct related milestone as indeterminate, and CAP-0007 composes those phases in one fresh database. The missing Judgment-context invocation is a separate composition gap and must not block the already-representable Reality/Judgment/Outcome trajectory or tempt a campaign-specific workaround.",
-  "unmet_requirement": null,
+  "rationale": "CAP-0004 already owns and implements grounded Judgment rationale/revision relations in judgment_context_projection.py and execute_grounded_judgment_context.py. CAP-0007 already owns phase ordering and explicitly allows a bounded execution phase when another capability owns the semantics. The observed gap is composition only: broker runs use fresh PostgreSQL, so earlier and later Judgments must be recreated together and the existing CAP-0004 context executor invoked in the same trajectory. A campaign-specific relation writer would violate unique semantic ownership.",
+  "unmet_requirement": "EpistemicTrajectorySpec cannot currently invoke the existing CAP-0004 Judgment-context executor, so an otherwise representable later-vintage revision relation cannot be included in one generic fresh-PostgreSQL trajectory.",
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0002.json",
-    ".longcycle/capabilities/cards/CAP-0003.json",
     ".longcycle/capabilities/cards/CAP-0004.json",
     ".longcycle/capabilities/cards/CAP-0007.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-promotion-ready-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/later-vintage-recovery-grounded-evidence-v1.json",
-    "issue:#148",
-    "commit:8d1afebc3324cc899204bca40b051c1e7f41f337"
+    "src/longcycle/application/judgment_context_projection.py",
+    "scripts/execute_grounded_judgment_context.py",
+    "issue:#149",
+    "commit:4a97be26e46afc5e6a55096cbf2bdcb4014ef79a"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/combined-recovery-trajectory-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-reality-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-judgment-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-orchestration-v2.json",
+    "src/longcycle/application/epistemic_trajectory.py",
+    "tests/test_epistemic_trajectory.py",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-judgment-context-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-trajectory-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json",
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
 }
