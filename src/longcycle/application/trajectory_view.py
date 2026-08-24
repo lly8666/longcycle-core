@@ -4,6 +4,10 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Any
 
+from longcycle.application.researcher_interpretation import (
+    researcher_outcome_interpretation,
+    researcher_time_hint,
+)
 from longcycle.domain.epistemic import (
     JudgmentMemoryRecord,
     JudgmentRationaleMemoryRecord,
@@ -131,6 +135,8 @@ def _outcome_story_payload(
         "semantic_relation": outcome.semantic_relation.value,
         "timing_relation": outcome.timing_relation,
         "occurrence_time": _extent_payload(outcome.occurrence_time),
+        "researcher_time_hint": researcher_time_hint(outcome.occurrence_time),
+        "researcher_interpretation": researcher_outcome_interpretation(outcome),
         "explanation": outcome.explanation,
         "linked_reality": (
             {
@@ -143,6 +149,10 @@ def _outcome_story_payload(
                     payload=linked_reality.value_payload,
                 ),
                 "valid_time": _extent_payload(linked_reality.valid_time),
+                "researcher_time_hint": researcher_time_hint(
+                    linked_reality.valid_time,
+                    observed_time=linked_reality.observed_time,
+                ),
             }
             if linked_reality is not None
             else None
@@ -181,12 +191,22 @@ def _judgment_storylines(
         speaker = judgment.speaker_name_text or "Source-grounded speaker"
         if later_outcomes:
             latest = later_outcomes[-1]
+            interpretation = latest["researcher_interpretation"]
+            if interpretation["interpretation_kind"] == "related_milestone_signal":
+                outcome_clause = (
+                    "a related milestone is visible, but the original target remains "
+                    "not directly resolved"
+                )
+            else:
+                outcome_clause = (
+                    f"the latest evaluation is {latest['evaluation_status']} with semantic relation "
+                    f"{latest['semantic_relation']}"
+                )
             researcher_summary = (
                 f"At {judgment.known_at.isoformat()}, {speaker} recorded: {judgment.summary} "
                 f"By the {snapshot.knowledge_cutoff.isoformat()} cutoff, "
-                f"{len(later_outcomes)} Outcome evaluation(s) were visible; the latest is "
-                f"{latest['evaluation_status']} with semantic relation "
-                f"{latest['semantic_relation']}. The later record does not rewrite the original Judgment."
+                f"{len(later_outcomes)} Outcome evaluation(s) were visible; {outcome_clause}. "
+                "The later record does not rewrite the original Judgment."
             )
             status = "outcome_visible"
         else:
@@ -210,6 +230,7 @@ def _judgment_storylines(
                     "judgment_kind": judgment.judgment_kind,
                     "statement": judgment.summary,
                     "target_time": _extent_payload(judgment.target_time),
+                    "researcher_time_hint": researcher_time_hint(judgment.target_time),
                     "value": _value_payload(
                         kind=judgment.value_kind,
                         text=judgment.value_text,
@@ -234,12 +255,11 @@ def _judgment_storylines(
 def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dict[str, Any]:
     """Render one no-lookahead snapshot as a researcher-readable cognition timeline.
 
-    This is a deterministic read model only. It does not infer causality, rewrite Judgment from
-    Outcome, change temporal precision, or create new Evidence/Fact/Judgment/Outcome records.
-    Entries are ordered by when they became knowable; each entry preserves its separate historical
-    time (Reality valid time, Judgment target time, or Outcome occurrence time). The additional
-    knowledge-progression and Judgment-storyline projections are built only from this already
-    filtered snapshot and therefore cannot pull future rows across the knowledge cutoff.
+    Canonical Reality/Judgment/Outcome time and evaluation semantics are never rewritten.
+    The presentation layer may add explicitly labelled deterministic researcher hints, such
+    as a source-supported time window, an as-of observation with unknown onset, or a related
+    milestone signal that does not satisfy the original target. These hints are read-only and
+    cannot create new epistemic records or silently become canonical truth.
     """
 
     judgments = {judgment.judgment_id: judgment for judgment in snapshot.judgments}
@@ -265,6 +285,7 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             "known_at": judgment.known_at.isoformat(),
             "historical_time_role": "target_time",
             "historical_time": _extent_payload(judgment.target_time),
+            "researcher_time_hint": researcher_time_hint(judgment.target_time),
             "headline": judgment.summary,
             "speaker_name_text": judgment.speaker_name_text,
             "topic_code": judgment.topic_code,
@@ -293,6 +314,10 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             "historical_time_role": "valid_time",
             "historical_time": _extent_payload(reality_item.valid_time),
             "observed_time": _extent_payload(reality_item.observed_time),
+            "researcher_time_hint": researcher_time_hint(
+                reality_item.valid_time,
+                observed_time=reality_item.observed_time,
+            ),
             "headline": f"{reality_item.predicate_code}: {display_value}",
             "predicate_code": reality_item.predicate_code,
             "value": _value_payload(
@@ -325,9 +350,11 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             "known_at": outcome.known_at.isoformat(),
             "historical_time_role": "occurrence_time",
             "historical_time": _extent_payload(outcome.occurrence_time),
+            "researcher_time_hint": researcher_time_hint(outcome.occurrence_time),
             "headline": headline,
             "evaluation_status": outcome.evaluation_status,
             "semantic_relation": outcome.semantic_relation.value,
+            "researcher_interpretation": researcher_outcome_interpretation(outcome),
             "timing_relation": outcome.timing_relation,
             "timing_delta_value": (
                 str(outcome.timing_delta_value) if outcome.timing_delta_value is not None else None
@@ -400,10 +427,12 @@ def build_researcher_trajectory_view(snapshot: PointInTimeMemorySnapshot) -> dic
             "ordered_by_knowledge_time": True,
             "historical_time_kept_separate_from_known_at": True,
             "source_temporal_precision_preserved": True,
+            "researcher_time_hints_do_not_mutate_canonical_time": True,
             "evidence_references_preserved": True,
             "judgment_not_rewritten_by_outcome": True,
             "storylines_derive_only_from_filtered_snapshot": True,
-            "presentation_adds_no_causality_or_realization_inference": True,
+            "related_milestones_surface_without_realization_promotion": True,
+            "presentation_does_not_promote_interpretation_to_truth": True,
             "no_new_epistemic_records_created": True,
         },
     }
