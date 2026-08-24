@@ -1,41 +1,25 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "MEMORY-SEMICONDUCTORS-HBM3E-PROMOTION-001",
-  "intent": "Reuse existing Reality, Judgment/revision, replay and orchestration capabilities to promote the already-grounded HBM3E packet without collapsing distinct status states. Persist only issuer-reported current production/sampling states as Reality, preserve forward-looking platform shipment/customer supply/mass-production timing as contemporaneous Judgments, and express Samsung's later Q2 12H mass-production plan as a narrowing revision of its earlier 1H plan. No claim may infer named-customer qualification unless a source explicitly supports it.",
+  "intent_id": "MEMORY-SEMICONDUCTORS-HBM3E-LATER-SUPPLY-GROUNDING-001",
+  "intent": "Reuse CAP-0001 and CAP-0002 to preserve and ground a later primary-source SK hynix HBM3E supply realization statement after the already-proven HBM3E status trajectory. The source may establish that 8-layer HBM3E supply actually began in March 2024, but grounding must stop at Evidence and must preserve the source's month-level occurrence precision; it may not invent a day or infer a named-customer/platform qualification state.",
   "governance_mode": "converging",
   "disposition": "reuse",
-  "target_capability_ids": [
-    "CAP-0003",
-    "CAP-0004",
-    "CAP-0005",
-    "CAP-0007"
-  ],
-  "closest_existing_capability_ids": [
-    "CAP-0002",
-    "CAP-0003",
-    "CAP-0004",
-    "CAP-0005",
-    "CAP-0007"
-  ],
-  "rationale": "Issue #152 proved four content-verified HBM3E fragments can be grounded 4/4/0/0. Their status components fit existing generic owners: CAP-0003 for narrow observed Reality, CAP-0004 for contemporaneous future timing and the Samsung plan revision, CAP-0005 for no-lookahead replay, and CAP-0007 for phase composition. The exercise is specifically meant to prove that product development/sampling/production/supply/platform timing can remain distinct without a semiconductor-specific status model.",
+  "target_capability_ids": ["CAP-0001", "CAP-0002"],
+  "closest_existing_capability_ids": ["CAP-0001", "CAP-0002", "CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
+  "rationale": "The HBM3E promotion trajectory succeeded at issue #153 and left the March 2024 SK hynix customer-supply statement as contemporaneous Judgment. SK hynix's October 10, 2024 anniversary article is a later issuer-authored source stating that 8-layer HBM3E supply to leading global tech companies began in March 2024. CAP-0001 already owns preservation and CAP-0002 exact claim-scoped grounding. Outcome evaluation is a later admission after the fragment exists.",
   "unmet_requirement": null,
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0004.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0007.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-status-grounded-evidence-v1.json",
-    "issue:#152",
-    "commit:8725b5a716bf22ebbedc0db2dbd06a3b8592e326"
+    ".longcycle/capabilities/cards/CAP-0001.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "issue:#153",
+    "commit:a642ee079b2007e07187a539ad28ba575fca2eac"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-status-grounding-receipt-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-reality-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-judgment-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-judgment-context-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-status-promotion-orchestration-v2.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-status-trajectory-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-10-10-HBM3E-SUPPLY-REALIZATION-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-later-supply-orchestration-v2.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounding-receipt-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json",
     ".longcycle/handoff/current.json"
   ],
