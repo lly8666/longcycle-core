@@ -5,10 +5,12 @@ from typing import Any
 from uuid import UUID
 
 from longcycle.domain.epistemic import MemorySubjectRef
+from longcycle.domain.models import require_aware_datetime
 from longcycle.domain.orientation import (
     IndustryDescriptor,
     IndustryMembershipProjection,
     IndustryOrientationCatalog,
+    IndustrySubjectDiscoveryRecord,
     IndustrySubjectMembershipRecord,
     ResolvedIndustryMembershipResolution,
 )
@@ -17,7 +19,7 @@ from .postgres import PostgresResearchRepository, PostgresSupport
 
 
 class PostgresIndustryOrientationReader(PostgresSupport):
-    """Read source-grounded industry membership without owning catalog truth semantics."""
+    """Read grounded industry entry inputs without owning truth semantics."""
 
     async def industry_catalog(self, industry_node_id: UUID) -> IndustryOrientationCatalog:
         async with self.connection() as connection:
@@ -86,6 +88,138 @@ class PostgresIndustryOrientationReader(PostgresSupport):
             memberships=tuple(self._membership_record(row) for row in membership_rows),
         )
 
+    async def deterministic_industry_subjects(
+        self,
+        industry_node_id: UUID,
+        *,
+        knowledge_cutoff: datetime,
+    ) -> tuple[IndustrySubjectDiscoveryRecord, ...]:
+        """Recover subjects from grounded memory carrying explicit industry scope.
+
+        This is a recall rule, not a truth promotion rule. An accepted Reality or
+        grounded Judgment explicitly scoped to an industry makes its entity
+        deterministically discoverable at that cutoff. It does not create a catalog
+        membership, infer a value-chain role, or rank importance.
+        """
+
+        checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
+        assert checked is not None
+        async with self.connection() as connection:
+            reality_cursor = await connection.execute(
+                """
+                SELECT canonical.id AS basis_id,
+                       key.subject_entity_id AS entity_id,
+                       entity.canonical_name,
+                       entity.entity_type,
+                       key.predicate_code AS semantic_code,
+                       canonical.market_known_at AS known_at,
+                       array_remove(
+                           array_agg(
+                               DISTINCT evidence_link.evidence_fragment_id
+                               ORDER BY evidence_link.evidence_fragment_id
+                           ),
+                           NULL
+                       ) AS evidence_fragment_ids
+                FROM research.canonical_fact_versions canonical
+                JOIN research.fact_keys key
+                  ON key.id = canonical.fact_key_id
+                JOIN research.fact_resolution_assertions selected
+                  ON selected.resolution_id = canonical.resolution_id
+                 AND selected.disposition = 'selected'
+                JOIN research.fact_assertions assertion
+                  ON assertion.id = selected.assertion_id
+                JOIN core.entities entity
+                  ON entity.id = key.subject_entity_id
+                LEFT JOIN research.assertion_evidence evidence_link
+                  ON evidence_link.assertion_id = assertion.id
+                WHERE canonical.system_to IS NULL
+                  AND canonical.publication_status = 'trusted'
+                  AND key.subject_entity_id IS NOT NULL
+                  AND key.predicate_code <> 'industry.membership'
+                  AND assertion.metadata->>'industry_node_id' = %s
+                  AND canonical.market_known_at <= %s
+                GROUP BY canonical.id, key.subject_entity_id,
+                         entity.canonical_name, entity.entity_type,
+                         key.predicate_code, canonical.market_known_at
+                HAVING bool_and(evidence_link.evidence_fragment_id IS NOT NULL)
+                """,
+                (str(industry_node_id), checked),
+            )
+            reality_rows = await reality_cursor.fetchall()
+
+            judgment_cursor = await connection.execute(
+                """
+                SELECT judgment.id AS basis_id,
+                       judgment.subject_entity_id AS entity_id,
+                       entity.canonical_name,
+                       entity.entity_type,
+                       judgment.topic_code AS semantic_code,
+                       judgment.first_known_at AS known_at,
+                       array_remove(
+                           array_agg(
+                               DISTINCT evidence_link.evidence_fragment_id
+                               ORDER BY evidence_link.evidence_fragment_id
+                           ),
+                           NULL
+                       ) AS evidence_fragment_ids
+                FROM research.judgment_assertions judgment
+                JOIN core.entities entity
+                  ON entity.id = judgment.subject_entity_id
+                LEFT JOIN research.judgment_evidence evidence_link
+                  ON evidence_link.judgment_id = judgment.id
+                WHERE judgment.subject_entity_id IS NOT NULL
+                  AND judgment.metadata->>'industry_node_id' = %s
+                  AND judgment.first_known_at <= %s
+                GROUP BY judgment.id, judgment.subject_entity_id,
+                         entity.canonical_name, entity.entity_type,
+                         judgment.topic_code, judgment.first_known_at
+                HAVING bool_and(evidence_link.evidence_fragment_id IS NOT NULL)
+                """,
+                (str(industry_node_id), checked),
+            )
+            judgment_rows = await judgment_cursor.fetchall()
+
+        records = [
+            IndustrySubjectDiscoveryRecord(
+                industry_node_id=industry_node_id,
+                subject=MemorySubjectRef(entity_id=row["entity_id"]),
+                canonical_name=row["canonical_name"],
+                entity_type=row["entity_type"],
+                basis_kind="accepted_reality",
+                basis_id=row["basis_id"],
+                semantic_code=row["semantic_code"],
+                known_at=row["known_at"],
+                evidence_fragment_ids=tuple(row["evidence_fragment_ids"]),
+            )
+            for row in reality_rows
+        ]
+        records.extend(
+            IndustrySubjectDiscoveryRecord(
+                industry_node_id=industry_node_id,
+                subject=MemorySubjectRef(entity_id=row["entity_id"]),
+                canonical_name=row["canonical_name"],
+                entity_type=row["entity_type"],
+                basis_kind="grounded_judgment",
+                basis_id=row["basis_id"],
+                semantic_code=row["semantic_code"],
+                known_at=row["known_at"],
+                evidence_fragment_ids=tuple(row["evidence_fragment_ids"]),
+            )
+            for row in judgment_rows
+        )
+        return tuple(
+            sorted(
+                records,
+                key=lambda item: (
+                    item.canonical_name.casefold(),
+                    str(item.subject.entity_id),
+                    item.known_at,
+                    item.basis_kind,
+                    str(item.basis_id),
+                ),
+            )
+        )
+
     @staticmethod
     def _industry_record(row: dict[str, Any]) -> IndustryDescriptor:
         return IndustryDescriptor(
@@ -119,7 +253,7 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
     """Bridge accepted CAP-0003 resolutions into the CAP-0005 orientation catalog.
 
     This adapter reconstructs the already-selected Fact and persists only the existing
-    catalog projection.  It never runs reconciliation or treats resolution/system time
+    catalog projection. It never runs reconciliation or treats resolution/system time
     as historical market-known time.
     """
 
@@ -275,8 +409,14 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 "role": source["value_text"],
                 "industry_node_id": source_industry_node_id,
                 "exposure_type": source_exposure,
-                "valid_from": self._catalog_date(source["valid_from"], label="membership valid_from"),
-                "valid_to": self._catalog_date(source["valid_to"], label="membership valid_to"),
+                "valid_from": self._catalog_date(
+                    source["valid_from"],
+                    label="membership valid_from",
+                ),
+                "valid_to": self._catalog_date(
+                    source["valid_to"],
+                    label="membership valid_to",
+                ),
                 "known_at": source["first_known_at"],
                 "system_from": source["resolved_at"],
                 "confidence": source["confidence"],
