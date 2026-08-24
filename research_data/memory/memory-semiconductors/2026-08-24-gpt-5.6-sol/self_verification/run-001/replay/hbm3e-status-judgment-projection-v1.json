@@ -1,0 +1,105 @@
+{
+  "schema_version":"longcycle-judgment-projection-spec/v2",
+  "task_id":"MEMORY-SEMICONDUCTORS-HBM3E-JUDGMENTS-001",
+  "source_evidence_task_id":"EVT-MEMORY-SEMICONDUCTORS-HBM3E-STATUS-001",
+  "allowed_claim_roles":["issuer_hbm3e_status_statement"],
+  "subjects":[
+    {"id":"eb2cb40d-1955-5b1f-a1d6-481b53d651d7","entity_type":"legal_entity","canonical_name":"Micron Technology, Inc."},
+    {"id":"24493701-d1f3-5eb4-86d6-3c1be70da617","entity_type":"legal_entity","canonical_name":"SK hynix Inc."},
+    {"id":"e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066","entity_type":"legal_entity","canonical_name":"Samsung Electronics Co., Ltd."}
+  ],
+  "judgments":[
+    {
+      "judgment_key":"2024-micron-hbm3e-h200-q2-shipment-expectation",
+      "evidence_refs":[{"fragment_key":"EVF-MICRON-HBM3E-STATUS","evidence_role":"statement"}],
+      "subject_entity_id":"eb2cb40d-1955-5b1f-a1d6-481b53d651d7",
+      "speaker_name_text":"Micron Technology",
+      "speaker_role":"management",
+      "topic_code":"platform.hbm3e_h200_shipment_timing",
+      "judgment_kind":"forecast",
+      "target_time_kind":"period",
+      "target_from":"2024-04-01T00:00:00Z",
+      "target_to":"2024-07-01T00:00:00Z",
+      "target_precision":"quarter",
+      "target_text":"second calendar quarter of 2024",
+      "value_kind":"text",
+      "value_text":"Micron stated that its 24GB 8H HBM3E would be part of NVIDIA H200 Tensor Core GPUs that would begin shipping in calendar Q2 2024.",
+      "summary":"At the February 26, 2024 vintage, Micron coupled already-begun HBM3E volume production with a forward-looking Q2 2024 H200 platform-shipment statement. The platform timing remains contemporaneous Judgment until later evidence establishes shipment.",
+      "metadata":{
+        "product_family":"HBM3E",
+        "variant":"24GB_8H",
+        "platform":"NVIDIA H200",
+        "reality_guard":"Do not backdate H200 shipment to February 26 merely because HBM3E volume production had begun.",
+        "qualification_guard":"Platform inclusion/shipment wording is preserved as stated and is not generalized into an independent unnamed qualification state."
+      }
+    },
+    {
+      "judgment_key":"2024-skhynix-hbm3e-late-march-customer-supply-plan",
+      "evidence_refs":[{"fragment_key":"EVF-SKHYNIX-HBM3E-STATUS","evidence_role":"statement"}],
+      "subject_entity_id":"24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "speaker_name_text":"SK hynix",
+      "speaker_role":"management",
+      "topic_code":"operations.hbm3e_customer_supply_timing",
+      "judgment_kind":"commitment",
+      "target_time_kind":"unknown",
+      "target_precision":"approximate",
+      "target_text":"from late March 2024",
+      "value_kind":"text",
+      "value_text":"SK hynix stated that HBM3E produced at volume would be supplied to a customer from late March 2024.",
+      "summary":"At the March 19, 2024 vintage, SK hynix had begun HBM3E volume production and described customer supply as beginning from late March. The source's qualitative late-March timing is preserved without inventing a specific day.",
+      "metadata":{
+        "product_family":"HBM3E",
+        "customer_identity":"unnamed",
+        "timing_guard":"Do not translate 'late March' into an invented exact date.",
+        "reality_guard":"The March 19 statement is not by itself evidence that the later customer-supply event had already occurred."
+      }
+    },
+    {
+      "judgment_key":"2024-samsung-hbm3e-12h-1h-mass-production-plan",
+      "evidence_refs":[{"fragment_key":"EVF-SAMSUNG-HBM3E-12H-SAMPLE-STATUS","evidence_role":"statement"}],
+      "subject_entity_id":"e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "speaker_name_text":"Samsung Electronics",
+      "speaker_role":"management",
+      "topic_code":"operations.hbm3e_12h_mass_production_plan",
+      "judgment_kind":"guidance",
+      "target_time_kind":"period",
+      "target_from":"2024-01-01T00:00:00Z",
+      "target_to":"2024-07-01T00:00:00Z",
+      "target_precision":"half_year",
+      "target_text":"first half of 2024",
+      "value_kind":"text",
+      "value_text":"Samsung stated that HBM3E 12H mass production was slated for the first half of 2024.",
+      "summary":"At the February 27, 2024 vintage, Samsung had begun HBM3E 12H customer sampling and guided to mass production in the first half of 2024. Sampling remains separate Reality; the production timing remains Judgment.",
+      "metadata":{
+        "product_family":"HBM3E",
+        "variant":"12H",
+        "sampling_guard":"Already-begun sampling does not prove already-begun mass production.",
+        "qualification_guard":"Sampling does not establish successful qualification by a named platform."
+      }
+    },
+    {
+      "judgment_key":"2024-samsung-hbm3e-12h-q2-mass-production-plan",
+      "evidence_refs":[{"fragment_key":"EVF-SAMSUNG-HBM3E-PRODUCTION-STATUS","evidence_role":"statement"}],
+      "subject_entity_id":"e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "speaker_name_text":"Samsung Electronics",
+      "speaker_role":"management",
+      "topic_code":"operations.hbm3e_12h_mass_production_plan",
+      "judgment_kind":"guidance",
+      "target_time_kind":"period",
+      "target_from":"2024-04-01T00:00:00Z",
+      "target_to":"2024-07-01T00:00:00Z",
+      "target_precision":"quarter",
+      "target_text":"second quarter of 2024",
+      "value_kind":"text",
+      "value_text":"Samsung planned to mass produce HBM3E 12H within the second quarter of 2024.",
+      "summary":"At the April 30, 2024 Q1-results vintage, Samsung reported HBM3E 8H mass production as already started and separately planned HBM3E 12H mass production within Q2 2024. The later Q2 plan narrows the earlier H1 window but is still not realized 12H production evidence.",
+      "metadata":{
+        "product_family":"HBM3E",
+        "variant":"12H",
+        "revision_candidate":"narrows 2024-samsung-hbm3e-12h-1h-mass-production-plan",
+        "reality_guard":"The sentence reports 8H production as current; 12H remains a future plan in the same vintage.",
+        "qualification_guard":"No named customer/platform qualification is inferred."
+      }
+    }
+  ]
+}
