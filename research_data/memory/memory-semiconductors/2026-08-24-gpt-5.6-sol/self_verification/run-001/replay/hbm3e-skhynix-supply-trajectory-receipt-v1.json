@@ -1,0 +1,117 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-hbm3e-supply-outcome-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "eef622fbe428326c60f92325a0deee47b3ffa2f5",
+  "default_branch_broker_commit": "3c3dd2198ffd5df4026c344551094c25c845d3e1",
+  "trigger_issue": 155,
+  "actions_run_id": 32727041606,
+  "full_ci_run_id": 32727021306,
+  "full_ci_conclusion": "success",
+  "actions_artifact": {
+    "artifact_id": 9519921458,
+    "name": "research-orchestration-32727041606",
+    "digest": "sha256:5b6927e39de17cd8b4cd9ef19cede8ca4231eb568e2878a036b9c50d157602fe",
+    "expires_at": "2026-08-31T12:26:20Z"
+  },
+  "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-skhynix-supply-trajectory-v1.json",
+  "research_orchestration_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-skhynix-supply-orchestration-v2.json",
+  "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-skhynix-supply-trajectory-evidence-v1.json",
+  "reality_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-reality-projection-v1.json",
+  "judgment_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-judgment-projection-v1.json",
+  "execution_schema": "longcycle-epistemic-trajectory-execution/v1",
+  "phases": [
+    "grounded_evidence",
+    "reality_projection",
+    "judgment_persistence",
+    "outcome_evaluation",
+    "seal_integrated_memory",
+    "point_in_time_replay"
+  ],
+  "acceptance": {
+    "persisted_document_versions": 2,
+    "persisted_evidence_fragments": 2,
+    "fact_assertions_created_during_grounding": 0,
+    "judgment_assertions_created_during_grounding": 0,
+    "canonical_reality_count": 2,
+    "judgment_count": 1,
+    "outcome_count": 1,
+    "replay_verified": true,
+    "no_lookahead_sequence_verified": true,
+    "typed_round_trip": true,
+    "full_ci": "success"
+  },
+  "fragment_ids": {
+    "EVF-SKHYNIX-HBM3E-MARCH-SUPPLY-TRAJECTORY": "3d5fe99e-f2e2-5c00-9713-ea86982a0e2d",
+    "EVF-SKHYNIX-HBM3E-SUPPLY-REALIZED-TRAJECTORY": "aa234398-84ba-59c8-86a0-5a0d6b744149"
+  },
+  "reality": {
+    "2024-skhynix-hbm3e-volume-production-supply-trajectory": {
+      "fact_assertion_id": "d6695f75-d60a-5b16-be55-55b34e6997eb",
+      "canonical_fact_version_id": "073a2a62-1ee8-58dd-bf7e-74337ca63056",
+      "known_at": "2024-03-20T00:00:00Z"
+    },
+    "2024-skhynix-hbm3e-customer-supply-realized-march": {
+      "fact_assertion_id": "3f272151-7430-5c0b-9423-11d83c182688",
+      "canonical_fact_version_id": "b5331764-3cfc-5aa3-8d12-32fdbada091f",
+      "known_at": "2024-10-11T00:00:00Z",
+      "valid_from": "2024-03-01T00:00:00Z",
+      "valid_to": "2024-04-01T00:00:00Z",
+      "valid_time_precision": "month",
+      "valid_time_text": "March 2024"
+    }
+  },
+  "judgment": {
+    "judgment_key": "2024-skhynix-hbm3e-late-march-customer-supply-plan",
+    "judgment_id": "cf931174-a668-58d4-a56c-ddd369b09eee",
+    "first_known_at": "2024-03-20T00:00:00Z",
+    "target_precision": "approximate",
+    "target_text": "from late March 2024"
+  },
+  "outcome": {
+    "evaluation_id": "1e0961b8-db2b-5a0d-a180-404249b398e8",
+    "judgment_id": "cf931174-a668-58d4-a56c-ddd369b09eee",
+    "canonical_fact_version_id": "b5331764-3cfc-5aa3-8d12-32fdbada091f",
+    "outcome_evidence_fragment_id": "aa234398-84ba-59c8-86a0-5a0d6b744149",
+    "evaluation_status": "realized",
+    "semantic_relation": "direct_match",
+    "outcome_from": "2024-03-01T00:00:00Z",
+    "outcome_to": "2024-04-01T00:00:00Z",
+    "outcome_precision": "month",
+    "outcome_text": "March 2024",
+    "outcome_first_known_at": "2024-10-11T00:00:00Z",
+    "timing_relation": "not_comparable",
+    "timing_delta_value": null,
+    "timing_delta_unit": null,
+    "timing_error_days": null,
+    "artifact_sha256": "03429c5d5ed6b4791a3990eaa02d61b5ba39c58a1a56c48469c72972848eb7e7"
+  },
+  "sealed_memory": {
+    "database_sha256": "5652c7dbb16e8b7003899da7d13519598ac61911bea31b24361795d7087fa0dc",
+    "manifest_sha256": "7167992ea75fadaa9cfbf1cb16257b254cf97389bf50e87465b50c5324ccde9a",
+    "counts": {"reality": 2, "judgments": 1, "outcomes": 1},
+    "judgment_context_counts": {"rationales": 0, "relations": 0}
+  },
+  "replay_counts": [
+    {
+      "knowledge_cutoff": "2024-03-20T00:00:00Z",
+      "reality": 1,
+      "judgments": 1,
+      "outcomes": 0,
+      "snapshot_sha256": "ebbd8a79f6bb8c8ad55ab1a9445cc834d5d2c446ead1c4f72a32be8e68410d82"
+    },
+    {
+      "knowledge_cutoff": "2024-10-11T00:00:00Z",
+      "reality": 2,
+      "judgments": 1,
+      "outcomes": 1,
+      "snapshot_sha256": "541a4356e2b4326f744e34f4f0dfcac48c8400e8474acfeed7412a824138590f"
+    }
+  ],
+  "boundary": [
+    "The later SK hynix source confirms that the same customer-supply milestone occurred in March 2024, so evaluation_status is realized and semantic_relation is direct_match.",
+    "The contemporaneous target was qualitative 'from late March 2024' while later occurrence evidence is month-precision 'March 2024'; therefore timing_relation is not_comparable and no timing delta or day error is manufactured.",
+    "The March 2024 Judgment remains immutable and is absent from hindsight rewriting; the later Reality and Outcome first become visible at the October 11 knowledge cutoff.",
+    "Customer supply does not establish a named customer, H200 linkage, or generic platform qualification."
+  ]
+}
