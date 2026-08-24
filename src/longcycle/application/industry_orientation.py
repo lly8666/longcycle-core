@@ -254,8 +254,10 @@ async def build_researcher_industry_orientation(
 
     Direct membership remains source-grounded catalog truth. Separately, already-grounded
     Reality/Judgment carrying explicit industry scope may deterministically make a subject
-    discoverable. That entailment expands recall only: it never manufactures membership,
-    role, importance, causality or historical timing.
+    discoverable. This concrete explicit-scope rule expands recall only and does not itself
+    assign a role. CAP-0005 may add other deterministic role entailments when their premises
+    and rules are auditable; ambiguous role, importance and causality belong in an explicitly
+    labelled model-judgment lane rather than being silently promoted to truth.
     """
 
     checked, catalog, visible_memberships, visible_discoveries, subjects = (
@@ -392,14 +394,15 @@ async def build_researcher_industry_orientation(
             "researcher_discovery_allows_deterministic_entailment": True,
             "entailed_discovery_requires_grounded_explicit_industry_scope": True,
             "entailed_discovery_does_not_create_membership_or_role": True,
+            "deterministic_role_entailment_allowed_when_rule_is_auditable": True,
+            "ambiguous_role_importance_causality_belong_to_labeled_model_judgment": True,
+            "presentation_does_not_promote_analysis_to_truth": True,
             "system_from_is_not_historical_known_at": True,
             "system_from_only_breaks_ties_between_already_knowable_versions": True,
             "memory_visibility_delegated_to_epistemic_snapshot": True,
             "same_knowledge_cutoff_used_for_membership_and_memory": True,
             "same_knowledge_cutoff_used_for_membership_discovery_and_memory": True,
             "canonical_labels_are_current_catalog_identity_not_historical_name_replay": True,
-            "presentation_infers_no_value_chain_role": True,
-            "presentation_infers_no_importance_or_causality": True,
             "presentation_invents_no_unknown_or_controversy": True,
             "subject_order_is_lexical_not_importance_ranking": True,
         },
