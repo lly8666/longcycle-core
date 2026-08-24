@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
+from longcycle.application.researcher_interpretation import model_analysis_policy
 from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType
 from longcycle.domain.epistemic import MemorySubjectRef
 from longcycle.domain.open_states import CurrentResearchOpenStateBundle
@@ -35,6 +36,7 @@ def _subject_with_current_label_payload(
 
 def _current_overlay_payload(bundle: CurrentResearchOpenStateBundle) -> dict[str, Any]:
     return {
+        "analysis_policy": model_analysis_policy(),
         "disagreements": [
             {
                 "disagreement_case_id": str(item.disagreement_case_id),
@@ -62,6 +64,10 @@ def _current_overlay_payload(bundle: CurrentResearchOpenStateBundle) -> dict[str
                 "assessment_id": str(item.assessment_id),
                 "lead_id": str(item.lead_id),
                 "subject": _subject_payload(item.subject),
+                "certainty_class": "model_judgment",
+                "authority_class": "research_only_current_state",
+                "is_canonical_truth": False,
+                "is_historical_market_knowledge": False,
                 "lead_summary": item.lead_summary,
                 "disposition": item.disposition.value,
                 "direct_source_search_status": item.direct_source_search_status.value,
@@ -112,6 +118,11 @@ async def build_researcher_open_state_view(
     Reality conflict visibility is reconstructed from source assertion known-time, never
     conflict-case curation time, and source independence reuses CAP-0003 source-cluster
     semantics. Current Memory state remains opt-in and scoped by its own research provenance.
+
+    Current hypotheses are an explicit MODEL/JUDGMENT lane. They may contain useful analytical
+    claims such as causality, participant importance or an ambiguous role hypothesis, but they
+    remain research-only and can never silently become canonical Reality or historical market
+    knowledge.
     """
 
     checked, catalog, memberships, discoveries, entity_subjects = (
@@ -225,6 +236,7 @@ async def build_researcher_open_state_view(
         "authority_class": "research_only_current_state",
         "is_historical_market_knowledge": False,
         "cutoff_filter_applied": False,
+        "analysis_policy": model_analysis_policy(),
         "disagreements": [],
         "hypotheses": [],
         "model_memory_coverage_gaps": [],
@@ -260,6 +272,8 @@ async def build_researcher_open_state_view(
             "current_research_overlay_is_opt_in": True,
             "current_research_overlay_is_not_cutoff_filtered": True,
             "current_research_scope_uses_own_run_provenance": True,
+            "model_judgment_lane_allows_explicit_analysis": True,
+            "model_judgment_never_promotes_to_canonical_truth": True,
             "model_memory_coverage_uses_latest_sealed_campaign": True,
             "model_memory_coverage_respects_seal_time": True,
             "model_memory_coverage_is_not_archive_absence": True,
