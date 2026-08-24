@@ -9,7 +9,9 @@
     "research open state",
     "memory disagreement",
     "research hypothesis",
-    "coverage gap"
+    "coverage gap",
+    "model judgment",
+    "research analysis"
   ],
   "entrypoints": [
     {
@@ -23,12 +25,19 @@
       "description": "Typed reader exposes current Memory disagreement, research-only hypothesis and explicit model-memory coverage state without promoting them into historical truth.",
       "kind": "port",
       "path": "src/longcycle/ports/open_states.py"
+    },
+    {
+      "contains": "def model_analysis_policy(",
+      "description": "Researcher interpretation contract explicitly permits labelled MODEL/JUDGMENT analysis while forbidding promotion into canonical Reality, membership truth or historical market knowledge.",
+      "kind": "application",
+      "path": "src/longcycle/application/researcher_interpretation.py"
     }
   ],
   "extension_seams": [
     "Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.",
     "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite.",
-    "Expose explicit current research-only disagreement/hypothesis/coverage state through typed readers while preserving its non-Evidence authority class."
+    "Expose explicit current research-only disagreement/hypothesis/coverage state through typed readers while preserving its non-Evidence authority class.",
+    "Use research-only hypotheses for explicitly labelled analytical judgments such as causality, participant importance or ambiguous value-chain role when reasoning/context/confidence remain visible and the result is not promoted to canonical truth."
   ],
   "guards": [
     {
@@ -42,6 +51,12 @@
       "description": "Typed memory ingest accepts open-ended approximate periods while keeping precision risk explicit.",
       "kind": "test",
       "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_model_analysis_policy_allows_analysis_but_never_truth_promotion",
+      "description": "Researcher interpretation regression allows useful MODEL/JUDGMENT analysis while forbidding canonical truth, membership or historical-time promotion.",
+      "kind": "test",
+      "path": "tests/test_researcher_interpretation.py"
     },
     {
       "contains": "test_opt_in_overlay_is_current_and_not_narrowed_by_historical_membership",
@@ -59,27 +74,30 @@
   "id": "CAP-0006",
   "maturity": "stable",
   "non_goals": [
-    "Publishing Memory Leads as Fact/Judgment.",
+    "Publishing Memory Leads, model judgments or research hypotheses as Fact/Judgment/Reality.",
     "Treating search not-found as contradiction.",
     "Presenting current research disagreement/hypothesis/model-memory coverage state as historical market knowledge.",
     "Treating model-memory coverage cells as proof that the archive or the real world lacks an event.",
-    "Forcing fragmentary recollection into exact dates or dropping useful leads because their time is only approximate."
+    "Forcing fragmentary recollection into exact dates or dropping useful leads because their time is only approximate.",
+    "Hiding useful analytical hypotheses merely because they are not source truth; they should remain visible with an explicit research-only/model label instead."
   ],
   "owned_semantics": [
     "memory.blind_recall_isolation",
     "memory.fragmentary_temporal_recall",
     "memory.campaign_saturation_and_seal",
     "memory.post_seal_verification_depth",
-    "memory.current_disagreement_hypothesis_coverage_state"
+    "memory.current_disagreement_hypothesis_coverage_state",
+    "memory.research_only_model_judgment_analysis"
   ],
-  "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and the explicitly research-only state that remains around Memory Leads: disagreement cases, hypothesis assessments and model-memory campaign coverage. These states guide research but remain below Evidence authority and are never backdated into historical market knowledge.",
-  "revisit_when": "Only replace if blind recall, approximate/uncertain lead preservation, immutable seal, search-enabled verification, explicit current research uncertainty and Evidence-final authority remain auditable and append-only.",
+  "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and the explicitly research-only state that remains around Memory Leads: disagreement cases, hypothesis assessments, model judgments and model-memory campaign coverage. These states guide research and may carry useful labelled analytical judgments such as causality, participant importance or ambiguous role, but remain below Evidence authority, never create canonical truth and are never backdated into historical market knowledge.",
+  "revisit_when": "Only replace if blind recall, approximate/uncertain lead preservation, immutable seal, search-enabled verification, explicit current research uncertainty, useful labelled model analysis and Evidence-final authority remain auditable and append-only.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/memory_campaign.py",
     "src/longcycle/application/memory_ingest.py",
     "src/longcycle/application/memory_audit.py",
     "src/longcycle/application/memory_history.py",
+    "src/longcycle/application/researcher_interpretation.py",
     "src/longcycle/domain/open_states.py",
     "src/longcycle/ports/open_states.py",
     "src/longcycle/adapters/storage/postgres_open_states.py",
@@ -88,6 +106,7 @@
     "migrations/0017_memory_hypothesis_assessments.sql",
     "tests/test_memory_campaign.py",
     "tests/test_memory_ingest.py",
+    "tests/test_researcher_interpretation.py",
     "tests/test_open_state_view.py",
     "docs/research/**memory**"
   ],
@@ -102,6 +121,8 @@
     "saturation",
     "self-verification",
     "research-only",
+    "model-judgment",
+    "analysis",
     "coverage-gap",
     "disagreement"
   ],
