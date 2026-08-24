@@ -11,7 +11,8 @@ permissions:
 jobs:
   execute:
     if: >-
-      github.event.issue.title == '[longcycle-research-orchestration-v1]' &&
+      (github.event.issue.title == '[longcycle-research-orchestration-v1]' ||
+       github.event.issue.title == '[longcycle-research-orchestration-v2]') &&
       github.event.issue.user.login == github.repository_owner
     runs-on: ubuntu-24.04
     timeout-minutes: 25
@@ -88,26 +89,40 @@ jobs:
           import re
 
           spec = json.load(open(os.environ['ORCHESTRATION_SPEC'], encoding='utf-8'))
-          if spec.get('schema_version') != 'longcycle-research-orchestration/v1':
-              raise SystemExit('unexpected orchestration schema')
-          source = spec.get('source_pack')
-          if not isinstance(source, dict):
-              raise SystemExit('orchestration spec has no source_pack')
-          release_tag = source.get('release_tag')
-          file_name = source.get('file_name')
-          sha256 = source.get('sha256')
-          if not isinstance(release_tag, str) or not release_tag:
-              raise SystemExit('invalid release_tag')
-          if not isinstance(file_name, str) or '/' in file_name or '\\' in file_name:
-              raise SystemExit('invalid source-pack file_name')
-          if not isinstance(sha256, str) or not re.fullmatch(r'[0-9a-f]{64}', sha256):
-              raise SystemExit('invalid source-pack sha256')
+          schema = spec.get('schema_version')
+          if schema not in {
+              'longcycle-research-orchestration/v1',
+              'longcycle-research-orchestration/v2',
+          }:
+              raise SystemExit(f'unexpected orchestration schema: {schema!r}')
+
+          release_tag = ''
+          file_name = ''
+          sha256 = ''
+          if schema == 'longcycle-research-orchestration/v1':
+              source = spec.get('source_pack')
+              if not isinstance(source, dict):
+                  raise SystemExit('orchestration v1 spec has no source_pack')
+              release_tag = source.get('release_tag')
+              file_name = source.get('file_name')
+              sha256 = source.get('sha256')
+              if not isinstance(release_tag, str) or not release_tag:
+                  raise SystemExit('invalid release_tag')
+              if not isinstance(file_name, str) or '/' in file_name or '\\' in file_name:
+                  raise SystemExit('invalid source-pack file_name')
+              if not isinstance(sha256, str) or not re.fullmatch(r'[0-9a-f]{64}', sha256):
+                  raise SystemExit('invalid source-pack sha256')
+          elif spec.get('source_pack') is not None:
+              raise SystemExit('orchestration v2 must be transport-neutral and omit source_pack')
+
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
+              print(f'schema={schema}', file=output)
               print(f'release_tag={release_tag}', file=output)
               print(f'file_name={file_name}', file=output)
               print(f'sha256={sha256}', file=output)
           PY
-      - name: Restore declared immutable source pack
+      - name: Restore declared immutable source pack for legacy v1
+        if: steps.source.outputs.schema == 'longcycle-research-orchestration/v1'
         shell: bash
         env:
           RELEASE_TAG: ${{ steps.source.outputs.release_tag }}
@@ -123,25 +138,59 @@ jobs:
         shell: bash
         env:
           ORCHESTRATION_SPEC: ${{ steps.request.outputs.spec }}
+          ORCHESTRATION_SCHEMA: ${{ steps.source.outputs.schema }}
           SOURCE_FILE: ${{ steps.source.outputs.file_name }}
         run: |
           set -euo pipefail
           exec > >(tee /tmp/research-orchestration.log) 2>&1
           python -m pip install -e '.[dev,postgres,duckdb,s3]'
-          longcycle --json research run \
-            "$ORCHESTRATION_SPEC" \
-            --source-pack "source-pack/$SOURCE_FILE" \
-            --work-dir work \
+
+          args=(
+            "$ORCHESTRATION_SPEC"
+            --work-dir work
             --output orchestration-execution.json
+          )
+          if [[ "$ORCHESTRATION_SCHEMA" == 'longcycle-research-orchestration/v1' ]]; then
+            args+=(--source-pack "source-pack/$SOURCE_FILE")
+          elif [[ "$ORCHESTRATION_SCHEMA" == 'longcycle-research-orchestration/v2' ]]; then
+            args+=(--material-root .)
+          else
+            echo "unsupported orchestration schema: $ORCHESTRATION_SCHEMA" >&2
+            exit 2
+          fi
+          longcycle --json research run "${args[@]}"
+
           python - <<'PY'
           import json
-          result = json.load(open('orchestration-execution.json'))
+
+          result = json.load(open('orchestration-execution.json', encoding='utf-8'))
           assert result['ok'] is True, result
           payload = result['result']
-          assert payload['schema_version'] == 'longcycle-research-orchestration-execution/v1', payload
-          assert payload['evidence']['acceptance']['fact_assertions_created'] == 0, payload
-          assert payload['evidence']['acceptance']['judgment_assertions_created'] == 0, payload
+          assert payload['schema_version'] in {
+              'longcycle-research-orchestration-execution/v1',
+              'longcycle-research-orchestration-execution/v2',
+          }, payload
+          acceptance = payload['evidence']['acceptance']
+          assert acceptance['fact_assertions_created'] == 0, payload
+          assert acceptance['judgment_assertions_created'] == 0, payload
+
+          grounded = json.load(open('work/grounded-evidence-execution.json', encoding='utf-8'))
+          assert grounded['ok'] is True, grounded
+          grounded_result = grounded['result']
+          fragment_ids = {
+              row['fragment_key']: row['evidence_fragment_id']
+              for row in grounded_result['fragments']
+          }
+          summary = {
+              'execution_schema': payload['schema_version'],
+              'orchestration_spec_version': payload.get('orchestration_spec_version'),
+              'acceptance': acceptance,
+              'fragment_ids': fragment_ids,
+          }
+          with open('/tmp/research-orchestration-summary.json', 'w', encoding='utf-8') as handle:
+              json.dump(summary, handle, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
           print('RESEARCH_ORCHESTRATION_CLI_GATE_PASS')
+          print(json.dumps(summary, ensure_ascii=False, sort_keys=True))
           PY
       - name: Upload generated execution relay
         if: always()
@@ -156,6 +205,7 @@ jobs:
             work/prepared-grounded-evidence-spec.json
             work/grounded-evidence-execution.json
             work/reality-execution.json
+            /tmp/research-orchestration-summary.json
             /tmp/research-orchestration.log
       - name: Report execution result
         if: always()
@@ -165,12 +215,14 @@ jobs:
           GATE_OUTCOME: ${{ steps.gate.outcome }}
           EXPECTED_HEAD: ${{ steps.request.outputs.head }}
           ORCHESTRATION_SPEC: ${{ steps.request.outputs.spec }}
+          ORCHESTRATION_SCHEMA: ${{ steps.source.outputs.schema }}
         run: |
           set -euo pipefail
           if [[ "$GATE_OUTCOME" == success ]]; then
-            body="RESEARCH_ORCHESTRATION_V1_PASS head=$EXPECTED_HEAD spec=$ORCHESTRATION_SPEC run_id=$GITHUB_RUN_ID entrypoint=longcycle-research-run"
+            summary="$(cat /tmp/research-orchestration-summary.json)"
+            body=$(printf 'RESEARCH_ORCHESTRATION_PASS head=%s spec=%s schema=%s run_id=%s entrypoint=longcycle-research-run\n\n```json\n%s\n```' "$EXPECTED_HEAD" "$ORCHESTRATION_SPEC" "$ORCHESTRATION_SCHEMA" "$GITHUB_RUN_ID" "$summary")
           else
             tail_text="$(tail -n 220 /tmp/research-orchestration.log 2>/dev/null || true)"
-            body=$(printf 'RESEARCH_ORCHESTRATION_V1_FAIL head=%s spec=%s run_id=%s entrypoint=longcycle-research-run\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ORCHESTRATION_SPEC" "$GITHUB_RUN_ID" "$tail_text")
+            body=$(printf 'RESEARCH_ORCHESTRATION_FAIL head=%s spec=%s schema=%s run_id=%s entrypoint=longcycle-research-run\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$ORCHESTRATION_SPEC" "$ORCHESTRATION_SCHEMA" "$GITHUB_RUN_ID" "$tail_text")
           fi
           gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
