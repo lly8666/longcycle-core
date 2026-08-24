@@ -1,0 +1,38 @@
+{
+  "schema_version": "longcycle-epistemic-trajectory/v1",
+  "task_id": "TRAJECTORY-MEMORY-SEMICONDUCTORS-HBM3E-STATUS-001",
+  "research_orchestration_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-status-promotion-orchestration-v2.json",
+  "judgment_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-judgment-projection-v1.json",
+  "judgment_context_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-judgment-context-v1.json",
+  "outcome_evaluations": [],
+  "replay": {
+    "subjects": [
+      {"entity_id": "eb2cb40d-1955-5b1f-a1d6-481b53d651d7"},
+      {"entity_id": "24493701-d1f3-5eb4-86d6-3c1be70da617"},
+      {"entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066"}
+    ],
+    "cutoffs": [
+      {
+        "key": "after-micron-hbm3e-vintage",
+        "knowledge_cutoff": "2024-02-27T00:00:00Z",
+        "expected_counts": {"reality": 1, "judgments": 1, "outcomes": 0}
+      },
+      {
+        "key": "after-samsung-12h-sampling-vintage",
+        "knowledge_cutoff": "2024-02-28T00:00:00Z",
+        "expected_counts": {"reality": 2, "judgments": 2, "outcomes": 0}
+      },
+      {
+        "key": "after-skhynix-hbm3e-vintage",
+        "knowledge_cutoff": "2024-03-20T00:00:00Z",
+        "expected_counts": {"reality": 3, "judgments": 3, "outcomes": 0}
+      },
+      {
+        "key": "after-samsung-q1-results-vintage",
+        "knowledge_cutoff": "2024-05-01T00:00:00Z",
+        "expected_counts": {"reality": 4, "judgments": 4, "outcomes": 0}
+      }
+    ],
+    "expected_manifest_counts": {"reality": 4, "judgments": 4, "outcomes": 0}
+  }
+}
