@@ -1,0 +1,260 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-HBM3E-STATUS-001",
+  "epistemic_guardrails": [
+    "HBM is a DRAM branch and must not be used as a proxy for total DRAM market conditions.",
+    "Development, customer sampling, volume/mass production, customer supply/shipment, platform shipment and platform qualification are separate states unless a source explicitly equates them.",
+    "A source saying a product will be part of a future platform shipment is not proof that the platform was already shipping at the source vintage.",
+    "A source saying supply to a customer will begin later is not proof that customer supply had already occurred at the announcement vintage.",
+    "Samsung customer sampling and mass-production statements do not by themselves establish qualification by any named accelerator customer.",
+    "Grounding creates EvidenceFragments only; Reality/Judgment promotion is a separate admitted step."
+  ],
+  "sources": [
+    {
+      "key": "micron_ir_hbm3e",
+      "name": "Micron Investor Relations — HBM3E announcement",
+      "publisher_domain": "investors.micron.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Micron's investor-relations release is primary for Micron's own HBM3E production state and its stated H200 integration/shipment timing."
+        }
+      ]
+    },
+    {
+      "key": "skhynix_newsroom_hbm3e",
+      "name": "SK hynix Newsroom — HBM3E announcement",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "SK hynix's own release is primary for its HBM3E production state and stated customer-supply timing."
+        }
+      ]
+    },
+    {
+      "key": "samsung_newsroom_hbm3e",
+      "name": "Samsung Global Newsroom — HBM3E announcements/results",
+      "publisher_domain": "news.samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung's own product announcement and earnings release are primary for its HBM3E sampling, production and production-plan states."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "micron_hbm3e_2024_02_26",
+      "vintage_id": "2024-02-26",
+      "source_key": "micron_ir_hbm3e",
+      "retrieval_url": "https://investors.micron.com/news/press-release/2024/Micron-Commences-Volume-Production-of-Industry-Leading-HBM3E-Solution-to-Accelerate-the-Growth-of-AI-02-26-2024/default.aspx",
+      "original_source_url": "https://investors.micron.com/news/press-release/2024/Micron-Commences-Volume-Production-of-Industry-Leading-HBM3E-Solution-to-Accelerate-the-Growth-of-AI-02-26-2024/default.aspx",
+      "external_id": "micron-hbm3e-2024-02-26-status",
+      "title": "Micron HBM3E volume production and H200 shipment timing capture",
+      "published_at": null,
+      "first_known_at": "2024-02-27T00:00:00Z",
+      "expected_sha256": "04ae9e1d53e25abe698af015ff635174357377ec5c19389dbbad9ba6a914808e",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-02-26-HBM3E-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-MICRON-2024-02-26-HBM3E-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-02-26",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T11:19:12Z"
+      }
+    },
+    {
+      "key": "skhynix_hbm3e_2024_03_19",
+      "vintage_id": "2024-03-19",
+      "source_key": "skhynix_newsroom_hbm3e",
+      "retrieval_url": "https://news.skhynix.com/en/sk-hynix-begins-volume-production-of-industry-first-hbm3e/",
+      "original_source_url": "https://news.skhynix.com/en/sk-hynix-begins-volume-production-of-industry-first-hbm3e/",
+      "external_id": "skhynix-hbm3e-2024-03-19-status",
+      "title": "SK hynix HBM3E volume production and customer-supply timing capture",
+      "published_at": null,
+      "first_known_at": "2024-03-20T00:00:00Z",
+      "expected_sha256": "2feda709485706bf241e24c72e8f4a4f338fb3f8b62701a2a66498f1eceadbf5",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-03-19-HBM3E-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2024-03-19-HBM3E-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-03-19",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T11:19:12Z"
+      }
+    },
+    {
+      "key": "samsung_hbm3e_sample_2024_02_27",
+      "vintage_id": "2024-02-27",
+      "source_key": "samsung_newsroom_hbm3e",
+      "retrieval_url": "https://news.samsung.com/global/samsung-develops-industry-first-36gb-hbm3e-12h-dram",
+      "original_source_url": "https://news.samsung.com/global/samsung-develops-industry-first-36gb-hbm3e-12h-dram",
+      "external_id": "samsung-hbm3e-12h-2024-02-27-status",
+      "title": "Samsung HBM3E 12H customer sampling and mass-production plan capture",
+      "published_at": null,
+      "first_known_at": "2024-02-28T00:00:00Z",
+      "expected_sha256": "7b79c7b395a4ad76de4b2bd35bbfa41f44504889634ad61d77d14b8660e1de23",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2024-02-27-HBM3E-SAMPLE-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2024-02-27-HBM3E-SAMPLE-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-02-27",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T11:19:12Z"
+      }
+    },
+    {
+      "key": "samsung_hbm3e_mass_2024_04_30",
+      "vintage_id": "2024-04-30",
+      "source_key": "samsung_newsroom_hbm3e",
+      "retrieval_url": "https://news.samsung.com/global/samsung-electronics-announces-first-quarter-2024-results",
+      "original_source_url": "https://news.samsung.com/global/samsung-electronics-announces-first-quarter-2024-results",
+      "external_id": "samsung-hbm3e-2024-04-30-production-status",
+      "title": "Samsung HBM3E 8H mass production and 12H production-plan capture",
+      "published_at": null,
+      "first_known_at": "2024-05-01T00:00:00Z",
+      "expected_sha256": "94ee7de2a2db00ef53175cb1cb3a1aed18dbfef169400131c26a79256a96bdc2",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2024-04-30-HBM3E-MASS-PRODUCTION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2024-04-30-HBM3E-MASS-PRODUCTION-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-04-30",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T11:19:12Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MICRON-HBM3E-STATUS",
+      "document_key": "micron_hbm3e_2024_02_26",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Micron Technology, Inc. (Nasdaq: MU), a global leader in memory and storage solutions, today announced it has begun volume production of its HBM3E (High Bandwidth Memory 3E) solution. Micron’s 24GB 8H HBM3E will be part of NVIDIA H200 Tensor Core GPUs, which will begin shipping in the second calendar quarter of 2024.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-001",
+        "epistemic_layer": "mixed_status_source_statement",
+        "claim_role": "issuer_hbm3e_status_statement",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0019","MS-0026","MS-0027","MS-0074","MS-0095","MS-0121"],
+        "product_lines": ["DRAM","HBM","HBM3E"],
+        "known_time": {"upper_bound":"2024-02-27T00:00:00Z","precision":"day"},
+        "status_components": [
+          {"state":"volume_production","temporal_semantics":"reported_current_by_vintage","promotion_candidate":"reality"},
+          {"state":"platform_shipment","platform":"NVIDIA H200","temporal_semantics":"forward_looking_q2_2024","promotion_candidate":"judgment"}
+        ],
+        "qualification_guard": "H200 inclusion/future shipment timing is not equivalent to proving a separate generic platform-qualification status at the February 26 vintage."
+      }
+    },
+    {
+      "fragment_key": "EVF-SKHYNIX-HBM3E-STATUS",
+      "document_key": "skhynix_hbm3e_2024_03_19",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "SK hynix Inc. (or “the company”, www.skhynix.com) announced today that it has begun volume production of HBM3E*, the newest AI memory product with ultra-high performance, for supply to a customer from late March.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-002",
+        "epistemic_layer": "mixed_status_source_statement",
+        "claim_role": "issuer_hbm3e_status_statement",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0019","MS-0026","MS-0027","MS-0074","MS-0095","MS-0121"],
+        "product_lines": ["DRAM","HBM","HBM3E"],
+        "known_time": {"upper_bound":"2024-03-20T00:00:00Z","precision":"day"},
+        "status_components": [
+          {"state":"volume_production","temporal_semantics":"reported_current_by_vintage","promotion_candidate":"reality"},
+          {"state":"customer_supply","temporal_semantics":"forward_looking_from_late_march","promotion_candidate":"judgment"}
+        ],
+        "qualification_guard": "The customer is unnamed and the sentence does not independently define a platform-qualification milestone."
+      }
+    },
+    {
+      "fragment_key": "EVF-SAMSUNG-HBM3E-12H-SAMPLE-STATUS",
+      "document_key": "samsung_hbm3e_sample_2024_02_27",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Samsung has begun sampling its HBM3E 12H to customers and mass production is slated for the first half of this year.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-003",
+        "epistemic_layer": "mixed_status_source_statement",
+        "claim_role": "issuer_hbm3e_status_statement",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0019","MS-0026","MS-0027","MS-0074","MS-0095","MS-0121"],
+        "product_lines": ["DRAM","HBM","HBM3E","HBM3E_12H"],
+        "known_time": {"upper_bound":"2024-02-28T00:00:00Z","precision":"day"},
+        "status_components": [
+          {"state":"customer_sampling","temporal_semantics":"reported_current_by_vintage","promotion_candidate":"reality"},
+          {"state":"mass_production","temporal_semantics":"forward_looking_1h_2024","promotion_candidate":"judgment"}
+        ],
+        "qualification_guard": "Customer sampling is not synonymous with successful qualification by a named customer or platform."
+      }
+    },
+    {
+      "fragment_key": "EVF-SAMSUNG-HBM3E-PRODUCTION-STATUS",
+      "document_key": "samsung_hbm3e_mass_2024_04_30",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "The Company started mass production of HBM3E 8H this month and plans to mass produce HBM3E 12H products and a 128GB product based on 1b nanometer (nm) 32Gb DDR5 within the second quarter.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-004",
+        "epistemic_layer": "mixed_status_source_statement",
+        "claim_role": "issuer_hbm3e_status_statement",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0019","MS-0026","MS-0027","MS-0074","MS-0095","MS-0121"],
+        "product_lines": ["DRAM","HBM","HBM3E","HBM3E_8H","HBM3E_12H"],
+        "known_time": {"upper_bound":"2024-05-01T00:00:00Z","precision":"day"},
+        "status_components": [
+          {"state":"mass_production","variant":"HBM3E_8H","temporal_semantics":"reported_started_in_april_2024","promotion_candidate":"reality"},
+          {"state":"mass_production","variant":"HBM3E_12H","temporal_semantics":"forward_looking_within_q2_2024","promotion_candidate":"judgment"}
+        ],
+        "qualification_guard": "Mass production state alone does not prove shipment to or qualification by a named accelerator platform."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 4,
+    "required_fragments": 4,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
