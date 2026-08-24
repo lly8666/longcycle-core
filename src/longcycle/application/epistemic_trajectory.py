@@ -104,8 +104,8 @@ class EpistemicTrajectorySpec(BaseModel):
     """CAP-0007 composition above transport-neutral research-orchestration/v2.
 
     The inner contract owns preserved-material verification, Grounded Evidence and optional Reality.
-    This outer bounded contract only composes already-owned Judgment, Outcome and portable replay
-    executors. It does not duplicate their epistemic semantics.
+    This outer bounded contract only composes already-owned Judgment, Judgment-context, Outcome and
+    portable replay executors. It does not duplicate their epistemic semantics.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -114,6 +114,7 @@ class EpistemicTrajectorySpec(BaseModel):
     task_id: str = Field(min_length=1)
     research_orchestration_spec_path: str = Field(min_length=1)
     judgment_spec_path: str | None = None
+    judgment_context_spec_path: str | None = None
     outcome_evaluations: tuple[OutcomeEvaluationPlan, ...] = ()
     replay: IntegratedReplayPlan | None = None
 
@@ -121,6 +122,8 @@ class EpistemicTrajectorySpec(BaseModel):
     def valid_trajectory_shape(self) -> "EpistemicTrajectorySpec":
         if self.schema_version != "longcycle-epistemic-trajectory/v1":
             raise ValueError("unsupported epistemic trajectory schema_version")
+        if self.judgment_context_spec_path is not None and self.judgment_spec_path is None:
+            raise ValueError("judgment context requires judgment_spec_path")
         if self.outcome_evaluations and self.judgment_spec_path is None:
             raise ValueError("outcome evaluation requires judgment_spec_path")
         keys = [item.key for item in self.outcome_evaluations]
@@ -176,6 +179,8 @@ def trajectory_phases(
         phases.append("reality_projection")
     if spec.judgment_spec_path is not None:
         phases.append("judgment_persistence")
+    if spec.judgment_context_spec_path is not None:
+        phases.append("judgment_context_persistence")
     if spec.outcome_evaluations:
         phases.append("outcome_evaluation")
     if spec.replay is not None:
@@ -207,6 +212,36 @@ def _validate_judgment_execution(
     ):
         if verification.get(key) is not True:
             raise ValueError(f"Judgment verification gate failed: {key}")
+    return payload
+
+
+def _validate_judgment_context_execution(
+    *,
+    output_path: Path,
+    judgment_context_spec_path: Path,
+) -> dict[str, Any]:
+    payload = _load_json(output_path, label="Judgment context execution")
+    if payload.get("schema_version") != "longcycle-grounded-judgment-context-persistence/v1":
+        raise ValueError("unexpected Judgment context execution schema")
+    context_spec = _load_json(judgment_context_spec_path, label="Judgment context spec")
+    rationales = context_spec.get("rationales", [])
+    relations = context_spec.get("relations", [])
+    if not isinstance(rationales, list) or not isinstance(relations, list):
+        raise ValueError("Judgment context spec rationales/relations must be lists")
+    verification = payload.get("verification")
+    if not isinstance(verification, dict):
+        raise ValueError("Judgment context execution has no verification object")
+    if verification.get("rationale_count") != len(rationales):
+        raise ValueError("Judgment context rationale count does not match projection spec")
+    if verification.get("relation_count") != len(relations):
+        raise ValueError("Judgment context relation count does not match projection spec")
+    for key in (
+        "idempotent_reappend_passed",
+        "revision_family_identity_guarded",
+        "rationale_input_no_lookahead_guarded",
+    ):
+        if verification.get(key) is not True:
+            raise ValueError(f"Judgment context verification gate failed: {key}")
     return payload
 
 
@@ -447,6 +482,34 @@ def execute_epistemic_trajectory(
             "verification": judgment_payload["verification"],
         }
 
+    judgment_context_summary: dict[str, Any] | None = None
+    if spec.judgment_context_spec_path is not None:
+        if judgment_output is None:
+            raise ValueError("Judgment context has no Judgment execution")
+        judgment_context_spec_path = _resolved_under(repo_root, spec.judgment_context_spec_path)
+        judgment_context_output = work_dir / "judgment-context-execution.json"
+        _run(
+            [
+                sys.executable,
+                str(repo_root / "scripts" / "execute_grounded_judgment_context.py"),
+                str(judgment_context_spec_path),
+                str(judgment_output),
+                str(evidence_output),
+                "--output",
+                str(judgment_context_output),
+            ]
+        )
+        judgment_context_payload = _validate_judgment_context_execution(
+            output_path=judgment_context_output,
+            judgment_context_spec_path=judgment_context_spec_path,
+        )
+        judgment_context_summary = {
+            "spec_path": spec.judgment_context_spec_path,
+            "artifact_member": _work_member(judgment_context_output, work_dir),
+            "output_sha256": sha256_file(judgment_context_output),
+            "verification": judgment_context_payload["verification"],
+        }
+
     outcome_summaries: list[dict[str, Any]] = []
     if spec.outcome_evaluations:
         if judgment_output is None:
@@ -557,6 +620,7 @@ def execute_epistemic_trajectory(
         "core_orchestration_spec_path": spec.research_orchestration_spec_path,
         "core_orchestration": core_result,
         "judgment": judgment_summary,
+        "judgment_context": judgment_context_summary,
         "outcomes": outcome_summaries,
         "replay": replay_summary,
     }
