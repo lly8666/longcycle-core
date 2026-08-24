@@ -123,17 +123,26 @@ async def _load_industry_subject_universe(
     A subject is eligible when it has either a visible source-grounded membership or a
     deterministic discovery basis from already-grounded memory explicitly scoped to the
     industry. The latter is recall-only and never becomes membership truth.
+
+    Legacy bounded readers that predate deterministic discovery remain valid and simply
+    contribute no entailed candidates; production readers implement the extended port.
     """
 
     checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
     assert checked is not None
     catalog = await catalog_reader.industry_catalog(industry_node_id)
     memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
-    discoveries = _visible_discoveries(
-        await catalog_reader.deterministic_industry_subjects(
+    discovery_reader = getattr(catalog_reader, "deterministic_industry_subjects", None)
+    raw_discoveries: tuple[IndustrySubjectDiscoveryRecord, ...]
+    if discovery_reader is None:
+        raw_discoveries = ()
+    else:
+        raw_discoveries = await discovery_reader(
             industry_node_id,
             knowledge_cutoff=checked,
-        ),
+        )
+    discoveries = _visible_discoveries(
+        raw_discoveries,
         industry_node_id=industry_node_id,
         knowledge_cutoff=checked,
     )
