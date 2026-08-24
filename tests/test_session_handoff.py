@@ -88,10 +88,13 @@ class SessionHandoffContractTest(unittest.TestCase):
             coverage_path = ROOT / checkpoint.active_context.coverage_path
             self.assertTrue(coverage_path.is_file())
             coverage = json.loads(coverage_path.read_text(encoding="utf-8"))
-            sealed_from_coverage = tuple(coverage["sealed_shards"])
             self.assertGreater(campaign.total_raw_leads, 0)
-            self.assertEqual(campaign.sealed_shards, sealed_from_coverage)
-            self.assertEqual(campaign.search_visibility, coverage["search_visibility"])
+            self.assertEqual(campaign.total_raw_leads, coverage["total_raw_leads"])
+            self.assertEqual(campaign.shard_count, coverage["canonical_lead_shards"])
+            self.assertEqual(coverage["blind_source_visibility"], "none")
+            self.assertEqual(len(campaign.sealed_shards), campaign.shard_count)
+            for relative in campaign.sealed_shards:
+                self.assertTrue((ROOT / relative).is_file())
 
         blind_campaign = HandoffMemoryCampaign(
             campaign_id="synthetic-blind-contract",
@@ -175,7 +178,7 @@ class SessionHandoffContractTest(unittest.TestCase):
 
         self.assertIn("HANDOFF_SEMANTIC_REREAD_V1", protocol)
         self.assertIn("HANDOFF_SEMANTIC_REREAD_V1", bootstrap)
-        self.assertIn("cursor as the sole owner", protocol)
+        self.assertIn("sole owner of the live current task", protocol)
         self.assertIn("must remain meaningfully broader than `next_atomic_action`", protocol)
         self.assertIn("Must be checked", protocol)
         self.assertIn("写完 JSON 不等于完成 handoff", bootstrap)
