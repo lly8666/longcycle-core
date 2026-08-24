@@ -1,35 +1,33 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "CONTINUITY-HANDOFF-SEMANTIC-REREAD-CADENCE-001",
-  "intent": "Repair CAP-0009 handoff continuity semantics without changing the v5 shape: preserve strategic/workstream/cursor granularity, require a post-write whole-document semantic reread plus temporal refresh, and derive a fixed every-ten Fresh-Agent drill cadence from continuity_sequence. This is an extension of the existing continuity owner, not a new semantic owner.",
+  "intent_id": "GENERIC-RESEARCH-RUNTIME-BROKER-V2-001",
+  "intent": "Evolve the already-existing default-branch research-orchestration invocation adapter so CAP-0007 research-orchestration/v2 can execute an exact requested branch/head from a prepared transport-neutral material root in real PostgreSQL runtime. Reuse the generic broker rather than creating or dispatching a semiconductor-specific orchestration path; Grounded Evidence remains CAP-0002-owned and no Fact/Judgment promotion is implied.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0009"
+    "CAP-0007"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0009"
+    "CAP-0007",
+    "CAP-0002"
   ],
-  "rationale": "CAP-0009 already owns repository-backed handoff, fresh-agent bootstrap and continuity drills. Sequence 87 exposed a failure inside that owner: several planning layers collapsed into paraphrases of one PostgreSQL/runtime blocker, bootstrap_instruction became mini-devlog narrative, and the writing process had no mandatory whole-document semantic reread. The smallest repair is to restore the existing field meanings, harden the close transaction and schedule periodic independent recovery drills while reusing continuity_sequence as the only counter.",
+  "rationale": "CAP-0007 already owns campaign-agnostic execution-stage composition, exact acceptance gates and portable receipts, and its extension seam explicitly routes invocation adapters through the same orchestration contracts rather than campaign-specific workflow logic. Repository history shows a default-branch issue-trigger broker already exists and has been reused after workflow-visibility failures. The semiconductor-specific workflow was therefore an invocation routing mistake, not evidence for a new owner.",
   "unmet_requirement": null,
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0009.json",
-    "docs/development/continuity-architecture.md",
-    "docs/development/session-handoff-protocol.md",
-    ".longcycle/handoff/current.json",
-    ".longcycle/handoff/rehearsals/README.md"
+    ".longcycle/capabilities/cards/CAP-0007.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
+    "commit:5685c98b08c2a989d197f59027c32754ea1d931b",
+    "commit:8c59ac543b3258eba58c9ffa9a28c29946aaea1d",
+    "commit:9f75dec26b47a3a86f83894c98a728d930c3c461",
+    "commit:bd754b20b84da68bf0b5e4275aa1f3979ee49f48",
+    "issue:#21",
+    "issue:#43",
+    "issue:#89",
+    "issue:#102"
   ],
   "planned_paths": [
-    "CONTINUE_HERE.md",
-    "docs/development/session-handoff-protocol.md",
-    "docs/development/continuity-architecture.md",
-    "docs/development/fresh-agent-continuity-drill.md",
-    ".longcycle/handoff/rehearsals/README.md",
-    "tests/test_session_handoff.py",
-    "tests/test_fresh_agent_continuity_drill.py",
-    ".longcycle/repair-memory/invariants/RI-0007-handoff-semantic-reread.json",
-    ".longcycle/repair-memory/active-index.json",
-    ".longcycle/handoff/current.json"
+    ".github/workflows/research-orchestration-once.yml",
+    ".github/workflows/memory-semiconductors-supplier-cut-grounding.yml"
   ],
   "proposed_capability_id": null
 }
