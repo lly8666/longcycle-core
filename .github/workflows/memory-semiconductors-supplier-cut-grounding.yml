@@ -1,0 +1,241 @@
+name: Memory Semiconductors Supplier Cut Grounding
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/memory-semiconductors-supplier-cut-grounding.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/capture-index-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/**'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/grounding/grounded-evidence-supplier-cut-recovery-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+      - 'src/longcycle/application/evidence_recording.py'
+      - 'src/longcycle/application/source_archive.py'
+  pull_request:
+    paths:
+      - '.github/workflows/memory-semiconductors-supplier-cut-grounding.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/capture-index-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/**'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/grounding/grounded-evidence-supplier-cut-recovery-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+      - 'src/longcycle/application/evidence_recording.py'
+      - 'src/longcycle/application/source_archive.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/memory-semiconductor-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/grounding/grounded-evidence-supplier-cut-recovery-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/memory-semiconductor-grounded-evidence-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounding boundary regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_materialized_source_representation.py
+          tests/test_handoff_data_plane.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Verify pinned capture materials
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          spec = json.loads(Path(os.environ['SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['GITHUB_WORKSPACE'])
+          assert spec['schema_version'] == 'longcycle-grounded-evidence-spec/v2'
+          assert spec['acceptance'] == {
+              'required_documents': 4,
+              'required_fragments': 4,
+              'facts_created': 0,
+              'judgments_created': 0,
+          }
+          docs = {row['key']: row for row in spec['documents']}
+          assert len(docs) == 4
+          for key, row in docs.items():
+              path = root / row['material_path']
+              assert path.is_file(), path
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == row['expected_sha256'], (key, digest, row['expected_sha256'])
+              capture = json.loads(path.read_text(encoding='utf-8'))
+              assert capture['capture_state'] == 'content_verified'
+              assert capture['raw_source_materialized'] is False
+              assert capture['claim_relevant_content_preserved'] is True
+              assert capture['source_media_type'] == 'text/html'
+          for fragment in spec['fragments']:
+              assert fragment['json_pointer'] == '/claim_relevant_visible_text'
+              capture = json.loads((root / docs[fragment['document_key']]['material_path']).read_text(encoding='utf-8'))
+              assert capture['claim_relevant_visible_text'] == fragment['expected_value']
+          print('MEMORY_SEMICONDUCTOR_CAPTURE_PINS_PASS')
+          PY
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only and representation boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import asyncio
+          import json
+          import os
+          import psycopg
+
+          payload = json.load(open(os.environ['OUTPUT'], encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 4, result
+          assert len(result['fragments']) == 4, result
+          assert result['acceptance'] == {
+              'persisted_document_versions': 4,
+              'persisted_evidence_fragments': 4,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }, result['acceptance']
+          for document in result['documents']:
+              assert document['transport_plugin'] == 'materialized_file'
+              assert document['retrieval_provenance']['source_capture_state'] == 'content_verified'
+              assert document['retrieval_provenance']['raw_source_materialized'] is False
+              assert document['retrieval_provenance']['source_media_type'] == 'text/html'
+              assert document['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          for fragment in result['fragments']:
+              assert fragment['locator'] == 'json-pointer:/claim_relevant_visible_text'
+
+          external_ids = [
+              'samsung-1q23-pre-earnings-guidance-cut',
+              'samsung-q1-2023-results-recovery',
+              'micron-2022-11-16-cut',
+              'skhynix-q3-2022-cut',
+          ]
+
+          async def verify_database():
+              async with await psycopg.AsyncConnection.connect(os.environ['LONGCYCLE_DATABASE_URL']) as conn:
+                  cursor = await conn.execute(
+                      """
+                      SELECT external_id, source_capture_state, source_media_type,
+                             raw_materialized_document_version_id
+                      FROM evidence.documents
+                      WHERE external_id = ANY(%s)
+                      """,
+                      (external_ids,),
+                  )
+                  rows = await cursor.fetchall()
+              assert len(rows) == 4, rows
+              actual = {row[0]: (row[1], row[2], row[3] is not None) for row in rows}
+              expected = {external_id: ('content_verified', 'text/html', False) for external_id in external_ids}
+              assert actual == expected, actual
+
+          asyncio.run(verify_database())
+          print('MEMORY_SEMICONDUCTOR_GROUNDED_EVIDENCE_PASS')
+          PY
+
+      - name: Build execution artifact
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/out
+          cp "$SPEC" .artifacts/out/grounded-evidence-supplier-cut-recovery-v1.json
+          if [[ -f "$OUTPUT" ]]; then cp "$OUTPUT" .artifacts/out/memory-semiconductor-grounded-evidence-execution.json; fi
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          out = Path('.artifacts/out')
+          manifest = {
+              'schema_version': 'longcycle-memory-semiconductor-grounding-artifact/v1',
+              'head_sha': os.environ['GITHUB_SHA'],
+              'files': [],
+          }
+          for path in sorted(out.glob('*.json')):
+              manifest['files'].append({
+                  'file_name': path.name,
+                  'size_bytes': path.stat().st_size,
+                  'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+              })
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Upload execution artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-semiconductor-grounding-${{ github.run_id }}
+          path: .artifacts/out
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish exact-head runtime status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$JOB_STATUS" == "success" ]]; then
+            state=success
+            description='Memory semiconductor Evidence runtime passed'
+          else
+            state=failure
+            description='Memory semiconductor Evidence runtime failed'
+          fi
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state="$state" \
+            -f context='longcycle/memory-semiconductor-grounding' \
+            -f description="$description" \
+            -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
