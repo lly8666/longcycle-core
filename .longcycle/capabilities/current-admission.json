@@ -1,44 +1,37 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "CROSS-INDUSTRY-THREE-BENCHMARK-SYNTHESIS-RECORD-001",
-  "intent": "Record the bounded parent-level synthesis across lithium-battery, innovative-drugs ADC and memory-semiconductor benchmarks. The assessment may distinguish what each benchmark actually falsified, conclude whether generic semantic transfer is materially demonstrated, and identify the smallest surviving product-level gap. It must not claim that the lithium campaign executed the later full orchestration stack, must not promote local evidence gaps into architecture gaps, and must not modify Method Core, capability ownership, runtime code, sealed blind artifacts or benchmark epistemic records.",
+  "intent_id": "RESEARCHER-ENTRY-RESOLUTION-BACKED-MEMBERSHIP-PROJECTION-001",
+  "intent": "Extend existing CAP-0003 and CAP-0005 paths with a typed, idempotent bridge from an already-selected source-grounded industry.membership Fact resolution into core.industry_entity_memberships. The bridge must delegate truth to existing reconciliation, derive historical known time from the selected assertion rather than system/resolution timestamps, preserve Evidence references through the existing orientation reader, and fail closed on predicate/identity/Evidence/time mismatches. It must not create membership truth in presentation code, infer participant importance, add a schema, or reinterpret general Facts as industry membership.",
   "governance_mode": "converging",
-  "disposition": "reuse",
+  "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
     "CAP-0003",
-    "CAP-0004",
-    "CAP-0005",
-    "CAP-0006",
-    "CAP-0007"
+    "CAP-0005"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
     "CAP-0003",
-    "CAP-0004",
     "CAP-0005",
-    "CAP-0006",
     "CAP-0007"
   ],
-  "rationale": "Read-only comparison found complementary falsification roles rather than one uniform benchmark protocol: lithium established broad industrial-semantic pressure plus blind-exhaustion/seal behavior; ADC falsified evidence, temporal, role-identity and product-branching primitives and drove reusable orchestration; semiconductors falsified lifecycle-state, Judgment-revision and direct/related Outcome boundaries with no new generic semantic owner. The remaining mission-level weakness is not another schema case but the lack of a governed real-industry path from source-grounded industry membership into the existing CAP-0005 researcher-entry surfaces. The current orientation hard smoke proves only synthetic manually materialized membership.",
-  "unmet_requirement": "A real-industry researcher entry must be reachable through a governed source-grounded membership projection rather than manual SQL, then exercised against durable real benchmark memory at one shared knowledge cutoff. Existing CAP-0003 reconciliation truth and CAP-0005 orientation/replay/open-state read semantics should be reused; no new semantic owner is justified.",
+  "rationale": "The three-industry synthesis found that generic epistemic semantics transferred, but the real researcher-entry path is blocked by a manual SQL step: the PostgreSQL orientation smoke reconciles a normal industry.membership Fact and then directly inserts core.industry_entity_memberships. Replacing that manual materialization with a resolution-backed projection reuses CAP-0003 truth and CAP-0005 orientation visibility instead of creating a parallel catalog truth rule. Existing schema and reader contracts are sufficient.",
+  "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/coverage-index.json",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/manifest.json",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/second-industry-architecture-verdict-v1.json",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/manifest.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/third-benchmark-vertical-alignment-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json",
-    "src/longcycle/application/industry_orientation.py",
-    "src/longcycle/adapters/storage/postgres_orientation.py",
+    "research_data/memory/cross-industry/2026-08-24-three-benchmark-synthesis-v1.json",
+    ".longcycle/capabilities/cards/CAP-0003.json",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/repair-memory/invariants/RI-0006-semantic-owner-reuse.json",
     "scripts/smoke_postgres_orientation.py",
-    ".longcycle/continuity/mission-fidelity.json",
-    "ci:32746890232"
+    "src/longcycle/application/industry_orientation.py",
+    "src/longcycle/adapters/storage/postgres_orientation.py"
   ],
   "planned_paths": [
-    "research_data/memory/cross-industry/2026-08-24-three-benchmark-synthesis-v1.json"
+    "src/longcycle/domain/orientation.py",
+    "src/longcycle/ports/orientation.py",
+    "src/longcycle/application/reconciliation.py",
+    "src/longcycle/adapters/storage/postgres.py",
+    "src/longcycle/adapters/storage/postgres_orientation.py",
+    "tests/test_industry_orientation.py",
+    "scripts/smoke_postgres_orientation.py"
   ],
   "proposed_capability_id": null
 }
