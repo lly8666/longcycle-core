@@ -1,34 +1,30 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "CAP5-DETERMINISTIC-INDUSTRY-DISCOVERY-BROADENING-001",
-  "intent": "Relax an over-tight researcher-entry gate without weakening truth ownership. Extend CAP-0005 so a subject can enter the historical researcher universe either through direct source-grounded industry membership or through a deterministic, auditable entailment from already-grounded Reality/Judgment carrying explicit industry scope. Keep the two provenance classes distinct. Entailed discoverability must not create membership, value-chain role, importance, causality, controversy or historical timing. Reuse the same subject-universe logic in orientation and historical open-state views.",
+  "intent_id": "CALIBRATED-RESEARCHER-INTERPRETATION-001",
+  "intent": "Implement the user-approved split between strict canonical truth and more useful researcher interpretation. Keep CAP-0003/CAP-0004 source-time, Reality/Judgment/Outcome and no-lookahead semantics hard; extend CAP-0005 so read models may expose deterministic time/usefulness hints and related-milestone interpretation without mutating underlying records; reuse CAP-0006 current research-only hypotheses as the explicitly labelled MODEL/JUDGMENT lane for analytical claims such as causality, participant importance or ambiguous role. Remove blanket presentation prohibitions that treated all inference as equally unsafe, while preserving an absolute ban on silently promoting inference into source truth.",
   "governance_mode": "converging",
   "disposition": "extend",
-  "target_capability_ids": [
-    "CAP-0005"
-  ],
-  "closest_existing_capability_ids": [
-    "CAP-0003",
-    "CAP-0004",
-    "CAP-0005"
-  ],
-  "rationale": "The prior CAP-0005 composition required a visible core.industry_entity_memberships row before an entity was even passed to the typed memory snapshot. That made a missing catalog projection suppress already-grounded Reality/Judgment/Outcome and historical controversy. The user correctly identified this as over-tight certainty. The repair belongs inside CAP-0005 researcher discovery, not in CAP-0003 truth semantics: direct membership remains strongest, while accepted Reality or grounded Judgment with explicit industry scope can mechanically entail researcher discoverability at the same no-lookahead cutoff. This broadens recall without promoting the entailment into a new truth record or semantic owner.",
+  "target_capability_ids": ["CAP-0005", "CAP-0006"],
+  "closest_existing_capability_ids": ["CAP-0003", "CAP-0004", "CAP-0005", "CAP-0006"],
+  "rationale": "The tightening review found three coupled over-restrictions. First, role/importance/causality were bundled into a blanket presentation ban even though deterministic entailment and labelled model analysis have different authority classes. Second, source-supported temporal precision correctly constrained canonical Reality but was being treated too much like a ban on useful researcher time hints. Third, related milestones correctly could not satisfy a direct Outcome target, yet presentation could surface their information value more clearly. Existing CAP-0005 read projection and CAP-0006 research-hypothesis semantics are sufficient; no new truth owner or schema is needed.",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/development/researcher-mental-map-gap-audit-v2.md",
+    "docs/devlog/2026-08-25-deterministic-researcher-discovery-broadening.md",
     "docs/development/assistant-session-standards-audit-v1.md",
-    "research_data/memory/cross-industry/2026-08-25-samsung-orientation-real-acceptance-receipt-v1.json",
-    "commit:cb7d7b2b5aef7a0019810836b46b4146210aa1e2",
-    "commit:e3e10c43bfc1ffad691f1404704fd0c24f9a48f1"
+    ".longcycle/capabilities/cards/CAP-0003.json",
+    ".longcycle/capabilities/cards/CAP-0004.json",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/cards/CAP-0006.json"
   ],
   "planned_paths": [
-    "src/longcycle/domain/orientation.py",
-    "src/longcycle/ports/orientation.py",
-    "src/longcycle/adapters/storage/postgres_orientation.py",
-    "src/longcycle/application/industry_orientation.py",
+    "src/longcycle/application/researcher_interpretation.py",
+    "src/longcycle/application/trajectory_view.py",
     "src/longcycle/application/open_state_view.py",
-    "tests/test_industry_orientation.py",
+    "tests/test_researcher_interpretation.py",
     ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/cards/CAP-0006.json",
+    ".longcycle/capabilities/active-index.json",
+    "docs/devlog/2026-08-25-calibrated-researcher-interpretation.md",
     ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
