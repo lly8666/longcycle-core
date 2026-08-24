@@ -1,0 +1,128 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-HBM3E-SKHYNIX-SUPPLY-TRAJECTORY-001",
+  "epistemic_guardrails": [
+    "The March 2024 source contains both current volume-production Reality and a forward-looking customer-supply Judgment; those components must remain separate.",
+    "The October 2024 retrospective is later knowledge and may create a new Reality/Outcome, but it must never rewrite the March Judgment.",
+    "The later source supports customer supply occurring in March 2024 at month precision only; no exact day may be invented.",
+    "Customer supply is not generalized into named-platform qualification.",
+    "Grounding itself creates EvidenceFragments only."
+  ],
+  "sources": [
+    {
+      "key": "skhynix_newsroom_hbm3e_supply_trajectory",
+      "name": "SK hynix Newsroom — HBM3E supply trajectory primary statements",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "SK hynix's own newsroom statements are primary for its reported HBM3E production, planned supply timing, and later retrospective supply occurrence."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "skhynix_hbm3e_2024_03_19_trajectory",
+      "vintage_id": "2024-03-19",
+      "source_key": "skhynix_newsroom_hbm3e_supply_trajectory",
+      "retrieval_url": "https://news.skhynix.com/en/sk-hynix-begins-volume-production-of-industry-first-hbm3e/",
+      "original_source_url": "https://news.skhynix.com/en/sk-hynix-begins-volume-production-of-industry-first-hbm3e/",
+      "external_id": "skhynix-hbm3e-2024-03-19-supply-trajectory",
+      "title": "SK hynix March 2024 HBM3E volume-production and customer-supply plan",
+      "published_at": null,
+      "first_known_at": "2024-03-20T00:00:00Z",
+      "expected_sha256": "2feda709485706bf241e24c72e8f4a4f338fb3f8b62701a2a66498f1eceadbf5",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-03-19-HBM3E-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2024-03-19-HBM3E-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-03-19",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T11:19:12Z"
+      }
+    },
+    {
+      "key": "skhynix_hbm3e_2024_10_10_supply_realization",
+      "vintage_id": "2024-10-10",
+      "source_key": "skhynix_newsroom_hbm3e_supply_trajectory",
+      "retrieval_url": "https://news.skhynix.com/en/sk-hynix-41st-anniversary-rise-to-ai-memory-leader/",
+      "original_source_url": "https://news.skhynix.com/en/sk-hynix-41st-anniversary-rise-to-ai-memory-leader/",
+      "external_id": "skhynix-hbm3e-2024-10-10-supply-realization-trajectory",
+      "title": "SK hynix October 2024 retrospective — HBM3E supply began in March",
+      "published_at": null,
+      "first_known_at": "2024-10-11T00:00:00Z",
+      "expected_sha256": "302df2b7c79edd3c533ec7c9009511e8b3db7099ad756da1fa4f5b5659daeb1c",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-10-10-HBM3E-SUPPLY-REALIZATION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2024-10-10-HBM3E-SUPPLY-REALIZATION-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-10-10",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T12:19:53Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-SKHYNIX-HBM3E-MARCH-SUPPLY-TRAJECTORY",
+      "document_key": "skhynix_hbm3e_2024_03_19_trajectory",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "SK hynix Inc. (or “the company”, www.skhynix.com) announced today that it has begun volume production of HBM3E*, the newest AI memory product with ultra-high performance, for supply to a customer from late March.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-SUPPLY-T01",
+        "epistemic_layer": "mixed_status_source_statement",
+        "claim_role": "issuer_hbm3e_status_statement",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "product_lines": ["DRAM", "HBM", "HBM3E", "HBM3E_8H"],
+        "known_time": {"upper_bound": "2024-03-20T00:00:00Z", "precision": "day"},
+        "status_components": [
+          {"state": "volume_production", "temporal_semantics": "reported_current_by_vintage", "promotion_candidate": "reality"},
+          {"state": "customer_supply", "temporal_semantics": "forward_looking_from_late_march", "promotion_candidate": "judgment"}
+        ],
+        "qualification_guard": "The customer is unnamed and the source does not independently define a platform-qualification milestone."
+      }
+    },
+    {
+      "fragment_key": "EVF-SKHYNIX-HBM3E-SUPPLY-REALIZED-TRAJECTORY",
+      "document_key": "skhynix_hbm3e_2024_10_10_supply_realization",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Moving into 2024, SK hynix has maintained its prominence in the AI memory market. The company began supplying the world’s best-performing 8-layer HBM3E, first developed in 2023, to leading global tech giants in March 2024.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-SUPPLY-T02",
+        "epistemic_layer": "reality_candidate",
+        "claim_role": "issuer_hbm3e_customer_supply_realization",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "product_lines": ["DRAM", "HBM", "HBM3E", "HBM3E_8H"],
+        "valid_effective_time": {"kind": "period", "precision": "month", "text": "March 2024"},
+        "known_time": {"upper_bound": "2024-10-11T00:00:00Z", "precision": "day"},
+        "comparability_guard": "This is later evidence of the same customer-supply milestone at month precision. It can establish realization but cannot prove an exact late-March day or a named-platform qualification."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 2,
+    "required_fragments": 2,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
