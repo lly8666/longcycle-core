@@ -1,0 +1,82 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-H200-MARKET-AVAILABILITY-001",
+  "epistemic_guardrails": [
+    "CoreWeave's August 28, 2024 statement is primary for CoreWeave's own H200 market/deployment status, not for the exact start date of NVIDIA H200 platform shipments.",
+    "Do not infer that H200 shipping began in calendar Q2 2024 from later August market availability.",
+    "Do not infer that Micron supplied the HBM3E in the CoreWeave H200 instances unless a source explicitly states that supplier identity.",
+    "H200 platform availability/deployment is not a named-customer HBM qualification event.",
+    "Grounding creates EvidenceFragments only; Reality/Outcome promotion remains a separate admitted step."
+  ],
+  "sources": [
+    {
+      "key": "coreweave_ir_h200_market",
+      "name": "CoreWeave Investor Relations — H200 market announcement",
+      "publisher_domain": "investors.coreweave.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "CoreWeave's own investor-relations release is primary for its statement that it brought NVIDIA H200 GPUs to market and for the deployment state of its H200 instances."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "coreweave_h200_market_2024_08_28",
+      "vintage_id": "2024-08-28",
+      "source_key": "coreweave_ir_h200_market",
+      "retrieval_url": "https://investors.coreweave.com/news/news-details/2024/CoreWeave-First-to-Market-with-NVIDIA-H200-Tensor-Core-GPUs-Ushering-in-a-New-Era-of-AI-Infrastructure-Performance/default.aspx",
+      "original_source_url": "https://investors.coreweave.com/news/news-details/2024/CoreWeave-First-to-Market-with-NVIDIA-H200-Tensor-Core-GPUs-Ushering-in-a-New-Era-of-AI-Infrastructure-Performance/default.aspx",
+      "external_id": "coreweave-h200-market-2024-08-28",
+      "title": "CoreWeave H200 market availability and deployment capture",
+      "published_at": null,
+      "first_known_at": "2024-08-29T00:00:00Z",
+      "expected_sha256": "3a5d4000a324f4b0cba24b0ad6c5a4688f44c03a6a802b31115d20b1fe759e9c",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-COREWEAVE-2024-08-28-H200-MARKET-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-COREWEAVE-2024-08-28-H200-MARKET-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-08-28",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T13:15:27Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-COREWEAVE-H200-MARKET-AVAILABLE-LATER",
+      "document_key": "coreweave_h200_market_2024_08_28",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "ROSELAND, N.J., Aug. 28, 2024 /PRNewswire/ -- CoreWeave, the AI Hyperscaler™, today announced that it is the first cloud provider to bring NVIDIA H200 Tensor Core GPUs to market.\nCoreWeave's H200 instances combine NVIDIA H200 GPUs with Intel's fifth-generation Xeon CPUs (Emerald Rapids) and 3200Gbps of NVIDIA Quantum-2 InfiniBand networking, and are deployed in clusters with up to 42,000 GPUs and accelerated storage solutions to deliver powerful performance and enable customers to dramatically lower their time and cost to train their GenAI models.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-005",
+        "epistemic_layer": "reality_candidate_related_milestone",
+        "claim_role": "h200_cloud_market_availability_realized_related_milestone",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0019", "MS-0026", "MS-0027", "MS-0074", "MS-0095", "MS-0121"],
+        "platforms": ["NVIDIA H200"],
+        "observed_at": {"date": "2024-08-28", "precision": "day"},
+        "known_time": {"upper_bound": "2024-08-29T00:00:00Z", "precision": "day"},
+        "status_components": [
+          {"state": "cloud_market_availability_and_deployment", "temporal_semantics": "reported_current_by_vintage", "promotion_candidate": "reality"}
+        ],
+        "memory_supplier_identity": "not_stated",
+        "comparability_guard": "This later H200 market/deployment milestone is historically related to Micron's February 26 H200 Q2 shipment statement but does not prove that the same shipment-start event occurred within Q2. Any Outcome comparison must therefore remain related_milestone unless a direct shipment-start source is recovered."
+      }
+    }
+  ],
+  "acceptance": {"required_documents": 1, "required_fragments": 1, "facts_created": 0, "judgments_created": 0}
+}
