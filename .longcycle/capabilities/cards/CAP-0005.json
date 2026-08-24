@@ -13,7 +13,8 @@
     "researcher industry entry",
     "industry subject discovery",
     "open states",
-    "researcher controversy"
+    "researcher controversy",
+    "researcher interpretation"
   ],
   "entrypoints": [
     {
@@ -29,8 +30,14 @@
       "path": "src/longcycle/ports/orientation.py"
     },
     {
+      "contains": "def researcher_time_hint(",
+      "description": "Read-only interpretation helper exposes useful source-supported or deterministic time hints without mutating canonical temporal semantics.",
+      "kind": "application",
+      "path": "src/longcycle/application/researcher_interpretation.py"
+    },
+    {
       "contains": "def build_researcher_trajectory_view(",
-      "description": "Deterministic read-only projection turns one already-filtered point-in-time snapshot into flat entries, knowledge progression and Judgment-centered storylines without deciding visibility or adding epistemic records.",
+      "description": "Deterministic read-only projection turns one already-filtered point-in-time snapshot into entries, knowledge progression and Judgment-centered storylines while keeping canonical truth separate from labelled researcher hints.",
       "kind": "application",
       "path": "src/longcycle/application/trajectory_view.py"
     },
@@ -50,9 +57,11 @@
   "extension_seams": [
     "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
     "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
-    "Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment that carries explicit industry scope; keep the entailment provenance visible and do not promote it into membership truth.",
-    "Add further deterministic, auditable subject-discovery entailment rules when their premises come from existing semantic owners and the rule cannot manufacture role, importance, causality or historical timing.",
-    "Compose explicit historical controversy with a separately labelled current research-only overlay without collapsing their time/authority classes.",
+    "Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment; keep the entailment provenance visible and do not promote it into membership truth.",
+    "Add deterministic, auditable role or subject entailment when premises come from existing semantic owners and the rule cannot manufacture unsupported historical timing or truth.",
+    "Add labelled researcher time/range/as-of hints that preserve source temporal precision and never overwrite canonical time.",
+    "Surface related milestones as useful signals while keeping the original target unresolved unless CAP-0004 records a direct match.",
+    "Compose explicit historical controversy with a separately labelled current research-only MODEL/JUDGMENT overlay from CAP-0006 without collapsing authority classes.",
     "Additional storage adapters implementing the same typed reader contracts."
   ],
   "guards": [
@@ -70,9 +79,21 @@
     },
     {
       "contains": "test_trajectory_storyline_preserves_related_milestone_as_indeterminate",
-      "description": "Presentation regression proves a related milestone stays indeterminate/not-comparable and is never narrated as realized.",
+      "description": "Presentation regression proves a related milestone stays indeterminate/not-comparable and is never narrated as direct realization.",
       "kind": "test",
       "path": "tests/test_trajectory_view.py"
+    },
+    {
+      "contains": "test_unknown_onset_can_surface_as_of_hint_without_inventing_start",
+      "description": "Researcher interpretation regression permits a useful as-of hint while preserving unknown onset in canonical Reality.",
+      "kind": "test",
+      "path": "tests/test_researcher_interpretation.py"
+    },
+    {
+      "contains": "test_related_milestone_is_useful_without_becoming_direct_realization",
+      "description": "Researcher interpretation regression surfaces related milestone information value without promoting the original target to realized.",
+      "kind": "test",
+      "path": "tests/test_researcher_interpretation.py"
     },
     {
       "contains": "test_orientation_starts_from_industry_without_leaking_future_membership_or_outcome",
@@ -82,7 +103,7 @@
     },
     {
       "contains": "test_grounded_industry_scoped_reality_is_discoverable_without_membership",
-      "description": "Recall regression proves an Evidence-grounded industry-scoped Reality can deterministically expose a subject even when no membership row exists, while future discovery remains cutoff-filtered and no membership or role is invented.",
+      "description": "Recall regression proves an Evidence-grounded industry-scoped Reality can deterministically expose a subject even when no membership row exists, while future discovery remains cutoff-filtered and no membership or role is invented by that rule.",
       "kind": "test",
       "path": "tests/test_industry_orientation.py"
     },
@@ -116,12 +137,12 @@
   "non_goals": [
     "Direct SQL as product replay semantics.",
     "Creating new Fact/Judgment/Outcome or industry-membership truth records in presentation code.",
-    "Treating deterministic discoverability as proof of a specific value-chain role, importance ranking, causal relation or formal membership.",
+    "Treating deterministic discoverability by itself as proof of a specific value-chain role, importance ranking or causal relation.",
+    "Silently promoting deterministic researcher hints or MODEL/JUDGMENT analysis into canonical Reality, formal membership or historical market knowledge.",
     "Presentation code deciding its own Reality/Judgment/Outcome knowledge-cutoff eligibility.",
     "Applying the historical knowledge cutoff to current research-only Memory/coverage state or presenting that state as contemporaneous market knowledge.",
-    "Inferring participant importance, causality, consensus, controversy or unknowns from counts, filenames or co-occurrence.",
     "Treating current catalog canonical names as historical-name replay.",
-    "Inferring causality, realization or success/failure beyond the stored Outcome semantics.",
+    "Inferring direct realization or success/failure beyond stored CAP-0004 Outcome semantics.",
     "Rewriting an original Judgment because a later Outcome became visible."
   ],
   "owned_semantics": [
@@ -132,10 +153,11 @@
     "replay.researcher_judgment_storyline_projection",
     "replay.researcher_industry_orientation_projection",
     "replay.researcher_industry_subject_discovery_projection",
+    "replay.researcher_calibrated_interpretation_projection",
     "replay.researcher_open_state_projection"
   ],
-  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that filtered memory. Researcher entry uses a broad, auditable subject universe: direct source-grounded membership and deterministic entailment from already-grounded records with explicit industry scope are both discoverable, but their provenance remains distinct and entailed discovery never becomes membership, role, importance or causality truth. Historical open states reuse that same subject universe while current research-only uncertainty remains explicitly separate.",
-  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics, preserves direct-versus-entailed discovery provenance, keeps membership authority outside presentation, and preserves the historical-versus-current-research authority boundary.",
+  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus calibrated researcher-readable projections over that filtered memory. Researcher entry uses direct source-grounded membership plus deterministic auditable entailment; presentation may add clearly labelled deterministic time/role/usefulness hints when premises support them, but never mutates canonical truth. Related milestones can be surfaced as informative without satisfying a direct target. Ambiguous role, participant importance and causality belong to the explicitly labelled CAP-0006 MODEL/JUDGMENT lane rather than being forbidden or silently promoted to Reality.",
+  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves no-lookahead, typed Reality/Judgment/Outcome semantics, direct-versus-entailed provenance, canonical temporal precision, explicit researcher-hint authority, membership authority outside presentation, and the historical-versus-current-research/model-analysis boundary.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/ports/epistemic.py",
@@ -145,11 +167,13 @@
     "src/longcycle/adapters/storage/postgres_orientation.py",
     "src/longcycle/application/historical_replay.py",
     "src/longcycle/application/judgment_replay.py",
+    "src/longcycle/application/researcher_interpretation.py",
     "src/longcycle/application/trajectory_view.py",
     "src/longcycle/application/industry_orientation.py",
     "src/longcycle/application/open_state_view.py",
     "scripts/replay_integrated_history.py",
     "scripts/smoke_postgres_orientation.py",
+    "tests/test_researcher_interpretation.py",
     "tests/test_trajectory_view.py",
     "tests/test_industry_orientation.py",
     "tests/test_open_state_view.py",
@@ -170,6 +194,7 @@
     "researcher-entry",
     "subject-discovery",
     "deterministic-entailment",
+    "calibrated-interpretation",
     "open-state",
     "controversy"
   ],
