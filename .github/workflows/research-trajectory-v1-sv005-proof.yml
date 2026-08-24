@@ -269,7 +269,8 @@ jobs:
               assert view['knowledge_progression'][-1]['counts_after'] == expected[year]
               assert len(view['judgment_storylines']) == 1
               assert view['boundary']['storylines_derive_only_from_filtered_snapshot'] is True
-              assert view['boundary']['presentation_adds_no_causality_or_realization_inference'] is True
+              assert view['boundary']['presentation_does_not_promote_interpretation_to_truth'] is True
+              assert view['boundary']['researcher_time_hints_do_not_mutate_canonical_time'] is True
               assert view['boundary']['judgment_not_rewritten_by_outcome'] is True
 
           story_2022 = views['2022']['judgment_storylines'][0]
@@ -288,9 +289,14 @@ jobs:
           assert outcome['semantic_relation'] == 'related_milestone'
           assert outcome['timing_relation'] == 'not_comparable'
           assert outcome['linked_reality']['predicate_code'] == 'clinical.dreamm7_pfs_outcome'
-          assert 'indeterminate' in story_2024['researcher_summary']
-          assert 'related_milestone' in story_2024['researcher_summary']
+          interpretation = outcome['researcher_interpretation']
+          assert interpretation['certainty'] == 'entailed'
+          assert interpretation['related_milestone_visible'] is True
+          assert interpretation['target_resolution'] == 'not_directly_resolved'
+          assert 'related milestone' in story_2024['researcher_summary']
+          assert 'original target remains not directly resolved' in story_2024['researcher_summary']
           assert 'realized' not in story_2024['researcher_summary']
+          assert views['2024']['boundary']['related_milestones_surface_without_realization_promotion'] is True
           print('RESEARCHER_READABLE_REPLAY_SURFACE_PASS')
           PY
 
