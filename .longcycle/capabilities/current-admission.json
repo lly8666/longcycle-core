@@ -6,7 +6,8 @@
   "disposition": "reuse",
   "target_capability_ids": [
     "CAP-0001",
-    "CAP-0002"
+    "CAP-0002",
+    "CAP-0007"
   ],
   "closest_existing_capability_ids": [
     "CAP-0001",
@@ -14,11 +15,12 @@
     "CAP-0004",
     "CAP-0007"
   ],
-  "rationale": "CAP-0001 already owns truthful content-verified source representations and CAP-0002 already owns claim-scoped grounding from those preserved representations. The later Samsung and SK hynix vintages are new source material for an existing campaign, not a new semantic capability. Outcome comparability remains a separate later admission after these fragments exist, so the current write cannot silently jump from discovery into Outcome evaluation.",
+  "rationale": "CAP-0001 already owns truthful content-verified source representations, CAP-0002 owns claim-scoped grounding from those preserved representations, and CAP-0007 owns the already-proven transport-neutral invocation of that grounding contract. The later Samsung and SK hynix vintages are new source material for an existing campaign, not a new semantic capability. Outcome comparability remains a separate later admission after these fragments exist, so the current write cannot silently jump from discovery into Outcome evaluation.",
   "unmet_requirement": null,
   "evidence_refs": [
     ".longcycle/capabilities/cards/CAP-0001.json",
     ".longcycle/capabilities/cards/CAP-0002.json",
+    ".longcycle/capabilities/cards/CAP-0007.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-04-27-RECOVERY-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2022-10-26-CUT-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-promotion-ready-evidence-v1.json",
@@ -28,6 +30,7 @@
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-10-31-RECOVERY-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2023-07-26-NAND-CUT-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/later-vintage-recovery-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/later-vintage-recovery-orchestration-v2.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json"
   ],
   "proposed_capability_id": null
