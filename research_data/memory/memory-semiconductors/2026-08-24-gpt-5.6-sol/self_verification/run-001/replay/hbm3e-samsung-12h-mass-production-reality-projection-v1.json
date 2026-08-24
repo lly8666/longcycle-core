@@ -1,0 +1,34 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-TRAJECTORY-001",
+  "allowed_claim_roles": ["issuer_hbm3e_12h_mass_production_realization"],
+  "subjects": [
+    {"id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066", "entity_type": "organization", "canonical_name": "Samsung Electronics Co., Ltd."}
+  ],
+  "facts": [
+    {
+      "fact_key": "2024-samsung-hbm3e-12h-mass-production-realized-q3",
+      "evidence_fragment_key": "EVF-SAMSUNG-HBM3E-12H-Q3-REALIZED-TRAJECTORY",
+      "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "predicate_code": "operations.hbm3e_mass_production_status",
+      "value_text": "Samsung later reported that HBM3E 12-stack products were in mass production and generating sales in the third quarter of 2024.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-10-31T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "October 31, 2024 Q3 earnings-call vintage reporting the third-quarter mass-production state",
+      "statistical_scope": "Samsung HBM3E 12H mass-production state",
+      "metadata": {
+        "product_family": "HBM3E",
+        "variant": "12H",
+        "state": "mass_production",
+        "reported_period_text": "third quarter of 2024",
+        "sales_context": "The same source says the 12-stack product was generating sales.",
+        "onset_guard": "The source proves that mass production had been realized by the Q3 reporting context but does not state when production began; canonical valid onset remains unknown.",
+        "timing_guard": "Do not infer that mass production started in Q3 or that the earlier Q2 target was missed.",
+        "qualification_guard": "Mass production and sales are not treated as proof of completed NVIDIA or other named-platform qualification."
+      }
+    }
+  ]
+}
