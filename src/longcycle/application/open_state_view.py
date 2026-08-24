@@ -6,13 +6,12 @@ from uuid import UUID
 
 from longcycle.domain.enums import JudgmentRationaleKind, JudgmentRelationType
 from longcycle.domain.epistemic import MemorySubjectRef
-from longcycle.domain.models import require_aware_datetime
 from longcycle.domain.open_states import CurrentResearchOpenStateBundle
 from longcycle.ports.epistemic import EpistemicMemoryReader
 from longcycle.ports.open_states import CurrentResearchOpenStateReader, RealityConflictReader
 from longcycle.ports.orientation import IndustryOrientationReader
 
-from .industry_orientation import _visible_memberships
+from .industry_orientation import _load_industry_subject_universe
 
 
 def _subject_payload(subject: MemorySubjectRef) -> dict[str, str | None]:
@@ -107,28 +106,29 @@ async def build_researcher_open_state_view(
 ) -> dict[str, Any]:
     """Separate historical controversy from current research-only uncertainty.
 
-    Membership visibility reuses the exact CAP-0005 orientation selector. Historical
-    Judgment visibility comes from the typed no-lookahead snapshot. Reality conflict
-    visibility is reconstructed from source assertion known-time, never conflict-case
-    curation time, and source independence reuses CAP-0003 source-cluster semantics.
-    Current Memory state is opt-in, scoped by its own current research provenance rather
-    than historical membership, and coverage is taken only from the latest sealed campaign
-    as it existed at that campaign's immutable seal timestamp.
+    Historical subject recall reuses the exact CAP-0005 industry subject universe: direct
+    membership plus deterministic discovery from grounded memory with explicit industry
+    scope. Historical Judgment visibility comes from the typed no-lookahead snapshot.
+    Reality conflict visibility is reconstructed from source assertion known-time, never
+    conflict-case curation time, and source independence reuses CAP-0003 source-cluster
+    semantics. Current Memory state remains opt-in and scoped by its own research provenance.
     """
 
-    checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
-    assert checked is not None
-    catalog = await catalog_reader.industry_catalog(industry_node_id)
-    memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
+    checked, catalog, memberships, discoveries, entity_subjects = (
+        await _load_industry_subject_universe(
+            catalog_reader=catalog_reader,
+            industry_node_id=industry_node_id,
+            knowledge_cutoff=knowledge_cutoff,
+        )
+    )
 
-    entity_subjects: dict[UUID, MemorySubjectRef] = {}
     current_labels: dict[str, str] = {
         f"industry:{industry_node_id}": catalog.industry.canonical_name,
     }
     for membership in memberships:
-        assert membership.subject.entity_id is not None
-        entity_subjects[membership.subject.entity_id] = membership.subject
         current_labels[membership.subject.key] = membership.canonical_name
+    for discovery in discoveries:
+        current_labels.setdefault(discovery.subject.key, discovery.canonical_name)
 
     subjects = (
         MemorySubjectRef(industry_node_id=industry_node_id),
@@ -249,6 +249,9 @@ async def build_researcher_open_state_view(
         },
         "current_research_overlay": current_overlay,
         "boundary": {
+            "subject_universe_reuses_industry_orientation_owner": True,
+            "subject_universe_includes_deterministic_entailment": True,
+            "entailed_discovery_does_not_create_membership_or_role": True,
             "membership_visibility_reuses_industry_orientation_owner": True,
             "historical_judgment_visibility_delegated_to_epistemic_snapshot": True,
             "reality_conflict_visibility_uses_member_source_known_at": True,
