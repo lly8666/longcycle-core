@@ -1,0 +1,55 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "MEMORY-SEMICONDUCTORS-HBM3E-SKHYNIX-SUPPLY-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-HBM3E-SKHYNIX-SUPPLY-TRAJECTORY-001",
+  "allowed_claim_roles": ["issuer_hbm3e_status_statement", "issuer_hbm3e_customer_supply_realization"],
+  "subjects": [
+    {"id": "24493701-d1f3-5eb4-86d6-3c1be70da617", "entity_type": "organization", "canonical_name": "SK hynix Inc."}
+  ],
+  "facts": [
+    {
+      "fact_key": "2024-skhynix-hbm3e-volume-production-supply-trajectory",
+      "evidence_fragment_key": "EVF-SKHYNIX-HBM3E-MARCH-SUPPLY-TRAJECTORY",
+      "subject_entity_id": "24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "predicate_code": "operations.hbm3e_volume_production_status",
+      "value_text": "SK hynix reported that HBM3E volume production had begun by the March 19, 2024 announcement vintage.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-03-19T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "March 19, 2024 announcement vintage",
+      "statistical_scope": "SK hynix 8-layer HBM3E volume-production state",
+      "metadata": {
+        "product_family": "HBM3E",
+        "variant": "8H",
+        "state": "volume_production",
+        "onset_guard": "The March source establishes volume production by the announcement but not an earlier exact start date.",
+        "supply_guard": "The same source's late-March customer-supply language remains Judgment and is not part of this current Reality fact."
+      }
+    },
+    {
+      "fact_key": "2024-skhynix-hbm3e-customer-supply-realized-march",
+      "evidence_fragment_key": "EVF-SKHYNIX-HBM3E-SUPPLY-REALIZED-TRAJECTORY",
+      "subject_entity_id": "24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "predicate_code": "operations.hbm3e_customer_supply_status",
+      "value_text": "SK hynix later reported that it began supplying 8-layer HBM3E to leading global tech giants in March 2024.",
+      "valid_time_kind": "period",
+      "valid_from": "2024-03-01T00:00:00Z",
+      "valid_to": "2024-04-01T00:00:00Z",
+      "valid_time_precision": "month",
+      "valid_time_text": "March 2024",
+      "observed_at": "2024-10-10T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "October 10, 2024 retrospective vintage",
+      "statistical_scope": "SK hynix 8-layer HBM3E customer-supply occurrence",
+      "metadata": {
+        "product_family": "HBM3E",
+        "variant": "8H",
+        "state": "customer_supply",
+        "customer_scope": "leading global tech giants; not individually named in the claim-scoped sentence",
+        "occurrence_precision_guard": "The source supports March 2024 only; do not invent an exact supply day.",
+        "qualification_guard": "Customer supply is not generalized into a named-platform qualification state."
+      }
+    }
+  ]
+}
