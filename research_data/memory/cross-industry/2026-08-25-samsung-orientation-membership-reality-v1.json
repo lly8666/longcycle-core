@@ -1,0 +1,37 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "CROSS-INDUSTRY-SAMSUNG-ORIENTATION-MEMBERSHIP-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-TRAJECTORY-001",
+  "allowed_claim_roles": [
+    "issuer_hbm3e_12h_mass_production_realization"
+  ],
+  "subjects": [
+    {
+      "id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "entity_type": "organization",
+      "canonical_name": "Samsung Electronics Co., Ltd."
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2024-samsung-memory-semiconductors-hbm3e-producer-membership",
+      "evidence_fragment_key": "EVF-SAMSUNG-HBM3E-12H-Q3-REALIZED-TRAJECTORY",
+      "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "predicate_code": "industry.membership",
+      "value_text": "hbm3e_producer",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-10-31T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "Samsung Q3 2024 earnings-call vintage reporting HBM3E 12-stack mass production and sales",
+      "statistical_scope": "Samsung participation in memory semiconductors through HBM3E production",
+      "metadata": {
+        "industry_node_id": "180d06d1-2f31-5a7c-8c43-16d0b3d3cce7",
+        "exposure_type": "direct",
+        "membership_basis": "The preserved Samsung source explicitly reports HBM3E 12-stack products in mass production and generating sales.",
+        "role_guard": "hbm3e_producer is a normalized narrow role supported by the source; do not broaden it to market leadership, supplier importance, named-customer qualification or conventional-DRAM status.",
+        "onset_guard": "The source establishes the producer state by the Q3 reporting context but does not establish when Samsung first entered this role; membership validity onset remains unknown."
+      }
+    }
+  ]
+}
