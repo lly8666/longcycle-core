@@ -314,11 +314,14 @@ async def main() -> None:
     required_boundary = {
         "membership_requires_fact_resolution_and_evidence",
         "membership_visibility_uses_source_known_at",
+        "researcher_discovery_allows_deterministic_entailment",
+        "entailed_discovery_does_not_create_membership_or_role",
+        "deterministic_role_entailment_allowed_when_rule_is_auditable",
+        "ambiguous_role_importance_causality_belong_to_labeled_model_judgment",
+        "presentation_does_not_promote_analysis_to_truth",
         "system_from_is_not_historical_known_at",
         "memory_visibility_delegated_to_epistemic_snapshot",
-        "same_knowledge_cutoff_used_for_membership_and_memory",
-        "presentation_infers_no_value_chain_role",
-        "presentation_infers_no_importance_or_causality",
+        "same_knowledge_cutoff_used_for_membership_discovery_and_memory",
         "presentation_invents_no_unknown_or_controversy",
     }
     if not all(boundary.get(key) is True for key in required_boundary):
