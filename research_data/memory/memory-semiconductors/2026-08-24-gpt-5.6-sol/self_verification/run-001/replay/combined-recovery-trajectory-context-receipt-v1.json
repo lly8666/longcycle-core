@@ -1,0 +1,97 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-combined-recovery-context-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "4b483e1743c128410e0ca21291f910dba4e87bdc",
+  "default_branch_broker_commit": "3c3dd2198ffd5df4026c344551094c25c845d3e1",
+  "trigger_issue": 151,
+  "actions_run_id": 32720883540,
+  "full_ci_run_id": 32720738552,
+  "full_ci_context": "longcycle/full-ci",
+  "full_ci_conclusion": "success",
+  "actions_artifact": {
+    "artifact_id": 9517690086,
+    "name": "research-orchestration-32720883540",
+    "digest": "sha256:83ce95c16e3b33ab4eae94cf689bc76446629c9d77fbfa25ce3bcd33ac7681d7",
+    "expires_at": "2026-08-31T11:15:32Z"
+  },
+  "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-trajectory-v1.json",
+  "judgment_context_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-judgment-context-v1.json",
+  "execution_schema": "longcycle-epistemic-trajectory-execution/v1",
+  "execution_sha256": "92d21cbc1212d1d817ee7cf8d686f02b3cbfd040c0fad2570c26c72a0da300c0",
+  "phases": [
+    "grounded_evidence",
+    "reality_projection",
+    "judgment_persistence",
+    "judgment_context_persistence",
+    "outcome_evaluation",
+    "seal_integrated_memory",
+    "point_in_time_replay"
+  ],
+  "acceptance": {
+    "persisted_document_versions": 6,
+    "persisted_evidence_fragments": 6,
+    "fact_assertions_created_during_grounding": 0,
+    "judgment_assertions_created_during_grounding": 0,
+    "canonical_reality_count": 2,
+    "judgment_count": 4,
+    "outcome_count": 1,
+    "judgment_rationale_count": 0,
+    "judgment_relation_count": 1,
+    "replay_verified": true
+  },
+  "judgment_context": {
+    "execution_sha256": "c44467fdd72052b8ba3868c971e15cffaefe4e8d84872a5324a92f296ac5ec5a",
+    "relation": {
+      "from_judgment_key": "2023-skhynix-further-nand-production-reduction-decision",
+      "from_judgment_id": "5fff09ee-e122-53d2-91da-a2575a48b3ca",
+      "to_judgment_key": "2022-skhynix-2023-investment-and-production-reduction-guidance",
+      "to_judgment_id": "d12b4352-978d-5155-bcd7-a428f7fed71f",
+      "relation_type": "reaffirms",
+      "reason_summary": "The July 2023 NAND-specific decision is later cognition consistent with the October 2022 broad 2023 production-reduction guidance and adds a NAND inventory rationale. It reaffirms the production-reduction stance without transferring the earlier >50% investment magnitude to NAND output or implying that only NAND remained in scope."
+    },
+    "verification": {
+      "rationale_count": 0,
+      "relation_count": 1,
+      "idempotent_reappend_passed": true,
+      "revision_family_identity_guarded": true,
+      "rationale_input_no_lookahead_guarded": true
+    }
+  },
+  "outcome": {
+    "evaluation_id": "235c8a0f-45a7-52dd-9c8c-81d3d8939fcc",
+    "judgment_id": "e7f03a06-0b2d-5131-9c23-b731fdfe6d3b",
+    "canonical_fact_version_id": "18222850-5294-5ee1-96c1-b353ac769ebb",
+    "outcome_evidence_fragment_id": "73274c1a-7c85-5cb2-9e78-1fe6cd935b18",
+    "semantic_relation": "related_milestone",
+    "evaluation_status": "indeterminate",
+    "outcome_precision": "quarter",
+    "outcome_text": "Q3 2023",
+    "outcome_first_known_at": "2023-11-01T00:00:00Z",
+    "timing_relation": "not_comparable",
+    "timing_delta_value": null,
+    "execution_sha256": "99121530007ba46f5eab849ec4c4f5ed09b9c06c9fb4f48d8326ec9d0c0b3a3d"
+  },
+  "replay": {
+    "duckdb_sha256": "71241357b8bcf1f2a2a4721b6728ab036718b6129cde14b1276d54d770da0acb",
+    "duckdb_size_bytes": 3682304,
+    "manifest_sha256": "e514cbd52448476d0b96b8b8c6efb2758a5a3f86ccd2763dfd83fbc526f1507e",
+    "manifest_counts": {
+      "reality": 2,
+      "judgments": 4,
+      "outcomes": 1
+    },
+    "judgment_context_counts": {
+      "rationales": 0,
+      "relations": 1
+    },
+    "snapshots": [
+      {"knowledge_cutoff": "2022-11-17T00:00:00Z", "reality": 1, "judgments": 1, "outcomes": 0},
+      {"knowledge_cutoff": "2023-04-28T00:00:00Z", "reality": 1, "judgments": 3, "outcomes": 0},
+      {"knowledge_cutoff": "2023-07-27T00:00:00Z", "reality": 1, "judgments": 4, "outcomes": 0},
+      {"knowledge_cutoff": "2023-11-01T00:00:00Z", "reality": 2, "judgments": 4, "outcomes": 1}
+    ],
+    "no_lookahead_sequence_verified": true
+  },
+  "boundary": "This receipt proves the same six-vintage storage-semiconductor Reality/Judgment/Outcome trajectory plus one CAP-0004-owned Judgment revision relation composed by CAP-0007. The relation reaffirms the later SK hynix production-reduction stance without importing the earlier >50% investment magnitude into NAND production. The Samsung Outcome remains related_milestone, indeterminate and not timing-comparable."
+}
