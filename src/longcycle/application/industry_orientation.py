@@ -106,6 +106,47 @@ def _visible_discoveries(
     )
 
 
+async def _load_industry_subject_universe(
+    *,
+    catalog_reader: IndustryOrientationReader,
+    industry_node_id: UUID,
+    knowledge_cutoff: datetime,
+) -> tuple[
+    datetime,
+    IndustryOrientationCatalog,
+    tuple[IndustrySubjectMembershipRecord, ...],
+    tuple[IndustrySubjectDiscoveryRecord, ...],
+    dict[UUID, MemorySubjectRef],
+]:
+    """Load the CAP-0005 industry subject universe from direct and entailed bases.
+
+    A subject is eligible when it has either a visible source-grounded membership or a
+    deterministic discovery basis from already-grounded memory explicitly scoped to the
+    industry. The latter is recall-only and never becomes membership truth.
+    """
+
+    checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
+    assert checked is not None
+    catalog = await catalog_reader.industry_catalog(industry_node_id)
+    memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
+    discoveries = _visible_discoveries(
+        await catalog_reader.deterministic_industry_subjects(
+            industry_node_id,
+            knowledge_cutoff=checked,
+        ),
+        industry_node_id=industry_node_id,
+        knowledge_cutoff=checked,
+    )
+    subjects: dict[UUID, MemorySubjectRef] = {}
+    for membership in memberships:
+        assert membership.subject.entity_id is not None
+        subjects[membership.subject.entity_id] = membership.subject
+    for discovery in discoveries:
+        assert discovery.subject.entity_id is not None
+        subjects[discovery.subject.entity_id] = discovery.subject
+    return checked, catalog, memberships, discoveries, subjects
+
+
 def _memory_counts(snapshot: PointInTimeMemorySnapshot) -> dict[str, dict[str, int]]:
     counts: dict[str, dict[str, int]] = defaultdict(
         lambda: {"reality": 0, "judgments": 0, "outcomes": 0}
@@ -208,29 +249,21 @@ async def build_researcher_industry_orientation(
     role, importance, causality or historical timing.
     """
 
-    checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
-    assert checked is not None
-    catalog = await catalog_reader.industry_catalog(industry_node_id)
-    visible_memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
-    visible_discoveries = _visible_discoveries(
-        await catalog_reader.deterministic_industry_subjects(
-            industry_node_id,
-            knowledge_cutoff=checked,
-        ),
-        industry_node_id=industry_node_id,
-        knowledge_cutoff=checked,
+    checked, catalog, visible_memberships, visible_discoveries, subjects = (
+        await _load_industry_subject_universe(
+            catalog_reader=catalog_reader,
+            industry_node_id=industry_node_id,
+            knowledge_cutoff=knowledge_cutoff,
+        )
     )
 
-    subjects: dict[UUID, MemorySubjectRef] = {}
     memberships_by_entity: dict[UUID, list[IndustrySubjectMembershipRecord]] = defaultdict(list)
     discoveries_by_entity: dict[UUID, list[IndustrySubjectDiscoveryRecord]] = defaultdict(list)
     for membership in visible_memberships:
         assert membership.subject.entity_id is not None
-        subjects[membership.subject.entity_id] = membership.subject
         memberships_by_entity[membership.subject.entity_id].append(membership)
     for discovery in visible_discoveries:
         assert discovery.subject.entity_id is not None
-        subjects[discovery.subject.entity_id] = discovery.subject
         discoveries_by_entity[discovery.subject.entity_id].append(discovery)
 
     snapshot_subjects = (
@@ -353,6 +386,7 @@ async def build_researcher_industry_orientation(
             "system_from_is_not_historical_known_at": True,
             "system_from_only_breaks_ties_between_already_knowable_versions": True,
             "memory_visibility_delegated_to_epistemic_snapshot": True,
+            "same_knowledge_cutoff_used_for_membership_and_memory": True,
             "same_knowledge_cutoff_used_for_membership_discovery_and_memory": True,
             "canonical_labels_are_current_catalog_identity_not_historical_name_replay": True,
             "presentation_infers_no_value_chain_role": True,
