@@ -18,6 +18,7 @@ from longcycle.domain.epistemic import (
 from longcycle.domain.orientation import (
     IndustryDescriptor,
     IndustryOrientationCatalog,
+    IndustrySubjectDiscoveryRecord,
     IndustrySubjectMembershipRecord,
 )
 
@@ -32,12 +33,27 @@ CUTOFF = datetime(2023, 1, 1, tzinfo=UTC)
 
 
 class FakeCatalogReader:
-    def __init__(self, catalog: IndustryOrientationCatalog) -> None:
+    def __init__(
+        self,
+        catalog: IndustryOrientationCatalog,
+        discoveries: tuple[IndustrySubjectDiscoveryRecord, ...] = (),
+    ) -> None:
         self.catalog = catalog
+        self.discoveries = discoveries
 
     async def industry_catalog(self, industry_node_id: UUID) -> IndustryOrientationCatalog:
         assert industry_node_id == INDUSTRY_ID
         return self.catalog
+
+    async def deterministic_industry_subjects(
+        self,
+        industry_node_id: UUID,
+        *,
+        knowledge_cutoff: datetime,
+    ) -> tuple[IndustrySubjectDiscoveryRecord, ...]:
+        assert industry_node_id == INDUSTRY_ID
+        assert knowledge_cutoff == CUTOFF
+        return self.discoveries
 
 
 class FakeMemoryReader:
@@ -112,6 +128,28 @@ def _membership(
         system_from=datetime(2026, 8, 24, tzinfo=UTC),
         confidence=0.9,
         resolution_id=UUID(membership_id.replace("60000000", "70000000")),
+        evidence_fragment_ids=(UUID(evidence_id),),
+    )
+
+
+def _discovery(
+    *,
+    basis_id: str,
+    entity_id: UUID,
+    name: str,
+    known_at: datetime,
+    evidence_id: str,
+    basis_kind: str = "accepted_reality",
+) -> IndustrySubjectDiscoveryRecord:
+    return IndustrySubjectDiscoveryRecord(
+        industry_node_id=INDUSTRY_ID,
+        subject=MemorySubjectRef(entity_id=entity_id),
+        canonical_name=name,
+        entity_type="project",
+        basis_kind=basis_kind,
+        basis_id=UUID(basis_id),
+        semantic_code="project.state",
+        known_at=known_at,
         evidence_fragment_ids=(UUID(evidence_id),),
     )
 
@@ -210,6 +248,8 @@ async def test_orientation_starts_from_industry_without_leaking_future_membershi
     assert [row["subject_id"] for row in view["subjects"]] == [str(EARLY_ENTITY_ID)]
     subject = view["subjects"][0]
     assert subject["canonical_name"] == "Early Project"
+    assert subject["discovery_certainty"] == "direct"
+    assert subject["discovery_bases"][0]["basis_kind"] == "industry_membership"
     assert subject["memory_counts"] == {"reality": 1, "judgments": 1, "outcomes": 0}
     assert subject["trajectory_replay"] == {"subject_id": str(EARLY_ENTITY_ID)}
     assert subject["evidence_fragment_ids"] == [
@@ -221,3 +261,61 @@ async def test_orientation_starts_from_industry_without_leaking_future_membershi
     assert view["boundary"]["memory_visibility_delegated_to_epistemic_snapshot"] is True
     assert view["boundary"]["system_from_is_not_historical_known_at"] is True
     assert view["boundary"]["presentation_invents_no_unknown_or_controversy"] is True
+
+
+async def test_grounded_industry_scoped_reality_is_discoverable_without_membership() -> None:
+    catalog = IndustryOrientationCatalog(
+        industry=IndustryDescriptor(
+            industry_node_id=INDUSTRY_ID,
+            canonical_name="Lithium conversion",
+            node_kind="industry",
+        ),
+    )
+    discoveries = (
+        _discovery(
+            basis_id="30000000-0000-0000-0000-000000000001",
+            entity_id=EARLY_ENTITY_ID,
+            name="Early Project",
+            known_at=datetime(2022, 6, 1, tzinfo=UTC),
+            evidence_id="80000000-0000-0000-0000-000000000001",
+        ),
+        _discovery(
+            basis_id="30000000-0000-0000-0000-000000000002",
+            entity_id=FUTURE_ENTITY_ID,
+            name="Future Project",
+            known_at=datetime(2024, 1, 1, tzinfo=UTC),
+            evidence_id="80000000-0000-0000-0000-000000000004",
+        ),
+    )
+    memory = FakeMemoryReader(_timeline())
+
+    view = await build_researcher_industry_orientation(
+        catalog_reader=FakeCatalogReader(catalog, discoveries),
+        memory_reader=memory,
+        industry_node_id=INDUSTRY_ID,
+        knowledge_cutoff=CUTOFF,
+    )
+
+    assert {item.key for item in memory.last_subjects} == {
+        MemorySubjectRef(industry_node_id=INDUSTRY_ID).key,
+        MemorySubjectRef(entity_id=EARLY_ENTITY_ID).key,
+    }
+    assert len(view["subjects"]) == 1
+    subject = view["subjects"][0]
+    assert subject["subject_id"] == str(EARLY_ENTITY_ID)
+    assert subject["discovery_certainty"] == "entailed"
+    assert subject["memberships"] == []
+    assert subject["discovery_bases"] == [
+        {
+            "certainty": "entailed",
+            "basis_kind": "accepted_reality",
+            "basis_id": str(REALITY_ID),
+            "semantic_code": "project.state",
+            "known_at": datetime(2022, 6, 1, tzinfo=UTC).isoformat(),
+            "entailment_rule": "explicit_industry_scope",
+            "evidence_fragment_ids": ["80000000-0000-0000-0000-000000000001"],
+        }
+    ]
+    assert subject["memory_counts"] == {"reality": 1, "judgments": 1, "outcomes": 0}
+    assert view["boundary"]["researcher_discovery_allows_deterministic_entailment"] is True
+    assert view["boundary"]["entailed_discovery_does_not_create_membership_or_role"] is True
