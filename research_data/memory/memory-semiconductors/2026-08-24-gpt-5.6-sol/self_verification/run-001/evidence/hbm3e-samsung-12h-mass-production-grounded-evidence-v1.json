@@ -1,0 +1,121 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-MASS-PRODUCTION-001",
+  "epistemic_guardrails": [
+    "Samsung's Q3 2024 earnings-call script is primary for Samsung's own reported HBM3E production and sales state.",
+    "The statement explicitly includes both HBM3E 8-stack and 12-stack products; do not generalize it into an unversioned HBM3E status.",
+    "Mass production and generating sales in Q3 2024 do not establish the exact production-onset date and do not prove that 12-stack mass production began in calendar Q2.",
+    "The source's separate statement that an important phase in a qualification process was completed is not a named-customer or completed-platform qualification state and is outside this fragment.",
+    "The readable JSON representation preserves claim-relevant text actually read from the upstream PDF; it is content_verified and must not be described as raw PDF materialization.",
+    "Grounding creates EvidenceFragments only; Reality/Outcome promotion remains a separate admitted step."
+  ],
+  "sources": [
+    {
+      "key": "samsung_ir_q3_2024_hbm3e",
+      "name": "Samsung Electronics Investor Relations — Q3 2024 earnings conference call",
+      "publisher_domain": "samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung Electronics' own Q3 earnings-call script is primary for its reported HBM3E 8-stack and 12-stack mass-production and sales state."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "samsung_hbm3e_12h_q3_2024_mass_production",
+      "vintage_id": "2024-10-31",
+      "source_key": "samsung_ir_q3_2024_hbm3e",
+      "retrieval_url": "https://irsvc.teletogether.com/sec/pdf/2024Q3_script_eng.pdf?1=",
+      "original_source_url": "https://irsvc.teletogether.com/sec/pdf/2024Q3_script_eng.pdf?1=",
+      "external_id": "samsung-q3-2024-earnings-call-hbm3e-12h-mass-production",
+      "title": "Samsung Q3 2024 HBM3E 12-stack mass-production realization readable representation",
+      "published_at": null,
+      "first_known_at": "2024-11-01T00:00:00Z",
+      "expected_sha256": "a65fd3697f78dad2b61da7f99bd200ad1172f8f848615d46ad3d3e0470af8d10",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2024-10-31-HBM3E-12H-MASS-PRODUCTION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2024-10-31-HBM3E-12H-MASS-PRODUCTION-v1",
+        "capture_schema_version": "longcycle-readable-source-representation/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_pdf_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "application/pdf",
+        "representation_media_type": "application/json",
+        "source_pdf_page_number_one_based": 31,
+        "source_pdf_page_index_zero_based": 30,
+        "retrieval_host": "irsvc.teletogether.com",
+        "landing_page_url": "https://irsvc.teletogether.com/sec/sec.php?c=sec&y=2547",
+        "published_date_only": "2024-10-31",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T15:01:08Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-SAMSUNG-HBM3E-12H-MASS-PRODUCTION-Q3-REALIZED",
+      "document_key": "samsung_hbm3e_12h_q3_2024_mass_production",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "In the third quarter, total HBM sales grew by more than 70% Q-on-Q with both HBM3E 8 and 12 stack layer products in mass production and generating sales.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-006",
+        "epistemic_layer": "reality_candidate",
+        "claim_role": "issuer_hbm3e_12h_mass_production_realization",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": [
+          "MS-0019",
+          "MS-0026",
+          "MS-0027",
+          "MS-0074",
+          "MS-0095",
+          "MS-0121"
+        ],
+        "product_lines": [
+          "DRAM",
+          "HBM",
+          "HBM3E",
+          "HBM3E_12H"
+        ],
+        "valid_effective_time": {
+          "kind": "period",
+          "precision": "quarter",
+          "text": "third quarter of 2024"
+        },
+        "known_time": {
+          "upper_bound": "2024-11-01T00:00:00Z",
+          "precision": "day"
+        },
+        "status_components": [
+          {
+            "state": "mass_production",
+            "temporal_semantics": "reported_in_q3_2024",
+            "promotion_candidate": "reality"
+          },
+          {
+            "state": "generating_sales",
+            "temporal_semantics": "reported_in_q3_2024",
+            "promotion_candidate": "related_reality_context"
+          }
+        ],
+        "onset_guard": "The source establishes 12-stack mass production during Q3 2024 but does not identify when mass production began; do not infer a Q2 miss or a Q3 start.",
+        "qualification_guard": "The source does not name a customer in this statement and does not prove completed NVIDIA or other named-platform qualification."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 1,
+    "required_fragments": 1,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
