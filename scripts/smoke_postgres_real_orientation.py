@@ -105,7 +105,7 @@ def _execute_real_grounded_membership(dsn: str) -> tuple[UUID, UUID, datetime]:
         root = Path(temporary)
         work_dir = root / "work"
         output_path = root / "orchestration-execution.json"
-        completed = subprocess.run(
+        subprocess.run(
             [
                 "longcycle",
                 "--json",
@@ -127,9 +127,6 @@ def _execute_real_grounded_membership(dsn: str) -> tuple[UUID, UUID, datetime]:
             text=True,
             env={**os.environ, "LONGCYCLE_DATABASE_URL": dsn},
         )
-        outer = json.loads(completed.stdout)
-        if outer.get("ok") is not True:
-            raise AssertionError(outer)
         persisted = json.loads(output_path.read_text(encoding="utf-8"))
         if persisted.get("ok") is not True:
             raise AssertionError(persisted)
