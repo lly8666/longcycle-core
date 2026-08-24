@@ -12,7 +12,13 @@ from uuid import UUID
 import psycopg
 
 from longcycle.adapters.storage.postgres import PostgresResearchRepository
+from longcycle.adapters.storage.postgres_orientation import (
+    PostgresIndustryMembershipProjectionStore,
+)
 from longcycle.adapters.storage.postgres_sources import PostgresSourceRegistry
+from longcycle.application.industry_membership_projection import (
+    project_resolved_industry_membership,
+)
 from longcycle.application.reconciliation import Reconciler
 from longcycle.application.source_registration import build_http_source_definition
 from longcycle.domain.enums import (
@@ -115,7 +121,11 @@ async def _ground_membership_assertion(
             corroboration=1.0,
             freshness=1.0,
         ),
-        metadata={"synthetic_test_fixture": True, "industry_node_id": str(INDUSTRY_ID)},
+        metadata={
+            "synthetic_test_fixture": True,
+            "industry_node_id": str(INDUSTRY_ID),
+            "exposure_type": "direct",
+        },
     )
     extraction = ExtractionEnvelope(
         run_id=run_id,
@@ -220,25 +230,37 @@ async def main() -> None:
     finally:
         await repository.close()
 
-    with psycopg.connect(dsn) as connection:
-        for entity_id, resolution_id, system_from in (
-            (EARLY_ENTITY_ID, early_resolution, datetime(2026, 8, 24, 0, 0, tzinfo=UTC)),
-            (FUTURE_ENTITY_ID, future_resolution, datetime(2026, 8, 24, 0, 1, tzinfo=UTC)),
-        ):
-            membership_id = stable_uuid_exact(
-                "orientation-smoke-membership", str(INDUSTRY_ID), str(entity_id)
-            )
-            connection.execute(
-                """
-                INSERT INTO core.industry_entity_memberships (
-                    id, industry_node_id, entity_id, role, exposure_type,
-                    valid_from, valid_to, system_from, confidence, resolution_id
-                ) VALUES (%s, %s, %s, 'conversion_facility', 'direct',
-                          DATE '2020-01-01', DATE '2030-01-01', %s, 1.0, %s)
-                ON CONFLICT (id) DO NOTHING
-                """,
-                (membership_id, INDUSTRY_ID, entity_id, system_from, resolution_id),
-            )
+    projection_store = PostgresIndustryMembershipProjectionStore(
+        dsn,
+        bucket_name="orientation-smoke",
+    )
+    try:
+        early_projection = await project_resolved_industry_membership(
+            resolution_reader=projection_store,
+            membership_writer=projection_store,
+            resolution_id=early_resolution,
+        )
+        future_projection = await project_resolved_industry_membership(
+            resolution_reader=projection_store,
+            membership_writer=projection_store,
+            resolution_id=future_resolution,
+        )
+        repeated_early = await project_resolved_industry_membership(
+            resolution_reader=projection_store,
+            membership_writer=projection_store,
+            resolution_id=early_resolution,
+        )
+    finally:
+        await projection_store.close()
+
+    if repeated_early != early_projection:
+        raise AssertionError("industry membership projection was not idempotent")
+    if early_projection.known_at != EARLY_KNOWN_AT:
+        raise AssertionError("membership projection lost source-known time")
+    if future_projection.known_at != FUTURE_KNOWN_AT:
+        raise AssertionError("future membership projection lost source-known time")
+    if early_projection.system_from == early_projection.known_at:
+        raise AssertionError("resolution/materialization time collapsed into historical known time")
 
     with tempfile.TemporaryDirectory(prefix="longcycle-orientation-smoke-") as temporary:
         output_path = Path(temporary) / "orientation.json"
