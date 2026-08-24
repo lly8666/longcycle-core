@@ -1,32 +1,21 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "MEMORY-SEMICONDUCTORS-HBM3E-SUPPLY-OUTCOME-001",
-  "intent": "Reuse CAP-0002/3/4/5/7 to execute a bounded two-vintage SK hynix HBM3E supply trajectory in fresh PostgreSQL. Re-ground the March 19, 2024 contemporaneous source and the October 10, 2024 later retrospective together; preserve volume production as current Reality, preserve 'supply from late March' as immutable Judgment, project later evidence only as month-precision March 2024 customer-supply Reality, and evaluate the same supply event as a direct Outcome without inventing a day-level timing comparison or named qualification state.",
+  "intent_id": "MEMORY-SEMICONDUCTORS-HBM3E-NEXT-SOURCE-ROUTING-001",
+  "intent": "Route the next HBM3E later-vintage recovery through CAP-0001/CAP-0002 while the researcher selects the strongest claim-scoped primary source for an unresolved platform or product-variant realization. This admission authorizes read-only discovery and source-selection reasoning only. No new material path is admitted yet: planned_paths remains empty and must be refreshed with the concrete capture/evidence paths before any repository source-preservation or grounding write.",
   "governance_mode": "converging",
   "disposition": "reuse",
-  "target_capability_ids": ["CAP-0002", "CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
-  "closest_existing_capability_ids": ["CAP-0002", "CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
-  "rationale": "Issue #154 proved the later SK hynix supply statement can be grounded 1/1/0/0. Existing owners already represent the remaining trajectory: CAP-0003 can project the March customer-supply Reality with month precision, CAP-0004 preserves the original approximate supply-timing Judgment and direct Outcome semantics, CAP-0005 provides no-lookahead replay, and CAP-0007 composes the phases. A narrow two-vintage run is preferable to replaying unrelated Samsung/Micron HBM states because it tests the exact same-event Outcome boundary without semantic noise.",
+  "target_capability_ids": ["CAP-0001", "CAP-0002"],
+  "closest_existing_capability_ids": ["CAP-0001", "CAP-0002", "CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
+  "rationale": "The SK hynix HBM3E customer-supply Outcome is now proven and closed: the same supply milestone is realized, while timing remains not_comparable because the contemporaneous target was qualitative and later occurrence evidence is month-precision. The remaining work is not a schema gap; it is source recovery for unresolved HBM3E platform/variant milestones. CAP-0001 owns truthful preservation and CAP-0002 owns claim-scoped grounding. Broad HBM shipment/revenue evidence must not be silently upgraded to H200-specific realization, and broad Samsung HBM3E sales must not be treated as 12H production or qualification.",
   "unmet_requirement": null,
   "evidence_refs": [
+    ".longcycle/capabilities/cards/CAP-0001.json",
     ".longcycle/capabilities/cards/CAP-0002.json",
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0004.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0007.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounding-receipt-v1.json",
-    "issue:#154",
-    "commit:c758738ebe7bd7b3472adfb450331dd605dc69a3"
-  ],
-  "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-skhynix-supply-trajectory-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-reality-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-judgment-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-skhynix-supply-orchestration-v2.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-skhynix-supply-trajectory-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-trajectory-receipt-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json",
-    ".longcycle/handoff/current.json"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-trajectory-receipt-v1.json",
+    "issue:#155",
+    "commit:eef622fbe428326c60f92325a0deee47b3ffa2f5"
   ],
+  "planned_paths": [],
   "proposed_capability_id": null
 }
