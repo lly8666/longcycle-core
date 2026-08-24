@@ -1,31 +1,35 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "CROSS-INDUSTRY-RESEARCHER-UNDERSTANDING-SYNTHESIS-READONLY-001",
-  "intent": "Perform a read-only parent-level researcher-understanding synthesis now that the historically premature industry-orientation closure has been repaired and real-source accepted. Compare the three-industry transfer result, the real Samsung researcher-entry acceptance receipt, and existing Reality/Judgment/replay/open-state owners to decide whether the remaining drivers/constraints question is already a truthful composition problem or exposes one concrete cross-industry semantic failure. Do not add another industry, source search, researcher feature, mechanism/driver schema, role graph or semantic owner by default. Before naming any observed local defect as a new generic gap, perform on-demand repository history recall and compare prior decisions and closure evidence.",
+  "intent_id": "CAP5-DETERMINISTIC-INDUSTRY-DISCOVERY-BROADENING-001",
+  "intent": "Relax an over-tight researcher-entry gate without weakening truth ownership. Extend CAP-0005 so a subject can enter the historical researcher universe either through direct source-grounded industry membership or through a deterministic, auditable entailment from already-grounded Reality/Judgment carrying explicit industry scope. Keep the two provenance classes distinct. Entailed discoverability must not create membership, value-chain role, importance, causality, controversy or historical timing. Reuse the same subject-universe logic in orientation and historical open-state views.",
   "governance_mode": "converging",
-  "disposition": "reuse",
+  "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0003",
-    "CAP-0004",
-    "CAP-0005",
-    "CAP-0006"
+    "CAP-0005"
   ],
   "closest_existing_capability_ids": [
     "CAP-0003",
     "CAP-0004",
-    "CAP-0005",
-    "CAP-0006"
+    "CAP-0005"
   ],
-  "rationale": "The orientation supply-path gap is now closed by a governed CAP-0003 resolution-backed projection into the existing CAP-0005 catalog reader, with synthetic full CI run 32750547777, real-source full CI run 32751296759 and independent broker run 32751445303. Historical recall showed this was not a new capability: v1 had already anticipated the gap and v2 closed it before a production supply path had been proven. The next justified action is therefore not more orientation work but a read-only synthesis around the one product question left explicit in the historical v2 audit: whether industry-level drivers/constraints require only composition over grounded Reality/Judgment/rationale/open-state records or reveal a real missing generic semantic owner.",
+  "rationale": "The prior CAP-0005 composition required a visible core.industry_entity_memberships row before an entity was even passed to the typed memory snapshot. That made a missing catalog projection suppress already-grounded Reality/Judgment/Outcome and historical controversy. The user correctly identified this as over-tight certainty. The repair belongs inside CAP-0005 researcher discovery, not in CAP-0003 truth semantics: direct membership remains strongest, while accepted Reality or grounded Judgment with explicit industry scope can mechanically entail researcher discoverability at the same no-lookahead cutoff. This broadens recall without promoting the entailment into a new truth record or semantic owner.",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/cross-industry/2026-08-24-three-benchmark-synthesis-v1.json",
-    "research_data/memory/cross-industry/2026-08-25-samsung-orientation-real-acceptance-receipt-v1.json",
     "docs/development/researcher-mental-map-gap-audit-v2.md",
     "docs/development/assistant-session-standards-audit-v1.md",
-    "ci:32751296759",
-    "issue:160"
+    "research_data/memory/cross-industry/2026-08-25-samsung-orientation-real-acceptance-receipt-v1.json",
+    "commit:cb7d7b2b5aef7a0019810836b46b4146210aa1e2",
+    "commit:e3e10c43bfc1ffad691f1404704fd0c24f9a48f1"
   ],
-  "planned_paths": [],
+  "planned_paths": [
+    "src/longcycle/domain/orientation.py",
+    "src/longcycle/ports/orientation.py",
+    "src/longcycle/adapters/storage/postgres_orientation.py",
+    "src/longcycle/application/industry_orientation.py",
+    "src/longcycle/application/open_state_view.py",
+    "tests/test_industry_orientation.py",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/handoff/current.json"
+  ],
   "proposed_capability_id": null
 }
