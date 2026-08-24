@@ -1,30 +1,34 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "GENERIC-EPISTEMIC-TRAJECTORY-BROKER-001",
-  "intent": "Extend the already-proven default-branch Issue-trigger runtime broker so the same CAP-0007 invocation adapter can execute longcycle-epistemic-trajectory/v1 specs at an exact requested branch/head from a prepared material root. The broker must only dispatch the existing CAP-0007 trajectory contract; Judgment remains CAP-0004-owned, replay remains CAP-0005-owned, Grounded Evidence remains CAP-0002-owned, and no campaign-specific workflow or duplicate semantic executor may be introduced.",
+  "intent_id": "MEMORY-SEMICONDUCTORS-LATER-VINTAGE-RECOVERY-001",
+  "intent": "Reuse the existing source-preservation and Grounded Evidence owners to preserve and ground two later-vintage primary-source observations for the storage-semiconductor campaign: Samsung Q3 2023 demand/inventory recovery evidence and SK hynix Q2 2023 additional NAND production-reduction evidence. This admission stops at content-verified source capture plus CAP-0002 grounding; it does not yet evaluate Outcomes or create new Reality/Judgment semantics.",
   "governance_mode": "converging",
-  "disposition": "extend",
+  "disposition": "reuse",
   "target_capability_ids": [
-    "CAP-0007"
+    "CAP-0001",
+    "CAP-0002"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0007",
+    "CAP-0001",
+    "CAP-0002",
     "CAP-0004",
-    "CAP-0005"
+    "CAP-0007"
   ],
-  "rationale": "CAP-0007 already owns EpistemicTrajectorySpec and its execution phases, and its extension seam explicitly routes invocation adapters through the same orchestration/trajectory contracts rather than campaign-specific workflow logic. Issues #142 and #143 prove the default-branch broker can execute exact-head v2 material-root Grounded Evidence and Reality. The remaining need is transport/invocation support for the already-existing trajectory schema so contemporaneous Judgments can run through the same PostgreSQL lifecycle without creating another workflow or reimplementing Judgment/replay semantics.",
+  "rationale": "CAP-0001 already owns truthful content-verified source representations and CAP-0002 already owns claim-scoped grounding from those preserved representations. The later Samsung and SK hynix vintages are new source material for an existing campaign, not a new semantic capability. Outcome comparability remains a separate later admission after these fragments exist, so the current write cannot silently jump from discovery into Outcome evaluation.",
   "unmet_requirement": null,
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0007.json",
-    ".longcycle/capabilities/cards/CAP-0004.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/SV-005-epistemic-trajectory-v1.json",
-    "issue:#142",
-    "issue:#143",
-    "commit:e8ba1576c1b398a277e5fed0e810ac2321b000cc"
+    ".longcycle/capabilities/cards/CAP-0001.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-04-27-RECOVERY-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2022-10-26-CUT-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-promotion-ready-evidence-v1.json",
+    "commit:e82ec06d2bdcc97f31b12f23858730d0060b39bc"
   ],
   "planned_paths": [
-    ".github/workflows/research-orchestration-once.yml"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-10-31-RECOVERY-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2023-07-26-NAND-CUT-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/later-vintage-recovery-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json"
   ],
   "proposed_capability_id": null
 }
