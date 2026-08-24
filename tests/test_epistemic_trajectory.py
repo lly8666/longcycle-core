@@ -68,6 +68,17 @@ class EpistemicTrajectoryContractTest(unittest.TestCase):
                 }
             )
 
+    def test_judgment_context_requires_judgment_spec(self) -> None:
+        with self.assertRaisesRegex(ValidationError, "judgment context requires judgment_spec_path"):
+            EpistemicTrajectorySpec.model_validate(
+                {
+                    "schema_version": "longcycle-epistemic-trajectory/v1",
+                    "task_id": "synthetic",
+                    "research_orchestration_spec_path": "core.json",
+                    "judgment_context_spec_path": "judgment-context.json",
+                }
+            )
+
     def test_replay_contract_requires_unique_subjects_and_increasing_cutoffs(self) -> None:
         with self.assertRaisesRegex(ValidationError, "subjects must be unique"):
             IntegratedReplayPlan.model_validate(
@@ -100,6 +111,7 @@ class EpistemicTrajectoryContractTest(unittest.TestCase):
                 "task_id": "synthetic",
                 "research_orchestration_spec_path": "core.json",
                 "judgment_spec_path": "judgment.json",
+                "judgment_context_spec_path": "judgment-context.json",
                 "outcome_evaluations": [
                     {
                         "key": "later-milestone",
@@ -122,6 +134,7 @@ class EpistemicTrajectoryContractTest(unittest.TestCase):
                 "grounded_evidence",
                 "reality_projection",
                 "judgment_persistence",
+                "judgment_context_persistence",
                 "outcome_evaluation",
                 "seal_integrated_memory",
                 "point_in_time_replay",
