@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "RESEARCHER-ENTRY-RESOLUTION-BACKED-MEMBERSHIP-PROJECTION-001",
-  "intent": "Extend existing CAP-0003 and CAP-0005 paths with a typed, idempotent bridge from an already-selected source-grounded industry.membership Fact resolution into core.industry_entity_memberships. The bridge must delegate truth to existing reconciliation, derive historical known time from the selected assertion rather than system/resolution timestamps, preserve Evidence references through the existing orientation reader, and fail closed on predicate/identity/Evidence/time mismatches. It must not create membership truth in presentation code, infer participant importance, add a schema, or reinterpret general Facts as industry membership.",
+  "intent_id": "RESEARCHER-ENTRY-HISTORICAL-CLOSURE-REAL-ACCEPTANCE-001",
+  "intent": "Complete the historically anticipated but prematurely closed industry-orientation integration proof. Reuse the now-green CAP-0003/CAP-0005 resolution-backed membership bridge, then prove on preserved real Samsung HBM3E source material that source-grounded Evidence can become an accepted industry.membership Fact, materialize through the governed projection, and enter the existing researcher orientation/trajectory/open-state/Evidence surfaces at one no-lookahead cutoff. This is a closure repair, not a new semantic capability: do not infer membership from general company knowledge, create a new schema/owner, or treat synthetic-only success as sufficient.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -9,28 +9,31 @@
     "CAP-0005"
   ],
   "closest_existing_capability_ids": [
+    "CAP-0002",
     "CAP-0003",
     "CAP-0005",
     "CAP-0007"
   ],
-  "rationale": "The three-industry synthesis found that generic epistemic semantics transferred, but the real researcher-entry path is blocked by a manual SQL step: the PostgreSQL orientation smoke reconciles a normal industry.membership Fact and then directly inserts core.industry_entity_memberships. Replacing that manual materialization with a resolution-backed projection reuses CAP-0003 truth and CAP-0005 orientation visibility instead of creating a parallel catalog truth rule. Existing schema and reader contracts are sufficient.",
+  "rationale": "Historical recall changes the diagnosis. researcher-mental-map-gap-audit-v1 already identified source-grounded industry-to-subject orientation as the highest-value gap and required stopping rather than fabricating a relation; v2 later declared orientation closed. The old PostgreSQL smoke shows that closure still depended on a manual INSERT into core.industry_entity_memberships after Fact reconciliation, so it proved the reader/cutoff contract but not a governed production supply path. The resolution-backed bridge now passes exact-head full CI (run 32750547777). The remaining justified work is a permanent real-source acceptance gate using already preserved Samsung Q3 HBM3E Evidence, whose explicit mass-production-and-sales statement supports only the narrow normalized role hbm3e_producer.",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/cross-industry/2026-08-24-three-benchmark-synthesis-v1.json",
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
+    "docs/development/researcher-mental-map-gap-audit-v1.md",
+    "docs/development/researcher-mental-map-gap-audit-v2.md",
+    "docs/development/assistant-session-standards-audit-v1.md",
     ".longcycle/repair-memory/invariants/RI-0006-semantic-owner-reuse.json",
-    "scripts/smoke_postgres_orientation.py",
-    "src/longcycle/application/industry_orientation.py",
-    "src/longcycle/adapters/storage/postgres_orientation.py"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2024-10-31-HBM3E-12H-MASS-PRODUCTION-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-samsung-12h-mass-production-trajectory-evidence-v1.json",
+    "ci:32750547777"
   ],
   "planned_paths": [
-    "src/longcycle/domain/orientation.py",
-    "src/longcycle/ports/orientation.py",
-    "src/longcycle/application/industry_membership_projection.py",
-    "src/longcycle/adapters/storage/postgres_orientation.py",
-    "tests/test_industry_membership_projection.py",
-    "scripts/smoke_postgres_orientation.py"
+    "research_data/memory/cross-industry/2026-08-25-samsung-orientation-membership-reality-v1.json",
+    "research_data/memory/cross-industry/2026-08-25-samsung-orientation-real-acceptance-orchestration-v2.json",
+    "scripts/smoke_postgres_real_orientation.py",
+    ".github/workflows/ci.yml",
+    "research_data/memory/cross-industry/2026-08-25-samsung-orientation-real-acceptance-receipt-v1.json",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/active-index.json",
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
 }
