@@ -68,22 +68,59 @@ def _read_json(path: Path) -> dict[str, Any]:
     return payload
 
 
+def _count_jsonl_records(path: Path) -> int:
+    return sum(1 for line in path.read_text(encoding="utf-8").splitlines() if line.strip())
+
+
 def _count_raw_memory_leads(campaign_root: Path) -> dict[str, int]:
     blind_root = campaign_root / "blind"
     if not blind_root.is_dir():
         raise FileNotFoundError(blind_root)
 
     counts: dict[str, int] = {}
+    for jsonl_path in sorted(blind_root.glob("*.jsonl")):
+        count = _count_jsonl_records(jsonl_path)
+        if count:
+            counts[jsonl_path.stem] = count
+
     for shard_dir in sorted(path for path in blind_root.iterdir() if path.is_dir()):
-        count = 0
-        for jsonl_path in sorted(shard_dir.glob("*.jsonl")):
-            count += sum(
-                1
-                for line in jsonl_path.read_text(encoding="utf-8").splitlines()
-                if line.strip()
-            )
+        count = sum(_count_jsonl_records(path) for path in sorted(shard_dir.glob("*.jsonl")))
         if count:
             counts[shard_dir.name] = count
+    return counts
+
+
+def _coverage_total(coverage: dict[str, Any]) -> int | None:
+    value = coverage.get("total_raw_leads_so_far")
+    if value is None:
+        value = coverage.get("total_raw_leads")
+    return value if isinstance(value, int) else None
+
+
+def _coverage_shard_count(coverage: dict[str, Any]) -> int | None:
+    rows = coverage.get("shards")
+    if isinstance(rows, list):
+        return len(rows)
+    value = coverage.get("canonical_lead_shards")
+    return value if isinstance(value, int) else None
+
+
+def _legacy_coverage_counts(coverage: dict[str, Any]) -> dict[str, int] | None:
+    rows = coverage.get("shards")
+    if rows is None:
+        return None
+    if not isinstance(rows, list):
+        raise ValueError("coverage-index.json shards must be a list when present")
+
+    counts: dict[str, int] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            raise ValueError("coverage shard row must be an object")
+        shard_id = row.get("shard_id")
+        lead_count = row.get("lead_count")
+        if not isinstance(shard_id, str) or not isinstance(lead_count, int):
+            raise ValueError("coverage shard row has invalid shard_id/lead_count")
+        counts[shard_id] = lead_count
     return counts
 
 
@@ -120,7 +157,9 @@ def audit_repository_handoff(
     raw_total: int | None = None
     raw_counts: dict[str, int] = {}
     coverage: dict[str, Any] = {}
-    sealed_from_coverage: tuple[str, ...] = ()
+    coverage_counts: dict[str, int] | None = None
+    sealed_from_checkpoint: tuple[str, ...] = ()
+    missing_sealed_shards: tuple[str, ...] = ()
     shard_mismatches: dict[str, dict[str, int | None]] = {}
 
     campaign = checkpoint.memory_campaign
@@ -134,30 +173,21 @@ def audit_repository_handoff(
         coverage = _read_json(root / coverage_path_raw)
         raw_counts = _count_raw_memory_leads(campaign_root)
         raw_total = sum(raw_counts.values())
+        coverage_counts = _legacy_coverage_counts(coverage)
+        if coverage_counts is not None:
+            shard_mismatches = {
+                shard_id: {
+                    "coverage": coverage_counts.get(shard_id),
+                    "raw": raw_counts.get(shard_id),
+                }
+                for shard_id in sorted(set(coverage_counts) | set(raw_counts))
+                if coverage_counts.get(shard_id) != raw_counts.get(shard_id)
+            }
 
-        coverage_shards_raw = coverage.get("shards")
-        if not isinstance(coverage_shards_raw, list):
-            raise ValueError("coverage-index.json shards must be a list")
-        coverage_counts: dict[str, int] = {}
-        for row in coverage_shards_raw:
-            if not isinstance(row, dict):
-                raise ValueError("coverage shard row must be an object")
-            shard_id = row.get("shard_id")
-            lead_count = row.get("lead_count")
-            if not isinstance(shard_id, str) or not isinstance(lead_count, int):
-                raise ValueError("coverage shard row has invalid shard_id/lead_count")
-            coverage_counts[shard_id] = lead_count
-
-        shard_mismatches = {
-            shard_id: {"coverage": coverage_counts.get(shard_id), "raw": raw_counts.get(shard_id)}
-            for shard_id in sorted(set(coverage_counts) | set(raw_counts))
-            if coverage_counts.get(shard_id) != raw_counts.get(shard_id)
-        }
-
-        sealed_raw = coverage.get("sealed_shards")
-        if not isinstance(sealed_raw, list) or not all(isinstance(item, str) for item in sealed_raw):
-            raise ValueError("coverage sealed_shards must be a string list")
-        sealed_from_coverage = tuple(sealed_raw)
+        sealed_from_checkpoint = tuple(campaign.sealed_shards)
+        missing_sealed_shards = tuple(
+            relative for relative in sealed_from_checkpoint if not (root / relative).is_file()
+        )
 
     core_text = f"{strategy}\n{methodology}".lower()
     core_exclusion_hits = tuple(
@@ -304,6 +334,10 @@ def audit_repository_handoff(
     ]
 
     if campaign is not None:
+        coverage_total = _coverage_total(coverage)
+        coverage_shard_count = _coverage_shard_count(coverage)
+        legacy_visibility = coverage.get("search_visibility")
+        blind_visibility = coverage.get("blind_source_visibility")
         checks_list.extend(
             [
                 HandoffDrillCheck(
@@ -313,12 +347,17 @@ def audit_repository_handoff(
                 ),
                 HandoffDrillCheck(
                     name="coverage_total_matches_raw",
-                    passed=coverage.get("total_raw_leads_so_far") == raw_total,
-                    detail=f"coverage={coverage.get('total_raw_leads_so_far')}, raw={raw_total}",
+                    passed=coverage_total == raw_total,
+                    detail=f"coverage={coverage_total}, raw={raw_total}",
                 ),
                 HandoffDrillCheck(
-                    name="coverage_shard_counts_match_raw",
-                    passed=not shard_mismatches,
+                    name="coverage_shard_count_matches_raw",
+                    passed=coverage_shard_count == len(raw_counts),
+                    detail=f"coverage={coverage_shard_count}, raw={len(raw_counts)}",
+                ),
+                HandoffDrillCheck(
+                    name="legacy_coverage_shard_counts_match_raw",
+                    passed=coverage_counts is None or not shard_mismatches,
                     detail="mismatches="
                     + json.dumps(shard_mismatches, ensure_ascii=False, sort_keys=True),
                 ),
@@ -328,17 +367,27 @@ def audit_repository_handoff(
                     detail=f"checkpoint={campaign.shard_count}, raw={len(raw_counts)}",
                 ),
                 HandoffDrillCheck(
-                    name="search_visibility_agrees",
-                    passed=campaign.search_visibility == coverage.get("search_visibility"),
+                    name="coverage_visibility_boundary_is_sound",
+                    passed=(
+                        campaign.search_visibility == legacy_visibility
+                        if isinstance(legacy_visibility, str)
+                        else blind_visibility == "none"
+                    ),
                     detail=(
-                        f"checkpoint={campaign.search_visibility}, "
-                        f"coverage={coverage.get('search_visibility')}"
+                        f"campaign={campaign.search_visibility}, legacy={legacy_visibility}, "
+                        f"blind={blind_visibility}"
                     ),
                 ),
                 HandoffDrillCheck(
-                    name="sealed_shards_agree",
-                    passed=campaign.sealed_shards == sealed_from_coverage,
-                    detail=f"checkpoint={campaign.sealed_shards}, coverage={sealed_from_coverage}",
+                    name="checkpoint_sealed_shards_exist",
+                    passed=(
+                        len(sealed_from_checkpoint) == campaign.shard_count
+                        and not missing_sealed_shards
+                    ),
+                    detail=(
+                        f"checkpoint={len(sealed_from_checkpoint)}, "
+                        f"expected={campaign.shard_count}, missing={missing_sealed_shards}"
+                    ),
                 ),
             ]
         )
@@ -367,7 +416,7 @@ def audit_repository_handoff(
         search_visibility=campaign.search_visibility if campaign else None,
         total_raw_leads=raw_total,
         shard_count=len(raw_counts) if campaign else None,
-        sealed_shards=sealed_from_coverage,
+        sealed_shards=sealed_from_checkpoint,
         ordered_next_actions=checkpoint.ordered_next_actions,
     )
     return HandoffIsolationReport(recovered=recovered, fidelity_score=score, checks=checks)
