@@ -3,9 +3,9 @@
   "campaign_id": "MEMORY-SEMICONDUCTORS-001",
   "run_id": "MEMORY-SEMICONDUCTORS-SV-001",
   "started_at": "2026-08-24",
-  "stage": "later_vintage_grounded_promotion_pending",
+  "stage": "combined_recovery_trajectory_executed_judgment_context_pending",
   "source_visibility": "search_results_opened_primary_pages_and_content_verified_readable_captures",
-  "authority": "The first supplier-cut/recovery packet has one canonical Reality and three contemporaneous Judgments. Two later-vintage primary-source documents are now separately grounded as Evidence: Samsung Q3 2023 is a scoped Reality candidate for PC/mobile demand and customer inventory adjustment, while SK hynix Q2 2023 is a later management decision/commitment candidate. No Outcome has yet been evaluated and no later evidence has been backdated into the original vintages.",
+  "authority": "The storage-semiconductor supplier-cut/recovery thread now has a successful six-vintage fresh-PostgreSQL trajectory: six Grounded Evidence fragments, two canonical Reality rows, four immutable contemporaneous/later Judgments, one explicitly non-direct Samsung Outcome, and a four-cutoff no-lookahead replay. The Samsung Q3 PC/mobile recovery observation is preserved only as a related milestone for the broader April forecast, so the Outcome remains indeterminate and timing-not-comparable. The remaining semantic-composition gap is explicit Judgment revision context: CAP-0004 already owns the relation semantics, but CAP-0007 does not yet invoke that executor inside one trajectory.",
   "blind_mutation_forbidden": true,
   "sealed_blind_commit": "cfaaee3a8cb843f3c52b7c960080097a9011efd3",
   "sealed_blind_digest": "cdf2840abd2ac9ca1913d6becc805d20212a0080ae97ed9e24f75b0983ba596b",
@@ -112,13 +112,49 @@
       "EVF-SKHYNIX-Q2-NAND-CUT-LATER": "later management decision/commitment Judgment candidate; not proof of already-executed additional NAND reduction"
     }
   },
+  "combined_trajectory_checkpoint": {
+    "successful_subject_head": "4a97be26e46afc5e6a55096cbf2bdcb4014ef79a",
+    "default_branch_broker_commit": "3c3dd2198ffd5df4026c344551094c25c845d3e1",
+    "trigger_issue": 149,
+    "actions_run_id": 32709359697,
+    "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-trajectory-v1.json",
+    "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
+    "acceptance": {
+      "persisted_document_versions": 6,
+      "persisted_evidence_fragments": 6,
+      "fact_assertions_created_during_grounding": 0,
+      "judgment_assertions_created_during_grounding": 0,
+      "canonical_reality_count": 2,
+      "judgment_count": 4,
+      "outcome_count": 1,
+      "replay_verified": true
+    },
+    "outcome_boundary": {
+      "judgment_key": "2023-samsung-second-half-demand-recovery-expectation",
+      "reality_fact_key": "2023-samsung-q3-pc-mobile-memory-demand-improvement",
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "timing_relation": "not_comparable"
+    },
+    "replay_counts": [
+      {"knowledge_cutoff": "2022-11-17T00:00:00Z", "reality": 1, "judgments": 1, "outcomes": 0},
+      {"knowledge_cutoff": "2023-04-28T00:00:00Z", "reality": 1, "judgments": 3, "outcomes": 0},
+      {"knowledge_cutoff": "2023-07-27T00:00:00Z", "reality": 1, "judgments": 4, "outcomes": 0},
+      {"knowledge_cutoff": "2023-11-01T00:00:00Z", "reality": 2, "judgments": 4, "outcomes": 1}
+    ],
+    "judgment_context_counts": {
+      "rationales": 0,
+      "relations": 0
+    }
+  },
   "comparability_guards": [
     "Micron approximately 20% is DRAM+NAND wafer starts versus fiscal Q4 2022 and is Micron-specific.",
     "SK hynix greater-than-50% is 2023 investment YoY, not wafer starts or bit supply.",
     "Samsung April 2023 supports a plan for selected-product production cuts but no product split or percentage and is not itself proof of executed cuts.",
     "Samsung April 27 recovery language is a dated management expectation and must not be overwritten by later outcome knowledge.",
-    "Samsung Q3 2023 PC/mobile demand improvement is narrower than the April broad memory-demand forecast; related evidence must not be silently upgraded to direct realization.",
-    "SK hynix July 2023 decided-to-reduce language is a management commitment and cannot by itself prove the additional NAND reduction was already executed."
+    "Samsung Q3 2023 PC/mobile demand improvement is narrower than the April broad memory-demand forecast; it is currently a related milestone only and the successful Outcome remains indeterminate/not-comparable.",
+    "SK hynix July 2023 decided-to-reduce language is a management commitment and cannot by itself prove the additional NAND reduction was already executed.",
+    "The July 2023 SK hynix Judgment is consistent with the earlier broad production-reduction guidance, but a persisted reaffirms/revision relation must be created only through CAP-0004's existing Judgment-context semantics."
   ],
-  "next_action": "Build one fresh-PostgreSQL combined trajectory that re-grounds the original and later vintages together, projects the Samsung Q3 scoped Reality, preserves the SK hynix July decision as a later Judgment, records the explicit Judgment revision relation if the generic CAP-0007 composition supports CAP-0004 context persistence, and evaluates the Samsung April forecast only as an explicit related milestone unless stronger like-for-like evidence is found."
+  "next_action": "Extend CAP-0007 EpistemicTrajectorySpec with one optional Judgment-context phase that invokes CAP-0004's existing grounded context executor after Judgment persistence and before Outcome evaluation. Re-run the same combined six-vintage trajectory in fresh PostgreSQL with an explicit later-SK-hynix -> earlier-guidance reaffirms relation, then verify the sealed replay reports one Judgment relation without changing the already-proven Reality/Judgment/Outcome counts or hindsight guards."
 }
