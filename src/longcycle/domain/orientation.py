@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+from typing import Literal
 from uuid import UUID
 
 from pydantic import Field, field_validator, model_validator
@@ -19,7 +20,7 @@ class IndustryDescriptor(DomainModel):
 class ResolvedIndustryMembershipResolution(DomainModel):
     """One already-decided CAP-0003 resolution supplied to catalog projection.
 
-    The projection layer is not allowed to choose between assertions.  It receives
+    The projection layer is not allowed to choose between assertions. It receives
     the exact selected assertion set from reconciliation and fails closed unless that
     set can represent one unambiguous industry-membership row.
     """
@@ -37,7 +38,7 @@ class ResolvedIndustryMembershipResolution(DomainModel):
         return checked
 
     @model_validator(mode="after")
-    def selected_assertions_are_unique(self) -> "ResolvedIndustryMembershipResolution":
+    def selected_assertions_are_unique(self) -> ResolvedIndustryMembershipResolution:
         ids = [item.id for item in self.selected_assertions]
         if len(ids) != len(set(ids)):
             raise ValueError("resolution selected assertions must be unique")
@@ -48,8 +49,8 @@ class IndustryMembershipProjection(DomainModel):
     """Validated materialization payload for the orientation catalog.
 
     ``known_at`` and Evidence identities remain explicit even though the catalog table
-    does not duplicate them.  The read adapter reconstructs them from the selected
-    assertion behind ``resolution_id``.  ``system_from`` is deterministic curation
+    does not duplicate them. The read adapter reconstructs them from the selected
+    assertion behind ``resolution_id``. ``system_from`` is deterministic curation
     provenance only and must never become historical market-known time.
     """
 
@@ -75,18 +76,22 @@ class IndustryMembershipProjection(DomainModel):
         return checked
 
     @model_validator(mode="after")
-    def grounded_projection(self) -> "IndustryMembershipProjection":
+    def grounded_projection(self) -> IndustryMembershipProjection:
         if not self.evidence_fragment_ids:
             raise ValueError("industry membership projection requires supporting Evidence")
         if len(set(self.evidence_fragment_ids)) != len(self.evidence_fragment_ids):
             raise ValueError("industry membership projection Evidence must be unique")
-        if self.valid_from is not None and self.valid_to is not None and self.valid_to <= self.valid_from:
+        if (
+            self.valid_from is not None
+            and self.valid_to is not None
+            and self.valid_to <= self.valid_from
+        ):
             raise ValueError("membership valid_to must be after valid_from")
         return self
 
 
 class IndustrySubjectMembershipRecord(DomainModel):
-    """One source-grounded catalog membership version used only for researcher orientation.
+    """One source-grounded catalog membership version used for researcher orientation.
 
     ``known_at`` is reconstructed from the selected FactAssertion(s) behind the
     membership resolution. ``system_from`` is retained only as deterministic curation
@@ -116,13 +121,55 @@ class IndustrySubjectMembershipRecord(DomainModel):
         return checked
 
     @model_validator(mode="after")
-    def grounded_entity_membership(self) -> "IndustrySubjectMembershipRecord":
+    def grounded_entity_membership(self) -> IndustrySubjectMembershipRecord:
         if self.subject.entity_id is None:
             raise ValueError("industry orientation membership must identify an entity subject")
         if not self.evidence_fragment_ids:
             raise ValueError("industry orientation membership must retain Evidence references")
-        if self.valid_from is not None and self.valid_to is not None and self.valid_to <= self.valid_from:
+        if (
+            self.valid_from is not None
+            and self.valid_to is not None
+            and self.valid_to <= self.valid_from
+        ):
             raise ValueError("membership valid_to must be after valid_from")
+        return self
+
+
+class IndustrySubjectDiscoveryRecord(DomainModel):
+    """A deterministic researcher-discovery basis that is weaker than membership truth.
+
+    These records let the read model recover a subject when already-grounded memory is
+    explicitly scoped to the industry. They never create a membership, role, importance
+    ranking or causal relation. The distinction between direct membership and entailed
+    discoverability stays visible to the researcher.
+    """
+
+    industry_node_id: UUID
+    subject: MemorySubjectRef
+    canonical_name: str = Field(min_length=1)
+    entity_type: str = Field(min_length=1)
+    basis_kind: Literal["accepted_reality", "grounded_judgment"]
+    basis_id: UUID
+    semantic_code: str = Field(min_length=1)
+    known_at: datetime
+    evidence_fragment_ids: tuple[UUID, ...]
+    entailment_rule: Literal["explicit_industry_scope"] = "explicit_industry_scope"
+
+    @field_validator("known_at")
+    @classmethod
+    def known_time_is_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "industry_subject_discovery_known_at")
+        assert checked is not None
+        return checked
+
+    @model_validator(mode="after")
+    def grounded_entity_discovery(self) -> IndustrySubjectDiscoveryRecord:
+        if self.subject.entity_id is None:
+            raise ValueError("industry discovery must identify an entity subject")
+        if not self.evidence_fragment_ids:
+            raise ValueError("industry discovery must retain Evidence references")
+        if len(set(self.evidence_fragment_ids)) != len(self.evidence_fragment_ids):
+            raise ValueError("industry discovery Evidence must be unique")
         return self
 
 
