@@ -11,6 +11,7 @@
     "industry orientation",
     "research orient",
     "researcher industry entry",
+    "industry subject discovery",
     "open states",
     "researcher controversy"
   ],
@@ -23,7 +24,7 @@
     },
     {
       "contains": "class IndustryOrientationReader(Protocol):",
-      "description": "Storage-neutral orientation boundary exposes source-grounded catalog membership without moving catalog truth semantics into presentation.",
+      "description": "Storage-neutral orientation boundary exposes direct catalog membership plus deterministic grounded subject-discovery candidates without moving membership truth into presentation.",
       "kind": "port",
       "path": "src/longcycle/ports/orientation.py"
     },
@@ -35,13 +36,13 @@
     },
     {
       "contains": "async def build_researcher_industry_orientation(",
-      "description": "Researcher entry projection composes source-grounded industry membership with the existing typed snapshot at one shared knowledge cutoff and links subjects into trajectory replay.",
+      "description": "Researcher entry composes direct membership and deterministic industry-scoped grounded-memory entailment at one shared cutoff, then delegates Reality/Judgment/Outcome visibility to the typed snapshot owner.",
       "kind": "application",
       "path": "src/longcycle/application/industry_orientation.py"
     },
     {
       "contains": "async def build_researcher_open_state_view(",
-      "description": "Researcher projection keeps historical conflict/Judgment controversy separate from an explicit opt-in current research-only overlay.",
+      "description": "Researcher projection reuses the same broad subject universe while keeping historical conflict/Judgment controversy separate from an explicit opt-in current research-only overlay.",
       "kind": "application",
       "path": "src/longcycle/application/open_state_view.py"
     }
@@ -49,7 +50,8 @@
   "extension_seams": [
     "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
     "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
-    "Compose source-grounded catalog identity/membership through a typed read boundary while leaving membership truth and reconciliation in their existing owners.",
+    "Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment that carries explicit industry scope; keep the entailment provenance visible and do not promote it into membership truth.",
+    "Add further deterministic, auditable subject-discovery entailment rules when their premises come from existing semantic owners and the rule cannot manufacture role, importance, causality or historical timing.",
     "Compose explicit historical controversy with a separately labelled current research-only overlay without collapsing their time/authority classes.",
     "Additional storage adapters implementing the same typed reader contracts."
   ],
@@ -74,19 +76,25 @@
     },
     {
       "contains": "test_orientation_starts_from_industry_without_leaking_future_membership_or_outcome",
-      "description": "Orientation contract proves a future-known membership and a future Outcome cannot cross the shared researcher knowledge cutoff.",
+      "description": "Orientation contract proves a future-known direct membership and future Outcome cannot cross the shared researcher knowledge cutoff.",
+      "kind": "test",
+      "path": "tests/test_industry_orientation.py"
+    },
+    {
+      "contains": "test_grounded_industry_scoped_reality_is_discoverable_without_membership",
+      "description": "Recall regression proves an Evidence-grounded industry-scoped Reality can deterministically expose a subject even when no membership row exists, while future discovery remains cutoff-filtered and no membership or role is invented.",
       "kind": "test",
       "path": "tests/test_industry_orientation.py"
     },
     {
       "contains": "test_default_view_keeps_current_research_out_of_historical_cutoff",
-      "description": "Open-state projection regression proves the default historical lane excludes current research state and reuses the same industry membership cutoff owner.",
+      "description": "Open-state projection regression proves the default historical lane excludes current research state while reusing the CAP-0005 subject-universe owner.",
       "kind": "test",
       "path": "tests/test_open_state_view.py"
     },
     {
       "contains": "POSTGRES_INDUSTRY_ORIENTATION_SMOKE_PASS",
-      "description": "Service-capable synthetic smoke proves grounded resolution-backed membership through PostgreSQL, the orientation adapter and the researcher CLI without creating real industry research data.",
+      "description": "Service-capable synthetic smoke exercises PostgreSQL membership and deterministic-discovery query plumbing plus the researcher CLI without creating real industry research data.",
       "kind": "runtime",
       "path": "scripts/smoke_postgres_orientation.py"
     },
@@ -108,9 +116,10 @@
   "non_goals": [
     "Direct SQL as product replay semantics.",
     "Creating new Fact/Judgment/Outcome or industry-membership truth records in presentation code.",
+    "Treating deterministic discoverability as proof of a specific value-chain role, importance ranking, causal relation or formal membership.",
     "Presentation code deciding its own Reality/Judgment/Outcome knowledge-cutoff eligibility.",
     "Applying the historical knowledge cutoff to current research-only Memory/coverage state or presenting that state as contemporaneous market knowledge.",
-    "Inferring value-chain role, participant importance, causality, consensus, controversy or unknowns from counts, filenames or co-occurrence.",
+    "Inferring participant importance, causality, consensus, controversy or unknowns from counts, filenames or co-occurrence.",
     "Treating current catalog canonical names as historical-name replay.",
     "Inferring causality, realization or success/failure beyond the stored Outcome semantics.",
     "Rewriting an original Judgment because a later Outcome became visible."
@@ -122,10 +131,11 @@
     "replay.researcher_knowledge_progression_projection",
     "replay.researcher_judgment_storyline_projection",
     "replay.researcher_industry_orientation_projection",
+    "replay.researcher_industry_subject_discovery_projection",
     "replay.researcher_open_state_projection"
   ],
-  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that filtered memory. Researcher entry includes source-grounded industry orientation and an open-state view that keeps source-known historical conflict/Judgment controversy separate from an explicit current research-only overlay. Presentation never manufactures causality, importance, controversy, unknowns or historical labels.",
-  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics, keeps catalog membership authority outside presentation, and preserves the historical-versus-current-research authority boundary.",
+  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus deterministic researcher-readable projections over that filtered memory. Researcher entry uses a broad, auditable subject universe: direct source-grounded membership and deterministic entailment from already-grounded records with explicit industry scope are both discoverable, but their provenance remains distinct and entailed discovery never becomes membership, role, importance or causality truth. Historical open states reuse that same subject universe while current research-only uncertainty remains explicitly separate.",
+  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves the same no-lookahead and typed Reality/Judgment/Outcome semantics, preserves direct-versus-entailed discovery provenance, keeps membership authority outside presentation, and preserves the historical-versus-current-research authority boundary.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/ports/epistemic.py",
@@ -158,6 +168,8 @@
     "judgment-storyline",
     "industry-orientation",
     "researcher-entry",
+    "subject-discovery",
+    "deterministic-entailment",
     "open-state",
     "controversy"
   ],
