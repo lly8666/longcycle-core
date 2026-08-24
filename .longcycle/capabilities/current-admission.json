@@ -13,14 +13,15 @@
     "CAP-0007",
     "CAP-0005"
   ],
-  "rationale": "CAP-0004 already owns and implements grounded Judgment rationale/revision relations in judgment_context_projection.py and execute_grounded_judgment_context.py. CAP-0007 already owns phase ordering and explicitly allows a bounded execution phase when another capability owns the semantics. The observed gap is composition only: broker runs use fresh PostgreSQL, so earlier and later Judgments must be recreated together and the existing CAP-0004 context executor invoked in the same trajectory. A campaign-specific relation writer would violate unique semantic ownership.",
-  "unmet_requirement": "EpistemicTrajectorySpec cannot currently invoke the existing CAP-0004 Judgment-context executor, so an otherwise representable later-vintage revision relation cannot be included in one generic fresh-PostgreSQL trajectory.",
+  "rationale": "CAP-0004 already owns and implements grounded Judgment rationale/revision relations in judgment_context_projection.py and execute_grounded_judgment_context.py. CAP-0007 already owns phase ordering and explicitly allows a bounded execution phase when another capability owns the semantics. The observed need is composition only: broker runs use fresh PostgreSQL, so earlier and later Judgments must be recreated together and the existing CAP-0004 context executor invoked in the same trajectory. A campaign-specific relation writer would violate unique semantic ownership.",
+  "unmet_requirement": null,
   "evidence_refs": [
     ".longcycle/capabilities/cards/CAP-0004.json",
     ".longcycle/capabilities/cards/CAP-0007.json",
     "src/longcycle/application/judgment_context_projection.py",
     "scripts/execute_grounded_judgment_context.py",
     "issue:#149",
+    "issue:#150",
     "commit:4a97be26e46afc5e6a55096cbf2bdcb4014ef79a"
   ],
   "planned_paths": [
@@ -28,7 +29,7 @@
     "tests/test_epistemic_trajectory.py",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-judgment-context-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-trajectory-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-context-receipt-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json",
     ".longcycle/handoff/current.json"
   ],
