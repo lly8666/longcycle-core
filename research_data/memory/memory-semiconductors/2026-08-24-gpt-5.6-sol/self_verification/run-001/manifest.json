@@ -3,9 +3,9 @@
   "campaign_id": "MEMORY-SEMICONDUCTORS-001",
   "run_id": "MEMORY-SEMICONDUCTORS-SV-001",
   "started_at": "2026-08-24",
-  "stage": "first_reality_judgment_trajectory_executed_outcomes_pending",
+  "stage": "later_vintage_grounded_promotion_pending",
   "source_visibility": "search_results_opened_primary_pages_and_content_verified_readable_captures",
-  "authority": "The first supplier-cut/recovery packet is grounded and has been executed through CAP-0007 into one canonical Reality and three contemporaneous Judgments. No Outcome has been evaluated and no later evidence has been backdated into the original vintages.",
+  "authority": "The first supplier-cut/recovery packet has one canonical Reality and three contemporaneous Judgments. Two later-vintage primary-source documents are now separately grounded as Evidence: Samsung Q3 2023 is a scoped Reality candidate for PC/mobile demand and customer inventory adjustment, while SK hynix Q2 2023 is a later management decision/commitment candidate. No Outcome has yet been evaluated and no later evidence has been backdated into the original vintages.",
   "blind_mutation_forbidden": true,
   "sealed_blind_commit": "cfaaee3a8cb843f3c52b7c960080097a9011efd3",
   "sealed_blind_digest": "cdf2840abd2ac9ca1913d6becc805d20212a0080ae97ed9e24f75b0983ba596b",
@@ -86,11 +86,39 @@
       "replay_verified": false
     }
   },
+  "later_vintage_grounding_checkpoint": {
+    "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/later-vintage-recovery-grounded-evidence-v1.json",
+    "orchestration_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/later-vintage-recovery-orchestration-v2.json",
+    "successful_subject_head": "8dc314eaa49a49dc1645f2c3b45c5b1a800b826f",
+    "trigger_issue": 148,
+    "actions_run_id": 32708713219,
+    "failed_attempt": {
+      "trigger_issue": 147,
+      "actions_run_id": 32708514695,
+      "reason": "unregistered SourceAuthorityProfile claim_scope realized_market_observation; corrected to existing market_measurement vocabulary without changing source text or claim content"
+    },
+    "acceptance": {
+      "persisted_document_versions": 2,
+      "persisted_evidence_fragments": 2,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    },
+    "fragment_ids": {
+      "EVF-SAMSUNG-Q3-RECOVERY-LATER": "d12d6051-550e-550d-9b76-b20d6e70e581",
+      "EVF-SKHYNIX-Q2-NAND-CUT-LATER": "7ad5d604-f317-5703-948b-91dd2f44cd65"
+    },
+    "promotion_classification": {
+      "EVF-SAMSUNG-Q3-RECOVERY-LATER": "scoped Reality candidate; any comparison to the broader April forecast must use explicit non-direct comparability unless stronger like-for-like evidence is found",
+      "EVF-SKHYNIX-Q2-NAND-CUT-LATER": "later management decision/commitment Judgment candidate; not proof of already-executed additional NAND reduction"
+    }
+  },
   "comparability_guards": [
     "Micron approximately 20% is DRAM+NAND wafer starts versus fiscal Q4 2022 and is Micron-specific.",
     "SK hynix greater-than-50% is 2023 investment YoY, not wafer starts or bit supply.",
     "Samsung April 2023 supports a plan for selected-product production cuts but no product split or percentage and is not itself proof of executed cuts.",
-    "Samsung April 27 recovery language is a dated management expectation and must not be overwritten by later outcome knowledge."
+    "Samsung April 27 recovery language is a dated management expectation and must not be overwritten by later outcome knowledge.",
+    "Samsung Q3 2023 PC/mobile demand improvement is narrower than the April broad memory-demand forecast; related evidence must not be silently upgraded to direct realization.",
+    "SK hynix July 2023 decided-to-reduce language is a management commitment and cannot by itself prove the additional NAND reduction was already executed."
   ],
-  "next_action": "Ground later primary-source evidence that can evaluate or revise the 2022-2023 Judgments without hindsight leakage: prioritize Samsung's later-2023 demand/inventory recovery updates and SK hynix's later-2023 NAND/production/inventory updates. Store later evidence as new vintages, then evaluate Outcomes only when semantic comparability is explicit."
+  "next_action": "Build one fresh-PostgreSQL combined trajectory that re-grounds the original and later vintages together, projects the Samsung Q3 scoped Reality, preserves the SK hynix July decision as a later Judgment, records the explicit Judgment revision relation if the generic CAP-0007 composition supports CAP-0004 context persistence, and evaluates the Samsung April forecast only as an explicit related milestone unless stronger like-for-like evidence is found."
 }
