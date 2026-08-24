@@ -213,7 +213,8 @@ def test_trajectory_view_keeps_knowledge_time_and_historical_time_separate() -> 
     assert revised_story["status_as_of_cutoff"] == "judgment_visible_no_outcome"
     assert revised_story["revision_context"]["outgoing_relations"][0]["to_judgment_id"] == str(EARLY_JUDGMENT)
     assert view["boundary"]["storylines_derive_only_from_filtered_snapshot"] is True
-    assert view["boundary"]["presentation_adds_no_causality_or_realization_inference"] is True
+    assert view["boundary"]["presentation_does_not_promote_interpretation_to_truth"] is True
+    assert view["boundary"]["researcher_time_hints_do_not_mutate_canonical_time"] is True
     assert view["boundary"]["judgment_not_rewritten_by_outcome"] is True
 
 
@@ -246,6 +247,9 @@ def test_trajectory_storyline_preserves_related_milestone_as_indeterminate() -> 
     assert later["evaluation_status"] == "indeterminate"
     assert later["semantic_relation"] == "related_milestone"
     assert later["timing_relation"] == "not_comparable"
-    assert "indeterminate" in early_story["researcher_summary"]
-    assert "related_milestone" in early_story["researcher_summary"]
+    assert later["researcher_interpretation"]["related_milestone_visible"] is True
+    assert later["researcher_interpretation"]["target_resolution"] == "not_directly_resolved"
+    assert "related milestone" in early_story["researcher_summary"]
+    assert "original target remains not directly resolved" in early_story["researcher_summary"]
     assert "realized" not in early_story["researcher_summary"]
+    assert view["boundary"]["related_milestones_surface_without_realization_promotion"] is True
