@@ -3,63 +3,29 @@
   "campaign_id": "MEMORY-SEMICONDUCTORS-001",
   "run_id": "MEMORY-SEMICONDUCTORS-SV-001",
   "started_at": "2026-08-24",
-  "stage": "hbm3e_status_and_supply_outcome_trajectories_executed_next_platform_realization_search",
+  "stage": "hbm3e_coreweave_h200_market_grounded_direct_q2_shipment_gap_open",
   "source_visibility": "search_results_opened_primary_pages_and_content_verified_readable_captures",
-  "authority": "The storage-semiconductor self-verification run now contains two closed point-in-time branches. Supplier-cut/recovery has a six-vintage exact-head trajectory with two Reality rows, four immutable Judgments, one SK hynix reaffirms relation, one explicitly non-direct Samsung Outcome and no-lookahead replay. HBM3E has a four-vintage status trajectory that keeps volume/mass production, customer sampling and future shipment/supply timing separate, plus a two-vintage SK hynix supply trajectory proving the same customer-supply milestone was later realized in March 2024. Because the contemporaneous target was qualitative 'from late March' and later occurrence evidence is month-precision 'March 2024', the direct Outcome is realized while timing remains not_comparable with no synthetic day error. No generic or named-platform qualification Reality has been inferred.",
+  "authority": "The storage-semiconductor self-verification run has closed supplier-cut/recovery, HBM3E status-state separation, and the SK hynix customer-supply direct Outcome. It has additionally grounded CoreWeave's August 28, 2024 primary statement that it brought NVIDIA H200 GPUs to market and had H200 instances deployed. That later H200 milestone remains below Reality/Outcome promotion in this checkpoint and is not direct evidence that NVIDIA H200 platform shipments began in calendar Q2 2024. No generic or named-platform HBM qualification Reality has been inferred.",
   "blind_mutation_forbidden": true,
   "sealed_blind_commit": "cfaaee3a8cb843f3c52b7c960080097a9011efd3",
   "sealed_blind_digest": "cdf2840abd2ac9ca1913d6becc805d20212a0080ae97ed9e24f75b0983ba596b",
   "objectives": [
     "refine exact supplier cut timing and product scope in the 2022-2023 downturn",
-    "separate HBM development, sampling, volume/mass production, customer supply/shipment and platform qualification states",
+    "separate HBM development, sampling, volume/mass production, customer supply/shipment, platform shipment and qualification states",
     "identify and preserve claim-scoped primary-source packets for CAP-0002 grounding",
     "preserve contemporaneous expectations and compare them with later outcomes without hindsight rewrite"
   ],
   "first_wave_lead_ids": ["MS-0018","MS-0019","MS-0024","MS-0026","MS-0027","MS-0074","MS-0081","MS-0095","MS-0099","MS-0121"],
   "supplier_cut_recovery_checkpoints": {
-    "initial_grounding": {
-      "subject_head": "bfc07692166c615302c818749c97c0777981e2ac",
-      "trigger_issue": 142,
-      "actions_run_id": 32703767137,
-      "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-grounded-evidence-receipt-v1.json",
-      "acceptance": {"persisted_document_versions":4,"persisted_evidence_fragments":4,"fact_assertions_created":0,"judgment_assertions_created":0}
-    },
-    "initial_promotion": {
-      "successful_subject_head": "bc11abda4209716a544b77aa5421536a3f014ab2",
-      "trigger_issue": 146,
-      "actions_run_id": 32705099146,
-      "trajectory_receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/supplier-cut-recovery-judgment-trajectory-receipt-v1.json"
-    },
-    "later_vintage_grounding": {
-      "successful_subject_head": "8dc314eaa49a49dc1645f2c3b45c5b1a800b826f",
-      "trigger_issue": 148,
-      "actions_run_id": 32708713219,
-      "acceptance": {"persisted_document_versions":2,"persisted_evidence_fragments":2,"fact_assertions_created":0,"judgment_assertions_created":0}
-    },
-    "combined_trajectory": {
-      "successful_subject_head": "4a97be26e46afc5e6a55096cbf2bdcb4014ef79a",
-      "trigger_issue": 149,
-      "actions_run_id": 32709359697,
-      "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
-      "acceptance": {"persisted_document_versions":6,"persisted_evidence_fragments":6,"canonical_reality_count":2,"judgment_count":4,"outcome_count":1,"judgment_relation_count":0,"replay_verified":true}
-    },
-    "combined_trajectory_with_context": {
-      "successful_subject_head": "4b483e1743c128410e0ca21291f910dba4e87bdc",
-      "trigger_issue": 151,
-      "actions_run_id": 32720883540,
-      "full_ci_run_id": 32720738552,
-      "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-context-receipt-v1.json",
-      "acceptance": {"persisted_document_versions":6,"persisted_evidence_fragments":6,"canonical_reality_count":2,"judgment_count":4,"judgment_relation_count":1,"outcome_count":1,"replay_verified":true,"full_ci":"success"},
-      "judgment_relation": {"from":"2023-skhynix-further-nand-production-reduction-decision","to":"2022-skhynix-2023-investment-and-production-reduction-guidance","relation_type":"reaffirms"},
-      "outcome_boundary": {"judgment_key":"2023-samsung-second-half-demand-recovery-expectation","reality_fact_key":"2023-samsung-q3-pc-mobile-memory-demand-improvement","semantic_relation":"related_milestone","evaluation_status":"indeterminate","timing_relation":"not_comparable"}
-    }
+    "initial_grounding_receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-grounded-evidence-receipt-v1.json",
+    "combined_trajectory_receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-context-receipt-v1.json",
+    "final_acceptance": {"persisted_document_versions":6,"persisted_evidence_fragments":6,"canonical_reality_count":2,"judgment_count":4,"judgment_relation_count":1,"outcome_count":1,"replay_verified":true},
+    "outcome_boundary": {"semantic_relation":"related_milestone","evaluation_status":"indeterminate","timing_relation":"not_comparable"}
   },
   "hbm3e_grounding_checkpoint": {
     "successful_subject_head": "8725b5a716bf22ebbedc0db2dbd06a3b8592e326",
     "trigger_issue": 152,
     "actions_run_id": 32721607752,
-    "full_ci_run_id": 32721590857,
-    "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-status-grounded-evidence-v1.json",
     "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-status-grounding-receipt-v1.json",
     "acceptance": {"persisted_document_versions":4,"persisted_evidence_fragments":4,"fact_assertions_created":0,"judgment_assertions_created":0}
   },
@@ -68,9 +34,8 @@
     "trigger_issue": 153,
     "actions_run_id": 32725906683,
     "full_ci_run_id": 32725881851,
-    "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-status-trajectory-v1.json",
     "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
-    "acceptance": {"persisted_document_versions":4,"persisted_evidence_fragments":4,"canonical_reality_count":4,"judgment_count":4,"judgment_rationale_count":0,"judgment_relation_count":1,"outcome_count":0,"replay_verified":true,"full_ci":"success"},
+    "acceptance": {"persisted_document_versions":4,"persisted_evidence_fragments":4,"canonical_reality_count":4,"judgment_count":4,"judgment_relation_count":1,"outcome_count":0,"replay_verified":true,"full_ci":"success"},
     "judgment_relation": {"from":"2024-samsung-hbm3e-12h-q2-mass-production-plan","to":"2024-samsung-hbm3e-12h-1h-mass-production-plan","relation_type":"narrows"},
     "replay_counts": [
       {"knowledge_cutoff":"2024-02-27T00:00:00Z","reality":1,"judgments":1,"outcomes":0},
@@ -79,61 +44,48 @@
       {"knowledge_cutoff":"2024-05-01T00:00:00Z","reality":4,"judgments":4,"outcomes":0}
     ]
   },
-  "hbm3e_later_supply_grounding_checkpoint": {
-    "successful_subject_head": "c758738ebe7bd7b3472adfb450331dd605dc69a3",
-    "trigger_issue": 154,
-    "actions_run_id": 32726657892,
-    "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounded-evidence-v1.json",
-    "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounding-receipt-v1.json",
-    "fragment_id": "b05b8bf7-fed0-5c40-b8e3-3fbcd02abe11",
-    "acceptance": {"persisted_document_versions":1,"persisted_evidence_fragments":1,"fact_assertions_created":0,"judgment_assertions_created":0}
-  },
   "hbm3e_skhynix_supply_outcome_checkpoint": {
     "successful_subject_head": "eef622fbe428326c60f92325a0deee47b3ffa2f5",
     "trigger_issue": 155,
     "actions_run_id": 32727041606,
     "full_ci_run_id": 32727021306,
-    "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-skhynix-supply-trajectory-v1.json",
     "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-skhynix-supply-trajectory-receipt-v1.json",
     "acceptance": {"persisted_document_versions":2,"persisted_evidence_fragments":2,"canonical_reality_count":2,"judgment_count":1,"outcome_count":1,"replay_verified":true,"full_ci":"success"},
-    "outcome": {
-      "judgment_key":"2024-skhynix-hbm3e-late-march-customer-supply-plan",
-      "reality_fact_key":"2024-skhynix-hbm3e-customer-supply-realized-march",
-      "semantic_relation":"direct_match",
-      "evaluation_status":"realized",
-      "outcome_precision":"month",
-      "outcome_text":"March 2024",
-      "outcome_first_known_at":"2024-10-11T00:00:00Z",
-      "timing_relation":"not_comparable",
-      "timing_delta_value":null,
-      "timing_error_days":null
-    },
+    "outcome": {"semantic_relation":"direct_match","evaluation_status":"realized","outcome_precision":"month","outcome_text":"March 2024","timing_relation":"not_comparable","timing_delta_value":null,"timing_error_days":null},
     "replay_counts": [
       {"knowledge_cutoff":"2024-03-20T00:00:00Z","reality":1,"judgments":1,"outcomes":0},
       {"knowledge_cutoff":"2024-10-11T00:00:00Z","reality":2,"judgments":1,"outcomes":1}
     ]
   },
+  "h200_coreweave_market_grounding_checkpoint": {
+    "successful_subject_head": "699405d7d5d0320d2cf2e1f5c19ea762ddfec966",
+    "trigger_issue": 156,
+    "actions_run_id": 32732043996,
+    "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-coreweave-h200-market-grounded-evidence-v1.json",
+    "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-coreweave-h200-market-grounding-receipt-v1.json",
+    "fragment_id": "60765aac-23aa-5452-9884-62d96c79db80",
+    "acceptance": {"persisted_document_versions":1,"persisted_evidence_fragments":1,"fact_assertions_created":0,"judgment_assertions_created":0},
+    "semantic_boundary": "CoreWeave reported H200 market availability/deployment by August 28, 2024. This is related to, but not direct realization evidence for, Micron's February statement that H200 GPUs would begin shipping in calendar Q2 2024."
+  },
   "comparability_guards": [
     "Micron approximately 20% is DRAM+NAND wafer starts versus fiscal Q4 2022 and is Micron-specific.",
     "SK hynix greater-than-50% is 2023 investment YoY, not wafer starts, bit supply or NAND production.",
     "Samsung April 2023 selected-product production-cut wording contains no product split or percentage and is not itself executed-cut Reality.",
-    "Samsung Q3 2023 PC/mobile recovery is narrower than the April broad memory forecast; its Outcome remains related_milestone, indeterminate and not_comparable.",
-    "HBM development, customer sampling, volume/mass production, customer supply, platform shipment and platform qualification are distinct states.",
+    "HBM development, customer sampling, volume/mass production, customer supply, platform shipment, platform market availability and platform qualification are distinct states.",
     "Samsung HBM3E 8H mass-production Reality and 12H production-plan Judgments are variant-specific and must not be merged.",
     "Samsung 12H customer sampling is not named-customer or named-platform qualification.",
-    "SK hynix March 2024 customer-supply realization is direct evidence of the same supply milestone, but month-precision later evidence cannot establish an exact late-March day.",
-    "A realized direct Outcome may still have timing_relation=not_comparable when source-supported temporal precision is insufficient."
+    "A realized direct Outcome may still have timing_relation=not_comparable when source-supported temporal precision is insufficient.",
+    "CoreWeave August H200 market availability/deployment cannot be backdated into Q2 shipment-start Reality and does not identify Micron as the HBM supplier."
   ],
   "discovery_notes_below_evidence_authority": [
     {
       "source":"Micron Fiscal Q3 2024 prepared remarks, June 26 2024",
-      "url":"https://investors.micron.com/static-files/4550f98c-1054-4847-a929-c17d520a0564",
-      "note":"Primary issuer material says Micron's HBM shipment ramp began in fiscal Q3 and it generated over $100 million in HBM3E revenue in the quarter. This is useful later Reality for Micron HBM3E shipment/revenue, but it is not by itself direct proof that NVIDIA H200 platform shipments began in Q2."
+      "note":"Micron said its HBM shipment ramp began in fiscal Q3 and it generated over $100 million in HBM3E revenue. This is related HBM shipment/revenue context, not direct proof that NVIDIA H200 platform shipments began in calendar Q2."
     },
     {
       "source":"Samsung Q2/Q3 2024 results",
-      "note":"Primary issuer results report increasing HBM3E sales/revenue but do not, in the currently discovered claim-scoped text, explicitly establish HBM3E 12H mass-production realization or a named-platform qualification milestone."
+      "note":"Samsung reported expanding HBM3E sales/revenue, but the recovered claim-scoped text does not explicitly establish original HBM3E 12H mass-production realization or a named-platform qualification milestone."
     }
   ],
-  "next_action": "Continue claim-scoped HBM later-vintage recovery without changing platform semantics. Highest-value unresolved targets are a direct primary-source realization of Micron/NVIDIA H200 platform shipment and an explicit Samsung HBM3E 12H mass-production or named qualification status. Preserve Micron June 26 HBM3E shipment/revenue material as a related milestone only if grounded; do not upgrade it to H200-specific realization. Before any new capture/evidence write, refresh current admission from the completed SK hynix Outcome phase to CAP-0001/CAP-0002 source-grounding ownership."
+  "next_action": "Return to read-only primary-source discovery for the still-unresolved direct H200 Q2 shipment-start realization and Samsung original HBM3E 12H mass-production/qualification realization. Do not promote the CoreWeave August milestone into a direct Outcome. Before any new material source write, refresh current-admission with concrete CAP-0001/CAP-0002 paths."
 }
