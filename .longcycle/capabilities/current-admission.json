@@ -1,36 +1,37 @@
 {
   "schema_version": "longcycle-capability-admission/v1",
-  "intent_id": "MEMORY-SEMICONDUCTORS-LATER-VINTAGE-RECOVERY-001",
-  "intent": "Reuse the existing source-preservation and Grounded Evidence owners to preserve and ground two later-vintage primary-source observations for the storage-semiconductor campaign: Samsung Q3 2023 demand/inventory recovery evidence and SK hynix Q2 2023 additional NAND production-reduction evidence. This admission stops at content-verified source capture plus CAP-0002 grounding; it does not yet evaluate Outcomes or create new Reality/Judgment semantics.",
+  "intent_id": "CAP0007-JUDGMENT-CONTEXT-PHASE-001",
+  "intent": "Extend CAP-0007's existing epistemic-trajectory composition with one optional bounded Judgment-context phase that invokes CAP-0004's already-existing grounded rationale/revision persistence executor after Judgment persistence and before Outcome evaluation. The orchestrator must validate the CAP-0004 receipt but must not reimplement Judgment relation semantics. This extension is required by the storage-semiconductor later-vintage run so a later SK hynix Judgment can be related to the earlier 2022 guidance in the same fresh PostgreSQL execution.",
   "governance_mode": "converging",
-  "disposition": "reuse",
+  "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
-    "CAP-0007"
-  ],
-  "closest_existing_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
     "CAP-0004",
     "CAP-0007"
   ],
-  "rationale": "CAP-0001 already owns truthful content-verified source representations, CAP-0002 owns claim-scoped grounding from those preserved representations, and CAP-0007 owns the already-proven transport-neutral invocation of that grounding contract. The later Samsung and SK hynix vintages are new source material for an existing campaign, not a new semantic capability. Outcome comparability remains a separate later admission after these fragments exist, so the current write cannot silently jump from discovery into Outcome evaluation.",
-  "unmet_requirement": null,
+  "closest_existing_capability_ids": [
+    "CAP-0004",
+    "CAP-0007",
+    "CAP-0005"
+  ],
+  "rationale": "CAP-0004 already owns and implements grounded Judgment rationale/revision relations in judgment_context_projection.py and execute_grounded_judgment_context.py. CAP-0007 already states that a bounded phase may be added when another capability owns the phase semantics. The observed research gap is composition only: ephemeral broker runs must recreate earlier and later Judgments together, then persist a real revision-family relation before Outcome/replay. A campaign-specific workaround or duplicate relation implementation would violate CAP-0007/RI-0006 ownership rules.",
+  "unmet_requirement": "EpistemicTrajectorySpec cannot currently invoke the existing CAP-0004 Judgment-context executor, so an otherwise representable later-vintage revision relation cannot be included in one generic fresh-PostgreSQL trajectory.",
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0001.json",
-    ".longcycle/capabilities/cards/CAP-0002.json",
+    ".longcycle/capabilities/cards/CAP-0004.json",
     ".longcycle/capabilities/cards/CAP-0007.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-04-27-RECOVERY-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2022-10-26-CUT-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-promotion-ready-evidence-v1.json",
-    "commit:e82ec06d2bdcc97f31b12f23858730d0060b39bc"
+    "src/longcycle/application/judgment_context_projection.py",
+    "scripts/execute_grounded_judgment_context.py",
+    "issue:#148",
+    "commit:8d1afebc3324cc899204bca40b051c1e7f41f337"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-10-31-RECOVERY-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2023-07-26-NAND-CUT-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/later-vintage-recovery-grounded-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/later-vintage-recovery-orchestration-v2.json",
+    "src/longcycle/application/epistemic_trajectory.py",
+    "tests/test_epistemic_trajectory.py",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/combined-recovery-trajectory-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-reality-projection-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-judgment-projection-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-judgment-context-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-orchestration-v2.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-trajectory-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/manifest.json"
   ],
   "proposed_capability_id": null
