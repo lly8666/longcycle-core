@@ -1,0 +1,83 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-HBM3E-LATER-SUPPLY-001",
+  "epistemic_guardrails": [
+    "This later issuer statement may support realized customer-supply Reality but must not rewrite the March 2024 contemporaneous supply plan.",
+    "The source supports occurrence in March 2024 only; it does not support an exact supply day or prove that the prior 'late March' timing was exactly met.",
+    "The source says leading global tech giants but does not name them in the claim-scoped sentence; do not infer a named customer or named platform.",
+    "Actual customer supply is not synonymous with generic platform qualification.",
+    "Grounding creates EvidenceFragments only; Reality and Outcome promotion require a separate admitted execution."
+  ],
+  "sources": [
+    {
+      "key": "skhynix_newsroom_hbm3e_later_supply",
+      "name": "SK hynix Newsroom — October 2024 HBM3E supply retrospective",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "SK hynix's own newsroom retrospective is primary for its later statement that 8-layer HBM3E supply began in March 2024."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "skhynix_hbm3e_supply_realization_2024_10_10",
+      "vintage_id": "2024-10-10",
+      "source_key": "skhynix_newsroom_hbm3e_later_supply",
+      "retrieval_url": "https://news.skhynix.com/en/sk-hynix-41st-anniversary-rise-to-ai-memory-leader/",
+      "original_source_url": "https://news.skhynix.com/en/sk-hynix-41st-anniversary-rise-to-ai-memory-leader/",
+      "external_id": "skhynix-hbm3e-supply-realization-2024-10-10",
+      "title": "SK hynix October 2024 retrospective — HBM3E supply began in March",
+      "published_at": null,
+      "first_known_at": "2024-10-11T00:00:00Z",
+      "expected_sha256": "302df2b7c79edd3c533ec7c9009511e8b3db7099ad756da1fa4f5b5659daeb1c",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-10-10-HBM3E-SUPPLY-REALIZATION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2024-10-10-HBM3E-SUPPLY-REALIZATION-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2024-10-10",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T12:19:53Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-SKHYNIX-HBM3E-SUPPLY-REALIZED-LATER",
+      "document_key": "skhynix_hbm3e_supply_realization_2024_10_10",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Moving into 2024, SK hynix has maintained its prominence in the AI memory market. The company began supplying the world’s best-performing 8-layer HBM3E, first developed in 2023, to leading global tech giants in March 2024.",
+      "claim_context": {
+        "claim_id": "MEMSEM-HBM-LATER-R01",
+        "epistemic_layer": "reality_candidate",
+        "claim_role": "issuer_hbm3e_customer_supply_realization",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0019", "MS-0026", "MS-0027", "MS-0074", "MS-0095", "MS-0121"],
+        "product_lines": ["DRAM", "HBM", "HBM3E", "HBM3E_8H"],
+        "valid_effective_time": {"kind": "period", "precision": "month", "text": "March 2024"},
+        "known_time": {"upper_bound": "2024-10-11T00:00:00Z", "precision": "day"},
+        "comparability_guard": "The later source confirms the same HBM3E supply event occurred in March at month precision. It does not support a precise day comparison with the earlier qualitative 'late March' target and does not establish named-platform qualification."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 1,
+    "required_fragments": 1,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
