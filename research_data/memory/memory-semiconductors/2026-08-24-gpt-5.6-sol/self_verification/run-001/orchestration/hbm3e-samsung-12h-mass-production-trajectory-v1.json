@@ -1,0 +1,32 @@
+{
+  "schema_version": "longcycle-epistemic-trajectory/v1",
+  "task_id": "TRAJECTORY-MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-001",
+  "research_orchestration_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-samsung-12h-mass-production-trajectory-orchestration-v2.json",
+  "judgment_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-samsung-12h-mass-production-judgment-projection-v1.json",
+  "outcome_evaluations": [
+    {
+      "key": "samsung-q2-12h-mass-production-vs-later-realization",
+      "judgment_key": "2024-samsung-hbm3e-12h-q2-mass-production-plan",
+      "reality_fact_key": "2024-samsung-hbm3e-12h-mass-production-realized-q3",
+      "semantic_relation": "direct_match"
+    }
+  ],
+  "replay": {
+    "subjects": [
+      {"entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066"}
+    ],
+    "cutoffs": [
+      {
+        "key": "after-q2-plan-vintage",
+        "knowledge_cutoff": "2024-05-01T00:00:00Z",
+        "expected_counts": {"reality": 0, "judgments": 1, "outcomes": 0}
+      },
+      {
+        "key": "after-q3-realization-vintage",
+        "knowledge_cutoff": "2024-11-01T00:00:00Z",
+        "expected_counts": {"reality": 1, "judgments": 1, "outcomes": 1}
+      }
+    ],
+    "expected_manifest_counts": {"reality": 1, "judgments": 1, "outcomes": 1}
+  }
+}
