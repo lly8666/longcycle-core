@@ -1,0 +1,50 @@
+{
+  "schema_version": "longcycle-memory-self-verification-discovery/v1",
+  "run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "packet_id": "SV1-SAMSUNG-CUT-RECOVERY-2023",
+  "authority": "search_and_interactive_primary_source_discovery_only_not_evidence",
+  "lead_ids": ["MS-0018", "MS-0024", "MS-0050", "MS-0081", "MS-0099"],
+  "sources": [
+    {
+      "publisher": "Samsung Electronics",
+      "source_role": "issuer primary investor-relations disclosure",
+      "source_displayed_title": "1Q 2023 Pre-Earnings Guidance",
+      "source_displayed_date": "2023-04-11",
+      "url": "https://www.samsung.com/global/ir/reports-disclosures/public-disclosure-view.84005/",
+      "capture_state": "content_observed_interactively_durable_capsule_pending",
+      "claim_scope": [
+        "Memory earnings were heavily affected by weak purchasing sentiment and customer inventory adjustments",
+        "Samsung stated that sufficient supply capability had been achieved for certain memory products and that it planned production cuts for those products",
+        "Samsung simultaneously stated that future-oriented infrastructure/R&D preparation would continue"
+      ],
+      "precision_guard": "The disclosure does not establish a DRAM-vs-NAND cut percentage, exact affected product list, or total company-wide wafer-start reduction. Do not infer these from secondary reports."
+    },
+    {
+      "publisher": "Samsung Electronics",
+      "source_role": "issuer primary earnings release",
+      "source_displayed_title": "Samsung Electronics Announces First Quarter 2023 Results",
+      "source_displayed_date": "2023-04-27",
+      "url": "https://news.samsung.com/global/samsung-electronics-announces-first-quarter-2023-results",
+      "capture_state": "content_observed_interactively_durable_capsule_pending",
+      "claim_scope": [
+        "Samsung expected only limited demand recovery in Q2 2023 while customer inventory adjustment continued",
+        "Samsung expected second-half demand to recover gradually as customer inventory levels declined",
+        "DRAM Q1 bit growth missed Samsung's previous guidance while NAND bit growth exceeded previous guidance",
+        "Samsung described distinct DRAM and NAND second-half product responses rather than one merged memory metric"
+      ],
+      "judgment_target": "second-half 2023 memory demand/inventory recovery",
+      "precision_guard": "This is Samsung's contemporaneous expectation, not a later-confirmed Outcome and not evidence that DRAM/NAND recovery timing was identical."
+    }
+  ],
+  "refined_findings": [
+    "The Samsung primary record resolves the existence/timing of a production-cut statement to April 2023, but does not support a numeric DRAM/NAND cut split.",
+    "The April 27 release provides a dated recovery Judgment that can later be compared with subsequent quarters without hindsight leakage.",
+    "Samsung's own Q1 discussion already differentiates DRAM and NAND bit-growth performance, directly supporting the benchmark's product-line comparability guard."
+  ],
+  "evidence_boundary": "No source in this discovery packet is yet a Longcycle Grounded EvidenceFragment. The current tool surface observed claim-relevant source content, but the normal webpage durable capture capsule has not yet been materialized; do not promote this packet directly to Reality or Judgment.",
+  "next_actions": [
+    "Create the durable claim-scoped webpage capture capsule under CAP-0001/CAP-0002 before epistemic promotion.",
+    "Pair Samsung's dated April-2023 recovery Judgment with later Samsung primary quarterly releases to evaluate revision/outcome timing.",
+    "Compare Samsung's non-numeric cut statement with Micron and SK hynix primary cut disclosures without manufacturing cross-company numeric equivalence."
+  ]
+}
