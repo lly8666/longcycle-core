@@ -6,7 +6,7 @@ from uuid import UUID
 from pydantic import Field, field_validator, model_validator
 
 from longcycle.domain.epistemic import MemorySubjectRef
-from longcycle.domain.models import DomainModel, require_aware_datetime
+from longcycle.domain.models import DomainModel, FactAssertion, require_aware_datetime
 
 
 class IndustryDescriptor(DomainModel):
@@ -14,6 +14,75 @@ class IndustryDescriptor(DomainModel):
     canonical_name: str = Field(min_length=1)
     node_kind: str = Field(min_length=1)
     archetype: str | None = None
+
+
+class ResolvedIndustryMembershipResolution(DomainModel):
+    """One already-decided CAP-0003 resolution supplied to catalog projection.
+
+    The projection layer is not allowed to choose between assertions.  It receives
+    the exact selected assertion set from reconciliation and fails closed unless that
+    set can represent one unambiguous industry-membership row.
+    """
+
+    resolution_id: UUID
+    selected_assertions: tuple[FactAssertion, ...]
+    confidence: float = Field(ge=0, le=1)
+    resolved_at: datetime
+
+    @field_validator("resolved_at")
+    @classmethod
+    def resolution_time_is_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "resolved_at")
+        assert checked is not None
+        return checked
+
+    @model_validator(mode="after")
+    def selected_assertions_are_unique(self) -> "ResolvedIndustryMembershipResolution":
+        ids = [item.id for item in self.selected_assertions]
+        if len(ids) != len(set(ids)):
+            raise ValueError("resolution selected assertions must be unique")
+        return self
+
+
+class IndustryMembershipProjection(DomainModel):
+    """Validated materialization payload for the orientation catalog.
+
+    ``known_at`` and Evidence identities remain explicit even though the catalog table
+    does not duplicate them.  The read adapter reconstructs them from the selected
+    assertion behind ``resolution_id``.  ``system_from`` is deterministic curation
+    provenance only and must never become historical market-known time.
+    """
+
+    membership_id: UUID
+    industry_node_id: UUID
+    entity_id: UUID
+    role: str = Field(min_length=1)
+    exposure_type: str | None = None
+    valid_from: date | None = None
+    valid_to: date | None = None
+    known_at: datetime
+    system_from: datetime
+    confidence: float = Field(ge=0, le=1)
+    resolution_id: UUID
+    assertion_id: UUID
+    evidence_fragment_ids: tuple[UUID, ...]
+
+    @field_validator("known_at", "system_from")
+    @classmethod
+    def projection_times_are_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "industry_membership_projection_time")
+        assert checked is not None
+        return checked
+
+    @model_validator(mode="after")
+    def grounded_projection(self) -> "IndustryMembershipProjection":
+        if not self.evidence_fragment_ids:
+            raise ValueError("industry membership projection requires supporting Evidence")
+        if len(set(self.evidence_fragment_ids)) != len(self.evidence_fragment_ids):
+            raise ValueError("industry membership projection Evidence must be unique")
+        if self.valid_from is not None and self.valid_to is not None and self.valid_to <= self.valid_from:
+            raise ValueError("membership valid_to must be after valid_from")
+        return self
 
 
 class IndustrySubjectMembershipRecord(DomainModel):
