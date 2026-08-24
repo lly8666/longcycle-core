@@ -12,7 +12,8 @@ jobs:
   execute:
     if: >-
       (github.event.issue.title == '[longcycle-research-orchestration-v1]' ||
-       github.event.issue.title == '[longcycle-research-orchestration-v2]') &&
+       github.event.issue.title == '[longcycle-research-orchestration-v2]' ||
+       github.event.issue.title == '[longcycle-epistemic-trajectory-v1]') &&
       github.event.issue.user.login == github.repository_owner
     runs-on: ubuntu-24.04
     timeout-minutes: 25
@@ -32,7 +33,7 @@ jobs:
       LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/research-orchestration-blobs
       GH_TOKEN: ${{ github.token }}
     steps:
-      - name: Parse bounded orchestration request
+      - name: Parse bounded research request
         id: request
         shell: bash
         env:
@@ -73,7 +74,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-      - name: Verify requested repository state and orchestration spec
+      - name: Verify requested repository state and research spec
         id: source
         shell: bash
         env:
@@ -93,8 +94,9 @@ jobs:
           if schema not in {
               'longcycle-research-orchestration/v1',
               'longcycle-research-orchestration/v2',
+              'longcycle-epistemic-trajectory/v1',
           }:
-              raise SystemExit(f'unexpected orchestration schema: {schema!r}')
+              raise SystemExit(f'unexpected research schema: {schema!r}')
 
           release_tag = ''
           file_name = ''
@@ -113,7 +115,7 @@ jobs:
               if not isinstance(sha256, str) or not re.fullmatch(r'[0-9a-f]{64}', sha256):
                   raise SystemExit('invalid source-pack sha256')
           elif spec.get('source_pack') is not None:
-              raise SystemExit('orchestration v2 must be transport-neutral and omit source_pack')
+              raise SystemExit('v2/trajectory research specs must be transport-neutral and omit source_pack')
 
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
               print(f'schema={schema}', file=output)
@@ -133,7 +135,7 @@ jobs:
           mkdir -p source-pack
           gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$SOURCE_FILE" --dir source-pack
           test "$(sha256sum "source-pack/$SOURCE_FILE" | awk '{print $1}')" = "$SOURCE_SHA256"
-      - name: Execute researcher-facing fail-closed orchestration
+      - name: Execute researcher-facing fail-closed contract
         id: gate
         shell: bash
         env:
@@ -152,10 +154,10 @@ jobs:
           )
           if [[ "$ORCHESTRATION_SCHEMA" == 'longcycle-research-orchestration/v1' ]]; then
             args+=(--source-pack "source-pack/$SOURCE_FILE")
-          elif [[ "$ORCHESTRATION_SCHEMA" == 'longcycle-research-orchestration/v2' ]]; then
+          elif [[ "$ORCHESTRATION_SCHEMA" == 'longcycle-research-orchestration/v2' || "$ORCHESTRATION_SCHEMA" == 'longcycle-epistemic-trajectory/v1' ]]; then
             args+=(--material-root .)
           else
-            echo "unsupported orchestration schema: $ORCHESTRATION_SCHEMA" >&2
+            echo "unsupported research schema: $ORCHESTRATION_SCHEMA" >&2
             exit 2
           fi
           longcycle --json research run "${args[@]}"
@@ -166,27 +168,48 @@ jobs:
           result = json.load(open('orchestration-execution.json', encoding='utf-8'))
           assert result['ok'] is True, result
           payload = result['result']
-          assert payload['schema_version'] in {
+          execution_schema = payload['schema_version']
+          summary = {
+              'execution_schema': execution_schema,
+              'research_spec_version': '${{ steps.source.outputs.schema }}',
+          }
+
+          if execution_schema in {
               'longcycle-research-orchestration-execution/v1',
               'longcycle-research-orchestration-execution/v2',
-          }, payload
-          acceptance = payload['evidence']['acceptance']
+          }:
+              core = payload
+          elif execution_schema == 'longcycle-epistemic-trajectory-execution/v1':
+              core = payload['core_orchestration']
+              summary['phases'] = payload['phases']
+              summary['judgment_verification'] = (
+                  payload['judgment']['verification'] if payload.get('judgment') else None
+              )
+              summary['outcome_count'] = len(payload.get('outcomes') or [])
+              summary['replay_verified'] = bool(
+                  payload.get('replay') and payload['replay'].get('no_lookahead_sequence_verified')
+              )
+          else:
+              raise AssertionError(payload)
+
+          acceptance = core['evidence']['acceptance']
           assert acceptance['fact_assertions_created'] == 0, payload
           assert acceptance['judgment_assertions_created'] == 0, payload
+          summary['acceptance'] = acceptance
+          if core.get('reality') is not None:
+              summary['reality_verification'] = core['reality']['verification']
 
-          grounded = json.load(open('work/grounded-evidence-execution.json', encoding='utf-8'))
+          grounded_path = 'work/grounded-evidence-execution.json'
+          if execution_schema == 'longcycle-epistemic-trajectory-execution/v1':
+              grounded_path = 'work/core-orchestration/grounded-evidence-execution.json'
+          grounded = json.load(open(grounded_path, encoding='utf-8'))
           assert grounded['ok'] is True, grounded
           grounded_result = grounded['result']
-          fragment_ids = {
+          summary['fragment_ids'] = {
               row['fragment_key']: row['evidence_fragment_id']
               for row in grounded_result['fragments']
           }
-          summary = {
-              'execution_schema': payload['schema_version'],
-              'orchestration_spec_version': payload.get('orchestration_spec_version'),
-              'acceptance': acceptance,
-              'fragment_ids': fragment_ids,
-          }
+
           with open('/tmp/research-orchestration-summary.json', 'w', encoding='utf-8') as handle:
               json.dump(summary, handle, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
           print('RESEARCH_ORCHESTRATION_CLI_GATE_PASS')
@@ -202,9 +225,7 @@ jobs:
           compression-level: 0
           path: |
             orchestration-execution.json
-            work/prepared-grounded-evidence-spec.json
-            work/grounded-evidence-execution.json
-            work/reality-execution.json
+            work/**/*.json
             /tmp/research-orchestration-summary.json
             /tmp/research-orchestration.log
       - name: Report execution result
