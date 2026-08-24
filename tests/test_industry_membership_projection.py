@@ -128,7 +128,7 @@ def test_membership_projection_preserves_resolution_truth_and_historical_time() 
 
 
 def test_membership_projection_rejects_non_membership_predicate() -> None:
-    with pytest.raises(ValueError, match="predicate industry.membership"):
+    with pytest.raises(ValueError, match=r"predicate industry\.membership"):
         build_industry_membership_projection(_resolution(_assertion(field_name="project.state")))
 
 
@@ -139,7 +139,7 @@ def test_membership_projection_rejects_ambiguous_selected_resolution() -> None:
 
 
 def test_membership_projection_rejects_missing_or_invalid_industry_identity() -> None:
-    with pytest.raises(ValueError, match="metadata.industry_node_id"):
+    with pytest.raises(ValueError, match=r"metadata\.industry_node_id"):
         build_industry_membership_projection(_resolution(_assertion(metadata={"exposure_type": "direct"})))
     with pytest.raises(ValueError, match="must be a UUID"):
         build_industry_membership_projection(
@@ -147,18 +147,7 @@ def test_membership_projection_rejects_missing_or_invalid_industry_identity() ->
         )
 
 
-def test_membership_projection_rejects_non_text_role() -> None:
-    invalid = _assertion().model_copy(
-        update={
-            "value_type": FactValueKind.BOOLEAN,
-            "normalized_boolean": True,
-        }
-    )
-    with pytest.raises(ValueError, match="role must use text"):
-        build_industry_membership_projection(_resolution(invalid))
-
-
-def test_membership_projection_rejects_missing_supporting_evidence() -> None:
+def test_membership_resolution_preserves_upstream_supporting_evidence_invariant() -> None:
     invalid = _assertion().model_copy(
         update={
             "evidence": (
@@ -169,7 +158,18 @@ def test_membership_projection_rejects_missing_supporting_evidence() -> None:
             )
         }
     )
-    with pytest.raises(ValueError, match="requires supporting Evidence"):
+    with pytest.raises(ValueError, match="requires at least one supporting evidence fragment"):
+        _resolution(invalid)
+
+
+def test_membership_projection_rejects_non_text_role() -> None:
+    invalid = _assertion().model_copy(
+        update={
+            "value_type": FactValueKind.BOOLEAN,
+            "normalized_boolean": True,
+        }
+    )
+    with pytest.raises(ValueError, match="role must use text"):
         build_industry_membership_projection(_resolution(invalid))
 
 
