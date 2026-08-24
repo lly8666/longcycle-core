@@ -201,7 +201,7 @@ jobs:
 
           grounded_path = 'work/grounded-evidence-execution.json'
           if execution_schema == 'longcycle-epistemic-trajectory-execution/v1':
-              grounded_path = 'work/core-orchestration/grounded-evidence-execution.json'
+              grounded_path = 'work/core/grounded-evidence-execution.json'
           grounded = json.load(open(grounded_path, encoding='utf-8'))
           assert grounded['ok'] is True, grounded
           grounded_result = grounded['result']
