@@ -14,6 +14,8 @@ from longcycle.application.session_handoff import (
 
 ROOT = Path(__file__).resolve().parents[1]
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
+PROTOCOL = ROOT / "docs" / "development" / "session-handoff-protocol.md"
+CONTINUE_HERE = ROOT / "CONTINUE_HERE.md"
 
 
 class SessionHandoffContractTest(unittest.TestCase):
@@ -165,6 +167,20 @@ class SessionHandoffContractTest(unittest.TestCase):
                     "strategic_horizon.medium_term_goal",
                 },
             )
+
+    def test_semantic_reread_rule_is_normative_without_changing_v5_shape(self) -> None:
+        # HANDOFF_SEMANTIC_REREAD_V1
+        protocol = PROTOCOL.read_text(encoding="utf-8")
+        bootstrap = CONTINUE_HERE.read_text(encoding="utf-8")
+
+        self.assertIn("HANDOFF_SEMANTIC_REREAD_V1", protocol)
+        self.assertIn("HANDOFF_SEMANTIC_REREAD_V1", bootstrap)
+        self.assertIn("cursor as the sole owner", protocol)
+        self.assertIn("must remain meaningfully broader than `next_atomic_action`", protocol)
+        self.assertIn("Must be checked", protocol)
+        self.assertIn("写完 JSON 不等于完成 handoff", bootstrap)
+        self.assertIn("必须检查不等于必须改值", bootstrap)
+        self.assertIn("从 live target ref 重新读取", bootstrap)
 
     def test_live_head_difference_requires_delta_reconciliation(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(

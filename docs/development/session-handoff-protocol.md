@@ -248,3 +248,62 @@ Do **not** fail merely because raw PDF bytes are pending after content verificat
 Material continuity changes require an observed failure or adversarial case, the smallest owning repair, repository-backed contract updates, an artificial-ignorance drill and a return to the research main path.
 
 The target is minimum sufficient context: preserve what was actually readable and verifiable, distinguish evidence truth from byte-archive completeness, defer low-value transport work, and continue the industrial-memory research without sacrificing claim-scoped provenance or no-lookahead semantics.
+
+## 14. Semantic reread and update cadence
+
+> `HANDOFF_SEMANTIC_REREAD_V1`
+
+The v5 planning layers are intentionally different horizons. They were introduced to prevent a fresh Agent from shrinking the roadmap into the latest local TODO. A handoff is therefore wrong even when schema-valid if those layers collapse into paraphrases of one narrow blocker.
+
+| Field/layer | Original semantic role | Update cadence |
+| --- | --- | --- |
+| `bootstrap_instruction` | procedural resume instruction only; never a mini-devlog, commit history or campaign narrative | change only when resume procedure changes |
+| `strategic_horizon.medium_term_goal` | current cross-session proof target below terminal mission | slow/milestone-moving |
+| `strategic_horizon.short_term_goal` | current milestone that advances the medium-term proof | milestone-moving |
+| `strategic_horizon.next_big_step` | next meaningful milestone/state transition above the local atomic task | milestone-moving; must remain meaningfully broader than `next_atomic_action` |
+| `continuation_cursor` | sole owner of the live current task, why-now, done condition and immediate next atomic action | re-verify every substantive handoff |
+| `workstreams` | typed lane state and lane-local queue; a cursor-owned workstream should describe what follows/frames the atomic action rather than restating it | update when lane state/queue changes |
+| `memory_campaign` | campaign research state, seal/visibility and campaign-level research progression | update when campaign state changes; do not use as a second CI/workflow task list |
+| `ci` | explicitly non-authoritative snapshot of what was actually observed | refresh whenever correctness/live status is material; `unobserved` must stay `unobserved` |
+| `ordered_next_actions` | compact cross-workstream ordering bridge when ordering matters | keep minimal; do not turn it into a second cursor narrative |
+
+“Must be checked” does not mean “must be rewritten.” Stable fields should stay stable until their semantic state changes; live fields must be actively re-verified even when their value remains unchanged.
+
+### 14.1 The complete handoff transaction
+
+Writing JSON is only the draft stage. A substantive handoff is complete only after:
+
+```text
+substantive/control-plane work
+→ draft next current.json
+→ schema/static validation
+→ re-read the entire final draft from top to bottom
+→ semantic normalization
+→ temporal/live-state refresh
+→ admission/history-routing applicability check
+→ commit handoff sync
+→ re-read current.json from the live target ref
+```
+
+During the whole-document reread, the closing Agent must answer, from the handoff itself:
+
+1. What state is the project in now?
+2. What is the single current task and single next atomic action?
+3. What is the broader `next_big_step`, and is it genuinely broader rather than a paraphrase?
+4. Which workstream owns the cursor, and are supporting/parallel lanes still distinguishable?
+5. Which fields are live observations, which are milestone state, and which are stable instructions?
+6. Does the planned material change still fit `current-admission.json`; if not, must admission/history recall be reopened before implementation?
+
+If several fields independently maintain the same immediate action, collapse them back to their proper semantic owner instead of merely changing wording. If a live fact was not observed, record that uncertainty rather than inferring success/failure.
+
+### 14.2 Fresh-Agent drill cadence
+
+> `FRESH_AGENT_DRILL_CADENCE_V1`
+
+`continuity_sequence` is the only scheduled-drill counter; do not add a second mutable counter.
+
+Before committing the next handoff, compute its proposed sequence. Every positive multiple of 10 is a scheduled genuine Fresh-Agent drill boundary. The closing Agent must proactively tell the user that the drill is due and, when an isolated fresh-Agent/session surface is available, trigger the black-box drill in `docs/development/fresh-agent-continuity-drill.md` rather than waiting for the user to remember.
+
+Manual/event-triggered drills may run at any sequence, especially after a material continuity change or a repeated historical-recall failure. They do **not** reset the fixed 10/20/30/... cadence. A same-Agent bounded rehearsal is useful for a continuity repair but does not satisfy the scheduled genuine Fresh-Agent boundary.
+
+Report-only rehearsal commits do not increment `continuity_sequence`; the sequence counts handoff generations, not every Git commit.

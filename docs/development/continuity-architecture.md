@@ -231,3 +231,39 @@ Continuity is infrastructure. Once a fresh Agent can recover:
 - the Release(raw source) / Drive(generated state) boundary;
 
 without chat history, the continuity task is complete and the main path returns to research.
+
+## 14. Semantic granularity is part of continuity correctness
+
+The strategic horizon, typed workstream graph, continuation cursor and ordered-action bridge are intentionally different planning scales. They exist because an earlier flat handoff could preserve immediate TODOs while successive Agents still shrank the roadmap from the product mission into the latest local test or blocker.
+
+A later failure exposed the opposite drift: when the active task became narrow, several schema-valid layers collapsed into paraphrases of the same PostgreSQL/runtime action. That did not mean the hierarchy was unnecessary; it meant its semantic scale was no longer being checked after writing.
+
+The repair is therefore **semantic normalization, not schema flattening**:
+
+- strategic horizon remains broader than the immediate cursor;
+- workstreams preserve lane state/role and what follows the cursor rather than copying it;
+- the cursor remains the sole owner of the immediate current task and next atomic action;
+- campaign state remains research/campaign state;
+- CI remains an observed snapshot;
+- bootstrap prose remains procedural.
+
+Every substantive handoff closes with a whole-document reread against these meanings and against live repository state. Stable/slow-moving fields are checked but only changed when their meaning changes; live fields are actively refreshed every substantive handoff. This keeps handoff maintenance a small mandatory tax rather than a second development project.
+
+## 15. Periodic recovery audit
+
+A handoff can be internally tidy yet still fail a genuinely fresh Agent. Longcycle therefore combines cheap high-frequency review with lower-frequency independent recovery testing:
+
+```text
+every substantive handoff
+  → write / schema-check / whole-document semantic reread / live-state refresh
+
+every 10th continuity_sequence
+  → genuine Fresh-Agent black-box drill
+
+material continuity change or suspicious recall failure
+  → optional early/manual drill
+```
+
+`continuity_sequence` is the single scheduled cadence source. Manual or event-triggered drills never reset the fixed 10/20/30/... boundaries, and report-only commits do not advance the sequence. Same-Agent artificial ignorance remains useful for local sufficiency checks but cannot satisfy the scheduled independent drill.
+
+The closing Agent owns the cadence check: it computes the proposed next handoff sequence and proactively raises the drill when a boundary is due instead of outsourcing that memory to the user.

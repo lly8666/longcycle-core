@@ -216,3 +216,51 @@ Longcycle 的 benchmark 用来打脸架构，不是训练 Agent 应试。真正�
 - devlog / old industry：按需追溯，不属于默认启动上下文。
 
 如果任务本身是在修改 handoff 机制，再定向读 `docs/development/session-handoff-protocol.md` 与 `docs/development/continuity-architecture.md`；不要因此预加载整个开发历史。
+
+## Handoff Semantic Reread Gate
+
+> `HANDOFF_SEMANTIC_REREAD_V1`
+
+Handoff 是每次 substantive session 末尾占比很小、但不能跳过的一环。**写完 JSON 不等于完成 handoff。** closing Agent 必须把最终 draft 从头到尾重新读一遍，再决定是否可以提交。
+
+重读时按字段原始语义检查，而不是只看 schema 是否通过：
+
+- `bootstrap_instruction` 只写恢复程序，不写 campaign/commit mini-devlog；
+- `strategic_horizon.next_big_step` 保持里程碑尺度，不能退化成 `next_atomic_action` 的换句话说；
+- `continuation_cursor` 是当前 task / done_when / next atomic action 的唯一即时 owner；
+- 当前 cursor 所属 workstream 的 `next_actions` 应表达 lane queue/后续步骤，不重复维护同一个即时动作；
+- `memory_campaign.next_research_actions` 保持 campaign/research 尺度，不当作 CI/workflow 操作清单；
+- `ci` 只记录实际观察到的 snapshot，没观察到就明确 `unobserved`；
+- `ordered_next_actions` 只承担必要的跨 workstream 顺序，不再写一份 cursor 故事。
+
+同时检查更新节奏：使命/方法不因 session 重写；战略和 workstream 只在 milestone/lane 状态变化时更新；cursor 与重要 live state 每次 substantive handoff 都要重新验证。**必须检查不等于必须改值。**
+
+完整 closing transaction：
+
+```text
+写 current.json draft
+→ schema/static validation
+→ 从头完整重读最终 draft
+→ 检查字段粒度 / 重复 owner / stale live state
+→ 检查当前 material change 是否仍落在 current-admission 的 intent/owner scope
+→ 必要时触发 bounded history recall
+→ normalize 后再 commit
+→ 从 live target ref 重新读取最终 current.json / HEAD
+```
+
+若重读后无法用 handoff 唯一回答“当前 task 是什么、next atomic action 是什么、next big step 为什么更高一层、哪个 workstream 拥有 cursor、哪些状态其实尚未观察”，handoff 还没写完。
+
+## Fresh-Agent Drill Cadence
+
+> `FRESH_AGENT_DRILL_CADENCE_V1`
+
+不用新增第二个计数器。`continuity_sequence` 就是 handoff 次数的唯一 cadence source。
+
+closing Agent 在写下一份 handoff 前先算 `next_sequence = current_sequence + 1`。当 `next_sequence` 是 10 的正整数倍时，Agent **必须主动告诉用户 Fresh-Agent drill 到期，并在有隔离 fresh session/Agent 能力时主动触发** `docs/development/fresh-agent-continuity-drill.md`，不能等用户自己记得。
+
+- 固定节拍：10、20、30……；
+- 任意 sequence 都可由用户或 Agent 手动触发；
+- material continuity change / 重复历史召回失败也可以提前触发；
+- 手动/提前 drill **不重置** 固定十次节拍；
+- same-Agent artificial-ignorance rehearsal 可以用于当前修复自检，但**不能替代**每十次一次的 genuine Fresh-Agent drill；
+- drill 的 report-only commit 不增加 `continuity_sequence`。

@@ -110,6 +110,23 @@
       ],
       "tags": ["semantic-owner", "projection", "composition", "negative-case", "capability-governance", "fresh-agent", "shadow-semantics"],
       "card_path": ".longcycle/repair-memory/invariants/RI-0006-semantic-owner-reuse.json"
+    },
+    {
+      "id": "RI-0007",
+      "title": "Handoff layers preserve planning granularity and are re-read before commit",
+      "kind": "architecture",
+      "severity": "high",
+      "scope": [
+        ".longcycle/handoff/**",
+        "CONTINUE_HERE.md",
+        "docs/development/session-handoff-protocol.md",
+        "docs/development/continuity-architecture.md",
+        "docs/development/fresh-agent-continuity-drill.md",
+        "tests/test_session_handoff.py",
+        "tests/test_fresh_agent_continuity_drill.py"
+      ],
+      "tags": ["handoff", "fresh-agent", "semantic-reread", "continuity", "tunnel-vision", "temporal-freshness", "deduplication", "recovery-drill"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0007-handoff-semantic-reread.json"
     }
   ]
 }

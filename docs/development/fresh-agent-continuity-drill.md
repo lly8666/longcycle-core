@@ -19,13 +19,15 @@ The Agent must first resolve the live branch through GitHub issue #2 and `FRESH_
 Recover, in the Agent's own words:
 
 - what Longcycle is ultimately trying to preserve;
-- the live continuation task and why it is current;
+- the live medium-term goal, short-term goal and broader `next_big_step`;
+- the live continuation task, its owning workstream/role, the single next atomic action and why it is current;
 - the semantic owner(s) that should be reused before material work;
-- whether old devlogs/issues/benchmarks need to be loaded now.
+- whether old devlogs/issues/benchmarks need to be loaded now;
+- which live Git/CI facts were independently refreshed rather than copied from the checkpoint snapshot.
 
 Constraint: old devlogs, old benchmark receipts and unrelated old issues are forbidden reads in this scenario. The Agent may use the normal bounded bootstrap, live PR/CI and current capability index.
 
-Pass means the current task is recoverable without chat history and without broad historical loading. Fail if the Agent asks the user to reconstruct context, treats checkpoint CI as live authority, or preloads cold history just to feel safer.
+Pass means the current task is recoverable without chat history and without broad historical loading; the Agent distinguishes strategic horizon from the immediate cursor and main/supporting/parallel workstreams rather than collapsing them into one TODO. Fail if the Agent asks the user to reconstruct context, treats checkpoint CI as live authority, copies an unobserved snapshot into a fact, preloads cold history just to feel safer, or cannot state one next atomic action distinct from the broader `next_big_step`.
 
 ### DUMB-02 — fuzzy prior-history cue
 
@@ -86,3 +88,18 @@ A PASS report is not self-authorizing evidence that the system is correct. A lat
 ## Why exactly three scenarios
 
 DUMB-01 tests bounded hot continuity. DUMB-02 tests latent/on-demand cold memory. DUMB-03 tests whether recent benchmark/productization can override the original memory-first historical method. Together they exercise the main failure modes without turning continuity into a separate benchmark program.
+
+## Scheduled cadence and manual triggers
+
+> `FRESH_AGENT_DRILL_CADENCE_V1`
+
+The scheduled cadence is derived only from `.longcycle/handoff/current.json.continuity_sequence`.
+
+- Every positive multiple of 10 (`10, 20, 30, ...`) is a scheduled genuine Fresh-Agent boundary.
+- Before writing a new handoff, the closing Agent computes the proposed next sequence. If that sequence is a boundary, the Agent must proactively tell the user the drill is due and, when an isolated fresh Agent/session surface is available, trigger this black-box drill instead of waiting for the user to remember.
+- Manual drills and event-triggered drills may run at any sequence, especially after a material continuity change, suspicious handoff drift or repeated historical-recall failure.
+- A manual/event-triggered drill does **not** reset or shift the fixed every-ten schedule.
+- A same-Agent artificial-ignorance rehearsal does **not** satisfy a scheduled genuine Fresh-Agent boundary because prior chat context can contaminate recovery.
+- A report-only drill commit does not increment `continuity_sequence`; the sequence counts handoff generations.
+
+The cadence is a backstop, not a target to optimize. A scheduled failure should be preserved as an immutable observation and repaired through the normal continuity evolution rule rather than by editing the report or coaching the test Agent.

@@ -28,3 +28,9 @@ Do not edit old rehearsal results to make history look consistent. Preserve the 
 - External fresh-Agent reports must follow `docs/development/fresh-agent-continuity-drill.md` and must not read earlier reports before completing their own scenarios.
 - A report may advance the live branch by one report-only commit while recording the pre-report `subject_head` it actually tested.
 - Do not copy report conclusions into Method Core, Capability Registry or Repair Memory unless a later maintainer independently verifies the architectural lesson.
+
+## Scheduled cadence
+
+`continuity_sequence` is the only scheduled Fresh-Agent drill counter. Every positive multiple of 10 is a genuine external/fresh-session drill boundary. The closing Agent must notice the proposed next handoff sequence itself and proactively raise or trigger the drill; this memory is not delegated to the user.
+
+Manual or event-triggered drills may happen between boundaries, including immediately after a material continuity repair. They do not reset the fixed `10, 20, 30, ...` cadence. Same-Agent rehearsals also do not satisfy those scheduled boundaries. Report-only commits preserve the subject sequence and do not increment `continuity_sequence`.
