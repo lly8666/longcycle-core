@@ -1,0 +1,110 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-samsung-hbm3e-12h-outcome-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "e01650d95434eb45fc1414cbd51d64da28c2e2c2",
+  "trigger_issue": 159,
+  "actions_run_id": 32743437215,
+  "actions_artifact": {
+    "artifact_id": 9526076205,
+    "name": "research-orchestration-32743437215",
+    "digest": "sha256:fa0510a429cdef108088164a4d5fbfd019dffe52f0472d6bff638fd47d62cdc2",
+    "expires_at": "2026-08-31T15:13:05Z"
+  },
+  "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-samsung-12h-mass-production-trajectory-v1.json",
+  "research_orchestration_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-samsung-12h-mass-production-trajectory-orchestration-v2.json",
+  "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-samsung-12h-mass-production-trajectory-evidence-v1.json",
+  "reality_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-samsung-12h-mass-production-reality-projection-v1.json",
+  "judgment_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-samsung-12h-mass-production-judgment-projection-v1.json",
+  "execution_schema": "longcycle-epistemic-trajectory-execution/v1",
+  "phases": [
+    "grounded_evidence",
+    "reality_projection",
+    "judgment_persistence",
+    "outcome_evaluation",
+    "seal_integrated_memory",
+    "point_in_time_replay"
+  ],
+  "acceptance": {
+    "persisted_document_versions": 2,
+    "persisted_evidence_fragments": 2,
+    "fact_assertions_created_during_grounding": 0,
+    "judgment_assertions_created_during_grounding": 0,
+    "canonical_reality_count": 1,
+    "judgment_count": 1,
+    "outcome_count": 1,
+    "replay_verified": true,
+    "no_lookahead_sequence_verified": true,
+    "typed_round_trip": true
+  },
+  "fragment_ids": {
+    "EVF-SAMSUNG-HBM3E-12H-Q2-PLAN-TRAJECTORY": "4914789a-1cbf-5c98-9aac-2d5c899bde80",
+    "EVF-SAMSUNG-HBM3E-12H-Q3-REALIZED-TRAJECTORY": "d8c8b3fd-4b9e-5c3a-8251-6990d59135d3"
+  },
+  "reality": {
+    "fact_key": "2024-samsung-hbm3e-12h-mass-production-realized-q3",
+    "fact_assertion_id": "d14d1ed7-6112-56be-8a70-ddf4bf3263f6",
+    "canonical_fact_version_id": "9039587a-c928-528a-a77e-d5b350f71c61",
+    "known_at": "2024-11-01T00:00:00Z",
+    "valid_time_kind": "unknown",
+    "valid_time_precision": "unknown",
+    "observed_at": "2024-10-31T00:00:00Z",
+    "observed_at_precision": "day",
+    "observation_text": "October 31, 2024 Q3 earnings-call vintage reporting the third-quarter mass-production state"
+  },
+  "judgment": {
+    "judgment_key": "2024-samsung-hbm3e-12h-q2-mass-production-plan",
+    "judgment_id": "1b4888c5-a823-530d-9c8e-04aceb65986c",
+    "first_known_at": "2024-05-01T00:00:00Z",
+    "target_precision": "quarter",
+    "target_text": "second quarter of 2024"
+  },
+  "outcome": {
+    "evaluation_id": "9307af52-66bb-5300-b90d-9e3d80428046",
+    "judgment_id": "1b4888c5-a823-530d-9c8e-04aceb65986c",
+    "canonical_fact_version_id": "9039587a-c928-528a-a77e-d5b350f71c61",
+    "outcome_evidence_fragment_id": "d8c8b3fd-4b9e-5c3a-8251-6990d59135d3",
+    "evaluation_status": "realized",
+    "semantic_relation": "direct_match",
+    "outcome_from": null,
+    "outcome_to": null,
+    "outcome_precision": "unknown",
+    "outcome_text": null,
+    "outcome_first_known_at": "2024-11-01T00:00:00Z",
+    "timing_relation": "not_comparable",
+    "timing_delta_value": null,
+    "timing_delta_unit": null,
+    "timing_error_days": null,
+    "explanation": "The later Samsung source directly establishes the same HBM3E 12H mass-production milestone as realized, but it only proves a true state by the Q3 reporting context and does not provide production onset. Therefore the original Q2 Judgment can be evaluated as realized without claiming it was on time, late or missed."
+  },
+  "sealed_memory": {
+    "database_sha256": "f242cee69cb99b28490cf5d1a89ba5c01232eda63f582634b6fb79370189a4fa",
+    "database_size_bytes": 2895872,
+    "manifest_sha256": "b26bbc6a6199f21ab4450597771c11e016b237206427d7e0e5c0a4bb1873e338",
+    "counts": {"reality": 1, "judgments": 1, "outcomes": 1}
+  },
+  "replay_counts": [
+    {
+      "knowledge_cutoff": "2024-05-01T00:00:00Z",
+      "reality": 0,
+      "judgments": 1,
+      "outcomes": 0,
+      "snapshot_sha256": "4a5b1ff3f756f7d537e456c00590aeda1fb0a4da5ff697f8df9c7cb05d527bf2"
+    },
+    {
+      "knowledge_cutoff": "2024-11-01T00:00:00Z",
+      "reality": 1,
+      "judgments": 1,
+      "outcomes": 1,
+      "snapshot_sha256": "c66b4fc0f36ca91aefbeee92cacb3f06066a837d907f3649ffdbce89f10fecb2"
+    }
+  ],
+  "boundary": [
+    "Samsung's Q3 2024 earnings-call script directly establishes that HBM3E 12-stack products were in mass production and generating sales; the prior direct mass-production realization source gap is closed.",
+    "The source does not state the 12-stack mass-production onset date. A Q3 reported state must not be converted into a Q3 start date or used to claim the Q2 target was met or missed.",
+    "The direct Outcome is therefore realized/direct_match but timing_relation=not_comparable with no synthetic timing delta.",
+    "Mass production and sales do not establish a named customer, NVIDIA qualification or completed platform qualification.",
+    "The original Q2 Judgment remains visible before the later Reality/Outcome; replay verified no-lookahead at both declared cutoffs."
+  ],
+  "control_plane_note": "Issue #158 was a discarded broker-envelope typo using trajectory_spec instead of orchestration_spec; run 32743357091 failed before semantic execution. Issue #159 reused the unchanged subject head and trajectory spec with the correct envelope and passed."
+}
