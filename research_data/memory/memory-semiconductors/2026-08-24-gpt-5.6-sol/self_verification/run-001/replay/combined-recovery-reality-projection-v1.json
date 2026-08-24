@@ -1,0 +1,66 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "MEMORY-SEMICONDUCTORS-COMBINED-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-COMBINED-RECOVERY-001",
+  "allowed_claim_roles": [
+    "issuer_reported_current_wafer_start_reduction",
+    "realized_memory_recovery_milestone"
+  ],
+  "subjects": [
+    {
+      "id": "eb2cb40d-1955-5b1f-a1d6-481b53d651d7",
+      "entity_type": "organization",
+      "canonical_name": "Micron Technology, Inc."
+    },
+    {
+      "id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "entity_type": "organization",
+      "canonical_name": "Samsung Electronics Co., Ltd."
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2022-micron-dram-nand-wafer-start-reduction-combined",
+      "evidence_fragment_key": "EVF-MICRON-CUT-COMBINED",
+      "subject_entity_id": "eb2cb40d-1955-5b1f-a1d6-481b53d651d7",
+      "predicate_code": "operations.memory_wafer_start_reduction",
+      "value_text": "Micron was reducing DRAM and NAND wafer starts by approximately 20% versus fiscal Q4 2022.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2022-11-16T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "November 16, 2022 announcement vintage",
+      "statistical_scope": "Micron DRAM + NAND wafer starts versus fiscal Q4 2022",
+      "metadata": {
+        "source_metric": "wafer_starts",
+        "magnitude_text": "approximately 20%",
+        "baseline": "fiscal Q4 2022",
+        "onset_guard": "The issuer wording establishes that the reduction was current by the November 16 announcement; it does not establish an earlier exact onset date.",
+        "comparability_guard": "Do not compare this 20% wafer-start reduction numerically with SK hynix's >50% investment guidance or Samsung's unspecified certain-product production-cut plan."
+      }
+    },
+    {
+      "fact_key": "2023-samsung-q3-pc-mobile-memory-demand-improvement",
+      "evidence_fragment_key": "EVF-SAMSUNG-Q3-RECOVERY-COMBINED",
+      "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "predicate_code": "market.memory_pc_mobile_demand_condition",
+      "value_text": "Samsung reported that PC and mobile demand improved in Q3 2023 with increasing high-density DRAM and NAND adoption and completion of customer inventory adjustments.",
+      "valid_time_kind": "period",
+      "valid_from": "2023-07-01T00:00:00Z",
+      "valid_to": "2023-10-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "Q3 2023",
+      "observed_at": "2023-10-31T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "October 31, 2023 Q3 results vintage",
+      "statistical_scope": "Samsung-reported PC/mobile DRAM+NAND demand and customer inventory adjustments in Q3 2023",
+      "metadata": {
+        "market_segments": ["PC", "mobile"],
+        "product_lines": ["DRAM", "NAND"],
+        "mechanism_text": "increasing adoption of high-density products and completion of customer inventory adjustments",
+        "scope_guard": "This is a scoped Q3 PC/mobile observation, not proof that every memory end-market recovered.",
+        "outcome_guard": "Comparison with Samsung's April broad 2H recovery forecast requires an explicit semantic relation; do not infer direct realization from topical similarity."
+      }
+    }
+  ]
+}
