@@ -1,0 +1,54 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-promotion-reality-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "e7bbd74aee9cf1733724bd7232cfb627236c8a5b",
+  "default_branch_broker_commit": "e8ba1576c1b398a277e5fed0e810ac2321b000cc",
+  "trigger_issue": 143,
+  "actions_run_id": 32704439341,
+  "orchestration_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/supplier-cut-recovery-reality-orchestration-v2.json",
+  "promotion_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-PROMOTION-READY-001",
+  "promotion_evidence_fragments": {
+    "EVF-SAMSUNG-CUT-PROMOTION": "9fb49c21-625c-5063-9aeb-79be0228dc3f",
+    "EVF-SAMSUNG-RECOVERY-PROMOTION": "e3d34f57-1f32-575e-811f-36aacbef4c4a",
+    "EVF-MICRON-CUT-PROMOTION": "ca6bddb8-83a4-5521-8454-0a0f1f7c66bb",
+    "EVF-SKHYNIX-CUT-PROMOTION": "beeef47a-6c3b-5e46-9e64-74ba0062160d"
+  },
+  "evidence_acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "reality": {
+    "task_id": "MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-REALITY-001",
+    "fact_key": "2022-micron-dram-nand-wafer-start-reduction",
+    "fact_assertion_id": "50a3d80e-fad6-564e-bace-5ecfb003c10f",
+    "canonical_fact_version_id": "4c0cfee7-49d3-5882-9906-69b01fee69c0",
+    "predicate_code": "operations.memory_wafer_start_reduction",
+    "observed_at": "2022-11-16T00:00:00Z",
+    "observed_at_precision": "day",
+    "market_known_at": "2022-11-17T00:00:00Z",
+    "valid_time_kind": "unknown",
+    "value_text": "Micron was reducing DRAM and NAND wafer starts by approximately 20% versus fiscal Q4 2022.",
+    "evidence_fragment_id": "ca6bddb8-83a4-5521-8454-0a0f1f7c66bb",
+    "reconciliation": {
+      "decision": "accept",
+      "score": 0.97,
+      "status": "trusted",
+      "reason_codes": ["source_supported_unknown_onset", "quality_gate_passed"]
+    }
+  },
+  "verification": {
+    "fact_count": 1,
+    "canonical_reality_count": 1,
+    "all_reconciled_accept": true,
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "valid_time_semantics_preserved": true,
+    "observation_semantics_preserved": true,
+    "sealed_blind_path_unchanged": true
+  },
+  "semantic_boundary": "Only Micron's current-tense announced wafer-start reduction was promoted to Reality. Samsung's cut plan, Samsung's recovery expectation and SK hynix's 2023 reduction guidance remain contemporaneous Judgment candidates and are not represented as executed Reality."
+}
