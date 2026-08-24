@@ -1,1 +1,71 @@
-{"authority":"captures_are_source_derived_representations_below_evidence_until_cap0002_execution","blind_mutation_forbidden":true,"campaign_id":"MEMORY-SEMICONDUCTORS-001","capture_checkpoint":{"capture_count":4,"capture_index":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/capture-index-v1.json","capture_state":"content_verified_readable_representation","commit":"9a85f9bd9d1768d3997e1b5a332bcde0d838a9cb","expected_documents":4,"expected_fragments":4,"facts_created":0,"grounded_evidence_spec":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/grounding/grounded-evidence-supplier-cut-recovery-v1.json","grounding_execution_status":"prepared_not_executed","grounding_task_id":"EVT-MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-RECOVERY-001","judgments_created":0,"raw_source_materialized":false},"comparability_guards":["Micron approximately 20% is DRAM+NAND wafer starts versus fiscal Q4 2022 and is Micron-specific.","SK hynix greater-than-50% is 2023 investment YoY, not wafer starts or bit supply.","Samsung April 2023 supports selected-product production cuts but no product split or percentage.","Samsung April 27 recovery language is a dated management expectation and must not be overwritten by later outcome knowledge."],"first_wave_lead_ids":["MS-0018","MS-0019","MS-0024","MS-0026","MS-0027","MS-0074","MS-0081","MS-0095","MS-0099","MS-0121"],"next_action":"Execute the prepared v2 Grounded Evidence spec through scripts/execute_grounded_evidence_spec.py in a configured Longcycle PostgreSQL/archive runtime, verify four persisted documents and four EvidenceFragments with zero Fact/Judgment creation, then capture the execution receipt before any epistemic promotion.","objectives":["refine exact supplier cut timing and product scope in the 2022-2023 downturn","separate HBM development, volume production, customer supply and platform qualification states","identify and preserve claim-scoped primary-source packets for CAP-0002 grounding","preserve contemporaneous recovery expectations rather than replacing them with hindsight"],"run_id":"MEMORY-SEMICONDUCTORS-SV-001","schema_version":"longcycle-memory-self-verification-run/v1","sealed_blind_commit":"cfaaee3a8cb843f3c52b7c960080097a9011efd3","sealed_blind_digest":"cdf2840abd2ac9ca1913d6becc805d20212a0080ae97ed9e24f75b0983ba596b","source_visibility":"search_results_opened_primary_pages_and_content_verified_readable_captures","stage":"source_capture_prepared_grounding_not_executed","started_at":"2026-08-24"}
+{
+  "schema_version": "longcycle-memory-self-verification-run/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "started_at": "2026-08-24",
+  "stage": "grounded_evidence_executed_promotion_semantics_pending",
+  "source_visibility": "search_results_opened_primary_pages_and_content_verified_readable_captures",
+  "authority": "Four source-derived readable representations are now persisted as claim-scoped CAP-0002 EvidenceFragments through a successful CAP-0007 v2 PostgreSQL run. No Fact or Judgment has been created; promotion requires a separate historically scoped claim_role/known_time contract.",
+  "blind_mutation_forbidden": true,
+  "sealed_blind_commit": "cfaaee3a8cb843f3c52b7c960080097a9011efd3",
+  "sealed_blind_digest": "cdf2840abd2ac9ca1913d6becc805d20212a0080ae97ed9e24f75b0983ba596b",
+  "objectives": [
+    "refine exact supplier cut timing and product scope in the 2022-2023 downturn",
+    "separate HBM development, volume production, customer supply and platform qualification states",
+    "identify and preserve claim-scoped primary-source packets for CAP-0002 grounding",
+    "preserve contemporaneous recovery expectations rather than replacing them with hindsight"
+  ],
+  "first_wave_lead_ids": [
+    "MS-0018",
+    "MS-0019",
+    "MS-0024",
+    "MS-0026",
+    "MS-0027",
+    "MS-0074",
+    "MS-0081",
+    "MS-0095",
+    "MS-0099",
+    "MS-0121"
+  ],
+  "capture_checkpoint": {
+    "commit": "9a85f9bd9d1768d3997e1b5a332bcde0d838a9cb",
+    "capture_count": 4,
+    "capture_index": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/capture-index-v1.json",
+    "capture_state": "content_verified_readable_representation",
+    "raw_source_materialized": false,
+    "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/grounding/grounded-evidence-supplier-cut-recovery-v1.json",
+    "grounding_task_id": "EVT-MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-RECOVERY-001",
+    "expected_documents": 4,
+    "expected_fragments": 4,
+    "facts_created": 0,
+    "judgments_created": 0,
+    "grounding_execution_status": "executed_pass"
+  },
+  "grounding_checkpoint": {
+    "subject_head": "bfc07692166c615302c818749c97c0777981e2ac",
+    "default_branch_broker_commit": "e8ba1576c1b398a277e5fed0e810ac2321b000cc",
+    "trigger_issue": 142,
+    "actions_run_id": 32703767137,
+    "orchestration_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/supplier-cut-recovery-orchestration-v2.json",
+    "receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/supplier-cut-recovery-grounded-evidence-receipt-v1.json",
+    "acceptance": {
+      "persisted_document_versions": 4,
+      "persisted_evidence_fragments": 4,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    },
+    "fragment_ids": {
+      "EVF-SAMSUNG-CUT": "cd6934e1-1909-51e2-b74b-9e83f88d079a",
+      "EVF-SAMSUNG-RECOVERY": "34726a4d-55ad-5830-9245-36968d273525",
+      "EVF-MICRON-CUT": "b5343263-f30c-5609-8862-e80ccf9a8d0e",
+      "EVF-SKHYNIX-CUT": "368939e1-627a-5bc4-99b2-15bb636fbd57"
+    }
+  },
+  "comparability_guards": [
+    "Micron approximately 20% is DRAM+NAND wafer starts versus fiscal Q4 2022 and is Micron-specific.",
+    "SK hynix greater-than-50% is 2023 investment YoY, not wafer starts or bit supply.",
+    "Samsung April 2023 supports a plan for selected-product production cuts but no product split or percentage and is not itself proof of executed cuts.",
+    "Samsung April 27 recovery language is a dated management expectation and must not be overwritten by later outcome knowledge."
+  ],
+  "next_action": "Create a separate promotion-ready Evidence packet that reuses the same source representations while adding claim_role and conservative source-vintage known-time semantics. Promote only claims whose epistemic layer is supported: Micron's announced current wafer-start reduction may enter Reality with unknown onset/announcement observation; Samsung cut plan, Samsung recovery forecast and SK hynix 2023 reduction guidance remain Judgment."
+}
