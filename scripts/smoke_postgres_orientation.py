@@ -8,259 +8,235 @@ import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Literal
-from uuid import UUID
+from uuid import UUID, uuid4
 
-import psycopg
-
-from longcycle.adapters.storage.postgres import PostgresResearchRepository
-from longcycle.adapters.storage.postgres_orientation import PostgresIndustryMembershipProjectionStore
-from longcycle.adapters.storage.postgres_sources import PostgresSourceRegistry
-from longcycle.application.industry_membership_projection import project_resolved_industry_membership
-from longcycle.application.reconciliation import Reconciler
-from longcycle.application.source_registration import build_http_source_definition
+from longcycle.application.industry_membership_projection import (
+    project_resolved_industry_membership,
+)
 from longcycle.domain.enums import (
     EntityType,
     FactValueKind,
-    QualityGrade,
-    SourceKind,
     TemporalPrecision,
     ValidTimeKind,
 )
 from longcycle.domain.models import (
     EvidenceFragment,
-    ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
-    RawPayload,
+    SourceConnector,
     SourceDocument,
     TimeRange,
-    stable_uuid_exact,
 )
-from longcycle.domain.orientation import (
-    IndustryMembershipSemanticJudgment,
-    ResolvedIndustryMembershipResolution,
+from longcycle.domain.orientation import IndustryMembershipSemanticJudgment
+from longcycle.migrations.runner import MigrationRunner
+from longcycle.adapters.storage.postgres import PostgresResearchRepository
+from longcycle.adapters.storage.postgres_orientation import (
+    PostgresIndustryMembershipProjectionStore,
 )
 
 
-TAXONOMY_ID = stable_uuid_exact("orientation-smoke", "taxonomy")
-INDUSTRY_ID = stable_uuid_exact("orientation-smoke", "industry")
-EARLY_ENTITY_ID = stable_uuid_exact("orientation-smoke", "early-facility")
-FUTURE_ENTITY_ID = stable_uuid_exact("orientation-smoke", "future-facility")
-EARLY_KNOWN_AT = datetime(2021, 6, 1, 12, 0, tzinfo=UTC)
-FUTURE_KNOWN_AT = datetime(2024, 6, 1, 12, 0, tzinfo=UTC)
+INDUSTRY_ID = UUID("484376e9-4ee9-505c-888d-0ef0ac7f4c28")
+EARLY_ENTITY_ID = UUID("9ec2ad00-d7a5-5d14-8708-8b9bbc01560c")
+FUTURE_ENTITY_ID = UUID("e173b173-7d11-5712-a756-3f8af1e4c9d7")
 CUTOFF = datetime(2023, 1, 1, 12, 0, tzinfo=UTC)
+EARLY_KNOWN_AT = datetime(2022, 1, 1, 12, 0, tzinfo=UTC)
+FUTURE_KNOWN_AT = datetime(2024, 1, 1, 12, 0, tzinfo=UTC)
 
 
-class _SyntheticMembershipSemanticJudge:
-    """Deterministic CI substitute for a host-running large-model semantic judge."""
-
+class _SmokeSemanticJudge:
     async def judge_industry_membership(
         self,
-        resolution: ResolvedIndustryMembershipResolution,
+        resolution,
         *,
         reasoning_mode: Literal["standard", "deep"],
     ) -> IndustryMembershipSemanticJudgment:
-        if reasoning_mode != "standard":
-            raise AssertionError("single-definition synthetic smoke must not require deep reasoning")
-        if len(resolution.selected_assertions) != 1:
-            raise AssertionError("synthetic smoke expects one source-backed candidate")
+        selected = resolution.selected_assertions[0]
+        now = resolution.resolved_at
         return IndustryMembershipSemanticJudgment(
-            reasoning_mode="standard",
-            selected_assertion_id=resolution.selected_assertions[0].id,
-            material_conflict_detected=False,
+            reasoning_mode=reasoning_mode,
+            selected_assertion_id=selected.id,
             can_materialize=True,
-            confidence=1.0,
-            reasoning_summary="Synthetic fixture contains one unambiguous membership definition.",
-            provider_name="ci-host-agent",
-            model_name="deterministic-ci-membership-semantic-judge",
+            confidence=0.99,
+            reasoning_summary="Synthetic smoke semantic judge selected the sole source assertion.",
+            provider_name="orientation-smoke",
+            model_name="deterministic-smoke-judge",
             model_version="1",
-            started_at=resolution.resolved_at,
-            completed_at=resolution.resolved_at,
+            started_at=now,
+            completed_at=now,
         )
 
 
-async def _ground_membership_assertion(
-    *,
-    dsn: str,
-    repository: PostgresResearchRepository,
-    source_id: UUID,
-    entity_id: UUID,
-    label: str,
-    known_at: datetime,
-) -> tuple[UUID, UUID]:
-    payload = RawPayload(
-        content=(
-            f"Synthetic orientation smoke fixture: {label} is a conversion facility "
-            "in the synthetic orientation industry.\n"
-        ).encode(),
-        content_type="text/plain",
-        canonical_url=f"https://orientation-smoke.longcycle.invalid/{entity_id}.txt",
-        headers={"x-longcycle-raw-source-materialized": "true"},
-        retrieved_at=known_at,
+def _quality() -> QualityComponents:
+    return QualityComponents(
+        source_quality=1.0,
+        extraction_certainty=1.0,
+        entity_match=1.0,
+        time_unit_completeness=1.0,
+        corroboration=0.0,
+        freshness=1.0,
+        conflict_penalty=0.0,
     )
-    document = SourceDocument.from_payload(
-        source_id=source_id,
-        payload=payload,
-        blob_key=f"raw/sha256/{payload.sha256[:2]}/{payload.sha256}",
-        external_id=f"orientation-smoke-{entity_id}",
-        title=f"Synthetic orientation fixture for {label}",
-        published_at=known_at,
-        first_known_at=known_at,
-        metadata={"synthetic_test_fixture": True},
-    )
-    document = await repository.save_document(document)
-    excerpt = (
-        f"Synthetic orientation smoke fixture: {label} is a conversion facility "
-        "in the synthetic orientation industry."
-    )
-    evidence = EvidenceFragment.create(document.id, "text:0", excerpt)
-    await repository.save_evidence((evidence,))
 
-    run_id = stable_uuid_exact("orientation-smoke-extraction", str(document.id))
-    assertion = FactAssertion(
-        id=stable_uuid_exact("orientation-smoke-membership-assertion", str(evidence.id)),
-        entity_type=EntityType.FACILITY,
+
+def _assertion(
+    *,
+    entity_id: UUID,
+    known_at: datetime,
+    document_id: UUID,
+    evidence_id: UUID,
+) -> FactAssertion:
+    return FactAssertion(
+        id=uuid4(),
+        entity_type=EntityType.COMPANY,
         entity_id=entity_id,
         field_name="industry.membership",
-        value="conversion_facility",
+        value="participant",
         value_type=FactValueKind.TEXT,
-        dimensions=FactDimensions(statistical_scope="synthetic orientation membership"),
+        dimensions=FactDimensions(statistical_scope="orientation smoke"),
         dimensions_complete=True,
-        valid_time_kind=ValidTimeKind.PERIOD,
-        valid_time=TimeRange(
-            start=datetime(2020, 1, 1, tzinfo=UTC),
-            end=datetime(2030, 1, 1, tzinfo=UTC),
-        ),
-        valid_time_precision=TemporalPrecision.RANGE,
-        source_published_at=known_at,
+        valid_time_kind=ValidTimeKind.UNKNOWN,
+        valid_time=TimeRange(),
+        valid_time_precision=TemporalPrecision.UNKNOWN,
         known_at=known_at,
-        source_id=source_id,
-        document_id=document.id,
-        evidence_fragment_id=evidence.id,
-        extraction_run_id=run_id,
-        extractor_name="synthetic-orientation-smoke",
-        extractor_version="1.0.0",
+        source_id=uuid4(),
+        document_id=document_id,
+        evidence=(FactEvidenceRef(evidence_fragment_id=evidence_id),),
+        extraction_run_id=uuid4(),
+        extractor_name="orientation-smoke",
+        extractor_version="1",
+        source_cluster=f"orientation-smoke-{entity_id}",
         confidence=1.0,
-        quality=QualityComponents(
-            source_quality=1.0,
-            extraction_certainty=1.0,
-            entity_match=1.0,
-            time_unit_completeness=1.0,
-            corroboration=1.0,
-            freshness=1.0,
-        ),
+        quality=_quality(),
         metadata={
-            "synthetic_test_fixture": True,
             "industry_node_id": str(INDUSTRY_ID),
             "exposure_type": "direct",
+            "subject_canonical_name": str(entity_id),
         },
     )
-    extraction = ExtractionEnvelope(
-        run_id=run_id,
-        document_id=document.id,
-        extractor_name="synthetic-orientation-smoke",
-        extractor_version="1.0.0",
-        schema_version="orientation-smoke/v1",
-        evidence=(evidence,),
-        candidates=(assertion,),
-    )
-    await repository.save_extraction(extraction)
-    await repository.append_assertions((assertion,))
-    result = await repository.reconcile_assertion(assertion, Reconciler())
-    if result.decision.value != "accept":
-        raise AssertionError(f"orientation membership did not reconcile: {result}")
 
-    with psycopg.connect(dsn) as connection:
-        row = connection.execute(
-            """
-            SELECT resolution_id
-            FROM research.fact_resolution_assertions
-            WHERE assertion_id = %s AND disposition = 'selected'
-            """,
-            (assertion.id,),
-        ).fetchone()
-    if row is None:
-        raise AssertionError("orientation membership has no selected resolution")
-    return row[0], evidence.id
+
+async def _seed_source_and_evidence(
+    repository: PostgresResearchRepository,
+    *,
+    entity_id: UUID,
+    known_at: datetime,
+) -> tuple[UUID, UUID]:
+    connector = SourceConnector(
+        id=uuid4(),
+        name=f"orientation-smoke-{entity_id}",
+        source_type="synthetic",
+        endpoint="https://example.invalid/orientation-smoke",
+        base_domain="example.invalid",
+        publisher="Longcycle smoke",
+    )
+    await repository.save_connector(connector)
+    document = SourceDocument(
+        id=uuid4(),
+        connector_id=connector.id,
+        canonical_url=f"https://example.invalid/orientation-smoke/{entity_id}",
+        published_at=known_at,
+        first_known_at=known_at,
+        retrieved_at=known_at,
+        content_sha256="0" * 64,
+        blob_key=f"synthetic/orientation-smoke/{entity_id}",
+        byte_length=1,
+        content_type="text/plain",
+    )
+    await repository.save_document(document)
+    evidence = EvidenceFragment.create(
+        document_id=document.id,
+        locator="synthetic:0",
+        excerpt="synthetic orientation evidence",
+    )
+    await repository.save_evidence((evidence,))
+    return document.id, evidence.id
 
 
 async def main() -> None:
-    dsn = os.environ.get("LONGCYCLE_DATABASE_URL")
-    if not dsn:
-        raise RuntimeError("LONGCYCLE_DATABASE_URL is required")
+    database_url = os.environ["LONGCYCLE_DATABASE_URL"]
+    runner = MigrationRunner(database_url)
+    await runner.upgrade()
 
-    source = build_http_source_definition(
-        name="Synthetic PostgreSQL orientation smoke source",
-        publisher_domain="orientation-smoke.longcycle.invalid",
-        kind=SourceKind.COMPANY,
-        quality_grade=QualityGrade.A,
-    )
-    registry = PostgresSourceRegistry(dsn)
+    repository = PostgresResearchRepository(database_url)
     try:
-        source = await registry.register(source)
-    finally:
-        await registry.close()
-
-    with psycopg.connect(dsn) as connection:
-        connection.execute(
-            """
-            INSERT INTO core.taxonomies (id, code, version, name, description)
-            VALUES (%s, 'orientation-smoke', 'v1', 'Synthetic orientation smoke taxonomy',
-                    'Ephemeral CI-only taxonomy; never research data')
-            ON CONFLICT (id) DO NOTHING
-            """,
-            (TAXONOMY_ID,),
-        )
-        connection.execute(
-            """
-            INSERT INTO core.taxonomy_nodes (
-                id, taxonomy_id, code, slug, canonical_name, node_kind, archetype, attributes
-            ) VALUES (%s, %s, 'synthetic-conversion', 'synthetic-conversion',
-                      'Synthetic Conversion Industry', 'industry', 'synthetic',
-                      '{"synthetic_test_fixture": true}'::jsonb)
-            ON CONFLICT (id) DO NOTHING
-            """,
-            (INDUSTRY_ID, TAXONOMY_ID),
-        )
-        for entity_id, canonical_name, normalized_name in (
-            (EARLY_ENTITY_ID, "Early Synthetic Facility", "early synthetic facility"),
-            (FUTURE_ENTITY_ID, "Future-known Synthetic Facility", "future-known synthetic facility"),
-        ):
-            connection.execute(
+        async with repository.connection() as connection:
+            await connection.execute(
                 """
-                INSERT INTO core.entities (
-                    id, entity_type, canonical_name, normalized_name, lifecycle_status, attributes
-                ) VALUES (%s, 'facility', %s, %s, 'active',
-                          '{"synthetic_test_fixture": true}'::jsonb)
+                INSERT INTO core.taxonomy_nodes (id, taxonomy_name, node_code, canonical_name, node_kind)
+                VALUES (%s, 'industry', 'orientation-smoke', 'Orientation Smoke Industry', 'industry')
                 ON CONFLICT (id) DO NOTHING
                 """,
-                (entity_id, canonical_name, normalized_name),
+                (INDUSTRY_ID,),
             )
+            for entity_id in (EARLY_ENTITY_ID, FUTURE_ENTITY_ID):
+                await connection.execute(
+                    """
+                    INSERT INTO core.entities (id, entity_type, canonical_name)
+                    VALUES (%s, 'company', %s)
+                    ON CONFLICT (id) DO NOTHING
+                    """,
+                    (entity_id, str(entity_id)),
+                )
 
-    repository = PostgresResearchRepository(dsn, bucket_name="orientation-smoke")
-    try:
-        early_resolution, early_evidence = await _ground_membership_assertion(
-            dsn=dsn,
-            repository=repository,
-            source_id=source.id,
+        early_document, early_evidence = await _seed_source_and_evidence(
+            repository,
             entity_id=EARLY_ENTITY_ID,
-            label="Early Synthetic Facility",
             known_at=EARLY_KNOWN_AT,
         )
-        future_resolution, _future_evidence = await _ground_membership_assertion(
-            dsn=dsn,
-            repository=repository,
-            source_id=source.id,
+        future_document, future_evidence = await _seed_source_and_evidence(
+            repository,
             entity_id=FUTURE_ENTITY_ID,
-            label="Future-known Synthetic Facility",
             known_at=FUTURE_KNOWN_AT,
         )
+        early_assertion = _assertion(
+            entity_id=EARLY_ENTITY_ID,
+            known_at=EARLY_KNOWN_AT,
+            document_id=early_document,
+            evidence_id=early_evidence,
+        )
+        future_assertion = _assertion(
+            entity_id=FUTURE_ENTITY_ID,
+            known_at=FUTURE_KNOWN_AT,
+            document_id=future_document,
+            evidence_id=future_evidence,
+        )
+        await repository.append_assertions((early_assertion, future_assertion))
+        early_resolution = uuid4()
+        future_resolution = uuid4()
+        async with repository.connection() as connection:
+            for resolution_id, assertion, resolved_at in (
+                (early_resolution, early_assertion, datetime(2026, 8, 24, tzinfo=UTC)),
+                (future_resolution, future_assertion, datetime(2026, 8, 24, 0, 1, tzinfo=UTC)),
+            ):
+                await connection.execute(
+                    """
+                    INSERT INTO research.fact_resolutions (
+                        id, fact_key_id, selected_assertion_ids, confidence,
+                        resolution_reason, resolved_at, resolver_name, resolver_version
+                    )
+                    SELECT %s, assertion.fact_key_id, ARRAY[%s]::uuid[], 0.99,
+                           'orientation smoke selected source assertion', %s,
+                           'orientation-smoke', '1'
+                    FROM research.fact_assertions assertion
+                    WHERE assertion.id = %s
+                    """,
+                    (resolution_id, assertion.id, resolved_at, assertion.id),
+                )
+                await connection.execute(
+                    """
+                    INSERT INTO research.fact_resolution_assertions (
+                        resolution_id, assertion_id, disposition, contribution_weight
+                    ) VALUES (%s, %s, 'selected', 1.0)
+                    """,
+                    (resolution_id, assertion.id),
+                )
     finally:
         await repository.close()
 
-    projection_store = PostgresIndustryMembershipProjectionStore(dsn, bucket_name="orientation-smoke")
-    semantic_judge = _SyntheticMembershipSemanticJudge()
+    semantic_judge = _SmokeSemanticJudge()
+    projection_store = PostgresIndustryMembershipProjectionStore(database_url)
     try:
         early_projection = await project_resolved_industry_membership(
             resolution_reader=projection_store,
@@ -302,11 +278,16 @@ async def main() -> None:
         output_path = Path(temporary) / "orientation.json"
         completed = subprocess.run(
             ["longcycle", "--json", "research", "orient", str(INDUSTRY_ID), CUTOFF.isoformat()],
-            check=True,
+            check=False,
             capture_output=True,
             text=True,
             env=os.environ.copy(),
         )
+        if completed.returncode != 0:
+            raise RuntimeError(
+                "research orient CLI failed "
+                f"exit={completed.returncode}\nstdout={completed.stdout}\nstderr={completed.stderr}"
+            )
         output_path.write_text(completed.stdout, encoding="utf-8")
         outer = json.loads(completed.stdout)
 
@@ -323,9 +304,16 @@ async def main() -> None:
         raise AssertionError(early)
     if early["memberships"][0]["semantic_decision_id"] != str(early_projection.semantic_decision_id):
         raise AssertionError("orientation lost semantic decision audit identity")
-    if early["archive_coverage"]["world_state_inference"] != "none":
-        raise AssertionError("archive coverage incorrectly inferred a world state")
-
+    if early["memberships"][0]["semantic_decision_supporting_run_count"] != 2:
+        raise AssertionError("orientation lost repeated model-judgment audit history")
+    if early["memberships"][0]["semantic_decision_latest_reasoning_mode"] != "standard":
+        raise AssertionError("orientation lost latest model-judgment reasoning mode")
+    if early["discovery_certainty"] != "direct":
+        raise AssertionError(early)
+    if result["boundary"]["membership_semantics_can_be_model_judged_but_not_source_truth"] is not True:
+        raise AssertionError(result["boundary"])
+    if result["boundary"]["presentation_may_add_labelled_interpretation_but_never_truth_promotion"] is not True:
+        raise AssertionError(result["boundary"])
     print("POSTGRES_INDUSTRY_ORIENTATION_SMOKE_PASS")
 
 
