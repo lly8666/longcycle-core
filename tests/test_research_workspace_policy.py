@@ -3,7 +3,13 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from uuid import UUID
 
+import pytest
+
 from longcycle.application.open_state_view import build_researcher_open_state_view
+from longcycle.application.research_enrichment import (
+    ProviderUnavailable,
+    ResearchEnrichmentDefect,
+)
 from longcycle.cli import _parser
 from longcycle.domain.epistemic import PointInTimeMemorySnapshot
 from longcycle.domain.orientation import IndustryDescriptor, IndustryOrientationCatalog
@@ -31,7 +37,7 @@ def test_current_research_workspace_defaults_on_with_explicit_historical_only_op
     assert historical_only.include_current_research is False
 
 
-class _CatalogWithBrokenOptionalDiscovery:
+class _CatalogBase:
     async def industry_catalog(self, industry_node_id: UUID) -> IndustryOrientationCatalog:
         assert industry_node_id == INDUSTRY_ID
         return IndustryOrientationCatalog(
@@ -42,6 +48,10 @@ class _CatalogWithBrokenOptionalDiscovery:
             )
         )
 
+
+class _CatalogWithExpectedUnavailableDiscovery(_CatalogBase):
+    capabilities = frozenset({"deterministic_industry_subjects"})
+
     async def deterministic_industry_subjects(
         self,
         industry_node_id: UUID,
@@ -49,7 +59,41 @@ class _CatalogWithBrokenOptionalDiscovery:
         knowledge_cutoff: datetime,
     ):
         del industry_node_id, knowledge_cutoff
-        raise RuntimeError("optional discovery service unavailable")
+        raise ProviderUnavailable("optional discovery provider unavailable")
+
+
+class _CatalogWithEmptyDiscovery(_CatalogBase):
+    capabilities = frozenset({"deterministic_industry_subjects"})
+
+    async def deterministic_industry_subjects(
+        self,
+        industry_node_id: UUID,
+        *,
+        knowledge_cutoff: datetime,
+    ):
+        del industry_node_id, knowledge_cutoff
+        return ()
+
+
+class _CatalogWithDiscoveryDefect(_CatalogBase):
+    capabilities = frozenset({"deterministic_industry_subjects"})
+
+    async def deterministic_industry_subjects(
+        self,
+        industry_node_id: UUID,
+        *,
+        knowledge_cutoff: datetime,
+    ):
+        del industry_node_id, knowledge_cutoff
+        raise RuntimeError("SQL shape mismatch")
+
+
+class _CatalogDeclaresNoDiscovery(_CatalogBase):
+    capabilities = frozenset()
+
+
+class _CatalogDeclaresSupportButMissesMethod(_CatalogBase):
+    capabilities = frozenset({"deterministic_industry_subjects"})
 
 
 class _EmptyHistoricalMemory:
@@ -64,18 +108,32 @@ class _NoHistoricalConflicts:
         return ()
 
 
-class _BrokenCurrentResearch:
+class _ExpectedUnavailableCurrentResearch:
     async def current_open_states(self, *, industry_node_id: UUID):
         del industry_node_id
-        raise RuntimeError("current model workspace unavailable")
+        raise ProviderUnavailable("current model provider unavailable")
 
 
-async def test_optional_research_failures_degrade_without_inventing_world_state() -> None:
+class _EmptyCurrentResearch:
+    async def current_open_states(self, *, industry_node_id: UUID):
+        from longcycle.domain.open_states import CurrentResearchOpenStateBundle
+
+        del industry_node_id
+        return CurrentResearchOpenStateBundle()
+
+
+class _DefectiveCurrentResearch:
+    async def current_open_states(self, *, industry_node_id: UUID):
+        del industry_node_id
+        raise TypeError("unexpected provider payload")
+
+
+async def test_expected_optional_unavailability_degrades_without_inventing_world_state() -> None:
     view = await build_researcher_open_state_view(
-        catalog_reader=_CatalogWithBrokenOptionalDiscovery(),
+        catalog_reader=_CatalogWithExpectedUnavailableDiscovery(),
         memory_reader=_EmptyHistoricalMemory(),
         conflict_reader=_NoHistoricalConflicts(),
-        current_research_reader=_BrokenCurrentResearch(),
+        current_research_reader=_ExpectedUnavailableCurrentResearch(),
         industry_node_id=INDUSTRY_ID,
         knowledge_cutoff=CUTOFF,
         include_current_research=True,
@@ -89,10 +147,14 @@ async def test_optional_research_failures_degrade_without_inventing_world_state(
     assert view["current_research_overlay"]["included"] is True
     assert view["current_research_overlay"]["degraded"] is True
     assert view["current_research_overlay"]["available"] is False
-    assert view["research_enrichment"]["status"] == "degraded"
+    assert view["current_research_overlay"]["availability_status"] == "UNAVAILABLE_EXPECTED"
+    assert view["research_enrichment"]["availability_status"] == "UNAVAILABLE_EXPECTED"
     assert {item["component"] for item in view["research_enrichment"]["failures"]} == {
         "deterministic_industry_subjects",
         "current_research_open_states",
+    }
+    assert {item["reason"] for item in view["research_enrichment"]["failures"]} == {
+        "provider_unavailable"
     }
 
     coverage = view["archive_research_coverage"]
@@ -100,5 +162,84 @@ async def test_optional_research_failures_degrade_without_inventing_world_state(
     assert coverage[0]["archive_status"] == "no_grounded_record"
     assert coverage[0]["world_state_inference"] == "none"
     assert "absence is not a claim" in coverage[0]["research_interpretation"]
-    assert view["boundary"]["historical_memory_and_conflict_reads_fail_closed"] is True
-    assert view["boundary"]["optional_research_enrichments_degrade_gracefully"] is True
+
+
+async def test_empty_optional_result_is_available_not_degraded() -> None:
+    view = await build_researcher_open_state_view(
+        catalog_reader=_CatalogWithEmptyDiscovery(),
+        memory_reader=_EmptyHistoricalMemory(),
+        conflict_reader=_NoHistoricalConflicts(),
+        current_research_reader=_EmptyCurrentResearch(),
+        industry_node_id=INDUSTRY_ID,
+        knowledge_cutoff=CUTOFF,
+        include_current_research=True,
+    )
+
+    assert view["research_enrichment"]["availability_status"] == "AVAILABLE"
+    assert view["research_enrichment"]["status"] == "complete"
+    assert view["research_enrichment"]["failures"] == []
+    components = {item["component"]: item for item in view["research_enrichment"]["components"]}
+    assert components["deterministic_industry_subjects"] == {
+        "component": "deterministic_industry_subjects",
+        "status": "AVAILABLE",
+        "result_count": 0,
+        "reason": None,
+        "message": None,
+    }
+    assert components["current_research_open_states"]["status"] == "AVAILABLE"
+    assert components["current_research_open_states"]["result_count"] == 0
+
+
+async def test_explicitly_unsupported_capability_is_expected_unavailable() -> None:
+    view = await build_researcher_open_state_view(
+        catalog_reader=_CatalogDeclaresNoDiscovery(),
+        memory_reader=_EmptyHistoricalMemory(),
+        conflict_reader=_NoHistoricalConflicts(),
+        current_research_reader=_EmptyCurrentResearch(),
+        industry_node_id=INDUSTRY_ID,
+        knowledge_cutoff=CUTOFF,
+        include_current_research=False,
+    )
+    component = view["research_enrichment"]["components"][0]
+    assert component["component"] == "deterministic_industry_subjects"
+    assert component["status"] == "UNAVAILABLE_EXPECTED"
+    assert component["reason"] == "capability_not_supported"
+
+
+async def test_optional_discovery_programming_defect_is_not_silently_degraded() -> None:
+    with pytest.raises(ResearchEnrichmentDefect, match="SQL shape mismatch"):
+        await build_researcher_open_state_view(
+            catalog_reader=_CatalogWithDiscoveryDefect(),
+            memory_reader=_EmptyHistoricalMemory(),
+            conflict_reader=_NoHistoricalConflicts(),
+            current_research_reader=_EmptyCurrentResearch(),
+            industry_node_id=INDUSTRY_ID,
+            knowledge_cutoff=CUTOFF,
+            include_current_research=False,
+        )
+
+
+async def test_declared_supported_capability_missing_method_is_a_defect() -> None:
+    with pytest.raises(ResearchEnrichmentDefect, match="deterministic_industry_subjects"):
+        await build_researcher_open_state_view(
+            catalog_reader=_CatalogDeclaresSupportButMissesMethod(),
+            memory_reader=_EmptyHistoricalMemory(),
+            conflict_reader=_NoHistoricalConflicts(),
+            current_research_reader=_EmptyCurrentResearch(),
+            industry_node_id=INDUSTRY_ID,
+            knowledge_cutoff=CUTOFF,
+            include_current_research=False,
+        )
+
+
+async def test_current_overlay_programming_defect_is_not_silently_degraded() -> None:
+    with pytest.raises(ResearchEnrichmentDefect, match="unexpected provider payload"):
+        await build_researcher_open_state_view(
+            catalog_reader=_CatalogWithEmptyDiscovery(),
+            memory_reader=_EmptyHistoricalMemory(),
+            conflict_reader=_NoHistoricalConflicts(),
+            current_research_reader=_DefectiveCurrentResearch(),
+            industry_node_id=INDUSTRY_ID,
+            knowledge_cutoff=CUTOFF,
+            include_current_research=True,
+        )
