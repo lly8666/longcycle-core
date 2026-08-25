@@ -99,7 +99,11 @@ WHERE supporting_judgment_run_ids IS NULL
 
 ALTER TABLE research.industry_membership_semantic_decisions
     ALTER COLUMN supporting_judgment_run_ids SET NOT NULL,
-    ALTER COLUMN last_confirmed_at SET NOT NULL,
+    ALTER COLUMN last_confirmed_at SET NOT NULL;
+
+-- PostgreSQL RENAME COLUMN is a standalone ALTER TABLE action; it cannot be mixed with
+-- comma-separated ALTER COLUMN actions in the same statement.
+ALTER TABLE research.industry_membership_semantic_decisions
     RENAME COLUMN reasoning_summary TO decision_summary;
 
 ALTER TABLE research.industry_membership_semantic_decisions
