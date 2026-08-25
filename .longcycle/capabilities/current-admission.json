@@ -6,7 +6,7 @@
   "disposition": "extend",
   "target_capability_ids": ["CAP-0005"],
   "closest_existing_capability_ids": ["CAP-0003", "CAP-0005", "CAP-0006"],
-  "rationale_summary": "Package A removed the exactly-one-assertion gate but still materializes Evidence and known_at from only the model-selected representative assertion. When several selected assertions have an identical entity/industry/role/exposure/validity signature, that representation is deterministically equivalent and should preserve the whole corroborating cluster. Otherwise a later duplicate can incorrectly make a historically known membership appear later. The semantic-decision owner already belongs to CAP-0005; no new capability or truth owner is needed. The researcher orientation projection must also expose the upgraded multi-run audit provenance instead of assuming one semantic-decision mode. Existing open-state smoke proof must track the already-approved explicit surface-mode contract rather than the obsolete universal opt-in default.",
+  "rationale_summary": "Equivalent selected membership assertions should preserve their full Evidence set and earliest source-known time instead of letting a later representative delay historical visibility. CAP-0005 already owns the semantic projection, so no new truth owner is needed. Orientation must expose repeated model-run provenance, while open-state proof must follow the already-approved explicit surface-mode contract rather than the obsolete universal opt-in default.",
   "rationale_details_ref": "docs/devlog/2026-08-25-membership-equivalent-corroboration.md",
   "unmet_requirement": null,
   "evidence_refs": [
