@@ -121,15 +121,17 @@ def _visible_discoveries(
 def _validate_capability_declaration(
     catalog_reader: IndustryOrientationReader,
 ) -> frozenset[str]:
-    try:
-        capabilities = catalog_reader.capabilities
-    except AttributeError as exc:
-        raise ResearchEnrichmentContractViolation(
-            "industry orientation reader must explicitly declare optional research capabilities"
-        ) from exc
+    """Validate claimed optional enrichment without requiring a declaration to exist.
+
+    Missing capability metadata means this reader provides only the truth-bearing catalog.
+    Once a reader explicitly claims optional support, the declaration itself is a contract:
+    malformed or unknown capability names still fail closed.
+    """
+
+    capabilities = getattr(catalog_reader, "capabilities", frozenset())
     if not isinstance(capabilities, frozenset):
         raise ResearchEnrichmentContractViolation(
-            "industry orientation reader capabilities must be a frozenset"
+            "industry orientation reader capabilities must be a frozenset when declared"
         )
     unknown = set(capabilities) - {DETERMINISTIC_INDUSTRY_SUBJECTS}
     if unknown:
@@ -155,8 +157,9 @@ async def _load_industry_subject_universe(
     """Load direct truth plus optional deterministic discovery enrichment.
 
     Truth-bearing catalog membership remains fail-closed. Optional deterministic discovery
-    must be explicitly declared by the reader. Expected provider/availability failures may
-    degrade with typed diagnostics; programming, SQL, schema and contract defects raise.
+    is used only when the reader explicitly declares support; a missing declaration means
+    unsupported rather than defective. Expected provider/availability failures may degrade
+    with typed diagnostics; malformed declarations and implementation defects still raise.
     A supported capability returning zero records is AVAILABLE with result_count=0.
     """
 
@@ -281,14 +284,8 @@ def _direct_discovery_basis(membership: IndustrySubjectMembershipRecord) -> dict
 
 
 def _membership_payload(membership: IndustrySubjectMembershipRecord) -> dict[str, Any]:
-    """Render membership audit provenance without collapsing repeated model runs.
+    """Render durable semantic-decision provenance without inventing one execution mode."""
 
-    ``semantic_decision_mode`` remains a compatibility alias for older v1 clients. It now
-    means the latest supporting reasoning mode only; the explicit count and latest-mode fields
-    are authoritative for interpreting the multi-run semantic-decision audit trail.
-    """
-
-    latest_reasoning_mode = membership.semantic_decision_latest_reasoning_mode
     return {
         "role": membership.role,
         "exposure_type": membership.exposure_type,
@@ -306,11 +303,12 @@ def _membership_payload(membership: IndustrySubjectMembershipRecord) -> dict[str
             if membership.semantic_decision_id is not None
             else None
         ),
-        "semantic_decision_mode": latest_reasoning_mode,
         "semantic_decision_supporting_run_count": (
             membership.semantic_decision_supporting_run_count
         ),
-        "semantic_decision_latest_reasoning_mode": latest_reasoning_mode,
+        "semantic_decision_latest_reasoning_mode": (
+            membership.semantic_decision_latest_reasoning_mode
+        ),
         "evidence_fragment_ids": [
             str(value) for value in membership.evidence_fragment_ids
         ],
@@ -480,7 +478,6 @@ async def build_researcher_industry_orientation(
             "membership_semantic_selection_is_model_audited": True,
             "model_semantic_decision_is_not_source_evidence_or_canonical_reality": True,
             "membership_semantic_audit_preserves_repeated_model_runs": True,
-            "semantic_decision_mode_is_compatibility_alias_for_latest_reasoning_mode": True,
             "membership_visibility_uses_source_known_at": True,
             "researcher_discovery_allows_deterministic_entailment": True,
             "entailed_discovery_requires_grounded_explicit_industry_scope": True,
@@ -493,6 +490,7 @@ async def build_researcher_industry_orientation(
             "optional_unavailability_is_typed_and_defects_raise": True,
             "empty_optional_result_is_available_not_degraded": True,
             "optional_capability_support_is_explicitly_declared": True,
+            "missing_optional_capability_declaration_means_unsupported_not_defect": True,
             "system_from_is_not_historical_known_at": True,
             "system_from_only_breaks_ties_between_already_knowable_versions": True,
             "memory_visibility_delegated_to_epistemic_snapshot": True,
