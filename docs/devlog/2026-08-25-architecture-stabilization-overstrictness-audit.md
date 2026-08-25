@@ -1,6 +1,6 @@
 # Architecture stabilization: historical over-strictness audit
 
-Status: in progress
+Status: final
 
 ## Goal
 
@@ -20,7 +20,7 @@ This audit reuses CAP-0005, CAP-0007 and CAP-0010. It creates no new semantic ow
 
 The system forbids inference masquerading as source fact. It does not forbid inference itself.
 
-## Audit results so far
+## Audit results
 
 ### 1. Optional researcher enrichment capability declaration — RELAXED
 
@@ -89,7 +89,7 @@ The following remain hard truth boundaries:
 - lifecycle distinctions such as sampling, mass production, customer supply, platform shipment, market availability and qualification;
 - sealed blind-memory immutability and seal-bounded coverage provenance.
 
-Research-layer relaxations already accepted and retained:
+Research-layer relaxations accepted and retained:
 
 - deterministic researcher discovery can be ENTAILED rather than requiring literal membership rows;
 - deterministic role may be entailed when an explicit auditable rule makes it unambiguous;
@@ -101,11 +101,28 @@ Research-layer relaxations already accepted and retained:
 - optional researcher enrichment may degrade gracefully while truth-bearing reads remain fail-closed;
 - multiple equivalent membership source rows preserve all supporting Evidence and earliest source-known time.
 
+## Architecture baseline after the audit
+
+The epistemic and semantic core is now treated as **basically fixed / core-locked**. This does not freeze product development. It changes the default direction of change:
+
+1. first extend data coverage, Evidence coverage, researcher views, current collection and operational reliability through existing owners;
+2. prefer reuse or extension of an existing capability over a new semantic owner;
+3. do not reopen Reality/Judgment/Outcome, known-time, Evidence, membership or replay semantics merely because one research case is inconvenient;
+4. create a new semantic owner only when a real industry case demonstrates a requirement that cannot be truthfully expressed by the existing owners and their extension seams.
+
+The storage-semiconductor benchmark does not demonstrate such a remaining generic gap. Its remaining work is Evidence/data/productization work, not a reason for speculative schema expansion.
+
+## Validation checkpoint
+
+Implementation head `3b29aec0be14dba826ac4c6aedebf9df10155116` passed full hard-gate CI run `32811870061` after the final optional-enrichment relaxation and type fix. That run includes PostgreSQL migrations/repository/Judgment/Reality/epistemic memory, researcher orientation, real Samsung source acceptance, open states, Evidence drilldown, materialized Evidence, no-lookahead Reality replay, no-lookahead Judgment replay, Mypy, Pytest, compact memory indexes, memory-history provenance and capability-index consistency. Ruff remains diagnostic-only repository debt.
+
+A later documentation/handoff commit must still be checked as the exact live head before a session claims final exact-head green.
+
 ## Freeze criterion
 
-Architecture can move to a stable/core-locked posture when:
+The architecture-stabilization criterion is satisfied at the implementation checkpoint:
 
-1. the exact-head hard CI is green;
-2. the current storage benchmark still passes real-source orientation and no-lookahead acceptance;
-3. no remaining audited rule suppresses researcher discovery without a truth-owner reason;
-4. the final handoff records the freeze boundary and remaining work as data/evidence/productization work rather than speculative schema expansion.
+1. the implementation hard CI is green;
+2. the storage benchmark passes real-source orientation and no-lookahead acceptance;
+3. the audit found no remaining rule that should be relaxed without a truth-owner reason;
+4. future work is routed to data/Evidence/productization by default, with architecture reopening only on demonstrated unmet semantics.
