@@ -415,6 +415,128 @@
         "graceful-enrichment"
       ],
       "title": "Fail-closed research and epistemic-trajectory orchestration"
+    },
+    {
+      "aliases": [
+        "current collection scheduler",
+        "job queue",
+        "scheduler tick",
+        "collection cadence",
+        "leases"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0008.json",
+      "extension_seams": [
+        "Add source watchlist/scheduler adapters without moving current-source archival semantics into historical recovery.",
+        "Add operational priority signals while preserving lease/idempotency boundaries."
+      ],
+      "id": "CAP-0008",
+      "maturity": "stable",
+      "owned_semantics": [
+        "ops.collection_cadence",
+        "ops.job_dispatch_and_lease",
+        "ops.retry_deadletter_boundary"
+      ],
+      "purpose": "Own cadence selection and due-work dispatch semantics for source-first current collection while keeping operational leases/retries separate from research history.",
+      "scope": [
+        "src/longcycle/application/scheduling.py",
+        "src/longcycle/adapters/storage/postgres_scheduler.py",
+        "src/longcycle/ports/repository.py",
+        "tests/test_archive_and_queue.py",
+        "tests/test_normalization_and_schedule.py"
+      ],
+      "tags": [
+        "scheduler",
+        "queue",
+        "current-collection",
+        "lease",
+        "operations"
+      ],
+      "title": "Current collection scheduling and operational queue"
+    },
+    {
+      "aliases": [
+        "handoff",
+        "session continuity",
+        "fresh agent bootstrap",
+        "resume cursor",
+        "data plane handoff",
+        "historical recall"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0009.json",
+      "extension_seams": [
+        "Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.",
+        "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger.",
+        "Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff."
+      ],
+      "id": "CAP-0009",
+      "maturity": "core_locked",
+      "owned_semantics": [
+        "continuity.resume_cursor",
+        "continuity.live_head_reconciliation",
+        "continuity.resume_asset_identity",
+        "continuity.on_demand_history_recall"
+      ],
+      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
+      "scope": [
+        "src/longcycle/application/session_handoff.py",
+        "src/longcycle/application/handoff_data_plane.py",
+        "src/longcycle/application/handoff_freshness.py",
+        "src/longcycle/application/handoff_drill.py",
+        ".longcycle/handoff/**",
+        "CONTINUE_HERE.md",
+        "FRESH_AGENT_BOOTSTRAP.md",
+        "docs/development/session-handoff-protocol.md",
+        "docs/development/continuity-architecture.md",
+        "docs/development/on-demand-history-recall.md"
+      ],
+      "tags": [
+        "handoff",
+        "continuity",
+        "bootstrap",
+        "historical-recall",
+        "live-head",
+        "data-plane"
+      ],
+      "title": "Repository-backed session continuity and data-plane handoff"
+    },
+    {
+      "aliases": [
+        "capability registry",
+        "feature inventory",
+        "anti duplication gate",
+        "architecture admission",
+        "semantic ownership"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0010.json",
+      "extension_seams": [
+        "Improve deterministic discovery/routing without making opaque similarity a hard blocker.",
+        "Tighten admission requirements as governance_mode matures from converging toward core-locked architecture."
+      ],
+      "id": "CAP-0010",
+      "maturity": "experimental",
+      "owned_semantics": [
+        "governance.capability_inventory",
+        "governance.semantic_owner_uniqueness",
+        "governance.capability_admission"
+      ],
+      "purpose": "Own the sparse machine-readable map of what Longcycle already knows how to do and force material development to classify as reuse/extend/replace/new before creating new semantic ownership.",
+      "scope": [
+        ".longcycle/capabilities/**",
+        "scripts/capability_registry.py",
+        "docs/development/capability-governance.md",
+        "AGENTS.md",
+        "CONTINUE_HERE.md",
+        "tests/test_capability_registry.py",
+        ".github/workflows/ci.yml"
+      ],
+      "tags": [
+        "architecture",
+        "governance",
+        "capability",
+        "ownership",
+        "anti-duplication"
+      ],
+      "title": "Stable capability ownership and admission governance"
     }
   ],
   "governance_horizon": {
