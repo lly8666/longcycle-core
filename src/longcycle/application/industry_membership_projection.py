@@ -1,17 +1,21 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from datetime import UTC, date, datetime, time
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from longcycle.domain.enums import EntityType, FactEvidenceRole, FactValueKind, ValidTimeKind
 from longcycle.domain.models import FactAssertion, stable_uuid_exact
 from longcycle.domain.orientation import (
+    IndustryMembershipModelJudgmentRun,
     IndustryMembershipProjection,
     IndustryMembershipSemanticDecision,
     IndustryMembershipSemanticJudgment,
     ResolvedIndustryMembershipResolution,
 )
 from longcycle.ports.orientation import (
+    IndustryMembershipJudgmentRunWriter,
     IndustryMembershipProjectionWriter,
     IndustryMembershipResolutionReader,
     IndustryMembershipSemanticDecisionWriter,
@@ -22,6 +26,7 @@ from longcycle.ports.orientation import (
 _MEMBERSHIP_PREDICATE = "industry.membership"
 _INDUSTRY_NODE_METADATA_KEY = "industry_node_id"
 _EXPOSURE_METADATA_KEY = "exposure_type"
+_STANDARD_DEEP_CONFIDENCE_THRESHOLD = 0.70
 
 
 def _industry_node_id(assertion: FactAssertion) -> UUID:
@@ -86,8 +91,6 @@ def _supporting_evidence(assertion: FactAssertion) -> tuple[UUID, ...]:
 
 
 def _validate_membership_candidate(assertion: FactAssertion) -> None:
-    """Reject structural corruption before asking a model to interpret semantics."""
-
     if assertion.field_name != _MEMBERSHIP_PREDICATE:
         raise ValueError("industry membership projection requires predicate industry.membership")
     if assertion.entity_type == EntityType.INDUSTRY:
@@ -121,6 +124,38 @@ def _candidate_evidence(
     return tuple(sorted(values, key=str))
 
 
+def _candidate_ids(resolution: ResolvedIndustryMembershipResolution) -> tuple[UUID, ...]:
+    return tuple(sorted((item.id for item in resolution.selected_assertions), key=str))
+
+
+def _assertion_hash(assertion: FactAssertion) -> str:
+    rendered = json.dumps(
+        assertion.model_dump(mode="json"),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(rendered).hexdigest()
+
+
+def _input_hashes(resolution: ResolvedIndustryMembershipResolution) -> tuple[str, ...]:
+    by_id = {item.id: item for item in resolution.selected_assertions}
+    return tuple(_assertion_hash(by_id[item_id]) for item_id in _candidate_ids(resolution))
+
+
+def _semantic_signature(assertion: FactAssertion) -> tuple[object, ...]:
+    return (
+        assertion.entity_type.value,
+        str(assertion.entity_id),
+        str(_industry_node_id(assertion)),
+        assertion.value,
+        _exposure_type(assertion),
+        assertion.valid_time_kind.value,
+        assertion.valid_time.start,
+        assertion.valid_time.end,
+    )
+
+
 def _validate_model_judgment(
     judgment: IndustryMembershipSemanticJudgment,
     *,
@@ -131,26 +166,77 @@ def _validate_model_judgment(
         raise ValueError(
             f"membership semantic judge returned {judgment.reasoning_mode!r} for {expected_mode!r} request"
         )
-    if judgment.selected_assertion_id is not None:
-        if judgment.selected_assertion_id not in candidate_ids:
-            raise ValueError("membership semantic judge selected an assertion outside the resolution")
+    if judgment.selected_assertion_id is not None and judgment.selected_assertion_id not in candidate_ids:
+        raise ValueError("membership semantic judge selected an assertion outside the resolution")
+    if any(item not in candidate_ids for item in judgment.alternative_assertion_ids):
+        raise ValueError("membership semantic judge returned an alternative outside the resolution")
+
+
+def _deep_trigger_reasons(
+    resolution: ResolvedIndustryMembershipResolution,
+    standard: IndustryMembershipSemanticJudgment,
+) -> tuple[str, ...]:
+    """Bounded deterministic triggers plus model self-escalation.
+
+    The standard model does not get sole authority to decide whether a question deserves deep
+    review. We only trigger on observable ambiguity/risk in the accepted candidate set or a
+    low-confidence/non-materializable standard judgment; this intentionally avoids a blanket
+    expensive-deep threshold.
+    """
+
+    reasons: list[str] = []
+    if len(resolution.selected_assertions) > 1:
+        signatures = {_semantic_signature(item) for item in resolution.selected_assertions}
+        if len(signatures) > 1:
+            reasons.append("candidate_semantic_definition_mismatch")
+        if not standard.can_materialize or standard.selected_assertion_id is None:
+            reasons.append("multiple_plausible_assertions")
+    if standard.confidence < _STANDARD_DEEP_CONFIDENCE_THRESHOLD:
+        reasons.append("low_standard_confidence")
+    if standard.material_conflict_detected:
+        reasons.append("model_reported_material_conflict")
+    return tuple(dict.fromkeys(reasons))
+
+
+def _judgment_run(
+    *,
+    resolution: ResolvedIndustryMembershipResolution,
+    judgment: IndustryMembershipSemanticJudgment,
+    triggered_deep: bool,
+    deep_trigger_reasons: tuple[str, ...],
+) -> IndustryMembershipModelJudgmentRun:
+    return IndustryMembershipModelJudgmentRun(
+        run_id=uuid4(),
+        resolution_id=resolution.resolution_id,
+        candidate_assertion_ids=_candidate_ids(resolution),
+        input_assertion_hashes=_input_hashes(resolution),
+        reasoning_mode=judgment.reasoning_mode,
+        provider_name=judgment.provider_name,
+        model_name=judgment.model_name,
+        model_version=judgment.model_version,
+        started_at=judgment.started_at,
+        completed_at=judgment.completed_at,
+        selected_assertion_id=judgment.selected_assertion_id,
+        alternative_assertion_ids=judgment.alternative_assertion_ids,
+        material_conflict_detected=judgment.material_conflict_detected,
+        confidence=judgment.confidence,
+        can_materialize=judgment.can_materialize,
+        reasoning_summary=judgment.reasoning_summary,
+        triggered_deep=triggered_deep,
+        deep_trigger_reasons=deep_trigger_reasons,
+        evidence_fragment_ids=_candidate_evidence(resolution),
+    )
 
 
 def build_industry_membership_projection(
     resolution: ResolvedIndustryMembershipResolution,
     decision: IndustryMembershipSemanticDecision,
 ) -> IndustryMembershipProjection:
-    """Materialize the source assertion chosen by an auditable model decision.
-
-    CAP-0003 owns the accepted source-backed assertion set. CAP-0005 owns this catalog
-    representation decision. The model may choose among accepted assertions but cannot
-    invent a role, entity, industry, time or Evidence identity that is absent from the
-    chosen assertion.
-    """
+    """Materialize the source assertion chosen by an auditable semantic decision."""
 
     for assertion in resolution.selected_assertions:
         _validate_membership_candidate(assertion)
-    candidate_ids = tuple(sorted((item.id for item in resolution.selected_assertions), key=str))
+    candidate_ids = _candidate_ids(resolution)
     if decision.resolution_id != resolution.resolution_id:
         raise ValueError("membership semantic decision references another resolution")
     if tuple(sorted(decision.candidate_assertion_ids, key=str)) != candidate_ids:
@@ -178,7 +264,7 @@ def build_industry_membership_projection(
         valid_from=valid_from,
         valid_to=valid_to,
         known_at=assertion.known_at,
-        system_from=decision.decided_at,
+        system_from=decision.first_decided_at,
         confidence=resolution.confidence,
         resolution_id=resolution.resolution_id,
         semantic_decision_id=decision.decision_id,
@@ -191,72 +277,76 @@ async def resolve_industry_membership_semantics(
     *,
     resolution: ResolvedIndustryMembershipResolution,
     semantic_judge: IndustryMembershipSemanticJudge,
+    judgment_run_writer: IndustryMembershipJudgmentRunWriter,
 ) -> IndustryMembershipSemanticDecision:
-    """Run standard model interpretation and automatically escalate conflicts to deep reasoning."""
+    """Persist every actual model execution and return the durable semantic conclusion."""
 
     for assertion in resolution.selected_assertions:
         _validate_membership_candidate(assertion)
-    candidate_ids = tuple(sorted((item.id for item in resolution.selected_assertions), key=str))
+    candidate_ids = _candidate_ids(resolution)
     candidate_set = set(candidate_ids)
 
     standard = await semantic_judge.judge_industry_membership(
         resolution,
         reasoning_mode="standard",
     )
-    _validate_model_judgment(
-        standard,
-        expected_mode="standard",
-        candidate_ids=candidate_set,
+    _validate_model_judgment(standard, expected_mode="standard", candidate_ids=candidate_set)
+    deep_reasons = _deep_trigger_reasons(resolution, standard)
+    standard_run = _judgment_run(
+        resolution=resolution,
+        judgment=standard,
+        triggered_deep=bool(deep_reasons),
+        deep_trigger_reasons=deep_reasons,
     )
+    persisted_standard = await judgment_run_writer.append_industry_membership_judgment_run(
+        standard_run
+    )
+    if persisted_standard != standard_run:
+        raise RuntimeError("persisted standard membership judgment run changed execution provenance")
 
-    conflict_detected = standard.material_conflict_detected
-    if conflict_detected:
+    runs = [standard_run]
+    final = standard
+    if deep_reasons:
         deep = await semantic_judge.judge_industry_membership(
             resolution,
             reasoning_mode="deep",
         )
-        _validate_model_judgment(
-            deep,
-            expected_mode="deep",
-            candidate_ids=candidate_set,
+        _validate_model_judgment(deep, expected_mode="deep", candidate_ids=candidate_set)
+        deep_run = _judgment_run(
+            resolution=resolution,
+            judgment=deep,
+            triggered_deep=True,
+            deep_trigger_reasons=deep_reasons,
         )
-        if not deep.can_materialize or deep.selected_assertion_id is None:
-            raise ValueError(
-                "deep membership semantic judgment could not resolve material-definition conflict"
-            )
+        persisted_deep = await judgment_run_writer.append_industry_membership_judgment_run(deep_run)
+        if persisted_deep != deep_run:
+            raise RuntimeError("persisted deep membership judgment run changed execution provenance")
+        runs.append(deep_run)
         final = deep
-        reasoning_summary = (
-            f"standard: {standard.reasoning_summary}\n"
-            f"deep: {deep.reasoning_summary}"
-        )
-    else:
-        if not standard.can_materialize or standard.selected_assertion_id is None:
-            raise ValueError("standard membership semantic judgment did not produce a materializable choice")
-        final = standard
-        reasoning_summary = standard.reasoning_summary
+        if not deep.can_materialize or deep.selected_assertion_id is None:
+            raise ValueError("deep membership semantic judgment could not resolve ambiguity safely")
+    elif not standard.can_materialize or standard.selected_assertion_id is None:
+        raise ValueError("standard membership semantic judgment did not produce a materializable choice")
 
     assert final.selected_assertion_id is not None
     decision_id = stable_uuid_exact(
-        "industry-membership-semantic-decision-v1",
+        "industry-membership-semantic-decision-v2",
         str(resolution.resolution_id),
         *(str(item) for item in candidate_ids),
         str(final.selected_assertion_id),
-        final.reasoning_mode,
-        final.model_name,
-        final.model_version or "none",
-        "material-conflict" if conflict_detected else "no-material-conflict",
+        _MEMBERSHIP_PREDICATE,
     )
+    first_decided_at = min(item.completed_at for item in runs)
+    last_confirmed_at = max(item.completed_at for item in runs)
     return IndustryMembershipSemanticDecision(
         decision_id=decision_id,
         resolution_id=resolution.resolution_id,
         candidate_assertion_ids=candidate_ids,
         selected_assertion_id=final.selected_assertion_id,
-        reasoning_mode=final.reasoning_mode,
-        material_conflict_detected=conflict_detected,
-        reasoning_summary=reasoning_summary,
-        model_name=final.model_name,
-        model_version=final.model_version,
-        decided_at=final.decided_at,
+        decision_summary=final.reasoning_summary,
+        first_decided_at=first_decided_at,
+        last_confirmed_at=last_confirmed_at,
+        supporting_judgment_run_ids=tuple(item.run_id for item in runs),
         evidence_fragment_ids=_candidate_evidence(resolution),
     )
 
@@ -265,6 +355,7 @@ async def project_resolved_industry_membership(
     *,
     resolution_reader: IndustryMembershipResolutionReader,
     semantic_judge: IndustryMembershipSemanticJudge,
+    judgment_run_writer: IndustryMembershipJudgmentRunWriter,
     decision_writer: IndustryMembershipSemanticDecisionWriter,
     membership_writer: IndustryMembershipProjectionWriter,
     resolution_id: UUID,
@@ -273,6 +364,7 @@ async def project_resolved_industry_membership(
     proposed_decision = await resolve_industry_membership_semantics(
         resolution=resolution,
         semantic_judge=semantic_judge,
+        judgment_run_writer=judgment_run_writer,
     )
     persisted_decision = await decision_writer.append_industry_membership_semantic_decision(
         proposed_decision
