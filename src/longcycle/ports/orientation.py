@@ -5,6 +5,7 @@ from typing import Literal, Protocol
 from uuid import UUID
 
 from longcycle.domain.orientation import (
+    IndustryMembershipModelJudgmentRun,
     IndustryMembershipProjection,
     IndustryMembershipSemanticDecision,
     IndustryMembershipSemanticJudgment,
@@ -42,11 +43,12 @@ class IndustryMembershipResolutionReader(Protocol):
 
 
 class IndustryMembershipSemanticJudge(Protocol):
-    """Model boundary for choosing one catalog representation from selected assertions.
+    """Host/model boundary for one membership semantic judgment execution.
 
-    ``standard`` is always attempted first. If the supplied material definitions conflict,
-    the application must call the same boundary again with ``deep`` before materialization.
-    Model output is interpretation provenance, never source Evidence.
+    The Longcycle-running Agent may implement this boundary directly. ``standard`` is always
+    attempted first; application-owned deterministic triggers and model self-escalation decide
+    whether the same boundary is called again with ``deep``. Model output is provenance, never
+    source Evidence.
     """
 
     async def judge_industry_membership(
@@ -57,8 +59,17 @@ class IndustryMembershipSemanticJudge(Protocol):
     ) -> IndustryMembershipSemanticJudgment: ...
 
 
+class IndustryMembershipJudgmentRunWriter(Protocol):
+    """Append one immutable record for every actual model/host judgment execution."""
+
+    async def append_industry_membership_judgment_run(
+        self,
+        run: IndustryMembershipModelJudgmentRun,
+    ) -> IndustryMembershipModelJudgmentRun: ...
+
+
 class IndustryMembershipSemanticDecisionWriter(Protocol):
-    """Persist audit-only model decision provenance before catalog materialization."""
+    """Persist/confirm a durable semantic conclusion independently of individual runs."""
 
     async def append_industry_membership_semantic_decision(
         self,
