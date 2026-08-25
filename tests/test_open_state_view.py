@@ -310,6 +310,7 @@ async def test_default_view_keeps_current_research_out_of_historical_cutoff() ->
         current_research_reader=current,
         industry_node_id=INDUSTRY_ID,
         knowledge_cutoff=CUTOFF,
+        research_overlay_mode="historical_only",
     )
 
     assert memory.last_cutoff == CUTOFF
@@ -348,7 +349,7 @@ async def test_opt_in_overlay_is_current_and_not_narrowed_by_historical_membersh
         current_research_reader=current,
         industry_node_id=INDUSTRY_ID,
         knowledge_cutoff=CUTOFF,
-        include_current_research=True,
+        research_overlay_mode="historical_plus_current_research",
     )
 
     assert current.calls == 1
