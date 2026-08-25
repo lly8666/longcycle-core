@@ -7,7 +7,8 @@
     "source pack execution",
     "portable research receipt",
     "epistemic trajectory",
-    "evidence to replay trajectory"
+    "evidence to replay trajectory",
+    "truth-bearing execution gate"
   ],
   "entrypoints": [
     {
@@ -18,59 +19,54 @@
     },
     {
       "contains": "class EpistemicTrajectorySpec(BaseModel):",
-      "description": "Thin CAP-0007 trajectory composition delegates to the existing Evidence, Reality, Judgment, Outcome and typed replay owners and adds fail-closed phase/acceptance/no-rewrite gates without duplicating their semantics.",
+      "description": "Thin trajectory composition delegates to Evidence, Reality, Judgment, Outcome and typed replay owners and adds fail-closed truth-bearing phase/no-rewrite gates without duplicating their semantics.",
       "kind": "application",
       "path": "src/longcycle/application/epistemic_trajectory.py"
     },
     {
       "contains": "--material-root",
-      "description": "The core longcycle research command accepts a transport-neutral material root for v2 while retaining --source-pack only for legacy v1 replay.",
+      "description": "Core research command accepts a transport-neutral material root for v2 while retaining --source-pack only for legacy v1 replay.",
       "kind": "cli",
       "path": "src/longcycle/cli.py"
-    },
-    {
-      "contains": "execute_epistemic_trajectory_receipt",
-      "description": "Campaign-agnostic CLI executes one declared Evidence -> optional Reality/Judgment/Outcome -> sealed replay trajectory from a prepared material root.",
-      "kind": "cli",
-      "path": "scripts/execute_epistemic_trajectory.py"
     }
   ],
   "extension_seams": [
     "Route researcher/task invocation adapters through the same orchestration and trajectory contracts rather than campaign-specific workflow logic.",
-    "Add a bounded execution phase only when another existing capability already owns the phase semantics; CAP-0007 composes and gates rather than reimplements.",
-    "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless byte-level/source-format verification is itself claim-relevant.",
-    "Add researcher-readable output/presentation after typed CAP-0005 replay rather than changing knowledge-cutoff filtering in the orchestration layer."
+    "Add a bounded truth-bearing execution phase only when another existing capability already owns its semantics; CAP-0007 composes and gates rather than reimplements.",
+    "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded.",
+    "Keep fail-closed behavior for source integrity, Evidence, reconciliation, canonical writes, Judgment/Outcome identity and no-lookahead replay.",
+    "Place optional researcher enrichment after typed CAP-0005 truth reconstruction; enrichment failure may degrade with diagnostics and must not make already-valid historical truth unavailable."
   ],
   "guards": [
     {
       "contains": "test_v2_material_root_verifies_required_representations_without_source_pack",
-      "description": "Contract tests prove core v2 orchestration verifies prepared source representations without requiring Release/source-pack transport.",
+      "description": "Core v2 orchestration verifies required prepared source representations without requiring Release/source-pack transport.",
       "kind": "test",
       "path": "tests/test_research_orchestration.py"
     },
     {
       "contains": "test_legacy_source_pack_hash_and_required_material_hashes_are_fail_closed",
-      "description": "Legacy v1 source-pack replay remains hash-checked and fail-closed without becoming the v2 default.",
+      "description": "Legacy source-pack replay remains hash-checked and fail-closed.",
       "kind": "test",
       "path": "tests/test_research_orchestration.py"
     },
     {
       "contains": "test_sequence_gate_rejects_hindsight_rewrite",
-      "description": "Trajectory contract rejects rewriting an already-known typed Judgment in a later replay snapshot while permitting later Outcome rows to appear separately.",
+      "description": "Trajectory rejects rewriting an already-known Judgment in a later replay snapshot while permitting later Outcome rows separately.",
       "kind": "test",
       "path": "tests/test_epistemic_trajectory.py"
     },
     {
       "contains": "test_snapshot_gate_checks_counts_and_future_leakage",
-      "description": "Trajectory contract fails closed if any typed replay row has known_at later than its declared historical cutoff.",
+      "description": "Trajectory fails closed if a typed replay row has known_at later than its declared historical cutoff.",
       "kind": "test",
       "path": "tests/test_epistemic_trajectory.py"
     },
     {
-      "contains": "longcycle-reusable-epistemic-trajectory-validation/v1",
-      "description": "Real PostgreSQL proof run 32640720602 executed the generic contract over BLENREP through Grounded Evidence, Reality, contemporaneous Judgment, related Outcome and three no-lookahead replay cutoffs.",
-      "kind": "runtime",
-      "path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/orchestration/reusable-epistemic-trajectory-validation-v1.json"
+      "contains": "test_optional_research_failures_degrade_without_inventing_world_state",
+      "description": "Cross-capability regression proves optional CAP-0005 researcher enrichment may degrade while historical truth-bearing reads remain available and strict.",
+      "kind": "test",
+      "path": "tests/test_research_workspace_policy.py"
     }
   ],
   "id": "CAP-0007",
@@ -80,17 +76,19 @@
     "Reimplementing Grounded Evidence, Reality reconciliation, Judgment identity/precision, Outcome comparability or CAP-0005 knowledge-cutoff semantics inside workflow/CLI.",
     "Owning memory-first historical discovery or treating one execution entrypoint as the whole historical-research lifecycle.",
     "Requiring raw source packs when claim-relevant content is already truthfully content_verified under CAP-0001/CAP-0002.",
+    "Turning a failure in optional researcher summaries, discovery enrichment or current model overlays into failure of already-valid canonical memory.",
     "Campaign-specific branches, product ids, fact keys or replay cutoffs in generic runner code."
   ],
   "owned_semantics": [
     "orchestration.preserved_source_integrity",
     "orchestration.bounded_evidence_reality_composition",
     "orchestration.epistemic_trajectory_composition",
+    "orchestration.fail_closed_truth_bearing_phase_gate",
     "orchestration.fail_closed_replay_sequence_gate",
     "orchestration.portable_execution_receipt"
   ],
-  "purpose": "Own campaign-agnostic execution-stage composition from a verified local material root through Grounded Evidence and, when declared, existing Reality, contemporaneous Judgment, later Outcome and sealed point-in-time replay executors. CAP-0007 owns composition, phase ordering, acceptance gates, immutable-path checks and portable receipts; it delegates source truthfulness to CAP-0001/2, Reality to CAP-0003, Judgment/Outcome to CAP-0004 and historical visibility to CAP-0005. Research-orchestration/v2 remains transport-neutral; legacy v1 source-pack replay remains compatibility only.",
-  "revisit_when": "Only replace if source identity, representation integrity, repair auditability, fail-closed phase composition, immutable guards, typed no-lookahead delegation and portable receipts remain one campaign-agnostic execution contract without absorbing historical discovery, transport, Reality/Judgment/Outcome or replay semantics from their existing owners.",
+  "purpose": "Own campaign-agnostic truth-bearing execution-stage composition from verified source representations through Grounded Evidence and, when declared, existing Reality, contemporaneous Judgment, later Outcome and sealed point-in-time replay. CAP-0007 remains fail-closed where continuing could corrupt source identity, canonical truth or historical visibility. It does not require optional CAP-0005 researcher enrichment to be fail-closed: once typed truth is valid, non-truth discovery/model/presentation enrichment may degrade explicitly without hiding the valid memory.",
+  "revisit_when": "Only replace if source identity, representation integrity, repair auditability, fail-closed truth-bearing composition, immutable guards, typed no-lookahead delegation, graceful separation from optional researcher enrichment and portable receipts remain one campaign-agnostic contract.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/research_orchestration.py",
@@ -111,7 +109,9 @@
     "replay",
     "repair-overlay",
     "receipt",
-    "fail-closed"
+    "truth-bearing",
+    "fail-closed",
+    "graceful-enrichment"
   ],
   "title": "Fail-closed research and epistemic-trajectory orchestration"
 }
