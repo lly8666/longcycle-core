@@ -10,18 +10,33 @@ Research Agent 是 Longcycle 的**证据工程执行器**，不是“搜几个�
 - 是否区分 Reality 与 contemporaneous Judgment；
 - 是否识别转载链和 independence cluster；
 - 是否保留失败/不可达路径；
-- 是否满足 search depth / stop condition；
+- 是否满足与当前结束类型相匹配的 search depth / stop condition；
 - 是否避免 hindsight。
 
-**raw PDF 是否已经下载不是研究质量的默认门槛。**
+**raw PDF 是否已经下载不是研究质量的默认门槛。搜索篇数/query 数也不是研究质量 KPI。**
 
 ---
 
 ## Part A — Historical Verification
 
+### 0. Memory Lead admission 与 delegated-search readiness 分开
+
+Memory Atlas 的职责是**先别丢线索**。模糊 recollection 即使暂时没有完整 query、source type、relation 或反证路径，也可以作为 unsourced Memory Lead 保存。
+
+但真正委托 bounded evidence search 前，必须把它整理成可执行 task packet。也就是说：
+
+```text
+fragmentary Memory Lead
+→ preserve in Atlas
+→ complete search/falsification plan
+→ delegated evidence search
+```
+
+“还没想好怎么搜”不等于“这条线索不值得保存”；“能保存”也不等于“已经准备好执行搜索”。
+
 ### 1. 先读完整 task packet
 
-至少包括：
+进入 delegated search 的 task packet 至少包括：
 
 ```text
 lead_id
@@ -32,11 +47,11 @@ query families
 preferred primary sources
 claim scope
 support / contradiction criteria
-minimum search depth
+minimum search depth for unresolved exhaustion
 knowledge cutoff
 ```
 
-不要只读任务标题就开始搜索。
+不要只读任务标题就开始搜索。若这些执行字段尚不完整，应先补 search plan，而不是删除原 Memory Lead 或伪造搜索条件。
 
 ### 2. 拆成最小可证明命题
 
@@ -66,7 +81,7 @@ Authority 最终按 claim scope，不按网站“名气”或 `.pdf` 后缀。
 
 ### 4. 使用多类 query family
 
-默认至少覆盖适用的：
+未直接解决的历史搜索，默认覆盖适用的：
 
 - exact entity/title；
 - time-bound；
@@ -176,9 +191,9 @@ not_found
 
 `not_found != false`。
 
-### 9. Minimum search depth
+### 9. Minimum search depth 是 unresolved-exhaustion 门槛，不是凑数门槛
 
-默认：
+当 claim **还没有被 claim-scoped authoritative content 直接解决**时，默认的 anti-premature-stop depth 是：
 
 - >= 6 个明显不同 query families；
 - >= 3 类来源；
@@ -187,21 +202,23 @@ not_found
 - 高影响 lead 至少一次 reverse query；
 - 换词/翻页直到新增结果高度重复。
 
+这些数字的用途是防止“搜两下没找到就说没有”。它们不是 corroboration quota，也不是在直接 authoritative 原文已经回答 claim 后继续凑 query/source 数的理由。
+
 ### 10. Historical stop condition
 
-只有三类正常结束：
+三类正常结束：
 
-#### A. Primary/content verified
+#### A. Authoritative/content verified
 
-找到 claim-scoped primary/authoritative source，并实际读到支持/反驳该 claim 的内容。Raw PDF 可以仍 pending。
+找到匹配 claim scope 的 primary/authoritative source，并实际读到支持该 claim 的内容，可以结束，不要求机械凑满 6 类 query / 3 类 source。高影响 claim 仍至少做一次 contradiction/revision-oriented reverse check。
 
-#### B. Primary contradicted
+#### B. Authoritative contradicted
 
-匹配 scope 的 authoritative content 明确反驳。
+匹配 claim scope 的 authoritative content 明确反驳，同样可以结束，不要求为数量而继续搜。高影响 claim 仍保留 reverse/revision check。
 
 #### C. Exhausted but unresolved
 
-达到 minimum depth 仍只有 locator-only、弱 secondary、blocked/paywalled 或完全未找到。必须保留：
+只有这一类结束必须达到完整 minimum depth。如果仍只有 locator-only、弱 secondary、blocked/paywalled 或完全未找到，必须保留：
 
 ```text
 queries attempted
@@ -210,6 +227,8 @@ source locators found
 what content remains unread
 possible next leads
 ```
+
+这里的结论仍然只是 `exhausted but unresolved`，不是 false。
 
 ---
 
@@ -283,15 +302,18 @@ source + locator
 
 交工前问：
 
+- 如果是 unresolved exhaustion，minimum depth 达到了吗？
+- 如果是 authoritative resolution，claim scope 真匹配且内容真的读到了吗？
 - primary domain 检查了吗？
 - 只看搜索首页了吗？
-- citation chain 追了吗？
-- old alias 用了吗？
+- citation chain 在需要时追了吗？
+- old alias 在 unresolved 搜索中用了吗？
 - PDF/附件至少确认 locator/内容状态了吗？
 - 是否把“下载失败”误写成“source 不存在”？
 - 是否把 locator-only 当 claim Evidence？
-- 是否做了 reverse query？
+- 高影响 claim 是否做了 reverse query？
 - 是否记录了没找到/没读到的东西？
+- 是否为了凑搜索数量继续偏离已经解决的 claim？
 - 是否因为 downloader/tool friction 偏离了研究主问题？
 
 理想执行状态机：
@@ -300,13 +322,13 @@ source + locator
 READ TASK
 → DECOMPOSE CLAIM
 → BUILD SOURCE LADDER
-→ RUN QUERY FAMILIES
+→ RUN QUERY FAMILIES AS NEEDED
 → OPEN DOCUMENTS
-→ CHASE CITATIONS
+→ CHASE CITATIONS WHEN NEEDED
 → VERIFY CONTENT / RECORD LOCATOR
-→ REVERSE VERIFY
+→ REVERSE VERIFY HIGH-IMPACT CLAIMS
 → PRESERVE
 → RETURN STRUCTURED LOG
 ```
 
-Agent 的价值是**恢复可审计的历史信息**，不是把下载成功率做高。
+Agent 的价值是**恢复可审计的历史信息**，不是把下载成功率、文档数量或 query 数做高。
