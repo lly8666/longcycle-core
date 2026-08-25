@@ -8,6 +8,7 @@ from longcycle.domain.epistemic import MemorySubjectRef
 from longcycle.domain.models import require_aware_datetime
 from longcycle.domain.orientation import (
     IndustryDescriptor,
+    IndustryMembershipModelJudgmentRun,
     IndustryMembershipProjection,
     IndustryMembershipSemanticDecision,
     IndustryOrientationCatalog,
@@ -15,6 +16,7 @@ from longcycle.domain.orientation import (
     IndustrySubjectMembershipRecord,
     ResolvedIndustryMembershipResolution,
 )
+from longcycle.ports.orientation import IndustryOrientationCapability
 
 from .postgres import PostgresResearchRepository, PostgresSupport
 
@@ -22,7 +24,9 @@ from .postgres import PostgresResearchRepository, PostgresSupport
 class PostgresIndustryOrientationReader(PostgresSupport):
     """Read grounded industry entry inputs without owning truth semantics."""
 
-    capabilities = frozenset({"deterministic_industry_subjects"})
+    capabilities: frozenset[IndustryOrientationCapability] = frozenset(
+        {"deterministic_industry_subjects"}
+    )
 
     async def industry_catalog(self, industry_node_id: UUID) -> IndustryOrientationCatalog:
         async with self.connection() as connection:
@@ -53,7 +57,9 @@ class PostgresIndustryOrientationReader(PostgresSupport):
                        membership.confidence,
                        membership.resolution_id,
                        membership.semantic_decision_id,
-                       decision.reasoning_mode AS semantic_decision_mode,
+                       COALESCE(cardinality(decision.supporting_judgment_run_ids), 0)
+                           AS semantic_decision_supporting_run_count,
+                       latest_run.reasoning_mode AS semantic_decision_latest_reasoning_mode,
                        max(assertion.first_known_at) AS known_at,
                        array_remove(
                            array_agg(
@@ -70,6 +76,14 @@ class PostgresIndustryOrientationReader(PostgresSupport):
                 LEFT JOIN research.industry_membership_semantic_decisions decision
                   ON decision.id = membership.semantic_decision_id
                  AND decision.resolution_id = membership.resolution_id
+                LEFT JOIN LATERAL (
+                    SELECT run.reasoning_mode
+                    FROM research.industry_membership_model_judgment_runs run
+                    WHERE decision.id IS NOT NULL
+                      AND run.id = ANY(decision.supporting_judgment_run_ids)
+                    ORDER BY run.completed_at DESC, run.id DESC
+                    LIMIT 1
+                ) latest_run ON true
                 JOIN research.fact_resolution_assertions selected
                   ON selected.resolution_id = resolution.id
                  AND selected.disposition = 'selected'
@@ -89,7 +103,9 @@ class PostgresIndustryOrientationReader(PostgresSupport):
                          membership.exposure_type, membership.valid_from,
                          membership.valid_to, membership.system_from,
                          membership.confidence, membership.resolution_id,
-                         membership.semantic_decision_id, decision.reasoning_mode
+                         membership.semantic_decision_id,
+                         decision.supporting_judgment_run_ids,
+                         latest_run.reasoning_mode
                 HAVING bool_and(evidence_link.evidence_fragment_id IS NOT NULL)
                 ORDER BY known_at, membership.system_from, membership.id
                 """,
@@ -108,13 +124,7 @@ class PostgresIndustryOrientationReader(PostgresSupport):
         *,
         knowledge_cutoff: datetime,
     ) -> tuple[IndustrySubjectDiscoveryRecord, ...]:
-        """Recover subjects from grounded memory carrying explicit industry scope.
-
-        This is a recall rule, not a truth promotion rule. An accepted Reality or
-        grounded Judgment explicitly scoped to an industry makes its entity
-        deterministically discoverable at that cutoff. It does not create a catalog
-        membership, infer a value-chain role, or rank importance.
-        """
+        """Recover subjects from grounded memory carrying explicit industry scope."""
 
         checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
         assert checked is not None
@@ -260,18 +270,18 @@ class PostgresIndustryOrientationReader(PostgresSupport):
             confidence=row["confidence"],
             resolution_id=row["resolution_id"],
             semantic_decision_id=row["semantic_decision_id"],
-            semantic_decision_mode=row["semantic_decision_mode"],
+            semantic_decision_supporting_run_count=row[
+                "semantic_decision_supporting_run_count"
+            ],
+            semantic_decision_latest_reasoning_mode=row[
+                "semantic_decision_latest_reasoning_mode"
+            ],
             evidence_fragment_ids=tuple(row["evidence_fragment_ids"]),
         )
 
 
 class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
-    """Bridge accepted CAP-0003 resolutions into the CAP-0005 orientation catalog.
-
-    CAP-0003 owns the source-backed selected assertion set. A model-mediated CAP-0005
-    semantic decision is persisted as audit provenance before materialization. The model
-    decision never becomes Evidence and never changes the underlying Fact resolution.
-    """
+    """Bridge accepted CAP-0003 resolutions into the model-audited CAP-0005 catalog."""
 
     async def industry_membership_resolution(
         self,
@@ -322,21 +332,100 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
             resolved_at=resolution["resolved_at"],
         )
 
+    async def _selected_ids_and_evidence(
+        self,
+        connection: Any,
+        resolution_id: UUID,
+    ) -> tuple[tuple[UUID, ...], tuple[UUID, ...]]:
+        selected_cursor = await connection.execute(
+            """
+            SELECT assertion_id
+            FROM research.fact_resolution_assertions
+            WHERE resolution_id = %s AND disposition = 'selected'
+            ORDER BY assertion_id
+            """,
+            (resolution_id,),
+        )
+        selected_ids = tuple(row["assertion_id"] for row in await selected_cursor.fetchall())
+        evidence_cursor = await connection.execute(
+            """
+            SELECT DISTINCT link.evidence_fragment_id
+            FROM research.assertion_evidence link
+            WHERE link.assertion_id = ANY(%s)
+              AND link.evidence_role = 'supporting'
+            ORDER BY link.evidence_fragment_id
+            """,
+            (list(selected_ids),),
+        )
+        evidence_ids = tuple(row["evidence_fragment_id"] for row in await evidence_cursor.fetchall())
+        return selected_ids, evidence_ids
+
+    async def append_industry_membership_judgment_run(
+        self,
+        run: IndustryMembershipModelJudgmentRun,
+    ) -> IndustryMembershipModelJudgmentRun:
+        async with self.connection() as connection:
+            selected_ids, evidence_ids = await self._selected_ids_and_evidence(
+                connection,
+                run.resolution_id,
+            )
+            if tuple(sorted(selected_ids, key=str)) != tuple(
+                sorted(run.candidate_assertion_ids, key=str)
+            ):
+                raise ValueError(
+                    "membership judgment run candidates do not match CAP-0003 selected assertions"
+                )
+            if evidence_ids != tuple(sorted(run.evidence_fragment_ids, key=str)):
+                raise ValueError(
+                    "membership judgment run Evidence does not match selected source assertions"
+                )
+            await connection.execute(
+                """
+                INSERT INTO research.industry_membership_model_judgment_runs (
+                    id, resolution_id, candidate_assertion_ids, input_assertion_hashes,
+                    reasoning_mode, provider_name, model_name, model_version,
+                    started_at, completed_at, selected_assertion_id,
+                    alternative_assertion_ids, material_conflict_detected, confidence,
+                    can_materialize, reasoning_summary, triggered_deep,
+                    deep_trigger_reasons, evidence_fragment_ids
+                ) VALUES (
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,
+                    %s, %s, %s, %s, %s, %s, %s, %s, %s
+                )
+                """,
+                (
+                    run.run_id,
+                    run.resolution_id,
+                    list(run.candidate_assertion_ids),
+                    list(run.input_assertion_hashes),
+                    run.reasoning_mode,
+                    run.provider_name,
+                    run.model_name,
+                    run.model_version,
+                    run.started_at,
+                    run.completed_at,
+                    run.selected_assertion_id,
+                    list(run.alternative_assertion_ids),
+                    run.material_conflict_detected,
+                    run.confidence,
+                    run.can_materialize,
+                    run.reasoning_summary,
+                    run.triggered_deep,
+                    list(run.deep_trigger_reasons),
+                    list(run.evidence_fragment_ids),
+                ),
+            )
+        return run
+
     async def append_industry_membership_semantic_decision(
         self,
         decision: IndustryMembershipSemanticDecision,
     ) -> IndustryMembershipSemanticDecision:
         async with self.connection() as connection:
-            selected_cursor = await connection.execute(
-                """
-                SELECT assertion_id
-                FROM research.fact_resolution_assertions
-                WHERE resolution_id = %s AND disposition = 'selected'
-                ORDER BY assertion_id
-                """,
-                (decision.resolution_id,),
+            selected_ids, evidence_ids = await self._selected_ids_and_evidence(
+                connection,
+                decision.resolution_id,
             )
-            selected_ids = tuple(row["assertion_id"] for row in await selected_cursor.fetchall())
             if tuple(sorted(selected_ids, key=str)) != tuple(
                 sorted(decision.candidate_assertion_ids, key=str)
             ):
@@ -345,51 +434,72 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 )
             if decision.selected_assertion_id not in selected_ids:
                 raise ValueError("membership semantic decision selected a non-selected assertion")
-
-            evidence_cursor = await connection.execute(
-                """
-                SELECT DISTINCT link.evidence_fragment_id
-                FROM research.assertion_evidence link
-                WHERE link.assertion_id = ANY(%s)
-                  AND link.evidence_role = 'supporting'
-                ORDER BY link.evidence_fragment_id
-                """,
-                (list(selected_ids),),
-            )
-            evidence_ids = tuple(row["evidence_fragment_id"] for row in await evidence_cursor.fetchall())
             if evidence_ids != tuple(sorted(decision.evidence_fragment_ids, key=str)):
                 raise ValueError(
                     "membership semantic decision Evidence does not match selected source assertions"
                 )
 
+            run_cursor = await connection.execute(
+                """
+                SELECT id, resolution_id, candidate_assertion_ids, evidence_fragment_ids
+                FROM research.industry_membership_model_judgment_runs
+                WHERE id = ANY(%s)
+                ORDER BY id
+                """,
+                (list(decision.supporting_judgment_run_ids),),
+            )
+            run_rows = await run_cursor.fetchall()
+            if len(run_rows) != len(decision.supporting_judgment_run_ids):
+                raise ValueError("membership semantic decision references missing model judgment runs")
+            for row in run_rows:
+                if row["resolution_id"] != decision.resolution_id:
+                    raise ValueError("membership semantic decision run references another resolution")
+                if tuple(sorted(row["candidate_assertion_ids"], key=str)) != tuple(
+                    sorted(decision.candidate_assertion_ids, key=str)
+                ):
+                    raise ValueError("membership semantic decision run candidate set drifted")
+                if tuple(sorted(row["evidence_fragment_ids"], key=str)) != evidence_ids:
+                    raise ValueError("membership semantic decision run Evidence set drifted")
+
             await connection.execute(
                 """
                 INSERT INTO research.industry_membership_semantic_decisions (
                     id, resolution_id, candidate_assertion_ids, selected_assertion_id,
-                    reasoning_mode, material_conflict_detected, reasoning_summary,
-                    model_name, model_version, decided_at, evidence_fragment_ids
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                ON CONFLICT (id) DO NOTHING
+                    semantic_scope, decision_summary, first_decided_at, last_confirmed_at,
+                    supporting_judgment_run_ids, evidence_fragment_ids
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ON CONFLICT (id) DO UPDATE SET
+                    supporting_judgment_run_ids = ARRAY(
+                        SELECT DISTINCT value
+                        FROM unnest(
+                            research.industry_membership_semantic_decisions.supporting_judgment_run_ids
+                            || EXCLUDED.supporting_judgment_run_ids
+                        ) AS value
+                        ORDER BY value
+                    ),
+                    last_confirmed_at = GREATEST(
+                        research.industry_membership_semantic_decisions.last_confirmed_at,
+                        EXCLUDED.last_confirmed_at
+                    )
                 """,
                 (
                     decision.decision_id,
                     decision.resolution_id,
                     list(decision.candidate_assertion_ids),
                     decision.selected_assertion_id,
-                    decision.reasoning_mode,
-                    decision.material_conflict_detected,
-                    decision.reasoning_summary,
-                    decision.model_name,
-                    decision.model_version,
-                    decision.decided_at,
+                    decision.semantic_scope,
+                    decision.decision_summary,
+                    decision.first_decided_at,
+                    decision.last_confirmed_at,
+                    list(decision.supporting_judgment_run_ids),
                     list(decision.evidence_fragment_ids),
                 ),
             )
             stored_cursor = await connection.execute(
                 """
                 SELECT id, resolution_id, candidate_assertion_ids, selected_assertion_id,
-                       reasoning_mode, material_conflict_detected, reasoning_summary,
-                       model_name, model_version, decided_at, evidence_fragment_ids
+                       semantic_scope, decision_summary, first_decided_at, last_confirmed_at,
+                       supporting_judgment_run_ids, evidence_fragment_ids
                 FROM research.industry_membership_semantic_decisions
                 WHERE id = %s
                 """,
@@ -402,28 +512,28 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
         persisted = IndustryMembershipSemanticDecision(
             decision_id=stored["id"],
             resolution_id=stored["resolution_id"],
+            semantic_scope=stored["semantic_scope"],
             candidate_assertion_ids=tuple(stored["candidate_assertion_ids"]),
             selected_assertion_id=stored["selected_assertion_id"],
-            reasoning_mode=stored["reasoning_mode"],
-            material_conflict_detected=stored["material_conflict_detected"],
-            reasoning_summary=stored["reasoning_summary"],
-            model_name=stored["model_name"],
-            model_version=stored["model_version"],
-            decided_at=stored["decided_at"],
+            decision_summary=stored["decision_summary"],
+            first_decided_at=stored["first_decided_at"],
+            last_confirmed_at=stored["last_confirmed_at"],
+            supporting_judgment_run_ids=tuple(stored["supporting_judgment_run_ids"]),
             evidence_fragment_ids=tuple(stored["evidence_fragment_ids"]),
         )
         semantic_fields = (
             "resolution_id",
+            "semantic_scope",
             "candidate_assertion_ids",
             "selected_assertion_id",
-            "reasoning_mode",
-            "material_conflict_detected",
-            "model_name",
-            "model_version",
             "evidence_fragment_ids",
         )
         if any(getattr(persisted, field) != getattr(decision, field) for field in semantic_fields):
             raise ValueError("membership semantic decision id maps to different semantic content")
+        if not set(decision.supporting_judgment_run_ids).issubset(
+            persisted.supporting_judgment_run_ids
+        ):
+            raise ValueError("membership semantic decision lost supporting model judgment runs")
         return persisted
 
     @staticmethod
@@ -445,7 +555,7 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
             source_cursor = await connection.execute(
                 """
                 SELECT resolution.confidence,
-                       decision.decided_at AS semantic_decided_at,
+                       decision.first_decided_at AS semantic_decided_at,
                        assertion.predicate_code,
                        assertion.subject_entity_id,
                        assertion.value_kind,
@@ -475,7 +585,7 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                   ON evidence.assertion_id = assertion.id
                  AND evidence.evidence_role = 'supporting'
                 WHERE resolution.id = %s AND assertion.id = %s
-                GROUP BY resolution.confidence, decision.decided_at,
+                GROUP BY resolution.confidence, decision.first_decided_at,
                          assertion.predicate_code, assertion.subject_entity_id,
                          assertion.value_kind, assertion.value_text,
                          assertion.valid_from, assertion.valid_to,
@@ -523,14 +633,8 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 "role": source["value_text"],
                 "industry_node_id": source_industry_node_id,
                 "exposure_type": source_exposure,
-                "valid_from": self._catalog_date(
-                    source["valid_from"],
-                    label="membership valid_from",
-                ),
-                "valid_to": self._catalog_date(
-                    source["valid_to"],
-                    label="membership valid_to",
-                ),
+                "valid_from": self._catalog_date(source["valid_from"], label="membership valid_from"),
+                "valid_to": self._catalog_date(source["valid_to"], label="membership valid_to"),
                 "known_at": source["first_known_at"],
                 "system_from": source["semantic_decided_at"],
                 "confidence": source["confidence"],
@@ -538,7 +642,7 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
             }
             if actual != expected:
                 raise ValueError(
-                    "industry membership projection does not exactly match model-selected source assertion"
+                    "industry membership projection does not exactly match semantic-decision source assertion"
                 )
             if not source_evidence:
                 raise ValueError("selected industry.membership assertion has no supporting Evidence")
