@@ -64,7 +64,7 @@ class CapabilityRegistryTest(unittest.TestCase):
                 "disposition": "new",
                 "target_capability_ids": [],
                 "closest_existing_capability_ids": ["CAP-0005"],
-                "rationale": "Synthetic rejection test.",
+                "rationale_summary": "Synthetic rejection test.",
                 "unmet_requirement": None,
                 "evidence_refs": [],
                 "planned_paths": ["src/longcycle/application/another_replay.py"],
