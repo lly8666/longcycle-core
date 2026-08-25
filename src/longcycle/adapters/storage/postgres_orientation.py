@@ -22,6 +22,8 @@ from .postgres import PostgresResearchRepository, PostgresSupport
 class PostgresIndustryOrientationReader(PostgresSupport):
     """Read grounded industry entry inputs without owning truth semantics."""
 
+    capabilities = frozenset({"deterministic_industry_subjects"})
+
     async def industry_catalog(self, industry_node_id: UUID) -> IndustryOrientationCatalog:
         async with self.connection() as connection:
             industry_cursor = await connection.execute(
