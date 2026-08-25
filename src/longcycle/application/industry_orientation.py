@@ -280,6 +280,43 @@ def _direct_discovery_basis(membership: IndustrySubjectMembershipRecord) -> dict
     }
 
 
+def _membership_payload(membership: IndustrySubjectMembershipRecord) -> dict[str, Any]:
+    """Render membership audit provenance without collapsing repeated model runs.
+
+    ``semantic_decision_mode`` remains a compatibility alias for older v1 clients. It now
+    means the latest supporting reasoning mode only; the explicit count and latest-mode fields
+    are authoritative for interpreting the multi-run semantic-decision audit trail.
+    """
+
+    latest_reasoning_mode = membership.semantic_decision_latest_reasoning_mode
+    return {
+        "role": membership.role,
+        "exposure_type": membership.exposure_type,
+        "valid_from": (
+            membership.valid_from.isoformat() if membership.valid_from is not None else None
+        ),
+        "valid_to": (
+            membership.valid_to.isoformat() if membership.valid_to is not None else None
+        ),
+        "known_at": membership.known_at.isoformat(),
+        "confidence": membership.confidence,
+        "resolution_id": str(membership.resolution_id),
+        "semantic_decision_id": (
+            str(membership.semantic_decision_id)
+            if membership.semantic_decision_id is not None
+            else None
+        ),
+        "semantic_decision_mode": latest_reasoning_mode,
+        "semantic_decision_supporting_run_count": (
+            membership.semantic_decision_supporting_run_count
+        ),
+        "semantic_decision_latest_reasoning_mode": latest_reasoning_mode,
+        "evidence_fragment_ids": [
+            str(value) for value in membership.evidence_fragment_ids
+        ],
+    }
+
+
 def _entailed_discovery_basis(discovery: IndustrySubjectDiscoveryRecord) -> dict[str, Any]:
     return {
         "certainty": "entailed",
@@ -407,33 +444,7 @@ async def build_researcher_industry_orientation(
                 "discovery_certainty": "direct" if entity_memberships else "entailed",
                 "discovery_bases": discovery_bases,
                 "memberships": [
-                    {
-                        "role": membership.role,
-                        "exposure_type": membership.exposure_type,
-                        "valid_from": (
-                            membership.valid_from.isoformat()
-                            if membership.valid_from is not None
-                            else None
-                        ),
-                        "valid_to": (
-                            membership.valid_to.isoformat()
-                            if membership.valid_to is not None
-                            else None
-                        ),
-                        "known_at": membership.known_at.isoformat(),
-                        "confidence": membership.confidence,
-                        "resolution_id": str(membership.resolution_id),
-                        "semantic_decision_id": (
-                            str(membership.semantic_decision_id)
-                            if membership.semantic_decision_id is not None
-                            else None
-                        ),
-                        "semantic_decision_mode": membership.semantic_decision_mode,
-                        "evidence_fragment_ids": [
-                            str(value) for value in membership.evidence_fragment_ids
-                        ],
-                    }
-                    for membership in entity_memberships
+                    _membership_payload(membership) for membership in entity_memberships
                 ],
                 "memory_counts": subject_counts,
                 "archive_coverage": _coverage_payload(subject_counts, len(subject_evidence)),
@@ -468,6 +479,8 @@ async def build_researcher_industry_orientation(
             "membership_requires_fact_resolution_and_evidence": True,
             "membership_semantic_selection_is_model_audited": True,
             "model_semantic_decision_is_not_source_evidence_or_canonical_reality": True,
+            "membership_semantic_audit_preserves_repeated_model_runs": True,
+            "semantic_decision_mode_is_compatibility_alias_for_latest_reasoning_mode": True,
             "membership_visibility_uses_source_known_at": True,
             "researcher_discovery_allows_deterministic_entailment": True,
             "entailed_discovery_requires_grounded_explicit_industry_scope": True,
