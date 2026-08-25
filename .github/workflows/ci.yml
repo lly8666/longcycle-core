@@ -87,7 +87,7 @@ jobs:
 
       - name: PostgreSQL researcher open states (hard gate)
         id: researcher_open_states
-        run: python scripts/smoke_postgres_open_states.py
+        run: python scripts/smoke_postgres_open_states_workspace.py
 
       - name: PostgreSQL researcher Evidence drilldown (hard gate)
         id: evidence_drilldown
