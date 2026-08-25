@@ -35,7 +35,7 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertIn("realityClaim", schema["$defs"])
         self.assertIn("judgmentClaim", schema["$defs"])
 
-    def test_model_memory_lead_schema_marks_recall_as_unsourced(self) -> None:
+    def test_model_memory_lead_schema_preserves_fragmentary_recall_before_search_planning(self) -> None:
         schema = json.loads(
             (RESEARCH_DOCS / "model-memory-lead.schema.json").read_text(encoding="utf-8")
         )
@@ -46,10 +46,17 @@ class ResearchPlaybookTest(unittest.TestCase):
                 "claim_scope",
                 "summary",
                 "memory_confidence",
-                "suggested_queries",
-                "relations",
             }.issubset(required)
         )
+        for planning_field in (
+            "suggested_queries",
+            "disconfirmation_queries",
+            "suggested_source_types",
+            "disconfirmation_source_types",
+            "relations",
+        ):
+            self.assertIn(planning_field, schema["properties"])
+            self.assertNotIn(planning_field, required)
         description = schema["properties"]["memory_confidence"]["description"]
         self.assertIn("NOT a probability", description)
         self.assertIn("cross_industry_dependency", schema["properties"]["lead_kind"]["enum"])
@@ -147,10 +154,13 @@ class ResearchPlaybookTest(unittest.TestCase):
         self.assertIn("P0", checklist)
         self.assertIn("primary", checklist)
 
-    def test_agent_sop_prevents_shallow_historical_search(self) -> None:
+    def test_agent_sop_prevents_shallow_unresolved_search_without_forcing_resolved_quotas(self) -> None:
         sop = (RESEARCH_DOCS / "research-agent-sop.md").read_text(encoding="utf-8")
         self.assertIn("minimum search depth", sop)
         self.assertIn(">= 6 个", sop)
+        self.assertIn("unresolved-exhaustion", sop)
+        self.assertIn("不是 corroboration quota", sop)
+        self.assertIn("authoritative 原文已经回答 claim", sop)
         self.assertIn("citation chain", sop)
         self.assertIn("not_found != false", sop)
         self.assertIn("Current Collection", sop)
