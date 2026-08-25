@@ -14,3 +14,6 @@ ALTER TABLE research.industry_membership_semantic_decisions
     ADD CHECK (cardinality(supporting_assertion_ids) > 0),
     ADD CHECK (supporting_assertion_ids <@ candidate_assertion_ids),
     ADD CHECK (selected_assertion_id = ANY(supporting_assertion_ids));
+
+COMMENT ON COLUMN research.industry_membership_semantic_decisions.supporting_assertion_ids IS
+    'CAP-0003-selected source assertions that deterministically share the chosen membership semantic signature; source corroboration provenance, not model-created truth.';
