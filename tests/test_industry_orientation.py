@@ -33,6 +33,8 @@ CUTOFF = datetime(2023, 1, 1, tzinfo=UTC)
 
 
 class FakeCatalogReader:
+    capabilities = frozenset({"deterministic_industry_subjects"})
+
     def __init__(
         self,
         catalog: IndustryOrientationCatalog,
