@@ -19,11 +19,11 @@ INDUSTRY_ID = UUID("10000000-0000-0000-0000-000000000001")
 CUTOFF = datetime(2024, 1, 1, tzinfo=UTC)
 
 
-def test_current_research_workspace_defaults_on_with_explicit_historical_only_opt_out() -> None:
+def test_cli_defaults_to_explicit_plus_current_mode_with_historical_only_opt_out() -> None:
     default_args = _parser().parse_args(
         ["research", "open-states", str(INDUSTRY_ID), CUTOFF.isoformat()]
     )
-    assert default_args.include_current_research is True
+    assert default_args.research_overlay_mode == "historical_plus_current_research"
 
     historical_only = _parser().parse_args(
         [
@@ -34,7 +34,7 @@ def test_current_research_workspace_defaults_on_with_explicit_historical_only_op
             "--historical-only",
         ]
     )
-    assert historical_only.include_current_research is False
+    assert historical_only.research_overlay_mode == "historical_only"
 
 
 class _CatalogBase:
@@ -136,18 +136,20 @@ async def test_expected_optional_unavailability_degrades_without_inventing_world
         current_research_reader=_ExpectedUnavailableCurrentResearch(),
         industry_node_id=INDUSTRY_ID,
         knowledge_cutoff=CUTOFF,
-        include_current_research=True,
+        research_overlay_mode="historical_plus_current_research",
     )
 
-    assert view["historical_at_cutoff"] == {
-        "reality_source_disagreements": [],
-        "judgment_contradictions": [],
-        "judgment_counterarguments": [],
-    }
-    assert view["current_research_overlay"]["included"] is True
-    assert view["current_research_overlay"]["degraded"] is True
-    assert view["current_research_overlay"]["available"] is False
-    assert view["current_research_overlay"]["availability_status"] == "UNAVAILABLE_EXPECTED"
+    assert view["research_overlay_mode"] == "historical_plus_current_research"
+    assert view["historical_market_knowledge"]["section_label"] == "Historical Market Knowledge"
+    assert view["historical_market_knowledge"]["as_of"] == CUTOFF.isoformat()
+    overlay = view["current_research_overlay"]
+    assert overlay["section_label"] == "TODAY'S RESEARCH OVERLAY"
+    assert overlay["historical_cutoff_applies"] is False
+    assert CUTOFF.isoformat() in overlay["warning"]
+    assert overlay["included"] is True
+    assert overlay["degraded"] is True
+    assert overlay["available"] is False
+    assert overlay["availability_status"] == "UNAVAILABLE_EXPECTED"
     assert view["research_enrichment"]["availability_status"] == "UNAVAILABLE_EXPECTED"
     assert {item["component"] for item in view["research_enrichment"]["failures"]} == {
         "deterministic_industry_subjects",
@@ -172,7 +174,7 @@ async def test_empty_optional_result_is_available_not_degraded() -> None:
         current_research_reader=_EmptyCurrentResearch(),
         industry_node_id=INDUSTRY_ID,
         knowledge_cutoff=CUTOFF,
-        include_current_research=True,
+        research_overlay_mode="historical_plus_current_research",
     )
 
     assert view["research_enrichment"]["availability_status"] == "AVAILABLE"
@@ -198,12 +200,13 @@ async def test_explicitly_unsupported_capability_is_expected_unavailable() -> No
         current_research_reader=_EmptyCurrentResearch(),
         industry_node_id=INDUSTRY_ID,
         knowledge_cutoff=CUTOFF,
-        include_current_research=False,
+        research_overlay_mode="historical_only",
     )
     component = view["research_enrichment"]["components"][0]
     assert component["component"] == "deterministic_industry_subjects"
     assert component["status"] == "UNAVAILABLE_EXPECTED"
     assert component["reason"] == "capability_not_supported"
+    assert view["current_research_overlay"]["included"] is False
 
 
 async def test_optional_discovery_programming_defect_is_not_silently_degraded() -> None:
@@ -215,7 +218,7 @@ async def test_optional_discovery_programming_defect_is_not_silently_degraded() 
             current_research_reader=_EmptyCurrentResearch(),
             industry_node_id=INDUSTRY_ID,
             knowledge_cutoff=CUTOFF,
-            include_current_research=False,
+            research_overlay_mode="historical_only",
         )
 
 
@@ -228,7 +231,7 @@ async def test_declared_supported_capability_missing_method_is_a_defect() -> Non
             current_research_reader=_EmptyCurrentResearch(),
             industry_node_id=INDUSTRY_ID,
             knowledge_cutoff=CUTOFF,
-            include_current_research=False,
+            research_overlay_mode="historical_only",
         )
 
 
@@ -241,5 +244,5 @@ async def test_current_overlay_programming_defect_is_not_silently_degraded() -> 
             current_research_reader=_DefectiveCurrentResearch(),
             industry_node_id=INDUSTRY_ID,
             knowledge_cutoff=CUTOFF,
-            include_current_research=True,
+            research_overlay_mode="historical_plus_current_research",
         )
