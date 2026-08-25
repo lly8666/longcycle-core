@@ -56,10 +56,24 @@ jobs:
       - name: Capability registry audit (hard gate)
         id: capabilities
         run: |
-          cp .longcycle/capabilities/active-index.json /tmp/committed-active-index.json
-          python scripts/capability_registry.py rebuild-index
-          echo '--- committed-vs-generated capability index ---'
-          diff -u /tmp/committed-active-index.json .longcycle/capabilities/active-index.json || true
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+
+          script = Path("scripts/capability_registry.py")
+          spec = importlib.util.spec_from_file_location("capability_registry_ci", script)
+          if spec is None or spec.loader is None:
+              raise RuntimeError("cannot load capability registry")
+          registry = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(registry)
+          generated = registry._canonical_json(registry.build_index(registry.load_cards()))
+          Path("/tmp/generated-active-index.json").write_text(generated, encoding="utf-8")
+          PY
+          if ! diff -u .longcycle/capabilities/active-index.json /tmp/generated-active-index.json; then
+            echo 'Capability cards are canonical; active-index.json is stale.'
+            echo 'Run: python scripts/capability_registry.py rebuild-index'
+            exit 1
+          fi
           python scripts/capability_registry.py audit
 
       - name: PostgreSQL migrations (hard gate)
