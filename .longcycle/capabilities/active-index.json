@@ -1,132 +1,428 @@
 {
-  "schema_version": "longcycle-capability-index/v1",
-  "governance_mode": "converging",
-  "policy": "Discover existing owners before material capability work. Prefer reuse/extend; new semantic ownership needs a demonstrated unmet requirement. Exact semantic ownership is unique.",
-  "governance_horizon": {
-    "short_term": "Every material capability change discovers existing owners first, records a reuse/extend/replace/new disposition, and keeps the compact registry in the default handoff read set.",
-    "medium_term": "Keep one semantic owner per stable capability, grow cards only when stable responsibilities change, and use CI ownership/audit guards to make duplicate parallel implementations increasingly difficult.",
-    "long_term": "Promote mature semantic owners to core_locked; overlapping new capabilities require a demonstrated truthful unmet requirement or an explicit supersession path rather than architectural preference."
-  },
   "active": [
     {
+      "aliases": [
+        "source archive",
+        "source acquisition",
+        "archive-now",
+        "preserve-now",
+        "document archival",
+        "source locator",
+        "deferred materialization",
+        "raw source preservation",
+        "source identity read",
+        "source provenance drilldown"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0001.json",
+      "extension_seams": [
+        "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
+        "Add source discovery/watchlist behavior without changing logical document identity semantics.",
+        "Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification.",
+        "Add storage-neutral source-identity/preservation read projections that expose existing provenance without inferring claim authority or rewriting representation identity."
+      ],
       "id": "CAP-0001",
-      "title": "Source identity, preservation and deferred materialization",
       "maturity": "stable",
+      "owned_semantics": [
+        "source.logical_document_identity",
+        "source.locator_content_materialization_lifecycle",
+        "source.fetch_archive_boundary",
+        "source.raw_version_identity",
+        "source.deferred_raw_materialization_integrity",
+        "source.researcher_identity_preservation_read"
+      ],
       "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction. Preserved readable representations may create document versions without claiming raw-source materialization; later verified raw bytes enrich the same logical document explicitly. Read projections may expose that existing identity and current preservation provenance without turning operational materialization state into historical market knowledge.",
-      "aliases": ["source archive","source acquisition","archive-now","preserve-now","document archival","source locator","deferred materialization","raw source preservation","source identity read","source provenance drilldown"],
-      "tags": ["source","archive","locator","provenance","materialization","immutable","collection","researcher-read"],
-      "owned_semantics": ["source.logical_document_identity","source.locator_content_materialization_lifecycle","source.fetch_archive_boundary","source.raw_version_identity","source.deferred_raw_materialization_integrity","source.researcher_identity_preservation_read"],
-      "extension_seams": ["Add SourcePlugin/transport adapters behind the existing source/archive ports.","Add source discovery/watchlist behavior without changing logical document identity semantics.","Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification.","Add storage-neutral source-identity/preservation read projections that expose existing provenance without inferring claim authority or rewriting representation identity."],
-      "scope": ["src/longcycle/application/source_archive.py","src/longcycle/ports/source.py","src/longcycle/ports/archive.py","src/longcycle/adapters/sources/**","src/longcycle/adapters/storage/filesystem.py","src/longcycle/adapters/storage/postgres_source_locators.py","src/longcycle/adapters/storage/postgres_evidence.py","migrations/0027_source_locator_materialization_state.sql","migrations/0028_truthful_source_materialization.sql","migrations/0029_source_representation_fetch_state.sql","migrations/0031_explicit_raw_source_materialization.sql","scripts/smoke_postgres_evidence_drilldown.py"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0001.json"
+      "scope": [
+        "src/longcycle/application/source_archive.py",
+        "src/longcycle/ports/source.py",
+        "src/longcycle/ports/archive.py",
+        "src/longcycle/adapters/sources/**",
+        "src/longcycle/adapters/storage/filesystem.py",
+        "src/longcycle/adapters/storage/postgres_source_locators.py",
+        "src/longcycle/adapters/storage/postgres_evidence.py",
+        "migrations/0027_source_locator_materialization_state.sql",
+        "migrations/0028_truthful_source_materialization.sql",
+        "migrations/0029_source_representation_fetch_state.sql",
+        "migrations/0031_explicit_raw_source_materialization.sql",
+        "scripts/smoke_postgres_evidence_drilldown.py"
+      ],
+      "tags": [
+        "source",
+        "archive",
+        "locator",
+        "provenance",
+        "materialization",
+        "immutable",
+        "collection",
+        "researcher-read"
+      ],
+      "title": "Source identity, preservation and deferred materialization"
     },
     {
+      "aliases": [
+        "grounded evidence",
+        "evidence fragment grounding",
+        "json pointer evidence",
+        "pdf page evidence",
+        "pdf readable representation evidence",
+        "html visible text evidence",
+        "evidence drilldown",
+        "evidence fragment read",
+        "researcher evidence provenance"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0002.json",
+      "extension_seams": [
+        "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
+        "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve the upstream PDF identity/media type separately and never call the representation byte-identical PDF.",
+        "Add claim_context annotations without silently promoting them into Reality/Judgment.",
+        "Add read-only Evidence navigation by fragment identity through typed ports while preserving claim-scoped content, first-known visibility and exact representation identity."
+      ],
       "id": "CAP-0002",
-      "title": "Claim-scoped Grounded Evidence",
       "maturity": "core_locked",
+      "owned_semantics": [
+        "evidence.fragment.grounding",
+        "evidence.locator.integrity",
+        "evidence.readable_representation_truthfulness",
+        "evidence.structured_json_pointer_exactness",
+        "evidence.fragment.typed_read_by_id",
+        "evidence.fragment.historical_visibility"
+      ],
       "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion, and own the typed read boundary that returns that same fragment without exposing storage internals. Grounding/readback may use archived raw PDF/HTML/JSON or a truthful readable representation of content the Agent actually read; locator existence alone is never claim Evidence, later raw materialization never rewrites the fragment's original representation identity, and readback must fail closed when the fragment was not yet knowable at the requested cutoff.",
-      "aliases": ["grounded evidence","evidence fragment grounding","json pointer evidence","pdf page evidence","pdf readable representation evidence","html visible text evidence","evidence drilldown","evidence fragment read","researcher evidence provenance"],
-      "tags": ["evidence","locator","provenance","readable-representation","json-pointer","claim-scope","researcher-read","knowledge-cutoff"],
-      "owned_semantics": ["evidence.fragment.grounding","evidence.locator.integrity","evidence.readable_representation_truthfulness","evidence.structured_json_pointer_exactness","evidence.fragment.typed_read_by_id","evidence.fragment.historical_visibility"],
-      "extension_seams": ["Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.","Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve the upstream PDF identity/media type separately and never call the representation byte-identical PDF.","Add claim_context annotations without silently promoting them into Reality/Judgment.","Add read-only Evidence navigation by fragment identity through typed ports while preserving claim-scoped content, first-known visibility and exact representation identity."],
-      "scope": ["src/longcycle/application/evidence_recording.py","src/longcycle/adapters/parsers.py","scripts/execute_grounded_evidence_spec.py","tests/test_evidence_recording.py","tests/test_json_evidence_recording.py","tests/test_handoff_data_plane.py","src/longcycle/domain/evidence.py","src/longcycle/ports/evidence.py","src/longcycle/adapters/storage/postgres_evidence.py","src/longcycle/application/evidence_drilldown.py","tests/test_evidence_drilldown.py","scripts/smoke_postgres_evidence_drilldown.py"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0002.json"
+      "scope": [
+        "src/longcycle/application/evidence_recording.py",
+        "src/longcycle/adapters/parsers.py",
+        "scripts/execute_grounded_evidence_spec.py",
+        "tests/test_evidence_recording.py",
+        "tests/test_json_evidence_recording.py",
+        "tests/test_handoff_data_plane.py",
+        "src/longcycle/domain/evidence.py",
+        "src/longcycle/ports/evidence.py",
+        "src/longcycle/adapters/storage/postgres_evidence.py",
+        "src/longcycle/application/evidence_drilldown.py",
+        "tests/test_evidence_drilldown.py",
+        "scripts/smoke_postgres_evidence_drilldown.py"
+      ],
+      "tags": [
+        "evidence",
+        "locator",
+        "provenance",
+        "readable-representation",
+        "json-pointer",
+        "claim-scope",
+        "researcher-read",
+        "knowledge-cutoff"
+      ],
+      "title": "Claim-scoped Grounded Evidence"
     },
     {
+      "aliases": [
+        "canonical reality",
+        "fact normalization",
+        "fact reconciliation",
+        "reality projection",
+        "comparability",
+        "state as of",
+        "reality conflict",
+        "source disagreement"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0003.json",
+      "extension_seams": [
+        "Add predicate-specific normalization/comparability rules through existing typed profiles.",
+        "Add generic Reality projection fields only when real cross-industry evidence cannot be represented truthfully.",
+        "Expose explicit reconciliation conflicts through typed read models while deriving historical visibility only from member source-known time."
+      ],
       "id": "CAP-0003",
-      "title": "Canonical Reality normalization and reconciliation",
       "maturity": "core_locked",
+      "owned_semantics": [
+        "reality.fact.normalization",
+        "reality.fact.comparability",
+        "reality.canonical.reconciliation",
+        "reality.valid_time_precision",
+        "reality.observation_time_unknown_onset",
+        "reality.source_disagreement.reconstruction"
+      ],
       "purpose": "Own typed Fact normalization, comparability, canonical Reality and explicit reconciliation-conflict semantics. This includes source-supported valid-time precision, observation/as-of state with unknown onset, and a typed read boundary for multi-source disagreement whose historical visibility is derived from member assertion known-time rather than later research curation timestamps.",
-      "aliases": ["canonical reality","fact normalization","fact reconciliation","reality projection","comparability","state as of","reality conflict","source disagreement"],
-      "tags": ["reality","fact","normalization","reconciliation","temporal-precision","observation-time","conflict","source-disagreement"],
-      "owned_semantics": ["reality.fact.normalization","reality.fact.comparability","reality.canonical.reconciliation","reality.valid_time_precision","reality.observation_time_unknown_onset","reality.source_disagreement.reconstruction"],
-      "extension_seams": ["Add predicate-specific normalization/comparability rules through existing typed profiles.","Add generic Reality projection fields only when real cross-industry evidence cannot be represented truthfully.","Expose explicit reconciliation conflicts through typed read models while deriving historical visibility only from member source-known time."],
-      "scope": ["src/longcycle/application/normalization.py","src/longcycle/application/reality_projection.py","src/longcycle/application/reconciliation.py","src/longcycle/domain/models.py","src/longcycle/domain/open_states.py","src/longcycle/ports/open_states.py","src/longcycle/adapters/storage/postgres_open_states.py","migrations/0020_fact_valid_time_precision.sql","migrations/0021_canonical_valid_time_kind.sql","migrations/0024_canonical_observation_time.sql","scripts/smoke_postgres_open_states.py"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0003.json"
+      "scope": [
+        "src/longcycle/application/normalization.py",
+        "src/longcycle/application/reality_projection.py",
+        "src/longcycle/application/reconciliation.py",
+        "src/longcycle/domain/models.py",
+        "src/longcycle/domain/open_states.py",
+        "src/longcycle/ports/open_states.py",
+        "src/longcycle/adapters/storage/postgres_open_states.py",
+        "migrations/0020_fact_valid_time_precision.sql",
+        "migrations/0021_canonical_valid_time_kind.sql",
+        "migrations/0024_canonical_observation_time.sql",
+        "scripts/smoke_postgres_open_states.py"
+      ],
+      "tags": [
+        "reality",
+        "fact",
+        "normalization",
+        "reconciliation",
+        "temporal-precision",
+        "observation-time",
+        "conflict",
+        "source-disagreement"
+      ],
+      "title": "Canonical Reality normalization and reconciliation"
     },
     {
+      "aliases": [
+        "judgment memory",
+        "expectation memory",
+        "forecast history",
+        "outcome evaluation",
+        "revision history",
+        "precision aware outcome"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0004.json",
+      "extension_seams": [
+        "Add generic Judgment kinds/relations when cross-industry evidence proves a truthful representation gap.",
+        "Add derived presentation over Judgment/Outcome without mutating original assertions."
+      ],
       "id": "CAP-0004",
-      "title": "Judgment, expectation revision and Outcome memory",
       "maturity": "core_locked",
+      "owned_semantics": [
+        "judgment.assertion.identity",
+        "judgment.rationale_revision_history",
+        "judgment.target_temporal_precision",
+        "outcome.judgment_reality_evaluation",
+        "outcome.precision_aware_timing"
+      ],
       "purpose": "Own contemporaneous Judgment representation, source-supported target precision, rationale/revision context and later precision-aware Outcome evaluation without rewriting the original historical Judgment.",
-      "aliases": ["judgment memory","expectation memory","forecast history","outcome evaluation","revision history","precision aware outcome"],
-      "tags": ["judgment","expectation","outcome","rationale","revision","temporal-precision"],
-      "owned_semantics": ["judgment.assertion.identity","judgment.rationale_revision_history","judgment.target_temporal_precision","outcome.judgment_reality_evaluation","outcome.precision_aware_timing"],
-      "extension_seams": ["Add generic Judgment kinds/relations when cross-industry evidence proves a truthful representation gap.","Add derived presentation over Judgment/Outcome without mutating original assertions."],
-      "scope": ["src/longcycle/application/judgment_projection.py","src/longcycle/application/judgment_context_projection.py","src/longcycle/application/judgment_replay.py","src/longcycle/domain/judgments.py","src/longcycle/domain/outcomes.py","migrations/0018_judgment_temporal_precision.sql","migrations/0019_precision_aware_outcome_timing.sql"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0004.json"
+      "scope": [
+        "src/longcycle/application/judgment_projection.py",
+        "src/longcycle/application/judgment_context_projection.py",
+        "src/longcycle/application/judgment_replay.py",
+        "src/longcycle/domain/judgments.py",
+        "src/longcycle/domain/outcomes.py",
+        "migrations/0018_judgment_temporal_precision.sql",
+        "migrations/0019_precision_aware_outcome_timing.sql"
+      ],
+      "tags": [
+        "judgment",
+        "expectation",
+        "outcome",
+        "rationale",
+        "revision",
+        "temporal-precision"
+      ],
+      "title": "Judgment, expectation revision and Outcome memory"
     },
     {
+      "aliases": [
+        "point-in-time replay",
+        "historical replay",
+        "epistemic replay",
+        "trajectory view",
+        "research replay",
+        "historical snapshot",
+        "knowledge progression",
+        "judgment storyline",
+        "industry orientation",
+        "research orient",
+        "researcher industry entry",
+        "industry subject discovery",
+        "membership semantic decision",
+        "open states",
+        "researcher controversy",
+        "researcher interpretation"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0005.json",
+      "extension_seams": [
+        "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
+        "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
+        "Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment; keep entailment provenance visible and do not promote it into membership truth.",
+        "Let a model choose the catalog representation among CAP-0003-selected source assertions; persist the decision as audit provenance and escalate material-definition conflict to deep reasoning before materialization.",
+        "Add labelled researcher time/range/as-of hints that preserve source temporal precision and never overwrite canonical time.",
+        "Surface archive absence as research coverage state without converting absence into world-state unknown/false.",
+        "Compose historical controversy with a separately labelled current research-only MODEL/JUDGMENT overlay; the current research workspace may show it by default while historical replay never backdates it.",
+        "Optional researcher enrichments may degrade with explicit diagnostics; truth-bearing catalog, Evidence and typed-memory reads remain fail-closed."
+      ],
       "id": "CAP-0005",
-      "title": "Typed point-in-time industrial-memory replay",
       "maturity": "core_locked",
-      "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus calibrated researcher-readable projections over that filtered memory. Researcher entry uses direct source-grounded membership plus deterministic auditable entailment; presentation may add clearly labelled deterministic time/role/usefulness hints when premises support them, but never mutates canonical truth. Related milestones can be surfaced as informative without satisfying a direct target. Ambiguous role, participant importance and causality belong to the explicitly labelled CAP-0006 MODEL/JUDGMENT lane rather than being forbidden or silently promoted to Reality.",
-      "aliases": ["point-in-time replay","historical replay","epistemic replay","trajectory view","research replay","historical snapshot","knowledge progression","judgment storyline","industry orientation","research orient","researcher industry entry","industry subject discovery","open states","researcher controversy","researcher interpretation"],
-      "tags": ["replay","knowledge-cutoff","no-lookahead","duckdb","trajectory","researcher-view","knowledge-progression","judgment-storyline","industry-orientation","researcher-entry","subject-discovery","deterministic-entailment","calibrated-interpretation","open-state","controversy"],
-      "owned_semantics": ["replay.knowledge_cutoff_visibility","replay.no_lookahead_boundary","replay.typed_reality_judgment_outcome_snapshot","replay.researcher_knowledge_progression_projection","replay.researcher_judgment_storyline_projection","replay.researcher_industry_orientation_projection","replay.researcher_industry_subject_discovery_projection","replay.researcher_calibrated_interpretation_projection","replay.researcher_open_state_projection"],
-      "extension_seams": ["Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.","New read-only CLI/API/UI projections that do not reimplement knowledge visibility.","Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment; keep the entailment provenance visible and do not promote it into membership truth.","Add deterministic, auditable role or subject entailment when premises come from existing semantic owners and the rule cannot manufacture unsupported historical timing or truth.","Add labelled researcher time/range/as-of hints that preserve source temporal precision and never overwrite canonical time.","Surface related milestones as useful signals while keeping the original target unresolved unless CAP-0004 records a direct match.","Compose explicit historical controversy with a separately labelled current research-only MODEL/JUDGMENT overlay from CAP-0006 without collapsing authority classes.","Additional storage adapters implementing the same typed reader contracts."],
-      "scope": ["src/longcycle/ports/epistemic.py","src/longcycle/ports/orientation.py","src/longcycle/adapters/storage/postgres_epistemic.py","src/longcycle/adapters/storage/duckdb_epistemic.py","src/longcycle/adapters/storage/postgres_orientation.py","src/longcycle/application/historical_replay.py","src/longcycle/application/judgment_replay.py","src/longcycle/application/researcher_interpretation.py","src/longcycle/application/trajectory_view.py","src/longcycle/application/industry_orientation.py","src/longcycle/application/open_state_view.py","scripts/smoke_postgres_orientation.py","tests/test_researcher_interpretation.py","tests/test_trajectory_view.py","tests/test_industry_orientation.py","tests/test_open_state_view.py"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0005.json"
+      "owned_semantics": [
+        "replay.knowledge_cutoff_visibility",
+        "replay.no_lookahead_boundary",
+        "replay.typed_reality_judgment_outcome_snapshot",
+        "replay.researcher_knowledge_progression_projection",
+        "replay.researcher_judgment_storyline_projection",
+        "replay.researcher_industry_orientation_projection",
+        "replay.researcher_industry_subject_discovery_projection",
+        "replay.industry_membership_semantic_projection_decision",
+        "replay.researcher_calibrated_interpretation_projection",
+        "replay.researcher_open_state_projection",
+        "replay.archive_research_coverage_projection",
+        "replay.optional_enrichment_degradation"
+      ],
+      "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome were knowable at a historical cutoff plus calibrated researcher projections over that filtered memory. Direct membership remains grounded in CAP-0003 source assertions, while CAP-0005 may use an auditable large-model semantic decision to choose how an already-selected assertion set is represented in the membership catalog; material-definition conflict escalates to deep reasoning and unresolved conflict fails before write. The current research workspace may show separately labelled CAP-0006 analysis by default, archive absence is exposed as research coverage rather than a world-state claim, and optional researcher enrichments degrade without hiding already-grounded truth.",
+      "scope": [
+        "src/longcycle/ports/epistemic.py",
+        "src/longcycle/ports/orientation.py",
+        "src/longcycle/adapters/storage/postgres_epistemic.py",
+        "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        "src/longcycle/adapters/storage/postgres_orientation.py",
+        "src/longcycle/application/researcher_interpretation.py",
+        "src/longcycle/application/trajectory_view.py",
+        "src/longcycle/application/industry_membership_projection.py",
+        "src/longcycle/application/industry_orientation.py",
+        "src/longcycle/application/open_state_view.py",
+        "migrations/0032_industry_membership_semantic_decisions.sql",
+        "tests/test_researcher_interpretation.py",
+        "tests/test_trajectory_view.py",
+        "tests/test_industry_membership_projection.py",
+        "tests/test_industry_orientation.py",
+        "tests/test_research_workspace_policy.py"
+      ],
+      "tags": [
+        "replay",
+        "knowledge-cutoff",
+        "no-lookahead",
+        "trajectory",
+        "researcher-view",
+        "industry-orientation",
+        "membership-semantic-decision",
+        "deep-reasoning",
+        "subject-discovery",
+        "calibrated-interpretation",
+        "archive-coverage",
+        "graceful-degradation",
+        "open-state"
+      ],
+      "title": "Typed point-in-time industrial-memory replay"
     },
     {
+      "aliases": [
+        "memory campaign",
+        "blind recall",
+        "memory atlas",
+        "self verification",
+        "verification depth",
+        "fragmentary historical recall",
+        "research open state",
+        "memory disagreement",
+        "research hypothesis",
+        "coverage gap",
+        "model judgment",
+        "research analysis",
+        "current research workspace"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0006.json",
+      "extension_seams": [
+        "Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.",
+        "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite.",
+        "Expose current research-only disagreement/hypothesis/coverage through typed readers while preserving its non-Evidence authority class.",
+        "Use research-only hypotheses for explicitly labelled analytical judgments such as causality, participant importance or ambiguous value-chain role when reasoning/context/confidence remain visible and the result is not promoted to canonical truth.",
+        "Show current research-only analysis by default in a present-day research workspace while retaining an explicit historical-only mode and never injecting the overlay into historical replay."
+      ],
       "id": "CAP-0006",
-      "title": "Historical model-memory campaign and verification",
       "maturity": "stable",
-      "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and the explicitly research-only state that remains around Memory Leads: disagreement cases, hypothesis assessments, model judgments and model-memory campaign coverage. These states guide research and may carry useful labelled analytical judgments such as causality, participant importance or ambiguous role, but remain below Evidence authority, never create canonical truth and are never backdated into historical market knowledge.",
-      "aliases": ["memory campaign","blind recall","memory atlas","self verification","verification depth","fragmentary historical recall","research open state","memory disagreement","research hypothesis","coverage gap","model judgment","research analysis"],
-      "tags": ["memory","blind-recall","approximate-time","uncertainty","seal","saturation","self-verification","research-only","model-judgment","analysis","coverage-gap","disagreement"],
-      "owned_semantics": ["memory.blind_recall_isolation","memory.fragmentary_temporal_recall","memory.campaign_saturation_and_seal","memory.post_seal_verification_depth","memory.current_disagreement_hypothesis_coverage_state","memory.research_only_model_judgment_analysis"],
-      "extension_seams": ["Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.","Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite.","Expose explicit current research-only disagreement/hypothesis/coverage state through typed readers while preserving its non-Evidence authority class.","Use research-only hypotheses for explicitly labelled analytical judgments such as causality, participant importance or ambiguous value-chain role when reasoning/context/confidence remain visible and the result is not promoted to canonical truth."],
-      "scope": ["src/longcycle/application/memory_campaign.py","src/longcycle/application/memory_ingest.py","src/longcycle/application/memory_audit.py","src/longcycle/application/memory_history.py","src/longcycle/application/researcher_interpretation.py","src/longcycle/domain/open_states.py","src/longcycle/ports/open_states.py","src/longcycle/adapters/storage/postgres_open_states.py","migrations/0014_memory_leads_and_authority.sql","migrations/0015_memory_campaigns_and_model_refresh.sql","migrations/0017_memory_hypothesis_assessments.sql","tests/test_memory_campaign.py","tests/test_memory_ingest.py","tests/test_researcher_interpretation.py","tests/test_open_state_view.py","docs/research/**memory**"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0006.json"
+      "owned_semantics": [
+        "memory.blind_recall_isolation",
+        "memory.fragmentary_temporal_recall",
+        "memory.campaign_saturation_and_seal",
+        "memory.post_seal_verification_depth",
+        "memory.current_disagreement_hypothesis_coverage_state",
+        "memory.research_only_model_judgment_analysis",
+        "memory.current_workspace_default_visibility"
+      ],
+      "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and explicitly research-only state around Memory Leads: disagreement cases, hypothesis assessments, model judgments and model-memory coverage. These states guide research and may carry useful labelled analysis such as causality, participant importance or ambiguous role, but remain below Evidence authority, never create canonical truth and are never backdated. A present-day research workspace may expose this lane by default; historical replay remains a separate no-lookahead surface.",
+      "scope": [
+        "src/longcycle/application/memory_campaign.py",
+        "src/longcycle/application/memory_ingest.py",
+        "src/longcycle/application/memory_audit.py",
+        "src/longcycle/application/memory_history.py",
+        "src/longcycle/application/researcher_interpretation.py",
+        "src/longcycle/domain/open_states.py",
+        "src/longcycle/ports/open_states.py",
+        "src/longcycle/adapters/storage/postgres_open_states.py",
+        "migrations/0014_memory_leads_and_authority.sql",
+        "migrations/0015_memory_campaigns_and_model_refresh.sql",
+        "migrations/0017_memory_hypothesis_assessments.sql",
+        "tests/test_memory_campaign.py",
+        "tests/test_memory_ingest.py",
+        "tests/test_researcher_interpretation.py",
+        "tests/test_open_state_view.py",
+        "docs/research/**memory**"
+      ],
+      "tags": [
+        "memory",
+        "blind-recall",
+        "approximate-time",
+        "uncertainty",
+        "seal",
+        "saturation",
+        "self-verification",
+        "research-only",
+        "model-judgment",
+        "current-workspace",
+        "analysis",
+        "coverage-gap",
+        "disagreement"
+      ],
+      "title": "Historical model-memory campaign and verification"
     },
     {
+      "aliases": [
+        "research orchestration",
+        "research runner",
+        "research run",
+        "source material execution",
+        "source pack execution",
+        "portable research receipt",
+        "epistemic trajectory",
+        "evidence to replay trajectory",
+        "truth-bearing execution gate"
+      ],
+      "card_path": ".longcycle/capabilities/cards/CAP-0007.json",
+      "extension_seams": [
+        "Route researcher/task invocation adapters through the same orchestration and trajectory contracts rather than campaign-specific workflow logic.",
+        "Add a bounded truth-bearing execution phase only when another existing capability already owns its semantics; CAP-0007 composes and gates rather than reimplements.",
+        "Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded.",
+        "Keep fail-closed behavior for source integrity, Evidence, reconciliation, canonical writes, Judgment/Outcome identity and no-lookahead replay.",
+        "Place optional researcher enrichment after typed CAP-0005 truth reconstruction; enrichment failure may degrade with diagnostics and must not make already-valid historical truth unavailable."
+      ],
       "id": "CAP-0007",
-      "title": "Fail-closed research and epistemic-trajectory orchestration",
       "maturity": "stable",
-      "purpose": "Own campaign-agnostic execution-stage composition from a verified local material root through Grounded Evidence and, when declared, existing Reality, contemporaneous Judgment, later Outcome and sealed point-in-time replay executors. CAP-0007 owns composition, phase ordering, acceptance gates, immutable-path checks and portable receipts; it delegates source truthfulness to CAP-0001/2, Reality to CAP-0003, Judgment/Outcome to CAP-0004 and historical visibility to CAP-0005. Research-orchestration/v2 remains transport-neutral; legacy v1 source-pack replay remains compatibility only.",
-      "aliases": ["research orchestration","research runner","research run","source material execution","source pack execution","portable research receipt","epistemic trajectory","evidence to replay trajectory"],
-      "tags": ["orchestration","source-material","transport-neutral","epistemic-trajectory","replay","repair-overlay","receipt","fail-closed"],
-      "owned_semantics": ["orchestration.preserved_source_integrity","orchestration.bounded_evidence_reality_composition","orchestration.epistemic_trajectory_composition","orchestration.fail_closed_replay_sequence_gate","orchestration.portable_execution_receipt"],
-      "extension_seams": ["Route researcher/task invocation adapters through the same orchestration and trajectory contracts rather than campaign-specific workflow logic.","Add a bounded execution phase only when another existing capability already owns the phase semantics; CAP-0007 composes and gates rather than reimplements.","Historical-recovery discovery stays upstream in CAP-0006; compose only source material that CAP-0001/CAP-0002 have truthfully preserved and grounded. Raw-file materialization is optional unless byte-level/source-format verification is itself claim-relevant.","Add researcher-readable output/presentation after typed CAP-0005 replay rather than changing knowledge-cutoff filtering in the orchestration layer."],
-      "scope": ["src/longcycle/application/research_orchestration.py","src/longcycle/application/epistemic_trajectory.py","scripts/execute_research_orchestration.py","scripts/execute_epistemic_trajectory.py","tests/test_research_orchestration.py","tests/test_epistemic_trajectory.py","src/longcycle/cli.py"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0007.json"
-    },
-    {
-      "id": "CAP-0008",
-      "title": "Current collection scheduling and operational queue",
-      "maturity": "stable",
-      "purpose": "Own cadence selection and due-work dispatch semantics for source-first current collection while keeping operational leases/retries separate from research history.",
-      "aliases": ["current collection scheduler","job queue","scheduler tick","collection cadence","leases"],
-      "tags": ["scheduler","queue","current-collection","lease","operations"],
-      "owned_semantics": ["ops.collection_cadence","ops.job_dispatch_and_lease","ops.retry_deadletter_boundary"],
-      "extension_seams": ["Add source watchlist/scheduler adapters without moving current-source archival semantics into historical recovery.","Add operational priority signals while preserving lease/idempotency boundaries."],
-      "scope": ["src/longcycle/application/scheduling.py","src/longcycle/adapters/storage/postgres_scheduler.py","src/longcycle/ports/repository.py","tests/test_archive_and_queue.py","tests/test_normalization_and_schedule.py"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0008.json"
-    },
-    {
-      "id": "CAP-0009",
-      "title": "Repository-backed session continuity and data-plane handoff",
-      "maturity": "core_locked",
-      "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
-      "aliases": ["handoff","session continuity","fresh agent bootstrap","resume cursor","data plane handoff","historical recall"],
-      "tags": ["handoff","continuity","bootstrap","historical-recall","live-head","data-plane"],
-      "owned_semantics": ["continuity.resume_cursor","continuity.live_head_reconciliation","continuity.resume_asset_identity","continuity.on_demand_history_recall"],
-      "extension_seams": ["Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.","Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger.","Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff."],
-      "scope": ["src/longcycle/application/session_handoff.py","src/longcycle/application/handoff_data_plane.py","src/longcycle/application/handoff_freshness.py","src/longcycle/application/handoff_drill.py",".longcycle/handoff/**","CONTINUE_HERE.md","FRESH_AGENT_BOOTSTRAP.md","docs/development/session-handoff-protocol.md","docs/development/continuity-architecture.md","docs/development/on-demand-history-recall.md"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0009.json"
-    },
-    {
-      "id": "CAP-0010",
-      "title": "Stable capability ownership and admission governance",
-      "maturity": "experimental",
-      "purpose": "Own the sparse machine-readable map of what Longcycle already knows how to do and force material development to classify as reuse/extend/replace/new before creating new semantic ownership.",
-      "aliases": ["capability registry","feature inventory","anti duplication gate","architecture admission","semantic ownership"],
-      "tags": ["architecture","governance","capability","ownership","anti-duplication"],
-      "owned_semantics": ["governance.capability_inventory","governance.semantic_owner_uniqueness","governance.capability_admission"],
-      "extension_seams": ["Improve deterministic discovery/routing without making opaque similarity a hard blocker.","Tighten admission requirements as governance_mode matures from converging toward core-locked architecture."],
-      "scope": [".longcycle/capabilities/**","scripts/capability_registry.py","docs/development/capability-governance.md","AGENTS.md","CONTINUE_HERE.md","tests/test_capability_registry.py",".github/workflows/ci.yml"],
-      "card_path": ".longcycle/capabilities/cards/CAP-0010.json"
+      "owned_semantics": [
+        "orchestration.preserved_source_integrity",
+        "orchestration.bounded_evidence_reality_composition",
+        "orchestration.epistemic_trajectory_composition",
+        "orchestration.fail_closed_truth_bearing_phase_gate",
+        "orchestration.fail_closed_replay_sequence_gate",
+        "orchestration.portable_execution_receipt"
+      ],
+      "purpose": "Own campaign-agnostic truth-bearing execution-stage composition from verified source representations through Grounded Evidence and, when declared, existing Reality, contemporaneous Judgment, later Outcome and sealed point-in-time replay. CAP-0007 remains fail-closed where continuing could corrupt source identity, canonical truth or historical visibility. It does not require optional CAP-0005 researcher enrichment to be fail-closed: once typed truth is valid, non-truth discovery/model/presentation enrichment may degrade explicitly without hiding the valid memory.",
+      "scope": [
+        "src/longcycle/application/research_orchestration.py",
+        "src/longcycle/application/epistemic_trajectory.py",
+        "scripts/execute_research_orchestration.py",
+        "scripts/execute_epistemic_trajectory.py",
+        "tests/test_research_orchestration.py",
+        "tests/test_epistemic_trajectory.py",
+        "src/longcycle/cli.py"
+      ],
+      "tags": [
+        "orchestration",
+        "source-material",
+        "transport-neutral",
+        "epistemic-trajectory",
+        "replay",
+        "repair-overlay",
+        "receipt",
+        "truth-bearing",
+        "fail-closed",
+        "graceful-enrichment"
+      ],
+      "title": "Fail-closed research and epistemic-trajectory orchestration"
     }
-  ]
+  ],
+  "governance_horizon": {
+    "long_term": "Promote mature semantic owners to core_locked; overlapping new capabilities require a demonstrated truthful unmet requirement or an explicit supersession path rather than architectural preference.",
+    "medium_term": "Keep one semantic owner per stable capability, grow cards only when stable responsibilities change, and use CI ownership/audit guards to make duplicate parallel implementations increasingly difficult.",
+    "short_term": "Every material capability change discovers existing owners first, records a reuse/extend/replace/new disposition, and keeps the compact registry in the default handoff read set."
+  },
+  "governance_mode": "converging",
+  "policy": "Discover existing owners before material capability work. Prefer reuse/extend; new semantic ownership needs a demonstrated unmet requirement. Exact semantic ownership is unique.",
+  "schema_version": "longcycle-capability-index/v1"
 }
