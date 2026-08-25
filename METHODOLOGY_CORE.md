@@ -41,6 +41,14 @@ source/watchlist
 - 同源转载属于同一 evidence cluster，不能伪装成独立 corroboration；
 - 权威来源口径不可调和时保留冲突，不强行选答案。
 
+### Historical search depth：防早停，不做凑数
+
+历史搜索的 minimum depth 是 **`unresolved-exhaustion` 的 anti-premature-stop gate**。如果一个 claim 仍然没有被解决，Agent 只有在完成配置的 query-family、source-type、primary-domain、reverse-query、citation-chase 等最低深度以后，才有资格说“已经搜尽但仍 unresolved”。`unresolved-exhaustion` 仍然不是 false，也不证明世界上没有这件事。
+
+反过来，如果 Agent 已实际读到 **claim-scoped authoritative 原文**，source identity 与 claim scope 都对得上，而且正文直接回答该 claim，则不要求为了满足固定 query/source 数量继续做无信息增益搜索。高影响已解决 claim 仍保留 reverse-query 保护；存在 citation chain、scope ambiguity、source conflict，或正文没有直接回答 claim 时仍须继续追查。来源数量永远不能代替 claim-scoped authority。
+
+一句话：**对“没找到/仍 unresolved”要求搜得够深；对“找到了”要求证据够直接、scope 对得上。多搜不是目标；有足够理由得出你声称的结论才是目标。**
+
 ### Source identity、可读内容、raw bytes 分开
 
 PDF 等文档使用三个显式状态：
