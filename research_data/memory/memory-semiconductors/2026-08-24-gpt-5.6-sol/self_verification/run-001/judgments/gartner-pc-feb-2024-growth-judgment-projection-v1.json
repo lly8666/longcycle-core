@@ -1,0 +1,51 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v3",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-GARTNER-PC-FEB-2024-JUDGMENT-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-CROSS-INDUSTRY-DEMAND-BRIDGE-001",
+  "allowed_claim_roles": [
+    "analyst_device_unit_growth_forecast"
+  ],
+  "subjects": [
+    {
+      "id": "c46b9fde-ea50-553b-898c-9e02857b07d5",
+      "entity_type": "event",
+      "canonical_name": "Worldwide PC shipments — calendar 2024"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "gartner-pc-growth-2024-02",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-GARTNER-2024-DEVICE-UNIT-FORECAST",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "c46b9fde-ea50-553b-898c-9e02857b07d5",
+      "speaker_name_text": "Gartner",
+      "speaker_role": "market research publisher",
+      "topic_code": "market.pc_shipments_yoy_growth",
+      "predicate_code": "market.pc_shipments_yoy_growth",
+      "dimensions": {
+        "statistical_scope": "worldwide pc shipments"
+      },
+      "dimensions_complete": true,
+      "judgment_kind": "forecast",
+      "target_time_kind": "period",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "calendar 2024",
+      "value_kind": "numeric",
+      "value_numeric": 3.5,
+      "unit_code": "pct_yoy",
+      "summary": "Gartner forecast worldwide PC shipments to grow 3.5% in calendar 2024.",
+      "metadata": {
+        "vintage": "2024-02-07",
+        "measurement_scope": "worldwide PC shipments",
+        "source_term": "PC shipments",
+        "scope_guard": "The same source also states a smartphone forecast; this bounded Judgment projects only the directly stated PC growth value."
+      }
+    }
+  ]
+}

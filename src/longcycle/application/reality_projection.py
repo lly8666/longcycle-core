@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Any, Literal
 from uuid import UUID
 
@@ -57,6 +58,9 @@ class GroundedRealityProjectionItem(DomainModel):
     subject_entity_id: UUID
     predicate_code: str = Field(min_length=3, pattern=r"^[a-z0-9_]+(?:\.[a-z0-9_]+)+$")
     value_text: str = Field(min_length=1)
+    value_kind: Literal[FactValueKind.TEXT, FactValueKind.NUMERIC] = FactValueKind.TEXT
+    value_numeric: Decimal | None = None
+    normalized_unit: str | None = None
     valid_time_kind: Literal[ValidTimeKind.PERIOD, ValidTimeKind.UNKNOWN] = ValidTimeKind.PERIOD
     valid_from: datetime | None = None
     valid_to: datetime | None = None
@@ -66,6 +70,8 @@ class GroundedRealityProjectionItem(DomainModel):
     observed_at_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
     observed_at_text: str | None = None
     statistical_scope: str = Field(default="project milestone", min_length=1)
+    dimensions: FactDimensions | None = None
+    dimensions_complete: bool = True
     extraction_confidence: float = Field(default=1.0, ge=0, le=1)
     source_quality: float = Field(default=1.0, ge=0, le=1)
     corroboration: float = Field(default=0.8, ge=0, le=1)
@@ -81,7 +87,7 @@ class GroundedRealityProjectionItem(DomainModel):
         return require_aware_datetime(value, info.field_name)
 
     @model_validator(mode="after")
-    def has_truthful_temporal_shape(self) -> GroundedRealityProjectionItem:
+    def has_truthful_temporal_and_value_shape(self) -> GroundedRealityProjectionItem:
         if self.valid_time_kind == ValidTimeKind.PERIOD:
             if self.valid_from is None and self.valid_to is None:
                 raise ValueError("Reality projection period requires at least one valid-time bound")
@@ -113,11 +119,24 @@ class GroundedRealityProjectionItem(DomainModel):
             and not self.observed_at_text
         ):
             raise ValueError("approximate observed-at time must preserve source time text")
+        if self.value_kind == FactValueKind.TEXT:
+            if self.value_numeric is not None or self.normalized_unit is not None:
+                raise ValueError("text Reality projection cannot carry numeric normalization")
+        else:
+            if self.value_numeric is None:
+                raise ValueError("numeric Reality projection requires value_numeric")
+            if not self.normalized_unit:
+                raise ValueError("numeric Reality projection requires normalized_unit")
+        if self.dimensions is not None and self.statistical_scope != "project milestone":
+            raise ValueError("use either dimensions or non-default statistical_scope, not both")
         return self
 
 
 class GroundedRealityProjectionSpec(DomainModel):
-    schema_version: Literal["longcycle-reality-projection-spec/v1"]
+    schema_version: Literal[
+        "longcycle-reality-projection-spec/v1",
+        "longcycle-reality-projection-spec/v2",
+    ]
     task_id: str = Field(min_length=1)
     source_evidence_task_id: str = Field(min_length=1)
     allowed_claim_roles: tuple[str, ...]
@@ -139,6 +158,10 @@ class GroundedRealityProjectionSpec(DomainModel):
         missing = {item.subject_entity_id for item in self.facts} - subject_ids
         if missing:
             raise ValueError("Reality projection references undeclared subjects")
+        if self.schema_version != "longcycle-reality-projection-spec/v2" and any(
+            item.value_kind != FactValueKind.TEXT for item in self.facts
+        ):
+            raise ValueError("numeric grounded Reality projection requires spec schema v2")
         return self
 
 
@@ -150,6 +173,8 @@ def build_grounded_reality_facts(
 
     The spec supplies the bounded semantic interpretation. This function never infers
     an occurrence from management guidance and never makes source time more precise.
+    Numeric v2 projections preserve the source text while carrying typed number/unit
+    normalization through the existing CAP-0003 Fact contract.
     """
 
     by_key = {item.fragment_key: item for item in evidence}
@@ -175,6 +200,7 @@ def build_grounded_reality_facts(
             item.fact_key,
             str(cited.evidence_fragment_id),
         )
+        dimensions = item.dimensions or FactDimensions(statistical_scope=item.statistical_scope)
         facts.append(
             FactAssertion(
                 id=stable_uuid_exact(
@@ -187,9 +213,11 @@ def build_grounded_reality_facts(
                 entity_id=subject.id,
                 field_name=item.predicate_code,
                 value=item.value_text,
-                value_type=FactValueKind.TEXT,
-                dimensions=FactDimensions(statistical_scope=item.statistical_scope),
-                dimensions_complete=True,
+                value_type=item.value_kind,
+                normalized_number=item.value_numeric,
+                normalized_unit=item.normalized_unit,
+                dimensions=dimensions,
+                dimensions_complete=item.dimensions_complete,
                 valid_time_kind=item.valid_time_kind,
                 valid_time=TimeRange(start=item.valid_from, end=item.valid_to),
                 valid_time_precision=item.valid_time_precision,
@@ -209,7 +237,11 @@ def build_grounded_reality_facts(
                 ),
                 extraction_run_id=extraction_run_id,
                 extractor_name="grounded-reality-projection",
-                extractor_version="1.0.0",
+                extractor_version=(
+                    "2.0.0"
+                    if spec.schema_version == "longcycle-reality-projection-spec/v2"
+                    else "1.0.0"
+                ),
                 confidence=item.extraction_confidence,
                 quality=QualityComponents(
                     source_quality=item.source_quality,

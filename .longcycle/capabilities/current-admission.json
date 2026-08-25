@@ -1,40 +1,40 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "STRICT-SEARCH-AGENT-RESTORE-AND-REALITY-CANDIDATE-002",
-  "intent": "Close the architecture-overstrictness session using existing owners only: keep bounded Agents as evidence-engineering executors with stop-and-escalate for independent synthesis beyond capability; preserve fragmentary Memory Leads before delegated-search readiness; require full configured historical-search depth before unresolved-exhaustion while allowing claim-scoped authoritative original content that directly answers a claim to resolve without mechanical query/source quotas (high-impact reverse-query protection remains); keep source-backed CAP-0003 REVIEW/QUARANTINE assertions visible through CAP-0005 as point-in-time research-only Reality candidates without lowering canonical thresholds; and harden CAP-0009 handoff fidelity using the real external Fresh-Agent takeover finding.",
+  "intent_id": "GROUNDED-NUMERIC-JUDGMENT-OUTCOME-003",
+  "intent": "Extend existing CAP-0003/CAP-0004 grounded projection seams so a source-grounded numeric forecast and directly comparable numeric Reality can be persisted and evaluated without flattening values into text or inventing a correctness threshold. Use existing Fact/Judgment numeric fields, FactDimensions comparability hashing and existing Outcome numeric_error columns; add no new semantic owner and no migration.",
   "governance_mode": "converging",
   "disposition": "extend",
-  "target_capability_ids": ["CAP-0005", "CAP-0006", "CAP-0009", "CAP-0010"],
-  "closest_existing_capability_ids": ["CAP-0003", "CAP-0005", "CAP-0006", "CAP-0009", "CAP-0010"],
-  "rationale_summary": "The user's corrections keep historical search fail-closed against shallow unresolved exhaustion and keep bounded-Agent authority strict, while a real isolated Fresh-Agent takeover exposed one remaining ambiguity: minimum search depth had been readable as a fixed quota even after authoritative original content directly resolved a claim. The closeout makes the distinction executable and testable without changing truth ownership. REVIEW/QUARANTINE visibility remains a CAP-0005 research projection over CAP-0003 state, never a second Reality system. CAP-0009 records and tests continuity fidelity; CAP-0010 keeps the work on existing owners.",
-  "rationale_details_ref": "docs/devlog/2026-08-25-search-agent-revert-and-reality-candidate-lane.md",
-  "unmet_requirement": null,
+  "target_capability_ids": [
+    "CAP-0003",
+    "CAP-0004"
+  ],
+  "closest_existing_capability_ids": [
+    "CAP-0003",
+    "CAP-0004"
+  ],
+  "rationale_summary": "The Gartner 2024 PC forecast/revision packet is a concrete source-grounded case that existing database/domain owners can represent, but the bounded grounded projection helpers were text-only and the bounded Outcome executor only wired temporal milestone comparisons. The storage schema already persists numeric Judgment values, normalized numeric Reality, comparability identity and numeric Outcome error. This change wires those existing semantics end-to-end, fail-closed on predicate/dimensions/unit identity, preserving preliminary status and no-lookahead.",
+  "rationale_details_ref": "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
+  "unmet_requirement": "Grounded source packets containing quantitative forecasts and same-scope later measurements cannot currently execute a typed numeric Judgment→Reality→Outcome comparison through the bounded production helpers even though CAP-0003/CAP-0004 storage/domain fields already support the values.",
   "evidence_refs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ddr5-platform-device-forecast-revision-productization-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ddr5-platform-device-forecast-revision-grounding-receipt-v1.json",
     ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0006.json",
-    ".longcycle/capabilities/cards/CAP-0009.json",
-    "docs/development/assistant-session-standards-audit-v1.md",
-    "docs/research/research-agent-sop.md",
-    "docs/development/fresh-agent-takeover-assessment-2026-08-25.md"
+    ".longcycle/capabilities/cards/CAP-0004.json"
   ],
   "planned_paths": [
-    "src/longcycle/application/memory_campaign.py",
-    "tests/test_memory_campaign.py",
-    "docs/research/research-agent-sop.md",
-    "docs/development/project-constitution.md",
-    "METHODOLOGY_CORE.md",
-    "src/longcycle/domain/reality_candidates.py",
-    "src/longcycle/ports/reality_candidates.py",
-    "src/longcycle/adapters/storage/postgres_reality_candidates.py",
-    "src/longcycle/application/reality_candidate_view.py",
-    "tests/test_reality_candidate_view.py",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0006.json",
-    ".longcycle/capabilities/active-index.json",
-    ".longcycle/handoff/current.json",
-    "docs/development/fresh-agent-takeover-assessment-2026-08-25.md",
-    "docs/devlog/2026-08-25-search-agent-revert-and-reality-candidate-lane.md"
+    "src/longcycle/application/judgment_projection.py",
+    "src/longcycle/application/reality_projection.py",
+    "src/longcycle/application/numeric_outcome_evaluation.py",
+    "scripts/execute_grounded_numeric_outcome_evaluation.py",
+    "tests/test_numeric_outcome_projection.py",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-feb-2024-growth-judgment-projection-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-mar-may-2024-growth-judgment-projection-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-mar-may-2024-growth-context-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/gartner-pc-2024-preliminary-growth-reality-projection-v1.json",
+    ".github/workflows/storage-gartner-pc-numeric-outcome.yml",
+    "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
 }

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 from typing import Any, Literal
 from uuid import UUID
 
@@ -14,7 +15,12 @@ from longcycle.domain.enums import (
     TemporalPrecision,
 )
 from longcycle.domain.judgments import JudgmentAssertion, JudgmentEvidenceRef
-from longcycle.domain.models import DomainModel, require_aware_datetime, stable_uuid_exact
+from longcycle.domain.models import (
+    DomainModel,
+    FactDimensions,
+    require_aware_datetime,
+    stable_uuid_exact,
+)
 
 
 class JudgmentProjectionSubject(DomainModel):
@@ -55,6 +61,13 @@ class GroundedJudgmentProjectionItem(DomainModel):
     speaker_name_text: str = Field(min_length=1)
     speaker_role: str | None = None
     topic_code: str = Field(min_length=1)
+    predicate_code: str | None = Field(
+        default=None,
+        min_length=3,
+        pattern=r"^[a-z0-9_]+(?:\.[a-z0-9_]+)+$",
+    )
+    dimensions: FactDimensions = Field(default_factory=FactDimensions)
+    dimensions_complete: bool = False
     judgment_kind: JudgmentKind
     target_time_kind: JudgmentTargetTimeKind
     target_at: datetime | None = None
@@ -62,8 +75,10 @@ class GroundedJudgmentProjectionItem(DomainModel):
     target_to: datetime | None = None
     target_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
     target_text: str | None = None
-    value_kind: Literal[JudgmentValueKind.TEXT] = JudgmentValueKind.TEXT
-    value_text: str = Field(min_length=1)
+    value_kind: Literal[JudgmentValueKind.TEXT, JudgmentValueKind.NUMERIC] = JudgmentValueKind.TEXT
+    value_numeric: Decimal | None = None
+    value_text: str | None = None
+    unit_code: str | None = None
     summary: str = Field(min_length=1)
     extraction_confidence: float = Field(default=1.0, ge=0, le=1)
     metadata: dict[str, Any] = Field(default_factory=dict)
@@ -98,7 +113,7 @@ class GroundedJudgmentProjectionItem(DomainModel):
         return require_aware_datetime(value, info.field_name)
 
     @model_validator(mode="after")
-    def has_grounding(self) -> GroundedJudgmentProjectionItem:
+    def has_grounding_and_one_value_representation(self) -> GroundedJudgmentProjectionItem:
         if not self.evidence_refs:
             raise ValueError("grounded judgment projection requires evidence refs")
         fragment_keys = [item.fragment_key for item in self.evidence_refs]
@@ -108,6 +123,20 @@ class GroundedJudgmentProjectionItem(DomainModel):
             item.evidence_role == JudgmentEvidenceRole.STATEMENT for item in self.evidence_refs
         ):
             raise ValueError("grounded judgment projection requires a statement evidence ref")
+        if self.value_kind == JudgmentValueKind.TEXT:
+            if self.value_text is None or not self.value_text.strip():
+                raise ValueError("text grounded judgment projection requires value_text")
+            if self.value_numeric is not None:
+                raise ValueError("text grounded judgment projection cannot carry value_numeric")
+        else:
+            if self.value_numeric is None:
+                raise ValueError("numeric grounded judgment projection requires value_numeric")
+            if self.value_text is not None:
+                raise ValueError("numeric grounded judgment projection cannot carry value_text")
+            if not self.unit_code:
+                raise ValueError("numeric grounded judgment projection requires unit_code")
+            if self.predicate_code is None:
+                raise ValueError("numeric grounded judgment projection requires predicate_code")
         return self
 
 
@@ -115,6 +144,7 @@ class GroundedJudgmentProjectionSpec(DomainModel):
     schema_version: Literal[
         "longcycle-judgment-projection-spec/v1",
         "longcycle-judgment-projection-spec/v2",
+        "longcycle-judgment-projection-spec/v3",
     ]
     task_id: str = Field(min_length=1)
     source_evidence_task_id: str = Field(min_length=1)
@@ -135,6 +165,10 @@ class GroundedJudgmentProjectionSpec(DomainModel):
         missing = {item.subject_entity_id for item in self.judgments} - subject_ids
         if missing:
             raise ValueError("judgment projection references undeclared subjects")
+        if self.schema_version != "longcycle-judgment-projection-spec/v3" and any(
+            item.value_kind != JudgmentValueKind.TEXT for item in self.judgments
+        ):
+            raise ValueError("numeric grounded Judgment projection requires spec schema v3")
         return self
 
 
@@ -147,6 +181,8 @@ def build_grounded_judgments(
     The projection spec supplies the interpretation. This function only verifies that
     the cited evidence exists, is from an allowed contemporaneous claim role, and
     determines conservative provenance/known-time fields from the cited fragments.
+    Numeric v3 projections reuse FactDimensions comparability hashing so later
+    Outcome comparison can be fail-closed on predicate/scope/unit identity.
     """
 
     by_key = {item.fragment_key: item for item in evidence}
@@ -189,8 +225,11 @@ def build_grounded_judgments(
             identity_parts = tuple(
                 f"{ref.evidence_role.value}:{row.evidence_fragment_id}" for ref, row in cited
             )
-            extractor_version = "2.0.0"
+            extractor_version = "3.0.0" if spec.schema_version.endswith("/v3") else "2.0.0"
 
+        comparability_hash = (
+            item.dimensions.comparability_hash if item.predicate_code is not None else None
+        )
         judgments.append(
             JudgmentAssertion(
                 id=stable_uuid_exact(
@@ -203,6 +242,9 @@ def build_grounded_judgments(
                 speaker_role=item.speaker_role,
                 subject_entity_id=item.subject_entity_id,
                 topic_code=item.topic_code,
+                predicate_code=item.predicate_code,
+                comparability_hash=comparability_hash,
+                dimensions_complete=item.dimensions_complete,
                 judgment_kind=item.judgment_kind,
                 target_time_kind=item.target_time_kind,
                 target_at=item.target_at,
@@ -210,8 +252,10 @@ def build_grounded_judgments(
                 target_to=item.target_to,
                 target_precision=item.target_precision,
                 target_text=item.target_text,
-                value_kind=JudgmentValueKind.TEXT,
+                value_kind=item.value_kind,
+                value_numeric=item.value_numeric,
                 value_text=item.value_text,
+                unit_code=item.unit_code,
                 summary=item.summary,
                 source_published_at=source_published_at,
                 first_known_at=first_known_at,
@@ -242,6 +286,9 @@ def build_grounded_judgments(
                     "evidence_roles": [ref.evidence_role.value for ref, _ in cited],
                     "subject_entity_type": subject.entity_type,
                     "subject_canonical_name": subject.canonical_name,
+                    "comparability_dimensions": (
+                        item.dimensions.canonical_payload if item.predicate_code is not None else None
+                    ),
                 },
             )
         )
