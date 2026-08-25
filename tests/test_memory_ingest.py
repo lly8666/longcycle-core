@@ -6,6 +6,7 @@ import unittest
 from longcycle.application.memory_ingest import (
     MemoryLeadCandidate,
     build_memory_candidate_repair_prompt,
+    require_memory_lead_search_ready,
     validate_memory_jsonl,
 )
 
@@ -44,6 +45,7 @@ class MemoryIngestTest(unittest.TestCase):
         candidate = MemoryLeadCandidate.model_validate(self._valid_payload())
         self.assertEqual(candidate.lead_kind.value, "mechanism")
         self.assertEqual(candidate.claim_scope.value, "technical_specification")
+        self.assertTrue(candidate.search_delegation_ready)
 
     def test_fragmentary_recall_can_keep_an_open_ended_approximate_period(self) -> None:
         payload = self._valid_payload()
@@ -67,12 +69,35 @@ class MemoryIngestTest(unittest.TestCase):
         self.assertEqual(len(result.failures), 1)
         self.assertIn("lead_kind", result.failures[0].reason)
 
-    def test_missing_disconfirmation_path_is_rejected(self) -> None:
+    def test_fragmentary_lead_without_complete_search_plan_is_preserved(self) -> None:
         payload = self._valid_payload()
         payload["disconfirmation_queries"] = []
+        payload["suggested_source_types"] = []
+
         result = validate_memory_jsonl(json.dumps(payload))
-        self.assertFalse(result.is_clean)
-        self.assertIn("disconfirmation", result.failures[0].reason)
+
+        self.assertTrue(result.is_clean)
+        self.assertEqual(len(result.accepted), 1)
+        lead = result.accepted[0]
+        self.assertFalse(lead.search_delegation_ready)
+        self.assertEqual(
+            lead.search_delegation_gaps,
+            ("disconfirmation_queries", "suggested_source_types"),
+        )
+
+    def test_incomplete_search_plan_fails_at_delegation_boundary_not_atlas_admission(self) -> None:
+        payload = self._valid_payload()
+        payload["disconfirmation_queries"] = []
+        candidate = MemoryLeadCandidate.model_validate(payload)
+
+        with self.assertRaisesRegex(ValueError, "not ready for delegated evidence search"):
+            require_memory_lead_search_ready(candidate)
+
+    def test_complete_search_plan_is_ready_for_delegation(self) -> None:
+        candidate = MemoryLeadCandidate.model_validate(self._valid_payload())
+        require_memory_lead_search_ready(candidate)
+        self.assertTrue(candidate.search_delegation_ready)
+        self.assertEqual(candidate.search_delegation_gaps, ())
 
     def test_repair_prompt_forbids_new_research_content(self) -> None:
         prompt = build_memory_candidate_repair_prompt(
