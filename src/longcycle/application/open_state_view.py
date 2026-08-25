@@ -12,7 +12,7 @@ from longcycle.ports.epistemic import EpistemicMemoryReader
 from longcycle.ports.open_states import CurrentResearchOpenStateReader, RealityConflictReader
 from longcycle.ports.orientation import IndustryOrientationReader
 
-from .industry_orientation import _load_industry_subject_universe
+from .industry_orientation import _load_industry_subject_universe, _memory_counts
 
 
 def _subject_payload(subject: MemorySubjectRef) -> dict[str, str | None]:
@@ -36,6 +36,9 @@ def _subject_with_current_label_payload(
 
 def _current_overlay_payload(bundle: CurrentResearchOpenStateBundle) -> dict[str, Any]:
     return {
+        "available": True,
+        "degraded": False,
+        "failure": None,
         "analysis_policy": model_analysis_policy(),
         "disagreements": [
             {
@@ -100,6 +103,44 @@ def _current_overlay_payload(bundle: CurrentResearchOpenStateBundle) -> dict[str
     }
 
 
+def _archive_coverage_payload(
+    *,
+    subjects: tuple[MemorySubjectRef, ...],
+    current_labels: dict[str, str],
+    memory_counts: dict[str, dict[str, int]],
+    membership_subject_keys: set[str],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for subject in subjects:
+        counts = memory_counts.get(
+            subject.key,
+            {"reality": 0, "judgments": 0, "outcomes": 0},
+        )
+        memory_record_count = counts["reality"] + counts["judgments"] + counts["outcomes"]
+        has_membership = subject.key in membership_subject_keys
+        has_grounded_record = memory_record_count > 0 or has_membership
+        rows.append(
+            {
+                "subject": _subject_with_current_label_payload(
+                    subject,
+                    current_labels.get(subject.key),
+                ),
+                "archive_status": (
+                    "grounded_records_present" if has_grounded_record else "no_grounded_record"
+                ),
+                "memory_counts": counts,
+                "has_grounded_membership": has_membership,
+                "world_state_inference": "none",
+                "research_interpretation": (
+                    "archive contains grounded material"
+                    if has_grounded_record
+                    else "research coverage may be incomplete or unresearched; absence is not a claim that the world state is unknown or false"
+                ),
+            }
+        )
+    return rows
+
+
 async def build_researcher_open_state_view(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -110,22 +151,16 @@ async def build_researcher_open_state_view(
     knowledge_cutoff: datetime,
     include_current_research: bool = False,
 ) -> dict[str, Any]:
-    """Separate historical controversy from current research-only uncertainty.
+    """Separate historical controversy, archive coverage and current research analysis.
 
-    Historical subject recall reuses the exact CAP-0005 industry subject universe: direct
-    membership plus deterministic discovery from grounded memory with explicit industry
-    scope. Historical Judgment visibility comes from the typed no-lookahead snapshot.
-    Reality conflict visibility is reconstructed from source assertion known-time, never
-    conflict-case curation time, and source independence reuses CAP-0003 source-cluster
-    semantics. Current Memory state remains opt-in and scoped by its own research provenance.
-
-    Current hypotheses are an explicit MODEL/JUDGMENT lane. They may contain useful analytical
-    claims such as causality, participant importance or an ambiguous role hypothesis, but they
-    remain research-only and can never silently become canonical Reality or historical market
-    knowledge.
+    Historical truth-bearing reads remain fail-closed. Deterministic discovery and the
+    current research-only overlay are researcher enrichments: if their backing service
+    is unavailable, already-grounded historical memory is still returned with explicit
+    degradation diagnostics. Current model hypotheses remain MODEL/JUDGMENT, never
+    canonical Reality or historical market knowledge.
     """
 
-    checked, catalog, memberships, discoveries, entity_subjects = (
+    checked, catalog, memberships, discoveries, entity_subjects, enrichment_failures = (
         await _load_industry_subject_universe(
             catalog_reader=catalog_reader,
             industry_node_id=industry_node_id,
@@ -233,6 +268,9 @@ async def build_researcher_open_state_view(
 
     current_overlay: dict[str, Any] = {
         "included": include_current_research,
+        "available": None if not include_current_research else True,
+        "degraded": False,
+        "failure": None,
         "authority_class": "research_only_current_state",
         "is_historical_market_knowledge": False,
         "cutoff_filter_applied": False,
@@ -241,11 +279,40 @@ async def build_researcher_open_state_view(
         "hypotheses": [],
         "model_memory_coverage_gaps": [],
     }
+    overlay_failures: list[dict[str, str]] = []
     if include_current_research:
-        bundle = await current_research_reader.current_open_states(
-            industry_node_id=industry_node_id,
-        )
-        current_overlay.update(_current_overlay_payload(bundle))
+        try:
+            bundle = await current_research_reader.current_open_states(
+                industry_node_id=industry_node_id,
+            )
+        except Exception as exc:
+            failure = {
+                "component": "current_research_open_states",
+                "status": "unavailable",
+                "error_type": type(exc).__name__,
+                "message": str(exc),
+                "truth_effect": "none",
+            }
+            current_overlay.update(
+                {
+                    "available": False,
+                    "degraded": True,
+                    "failure": failure,
+                }
+            )
+            overlay_failures.append(failure)
+        else:
+            current_overlay.update(_current_overlay_payload(bundle))
+
+    counts = _memory_counts(snapshot)
+    membership_subject_keys = {item.subject.key for item in memberships}
+    archive_coverage = _archive_coverage_payload(
+        subjects=subjects,
+        current_labels=current_labels,
+        memory_counts=counts,
+        membership_subject_keys=membership_subject_keys,
+    )
+    all_enrichment_failures = [*enrichment_failures, *overlay_failures]
 
     return {
         "schema_version": "longcycle-researcher-open-states/v1",
@@ -259,17 +326,24 @@ async def build_researcher_open_state_view(
             "judgment_contradictions": judgment_contradictions,
             "judgment_counterarguments": judgment_counterarguments,
         },
+        "archive_research_coverage": archive_coverage,
         "current_research_overlay": current_overlay,
+        "research_enrichment": {
+            "status": "degraded" if all_enrichment_failures else "complete",
+            "failures": all_enrichment_failures,
+        },
         "boundary": {
             "subject_universe_reuses_industry_orientation_owner": True,
-            "subject_universe_includes_deterministic_entailment": True,
+            "subject_universe_includes_deterministic_entailment_when_available": True,
             "entailed_discovery_does_not_create_membership_or_role": True,
             "membership_visibility_reuses_industry_orientation_owner": True,
+            "historical_memory_and_conflict_reads_fail_closed": True,
+            "optional_research_enrichments_degrade_gracefully": True,
             "historical_judgment_visibility_delegated_to_epistemic_snapshot": True,
             "reality_conflict_visibility_uses_member_source_known_at": True,
             "reality_source_independence_reuses_fact_source_cluster": True,
             "conflict_case_opened_at_is_not_historical_known_at": True,
-            "current_research_overlay_is_opt_in": True,
+            "current_research_overlay_is_explicitly_separate_from_historical_cutoff": True,
             "current_research_overlay_is_not_cutoff_filtered": True,
             "current_research_scope_uses_own_run_provenance": True,
             "model_judgment_lane_allows_explicit_analysis": True,
@@ -277,6 +351,7 @@ async def build_researcher_open_state_view(
             "model_memory_coverage_uses_latest_sealed_campaign": True,
             "model_memory_coverage_respects_seal_time": True,
             "model_memory_coverage_is_not_archive_absence": True,
+            "archive_absence_is_exposed_as_research_coverage": True,
             "absence_of_records_does_not_create_an_unknown_state": True,
             "not_found_is_not_false": True,
         },
