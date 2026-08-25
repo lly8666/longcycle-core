@@ -53,7 +53,7 @@ jobs:
         id: repair_memory
         run: python scripts/repair_memory.py audit
 
-      - name: Capability registry audit (hard gate)
+      - name: Capability registry metadata audit (hard gate)
         id: capabilities
         run: |
           python - <<'PY'
@@ -66,15 +66,14 @@ jobs:
               raise RuntimeError("cannot load capability registry")
           registry = importlib.util.module_from_spec(spec)
           spec.loader.exec_module(registry)
-          generated = registry._canonical_json(registry.build_index(registry.load_cards()))
+          cards = registry.load_cards()
+          active = {card["id"]: card for _, card in cards if card["status"] == "active"}
+          registry.validate_admission(active)
+          registry.validate_handoff()
+          generated = registry._canonical_json(registry.build_index(cards))
           Path("/tmp/generated-active-index.json").write_text(generated, encoding="utf-8")
+          print(f"CAPABILITY_REGISTRY_METADATA_PASS active={len(active)}")
           PY
-          if ! diff -u .longcycle/capabilities/active-index.json /tmp/generated-active-index.json; then
-            echo 'Capability cards are canonical; active-index.json is stale.'
-            echo 'Run: python scripts/capability_registry.py rebuild-index'
-            exit 1
-          fi
-          python scripts/capability_registry.py audit
 
       - name: PostgreSQL migrations (hard gate)
         id: migrations
@@ -151,6 +150,15 @@ jobs:
           research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol
           .artifacts/memory-history-audit.json
 
+      - name: Capability generated index consistency (hard gate)
+        id: capability_index
+        run: |
+          if ! diff -u .longcycle/capabilities/active-index.json /tmp/generated-active-index.json; then
+            echo 'Capability cards are canonical; active-index.json is a stale generated artifact.'
+            echo 'Run: python scripts/capability_registry.py rebuild-index'
+            exit 1
+          fi
+
       - name: Upload memory compact indexes
         if: steps.compact.outcome == 'success'
         uses: actions/upload-artifact@v4
@@ -189,6 +197,7 @@ jobs:
           echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
           echo "compact=${{ steps.compact.outcome }} (hard gate)"
           echo "memory_history=${{ steps.memory_history.outcome }} (hard gate)"
+          echo "capability_index=${{ steps.capability_index.outcome }} (hard gate)"
 
       - name: Publish full CI success status
         if: success()
