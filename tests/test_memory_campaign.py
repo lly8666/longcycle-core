@@ -85,7 +85,7 @@ class MemoryCampaignTest(unittest.TestCase):
         self.assertFalse(blocked.saturated)
         self.assertIn("major_coverage_gaps_remain", blocked.reason_codes)
 
-    def test_agent_cannot_stop_before_minimum_search_depth(self) -> None:
+    def test_unresolved_search_cannot_claim_exhaustion_before_minimum_depth(self) -> None:
         shallow = VerificationSearchProgress(
             query_family_count=2,
             source_type_count=1,
@@ -95,12 +95,12 @@ class MemoryCampaignTest(unittest.TestCase):
             citation_chase_done=False,
         )
         self.assertFalse(verification_depth_satisfied(shallow))
-        support = verification_stop_decision(
-            resolution="authoritative_support",
+        unresolved = verification_stop_decision(
+            resolution="unresolved",
             progress=shallow,
         )
-        self.assertFalse(support.allowed)
-        self.assertEqual(support.reason_code, "minimum_depth_not_met")
+        self.assertFalse(unresolved.allowed)
+        self.assertEqual(unresolved.reason_code, "unresolved_minimum_depth_not_met")
 
         deep = VerificationSearchProgress(
             query_family_count=6,
@@ -111,18 +111,67 @@ class MemoryCampaignTest(unittest.TestCase):
             citation_chase_done=True,
         )
         self.assertTrue(verification_depth_satisfied(deep))
-        resolved = verification_stop_decision(
-            resolution="authoritative_support",
-            progress=deep,
-        )
-        unresolved = verification_stop_decision(
+        exhausted = verification_stop_decision(
             resolution="unresolved",
             progress=deep,
         )
+        self.assertTrue(exhausted.allowed)
+        self.assertEqual(exhausted.reason_code, "exhausted_but_unresolved")
+
+    def test_authoritative_content_can_resolve_claim_without_search_quota(self) -> None:
+        shallow = VerificationSearchProgress(
+            query_family_count=2,
+            source_type_count=1,
+            primary_domain_checked=True,
+            reverse_query_done=False,
+            citation_chase_required=False,
+            citation_chase_done=False,
+        )
+        support = verification_stop_decision(
+            resolution="authoritative_support",
+            progress=shallow,
+        )
+        contradiction = verification_stop_decision(
+            resolution="authoritative_contradiction",
+            progress=shallow,
+        )
+        self.assertTrue(support.allowed)
+        self.assertEqual(support.reason_code, "authoritative_support")
+        self.assertTrue(contradiction.allowed)
+        self.assertEqual(contradiction.reason_code, "authoritative_contradiction")
+
+    def test_high_impact_resolved_claim_still_requires_reverse_check(self) -> None:
+        without_reverse = VerificationSearchProgress(
+            query_family_count=2,
+            source_type_count=1,
+            primary_domain_checked=True,
+            reverse_query_done=False,
+            citation_chase_required=False,
+            citation_chase_done=False,
+        )
+        blocked = verification_stop_decision(
+            resolution="authoritative_support",
+            progress=without_reverse,
+            high_impact=True,
+        )
+        self.assertFalse(blocked.allowed)
+        self.assertEqual(blocked.reason_code, "high_impact_reverse_query_required")
+
+        with_reverse = VerificationSearchProgress(
+            query_family_count=2,
+            source_type_count=1,
+            primary_domain_checked=True,
+            reverse_query_done=True,
+            citation_chase_required=False,
+            citation_chase_done=False,
+        )
+        resolved = verification_stop_decision(
+            resolution="authoritative_support",
+            progress=with_reverse,
+            high_impact=True,
+        )
         self.assertTrue(resolved.allowed)
         self.assertEqual(resolved.reason_code, "authoritative_support")
-        self.assertTrue(unresolved.allowed)
-        self.assertEqual(unresolved.reason_code, "exhausted_but_unresolved")
 
 
 if __name__ == "__main__":
