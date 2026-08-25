@@ -199,7 +199,7 @@ not_found
 
 匹配 scope 的 authoritative content 明确反驳。
 
-#### C. Exhausted but unresolved
+#### C. Exhausted but unresolved (`unresolved-exhaustion`)
 
 达到 minimum depth 仍只有 locator-only、弱 secondary、blocked/paywalled 或完全未找到。必须保留：
 
