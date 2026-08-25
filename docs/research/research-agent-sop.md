@@ -178,7 +178,7 @@ not_found
 
 ### 9. Minimum search depth
 
-默认：
+默认 unresolved-exhaustion 深度：
 
 - >= 6 个明显不同 query families；
 - >= 3 类来源；
@@ -187,7 +187,13 @@ not_found
 - 高影响 lead 至少一次 reverse query；
 - 换词/翻页直到新增结果高度重复。
 
-Minimum search depth 是 anti-premature-stop 约束，**不是 corroboration quota**：不能靠凑来源数量替代 claim-scoped source authority，也不能因为已经找到一条强来源就跳过最低搜索深度。
+Minimum search depth 是 **unresolved-exhaustion 的 anti-premature-stop gate**，不是 corroboration quota。
+
+它主要防止模型浅搜几次以后自行宣布“已经搜尽，所以没有/未知”。如果 **claim-scoped authoritative 原文已经回答 claim**，并且 Agent 已实际读取、确认 source identity 与 claim scope，则不要求为了凑 `>=6` query families 或 `>=3` source classes 继续做无信息增益搜索；来源数量也不能替代权威性判断。
+
+高影响已解决 claim 仍至少做一次 reverse query；存在 citation chain、scope ambiguity、source conflict 或正文并未直接回答 claim 时，继续追查相应问题，不能把“看起来像权威”当作提前停止理由。
+
+简化成一句：**对“没找到/仍 unresolved”要求搜得够深；对“找到了”要求证据够直接、scope 对得上。**
 
 ### 10. Historical stop condition
 
@@ -195,15 +201,19 @@ Minimum search depth 是 anti-premature-stop 约束，**不是 corroboration quo
 
 #### A. Primary/content verified
 
-找到 claim-scoped primary/authoritative source，并实际读到支持/反驳该 claim 的内容。Raw PDF 可以仍 pending。
+找到 claim-scoped primary/authoritative source，并实际读到支持该 claim 的内容。Raw PDF 可以仍 pending。
+
+若 authoritative 原文已经直接回答 claim，可按本节结束，不机械要求满足 unresolved-exhaustion 的固定 query/source 数量；高影响 claim 仍执行 reverse query。
 
 #### B. Primary contradicted
 
 匹配 scope 的 authoritative content 明确反驳。
 
+同样不靠来源数量投票；高影响 claim 仍执行 reverse query。
+
 #### C. Exhausted but unresolved (`unresolved-exhaustion`)
 
-达到 minimum depth 仍只有 locator-only、弱 secondary、blocked/paywalled 或完全未找到。必须保留：
+达到完整 minimum depth 仍只有 locator-only、弱 secondary、blocked/paywalled 或完全未找到。只有这一类结束可以声称“已达到搜索深度但仍 unresolved”。必须保留：
 
 ```text
 queries attempted
@@ -212,6 +222,8 @@ source locators found
 what content remains unread
 possible next leads
 ```
+
+`unresolved-exhaustion` 仍然是 unresolved，不是 false，也不是“全世界不存在该事实”。
 
 ---
 
@@ -292,7 +304,9 @@ source + locator
 - PDF/附件至少确认 locator/内容状态了吗？
 - 是否把“下载失败”误写成“source 不存在”？
 - 是否把 locator-only 当 claim Evidence？
-- 是否做了 reverse query？
+- 高影响 claim 是否做了 reverse query？
+- unresolved-exhaustion 是否真的达到 minimum depth？
+- 已有 authoritative 原文直接回答 claim 时，是否又把 minimum depth 错当成无信息增益的数量 KPI？
 - 是否记录了没找到/没读到的东西？
 - 是否因为 downloader/tool friction 偏离了研究主问题？
 
@@ -306,9 +320,9 @@ READ TASK
 → OPEN DOCUMENTS
 → CHASE CITATIONS
 → VERIFY CONTENT / RECORD LOCATOR
-→ REVERSE VERIFY
+→ REVERSE VERIFY WHEN REQUIRED
 → PRESERVE
 → RETURN STRUCTURED LOG
 ```
 
-Agent 的价值是**恢复可审计的历史信息**，不是把下载成功率做高。
+Agent 的价值是**恢复可审计的历史信息**，不是把下载成功率或搜索数量做高。
