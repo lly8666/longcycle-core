@@ -18,6 +18,8 @@ Blind Memory Exhaustion
 
 未 seal 的 blind 单元不得被新搜索结果反向污染；`not_found != false`。模型记忆、搜索和推理可以扩展研究空间，但不能自己发布事实。
 
+**Memory Lead preservation 与 search-task readiness 分开。** 模糊但有价值的 unsourced recollection 可以先进入 Atlas，即使 query、source type、relation 或 disconfirmation plan 尚不完整；真正进入 delegated evidence search 前再补齐可执行搜索/反证计划。不能因为“还没想好怎么搜”而让线索从 typed Atlas 消失。
+
 ## M2. 当下采集：Source-first, Preserve-now
 
 今天仍容易获得的高价值原始资料，应尽快保存其**可读内容、source identity、locator、版本/时间语义和 provenance**，而不是等几年后再历史抢救。
@@ -96,13 +98,17 @@ technology announced != technology adopted
 
 项目、技术、资本开支、预期和政策都应保存状态转换、修订、延期、取消、重启和兑现过程。最终实际结果不能覆盖当初承诺；失败路径也是历史的一部分。
 
-## M7. Agent 分工
+## M7. Agent 分工：能力影响权限和复核，不决定“能不能思考”
 
 高能力模型适合召回长尾历史线索、发现跨链关联和 negative space、seal 后解释模糊记忆并定位可能原始来源、处理高价值冲突和任务拆解。
 
-较低能力 Agent 默认是**证据工程执行者**：拿明确 claim、旧称、query family、来源目标、反向查询和 stop condition 深搜，不自由发挥行业结论。
+较低成本 / bounded Agent 默认是**证据工程执行者**：拿明确 claim、旧称、query family、来源目标、反向查询和 stop condition 深搜。它可以在任务范围内做 deterministic local reasoning、生成带标签的研究候选/假设、改进 query、发现可能的 cross-link；这些输出的 authority 来自后续 Evidence / deterministic rule / review，而不是模型级别本身。
 
-低成本 Agent 编排只需要一个很薄的 capability-aware 边界：任务声明需要 `high_capability_reasoning` 还是 `bounded_execution`。当前阶段不提前建设完整调度系统。较低能力 Agent 若无法可靠完成需要独立综合判断的任务，应**停止并升级给高能力模型**。
+它不能因为语言流畅就把候选发布成 canonical Reality/Judgment，也不能对真正高影响且含歧义的行业综合判断假装已经定论。任务声明需要 `high_capability_reasoning` 还是 `bounded_execution`；当 bounded Agent 遇到自己不能可靠消解的高影响歧义时，停止该**发布/定论动作**并升级，而不是停止所有发现和局部推理。
+
+Search depth 同样是执行边界而非凑数 KPI：`>= 6 query families / >= 3 source types` 这类默认值用于防止 unresolved search 过早宣布 exhausted。若 claim-scoped authoritative content 已直接解决命题，不要求为了数量继续搜索；高影响命题仍做 contradiction/revision-oriented reverse check。
+
+当前阶段不提前建设完整调度系统，只保留薄 capability-aware 边界和清楚的输出 authority。
 
 ## M8. 用真实 benchmark 拉动抽象
 
@@ -198,9 +204,29 @@ Semantic contract 只提供问题和误读检查，不提供可照抄的标准�
 - 用户目标明确时，不把技术判断责任反推给用户；
 - 事实不确定时校准置信度并验证，不以“模型更高级”替代证据；
 - 高能力 Agent 应主动提出能明显推进父目标的建议；
-- 较低能力 Agent 不可靠时，停止并升级给高能力模型，不模仿高级语气给伪结论。
+- bounded Agent 同样可以做其能力范围内的真实推理和提出候选；只有在高影响歧义超出可靠能力时，才升级定论/发布责任，而不是用模型等级禁止一切分析。
 
 这里的“高能力”指任务表现和推理责任，不是对用户的身份优越判断。
+
+## M14. 断言严格，发现宽；推理必须分层而不是被禁止
+
+Longcycle 的 fail-closed 约束首先作用于**系统可以把什么当成真值发布**，不能被偷换成“研究员只能看到来源逐字写出的东西”。稳定使用三类 certainty：
+
+- **DIRECT**：claim-scoped source / Evidence 直接支持；
+- **ENTAILED**：已接受事实 + 显式、可审计、确定性的规则使语义答案唯一；
+- **MODEL / JUDGMENT**：仍有歧义的分析、候选解释、重要性或因果假设，只在 research-only lane 中展示。
+
+因此：
+
+- 禁止的是**把推理冒充来源事实**，不是禁止推理；
+- 一个 dedicated predicate / row 不存在，不等于相关信息为 false 或不可发现；
+- archive absence 是 coverage state，不是 world-state false/unknown；
+- `not_found` 是搜索结果状态，不是反证；
+- 确定性 entailment 可以服务 researcher discovery，但不得静默改写其 truth owner；
+- 模糊分析应保留明确 MODEL/JUDGMENT 标签，而不是因为不能进 canonical 就被隐藏；
+- 一个 physical assertion 不是目标，一个有 provenance 的无歧义 semantic answer 才是目标。
+
+这条方法只放宽 research discovery / interpretation，不削弱 no-lookahead、Evidence grounding、source independence、temporal precision、Reality/Judgment/Outcome 分层或 canonical reconciliation。
 
 ## Method Core 修改门槛
 
