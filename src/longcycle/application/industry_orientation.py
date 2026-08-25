@@ -15,6 +15,18 @@ from longcycle.domain.orientation import (
 from longcycle.ports.epistemic import EpistemicMemoryReader
 from longcycle.ports.orientation import IndustryOrientationReader
 
+from .research_enrichment import (
+    DETERMINISTIC_INDUSTRY_SUBJECTS,
+    EnrichmentComponentResult,
+    ExpectedResearchEnrichmentUnavailable,
+    ResearchEnrichmentContractViolation,
+    available_component,
+    defect,
+    overall_status,
+    unavailable_component,
+    unsupported_component,
+)
+
 
 def _membership_visible(
     membership: IndustrySubjectMembershipRecord,
@@ -106,14 +118,25 @@ def _visible_discoveries(
     )
 
 
-def _enrichment_failure(component: str, exc: Exception) -> dict[str, str]:
-    return {
-        "component": component,
-        "status": "unavailable",
-        "error_type": type(exc).__name__,
-        "message": str(exc),
-        "truth_effect": "none",
-    }
+def _validate_capability_declaration(
+    catalog_reader: IndustryOrientationReader,
+) -> frozenset[str]:
+    try:
+        capabilities = catalog_reader.capabilities
+    except AttributeError as exc:
+        raise ResearchEnrichmentContractViolation(
+            "industry orientation reader must explicitly declare optional research capabilities"
+        ) from exc
+    if not isinstance(capabilities, frozenset):
+        raise ResearchEnrichmentContractViolation(
+            "industry orientation reader capabilities must be a frozenset"
+        )
+    unknown = set(capabilities) - {DETERMINISTIC_INDUSTRY_SUBJECTS}
+    if unknown:
+        raise ResearchEnrichmentContractViolation(
+            f"industry orientation reader declared unsupported capability names: {sorted(unknown)}"
+        )
+    return frozenset(capabilities)
 
 
 async def _load_industry_subject_universe(
@@ -127,35 +150,46 @@ async def _load_industry_subject_universe(
     tuple[IndustrySubjectMembershipRecord, ...],
     tuple[IndustrySubjectDiscoveryRecord, ...],
     dict[UUID, MemorySubjectRef],
-    tuple[dict[str, str], ...],
+    tuple[EnrichmentComponentResult, ...],
 ]:
     """Load direct truth plus optional deterministic discovery enrichment.
 
-    Catalog membership is truth-bearing input and remains fail-closed. Deterministic
-    discovery is a recall enrichment: transport/storage failure in that optional lane
-    degrades the researcher view with diagnostics instead of hiding already-grounded
-    membership truth. Returned discovery records still pass strict no-lookahead and
-    industry-identity validation.
+    Truth-bearing catalog membership remains fail-closed. Optional deterministic discovery
+    must be explicitly declared by the reader. Expected provider/availability failures may
+    degrade with typed diagnostics; programming, SQL, schema and contract defects raise.
+    A supported capability returning zero records is AVAILABLE with result_count=0.
     """
 
     checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
     assert checked is not None
     catalog = await catalog_reader.industry_catalog(industry_node_id)
     memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
-    discovery_reader = getattr(catalog_reader, "deterministic_industry_subjects", None)
-    failures: list[dict[str, str]] = []
+    capabilities = _validate_capability_declaration(catalog_reader)
+
+    components: list[EnrichmentComponentResult] = []
     raw_discoveries: tuple[IndustrySubjectDiscoveryRecord, ...]
-    if discovery_reader is None:
+    if DETERMINISTIC_INDUSTRY_SUBJECTS not in capabilities:
         raw_discoveries = ()
+        components.append(unsupported_component(DETERMINISTIC_INDUSTRY_SUBJECTS))
     else:
         try:
-            raw_discoveries = await discovery_reader(
+            raw_discoveries = await catalog_reader.deterministic_industry_subjects(
                 industry_node_id,
                 knowledge_cutoff=checked,
             )
-        except Exception as exc:
+        except ExpectedResearchEnrichmentUnavailable as exc:
             raw_discoveries = ()
-            failures.append(_enrichment_failure("deterministic_industry_subjects", exc))
+            components.append(unavailable_component(DETERMINISTIC_INDUSTRY_SUBJECTS, exc))
+        except Exception as exc:
+            raise defect(DETERMINISTIC_INDUSTRY_SUBJECTS, exc) from exc
+        else:
+            components.append(
+                available_component(
+                    DETERMINISTIC_INDUSTRY_SUBJECTS,
+                    result_count=len(raw_discoveries),
+                )
+            )
+
     discoveries = _visible_discoveries(
         raw_discoveries,
         industry_node_id=industry_node_id,
@@ -168,7 +202,7 @@ async def _load_industry_subject_universe(
     for discovery in discoveries:
         assert discovery.subject.entity_id is not None
         subjects[discovery.subject.entity_id] = discovery.subject
-    return checked, catalog, memberships, discoveries, subjects, tuple(failures)
+    return checked, catalog, memberships, discoveries, subjects, tuple(components)
 
 
 def _memory_counts(snapshot: PointInTimeMemorySnapshot) -> dict[str, dict[str, int]]:
@@ -274,6 +308,19 @@ def _coverage_payload(counts: dict[str, int], evidence_count: int) -> dict[str, 
     }
 
 
+def _enrichment_payload(
+    components: tuple[EnrichmentComponentResult, ...],
+) -> dict[str, Any]:
+    payloads = [item.as_payload() for item in components]
+    availability = overall_status(components)
+    return {
+        "status": "degraded" if availability == "UNAVAILABLE_EXPECTED" else "complete",
+        "availability_status": availability,
+        "components": payloads,
+        "failures": [item for item in payloads if item["status"] == "UNAVAILABLE_EXPECTED"],
+    }
+
+
 async def build_researcher_industry_orientation(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -283,7 +330,7 @@ async def build_researcher_industry_orientation(
 ) -> dict[str, Any]:
     """Build a broad but auditable researcher entry view at one knowledge cutoff."""
 
-    checked, catalog, visible_memberships, visible_discoveries, subjects, enrichment_failures = (
+    checked, catalog, visible_memberships, visible_discoveries, subjects, enrichment = (
         await _load_industry_subject_universe(
             catalog_reader=catalog_reader,
             industry_node_id=industry_node_id,
@@ -416,10 +463,7 @@ async def build_researcher_industry_orientation(
         },
         "subjects": subject_rows,
         "explicit_open_states": [],
-        "research_enrichment": {
-            "status": "degraded" if enrichment_failures else "complete",
-            "failures": list(enrichment_failures),
-        },
+        "research_enrichment": _enrichment_payload(enrichment),
         "boundary": {
             "membership_requires_fact_resolution_and_evidence": True,
             "membership_semantic_selection_is_model_audited": True,
@@ -433,6 +477,9 @@ async def build_researcher_industry_orientation(
             "presentation_does_not_promote_analysis_to_truth": True,
             "truth_bearing_catalog_and_memory_reads_fail_closed": True,
             "optional_research_discovery_enrichment_degrades_gracefully": True,
+            "optional_unavailability_is_typed_and_defects_raise": True,
+            "empty_optional_result_is_available_not_degraded": True,
+            "optional_capability_support_is_explicitly_declared": True,
             "system_from_is_not_historical_known_at": True,
             "system_from_only_breaks_ties_between_already_knowable_versions": True,
             "memory_visibility_delegated_to_epistemic_snapshot": True,
