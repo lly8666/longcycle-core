@@ -165,8 +165,8 @@ def _parser() -> argparse.ArgumentParser:
     research_open_states = research_sub.add_parser(
         "open-states",
         help=(
-            "render the current research workspace: historical controversy plus current "
-            "research-only analysis, with an explicit historical-only opt-out"
+            "render explicitly separated historical market knowledge and present-day "
+            "research-only analysis"
         ),
     )
     research_open_states.add_argument("industry_node_id", type=UUID)
@@ -174,23 +174,24 @@ def _parser() -> argparse.ArgumentParser:
     current_research_group = research_open_states.add_mutually_exclusive_group()
     current_research_group.add_argument(
         "--include-current-research",
-        action="store_true",
-        dest="include_current_research",
+        action="store_const",
+        const="historical_plus_current_research",
+        dest="research_overlay_mode",
         help=(
-            "explicitly include current Memory disagreement/hypothesis/model-memory coverage; "
-            "this is already the default for the current research workspace"
+            "include today's Memory disagreement/hypothesis/model-memory research section; "
+            "this is already the CLI default"
         ),
     )
     current_research_group.add_argument(
         "--historical-only",
-        action="store_false",
-        dest="include_current_research",
-        help=(
-            "show only historical cutoff state and archive coverage; exclude today's "
-            "research-only overlay"
-        ),
+        action="store_const",
+        const="historical_only",
+        dest="research_overlay_mode",
+        help="show only historical market knowledge at the requested cutoff",
     )
-    research_open_states.set_defaults(include_current_research=True)
+    research_open_states.set_defaults(
+        research_overlay_mode="historical_plus_current_research"
+    )
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
     schedule.add_argument("--industry-id", type=UUID, required=True)
@@ -358,7 +359,7 @@ async def _research_open_states(args: argparse.Namespace, settings: Settings) ->
             current_research_reader=open_state_reader,
             industry_node_id=args.industry_node_id,
             knowledge_cutoff=args.cutoff,
-            include_current_research=bool(args.include_current_research),
+            research_overlay_mode=args.research_overlay_mode,
         )
     finally:
         await catalog_reader.close()
