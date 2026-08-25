@@ -144,6 +144,10 @@ def test_numeric_projection_reuses_typed_dimensions_for_comparability() -> None:
     assert judgment.unit_code == "pct_yoy"
     assert judgment.predicate_code == reality.field_name
     assert judgment.comparability_hash == reality.dimensions.comparability_hash
+    assert judgment.metadata["comparability_dimensions"] == DIMENSIONS.canonical_payload
+    assert FactDimensions.model_validate(
+        judgment.metadata["comparability_dimensions"]
+    ).comparability_hash == judgment.comparability_hash
     assert reality.value_type == FactValueKind.NUMERIC
     assert reality.normalized_number == Decimal("1.3")
     assert reality.normalized_unit == "pct_yoy"

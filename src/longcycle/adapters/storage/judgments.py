@@ -10,11 +10,13 @@ from longcycle.domain.judgments import (
     JudgmentRationale,
     JudgmentRelation,
 )
+from longcycle.domain.models import FactDimensions
 
 from .postgres import PostgresSupport
 
 
 _FINGERPRINT_KEY = "_longcycle_content_sha256"
+_COMPARABILITY_DIMENSIONS_KEY = "comparability_dimensions"
 
 
 class InMemoryJudgmentRepository:
@@ -61,6 +63,66 @@ class InMemoryJudgmentRepository:
 
 
 class PostgresJudgmentRepository(PostgresSupport):
+    async def _ensure_comparability_identity(
+        self,
+        connection: Any,
+        judgment: JudgmentAssertion,
+    ) -> None:
+        if judgment.comparability_hash is None:
+            return
+        payload = judgment.metadata.get(_COMPARABILITY_DIMENSIONS_KEY)
+        if not isinstance(payload, dict):
+            raise ValueError(
+                "judgment with comparability_hash must preserve comparability_dimensions metadata"
+            )
+        dimensions = FactDimensions.model_validate(payload)
+        if dimensions.comparability_hash != judgment.comparability_hash:
+            raise ValueError("judgment comparability hash does not match canonical dimension payload")
+
+        await connection.execute(
+            """
+            INSERT INTO research.fact_dimension_sets (
+                comparability_hash, schema_version, product_spec_id,
+                geography_scheme, geography_code, market_basis, contract_basis,
+                tax_basis, freight_basis, incoterm, currency_code, frequency,
+                price_component, statistical_scope, canonical_payload
+            ) VALUES (
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+            ) ON CONFLICT (comparability_hash) DO NOTHING
+            """,
+            (
+                judgment.comparability_hash,
+                dimensions.schema_version,
+                dimensions.product_spec_id,
+                dimensions.geography_scheme,
+                dimensions.geography_code,
+                dimensions.market_basis.value if dimensions.market_basis else None,
+                dimensions.contract_basis,
+                dimensions.tax_basis.value if dimensions.tax_basis else None,
+                dimensions.freight_basis.value if dimensions.freight_basis else None,
+                dimensions.incoterm,
+                dimensions.currency_code,
+                dimensions.frequency.value if dimensions.frequency else None,
+                dimensions.price_component.value if dimensions.price_component else None,
+                dimensions.statistical_scope,
+                self.jsonb(dimensions.canonical_payload),
+            ),
+        )
+        dimension_cursor = await connection.execute(
+            """
+            SELECT canonical_payload
+            FROM research.fact_dimension_sets
+            WHERE comparability_hash = %s
+            """,
+            (judgment.comparability_hash,),
+        )
+        stored_dimension = await dimension_cursor.fetchone()
+        if (
+            stored_dimension is None
+            or stored_dimension["canonical_payload"] != dimensions.canonical_payload
+        ):
+            raise ValueError("comparability hash maps to a different canonical dimension payload")
+
     async def append_judgments(self, judgments: Sequence[JudgmentAssertion]) -> None:
         async with self.connection() as connection:
             evidence_ids = sorted(
@@ -84,7 +146,21 @@ class PostgresJudgmentRepository(PostgresSupport):
                         + ", ".join(sorted(str(item) for item in missing))
                     )
 
+            unit_codes = sorted({judgment.unit_code for judgment in judgments if judgment.unit_code})
+            if unit_codes:
+                unit_cursor = await connection.execute(
+                    "SELECT code FROM core.units WHERE code = ANY(%s)",
+                    (unit_codes,),
+                )
+                registered = {row["code"] for row in await unit_cursor.fetchall()}
+                unknown = sorted(set(unit_codes) - registered)
+                if unknown:
+                    raise ValueError(
+                        "judgments contain unregistered units: " + ", ".join(unknown)
+                    )
+
             for judgment in judgments:
+                await self._ensure_comparability_identity(connection, judgment)
                 fingerprint = judgment.content_fingerprint
                 existing_cursor = await connection.execute(
                     """
