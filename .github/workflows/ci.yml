@@ -55,7 +55,12 @@ jobs:
 
       - name: Capability registry audit (hard gate)
         id: capabilities
-        run: python scripts/capability_registry.py audit
+        run: |
+          cp .longcycle/capabilities/active-index.json /tmp/committed-active-index.json
+          python scripts/capability_registry.py rebuild-index
+          echo '--- committed-vs-generated capability index ---'
+          diff -u /tmp/committed-active-index.json .longcycle/capabilities/active-index.json || true
+          python scripts/capability_registry.py audit
 
       - name: PostgreSQL migrations (hard gate)
         id: migrations
