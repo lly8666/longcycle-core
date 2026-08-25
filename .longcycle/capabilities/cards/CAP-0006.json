@@ -55,6 +55,30 @@
       "path": "tests/test_memory_ingest.py"
     },
     {
+      "contains": "test_fragmentary_lead_may_omit_search_plan_fields_entirely",
+      "description": "Memory Atlas admission preserves useful fragmentary recall even when delegated-search planning fields are not yet available.",
+      "kind": "test",
+      "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_incomplete_search_plan_fails_at_delegation_boundary_not_atlas_admission",
+      "description": "Search-plan completeness remains fail-closed at delegated evidence-search readiness rather than deleting an admissible Memory Lead.",
+      "kind": "test",
+      "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_authoritative_content_can_resolve_claim_without_search_quota",
+      "description": "Claim-scoped authoritative content may resolve a lead without mechanically satisfying unresolved-exhaustion query/source quotas.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_unresolved_search_cannot_claim_exhaustion_before_minimum_depth",
+      "description": "Minimum verification depth still prevents shallow not-found work from being labelled exhausted when the claim remains unresolved.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
       "contains": "test_model_analysis_policy_allows_analysis_but_never_truth_promotion",
       "description": "Researcher interpretation allows useful MODEL/JUDGMENT analysis while forbidding canonical truth, membership or historical-time promotion.",
       "kind": "test",
@@ -82,6 +106,8 @@
     "Injecting today's research overlay into historical replay merely because the current workspace shows it by default.",
     "Treating model-memory coverage cells as proof that the archive or real world lacks an event.",
     "Forcing fragmentary recollection into exact dates or dropping useful leads because their time is approximate.",
+    "Requiring a complete positive/negative query and source plan before preserving an otherwise useful unsourced Memory Lead; planning completeness belongs to delegated-search readiness.",
+    "Treating minimum query-family/source-type depth as a corroboration quota after claim-scoped authoritative content already resolves the claim; the depth guard applies to unresolved exhaustion.",
     "Hiding useful analytical hypotheses merely because they are not source truth; keep them visible with an explicit research-only/model label instead."
   ],
   "owned_semantics": [
