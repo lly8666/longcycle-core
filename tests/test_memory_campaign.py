@@ -12,6 +12,7 @@ from longcycle.application.memory_campaign import (
     build_self_verification_prompt,
     evaluate_campaign_saturation,
     verification_depth_satisfied,
+    verification_stop_decision,
 )
 
 
@@ -33,6 +34,8 @@ class MemoryCampaignTest(unittest.TestCase):
         self.assertIn("approximate period", prompt)
         self.assertIn("instead of fabricating precision", prompt)
         self.assertIn("Do not invent citations, URLs, exact report titles, exact dates", prompt)
+        self.assertIn("Do not discard a useful lead", prompt)
+        self.assertIn("fake search plan", prompt)
 
     def test_atlas_only_pass_requires_atlas(self) -> None:
         spec = RecallPassSpec(
@@ -82,7 +85,7 @@ class MemoryCampaignTest(unittest.TestCase):
         self.assertFalse(blocked.saturated)
         self.assertIn("major_coverage_gaps_remain", blocked.reason_codes)
 
-    def test_agent_cannot_stop_before_minimum_search_depth(self) -> None:
+    def test_unresolved_search_cannot_claim_exhaustion_before_minimum_depth(self) -> None:
         shallow = VerificationSearchProgress(
             query_family_count=2,
             source_type_count=1,
@@ -92,6 +95,9 @@ class MemoryCampaignTest(unittest.TestCase):
             citation_chase_done=False,
         )
         self.assertFalse(verification_depth_satisfied(shallow))
+        decision = verification_stop_decision(resolution="unresolved", progress=shallow)
+        self.assertFalse(decision.allowed)
+        self.assertEqual(decision.reason_code, "unresolved_minimum_depth_not_met")
 
         deep = VerificationSearchProgress(
             query_family_count=6,
@@ -102,6 +108,65 @@ class MemoryCampaignTest(unittest.TestCase):
             citation_chase_done=True,
         )
         self.assertTrue(verification_depth_satisfied(deep))
+        decision = verification_stop_decision(resolution="unresolved", progress=deep)
+        self.assertTrue(decision.allowed)
+        self.assertEqual(decision.reason_code, "exhausted_but_unresolved")
+
+    def test_authoritative_content_can_resolve_claim_without_search_quota(self) -> None:
+        direct = VerificationSearchProgress(
+            query_family_count=1,
+            source_type_count=1,
+            primary_domain_checked=True,
+            reverse_query_done=False,
+            citation_chase_required=False,
+            citation_chase_done=False,
+        )
+
+        support = verification_stop_decision(
+            resolution="authoritative_support",
+            progress=direct,
+        )
+        contradiction = verification_stop_decision(
+            resolution="authoritative_contradiction",
+            progress=direct,
+        )
+
+        self.assertTrue(support.allowed)
+        self.assertEqual(support.reason_code, "authoritative_support")
+        self.assertTrue(contradiction.allowed)
+        self.assertEqual(contradiction.reason_code, "authoritative_contradiction")
+
+    def test_high_impact_resolved_claim_still_requires_reverse_check(self) -> None:
+        direct = VerificationSearchProgress(
+            query_family_count=1,
+            source_type_count=1,
+            primary_domain_checked=True,
+            reverse_query_done=False,
+            citation_chase_required=False,
+            citation_chase_done=False,
+        )
+        blocked = verification_stop_decision(
+            resolution="authoritative_support",
+            progress=direct,
+            high_impact=True,
+        )
+        self.assertFalse(blocked.allowed)
+        self.assertEqual(blocked.reason_code, "high_impact_reverse_query_required")
+
+        checked = VerificationSearchProgress(
+            query_family_count=2,
+            source_type_count=1,
+            primary_domain_checked=True,
+            reverse_query_done=True,
+            citation_chase_required=False,
+            citation_chase_done=False,
+        )
+        allowed = verification_stop_decision(
+            resolution="authoritative_support",
+            progress=checked,
+            high_impact=True,
+        )
+        self.assertTrue(allowed.allowed)
 
 
 if __name__ == "__main__":
