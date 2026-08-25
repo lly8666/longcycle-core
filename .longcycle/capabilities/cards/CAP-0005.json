@@ -67,14 +67,14 @@
   ],
   "guards": [
     {
-      "contains": "test_material_definition_conflict_automatically_escalates_to_deep_reasoning",
-      "description": "Membership regression proves conflicting source definitions automatically run standard then deep model reasoning before any catalog representation is chosen.",
+      "contains": "test_deterministic_definition_mismatch_forces_deep_even_if_standard_claims_no_conflict",
+      "description": "Membership regression proves conflicting candidate definitions deterministically force standard then deep model reasoning before any catalog representation is chosen.",
       "kind": "test",
       "path": "tests/test_industry_membership_projection.py"
     },
     {
-      "contains": "test_unresolved_deep_conflict_fails_closed_before_membership_write",
-      "description": "Deep reasoning that still cannot resolve a material conflict stops before membership materialization.",
+      "contains": "test_unresolved_deep_conflict_keeps_both_runs_and_fails_before_membership",
+      "description": "Deep reasoning that still cannot resolve a material conflict preserves both judgment runs and stops before membership materialization.",
       "kind": "test",
       "path": "tests/test_industry_membership_projection.py"
     },
@@ -91,14 +91,14 @@
       "path": "tests/test_industry_orientation.py"
     },
     {
-      "contains": "test_current_research_workspace_defaults_on_with_explicit_historical_only_opt_out",
+      "contains": "test_cli_defaults_to_explicit_plus_current_mode_with_historical_only_opt_out",
       "description": "Current open-state workspace includes today's research overlay by default while retaining an explicit historical-only mode.",
       "kind": "test",
       "path": "tests/test_research_workspace_policy.py"
     },
     {
-      "contains": "test_optional_research_failures_degrade_without_inventing_world_state",
-      "description": "Research workspace returns historical truth when optional discovery/model enrichments fail and labels archive absence as coverage rather than world state.",
+      "contains": "test_expected_optional_unavailability_degrades_without_inventing_world_state",
+      "description": "Research workspace returns historical truth when expected optional discovery/model providers are unavailable and labels archive absence as coverage rather than world state.",
       "kind": "test",
       "path": "tests/test_research_workspace_policy.py"
     },
