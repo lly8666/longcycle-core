@@ -65,6 +65,7 @@ def _assertion(
     metadata: dict[str, object] | None = None,
     valid_time: TimeRange | None = None,
     valid_time_kind: ValidTimeKind = ValidTimeKind.PERIOD,
+    known_at: datetime = KNOWN_AT,
 ) -> FactAssertion:
     return FactAssertion(
         id=assertion_id,
@@ -86,7 +87,7 @@ def _assertion(
             if valid_time_kind == ValidTimeKind.PERIOD
             else TemporalPrecision.UNKNOWN
         ),
-        known_at=KNOWN_AT,
+        known_at=known_at,
         source_id=uuid4(),
         document_id=uuid4(),
         evidence=(FactEvidenceRef(evidence_fragment_id=evidence_id),),
@@ -131,13 +132,16 @@ def _decision(
     resolution: ResolvedIndustryMembershipResolution,
     *,
     selected_assertion_id: UUID | None = None,
+    supporting_assertion_ids: tuple[UUID, ...] | None = None,
 ) -> IndustryMembershipSemanticDecision:
     selected_id = selected_assertion_id or resolution.selected_assertions[0].id
+    support = supporting_assertion_ids or tuple(item.id for item in resolution.selected_assertions)
     return IndustryMembershipSemanticDecision(
         decision_id=uuid4(),
         resolution_id=resolution.resolution_id,
         candidate_assertion_ids=tuple(item.id for item in resolution.selected_assertions),
         selected_assertion_id=selected_id,
+        supporting_assertion_ids=support,
         decision_summary="Adopt the source-backed catalog representation.",
         first_decided_at=DECIDED_AT,
         last_confirmed_at=DECIDED_AT,
@@ -187,7 +191,33 @@ def test_membership_projection_accepts_semantic_decision_selected_assertion() ->
         _decision(resolution, selected_assertion_id=second_id),
     )
     assert projection.assertion_id == second_id
-    assert projection.evidence_fragment_ids == (second_evidence,)
+    assert projection.evidence_fragment_ids == (EVIDENCE_ID, second_evidence)
+
+
+def test_equivalent_membership_assertions_merge_evidence_and_keep_earliest_known_time() -> None:
+    second_id = UUID("40000000-0000-0000-0000-000000000002")
+    second_evidence = UUID("30000000-0000-0000-0000-000000000002")
+    later_known_at = datetime(2024, 6, 1, tzinfo=UTC)
+    resolution = _resolution(
+        _assertion(),
+        _assertion(
+            assertion_id=second_id,
+            evidence_id=second_evidence,
+            known_at=later_known_at,
+        ),
+    )
+
+    projection = build_industry_membership_projection(
+        resolution,
+        _decision(resolution, selected_assertion_id=second_id),
+    )
+
+    assert projection.assertion_id == second_id
+    assert projection.known_at == KNOWN_AT
+    assert projection.known_at < later_known_at
+    assert projection.evidence_fragment_ids == (EVIDENCE_ID, second_evidence)
+    assert projection.valid_from.isoformat() == "2020-01-01"
+    assert projection.valid_to.isoformat() == "2030-01-01"
 
 
 def test_membership_projection_rejects_decision_with_mismatched_candidate_set() -> None:
@@ -345,7 +375,32 @@ async def test_semantic_resolution_records_one_standard_run_for_unambiguous_mate
     assert runs.rows[0].triggered_deep is False
     assert runs.rows[0].provider_name == "host-agent"
     assert decision.selected_assertion_id == ASSERTION_ID
+    assert decision.supporting_assertion_ids == (ASSERTION_ID,)
     assert decision.supporting_judgment_run_ids == (runs.rows[0].run_id,)
+
+
+async def test_equivalent_membership_assertions_form_one_deterministic_support_cluster() -> None:
+    second_id = UUID("40000000-0000-0000-0000-000000000002")
+    second_evidence = UUID("30000000-0000-0000-0000-000000000002")
+    resolution = _resolution(
+        _assertion(),
+        _assertion(assertion_id=second_id, evidence_id=second_evidence),
+    )
+    judge = _FakeSemanticJudge(
+        standard=_judgment(mode="standard", selected_assertion_id=second_id)
+    )
+    runs = _FakeRunWriter()
+
+    decision = await resolve_industry_membership_semantics(
+        resolution=resolution,
+        semantic_judge=judge,
+        judgment_run_writer=runs,
+    )
+
+    assert judge.calls == ["standard"]
+    assert runs.rows[0].triggered_deep is False
+    assert decision.selected_assertion_id == second_id
+    assert decision.supporting_assertion_ids == (ASSERTION_ID, second_id)
 
 
 async def test_deterministic_definition_mismatch_forces_deep_even_if_standard_claims_no_conflict() -> None:
@@ -384,6 +439,7 @@ async def test_deterministic_definition_mismatch_forces_deep_even_if_standard_cl
     assert len(runs.rows) == 2
     assert "candidate_semantic_definition_mismatch" in runs.rows[0].deep_trigger_reasons
     assert decision.selected_assertion_id == second_id
+    assert decision.supporting_assertion_ids == (second_id,)
     assert decision.supporting_judgment_run_ids == tuple(item.run_id for item in runs.rows)
 
 
@@ -465,6 +521,11 @@ class _FakeDecisionWriter:
             return decision
         merged = existing.model_copy(
             update={
+                "supporting_assertion_ids": tuple(
+                    dict.fromkeys(
+                        (*existing.supporting_assertion_ids, *decision.supporting_assertion_ids)
+                    )
+                ),
                 "supporting_judgment_run_ids": tuple(
                     dict.fromkeys(
                         (*existing.supporting_judgment_run_ids, *decision.supporting_judgment_run_ids)
