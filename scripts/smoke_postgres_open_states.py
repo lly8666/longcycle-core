@@ -498,7 +498,7 @@ async def main() -> None:
         "reality_conflict_visibility_uses_member_source_known_at",
         "reality_source_independence_reuses_fact_source_cluster",
         "conflict_case_opened_at_is_not_historical_known_at",
-        "current_research_overlay_is_opt_in",
+        "overlay_mode_is_explicit_at_application_boundary",
         "current_research_overlay_is_not_cutoff_filtered",
         "current_research_scope_uses_own_run_provenance",
         "model_memory_coverage_uses_latest_sealed_campaign",
