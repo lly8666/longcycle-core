@@ -67,6 +67,12 @@
   ],
   "guards": [
     {
+      "contains": "test_equivalent_membership_assertions_merge_evidence_and_keep_earliest_known_time",
+      "description": "Equivalent selected membership assertions preserve all corroborating Evidence and the earliest source-known time even when a later assertion is the representative.",
+      "kind": "test",
+      "path": "tests/test_industry_membership_projection.py"
+    },
+    {
       "contains": "test_deterministic_definition_mismatch_forces_deep_even_if_standard_claims_no_conflict",
       "description": "Membership regression proves conflicting candidate definitions deterministically force standard then deep model reasoning before any catalog representation is chosen.",
       "kind": "test",
@@ -116,6 +122,7 @@
     "Creating source Fact/Judgment/Outcome truth in presentation code.",
     "Treating a model membership semantic decision as source Evidence, CAP-0003 reconciliation or canonical Reality.",
     "Allowing a model to invent a membership role, entity, industry, timing or Evidence identity absent from the selected source assertions.",
+    "Dropping corroborating Evidence or delaying historical membership visibility merely because a later equivalent assertion was chosen as the representative.",
     "Silently promoting deterministic hints or MODEL/JUDGMENT analysis into canonical Reality or historical market knowledge.",
     "Presentation code deciding its own Reality/Judgment/Outcome knowledge-cutoff eligibility.",
     "Treating archive absence as proof of unknown, false or controversy.",
@@ -137,7 +144,7 @@
     "replay.optional_enrichment_degradation"
   ],
   "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome were knowable at a historical cutoff plus calibrated researcher projections over that filtered memory. Direct membership remains grounded in CAP-0003 source assertions, while CAP-0005 may use an auditable large-model semantic decision to choose how an already-selected assertion set is represented in the membership catalog; material-definition conflict escalates to deep reasoning and unresolved conflict fails before write. The current research workspace may show separately labelled CAP-0006 analysis by default, archive absence is exposed as research coverage rather than a world-state claim, and optional researcher enrichments degrade without hiding already-grounded truth.",
-  "revisit_when": "Only replace if no-lookahead, typed Reality/Judgment/Outcome semantics, direct-versus-entailed provenance, source temporal precision, model-decision auditability, archive-coverage/world-state separation, graceful optional enrichment and the historical-versus-current-research boundary all remain explicit.",
+  "revisit_when": "Only replace if no-lookahead, typed Reality/Judgment/Outcome semantics, direct-versus-entailed provenance, source temporal precision, equivalent-source corroboration, model-decision auditability, archive-coverage/world-state separation, graceful optional enrichment and the historical-versus-current-research boundary all remain explicit.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/ports/epistemic.py",
