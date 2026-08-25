@@ -21,13 +21,7 @@ class IndustryDescriptor(DomainModel):
 
 
 class ResolvedIndustryMembershipResolution(DomainModel):
-    """One already-decided CAP-0003 resolution supplied to catalog projection.
-
-    CAP-0003 owns which source-backed assertions are selected. CAP-0005 may need a
-    model-mediated semantic decision to turn that selected set into one catalog row,
-    but it may never rewrite the source assertions or pretend the model decision is
-    source Evidence.
-    """
+    """One already-decided CAP-0003 resolution supplied to catalog projection."""
 
     resolution_id: UUID
     selected_assertions: tuple[FactAssertion, ...]
@@ -52,65 +46,124 @@ class ResolvedIndustryMembershipResolution(DomainModel):
 
 
 class IndustryMembershipSemanticJudgment(DomainModel):
-    """Transient structured output from the membership semantic model judge.
+    """Structured output from one actual host/model judgment execution.
 
-    A standard pass detects whether the supplied material definitions conflict. When
-    they do, the application must escalate to ``deep`` reasoning before any catalog
-    materialization. ``can_materialize`` means the model has selected one source-backed
-    assertion representation; it does not promote model reasoning into Evidence.
+    The running Longcycle Agent may implement the judge directly. This object describes that
+    execution's answer; the application later wraps it in an append-only ModelJudgmentRun.
+    It is interpretation provenance, never source Evidence or canonical Reality.
     """
 
     reasoning_mode: IndustryMembershipReasoningMode
     selected_assertion_id: UUID | None = None
+    alternative_assertion_ids: tuple[UUID, ...] = ()
     material_conflict_detected: bool = False
     can_materialize: bool = False
+    confidence: float = Field(ge=0, le=1)
     reasoning_summary: str = Field(min_length=1)
+    provider_name: str = Field(min_length=1)
     model_name: str = Field(min_length=1)
     model_version: str | None = None
-    decided_at: datetime
+    started_at: datetime
+    completed_at: datetime
 
-    @field_validator("decided_at")
+    @field_validator("started_at", "completed_at")
     @classmethod
-    def decision_time_is_aware(cls, value: datetime) -> datetime:
-        checked = require_aware_datetime(value, "membership_semantic_judgment.decided_at")
+    def run_times_are_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "membership_semantic_judgment.run_time")
         assert checked is not None
         return checked
 
     @model_validator(mode="after")
     def valid_semantic_judgment(self) -> IndustryMembershipSemanticJudgment:
+        if self.completed_at < self.started_at:
+            raise ValueError("membership semantic judgment completed_at precedes started_at")
         if self.can_materialize and self.selected_assertion_id is None:
             raise ValueError("materializable membership judgment must select an assertion")
-        if self.reasoning_mode == "standard" and self.material_conflict_detected:
-            if self.can_materialize:
-                raise ValueError(
-                    "standard membership judgment with material conflict must escalate to deep reasoning"
-                )
+        if self.selected_assertion_id in self.alternative_assertion_ids:
+            raise ValueError("selected assertion cannot also be an alternative")
+        if len(set(self.alternative_assertion_ids)) != len(self.alternative_assertion_ids):
+            raise ValueError("alternative assertions must be unique")
         return self
 
 
-class IndustryMembershipSemanticDecision(DomainModel):
-    """Persisted audit provenance for the model-mediated catalog projection.
+class IndustryMembershipModelJudgmentRun(DomainModel):
+    """Append-only provenance for one actual standard/deep model execution."""
 
-    This row records how CAP-0005 represented an already-selected CAP-0003 assertion
-    set. It is research/projection provenance, not canonical Reality and not Evidence.
+    run_id: UUID
+    resolution_id: UUID
+    candidate_assertion_ids: tuple[UUID, ...]
+    input_assertion_hashes: tuple[str, ...]
+    reasoning_mode: IndustryMembershipReasoningMode
+    provider_name: str = Field(min_length=1)
+    model_name: str = Field(min_length=1)
+    model_version: str | None = None
+    started_at: datetime
+    completed_at: datetime
+    selected_assertion_id: UUID | None = None
+    alternative_assertion_ids: tuple[UUID, ...] = ()
+    material_conflict_detected: bool = False
+    confidence: float = Field(ge=0, le=1)
+    can_materialize: bool = False
+    reasoning_summary: str = Field(min_length=1)
+    triggered_deep: bool = False
+    deep_trigger_reasons: tuple[str, ...] = ()
+    evidence_fragment_ids: tuple[UUID, ...]
+
+    @field_validator("started_at", "completed_at")
+    @classmethod
+    def persisted_run_times_are_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "membership_model_judgment_run.time")
+        assert checked is not None
+        return checked
+
+    @model_validator(mode="after")
+    def auditable_run(self) -> IndustryMembershipModelJudgmentRun:
+        if not self.candidate_assertion_ids:
+            raise ValueError("membership model run requires candidate assertions")
+        if len(self.candidate_assertion_ids) != len(self.input_assertion_hashes):
+            raise ValueError("membership model run requires one input hash per candidate assertion")
+        if len(set(self.candidate_assertion_ids)) != len(self.candidate_assertion_ids):
+            raise ValueError("membership model run candidates must be unique")
+        if self.selected_assertion_id is not None and self.selected_assertion_id not in self.candidate_assertion_ids:
+            raise ValueError("membership model run selected assertion must be a candidate")
+        if any(item not in self.candidate_assertion_ids for item in self.alternative_assertion_ids):
+            raise ValueError("membership model run alternatives must be candidates")
+        if self.completed_at < self.started_at:
+            raise ValueError("membership model run completed_at precedes started_at")
+        if not self.evidence_fragment_ids:
+            raise ValueError("membership model run requires source Evidence provenance")
+        if self.triggered_deep != bool(self.deep_trigger_reasons):
+            raise ValueError("triggered_deep must match presence of deep trigger reasons")
+        return self
+
+    @property
+    def is_canonical_truth(self) -> bool:
+        return False
+
+
+class IndustryMembershipSemanticDecision(DomainModel):
+    """Durable semantic conclusion supported by one or more model judgment runs.
+
+    Decision identity is about the semantic conclusion, not a particular model execution.
+    Repeated model vintages may support the same decision while every run remains separately
+    auditable.
     """
 
     decision_id: UUID
     resolution_id: UUID
+    semantic_scope: Literal["industry.membership"] = "industry.membership"
     candidate_assertion_ids: tuple[UUID, ...]
     selected_assertion_id: UUID
-    reasoning_mode: IndustryMembershipReasoningMode
-    material_conflict_detected: bool = False
-    reasoning_summary: str = Field(min_length=1)
-    model_name: str = Field(min_length=1)
-    model_version: str | None = None
-    decided_at: datetime
+    decision_summary: str = Field(min_length=1)
+    first_decided_at: datetime
+    last_confirmed_at: datetime
+    supporting_judgment_run_ids: tuple[UUID, ...]
     evidence_fragment_ids: tuple[UUID, ...]
 
-    @field_validator("decided_at")
+    @field_validator("first_decided_at", "last_confirmed_at")
     @classmethod
-    def persisted_decision_time_is_aware(cls, value: datetime) -> datetime:
-        checked = require_aware_datetime(value, "membership_semantic_decision.decided_at")
+    def persisted_decision_times_are_aware(cls, value: datetime) -> datetime:
+        checked = require_aware_datetime(value, "membership_semantic_decision.time")
         assert checked is not None
         return checked
 
@@ -122,12 +175,16 @@ class IndustryMembershipSemanticDecision(DomainModel):
             raise ValueError("membership semantic decision candidates must be unique")
         if self.selected_assertion_id not in self.candidate_assertion_ids:
             raise ValueError("membership semantic decision must select one candidate assertion")
+        if not self.supporting_judgment_run_ids:
+            raise ValueError("membership semantic decision requires supporting model judgment runs")
+        if len(set(self.supporting_judgment_run_ids)) != len(self.supporting_judgment_run_ids):
+            raise ValueError("membership semantic decision judgment runs must be unique")
         if not self.evidence_fragment_ids:
             raise ValueError("membership semantic decision requires source Evidence provenance")
         if len(set(self.evidence_fragment_ids)) != len(self.evidence_fragment_ids):
             raise ValueError("membership semantic decision Evidence must be unique")
-        if self.material_conflict_detected and self.reasoning_mode != "deep":
-            raise ValueError("material conflict requires a persisted deep-reasoning decision")
+        if self.last_confirmed_at < self.first_decided_at:
+            raise ValueError("semantic decision last_confirmed_at precedes first_decided_at")
         return self
 
     @property
@@ -136,13 +193,7 @@ class IndustryMembershipSemanticDecision(DomainModel):
 
 
 class IndustryMembershipProjection(DomainModel):
-    """Validated materialization payload for the orientation catalog.
-
-    ``known_at`` and Evidence identities remain explicit even though the catalog table
-    does not duplicate them. The read adapter reconstructs them from the model-selected
-    source assertion behind ``semantic_decision_id``. ``system_from`` is deterministic
-    curation provenance only and must never become historical market-known time.
-    """
+    """Validated materialization payload for the orientation catalog."""
 
     membership_id: UUID
     industry_node_id: UUID
@@ -172,22 +223,13 @@ class IndustryMembershipProjection(DomainModel):
             raise ValueError("industry membership projection requires supporting Evidence")
         if len(set(self.evidence_fragment_ids)) != len(self.evidence_fragment_ids):
             raise ValueError("industry membership projection Evidence must be unique")
-        if (
-            self.valid_from is not None
-            and self.valid_to is not None
-            and self.valid_to <= self.valid_from
-        ):
+        if self.valid_from is not None and self.valid_to is not None and self.valid_to <= self.valid_from:
             raise ValueError("membership valid_to must be after valid_from")
         return self
 
 
 class IndustrySubjectMembershipRecord(DomainModel):
-    """One source-grounded catalog membership version used for researcher orientation.
-
-    ``known_at`` is reconstructed from the source assertion selected by the persisted
-    semantic decision. ``system_from`` is retained only as deterministic curation
-    provenance; it must never be substituted for historical market-known time.
-    """
+    """One source-grounded catalog membership version used for researcher orientation."""
 
     membership_id: UUID
     industry_node_id: UUID
@@ -203,7 +245,8 @@ class IndustrySubjectMembershipRecord(DomainModel):
     confidence: float = Field(ge=0, le=1)
     resolution_id: UUID
     semantic_decision_id: UUID | None = None
-    semantic_decision_mode: IndustryMembershipReasoningMode | None = None
+    semantic_decision_supporting_run_count: int = Field(default=0, ge=0)
+    semantic_decision_latest_reasoning_mode: IndustryMembershipReasoningMode | None = None
     evidence_fragment_ids: tuple[UUID, ...]
 
     @field_validator("known_at", "system_from")
@@ -219,23 +262,13 @@ class IndustrySubjectMembershipRecord(DomainModel):
             raise ValueError("industry orientation membership must identify an entity subject")
         if not self.evidence_fragment_ids:
             raise ValueError("industry orientation membership must retain Evidence references")
-        if (
-            self.valid_from is not None
-            and self.valid_to is not None
-            and self.valid_to <= self.valid_from
-        ):
+        if self.valid_from is not None and self.valid_to is not None and self.valid_to <= self.valid_from:
             raise ValueError("membership valid_to must be after valid_from")
         return self
 
 
 class IndustrySubjectDiscoveryRecord(DomainModel):
-    """A deterministic researcher-discovery basis that is weaker than membership truth.
-
-    These records let the read model recover a subject when already-grounded memory is
-    explicitly scoped to the industry. They never create a membership, role, importance
-    ranking or causal relation. The distinction between direct membership and entailed
-    discoverability stays visible to the researcher.
-    """
+    """A deterministic researcher-discovery basis that is weaker than membership truth."""
 
     industry_node_id: UUID
     subject: MemorySubjectRef
