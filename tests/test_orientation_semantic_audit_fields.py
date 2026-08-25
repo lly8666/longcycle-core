@@ -34,5 +34,4 @@ def test_membership_payload_preserves_multi_run_semantic_audit() -> None:
 
     assert payload["semantic_decision_supporting_run_count"] == 3
     assert payload["semantic_decision_latest_reasoning_mode"] == "deep"
-    assert payload["semantic_decision_mode"] == "deep"
-    assert payload["semantic_decision_mode"] == payload["semantic_decision_latest_reasoning_mode"]
+    assert "semantic_decision_mode" not in payload
