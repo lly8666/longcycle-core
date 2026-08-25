@@ -90,6 +90,17 @@ def _supporting_evidence(assertion: FactAssertion) -> tuple[UUID, ...]:
     return evidence
 
 
+def _supporting_evidence_for_assertions(
+    assertions: tuple[FactAssertion, ...],
+) -> tuple[UUID, ...]:
+    evidence: set[UUID] = set()
+    for assertion in assertions:
+        evidence.update(_supporting_evidence(assertion))
+    if not evidence:
+        raise ValueError("industry membership equivalence cluster requires supporting Evidence")
+    return tuple(sorted(evidence, key=str))
+
+
 def _validate_membership_candidate(assertion: FactAssertion) -> None:
     if assertion.field_name != _MEMBERSHIP_PREDICATE:
         raise ValueError("industry membership projection requires predicate industry.membership")
@@ -118,10 +129,7 @@ def _assertion_by_id(
 def _candidate_evidence(
     resolution: ResolvedIndustryMembershipResolution,
 ) -> tuple[UUID, ...]:
-    values: set[UUID] = set()
-    for assertion in resolution.selected_assertions:
-        values.update(_supporting_evidence(assertion))
-    return tuple(sorted(values, key=str))
+    return _supporting_evidence_for_assertions(resolution.selected_assertions)
 
 
 def _candidate_ids(resolution: ResolvedIndustryMembershipResolution) -> tuple[UUID, ...]:
@@ -154,6 +162,34 @@ def _semantic_signature(assertion: FactAssertion) -> tuple[object, ...]:
         assertion.valid_time.start,
         assertion.valid_time.end,
     )
+
+
+def _equivalent_assertions(
+    resolution: ResolvedIndustryMembershipResolution,
+    selected_assertion_id: UUID,
+) -> tuple[FactAssertion, ...]:
+    selected = _assertion_by_id(resolution, selected_assertion_id)
+    selected_signature = _semantic_signature(selected)
+    equivalent = tuple(
+        sorted(
+            (
+                item
+                for item in resolution.selected_assertions
+                if _semantic_signature(item) == selected_signature
+            ),
+            key=lambda item: str(item.id),
+        )
+    )
+    if not equivalent:
+        raise RuntimeError("selected membership assertion lost its deterministic equivalence cluster")
+    return equivalent
+
+
+def _equivalent_ids(
+    resolution: ResolvedIndustryMembershipResolution,
+    selected_assertion_id: UUID,
+) -> tuple[UUID, ...]:
+    return tuple(item.id for item in _equivalent_assertions(resolution, selected_assertion_id))
 
 
 def _validate_model_judgment(
@@ -232,7 +268,7 @@ def build_industry_membership_projection(
     resolution: ResolvedIndustryMembershipResolution,
     decision: IndustryMembershipSemanticDecision,
 ) -> IndustryMembershipProjection:
-    """Materialize the source assertion chosen by an auditable semantic decision."""
+    """Materialize one semantic membership while preserving equivalent corroboration."""
 
     for assertion in resolution.selected_assertions:
         _validate_membership_candidate(assertion)
@@ -243,7 +279,13 @@ def build_industry_membership_projection(
         raise ValueError("membership semantic decision candidates do not match selected resolution")
 
     assertion = _assertion_by_id(resolution, decision.selected_assertion_id)
-    supporting_evidence = _supporting_evidence(assertion)
+    equivalent = _equivalent_assertions(resolution, decision.selected_assertion_id)
+    equivalent_ids = tuple(item.id for item in equivalent)
+    if tuple(sorted(decision.supporting_assertion_ids, key=str)) != equivalent_ids:
+        raise ValueError(
+            "membership semantic decision supporting assertions do not match the selected semantic equivalence cluster"
+        )
+    supporting_evidence = _supporting_evidence_for_assertions(equivalent)
     industry_node_id = _industry_node_id(assertion)
     valid_from, valid_to = _membership_dates(assertion)
     exposure_type = _exposure_type(assertion)
@@ -263,7 +305,7 @@ def build_industry_membership_projection(
         exposure_type=exposure_type,
         valid_from=valid_from,
         valid_to=valid_to,
-        known_at=assertion.known_at,
+        known_at=min(item.known_at for item in equivalent),
         system_from=decision.first_decided_at,
         confidence=resolution.confidence,
         resolution_id=resolution.resolution_id,
@@ -329,6 +371,7 @@ async def resolve_industry_membership_semantics(
         raise ValueError("standard membership semantic judgment did not produce a materializable choice")
 
     assert final.selected_assertion_id is not None
+    supporting_assertion_ids = _equivalent_ids(resolution, final.selected_assertion_id)
     decision_id = stable_uuid_exact(
         "industry-membership-semantic-decision-v2",
         str(resolution.resolution_id),
@@ -343,6 +386,7 @@ async def resolve_industry_membership_semantics(
         resolution_id=resolution.resolution_id,
         candidate_assertion_ids=candidate_ids,
         selected_assertion_id=final.selected_assertion_id,
+        supporting_assertion_ids=supporting_assertion_ids,
         decision_summary=final.reasoning_summary,
         first_decided_at=first_decided_at,
         last_confirmed_at=last_confirmed_at,
