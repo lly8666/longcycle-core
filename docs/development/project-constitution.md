@@ -60,6 +60,8 @@ Fresh search must not contaminate an unsealed blind shard.
 
 `not_found != false`: inability to recover a historical source is not evidence that the event or claim was false.
 
+Historical verification minimum search depth is an anti-premature-stop gate for **unresolved-exhaustion**, not a fixed corroboration quota for a claim already directly resolved by claim-scoped authoritative original content. An unresolved search must complete its configured minimum depth before it may declare exhaustion. A directly resolved claim may stop without mechanically reaching fixed query/source counts once source identity, content and claim scope have actually been verified; high-impact resolved claims retain reverse-query protection. Source count never substitutes for claim-scoped authority.
+
 ## Current collection rule
 
 Current collection is source-first and archive-now. Material that exists today should be archived proactively instead of becoming a future historical-recovery problem.
@@ -143,7 +145,8 @@ These execution choices are part of the product method and must survive session 
 
 - Historical recovery is **memory-first, evidence-final**: a high-capability model first builds and exhausts a Memory Atlas before claim-scoped evidence collection begins.
 - A shard must seal before fresh search touches it. After sealing, the high-capability model should perform the first self-verification/search pass because it best understands its own vague recollections, aliases and cross-chain associations.
-- Lower-capability agents are evidence engineers, not industry analysts. They receive explicit Memory Leads, source targets, search-depth requirements, contradiction queries and stop conditions; they do not publish cycle conclusions or turn missing search results into falsity.
+- Lower-capability agents are evidence engineers, not industry analysts. They receive explicit Memory Leads, source targets, search-depth requirements, contradiction queries and stop conditions; they do not publish cycle conclusions or turn missing search results into falsity. A task requiring independent synthesis beyond their declared capability must stop-and-escalate.
+- Historical minimum search depth prevents a shallow failed search from being labelled complete. Full configured depth is mandatory before `unresolved-exhaustion`; it is not a corroboration/search-count quota after claim-scoped authoritative original content has directly answered the claim. High-impact resolved claims still require the configured reverse-query check.
 - Cross-chain topology should emerge from independently recalled shard triggers. Repeated independent bridge/satellite triggers may promote a topic; one model tangent should not explode the task graph.
 - Current collection is **source-first, archive-now** and follows a maintained source/watchlist discipline rather than retrospective broad search.
 - When a stronger model vintage becomes available, rerun blind memory extraction as a new immutable vintage, diff it against prior atlases and create backfill tasks from novel/refined leads instead of overwriting old model output.
