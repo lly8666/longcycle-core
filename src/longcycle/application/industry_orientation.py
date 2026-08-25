@@ -128,7 +128,7 @@ def _validate_capability_declaration(
     malformed or unknown capability names still fail closed.
     """
 
-    capabilities = getattr(catalog_reader, "capabilities", frozenset())
+    capabilities: frozenset[str] = getattr(catalog_reader, "capabilities", frozenset())
     if not isinstance(capabilities, frozenset):
         raise ResearchEnrichmentContractViolation(
             "industry orientation reader capabilities must be a frozenset when declared"
