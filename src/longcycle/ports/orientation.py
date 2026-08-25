@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Protocol
+from typing import Literal, Protocol
 from uuid import UUID
 
 from longcycle.domain.orientation import (
     IndustryMembershipProjection,
+    IndustryMembershipSemanticDecision,
+    IndustryMembershipSemanticJudgment,
     IndustryOrientationCatalog,
     IndustrySubjectDiscoveryRecord,
     ResolvedIndustryMembershipResolution,
@@ -34,8 +36,33 @@ class IndustryMembershipResolutionReader(Protocol):
     ) -> ResolvedIndustryMembershipResolution: ...
 
 
+class IndustryMembershipSemanticJudge(Protocol):
+    """Model boundary for choosing one catalog representation from selected assertions.
+
+    ``standard`` is always attempted first. If the supplied material definitions conflict,
+    the application must call the same boundary again with ``deep`` before materialization.
+    Model output is interpretation provenance, never source Evidence.
+    """
+
+    async def judge_industry_membership(
+        self,
+        resolution: ResolvedIndustryMembershipResolution,
+        *,
+        reasoning_mode: Literal["standard", "deep"],
+    ) -> IndustryMembershipSemanticJudgment: ...
+
+
+class IndustryMembershipSemanticDecisionWriter(Protocol):
+    """Persist audit-only model decision provenance before catalog materialization."""
+
+    async def append_industry_membership_semantic_decision(
+        self,
+        decision: IndustryMembershipSemanticDecision,
+    ) -> IndustryMembershipSemanticDecision: ...
+
+
 class IndustryMembershipProjectionWriter(Protocol):
-    """Materialize a validated membership projection without deciding truth."""
+    """Materialize a validated membership projection without rewriting source truth."""
 
     async def append_industry_membership(
         self,
