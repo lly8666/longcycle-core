@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Literal
 from uuid import UUID
 
 import psycopg
@@ -25,6 +26,10 @@ from longcycle.application.industry_orientation import build_researcher_industry
 from longcycle.application.open_state_view import build_researcher_open_state_view
 from longcycle.application.trajectory_view import build_researcher_trajectory_view
 from longcycle.domain.epistemic import MemorySubjectRef
+from longcycle.domain.orientation import (
+    IndustryMembershipSemanticJudgment,
+    ResolvedIndustryMembershipResolution,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +46,40 @@ EXPECTED_EXCERPT = (
     "In the third quarter, total HBM sales grew by more than 70% Q-on-Q with both "
     "HBM3E 8 and 12 stack layer products in mass production and generating sales."
 )
+
+
+class _RealAcceptanceMembershipSemanticJudge:
+    """Deterministic acceptance substitute for the production large-model judge.
+
+    The preserved Samsung fixture contains one CAP-0003-selected membership definition,
+    so the expected large-model behavior is a standard, non-conflict selection. Separate
+    unit tests exercise automatic standard -> deep escalation for conflicting definitions.
+    """
+
+    async def judge_industry_membership(
+        self,
+        resolution: ResolvedIndustryMembershipResolution,
+        *,
+        reasoning_mode: Literal["standard", "deep"],
+    ) -> IndustryMembershipSemanticJudgment:
+        if reasoning_mode != "standard":
+            raise AssertionError("real single-definition acceptance must not require deep reasoning")
+        if len(resolution.selected_assertions) != 1:
+            raise AssertionError("real acceptance expected one CAP-0003-selected membership assertion")
+        assertion = resolution.selected_assertions[0]
+        return IndustryMembershipSemanticJudgment(
+            reasoning_mode="standard",
+            selected_assertion_id=assertion.id,
+            material_conflict_detected=False,
+            can_materialize=True,
+            reasoning_summary=(
+                "The preserved Samsung source-backed membership definition is unambiguous; "
+                "select the existing assertion without inventing role or timing semantics."
+            ),
+            model_name="deterministic-real-acceptance-membership-semantic-judge",
+            model_version="1",
+            decided_at=resolution.resolved_at,
+        )
 
 
 def _seed_current_taxonomy(dsn: str) -> None:
@@ -173,14 +212,19 @@ async def _verify_researcher_path(
         dsn,
         bucket_name="real-orientation-acceptance",
     )
+    semantic_judge = _RealAcceptanceMembershipSemanticJudge()
     try:
         projection = await project_resolved_industry_membership(
             resolution_reader=projection_store,
+            semantic_judge=semantic_judge,
+            decision_writer=projection_store,
             membership_writer=projection_store,
             resolution_id=resolution_id,
         )
         repeated = await project_resolved_industry_membership(
             resolution_reader=projection_store,
+            semantic_judge=semantic_judge,
+            decision_writer=projection_store,
             membership_writer=projection_store,
             resolution_id=resolution_id,
         )
@@ -192,6 +236,8 @@ async def _verify_researcher_path(
         raise AssertionError("membership projection collapsed source-known and curation time")
     if projection.evidence_fragment_ids != (evidence_fragment_id,):
         raise AssertionError("membership projection changed supporting Evidence identity")
+    if projection.semantic_decision_id is None:
+        raise AssertionError("real membership projection lost model semantic audit provenance")
 
     catalog_reader = PostgresIndustryOrientationReader(dsn)
     memory_reader = PostgresEpistemicMemoryReader(dsn)
@@ -223,10 +269,16 @@ async def _verify_researcher_path(
             raise AssertionError("orientation did not preserve membership source-known time")
         if memberships[0]["valid_from"] is not None or memberships[0]["valid_to"] is not None:
             raise AssertionError("unknown membership onset was converted into an invented validity date")
+        if memberships[0]["semantic_decision_id"] != str(projection.semantic_decision_id):
+            raise AssertionError("orientation lost model semantic decision identity")
+        if memberships[0]["semantic_decision_mode"] != "standard":
+            raise AssertionError("real single-definition acceptance unexpectedly used deep reasoning")
         if str(evidence_fragment_id) not in samsung["evidence_fragment_ids"]:
             raise AssertionError("orientation lost membership Evidence provenance")
         if samsung["memory_counts"] != {"reality": 1, "judgments": 0, "outcomes": 0}:
             raise AssertionError(f"unexpected real orientation memory counts: {samsung['memory_counts']}")
+        if samsung["archive_coverage"]["world_state_inference"] != "none":
+            raise AssertionError("archive coverage incorrectly inferred world state")
 
         snapshot = await memory_reader.snapshot(
             (MemorySubjectRef(entity_id=SAMSUNG_ID),),
@@ -254,7 +306,10 @@ async def _verify_researcher_path(
         if any(historical.values()):
             raise AssertionError(f"acceptance fixture manufactured controversy: {historical}")
         if open_states["current_research_overlay"]["included"] is not False:
-            raise AssertionError("current research overlay must remain opt-in")
+            raise AssertionError("explicit historical-only application path must exclude current research")
+        coverage = open_states["archive_research_coverage"]
+        if not coverage or any(row["world_state_inference"] != "none" for row in coverage):
+            raise AssertionError("open-state coverage must not infer a world state from archive presence/absence")
 
         try:
             await build_researcher_evidence_drilldown(
@@ -287,6 +342,7 @@ async def _verify_researcher_path(
         "industry_node_id": str(INDUSTRY_ID),
         "subject_entity_id": str(SAMSUNG_ID),
         "membership_resolution_id": str(resolution_id),
+        "membership_semantic_decision_id": str(projection.semantic_decision_id),
         "membership_id": str(projection.membership_id),
         "evidence_fragment_id": str(evidence_fragment_id),
         "known_at": KNOWN_AT.isoformat(),
