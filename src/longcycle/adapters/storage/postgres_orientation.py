@@ -60,7 +60,7 @@ class PostgresIndustryOrientationReader(PostgresSupport):
                        COALESCE(cardinality(decision.supporting_judgment_run_ids), 0)
                            AS semantic_decision_supporting_run_count,
                        latest_run.reasoning_mode AS semantic_decision_latest_reasoning_mode,
-                       max(assertion.first_known_at) AS known_at,
+                       min(assertion.first_known_at) AS known_at,
                        array_remove(
                            array_agg(
                                DISTINCT evidence_link.evidence_fragment_id
@@ -89,7 +89,7 @@ class PostgresIndustryOrientationReader(PostgresSupport):
                  AND selected.disposition = 'selected'
                  AND (
                      decision.id IS NULL
-                     OR selected.assertion_id = decision.selected_assertion_id
+                     OR selected.assertion_id = ANY(decision.supporting_assertion_ids)
                  )
                 JOIN research.fact_assertions assertion
                   ON assertion.id = selected.assertion_id
@@ -434,6 +434,14 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 )
             if decision.selected_assertion_id not in selected_ids:
                 raise ValueError("membership semantic decision selected a non-selected assertion")
+            if not set(decision.supporting_assertion_ids).issubset(selected_ids):
+                raise ValueError(
+                    "membership semantic decision support includes a non-selected assertion"
+                )
+            if decision.selected_assertion_id not in decision.supporting_assertion_ids:
+                raise ValueError(
+                    "membership semantic decision support omits the representative assertion"
+                )
             if evidence_ids != tuple(sorted(decision.evidence_fragment_ids, key=str)):
                 raise ValueError(
                     "membership semantic decision Evidence does not match selected source assertions"
@@ -465,10 +473,19 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 """
                 INSERT INTO research.industry_membership_semantic_decisions (
                     id, resolution_id, candidate_assertion_ids, selected_assertion_id,
-                    semantic_scope, decision_summary, first_decided_at, last_confirmed_at,
+                    supporting_assertion_ids, semantic_scope, decision_summary,
+                    first_decided_at, last_confirmed_at,
                     supporting_judgment_run_ids, evidence_fragment_ids
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ON CONFLICT (id) DO UPDATE SET
+                    supporting_assertion_ids = ARRAY(
+                        SELECT DISTINCT value
+                        FROM unnest(
+                            research.industry_membership_semantic_decisions.supporting_assertion_ids
+                            || EXCLUDED.supporting_assertion_ids
+                        ) AS value
+                        ORDER BY value
+                    ),
                     supporting_judgment_run_ids = ARRAY(
                         SELECT DISTINCT value
                         FROM unnest(
@@ -487,6 +504,7 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                     decision.resolution_id,
                     list(decision.candidate_assertion_ids),
                     decision.selected_assertion_id,
+                    list(decision.supporting_assertion_ids),
                     decision.semantic_scope,
                     decision.decision_summary,
                     decision.first_decided_at,
@@ -498,7 +516,8 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
             stored_cursor = await connection.execute(
                 """
                 SELECT id, resolution_id, candidate_assertion_ids, selected_assertion_id,
-                       semantic_scope, decision_summary, first_decided_at, last_confirmed_at,
+                       supporting_assertion_ids, semantic_scope, decision_summary,
+                       first_decided_at, last_confirmed_at,
                        supporting_judgment_run_ids, evidence_fragment_ids
                 FROM research.industry_membership_semantic_decisions
                 WHERE id = %s
@@ -515,6 +534,7 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
             semantic_scope=stored["semantic_scope"],
             candidate_assertion_ids=tuple(stored["candidate_assertion_ids"]),
             selected_assertion_id=stored["selected_assertion_id"],
+            supporting_assertion_ids=tuple(stored["supporting_assertion_ids"]),
             decision_summary=stored["decision_summary"],
             first_decided_at=stored["first_decided_at"],
             last_confirmed_at=stored["last_confirmed_at"],
@@ -530,6 +550,8 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
         )
         if any(getattr(persisted, field) != getattr(decision, field) for field in semantic_fields):
             raise ValueError("membership semantic decision id maps to different semantic content")
+        if not set(decision.supporting_assertion_ids).issubset(persisted.supporting_assertion_ids):
+            raise ValueError("membership semantic decision lost supporting source assertions")
         if not set(decision.supporting_judgment_run_ids).issubset(
             persisted.supporting_judgment_run_ids
         ):
@@ -556,6 +578,9 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 """
                 SELECT resolution.confidence,
                        decision.first_decided_at AS semantic_decided_at,
+                       decision.selected_assertion_id,
+                       decision.supporting_assertion_ids,
+                       assertion.id AS assertion_id,
                        assertion.predicate_code,
                        assertion.subject_entity_id,
                        assertion.value_kind,
@@ -578,41 +603,44 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 JOIN research.fact_resolution_assertions selected
                   ON selected.resolution_id = resolution.id
                  AND selected.disposition = 'selected'
-                 AND selected.assertion_id = decision.selected_assertion_id
+                 AND selected.assertion_id = ANY(decision.supporting_assertion_ids)
                 JOIN research.fact_assertions assertion
                   ON assertion.id = selected.assertion_id
                 LEFT JOIN research.assertion_evidence evidence
                   ON evidence.assertion_id = assertion.id
                  AND evidence.evidence_role = 'supporting'
-                WHERE resolution.id = %s AND assertion.id = %s
+                WHERE resolution.id = %s
                 GROUP BY resolution.confidence, decision.first_decided_at,
-                         assertion.predicate_code, assertion.subject_entity_id,
-                         assertion.value_kind, assertion.value_text,
-                         assertion.valid_from, assertion.valid_to,
-                         assertion.first_known_at, assertion.metadata
+                         decision.selected_assertion_id,
+                         decision.supporting_assertion_ids,
+                         assertion.id, assertion.predicate_code,
+                         assertion.subject_entity_id, assertion.value_kind,
+                         assertion.value_text, assertion.valid_from,
+                         assertion.valid_to, assertion.first_known_at,
+                         assertion.metadata
+                ORDER BY assertion.id
                 """,
                 (
                     projection.semantic_decision_id,
                     projection.resolution_id,
-                    projection.assertion_id,
                 ),
             )
-            source = await source_cursor.fetchone()
-            if source is None:
+            sources = await source_cursor.fetchall()
+            if not sources:
                 raise ValueError(
-                    "membership projection does not reference the model-selected assertion in its resolution"
+                    "membership projection has no source assertions in its semantic support cluster"
+                )
+            supporting_ids = tuple(sources[0]["supporting_assertion_ids"] or ())
+            if len(sources) != len(supporting_ids):
+                raise ValueError("membership semantic support cluster is incomplete in storage")
+            if sources[0]["selected_assertion_id"] != projection.assertion_id:
+                raise ValueError(
+                    "membership projection does not reference the semantic-decision representative assertion"
                 )
 
-            metadata = source["metadata"] or {}
-            try:
-                source_industry_node_id = UUID(str(metadata.get("industry_node_id")))
-            except (TypeError, ValueError) as exc:
-                raise ValueError(
-                    "selected industry.membership assertion has invalid industry_node_id metadata"
-                ) from exc
-            source_exposure = metadata.get("exposure_type")
-            source_evidence = tuple(source["supporting_evidence"] or ())
-            expected = {
+            source_evidence_values: set[UUID] = set()
+            source_known_at: list[datetime] = []
+            expected_semantic = {
                 "predicate": "industry.membership",
                 "entity_id": projection.entity_id,
                 "value_kind": "text",
@@ -621,31 +649,59 @@ class PostgresIndustryMembershipProjectionStore(PostgresResearchRepository):
                 "exposure_type": projection.exposure_type,
                 "valid_from": projection.valid_from,
                 "valid_to": projection.valid_to,
+            }
+            for source in sources:
+                metadata = source["metadata"] or {}
+                try:
+                    source_industry_node_id = UUID(str(metadata.get("industry_node_id")))
+                except (TypeError, ValueError) as exc:
+                    raise ValueError(
+                        "supporting industry.membership assertion has invalid industry_node_id metadata"
+                    ) from exc
+                actual_semantic = {
+                    "predicate": source["predicate_code"],
+                    "entity_id": source["subject_entity_id"],
+                    "value_kind": source["value_kind"],
+                    "role": source["value_text"],
+                    "industry_node_id": source_industry_node_id,
+                    "exposure_type": metadata.get("exposure_type"),
+                    "valid_from": self._catalog_date(
+                        source["valid_from"], label="membership valid_from"
+                    ),
+                    "valid_to": self._catalog_date(
+                        source["valid_to"], label="membership valid_to"
+                    ),
+                }
+                if actual_semantic != expected_semantic:
+                    raise ValueError(
+                        "membership semantic support cluster contains a non-equivalent assertion"
+                    )
+                source_evidence = tuple(source["supporting_evidence"] or ())
+                if not source_evidence:
+                    raise ValueError(
+                        "supporting industry.membership assertion has no supporting Evidence"
+                    )
+                source_evidence_values.update(source_evidence)
+                source_known_at.append(source["first_known_at"])
+
+            actual = {
+                **expected_semantic,
+                "known_at": min(source_known_at),
+                "system_from": sources[0]["semantic_decided_at"],
+                "confidence": sources[0]["confidence"],
+                "evidence": tuple(sorted(source_evidence_values, key=str)),
+            }
+            expected = {
+                **expected_semantic,
                 "known_at": projection.known_at,
                 "system_from": projection.system_from,
                 "confidence": projection.confidence,
                 "evidence": projection.evidence_fragment_ids,
             }
-            actual = {
-                "predicate": source["predicate_code"],
-                "entity_id": source["subject_entity_id"],
-                "value_kind": source["value_kind"],
-                "role": source["value_text"],
-                "industry_node_id": source_industry_node_id,
-                "exposure_type": source_exposure,
-                "valid_from": self._catalog_date(source["valid_from"], label="membership valid_from"),
-                "valid_to": self._catalog_date(source["valid_to"], label="membership valid_to"),
-                "known_at": source["first_known_at"],
-                "system_from": source["semantic_decided_at"],
-                "confidence": source["confidence"],
-                "evidence": source_evidence,
-            }
             if actual != expected:
                 raise ValueError(
-                    "industry membership projection does not exactly match semantic-decision source assertion"
+                    "industry membership projection does not exactly match its equivalent source support cluster"
                 )
-            if not source_evidence:
-                raise ValueError("selected industry.membership assertion has no supporting Evidence")
 
             industry_cursor = await connection.execute(
                 "SELECT 1 FROM core.taxonomy_nodes WHERE id = %s",
