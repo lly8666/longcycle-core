@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
-from typing import Sequence
+from typing import Literal, Sequence
 
 
 @dataclass(frozen=True, slots=True)
@@ -101,25 +101,28 @@ Separate recollection from inference. A strong recollection is still only a sear
 Questions for this pass:
 {questions}
 
-For every useful lead return enough structure for later evidence search:
+For every useful lead preserve the recollection even when later search planning is incomplete:
 - lead_kind and claim_scope
 - concise summary
 - approximate period
-- possible actors/entities/projects and old aliases
+- possible actors/entities/projects and old aliases when remembered
 - recalled mechanism/context
 - memory_confidence as recall strength, never truth probability
 - importance, novelty, and searchability scores
-- query families/search keys
-- likely claim-scoped primary source types
+- query families/search keys when they come to mind
+- likely claim-scoped primary source types when they come to mind
 - relations to other leads when useful
 
-For each high-importance lead also answer:
+Do not discard a useful lead merely because you cannot yet supply a query, source type, relation,
+or disconfirmation path. Those are search-planning fields that can be completed before delegation.
+
+For each high-importance lead also answer when memory permits:
 1. Who else may be connected?
 2. What may have preceded it?
 3. What may have followed it?
 4. What was it likely called at the time?
 
-If memory is fragmentary, preserve the fragment and give search keys instead of fabricating precision.
+If memory is fragmentary, preserve the fragment instead of fabricating precision or a fake search plan.
 """
 
 
@@ -214,6 +217,12 @@ def evaluate_campaign_saturation(
 
 @dataclass(frozen=True, slots=True)
 class VerificationDepth:
+    """Default depth needed before declaring an unresolved search exhausted.
+
+    These are anti-premature-stop defaults, not corroboration quotas after authoritative
+    claim-scoped content has already answered the question.
+    """
+
     minimum_query_families: int = 6
     minimum_source_types: int = 3
     require_primary_domain_check: bool = True
@@ -237,10 +246,25 @@ class VerificationSearchProgress:
     citation_chase_done: bool
 
 
+VerificationResolution = Literal[
+    "authoritative_support",
+    "authoritative_contradiction",
+    "unresolved",
+]
+
+
+@dataclass(frozen=True, slots=True)
+class VerificationStopDecision:
+    allowed: bool
+    reason_code: str
+
+
 def verification_depth_satisfied(
     progress: VerificationSearchProgress,
     depth: VerificationDepth = VerificationDepth(),
 ) -> bool:
+    """Return whether an unresolved search has enough depth to be called exhausted."""
+
     if progress.query_family_count < depth.minimum_query_families:
         return False
     if progress.source_type_count < depth.minimum_source_types:
@@ -256,3 +280,28 @@ def verification_depth_satisfied(
     ):
         return False
     return True
+
+
+def verification_stop_decision(
+    *,
+    resolution: VerificationResolution,
+    progress: VerificationSearchProgress,
+    high_impact: bool = False,
+    depth: VerificationDepth = VerificationDepth(),
+) -> VerificationStopDecision:
+    """Separate claim resolution from unresolved-search exhaustion.
+
+    Direct, claim-scoped authoritative content may close a search without mechanically reaching
+    six query families or three source types. High-impact resolved claims still require the
+    contradiction-oriented check when configured. Unresolved work may be labelled exhausted only
+    after the full anti-premature-stop depth is satisfied.
+    """
+
+    if resolution in {"authoritative_support", "authoritative_contradiction"}:
+        if high_impact and depth.require_reverse_query and not progress.reverse_query_done:
+            return VerificationStopDecision(False, "high_impact_reverse_query_required")
+        return VerificationStopDecision(True, resolution)
+
+    if verification_depth_satisfied(progress, depth):
+        return VerificationStopDecision(True, "exhausted_but_unresolved")
+    return VerificationStopDecision(False, "unresolved_minimum_depth_not_met")
