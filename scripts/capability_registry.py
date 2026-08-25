@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import difflib
 import fnmatch
 import json
 import re
@@ -17,7 +18,7 @@ HANDOFF_PATH = ROOT / ".longcycle" / "handoff" / "current.json"
 
 CARD_SCHEMA = "longcycle-capability/v1"
 INDEX_SCHEMA = "longcycle-capability-index/v1"
-ADMISSION_SCHEMA = "longcycle-capability-admission/v1"
+ADMISSION_SCHEMA = "longcycle-capability-admission/v2"
 ID_PATTERN = re.compile(r"^CAP-[0-9]{4}$")
 SEMANTIC_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_.-]*$")
 STATUS_VALUES = {"active", "superseded", "retired"}
@@ -71,7 +72,8 @@ ADMISSION_KEYS = {
     "disposition",
     "target_capability_ids",
     "closest_existing_capability_ids",
-    "rationale",
+    "rationale_summary",
+    "rationale_details_ref",
     "unmet_requirement",
     "evidence_refs",
     "planned_paths",
@@ -104,7 +106,9 @@ def _load_json(path: Path) -> dict[str, Any]:
 def _text(payload: dict[str, Any], key: str, *, max_length: int = 800) -> str:
     value = payload.get(key)
     if not isinstance(value, str) or not value.strip():
-        raise CapabilityRegistryError(f"{payload.get('id', payload.get('intent_id', '<unknown>'))}: {key} must be nonblank text")
+        raise CapabilityRegistryError(
+            f"{payload.get('id', payload.get('intent_id', '<unknown>'))}: {key} must be nonblank text"
+        )
     if len(value) > max_length:
         raise CapabilityRegistryError(f"{key} exceeds {max_length} characters; distill it")
     return value
@@ -121,7 +125,9 @@ def _text_list(
     value = payload.get(key)
     if not isinstance(value, list) or (not value and not allow_empty):
         qualifier = "a list" if allow_empty else "a non-empty list"
-        raise CapabilityRegistryError(f"{payload.get('id', payload.get('intent_id', '<unknown>'))}: {key} must be {qualifier}")
+        raise CapabilityRegistryError(
+            f"{payload.get('id', payload.get('intent_id', '<unknown>'))}: {key} must be {qualifier}"
+        )
     if len(value) > max_items:
         raise CapabilityRegistryError(f"{key} has more than {max_items} items; consolidate it")
     result: list[str] = []
@@ -157,21 +163,29 @@ def _validate_marker(card_id: str, raw: Any, *, entrypoint: bool) -> dict[str, s
     allowed = ENTRYPOINT_KINDS if entrypoint else GUARD_KINDS
     kind = raw.get("kind")
     if kind not in allowed:
-        raise CapabilityRegistryError(f"{card_id}: unsupported {'entrypoint' if entrypoint else 'guard'} kind {kind!r}")
+        raise CapabilityRegistryError(
+            f"{card_id}: unsupported {'entrypoint' if entrypoint else 'guard'} kind {kind!r}"
+        )
     path_text = raw.get("path")
     contains = raw.get("contains")
     description = raw.get("description")
     if not all(isinstance(value, str) and value.strip() for value in (path_text, contains, description)):
-        raise CapabilityRegistryError(f"{card_id}: marker path/contains/description must be nonblank text")
+        raise CapabilityRegistryError(
+            f"{card_id}: marker path/contains/description must be nonblank text"
+        )
     path = _validate_repo_path(path_text, label=f"{card_id} marker path")
     if not path.is_file():
         raise CapabilityRegistryError(f"{card_id}: marker path does not exist: {path_text}")
     try:
         content = path.read_text(encoding="utf-8")
     except UnicodeDecodeError as exc:
-        raise CapabilityRegistryError(f"{card_id}: marker path must be UTF-8 text: {path_text}") from exc
+        raise CapabilityRegistryError(
+            f"{card_id}: marker path must be UTF-8 text: {path_text}"
+        ) from exc
     if contains not in content:
-        raise CapabilityRegistryError(f"{card_id}: marker missing from {path_text}: {contains!r}")
+        raise CapabilityRegistryError(
+            f"{card_id}: marker missing from {path_text}: {contains!r}"
+        )
     return {
         "kind": kind,
         "path": path_text,
@@ -208,7 +222,10 @@ def _validate_card(path: Path, card: dict[str, Any]) -> dict[str, Any]:
     supersedes = _text_list(card, "supersedes", allow_empty=True, max_items=12)
 
     for scope in scopes:
-        _validate_repo_path(scope.replace("**", "placeholder").replace("*", "placeholder"), label=f"{card_id} scope")
+        _validate_repo_path(
+            scope.replace("**", "placeholder").replace("*", "placeholder"),
+            label=f"{card_id} scope",
+        )
     for semantic in semantics:
         if not SEMANTIC_PATTERN.fullmatch(semantic):
             raise CapabilityRegistryError(f"{card_id}: invalid owned semantic key {semantic!r}")
@@ -229,7 +246,9 @@ def _validate_card(path: Path, card: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(superseded_by, str) or not ID_PATTERN.fullmatch(superseded_by):
             raise CapabilityRegistryError(f"{card_id}: superseded capability requires superseded_by")
     elif card.get("superseded_by") is not None:
-        raise CapabilityRegistryError(f"{card_id}: superseded_by is only valid for superseded capability")
+        raise CapabilityRegistryError(
+            f"{card_id}: superseded_by is only valid for superseded capability"
+        )
 
     normalized = dict(card)
     normalized["scope"] = scopes
@@ -246,7 +265,9 @@ def _validate_card(path: Path, card: dict[str, Any]) -> dict[str, Any]:
 
 def load_cards() -> list[tuple[Path, dict[str, Any]]]:
     if not CARDS_ROOT.is_dir():
-        raise CapabilityRegistryError(f"missing capability cards directory: {_relative(CARDS_ROOT)}")
+        raise CapabilityRegistryError(
+            f"missing capability cards directory: {_relative(CARDS_ROOT)}"
+        )
     cards: list[tuple[Path, dict[str, Any]]] = []
     ids: set[str] = set()
     for path in sorted(CARDS_ROOT.glob("*.json")):
@@ -264,7 +285,9 @@ def load_cards() -> list[tuple[Path, dict[str, Any]]]:
     for _, card in cards:
         missing = set(card["supersedes"]) - known_ids
         if missing:
-            raise CapabilityRegistryError(f"{card['id']}: supersedes unknown ids {sorted(missing)}")
+            raise CapabilityRegistryError(
+                f"{card['id']}: supersedes unknown ids {sorted(missing)}"
+            )
         if card.get("superseded_by") and card["superseded_by"] not in known_ids:
             raise CapabilityRegistryError(f"{card['id']}: superseded_by references unknown id")
         if card["status"] != "active":
@@ -312,10 +335,27 @@ def build_index(cards: list[tuple[Path, dict[str, Any]]]) -> dict[str, Any]:
 
 
 def rebuild_index() -> None:
+    """Developer generator: cards are canonical; active-index is derived."""
+
     cards = load_cards()
     INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
     INDEX_PATH.write_text(_canonical_json(build_index(cards)), encoding="utf-8")
-    print(f"CAPABILITY_INDEX_WRITTEN active={sum(card['status'] == 'active' for _, card in cards)}")
+    print(
+        f"CAPABILITY_INDEX_WRITTEN active={sum(card['status'] == 'active' for _, card in cards)}"
+    )
+
+
+def _index_diff(actual: dict[str, Any], expected: dict[str, Any]) -> str:
+    actual_lines = _canonical_json(actual).splitlines(keepends=True)
+    expected_lines = _canonical_json(expected).splitlines(keepends=True)
+    return "".join(
+        difflib.unified_diff(
+            actual_lines,
+            expected_lines,
+            fromfile="repository active-index.json",
+            tofile="generated from capability cards",
+        )
+    )
 
 
 def _validate_reference(value: str, *, label: str) -> None:
@@ -328,7 +368,9 @@ def _validate_reference(value: str, *, label: str) -> None:
 
 def validate_admission(active_cards: dict[str, dict[str, Any]]) -> dict[str, Any]:
     if not ADMISSION_PATH.is_file():
-        raise CapabilityRegistryError(f"missing current capability admission: {_relative(ADMISSION_PATH)}")
+        raise CapabilityRegistryError(
+            f"missing current capability admission: {_relative(ADMISSION_PATH)}"
+        )
     payload = _load_json(ADMISSION_PATH)
     if set(payload) != ADMISSION_KEYS:
         raise CapabilityRegistryError(
@@ -338,7 +380,9 @@ def validate_admission(active_cards: dict[str, dict[str, Any]]) -> dict[str, Any
         raise CapabilityRegistryError("current admission has unsupported schema_version")
     _text(payload, "intent_id", max_length=120)
     _text(payload, "intent")
-    _text(payload, "rationale")
+    _text(payload, "rationale_summary", max_length=800)
+    rationale_details_ref = _text(payload, "rationale_details_ref", max_length=320)
+    _validate_reference(rationale_details_ref, label="rationale details ref")
     if payload.get("governance_mode") != GOVERNANCE_MODE:
         raise CapabilityRegistryError("current admission governance_mode is stale")
     disposition = payload.get("disposition")
@@ -346,14 +390,21 @@ def validate_admission(active_cards: dict[str, dict[str, Any]]) -> dict[str, Any
         raise CapabilityRegistryError(f"unsupported capability disposition {disposition!r}")
 
     targets = _text_list(payload, "target_capability_ids", allow_empty=True, max_items=8)
-    closest = _text_list(payload, "closest_existing_capability_ids", allow_empty=True, max_items=8)
+    closest = _text_list(
+        payload, "closest_existing_capability_ids", allow_empty=True, max_items=8
+    )
     evidence = _text_list(payload, "evidence_refs", allow_empty=True, max_items=12)
     planned = _text_list(payload, "planned_paths", allow_empty=True, max_items=16)
     for capability_id in [*targets, *closest]:
         if capability_id not in active_cards:
-            raise CapabilityRegistryError(f"admission references inactive/unknown capability {capability_id}")
+            raise CapabilityRegistryError(
+                f"admission references inactive/unknown capability {capability_id}"
+            )
     for path in planned:
-        _validate_repo_path(path.replace("**", "placeholder").replace("*", "placeholder"), label="planned path")
+        _validate_repo_path(
+            path.replace("**", "placeholder").replace("*", "placeholder"),
+            label="planned path",
+        )
     for ref in evidence:
         _validate_reference(ref, label="evidence ref")
 
@@ -361,30 +412,44 @@ def validate_admission(active_cards: dict[str, dict[str, Any]]) -> dict[str, Any
     proposed = payload.get("proposed_capability_id")
     if unmet is not None and (not isinstance(unmet, str) or not unmet.strip()):
         raise CapabilityRegistryError("unmet_requirement must be null or nonblank text")
-    if proposed is not None and (not isinstance(proposed, str) or not ID_PATTERN.fullmatch(proposed)):
+    if proposed is not None and (
+        not isinstance(proposed, str) or not ID_PATTERN.fullmatch(proposed)
+    ):
         raise CapabilityRegistryError("proposed_capability_id must be null or CAP-NNNN")
 
     if disposition in {"reuse", "extend"}:
         if not targets:
-            raise CapabilityRegistryError(f"{disposition} admission requires target_capability_ids")
+            raise CapabilityRegistryError(
+                f"{disposition} admission requires target_capability_ids"
+            )
         if proposed is not None:
-            raise CapabilityRegistryError(f"{disposition} admission cannot propose a new capability id")
+            raise CapabilityRegistryError(
+                f"{disposition} admission cannot propose a new capability id"
+            )
         if unmet is not None:
-            raise CapabilityRegistryError(f"{disposition} admission must not claim an unmet requirement")
+            raise CapabilityRegistryError(
+                f"{disposition} admission must not claim an unmet requirement"
+            )
         if disposition == "extend" and not planned:
             raise CapabilityRegistryError("extend admission requires planned_paths")
     elif disposition == "replace":
         if not targets or proposed is None or not evidence:
-            raise CapabilityRegistryError("replace admission requires targets, proposed id and evidence_refs")
+            raise CapabilityRegistryError(
+                "replace admission requires targets, proposed id and evidence_refs"
+            )
     else:
         if proposed is None:
             raise CapabilityRegistryError("new admission requires proposed_capability_id")
         if proposed in active_cards:
             raise CapabilityRegistryError("new admission proposed id already exists")
         if not closest:
-            raise CapabilityRegistryError("new admission must identify closest existing capabilities")
+            raise CapabilityRegistryError(
+                "new admission must identify closest existing capabilities"
+            )
         if unmet is None:
-            raise CapabilityRegistryError("new admission requires a demonstrated unmet_requirement")
+            raise CapabilityRegistryError(
+                "new admission requires a demonstrated unmet_requirement"
+            )
         if not evidence:
             raise CapabilityRegistryError("new admission requires evidence_refs")
         if not planned:
@@ -406,14 +471,22 @@ def validate_handoff() -> None:
 
 
 def audit() -> None:
+    """CI/read-only audit: regenerate in memory and compare; never rewrite repository state."""
+
     cards = load_cards()
     expected = build_index(cards)
     if not INDEX_PATH.is_file():
-        raise CapabilityRegistryError(f"missing generated capability index: {_relative(INDEX_PATH)}")
+        raise CapabilityRegistryError(
+            f"missing generated capability index: {_relative(INDEX_PATH)}; "
+            "run `python scripts/capability_registry.py rebuild-index`"
+        )
     actual = _load_json(INDEX_PATH)
     if actual != expected:
+        diff = _index_diff(actual, expected)
         raise CapabilityRegistryError(
-            "capability index is stale; run `python scripts/capability_registry.py rebuild-index`"
+            "capability index is a stale generated artifact; capability cards are canonical. "
+            "Run `python scripts/capability_registry.py rebuild-index` and commit the result.\n"
+            f"{diff}"
         )
     active_cards = {card["id"]: card for _, card in cards if card["status"] == "active"}
     admission = validate_admission(active_cards)
@@ -421,14 +494,18 @@ def audit() -> None:
     print(
         "CAPABILITY_REGISTRY_AUDIT_PASS "
         f"active={len(active_cards)} mode={GOVERNANCE_MODE} "
-        f"admission={admission['disposition']}:{','.join(admission['target_capability_ids']) or admission['proposed_capability_id']}"
+        f"admission={admission['disposition']}:"
+        f"{','.join(admission['target_capability_ids']) or admission['proposed_capability_id']}"
     )
 
 
 def _tokens(text: str) -> set[str]:
     return {
         token
-        for token in re.findall(r"[a-z0-9]+", text.casefold().replace("_", " ").replace("-", " ").replace(".", " "))
+        for token in re.findall(
+            r"[a-z0-9]+",
+            text.casefold().replace("_", " ").replace("-", " ").replace(".", " "),
+        )
         if len(token) >= 2
     }
 
@@ -456,7 +533,11 @@ def relevant(query_text: str) -> None:
         tokens = _tokens(searchable)
         score = len(query_tokens & tokens)
         folded_query = query.casefold()
-        if any(folded_query in part.casefold() or part.casefold() in folded_query for part in searchable_parts if len(part) > 5):
+        if any(
+            folded_query in part.casefold() or part.casefold() in folded_query
+            for part in searchable_parts
+            if len(part) > 5
+        ):
             score += 4
         if score:
             matches.append((score, card))
@@ -478,7 +559,9 @@ def relevant(query_text: str) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Longcycle stable capability ownership registry")
+    parser = argparse.ArgumentParser(
+        description="Longcycle stable capability ownership registry"
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("audit")
     subparsers.add_parser("rebuild-index")
