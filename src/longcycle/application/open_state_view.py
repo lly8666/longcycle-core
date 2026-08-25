@@ -13,6 +13,14 @@ from longcycle.ports.open_states import CurrentResearchOpenStateReader, RealityC
 from longcycle.ports.orientation import IndustryOrientationReader
 
 from .industry_orientation import _load_industry_subject_universe, _memory_counts
+from .research_enrichment import (
+    EnrichmentComponentResult,
+    ExpectedResearchEnrichmentUnavailable,
+    available_component,
+    defect,
+    overall_status,
+    unavailable_component,
+)
 
 
 def _subject_payload(subject: MemorySubjectRef) -> dict[str, str | None]:
@@ -38,6 +46,7 @@ def _current_overlay_payload(bundle: CurrentResearchOpenStateBundle) -> dict[str
     return {
         "available": True,
         "degraded": False,
+        "availability_status": "AVAILABLE",
         "failure": None,
         "analysis_policy": model_analysis_policy(),
         "disagreements": [
@@ -141,6 +150,19 @@ def _archive_coverage_payload(
     return rows
 
 
+def _component_payloads(
+    components: list[EnrichmentComponentResult] | tuple[EnrichmentComponentResult, ...],
+) -> dict[str, Any]:
+    rendered = [item.as_payload() for item in components]
+    availability = overall_status(list(components))
+    return {
+        "status": "degraded" if availability == "UNAVAILABLE_EXPECTED" else "complete",
+        "availability_status": availability,
+        "components": rendered,
+        "failures": [item for item in rendered if item["status"] == "UNAVAILABLE_EXPECTED"],
+    }
+
+
 async def build_researcher_open_state_view(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -153,14 +175,14 @@ async def build_researcher_open_state_view(
 ) -> dict[str, Any]:
     """Separate historical controversy, archive coverage and current research analysis.
 
-    Historical truth-bearing reads remain fail-closed. Deterministic discovery and the
-    current research-only overlay are researcher enrichments: if their backing service
-    is unavailable, already-grounded historical memory is still returned with explicit
-    degradation diagnostics. Current model hypotheses remain MODEL/JUDGMENT, never
-    canonical Reality or historical market knowledge.
+    Historical truth-bearing reads remain fail-closed. Optional research lanes degrade only
+    for explicitly classified expected-unavailability conditions. Programming, SQL, schema,
+    payload and contract defects raise instead of being silently reported as provider downtime.
+    Current model hypotheses remain MODEL/JUDGMENT, never canonical Reality or historical
+    market knowledge.
     """
 
-    checked, catalog, memberships, discoveries, entity_subjects, enrichment_failures = (
+    checked, catalog, memberships, discoveries, entity_subjects, enrichment_components = (
         await _load_industry_subject_universe(
             catalog_reader=catalog_reader,
             industry_node_id=industry_node_id,
@@ -270,6 +292,7 @@ async def build_researcher_open_state_view(
         "included": include_current_research,
         "available": None if not include_current_research else True,
         "degraded": False,
+        "availability_status": None if not include_current_research else "AVAILABLE",
         "failure": None,
         "authority_class": "research_only_current_state",
         "is_historical_market_knowledge": False,
@@ -279,29 +302,32 @@ async def build_researcher_open_state_view(
         "hypotheses": [],
         "model_memory_coverage_gaps": [],
     }
-    overlay_failures: list[dict[str, str]] = []
+    all_components = list(enrichment_components)
     if include_current_research:
+        component_name = "current_research_open_states"
         try:
             bundle = await current_research_reader.current_open_states(
                 industry_node_id=industry_node_id,
             )
-        except Exception as exc:
-            failure = {
-                "component": "current_research_open_states",
-                "status": "unavailable",
-                "error_type": type(exc).__name__,
-                "message": str(exc),
-                "truth_effect": "none",
-            }
+        except ExpectedResearchEnrichmentUnavailable as exc:
+            component = unavailable_component(component_name, exc)
+            failure = component.as_payload()
             current_overlay.update(
                 {
                     "available": False,
                     "degraded": True,
+                    "availability_status": "UNAVAILABLE_EXPECTED",
                     "failure": failure,
                 }
             )
-            overlay_failures.append(failure)
+            all_components.append(component)
+        except Exception as exc:
+            raise defect(component_name, exc) from exc
         else:
+            result_count = (
+                len(bundle.disagreements) + len(bundle.hypotheses) + len(bundle.coverage_gaps)
+            )
+            all_components.append(available_component(component_name, result_count=result_count))
             current_overlay.update(_current_overlay_payload(bundle))
 
     counts = _memory_counts(snapshot)
@@ -312,7 +338,6 @@ async def build_researcher_open_state_view(
         memory_counts=counts,
         membership_subject_keys=membership_subject_keys,
     )
-    all_enrichment_failures = [*enrichment_failures, *overlay_failures]
 
     return {
         "schema_version": "longcycle-researcher-open-states/v1",
@@ -328,10 +353,7 @@ async def build_researcher_open_state_view(
         },
         "archive_research_coverage": archive_coverage,
         "current_research_overlay": current_overlay,
-        "research_enrichment": {
-            "status": "degraded" if all_enrichment_failures else "complete",
-            "failures": all_enrichment_failures,
-        },
+        "research_enrichment": _component_payloads(all_components),
         "boundary": {
             "subject_universe_reuses_industry_orientation_owner": True,
             "subject_universe_includes_deterministic_entailment_when_available": True,
@@ -339,6 +361,9 @@ async def build_researcher_open_state_view(
             "membership_visibility_reuses_industry_orientation_owner": True,
             "historical_memory_and_conflict_reads_fail_closed": True,
             "optional_research_enrichments_degrade_gracefully": True,
+            "expected_unavailability_is_distinct_from_empty_result": True,
+            "unexpected_enrichment_defects_raise": True,
+            "optional_capabilities_are_explicitly_declared": True,
             "historical_judgment_visibility_delegated_to_epistemic_snapshot": True,
             "reality_conflict_visibility_uses_member_source_known_at": True,
             "reality_source_independence_reuses_fact_source_cluster": True,
