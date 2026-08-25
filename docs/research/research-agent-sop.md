@@ -187,6 +187,8 @@ not_found
 - 高影响 lead 至少一次 reverse query；
 - 换词/翻页直到新增结果高度重复。
 
+Minimum search depth 是 anti-premature-stop 约束，**不是 corroboration quota**：不能靠凑来源数量替代 claim-scoped source authority，也不能因为已经找到一条强来源就跳过最低搜索深度。
+
 ### 10. Historical stop condition
 
 只有三类正常结束：
