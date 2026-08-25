@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
   "intent_id": "GROUNDED-NUMERIC-JUDGMENT-OUTCOME-003",
-  "intent": "Extend existing CAP-0003/CAP-0004 grounded projection seams so a source-grounded numeric forecast and directly comparable numeric Reality can be persisted and evaluated without flattening values into text or inventing a correctness threshold. Reuse existing Fact/Judgment numeric fields, FactDimensions comparability hashing and Outcome numeric_error columns; bootstrap the existing canonical PostgreSQL catalog with the already-defined standard units and this predicate, without adding a new semantic owner or schema shape.",
+  "intent": "Extend existing CAP-0003/CAP-0004 grounded projection seams so a source-grounded numeric forecast and directly comparable numeric Reality can be persisted and evaluated without flattening values into text or inventing a correctness threshold. Reuse existing Fact/Judgment numeric fields, FactDimensions comparability hashing, the existing PostgreSQL semantic catalog and Outcome numeric_error columns; add no new semantic owner or schema shape.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -12,7 +12,7 @@
     "CAP-0003",
     "CAP-0004"
   ],
-  "rationale_summary": "The Gartner 2024 PC forecast/revision packet is a concrete source-grounded case that existing database/domain owners can represent. The bounded helpers needed numeric wiring, and fresh PostgreSQL also lacked catalog data for the canonical ratio vocabulary already present in AssertionNormalizer. This remains an extension of CAP-0003/CAP-0004: seed existing catalog tables, use ratio rather than an ad-hoc pct_yoy unit, and compare fail-closed on predicate/dimensions/unit identity while preserving preliminary status and no-lookahead.",
+  "rationale_summary": "The Gartner 2024 PC forecast/revision packet is a concrete source-grounded case that existing database/domain owners can represent. The bounded helpers needed numeric wiring; the first production attempt also used an ad-hoc pct_yoy unit even though 0003_research_domains.sql already seeds the canonical ratio unit. This remains an extension of CAP-0003/CAP-0004: reuse the existing catalog vocabulary, register the claim-specific PC YoY-growth predicate against ratio, and compare fail-closed on predicate/dimensions/unit identity while preserving preliminary status and no-lookahead.",
   "rationale_details_ref": "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
   "unmet_requirement": null,
   "evidence_refs": [

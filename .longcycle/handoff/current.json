@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 98,
+  "continuity_sequence": 99,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "a748695091b6c19cf684325c729980a8f434b641",
+  "checkpoint_based_on_head_sha": "ccac9dd2fb52115663c18720798a86d07682dd0c",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR #1 / design/industry-memory and compare live HEAD with checkpoint_based_on_head_sha. Seq98 applies the bounded Gartner numeric repair after that checkpoint: extend admission is normalized, percentages use canonical ratio semantics, and fresh PostgreSQL receives standard unit/predicate catalog data through existing CAP-0003 tables. Refresh exact-head CI before trusting this snapshot. Do not read any existing Fresh-Agent rehearsal/assessment report content.",
+  "bootstrap_instruction": "Resume from live PR #1 / design/industry-memory and compare live HEAD with checkpoint_based_on_head_sha. Seq99 narrows the Gartner numeric repair after exact-head run 32891147887 proved migration 0003 already seeds the canonical base-unit catalog including ratio. Migration 0035 now reuses that catalog and only validates ratio/registers market.pc_shipments_yoy_growth. Refresh exact-head dedicated numeric execution and full CI before trusting this snapshot. Do not read any existing Fresh-Agent rehearsal/assessment report content.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -19,37 +19,39 @@
     "medium_term_goal": "Productize the core-locked point-in-time industrial-memory architecture into defensible, information-complete industry research while preserving no-lookahead, claim-scoped authority and truthful temporal semantics.",
     "short_term_goal": "Validate the repaired Gartner PC numeric Judgment→Reality→Outcome chain on fresh PostgreSQL and full CI, then resume storage-semiconductor Evidence/data productization.",
     "next_big_step": "Use production execution to prove typed storage research packets while reusing existing semantic owners rather than adding parallel architecture.",
-    "local_optimization_stop_rule": "Do not invent ad-hoc units, duplicate capability owners, correctness thresholds or new schema shapes when existing CAP-0003/CAP-0004 semantics can represent the source truth. Keep unresolved search-depth and no-lookahead guards intact.",
+    "local_optimization_stop_rule": "Reuse the catalog seeded by 0003; do not duplicate base-unit seeds, invent ad-hoc units, duplicate capability owners, correctness thresholds or new schema shapes when existing CAP-0003/CAP-0004 semantics can represent the source truth.",
     "parallel_permanent_tracks": [
       "Current source collection remains source-first/preserve-now; later-known material never backdates into historical replay."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "storage-productization",
-    "last_completed_action": "Prepared one bounded repair over seq97: current admission now treats numeric wiring/catalog bootstrap as CAP-0003/CAP-0004 extension work with unmet_requirement=null; Gartner 3.5%, 2.4% and 1.3% values are represented as 0.035, 0.024 and 0.013 ratio; a catalog-data migration seeds the canonical unit vocabulary and registers market.pc_shipments_yoy_growth; regression/workflow assertions expect numeric errors -0.022, -0.011 and -0.011.",
-    "current_task": "Refresh live HEAD and verify both the dedicated Storage Gartner PC numeric Outcome workflow and full CI on the repair commit. If either fails, repair only the evidenced integration defect without reopening semantic ownership. Once green, resume storage-semiconductor Evidence/data productization.",
-    "why_now": "Seq97 isolated two production blockers. Their semantics are now understood: one admission-field misuse and one fresh-database catalog mismatch. CI is the remaining truth test.",
-    "done_when": "Dedicated numeric execution and full CI are green on the repair HEAD; fresh PostgreSQL contains canonical ratio plus market.pc_shipments_yoy_growth; Gartner vintages persist as 0.035/0.024/0.024 ratio, preliminary Reality as 0.013 ratio, and Outcomes as -0.022/-0.011/-0.011 with no new capability owner or correctness threshold.",
+    "last_completed_action": "Exact-head dedicated run 32891147887 passed 19 numeric projection regressions but failed migration 0035 because the first repair redundantly reseeded base units and guessed day.dimension=duration. Repository inspection established that 0003_research_domains.sql already seeds day.dimension=time and ratio.dimension=ratio. Seq99 narrows 0035 to validate the existing ratio row and register only market.pc_shipments_yoy_growth; admission remains extend with unmet_requirement=null.",
+    "current_task": "Verify the dedicated Storage Gartner PC numeric Outcome workflow and full CI on the seq99 repair HEAD. If either fails, repair only the evidenced integration defect without reopening semantic ownership. Once green, resume storage-semiconductor Evidence/data productization.",
+    "why_now": "The first repair's regression semantics were correct; CI identified only an over-broad catalog migration. The repository already has the canonical base-unit seed, so the minimal patch is now evidence-defined.",
+    "done_when": "Dedicated numeric execution and full CI are green on the exact repair HEAD; existing core.units.ratio remains authoritative; market.pc_shipments_yoy_growth is registered with canonical_unit_code=ratio; Gartner vintages persist as 0.035/0.024/0.024 ratio, preliminary Reality as 0.013 ratio, and Outcomes as -0.022/-0.011/-0.011 with no new capability owner or correctness threshold.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
     "next_atomic_action": "Inspect exact-head workflow runs and logs. After green, return to the storage research cursor and continue claim-scoped demand-side productization rather than architecture work."
   },
   "active_context": {
-    "context_id": "storage-gartner-numeric-outcome-repair-v1",
+    "context_id": "storage-gartner-numeric-outcome-repair-v2",
     "context_kind": "core_locked_storage_semiconductor_numeric_outcome_execution",
-    "label": "Seq98 bounded canonical-ratio/catalog repair awaiting exact-head CI",
+    "label": "Seq99 minimal existing-catalog repair awaiting exact-head CI",
     "root_path": ".",
     "campaign_root": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol",
     "coverage_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/coverage-index.json",
     "deep_context_paths": [
       "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
       ".longcycle/capabilities/current-admission.json",
+      "migrations/0003_research_domains.sql",
       "migrations/0035_standard_semantic_catalog.sql",
       ".github/workflows/storage-gartner-pc-numeric-outcome.yml",
       "tests/test_numeric_outcome_projection.py"
     ],
     "core_exclusion_terms": [
       "pct_yoy-as-canonical-unit",
+      "duplicate-base-unit-seed",
       "new-capability-for-numeric-wiring",
       "numeric-correctness-threshold",
       "lookahead-or-backdating",
@@ -71,23 +73,23 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32882315772,
-    "observed_head_sha": "a748695091b6c19cf684325c729980a8f434b641",
-    "conclusion": "Parent checkpoint remains red from the two seq97 blockers. Seq98 repair is committed in the delta after checkpoint_based_on_head_sha; refresh the live repair HEAD and require dedicated numeric execution plus full CI green before declaring health.",
-    "mypy_summary": "Parent full CI did not provide authoritative post-repair Mypy evidence; refresh exact-head CI.",
-    "pytest_summary": "Parent dedicated numeric regression selection passed before its database unit failure; the repair adds a percent-to-ratio regression and must be revalidated on exact HEAD.",
+    "last_observed_run": 32891147887,
+    "observed_head_sha": "ccac9dd2fb52115663c18720798a86d07682dd0c",
+    "conclusion": "Dedicated run passed 19 numeric regression tests and then failed only at migration 0035 because the repair duplicated the pre-existing 0003 unit catalog and conflicted on day.dimension. Seq99 removes that duplicate seed. Full CI run 32891147866 was also started on the parent repair and is superseded by the seq99 exact-head run.",
+    "mypy_summary": "No authoritative seq99 result yet; refresh exact-head CI.",
+    "pytest_summary": "Parent dedicated numeric regression selection: 19 passed in 0.24s before migration failure; seq99 changes only migration/admission/devlog/handoff and must still be validated on exact HEAD.",
     "ruff_summary": "Diagnostic only during the memory campaign; refresh exact-head result.",
-    "refresh_instruction": "Compare live HEAD to a748695091b6c19cf684325c729980a8f434b641, inspect the seq98 repair commit, then verify the dedicated Storage Gartner PC numeric Outcome workflow and longcycle/full-ci status on that live SHA."
+    "refresh_instruction": "Compare live HEAD to ccac9dd2fb52115663c18720798a86d07682dd0c, inspect the seq99 migration narrowing, then verify the dedicated Storage Gartner PC numeric Outcome workflow and longcycle/full-ci status on that live SHA."
   },
   "workstreams": [
     {
       "workstream_id": "storage-productization",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "repair_pending_exact_head_ci",
-      "summary": "Numeric Judgment→Reality→Outcome semantics are wired through canonical ratio and fresh catalog data under CAP-0003/CAP-0004; CI validation is the remaining gate before returning to storage research.",
+      "status": "minimal_catalog_repair_pending_exact_head_ci",
+      "summary": "Numeric Judgment→Reality→Outcome semantics use canonical ratio under CAP-0003/CAP-0004; 0035 now extends the existing 0003 catalog instead of duplicating it. CI validation is the remaining gate before returning to storage research.",
       "next_actions": [
-        "Verify dedicated numeric workflow and full CI on the exact repair HEAD.",
+        "Verify dedicated numeric workflow and full CI on the exact seq99 repair HEAD.",
         "If green, resume storage-semiconductor claim-scoped Evidence/data productization."
       ],
       "blockers": [
@@ -104,17 +106,6 @@
         "Keep capability audit green and treat future implementation gaps as extension work unless ownership is genuinely insufficient."
       ],
       "blockers": []
-    },
-    {
-      "workstream_id": "current-source-archive",
-      "role": "parallel_track",
-      "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "source_first_preserve_now",
-      "summary": "Preserve current primary sources with truthful known-time and source lifecycle; never backdate later material into historical replay.",
-      "next_actions": [
-        "Continue source preservation when high-value ephemeral material appears."
-      ],
-      "blockers": []
     }
   ],
   "resume_read_set": [
@@ -128,6 +119,7 @@
     ".longcycle/capabilities/current-admission.json"
   ],
   "deep_reference_paths": [
+    "migrations/0003_research_domains.sql",
     "migrations/0035_standard_semantic_catalog.sql",
     "tests/test_numeric_outcome_projection.py",
     ".github/workflows/storage-gartner-pc-numeric-outcome.yml",
@@ -139,13 +131,13 @@
     "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md"
   ],
   "unresolved_questions": [
-    "Does the dedicated fresh-PostgreSQL execution pass end-to-end with canonical ratio and errors -0.022, -0.011 and -0.011?",
-    "Does full CI pass on the same repair HEAD?"
+    "Does the dedicated fresh-PostgreSQL execution pass end-to-end with the existing ratio catalog and errors -0.022, -0.011 and -0.011?",
+    "Does full CI pass on the same seq99 repair HEAD?"
   ],
   "ordered_next_actions": [
-    "Refresh PR #1 live HEAD and inspect any delta after seq98 checkpoint base.",
-    "Verify dedicated Storage Gartner PC numeric Outcome workflow on exact repair HEAD.",
-    "Verify full CI / longcycle/full-ci on the same exact repair HEAD.",
+    "Refresh PR #1 live HEAD and inspect any delta after seq99 checkpoint base.",
+    "Verify dedicated Storage Gartner PC numeric Outcome workflow on exact seq99 repair HEAD.",
+    "Verify full CI / longcycle/full-ci on the same exact seq99 repair HEAD.",
     "If green, resume storage-semiconductor Evidence/data productization at the demand-side research cursor; do not reopen architecture."
   ]
 }

@@ -6,17 +6,19 @@ The storage-semiconductor production packet contains a directly comparable Gartn
 
 ## Owner decision
 
-This is an extension of existing owners, not a new capability. CAP-0003 continues to own numeric Reality normalization, canonical unit/catalog semantics and FactDimensions comparability. CAP-0004 continues to own contemporaneous Judgment, revision context and immutable later Outcome evaluation. No schema shape or semantic-owner split is introduced. A bounded data migration seeds the already-defined canonical unit vocabulary into fresh PostgreSQL and registers the PC YoY-growth predicate against `ratio`; this closes a bootstrap gap between the in-memory normalizer defaults and the database catalog rather than creating a new unit system.
+This is an extension of existing owners, not a new capability. CAP-0003 continues to own numeric Reality normalization, canonical unit/catalog semantics and FactDimensions comparability. CAP-0004 continues to own contemporaneous Judgment, revision context and immutable later Outcome evaluation. No schema shape or semantic-owner split is introduced.
 
 ## Canonical percentage representation
 
-Longcycle's initial normalizer already defines `%` and `percent` as source-facing aliases that multiply by `0.01` into the canonical `ratio` unit. Therefore YoY semantics belong in the predicate `market.pc_shipments_yoy_growth`, not in an ad-hoc unit code. The typed values are stored as 3.5% = `0.035 ratio`, 2.4% = `0.024 ratio`, and 1.3% = `0.013 ratio`; the source-facing percentage text remains preserved in summaries/metadata.
+Longcycle's initial normalizer already defines `%` and `percent` as source-facing aliases that multiply by `0.01` into the canonical `ratio` unit. Migration `0003_research_domains.sql` also already seeds `ratio` into `core.units`; therefore YoY semantics belong in the predicate `market.pc_shipments_yoy_growth`, not in an ad-hoc unit code. Migration 0035 only validates that existing unit and registers the new claim-specific predicate against it.
 
-The first production attempt used `pct_yoy`, which correctly failed the repository's registered-unit guard on a fresh PostgreSQL database. The repair keeps that fail-closed guard, removes the ad-hoc unit, and makes the fresh catalog agree with the canonical normalizer vocabulary.
+The typed values are stored as 3.5% = `0.035 ratio`, 2.4% = `0.024 ratio`, and 1.3% = `0.013 ratio`; the source-facing percentage text remains preserved in summaries/metadata.
+
+The first production attempt used `pct_yoy`, which correctly failed the repository's registered-unit guard on a fresh PostgreSQL database. The first repair attempt then overreached by trying to reseed the full base unit catalog; CI correctly exposed that `0003` already owned those rows (`day` is seeded there with dimension `time`). The bounded repair therefore reuses the existing catalog rather than duplicating or redefining it.
 
 ## Capability-admission correction
 
-`disposition=extend` remains correct because CAP-0003/CAP-0004 already own the semantics. `unmet_requirement` is therefore `null`: the missing numeric helper wiring and fresh-catalog data are extension work, not evidence that existing semantic owners are fundamentally insufficient.
+`disposition=extend` remains correct because CAP-0003/CAP-0004 already own the semantics. `unmet_requirement` is therefore `null`: the missing numeric helper wiring and predicate registration are extension work, not evidence that existing semantic owners are fundamentally insufficient.
 
 ## Guards
 

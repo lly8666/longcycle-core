@@ -1,44 +1,16 @@
--- Seed the canonical units already owned by AssertionNormalizer so a fresh
--- PostgreSQL catalog has the same stable unit vocabulary as in-memory use.
--- Source-facing aliases such as '%' and 'percent' remain parser/normalizer
--- inputs; canonical persisted percentage values use the dimensionless ratio unit.
-
-INSERT INTO core.units (code, dimension, display_name, decimal_scale, attributes)
-VALUES
-    ('t', 'mass', 'tonne', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('kg', 'mass', 'kilogram', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('lb', 'mass', 'pound', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('m3', 'volume', 'cubic metre', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('unit', 'count', 'unit', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('day', 'duration', 'day', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('ratio', 'ratio', 'ratio', 9, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('CNY', 'currency', 'Chinese yuan', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb),
-    ('USD', 'currency', 'US dollar', 6, '{"bootstrap":"longcycle-defaults-v1"}'::jsonb)
-ON CONFLICT (code) DO NOTHING;
+-- Extend the existing semantic catalog seeded by 0003_research_domains.sql.
+-- Source-facing percentage aliases remain an AssertionNormalizer concern;
+-- canonical persisted percentage values use the pre-existing `ratio` unit.
 
 DO $$
-DECLARE
-    conflicting_code text;
 BEGIN
-    SELECT expected.code
-      INTO conflicting_code
-      FROM (VALUES
-          ('t', 'mass'),
-          ('kg', 'mass'),
-          ('lb', 'mass'),
-          ('m3', 'volume'),
-          ('unit', 'count'),
-          ('day', 'duration'),
-          ('ratio', 'ratio'),
-          ('CNY', 'currency'),
-          ('USD', 'currency')
-      ) AS expected(code, dimension)
-      JOIN core.units actual ON actual.code = expected.code
-     WHERE actual.dimension <> expected.dimension
-     LIMIT 1;
-
-    IF conflicting_code IS NOT NULL THEN
-        RAISE EXCEPTION 'canonical unit % already exists with an incompatible dimension', conflicting_code;
+    IF NOT EXISTS (
+        SELECT 1
+          FROM core.units
+         WHERE code = 'ratio'
+           AND dimension = 'ratio'
+    ) THEN
+        RAISE EXCEPTION 'canonical ratio unit is missing or incompatible';
     END IF;
 END $$;
 
