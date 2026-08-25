@@ -14,8 +14,13 @@ from longcycle.domain.orientation import (
 )
 
 
+IndustryOrientationCapability = Literal["deterministic_industry_subjects"]
+
+
 class IndustryOrientationReader(Protocol):
-    """Storage-neutral catalog and deterministic discovery boundary for researcher entry."""
+    """Storage-neutral catalog and explicitly declared researcher-discovery boundary."""
+
+    capabilities: frozenset[IndustryOrientationCapability]
 
     async def industry_catalog(self, industry_node_id: UUID) -> IndustryOrientationCatalog: ...
 
