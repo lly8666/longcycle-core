@@ -85,6 +85,34 @@ class MemoryIngestTest(unittest.TestCase):
             ("disconfirmation_queries", "suggested_source_types"),
         )
 
+    def test_fragmentary_lead_may_omit_search_plan_fields_entirely(self) -> None:
+        payload = self._valid_payload()
+        for field in (
+            "suggested_queries",
+            "disconfirmation_queries",
+            "suggested_source_types",
+            "disconfirmation_source_types",
+            "satellite_trigger",
+            "relations",
+        ):
+            payload.pop(field)
+
+        result = validate_memory_jsonl(json.dumps(payload))
+
+        self.assertTrue(result.is_clean)
+        lead = result.accepted[0]
+        self.assertEqual(
+            lead.search_delegation_gaps,
+            (
+                "suggested_queries",
+                "disconfirmation_queries",
+                "suggested_source_types",
+                "disconfirmation_source_types",
+            ),
+        )
+        self.assertIsNone(lead.satellite_trigger)
+        self.assertEqual(lead.relations, ())
+
     def test_incomplete_search_plan_fails_at_delegation_boundary_not_atlas_admission(self) -> None:
         payload = self._valid_payload()
         payload["disconfirmation_queries"] = []
