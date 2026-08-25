@@ -4,12 +4,10 @@
     "historical replay",
     "epistemic replay",
     "trajectory view",
-    "research replay",
     "historical snapshot",
     "knowledge progression",
     "judgment storyline",
     "industry orientation",
-    "research orient",
     "researcher industry entry",
     "industry subject discovery",
     "membership semantic decision",
@@ -173,7 +171,7 @@
     "replay.archive_research_coverage_projection",
     "replay.optional_enrichment_degradation"
   ],
-  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome were knowable at a historical cutoff plus calibrated researcher projections over that filtered memory. CAP-0005 may expose source-backed CAP-0003 REVIEW/QUARANTINE assertions in a separate research-only candidate lane so publication strictness does not become information invisibility; this never lowers canonical thresholds or changes CAP-0003 ownership. Direct membership remains grounded in CAP-0003 source assertions, while CAP-0005 may use an auditable large-model semantic decision to choose how an already-selected assertion set is represented in the membership catalog; material-definition conflict escalates to deep reasoning and unresolved conflict fails before write. The current research workspace may show separately labelled CAP-0006 analysis by default, archive absence is exposed as research coverage rather than a world-state claim, and optional researcher enrichments degrade without hiding already-grounded truth.",
+  "purpose": "Own point-in-time Reality/Judgment/Outcome replay and calibrated researcher projections. CAP-0005 may expose source-backed CAP-0003 REVIEW/QUARANTINE assertions in a separate research-only candidate lane so publication strictness does not become information invisibility; this never lowers canonical thresholds or changes CAP-0003 ownership. Membership representation remains source-grounded and model-audited, historical replay remains no-lookahead, and optional research enrichment may degrade without hiding valid typed memory.",
   "revisit_when": "Only replace if no-lookahead, typed Reality/Judgment/Outcome semantics, direct-versus-entailed provenance, noncanonical source-backed candidate visibility, source temporal precision, equivalent-source corroboration, model-decision auditability, archive-coverage/world-state separation, graceful optional enrichment and the historical-versus-current-research boundary all remain explicit.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
@@ -191,13 +189,8 @@
     "src/longcycle/application/industry_orientation.py",
     "src/longcycle/application/reality_candidate_view.py",
     "src/longcycle/application/open_state_view.py",
-    "migrations/0032_industry_membership_semantic_decisions.sql",
-    "tests/test_researcher_interpretation.py",
-    "tests/test_trajectory_view.py",
-    "tests/test_industry_membership_projection.py",
-    "tests/test_industry_orientation.py",
-    "tests/test_reality_candidate_view.py",
-    "tests/test_research_workspace_policy.py"
+    "tests/test_*orientation*.py",
+    "tests/test_reality_candidate_view.py"
   ],
   "status": "active",
   "supersedes": [],
