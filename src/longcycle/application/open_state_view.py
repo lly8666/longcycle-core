@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import Any, Literal
 from uuid import UUID
 
 from longcycle.application.researcher_interpretation import model_analysis_policy
@@ -21,6 +21,9 @@ from .research_enrichment import (
     overall_status,
     unavailable_component,
 )
+
+
+ResearchOverlayMode = Literal["historical_only", "historical_plus_current_research"]
 
 
 def _subject_payload(subject: MemorySubjectRef) -> dict[str, str | None]:
@@ -163,6 +166,14 @@ def _component_payloads(
     }
 
 
+def _include_current_research(mode: ResearchOverlayMode) -> bool:
+    if mode == "historical_only":
+        return False
+    if mode == "historical_plus_current_research":
+        return True
+    raise ValueError(f"unsupported research overlay mode: {mode}")
+
+
 async def build_researcher_open_state_view(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -171,17 +182,17 @@ async def build_researcher_open_state_view(
     current_research_reader: CurrentResearchOpenStateReader,
     industry_node_id: UUID,
     knowledge_cutoff: datetime,
-    include_current_research: bool = False,
+    research_overlay_mode: ResearchOverlayMode,
 ) -> dict[str, Any]:
-    """Separate historical controversy, archive coverage and current research analysis.
+    """Render explicit historical and present-day research sections without time mixing.
 
-    Historical truth-bearing reads remain fail-closed. Optional research lanes degrade only
-    for explicitly classified expected-unavailability conditions. Programming, SQL, schema,
-    payload and contract defects raise instead of being silently reported as provider downtime.
-    Current model hypotheses remain MODEL/JUDGMENT, never canonical Reality or historical
-    market knowledge.
+    Callers must choose the overlay mode explicitly. Historical truth-bearing reads remain
+    fail-closed. Optional research lanes degrade only for explicitly classified expected
+    availability failures; defects raise. The current research section is never cutoff-filtered
+    and is visibly labelled as present-day research, not historical market knowledge.
     """
 
+    include_current_research = _include_current_research(research_overlay_mode)
     checked, catalog, memberships, discoveries, entity_subjects, enrichment_components = (
         await _load_industry_subject_universe(
             catalog_reader=catalog_reader,
@@ -289,6 +300,13 @@ async def build_researcher_open_state_view(
     ]
 
     current_overlay: dict[str, Any] = {
+        "section_label": "TODAY'S RESEARCH OVERLAY",
+        "temporal_scope": "current_research_not_cutoff_filtered",
+        "historical_cutoff_applies": False,
+        "warning": (
+            "Current model research is present-day analysis and is not part of the historical "
+            f"market-knowledge state as of {checked.isoformat()}."
+        ),
         "included": include_current_research,
         "available": None if not include_current_research else True,
         "degraded": False,
@@ -338,14 +356,24 @@ async def build_researcher_open_state_view(
         memory_counts=counts,
         membership_subject_keys=membership_subject_keys,
     )
+    historical_section = {
+        "section_label": "Historical Market Knowledge",
+        "temporal_scope": "as_of_knowledge_cutoff",
+        "as_of": checked.isoformat(),
+        "reality_source_disagreements": historical_conflicts,
+        "judgment_contradictions": judgment_contradictions,
+        "judgment_counterarguments": judgment_counterarguments,
+    }
 
     return {
         "schema_version": "longcycle-researcher-open-states/v1",
         "knowledge_cutoff": checked.isoformat(),
+        "research_overlay_mode": research_overlay_mode,
         "industry": {
             "industry_node_id": str(industry_node_id),
             "canonical_name": catalog.industry.canonical_name,
         },
+        "historical_market_knowledge": historical_section,
         "historical_at_cutoff": {
             "reality_source_disagreements": historical_conflicts,
             "judgment_contradictions": judgment_contradictions,
@@ -355,6 +383,8 @@ async def build_researcher_open_state_view(
         "current_research_overlay": current_overlay,
         "research_enrichment": _component_payloads(all_components),
         "boundary": {
+            "overlay_mode_is_explicit_at_application_boundary": True,
+            "historical_and_current_research_are_separate_sections": True,
             "subject_universe_reuses_industry_orientation_owner": True,
             "subject_universe_includes_deterministic_entailment_when_available": True,
             "entailed_discovery_does_not_create_membership_or_role": True,
