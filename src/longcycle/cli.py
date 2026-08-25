@@ -164,18 +164,33 @@ def _parser() -> argparse.ArgumentParser:
     research_orient.add_argument("cutoff", type=_parse_aware_datetime)
     research_open_states = research_sub.add_parser(
         "open-states",
-        help="separate historical controversy from opt-in current research-only uncertainty",
+        help=(
+            "render the current research workspace: historical controversy plus current "
+            "research-only analysis, with an explicit historical-only opt-out"
+        ),
     )
     research_open_states.add_argument("industry_node_id", type=UUID)
     research_open_states.add_argument("cutoff", type=_parse_aware_datetime)
-    research_open_states.add_argument(
+    current_research_group = research_open_states.add_mutually_exclusive_group()
+    current_research_group.add_argument(
         "--include-current-research",
         action="store_true",
+        dest="include_current_research",
         help=(
-            "include current Memory disagreement/hypothesis/model-memory coverage state; "
-            "this overlay is not historical market knowledge and is not cutoff-filtered"
+            "explicitly include current Memory disagreement/hypothesis/model-memory coverage; "
+            "this is already the default for the current research workspace"
         ),
     )
+    current_research_group.add_argument(
+        "--historical-only",
+        action="store_false",
+        dest="include_current_research",
+        help=(
+            "show only historical cutoff state and archive coverage; exclude today's "
+            "research-only overlay"
+        ),
+    )
+    research_open_states.set_defaults(include_current_research=True)
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
     schedule.add_argument("--industry-id", type=UUID, required=True)
