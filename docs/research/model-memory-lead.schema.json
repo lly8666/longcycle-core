@@ -20,12 +20,7 @@
     "aliases_or_old_terms",
     "why_search_may_miss_it",
     "recalled_details",
-    "possible_actors",
-    "suggested_queries",
-    "disconfirmation_queries",
-    "suggested_source_types",
-    "disconfirmation_source_types",
-    "relations"
+    "possible_actors"
   ],
   "properties": {
     "lead_kind": {
@@ -129,22 +124,26 @@
     "suggested_queries": {
       "type": "array",
       "items": {"type": "string", "minLength": 1},
-      "uniqueItems": true
+      "uniqueItems": true,
+      "description": "Optional search-planning hints. May be absent/empty in fragmentary blind recall; fill before delegated evidence search."
     },
     "disconfirmation_queries": {
       "type": "array",
       "items": {"type": "string", "minLength": 1},
-      "uniqueItems": true
+      "uniqueItems": true,
+      "description": "Optional falsification-search hints. May be absent/empty at Atlas admission; required by delegated-search readiness."
     },
     "suggested_source_types": {
       "type": "array",
       "items": {"type": "string", "minLength": 1},
-      "uniqueItems": true
+      "uniqueItems": true,
+      "description": "Optional source-planning hints, not an Atlas admission prerequisite."
     },
     "disconfirmation_source_types": {
       "type": "array",
       "items": {"type": "string", "minLength": 1},
-      "uniqueItems": true
+      "uniqueItems": true,
+      "description": "Optional contradiction-source planning, completed before delegated evidence search when needed."
     },
     "satellite_trigger": {
       "type": ["string", "null"],
@@ -152,6 +151,7 @@
     },
     "relations": {
       "type": "array",
+      "description": "Optional recalled relations. Their absence must not make an otherwise useful lead inadmissible.",
       "items": {
         "type": "object",
         "additionalProperties": false,
