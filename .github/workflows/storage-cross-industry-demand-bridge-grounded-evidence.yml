@@ -1,0 +1,108 @@
+name: Storage cross-industry demand bridge Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-cross-industry-demand-bridge-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICROSOFT-2024-07-30-CLOUD-AI-CAPEX-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-HYPERSCALE-SSD-DEMAND-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-03-20-EDGE-AI-CONTENT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-NVIDIA-2023-11-13-H200-MEMORY-CONTENT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TSMC-2024-07-18-COWOS-CONSTRAINT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SOLIDIGM-2024-11-13-122TB-QLC-AI-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-GARTNER-2024-02-07-AI-DEVICE-UNIT-FORECAST-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/storage-demand-bridge-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/storage-cross-industry-demand-bridge-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-CROSS-INDUSTRY-DEMAND-BRIDGE-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 7, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 9, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+          assert len(result["documents"]) == 7
+          assert len(result["fragments"]) == 9
+          print("STORAGE_CROSS_INDUSTRY_DEMAND_BRIDGE_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-cross-industry-demand-bridge-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7
