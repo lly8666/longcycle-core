@@ -97,6 +97,12 @@
       "path": "tests/test_industry_orientation.py"
     },
     {
+      "contains": "test_missing_optional_capability_declaration_means_unsupported",
+      "description": "A catalog reader that does not claim optional discovery support still serves direct truth instead of turning missing optional metadata into a researcher-facing defect.",
+      "kind": "test",
+      "path": "tests/test_optional_orientation_capability.py"
+    },
+    {
       "contains": "test_cli_defaults_to_explicit_plus_current_mode_with_historical_only_opt_out",
       "description": "Current open-state workspace includes today's research overlay by default while retaining an explicit historical-only mode.",
       "kind": "test",
@@ -127,6 +133,7 @@
     "Presentation code deciding its own Reality/Judgment/Outcome knowledge-cutoff eligibility.",
     "Treating archive absence as proof of unknown, false or controversy.",
     "Applying the historical knowledge cutoff to current research-only state or presenting that state as contemporaneous market knowledge.",
+    "Treating absence of optional enrichment capability metadata as a failure of the truth-bearing catalog path.",
     "Rewriting an original Judgment because a later Outcome became visible."
   ],
   "owned_semantics": [
