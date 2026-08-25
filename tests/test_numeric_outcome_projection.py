@@ -14,6 +14,7 @@ from longcycle.application.judgment_projection import (
     JudgmentProjectionSubject,
     build_grounded_judgments,
 )
+from longcycle.application.normalization import AssertionNormalizer
 from longcycle.application.numeric_outcome_evaluation import (
     NumericOutcomeObservation,
     evaluate_numeric_outcome,
@@ -82,8 +83,8 @@ def _judgment() -> JudgmentAssertion:
                 target_precision=TemporalPrecision.YEAR,
                 target_text="calendar 2024",
                 value_kind=JudgmentValueKind.NUMERIC,
-                value_numeric=Decimal("3.5"),
-                unit_code="pct_yoy",
+                value_numeric=Decimal("0.035"),
+                unit_code="ratio",
                 summary="Gartner forecast 3.5% PC shipment growth for 2024.",
             ),
         ),
@@ -121,8 +122,8 @@ def _reality() -> FactAssertion:
                 predicate_code="market.pc_shipments_yoy_growth",
                 value_text="1.3% year-over-year",
                 value_kind=FactValueKind.NUMERIC,
-                value_numeric=Decimal("1.3"),
-                normalized_unit="pct_yoy",
+                value_numeric=Decimal("0.013"),
+                normalized_unit="ratio",
                 valid_from=datetime(2024, 1, 1, tzinfo=UTC),
                 valid_to=datetime(2025, 1, 1, tzinfo=UTC),
                 valid_time_precision=TemporalPrecision.YEAR,
@@ -140,8 +141,8 @@ def test_numeric_projection_reuses_typed_dimensions_for_comparability() -> None:
     reality = _reality()
 
     assert judgment.value_kind == JudgmentValueKind.NUMERIC
-    assert judgment.value_numeric == Decimal("3.5")
-    assert judgment.unit_code == "pct_yoy"
+    assert judgment.value_numeric == Decimal("0.035")
+    assert judgment.unit_code == "ratio"
     assert judgment.predicate_code == reality.field_name
     assert judgment.comparability_hash == reality.dimensions.comparability_hash
     assert judgment.metadata["comparability_dimensions"] == DIMENSIONS.canonical_payload
@@ -149,8 +150,21 @@ def test_numeric_projection_reuses_typed_dimensions_for_comparability() -> None:
         judgment.metadata["comparability_dimensions"]
     ).comparability_hash == judgment.comparability_hash
     assert reality.value_type == FactValueKind.NUMERIC
-    assert reality.normalized_number == Decimal("1.3")
-    assert reality.normalized_unit == "pct_yoy"
+    assert reality.normalized_number == Decimal("0.013")
+    assert reality.normalized_unit == "ratio"
+
+
+def test_percent_source_alias_normalizes_to_canonical_ratio() -> None:
+    raw = _reality().model_copy(
+        update={
+            "normalized_number": Decimal("999"),
+            "normalized_unit": "%",
+        }
+    )
+    normalized = AssertionNormalizer().normalize(raw)
+
+    assert normalized.normalized_number == Decimal("0.013")
+    assert normalized.normalized_unit == "ratio"
 
 
 def test_numeric_outcome_records_realized_minus_forecast_without_threshold() -> None:
@@ -178,7 +192,7 @@ def test_numeric_outcome_records_realized_minus_forecast_without_threshold() -> 
 
     assert evaluation.semantic_relation == OutcomeSemanticRelation.DIRECT_MATCH
     assert evaluation.evaluation_status == JudgmentOutcomeStatus.INDETERMINATE
-    assert evaluation.numeric_error == Decimal("-2.2")
+    assert evaluation.numeric_error == Decimal("-0.022")
     assert evaluation.direction_correct is True
     assert evaluation.canonical_fact_version_id == UUID(int=7)
     assert evaluation.outcome_first_known_at == datetime(2025, 1, 16, tzinfo=UTC)

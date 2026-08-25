@@ -6,6 +6,7 @@ on:
       - design/industry-memory
     paths:
       - '.github/workflows/storage-gartner-pc-numeric-outcome.yml'
+      - 'migrations/0035_standard_semantic_catalog.sql'
       - 'src/longcycle/application/judgment_projection.py'
       - 'src/longcycle/application/reality_projection.py'
       - 'src/longcycle/application/numeric_outcome_evaluation.py'
@@ -20,6 +21,7 @@ on:
   pull_request:
     paths:
       - '.github/workflows/storage-gartner-pc-numeric-outcome.yml'
+      - 'migrations/0035_standard_semantic_catalog.sql'
       - 'src/longcycle/application/judgment_projection.py'
       - 'src/longcycle/application/reality_projection.py'
       - 'src/longcycle/application/numeric_outcome_evaluation.py'
@@ -86,6 +88,27 @@ jobs:
           tests/test_outcome_evaluation.py
       - name: Migrate database
         run: longcycle --json db upgrade
+      - name: Assert canonical ratio catalog bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY2'
+          import os
+          import psycopg
+          from psycopg.rows import dict_row
+          with psycopg.connect(os.environ['LONGCYCLE_DATABASE_URL'], row_factory=dict_row) as conn:
+              ratio = conn.execute("SELECT code,dimension FROM core.units WHERE code='ratio'").fetchone()
+              predicate = conn.execute("SELECT value_kinds,temporal_mode,dimension_schema_version,required_dimensions,allowed_dimensions,canonical_unit_code FROM core.predicate_definitions WHERE code='market.pc_shipments_yoy_growth' AND active").fetchone()
+          assert ratio == {'code': 'ratio', 'dimension': 'ratio'}, ratio
+          assert predicate is not None, predicate
+          assert predicate['value_kinds'] == ['numeric'], predicate
+          assert predicate['temporal_mode'] == 'period', predicate
+          assert predicate['dimension_schema_version'] == 'fact-dimensions/v1', predicate
+          assert predicate['required_dimensions'] == ['statistical_scope'], predicate
+          assert predicate['allowed_dimensions'] == ['statistical_scope'], predicate
+          assert predicate['canonical_unit_code'] == 'ratio', predicate
+          print('CANONICAL_RATIO_CATALOG_PASS')
+          PY2
       - name: Re-execute first Grounded Evidence packet
         run: >-
           python scripts/execute_grounded_evidence_spec.py "$FIRST_EVIDENCE_SPEC"
@@ -138,9 +161,9 @@ jobs:
           def load(name): return json.loads(Path(os.environ[name]).read_text(encoding='utf-8'))
           feb_j=load('FEB_JUDGMENT_OUTPUT'); mm_j=load('MAR_MAY_JUDGMENT_OUTPUT'); ctx=load('CONTEXT_OUTPUT'); reality=load('REALITY_OUTPUT')
           judgments=feb_j['judgments']+mm_j['judgments']; by_key={x['metadata']['judgment_key']:x for x in judgments}
-          expected={'gartner-pc-growth-2024-02':Decimal('3.5'),'gartner-pc-growth-2024-03':Decimal('2.4'),'gartner-pc-growth-2024-05':Decimal('2.4')}
+          expected={'gartner-pc-growth-2024-02':Decimal('0.035'),'gartner-pc-growth-2024-03':Decimal('0.024'),'gartner-pc-growth-2024-05':Decimal('0.024')}
           for key,value in expected.items():
-              x=by_key[key]; assert x['value_kind']=='numeric'; assert Decimal(str(x['value_numeric']))==value; assert x['unit_code']=='pct_yoy'; assert x['predicate_code']=='market.pc_shipments_yoy_growth'; assert x['dimensions_complete'] is True
+              x=by_key[key]; assert x['value_kind']=='numeric'; assert Decimal(str(x['value_numeric']))==value; assert x['unit_code']=='ratio'; assert x['predicate_code']=='market.pc_shipments_yoy_growth'; assert x['dimensions_complete'] is True
           assert ctx['verification']['relation_count']==1, ctx
           assert ctx['relations'][0]['relation_type']=='reaffirms', ctx
           ids=[x['id'] for x in judgments]
@@ -148,9 +171,9 @@ jobs:
               rows=conn.execute('SELECT id,value_kind,value_numeric,unit_code,predicate_code,comparability_hash,dimensions_complete FROM research.judgment_assertions WHERE id = ANY(%s::uuid[])',(ids,)).fetchall()
           assert len(rows)==3, rows
           for row in rows:
-              assert row['value_kind']=='numeric'; assert row['value_numeric'] is not None; assert row['unit_code']=='pct_yoy'; assert row['predicate_code']=='market.pc_shipments_yoy_growth'; assert row['comparability_hash'] is not None; assert row['dimensions_complete'] is True
-          fact=reality['facts'][0]['fact']; assert Decimal(str(fact['normalized_number']))==Decimal('1.3'); assert fact['normalized_unit']=='pct_yoy'; assert fact['known_at']=='2025-01-16T00:00:00Z'; assert reality['verification']['canonical_reality_count']==1
-          for name,error in [('FEB_OUTCOME_OUTPUT',Decimal('-2.2')),('MAR_OUTCOME_OUTPUT',Decimal('-1.1')),('MAY_OUTCOME_OUTPUT',Decimal('-1.1'))]:
+              assert row['value_kind']=='numeric'; assert row['value_numeric'] is not None; assert row['unit_code']=='ratio'; assert row['predicate_code']=='market.pc_shipments_yoy_growth'; assert row['comparability_hash'] is not None; assert row['dimensions_complete'] is True
+          fact=reality['facts'][0]['fact']; assert Decimal(str(fact['normalized_number']))==Decimal('0.013'); assert fact['normalized_unit']=='ratio'; assert fact['known_at']=='2025-01-16T00:00:00Z'; assert reality['verification']['canonical_reality_count']==1
+          for name,error in [('FEB_OUTCOME_OUTPUT',Decimal('-0.022')),('MAR_OUTCOME_OUTPUT',Decimal('-0.011')),('MAY_OUTCOME_OUTPUT',Decimal('-0.011'))]:
               p=load(name); e=p['evaluation']; assert e['semantic_relation']=='direct_match'; assert e['evaluation_status']=='indeterminate'; assert Decimal(str(e['numeric_error']))==error; assert e['outcome_first_known_at']=='2025-01-16T00:00:00Z'; assert p['verification']['predicate_dimensions_unit_match_required'] is True; assert p['verification']['no_correctness_tolerance_inferred'] is True
           print('STORAGE_GARTNER_PC_NUMERIC_OUTCOME_PASS')
           PY2

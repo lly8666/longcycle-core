@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
   "intent_id": "GROUNDED-NUMERIC-JUDGMENT-OUTCOME-003",
-  "intent": "Extend existing CAP-0003/CAP-0004 grounded projection seams so a source-grounded numeric forecast and directly comparable numeric Reality can be persisted and evaluated without flattening values into text or inventing a correctness threshold. Use existing Fact/Judgment numeric fields, FactDimensions comparability hashing and existing Outcome numeric_error columns; add no new semantic owner and no migration.",
+  "intent": "Extend existing CAP-0003/CAP-0004 grounded projection seams so a source-grounded numeric forecast and directly comparable numeric Reality can be persisted and evaluated without flattening values into text or inventing a correctness threshold. Reuse existing Fact/Judgment numeric fields, FactDimensions comparability hashing and Outcome numeric_error columns; bootstrap the existing canonical PostgreSQL catalog with the already-defined standard units and this predicate, without adding a new semantic owner or schema shape.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -12,9 +12,9 @@
     "CAP-0003",
     "CAP-0004"
   ],
-  "rationale_summary": "The Gartner 2024 PC forecast/revision packet is a concrete source-grounded case that existing database/domain owners can represent, but the bounded grounded projection helpers were text-only and the bounded Outcome executor only wired temporal milestone comparisons. The storage schema already persists numeric Judgment values, normalized numeric Reality, comparability identity and numeric Outcome error. This change wires those existing semantics end-to-end, fail-closed on predicate/dimensions/unit identity, preserving preliminary status and no-lookahead.",
+  "rationale_summary": "The Gartner 2024 PC forecast/revision packet is a concrete source-grounded case that existing database/domain owners can represent. The bounded helpers needed numeric wiring, and fresh PostgreSQL also lacked catalog data for the canonical ratio vocabulary already present in AssertionNormalizer. This remains an extension of CAP-0003/CAP-0004: seed existing catalog tables, use ratio rather than an ad-hoc pct_yoy unit, and compare fail-closed on predicate/dimensions/unit identity while preserving preliminary status and no-lookahead.",
   "rationale_details_ref": "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
-  "unmet_requirement": "Grounded source packets containing quantitative forecasts and same-scope later measurements cannot currently execute a typed numeric Judgment→Reality→Outcome comparison through the bounded production helpers even though CAP-0003/CAP-0004 storage/domain fields already support the values.",
+  "unmet_requirement": null,
   "evidence_refs": [
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ddr5-platform-device-forecast-revision-productization-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounding-receipt-v1.json",
@@ -28,9 +28,9 @@
     "src/longcycle/application/numeric_outcome_evaluation.py",
     "scripts/execute_grounded_numeric_outcome_evaluation.py",
     "tests/test_numeric_outcome_projection.py",
+    "migrations/0035_standard_semantic_catalog.sql",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-feb-2024-growth-judgment-projection-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-mar-may-2024-growth-judgment-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-mar-may-2024-growth-context-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/gartner-pc-2024-preliminary-growth-reality-projection-v1.json",
     ".github/workflows/storage-gartner-pc-numeric-outcome.yml",
     "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
