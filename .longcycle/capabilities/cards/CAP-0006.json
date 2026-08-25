@@ -67,14 +67,8 @@
       "path": "tests/test_memory_ingest.py"
     },
     {
-      "contains": "test_authoritative_content_can_resolve_claim_without_search_quota",
-      "description": "Claim-scoped authoritative content may resolve a lead without mechanically satisfying unresolved-exhaustion query/source quotas.",
-      "kind": "test",
-      "path": "tests/test_memory_campaign.py"
-    },
-    {
-      "contains": "test_unresolved_search_cannot_claim_exhaustion_before_minimum_depth",
-      "description": "Minimum verification depth still prevents shallow not-found work from being labelled exhausted when the claim remains unresolved.",
+      "contains": "test_agent_cannot_stop_before_minimum_search_depth",
+      "description": "Every normal historical verification stop state requires the full minimum search depth so a model cannot decide for itself that one apparently decisive result was thorough enough.",
       "kind": "test",
       "path": "tests/test_memory_campaign.py"
     },
@@ -107,7 +101,7 @@
     "Treating model-memory coverage cells as proof that the archive or real world lacks an event.",
     "Forcing fragmentary recollection into exact dates or dropping useful leads because their time is approximate.",
     "Requiring a complete positive/negative query and source plan before preserving an otherwise useful unsourced Memory Lead; planning completeness belongs to delegated-search readiness.",
-    "Treating minimum query-family/source-type depth as a corroboration quota after claim-scoped authoritative content already resolves the claim; the depth guard applies to unresolved exhaustion.",
+    "Allowing a model to stop historical verification before the required minimum query-family/source-type/primary/reverse/citation depth merely because one result appears decisive.",
     "Hiding useful analytical hypotheses merely because they are not source truth; keep them visible with an explicit research-only/model label instead."
   ],
   "owned_semantics": [
@@ -119,8 +113,8 @@
     "memory.research_only_model_judgment_analysis",
     "memory.current_workspace_default_visibility"
   ],
-  "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and explicitly research-only state around Memory Leads: disagreement cases, hypothesis assessments, model judgments and model-memory coverage. These states guide research and may carry useful labelled analysis such as causality, participant importance or ambiguous role, but remain below Evidence authority, never create canonical truth and are never backdated. A present-day research workspace may expose this lane by default; historical replay remains a separate no-lookahead surface.",
-  "revisit_when": "Only replace if blind recall, approximate lead preservation, immutable seal, search-enabled verification, current research uncertainty, useful labelled model analysis, current-workspace visibility and Evidence-final authority remain auditable and append-only.",
+  "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and explicitly research-only state around Memory Leads: disagreement cases, hypothesis assessments, model judgments and model-memory coverage. These states guide research and may carry useful labelled analysis such as causality, participant importance or ambiguous role, but remain below Evidence authority, never create canonical truth and are never backdated. Historical verification retains a hard minimum-depth stop gate to prevent model self-declared search completeness. A present-day research workspace may expose this lane by default; historical replay remains a separate no-lookahead surface.",
+  "revisit_when": "Only replace if blind recall, approximate lead preservation, immutable seal, strict search-depth verification, current research uncertainty, useful labelled model analysis, current-workspace visibility and Evidence-final authority remain auditable and append-only.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/memory_campaign.py",
