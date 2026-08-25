@@ -217,10 +217,12 @@ def evaluate_campaign_saturation(
 
 @dataclass(frozen=True, slots=True)
 class VerificationDepth:
-    """Minimum search depth required before a verification task may stop.
+    """Minimum depth required before declaring an unresolved historical search exhausted.
 
-    This is an anti-premature-stop hard gate. A model finding a plausible or even authoritative
-    page does not by itself prove that historical search was thorough enough to stop.
+    This is an anti-premature-stop gate for unresolved-exhaustion, not a corroboration quota for
+    claims already resolved by claim-scoped authoritative content. Search depth prevents a model
+    from turning a shallow failed search into "nothing happened"; it does not require low-value
+    quota chasing after authoritative original content has directly answered the claim.
     """
 
     minimum_query_families: int = 6
@@ -263,7 +265,7 @@ def verification_depth_satisfied(
     progress: VerificationSearchProgress,
     depth: VerificationDepth = VerificationDepth(),
 ) -> bool:
-    """Return whether the full anti-premature-stop search depth has been satisfied."""
+    """Return whether unresolved-exhaustion minimum search depth has been satisfied."""
 
     if progress.query_family_count < depth.minimum_query_families:
         return False
@@ -289,16 +291,18 @@ def verification_stop_decision(
     high_impact: bool = False,
     depth: VerificationDepth = VerificationDepth(),
 ) -> VerificationStopDecision:
-    """Require full search depth before any normal verification stop state is accepted.
+    """Decide whether a verification task may stop without turning search depth into a quota.
 
-    ``high_impact`` is retained for caller compatibility, but it never weakens the common minimum
-    depth. The hard gate exists specifically to prevent a model from deciding for itself that one
-    apparently decisive result means it has searched thoroughly enough.
+    Authoritative claim-scoped content may resolve a claim before the generic 6-query/3-source
+    exhaustion depth. High-impact resolved claims still retain the configured reverse-query guard.
+    Only an unresolved task may claim exhaustive stopping after the full minimum depth is satisfied.
     """
 
-    del high_impact
-    if not verification_depth_satisfied(progress, depth):
-        return VerificationStopDecision(False, "minimum_depth_not_met")
     if resolution in {"authoritative_support", "authoritative_contradiction"}:
+        if high_impact and depth.require_reverse_query and not progress.reverse_query_done:
+            return VerificationStopDecision(False, "high_impact_reverse_query_required")
         return VerificationStopDecision(True, resolution)
+
+    if not verification_depth_satisfied(progress, depth):
+        return VerificationStopDecision(False, "unresolved_minimum_depth_not_met")
     return VerificationStopDecision(True, "exhausted_but_unresolved")
