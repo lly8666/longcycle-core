@@ -12,6 +12,7 @@
     "research orient",
     "researcher industry entry",
     "industry subject discovery",
+    "membership semantic decision",
     "open states",
     "researcher controversy",
     "researcher interpretation"
@@ -24,32 +25,32 @@
       "path": "src/longcycle/ports/epistemic.py"
     },
     {
-      "contains": "class IndustryOrientationReader(Protocol):",
-      "description": "Storage-neutral orientation boundary exposes direct catalog membership plus deterministic grounded subject-discovery candidates without moving membership truth into presentation.",
+      "contains": "class IndustryMembershipSemanticJudge(Protocol):",
+      "description": "Membership projection requires an explicit model semantic judge. Standard reasoning runs first; material-definition conflict must escalate to deep reasoning before catalog materialization.",
       "kind": "port",
       "path": "src/longcycle/ports/orientation.py"
     },
     {
-      "contains": "def researcher_time_hint(",
-      "description": "Read-only interpretation helper exposes useful source-supported or deterministic time hints without mutating canonical temporal semantics.",
+      "contains": "async def resolve_industry_membership_semantics(",
+      "description": "Application service turns a CAP-0003-selected assertion set into an auditable projection decision without turning model reasoning into source Evidence or canonical Reality.",
       "kind": "application",
-      "path": "src/longcycle/application/researcher_interpretation.py"
+      "path": "src/longcycle/application/industry_membership_projection.py"
     },
     {
       "contains": "def build_researcher_trajectory_view(",
-      "description": "Deterministic read-only projection turns one already-filtered point-in-time snapshot into entries, knowledge progression and Judgment-centered storylines while keeping canonical truth separate from labelled researcher hints.",
+      "description": "Deterministic read-only projection turns one already-filtered point-in-time snapshot into entries, progression and Judgment storylines while keeping canonical truth separate from labelled hints.",
       "kind": "application",
       "path": "src/longcycle/application/trajectory_view.py"
     },
     {
       "contains": "async def build_researcher_industry_orientation(",
-      "description": "Researcher entry composes direct membership and deterministic industry-scoped grounded-memory entailment at one shared cutoff, then delegates Reality/Judgment/Outcome visibility to the typed snapshot owner.",
+      "description": "Researcher entry composes direct membership and deterministic industry-scoped grounded-memory entailment at one shared cutoff; optional discovery enrichment may degrade without hiding direct truth.",
       "kind": "application",
       "path": "src/longcycle/application/industry_orientation.py"
     },
     {
       "contains": "async def build_researcher_open_state_view(",
-      "description": "Researcher projection reuses the same broad subject universe while keeping historical conflict/Judgment controversy separate from an explicit opt-in current research-only overlay.",
+      "description": "Researcher workspace keeps historical conflict separate from current research-only analysis, exposes archive coverage explicitly and permits optional current/discovery enrichments to degrade with diagnostics.",
       "kind": "application",
       "path": "src/longcycle/application/open_state_view.py"
     }
@@ -57,92 +58,68 @@
   "extension_seams": [
     "Researcher-readable trajectory/table/graph views over an already-filtered typed snapshot.",
     "New read-only CLI/API/UI projections that do not reimplement knowledge visibility.",
-    "Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment; keep the entailment provenance visible and do not promote it into membership truth.",
-    "Add deterministic, auditable role or subject entailment when premises come from existing semantic owners and the rule cannot manufacture unsupported historical timing or truth.",
+    "Compose direct catalog membership with deterministic discoverability from already-grounded Reality/Judgment; keep entailment provenance visible and do not promote it into membership truth.",
+    "Let a model choose the catalog representation among CAP-0003-selected source assertions; persist the decision as audit provenance and escalate material-definition conflict to deep reasoning before materialization.",
     "Add labelled researcher time/range/as-of hints that preserve source temporal precision and never overwrite canonical time.",
-    "Surface related milestones as useful signals while keeping the original target unresolved unless CAP-0004 records a direct match.",
-    "Compose explicit historical controversy with a separately labelled current research-only MODEL/JUDGMENT overlay from CAP-0006 without collapsing authority classes.",
-    "Additional storage adapters implementing the same typed reader contracts."
+    "Surface archive absence as research coverage state without converting absence into world-state unknown/false.",
+    "Compose historical controversy with a separately labelled current research-only MODEL/JUDGMENT overlay; the current research workspace may show it by default while historical replay never backdates it.",
+    "Optional researcher enrichments may degrade with explicit diagnostics; truth-bearing catalog, Evidence and typed-memory reads remain fail-closed."
   ],
   "guards": [
     {
-      "contains": "DuckDBEpistemicMemoryReader(database)",
-      "description": "Integrated replay consumes the typed DuckDB reader rather than physical tables.",
-      "kind": "runtime",
-      "path": "scripts/replay_integrated_history.py"
+      "contains": "test_material_definition_conflict_automatically_escalates_to_deep_reasoning",
+      "description": "Membership regression proves conflicting source definitions automatically run standard then deep model reasoning before any catalog representation is chosen.",
+      "kind": "test",
+      "path": "tests/test_industry_membership_projection.py"
     },
     {
-      "contains": "seal_industrial_memory(portable, timeline)",
-      "description": "Hard smoke round-trips one typed timeline across PostgreSQL and DuckDB.",
+      "contains": "test_unresolved_deep_conflict_fails_closed_before_membership_write",
+      "description": "Deep reasoning that still cannot resolve a material conflict stops before membership materialization.",
       "kind": "test",
-      "path": "scripts/smoke_postgres_epistemic.py"
-    },
-    {
-      "contains": "test_trajectory_storyline_preserves_related_milestone_as_indeterminate",
-      "description": "Presentation regression proves a related milestone stays indeterminate/not-comparable and is never narrated as direct realization.",
-      "kind": "test",
-      "path": "tests/test_trajectory_view.py"
+      "path": "tests/test_industry_membership_projection.py"
     },
     {
       "contains": "test_unknown_onset_can_surface_as_of_hint_without_inventing_start",
-      "description": "Researcher interpretation regression permits a useful as-of hint while preserving unknown onset in canonical Reality.",
-      "kind": "test",
-      "path": "tests/test_researcher_interpretation.py"
-    },
-    {
-      "contains": "test_related_milestone_is_useful_without_becoming_direct_realization",
-      "description": "Researcher interpretation regression surfaces related milestone information value without promoting the original target to realized.",
+      "description": "Researcher interpretation permits a useful as-of hint while preserving unknown onset in canonical Reality.",
       "kind": "test",
       "path": "tests/test_researcher_interpretation.py"
     },
     {
       "contains": "test_orientation_starts_from_industry_without_leaking_future_membership_or_outcome",
-      "description": "Orientation contract proves a future-known direct membership and future Outcome cannot cross the shared researcher knowledge cutoff.",
+      "description": "Orientation proves future-known membership and Outcome cannot cross the researcher knowledge cutoff.",
       "kind": "test",
       "path": "tests/test_industry_orientation.py"
     },
     {
-      "contains": "test_grounded_industry_scoped_reality_is_discoverable_without_membership",
-      "description": "Recall regression proves an Evidence-grounded industry-scoped Reality can deterministically expose a subject even when no membership row exists, while future discovery remains cutoff-filtered and no membership or role is invented by that rule.",
+      "contains": "test_current_research_workspace_defaults_on_with_explicit_historical_only_opt_out",
+      "description": "Current open-state workspace includes today's research overlay by default while retaining an explicit historical-only mode.",
       "kind": "test",
-      "path": "tests/test_industry_orientation.py"
+      "path": "tests/test_research_workspace_policy.py"
     },
     {
-      "contains": "test_default_view_keeps_current_research_out_of_historical_cutoff",
-      "description": "Open-state projection regression proves the default historical lane excludes current research state while reusing the CAP-0005 subject-universe owner.",
+      "contains": "test_optional_research_failures_degrade_without_inventing_world_state",
+      "description": "Research workspace returns historical truth when optional discovery/model enrichments fail and labels archive absence as coverage rather than world state.",
       "kind": "test",
-      "path": "tests/test_open_state_view.py"
+      "path": "tests/test_research_workspace_policy.py"
     },
     {
-      "contains": "POSTGRES_INDUSTRY_ORIENTATION_SMOKE_PASS",
-      "description": "Service-capable synthetic smoke exercises PostgreSQL membership and deterministic-discovery query plumbing plus the researcher CLI without creating real industry research data.",
+      "contains": "POSTGRES_REAL_SOURCE_ORIENTATION_ACCEPTANCE_PASS",
+      "description": "Real Samsung acceptance proves source known-time/Evidence survive through the model-audited membership projection and no-lookahead researcher path.",
       "kind": "runtime",
-      "path": "scripts/smoke_postgres_orientation.py"
-    },
-    {
-      "contains": "POSTGRES_RESEARCHER_OPEN_STATES_SMOKE_PASS",
-      "description": "Service-capable synthetic smoke proves the researcher CLI separates source-known historical conflict from opt-in current research-only state.",
-      "kind": "runtime",
-      "path": "scripts/smoke_postgres_open_states.py"
-    },
-    {
-      "contains": "RESEARCHER_READABLE_REPLAY_SURFACE_PASS",
-      "description": "Service-capable regression exercises `longcycle research replay` at multiple historical cutoffs and verifies knowledge progression plus unchanged original Judgment content.",
-      "kind": "runtime",
-      "path": ".github/workflows/research-trajectory-v1-sv005-proof.yml"
+      "path": "scripts/smoke_postgres_real_orientation.py"
     }
   ],
   "id": "CAP-0005",
   "maturity": "core_locked",
   "non_goals": [
     "Direct SQL as product replay semantics.",
-    "Creating new Fact/Judgment/Outcome or industry-membership truth records in presentation code.",
-    "Treating deterministic discoverability by itself as proof of a specific value-chain role, importance ranking or causal relation.",
-    "Silently promoting deterministic researcher hints or MODEL/JUDGMENT analysis into canonical Reality, formal membership or historical market knowledge.",
+    "Creating source Fact/Judgment/Outcome truth in presentation code.",
+    "Treating a model membership semantic decision as source Evidence, CAP-0003 reconciliation or canonical Reality.",
+    "Allowing a model to invent a membership role, entity, industry, timing or Evidence identity absent from the selected source assertions.",
+    "Silently promoting deterministic hints or MODEL/JUDGMENT analysis into canonical Reality or historical market knowledge.",
     "Presentation code deciding its own Reality/Judgment/Outcome knowledge-cutoff eligibility.",
-    "Applying the historical knowledge cutoff to current research-only Memory/coverage state or presenting that state as contemporaneous market knowledge.",
-    "Treating current catalog canonical names as historical-name replay.",
-    "Inferring direct realization or success/failure beyond stored CAP-0004 Outcome semantics.",
+    "Treating archive absence as proof of unknown, false or controversy.",
+    "Applying the historical knowledge cutoff to current research-only state or presenting that state as contemporaneous market knowledge.",
     "Rewriting an original Judgment because a later Outcome became visible."
   ],
   "owned_semantics": [
@@ -153,11 +130,14 @@
     "replay.researcher_judgment_storyline_projection",
     "replay.researcher_industry_orientation_projection",
     "replay.researcher_industry_subject_discovery_projection",
+    "replay.industry_membership_semantic_projection_decision",
     "replay.researcher_calibrated_interpretation_projection",
-    "replay.researcher_open_state_projection"
+    "replay.researcher_open_state_projection",
+    "replay.archive_research_coverage_projection",
+    "replay.optional_enrichment_degradation"
   ],
-  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome records were knowable at a historical cutoff, plus calibrated researcher-readable projections over that filtered memory. Researcher entry uses direct source-grounded membership plus deterministic auditable entailment; presentation may add clearly labelled deterministic time/role/usefulness hints when premises support them, but never mutates canonical truth. Related milestones can be surfaced as informative without satisfying a direct target. Ambiguous role, participant importance and causality belong to the explicitly labelled CAP-0006 MODEL/JUDGMENT lane rather than being forbidden or silently promoted to Reality.",
-  "revisit_when": "Only replace if a stronger storage-neutral read contract preserves no-lookahead, typed Reality/Judgment/Outcome semantics, direct-versus-entailed provenance, canonical temporal precision, explicit researcher-hint authority, membership authority outside presentation, and the historical-versus-current-research/model-analysis boundary.",
+  "purpose": "Own storage-neutral reconstruction of what Reality, Judgment and Outcome were knowable at a historical cutoff plus calibrated researcher projections over that filtered memory. Direct membership remains grounded in CAP-0003 source assertions, while CAP-0005 may use an auditable large-model semantic decision to choose how an already-selected assertion set is represented in the membership catalog; material-definition conflict escalates to deep reasoning and unresolved conflict fails before write. The current research workspace may show separately labelled CAP-0006 analysis by default, archive absence is exposed as research coverage rather than a world-state claim, and optional researcher enrichments degrade without hiding already-grounded truth.",
+  "revisit_when": "Only replace if no-lookahead, typed Reality/Judgment/Outcome semantics, direct-versus-entailed provenance, source temporal precision, model-decision auditability, archive-coverage/world-state separation, graceful optional enrichment and the historical-versus-current-research boundary all remain explicit.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/ports/epistemic.py",
@@ -165,17 +145,17 @@
     "src/longcycle/adapters/storage/postgres_epistemic.py",
     "src/longcycle/adapters/storage/duckdb_epistemic.py",
     "src/longcycle/adapters/storage/postgres_orientation.py",
-    "src/longcycle/application/historical_replay.py",
-    "src/longcycle/application/judgment_replay.py",
     "src/longcycle/application/researcher_interpretation.py",
     "src/longcycle/application/trajectory_view.py",
+    "src/longcycle/application/industry_membership_projection.py",
     "src/longcycle/application/industry_orientation.py",
     "src/longcycle/application/open_state_view.py",
-    "scripts/smoke_postgres_orientation.py",
+    "migrations/0032_industry_membership_semantic_decisions.sql",
     "tests/test_researcher_interpretation.py",
     "tests/test_trajectory_view.py",
+    "tests/test_industry_membership_projection.py",
     "tests/test_industry_orientation.py",
-    "tests/test_open_state_view.py"
+    "tests/test_research_workspace_policy.py"
   ],
   "status": "active",
   "supersedes": [],
@@ -183,18 +163,16 @@
     "replay",
     "knowledge-cutoff",
     "no-lookahead",
-    "duckdb",
     "trajectory",
     "researcher-view",
-    "knowledge-progression",
-    "judgment-storyline",
     "industry-orientation",
-    "researcher-entry",
+    "membership-semantic-decision",
+    "deep-reasoning",
     "subject-discovery",
-    "deterministic-entailment",
     "calibrated-interpretation",
-    "open-state",
-    "controversy"
+    "archive-coverage",
+    "graceful-degradation",
+    "open-state"
   ],
   "title": "Typed point-in-time industrial-memory replay"
 }
