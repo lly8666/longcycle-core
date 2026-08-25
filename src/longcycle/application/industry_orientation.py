@@ -106,6 +106,16 @@ def _visible_discoveries(
     )
 
 
+def _enrichment_failure(component: str, exc: Exception) -> dict[str, str]:
+    return {
+        "component": component,
+        "status": "unavailable",
+        "error_type": type(exc).__name__,
+        "message": str(exc),
+        "truth_effect": "none",
+    }
+
+
 async def _load_industry_subject_universe(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -117,15 +127,15 @@ async def _load_industry_subject_universe(
     tuple[IndustrySubjectMembershipRecord, ...],
     tuple[IndustrySubjectDiscoveryRecord, ...],
     dict[UUID, MemorySubjectRef],
+    tuple[dict[str, str], ...],
 ]:
-    """Load the CAP-0005 industry subject universe from direct and entailed bases.
+    """Load direct truth plus optional deterministic discovery enrichment.
 
-    A subject is eligible when it has either a visible source-grounded membership or a
-    deterministic discovery basis from already-grounded memory explicitly scoped to the
-    industry. The latter is recall-only and never becomes membership truth.
-
-    Legacy bounded readers that predate deterministic discovery remain valid and simply
-    contribute no entailed candidates; production readers implement the extended port.
+    Catalog membership is truth-bearing input and remains fail-closed. Deterministic
+    discovery is a recall enrichment: transport/storage failure in that optional lane
+    degrades the researcher view with diagnostics instead of hiding already-grounded
+    membership truth. Returned discovery records still pass strict no-lookahead and
+    industry-identity validation.
     """
 
     checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
@@ -133,14 +143,19 @@ async def _load_industry_subject_universe(
     catalog = await catalog_reader.industry_catalog(industry_node_id)
     memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
     discovery_reader = getattr(catalog_reader, "deterministic_industry_subjects", None)
+    failures: list[dict[str, str]] = []
     raw_discoveries: tuple[IndustrySubjectDiscoveryRecord, ...]
     if discovery_reader is None:
         raw_discoveries = ()
     else:
-        raw_discoveries = await discovery_reader(
-            industry_node_id,
-            knowledge_cutoff=checked,
-        )
+        try:
+            raw_discoveries = await discovery_reader(
+                industry_node_id,
+                knowledge_cutoff=checked,
+            )
+        except Exception as exc:
+            raw_discoveries = ()
+            failures.append(_enrichment_failure("deterministic_industry_subjects", exc))
     discoveries = _visible_discoveries(
         raw_discoveries,
         industry_node_id=industry_node_id,
@@ -153,7 +168,7 @@ async def _load_industry_subject_universe(
     for discovery in discoveries:
         assert discovery.subject.entity_id is not None
         subjects[discovery.subject.entity_id] = discovery.subject
-    return checked, catalog, memberships, discoveries, subjects
+    return checked, catalog, memberships, discoveries, subjects, tuple(failures)
 
 
 def _memory_counts(snapshot: PointInTimeMemorySnapshot) -> dict[str, dict[str, int]]:
@@ -243,6 +258,22 @@ def _entailed_discovery_basis(discovery: IndustrySubjectDiscoveryRecord) -> dict
     }
 
 
+def _coverage_payload(counts: dict[str, int], evidence_count: int) -> dict[str, Any]:
+    grounded_count = counts["reality"] + counts["judgments"] + counts["outcomes"]
+    has_grounded_record = grounded_count > 0 or evidence_count > 0
+    return {
+        "archive_status": "grounded_records_present" if has_grounded_record else "no_grounded_record",
+        "grounded_record_count": grounded_count,
+        "evidence_fragment_count": evidence_count,
+        "world_state_inference": "none",
+        "absence_meaning": (
+            None
+            if has_grounded_record
+            else "research coverage may be incomplete or unresearched; archive absence is not a world-state unknown"
+        ),
+    }
+
+
 async def build_researcher_industry_orientation(
     *,
     catalog_reader: IndustryOrientationReader,
@@ -250,17 +281,9 @@ async def build_researcher_industry_orientation(
     industry_node_id: UUID,
     knowledge_cutoff: datetime,
 ) -> dict[str, Any]:
-    """Build a broad but auditable researcher entry view at one knowledge cutoff.
+    """Build a broad but auditable researcher entry view at one knowledge cutoff."""
 
-    Direct membership remains source-grounded catalog truth. Separately, already-grounded
-    Reality/Judgment carrying explicit industry scope may deterministically make a subject
-    discoverable. This concrete explicit-scope rule expands recall only and does not itself
-    assign a role. CAP-0005 may add other deterministic role entailments when their premises
-    and rules are auditable; ambiguous role, importance and causality belong in an explicitly
-    labelled model-judgment lane rather than being silently promoted to truth.
-    """
-
-    checked, catalog, visible_memberships, visible_discoveries, subjects = (
+    checked, catalog, visible_memberships, visible_discoveries, subjects, enrichment_failures = (
         await _load_industry_subject_universe(
             catalog_reader=catalog_reader,
             industry_node_id=industry_node_id,
@@ -304,16 +327,10 @@ async def build_researcher_industry_orientation(
         elif entity_discoveries:
             canonical_name = entity_discoveries[0].canonical_name
             entity_type = entity_discoveries[0].entity_type
-        else:  # pragma: no cover - subjects are populated only from one of these inputs
+        else:  # pragma: no cover
             raise RuntimeError("orientation subject has no discovery basis")
         rows_to_render.append(
-            (
-                entity_id,
-                canonical_name,
-                entity_type,
-                entity_memberships,
-                entity_discoveries,
-            )
+            (entity_id, canonical_name, entity_type, entity_memberships, entity_discoveries)
         )
 
     subject_rows: list[dict[str, Any]] = []
@@ -331,6 +348,10 @@ async def build_researcher_industry_orientation(
             *(_direct_discovery_basis(membership) for membership in entity_memberships),
             *(_entailed_discovery_basis(discovery) for discovery in entity_discoveries),
         ]
+        subject_counts = counts.get(
+            subject_key,
+            {"reality": 0, "judgments": 0, "outcomes": 0},
+        )
         subject_rows.append(
             {
                 "subject_id": str(entity_id),
@@ -355,16 +376,20 @@ async def build_researcher_industry_orientation(
                         "known_at": membership.known_at.isoformat(),
                         "confidence": membership.confidence,
                         "resolution_id": str(membership.resolution_id),
+                        "semantic_decision_id": (
+                            str(membership.semantic_decision_id)
+                            if membership.semantic_decision_id is not None
+                            else None
+                        ),
+                        "semantic_decision_mode": membership.semantic_decision_mode,
                         "evidence_fragment_ids": [
                             str(value) for value in membership.evidence_fragment_ids
                         ],
                     }
                     for membership in entity_memberships
                 ],
-                "memory_counts": counts.get(
-                    subject_key,
-                    {"reality": 0, "judgments": 0, "outcomes": 0},
-                ),
+                "memory_counts": subject_counts,
+                "archive_coverage": _coverage_payload(subject_counts, len(subject_evidence)),
                 "judgment_relation_markers": relation_markers.get(subject_key, []),
                 "evidence_fragment_ids": sorted(subject_evidence),
                 "trajectory_replay": {"subject_id": str(entity_id)},
@@ -372,6 +397,11 @@ async def build_researcher_industry_orientation(
         )
 
     industry_subject = MemorySubjectRef(industry_node_id=industry_node_id)
+    industry_counts = counts.get(
+        industry_subject.key,
+        {"reality": 0, "judgments": 0, "outcomes": 0},
+    )
+    industry_evidence_count = len(evidence.get(industry_subject.key, set()))
     return {
         "schema_version": "longcycle-researcher-industry-orientation/v1",
         "knowledge_cutoff": checked.isoformat(),
@@ -380,16 +410,20 @@ async def build_researcher_industry_orientation(
             "canonical_name": catalog.industry.canonical_name,
             "node_kind": catalog.industry.node_kind,
             "archetype": catalog.industry.archetype,
-            "memory_counts": counts.get(
-                industry_subject.key,
-                {"reality": 0, "judgments": 0, "outcomes": 0},
-            ),
+            "memory_counts": industry_counts,
+            "archive_coverage": _coverage_payload(industry_counts, industry_evidence_count),
             "trajectory_replay": {"industry_node_id": str(industry_node_id)},
         },
         "subjects": subject_rows,
         "explicit_open_states": [],
+        "research_enrichment": {
+            "status": "degraded" if enrichment_failures else "complete",
+            "failures": list(enrichment_failures),
+        },
         "boundary": {
             "membership_requires_fact_resolution_and_evidence": True,
+            "membership_semantic_selection_is_model_audited": True,
+            "model_semantic_decision_is_not_source_evidence_or_canonical_reality": True,
             "membership_visibility_uses_source_known_at": True,
             "researcher_discovery_allows_deterministic_entailment": True,
             "entailed_discovery_requires_grounded_explicit_industry_scope": True,
@@ -397,12 +431,15 @@ async def build_researcher_industry_orientation(
             "deterministic_role_entailment_allowed_when_rule_is_auditable": True,
             "ambiguous_role_importance_causality_belong_to_labeled_model_judgment": True,
             "presentation_does_not_promote_analysis_to_truth": True,
+            "truth_bearing_catalog_and_memory_reads_fail_closed": True,
+            "optional_research_discovery_enrichment_degrades_gracefully": True,
             "system_from_is_not_historical_known_at": True,
             "system_from_only_breaks_ties_between_already_knowable_versions": True,
             "memory_visibility_delegated_to_epistemic_snapshot": True,
             "same_knowledge_cutoff_used_for_membership_and_memory": True,
             "same_knowledge_cutoff_used_for_membership_discovery_and_memory": True,
             "canonical_labels_are_current_catalog_identity_not_historical_name_replay": True,
+            "archive_absence_is_research_coverage_not_world_state": True,
             "presentation_invents_no_unknown_or_controversy": True,
             "subject_order_is_lexical_not_importance_ranking": True,
         },
