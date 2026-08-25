@@ -67,12 +67,12 @@ class MemoryLeadCandidate(BaseModel):
     why_search_may_miss_it: str | None
     recalled_details: dict[str, Any]
     possible_actors: tuple[str, ...]
-    suggested_queries: tuple[str, ...]
-    disconfirmation_queries: tuple[str, ...]
-    suggested_source_types: tuple[str, ...]
-    disconfirmation_source_types: tuple[str, ...]
-    satellite_trigger: str | None
-    relations: tuple[MemoryLeadRelationCandidate, ...]
+    suggested_queries: tuple[str, ...] = ()
+    disconfirmation_queries: tuple[str, ...] = ()
+    suggested_source_types: tuple[str, ...] = ()
+    disconfirmation_source_types: tuple[str, ...] = ()
+    satellite_trigger: str | None = None
+    relations: tuple[MemoryLeadRelationCandidate, ...] = ()
 
     @model_validator(mode="after")
     def validate_period(self) -> MemoryLeadCandidate:
