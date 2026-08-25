@@ -142,11 +142,13 @@ class IndustryMembershipModelJudgmentRun(DomainModel):
 
 
 class IndustryMembershipSemanticDecision(DomainModel):
-    """Durable semantic conclusion supported by one or more model judgment runs.
+    """Durable semantic conclusion supported by source assertions and model judgment runs.
 
     Decision identity is about the semantic conclusion, not a particular model execution.
     Repeated model vintages may support the same decision while every run remains separately
-    auditable.
+    auditable. ``supporting_assertion_ids`` is the deterministic equivalence cluster whose
+    entity/industry/role/exposure/validity semantics match the chosen representation; it may
+    therefore preserve corroboration from more than the representative selected assertion.
     """
 
     decision_id: UUID
@@ -154,6 +156,7 @@ class IndustryMembershipSemanticDecision(DomainModel):
     semantic_scope: Literal["industry.membership"] = "industry.membership"
     candidate_assertion_ids: tuple[UUID, ...]
     selected_assertion_id: UUID
+    supporting_assertion_ids: tuple[UUID, ...]
     decision_summary: str = Field(min_length=1)
     first_decided_at: datetime
     last_confirmed_at: datetime
@@ -175,6 +178,14 @@ class IndustryMembershipSemanticDecision(DomainModel):
             raise ValueError("membership semantic decision candidates must be unique")
         if self.selected_assertion_id not in self.candidate_assertion_ids:
             raise ValueError("membership semantic decision must select one candidate assertion")
+        if not self.supporting_assertion_ids:
+            raise ValueError("membership semantic decision requires supporting source assertions")
+        if len(set(self.supporting_assertion_ids)) != len(self.supporting_assertion_ids):
+            raise ValueError("membership semantic decision supporting assertions must be unique")
+        if self.selected_assertion_id not in self.supporting_assertion_ids:
+            raise ValueError("selected assertion must be part of the supporting equivalence cluster")
+        if any(item not in self.candidate_assertion_ids for item in self.supporting_assertion_ids):
+            raise ValueError("supporting assertions must be CAP-0003 selected candidates")
         if not self.supporting_judgment_run_ids:
             raise ValueError("membership semantic decision requires supporting model judgment runs")
         if len(set(self.supporting_judgment_run_ids)) != len(self.supporting_judgment_run_ids):
