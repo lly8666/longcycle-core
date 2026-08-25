@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Literal
 from uuid import UUID
 
 import psycopg
@@ -40,6 +41,10 @@ from longcycle.domain.models import (
     TimeRange,
     stable_uuid_exact,
 )
+from longcycle.domain.orientation import (
+    IndustryMembershipSemanticJudgment,
+    ResolvedIndustryMembershipResolution,
+)
 
 
 TAXONOMY_ID = stable_uuid_exact("orientation-smoke", "taxonomy")
@@ -49,6 +54,31 @@ FUTURE_ENTITY_ID = stable_uuid_exact("orientation-smoke", "future-facility")
 EARLY_KNOWN_AT = datetime(2021, 6, 1, 12, 0, tzinfo=UTC)
 FUTURE_KNOWN_AT = datetime(2024, 6, 1, 12, 0, tzinfo=UTC)
 CUTOFF = datetime(2023, 1, 1, 12, 0, tzinfo=UTC)
+
+
+class _SyntheticMembershipSemanticJudge:
+    """Deterministic CI substitute for the production large-model semantic judge."""
+
+    async def judge_industry_membership(
+        self,
+        resolution: ResolvedIndustryMembershipResolution,
+        *,
+        reasoning_mode: Literal["standard", "deep"],
+    ) -> IndustryMembershipSemanticJudgment:
+        if reasoning_mode != "standard":
+            raise AssertionError("single-definition synthetic smoke must not require deep reasoning")
+        if len(resolution.selected_assertions) != 1:
+            raise AssertionError("synthetic smoke expects one source-backed candidate")
+        return IndustryMembershipSemanticJudgment(
+            reasoning_mode="standard",
+            selected_assertion_id=resolution.selected_assertions[0].id,
+            material_conflict_detected=False,
+            can_materialize=True,
+            reasoning_summary="Synthetic fixture contains one unambiguous membership definition.",
+            model_name="deterministic-ci-membership-semantic-judge",
+            model_version="1",
+            decided_at=resolution.resolved_at,
+        )
 
 
 async def _ground_membership_assertion(
@@ -234,19 +264,26 @@ async def main() -> None:
         dsn,
         bucket_name="orientation-smoke",
     )
+    semantic_judge = _SyntheticMembershipSemanticJudge()
     try:
         early_projection = await project_resolved_industry_membership(
             resolution_reader=projection_store,
+            semantic_judge=semantic_judge,
+            decision_writer=projection_store,
             membership_writer=projection_store,
             resolution_id=early_resolution,
         )
         future_projection = await project_resolved_industry_membership(
             resolution_reader=projection_store,
+            semantic_judge=semantic_judge,
+            decision_writer=projection_store,
             membership_writer=projection_store,
             resolution_id=future_resolution,
         )
         repeated_early = await project_resolved_industry_membership(
             resolution_reader=projection_store,
+            semantic_judge=semantic_judge,
+            decision_writer=projection_store,
             membership_writer=projection_store,
             resolution_id=early_resolution,
         )
@@ -260,7 +297,9 @@ async def main() -> None:
     if future_projection.known_at != FUTURE_KNOWN_AT:
         raise AssertionError("future membership projection lost source-known time")
     if early_projection.system_from == early_projection.known_at:
-        raise AssertionError("resolution/materialization time collapsed into historical known time")
+        raise AssertionError("semantic decision time collapsed into historical known time")
+    if early_projection.semantic_decision_id is None:
+        raise AssertionError("membership projection lost semantic decision audit provenance")
 
     with tempfile.TemporaryDirectory(prefix="longcycle-orientation-smoke-") as temporary:
         output_path = Path(temporary) / "orientation.json"
@@ -307,21 +346,30 @@ async def main() -> None:
         raise AssertionError(early)
     if str(early_evidence) not in early["evidence_fragment_ids"]:
         raise AssertionError(early)
+    if early["memberships"][0]["semantic_decision_id"] != str(early_projection.semantic_decision_id):
+        raise AssertionError("orientation lost semantic decision audit identity")
+    if early["archive_coverage"]["world_state_inference"] != "none":
+        raise AssertionError("archive coverage incorrectly inferred a world state")
     if result["explicit_open_states"] != []:
         raise AssertionError("orientation invented an open/unknown state")
 
     boundary = result["boundary"]
     required_boundary = {
         "membership_requires_fact_resolution_and_evidence",
+        "membership_semantic_selection_is_model_audited",
+        "model_semantic_decision_is_not_source_evidence_or_canonical_reality",
         "membership_visibility_uses_source_known_at",
         "researcher_discovery_allows_deterministic_entailment",
         "entailed_discovery_does_not_create_membership_or_role",
         "deterministic_role_entailment_allowed_when_rule_is_auditable",
         "ambiguous_role_importance_causality_belong_to_labeled_model_judgment",
         "presentation_does_not_promote_analysis_to_truth",
+        "truth_bearing_catalog_and_memory_reads_fail_closed",
+        "optional_research_discovery_enrichment_degrades_gracefully",
         "system_from_is_not_historical_known_at",
         "memory_visibility_delegated_to_epistemic_snapshot",
         "same_knowledge_cutoff_used_for_membership_discovery_and_memory",
+        "archive_absence_is_research_coverage_not_world_state",
         "presentation_invents_no_unknown_or_controversy",
     }
     if not all(boundary.get(key) is True for key in required_boundary):
