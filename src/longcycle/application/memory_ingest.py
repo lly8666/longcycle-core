@@ -38,11 +38,12 @@ class MemoryLeadRelationCandidate(BaseModel):
 
 
 class MemoryLeadCandidate(BaseModel):
-    """Typed candidate emitted by a memory model before persistence.
+    """Typed unsourced recollection preserved before evidence-search planning is complete.
 
-    This is intentionally stricter than the persisted MemoryLead domain object because
-    generation-time search archaeology and falsification fields must be complete before
-    a lead is accepted into a campaign atlas.
+    Atlas admission validates the recalled lead itself, not whether a delegated search packet has
+    already been fully designed. Fragmentary memory is allowed to remain fragmentary. The positive
+    and disconfirmation query/source fields are still preserved here when available, while
+    ``search_delegation_gaps`` provides a separate execution-readiness boundary for later search.
     """
 
     model_config = ConfigDict(extra="forbid")
@@ -74,19 +75,38 @@ class MemoryLeadCandidate(BaseModel):
     relations: tuple[MemoryLeadRelationCandidate, ...]
 
     @model_validator(mode="after")
-    def validate_period_and_search_contract(self) -> MemoryLeadCandidate:
+    def validate_period(self) -> MemoryLeadCandidate:
         start, end = self.approximate_period
         if start is not None and end is not None and end < start:
             raise ValueError("approximate_period end must not be before start")
-        if not self.suggested_queries:
-            raise ValueError("at least one suggested query is required")
-        if not self.disconfirmation_queries:
-            raise ValueError("at least one disconfirmation query is required")
-        if not self.suggested_source_types:
-            raise ValueError("at least one suggested source type is required")
-        if not self.disconfirmation_source_types:
-            raise ValueError("at least one disconfirmation source type is required")
         return self
+
+    @property
+    def search_delegation_gaps(self) -> tuple[str, ...]:
+        """Return planning fields that must be filled before bounded evidence-search delegation."""
+
+        fields = (
+            "suggested_queries",
+            "disconfirmation_queries",
+            "suggested_source_types",
+            "disconfirmation_source_types",
+        )
+        return tuple(field for field in fields if not getattr(self, field))
+
+    @property
+    def search_delegation_ready(self) -> bool:
+        return not self.search_delegation_gaps
+
+
+def require_memory_lead_search_ready(candidate: MemoryLeadCandidate) -> None:
+    """Fail closed at delegated-search execution, not at Memory Atlas preservation."""
+
+    gaps = candidate.search_delegation_gaps
+    if gaps:
+        raise ValueError(
+            "memory lead is preserved but not ready for delegated evidence search; missing: "
+            + ", ".join(gaps)
+        )
 
 
 class MemoryRepairOperation(BaseModel):
