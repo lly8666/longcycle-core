@@ -1,0 +1,72 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0118-2017-UPCYCLE-COMPETING-EXPLANATIONS-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0118",
+  "authority": "curated_research_assessment_over_grounded_evidence",
+  "subject": "Competing explanations for the 2016-2018 memory upcycle without inferring supplier coordination from price alone",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounding-receipt-v1.json"
+  ],
+  "assessment": {
+    "status": "multi_factor_tightness_supported_coordination_unresolved",
+    "supported": [
+      {
+        "explanatory_axis": "limited_wafer_capacity_expectations",
+        "finding": "Contemporaneous December 2016 TrendForce/DRAMeXchange forecasts expected 2017 DRAM wafer capacity to remain roughly flat versus 2016 and NAND wafer capacity to increase only modestly.",
+        "meaning": "A low-wafer-addition explanation was available before the 2017 price outcome was fully known, but these statements remain forecasts rather than realized full-year capacity measurements."
+      },
+      {
+        "explanatory_axis": "demand_mix_strength",
+        "finding": "By late April 2017 Samsung was describing strong server and mobile demand in memory, while SK hynix reported a quarter in which its DRAM bit shipments fell sequentially and ASP rose materially.",
+        "meaning": "Demand strength and supplier-specific tightness were both contemporaneously observable. The price outcome does not isolate whether demand, supply or both carried the larger causal weight."
+      },
+      {
+        "explanatory_axis": "technology_transition_effective_supply",
+        "finding": "By late September 2017 TrendForce/DRAMeXchange reported production-capacity losses at non-Samsung suppliers during the 2D-to-3D NAND transition, and Micron separately described a fiscal-2018 capital plan focused on technology migrations with no new wafer capacity.",
+        "meaning": "Technology migration could alter effective supply even without a simple reduction in installed wafer capacity. This mechanism is directly supported for NAND transition losses and separately supported as Micron-specific forward capital guidance."
+      },
+      {
+        "explanatory_axis": "product_line_divergence",
+        "finding": "The packet does not rely on one shared DRAM/NAND supply mechanism: DRAM evidence emphasizes wafer-capacity expectations, supplier shipment/ASP outcomes and server/mobile demand, while NAND adds a directly observed transition-related effective-capacity-loss mechanism.",
+        "meaning": "The common 2017 direction of prices is not sufficient reason to collapse DRAM and NAND causal histories."
+      }
+    ],
+    "not_established": [
+      "The packet does not establish supplier collusion, coordination or an industry-wide agreement to withhold capacity.",
+      "The packet does not establish realized full-year 2017 DRAM or NAND wafer capacity from a comparable primary industry ledger.",
+      "The packet does not quantify the yield penalty or exact wafer/bit loss caused by the NAND 2D-to-3D transition for each supplier.",
+      "The packet does not establish an analogous transition-related effective-capacity loss for DRAM merely because DRAM was also migrating technology nodes.",
+      "The packet does not quantify causal weights between wafer additions, technology migration, server/mobile demand and inventory conditions.",
+      "Micron's fiscal-2018 plan does not establish Samsung or SK hynix capacity behavior."
+    ],
+    "point_in_time_interpretation": {
+      "as_of_2016_12_22": "A researcher can hold contemporaneous expectations that 2017 DRAM wafer capacity will be roughly flat and NAND wafer capacity will grow modestly. These are expectations, not proof of realized discipline or coordination.",
+      "as_of_2017_04_30": "A researcher can additionally observe SK hynix supplier-specific DRAM shipment/ASP tightness and Samsung commentary about strong server/mobile memory demand. The late-September evidence of NAND transition-related capacity loss and Micron's fiscal-2018 no-new-wafer guidance remain unavailable.",
+      "as_of_2017_09_28": "A researcher can now add two further mechanisms: Micron's own forward plan centered on technology migrations without new wafer capacity, and a methodological-primary observation that non-Samsung 3D-NAND transition work caused some production-capacity losses. These later observations may strengthen a multi-factor supply explanation but must not be backdated into April."
+    },
+    "counterfactual_evaluation": {
+      "hypothesis_supplier_discipline_only": "insufficiently_supported",
+      "reason_supplier_discipline_only": "Low wafer-addition expectations and a Micron-specific no-new-wafer plan are consistent with restrained physical capacity growth, but price strength alone does not prove coordinated supplier discipline and the packet contains independent demand and technology-transition mechanisms.",
+      "hypothesis_technology_transition_plus_demand": "supported_as_material_competing_explanation",
+      "reason_technology_transition_plus_demand": "Contemporaneous demand strength is directly stated, and late-2017 NAND evidence directly identifies transition-related production-capacity losses. The evidence supports these as material mechanisms without establishing that they explain all DRAM/NAND price movement.",
+      "preferred_research_representation": "Preserve multiple causal families and their vintage-specific evidence. Do not collapse them into one supercycle cause or select a single causal story from later price history."
+    },
+    "representation_decision": "Keep supplier capacity plans/expectations, technology-transition effective-supply observations, demand-mix statements and price/shipment outcomes as distinct claims. Any later model judgment about relative causal importance belongs in the CAP-0006 research-only lane unless separately grounded and promoted through existing typed Judgment semantics.",
+    "canonical_projection_decision": "Do not create a canonical causal Reality predicate from this packet. Supplier-reported numeric outcomes may be projection candidates in a separate Reality task, while the two December capacity statements are Judgment/Expectation candidates. The counterfactual causal synthesis remains research-only.",
+    "outcome_for_ms0118": "MS-0118 is supported as a corrective to a single-cause narrative. The 2017 upcycle can be represented with contemporaneous evidence for constrained wafer additions, strong server/mobile demand and NAND technology-transition effective-supply losses. The stronger claim that rising prices demonstrate coordinated supplier discipline remains unresolved, not established."
+  },
+  "stop_rule": {
+    "closed_surface": "Do not repeat generic searches for '2017 memory supercycle' or infer coordination from concentration and price. The first packet already establishes multiple plausible contemporaneous mechanisms.",
+    "reopen_when": [
+      "A primary supplier source provides realized 2017 wafer starts/capacity or transition-yield data comparable across periods.",
+      "A regulator, court record or primary communication provides direct evidence relevant to supplier coordination rather than price/concentration inference.",
+      "A methodological-primary dataset decomposes 2017 DRAM/NAND bit supply and bit demand into comparable realized contributions.",
+      "A source-grounded inventory trajectory materially changes the competing-explanation assessment."
+    ]
+  },
+  "next_research_direction": {
+    "candidate": "MS-0119",
+    "rationale": "The next counterfactual lead tests the 2022 downturn as inventory amplification rather than a simple end-demand collapse. It would extend the same competing-explanation method into the opposite phase of the cycle and directly exercise the known thin area around inventory disclosures."
+  }
+}
