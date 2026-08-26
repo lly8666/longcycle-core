@@ -28,9 +28,9 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "architecture-continuity-governance",
-    "last_completed_action": "Closed semiconductor-memory research through MS-0122 and then repaired the Fresh-Agent drill harness after reviewing the user-requested new seq111 v2 report. The report showed that DUMB-02 and DUMB-03 received only the literal word 'cue'; the subject correctly refused to invent hidden questions, but v2 could still self-declare PASS because it had no cue-payload integrity rule. V3 now separates pre-delivery secrecy from post-delivery authorization: a valid external cue carries the actual question payload, stage id and canonical SHA-256; after delivery the subject must read and answer that payload; empty/trigger-only/wrong-stage cues are INVALID_CUE and do not advance. A Pydantic report validator plus CLI recomputes cue hashes, enforces stage order, rejects controller/prior-report reads recorded before completion, and verifies report filename plus report-only Git provenance. A focused Fresh-Agent Continuity v3 workflow was added. Focused run 32996663244 proved the v3 validator, cue/report protocol tests, continuity document tests and capability-registry tests green; its only failure was the pre-v3 seq111 handoff cursor still declaring bounded_execution. This handoff corrects that final control-plane mismatch to high_capability_reasoning. The old v2 report remains immutable and is explicitly not an accepted v3 PASS.",
+    "last_completed_action": "Closed semiconductor-memory research through MS-0122 and repaired the Fresh-Agent drill harness after the user-requested seq111 v2 report exposed a cue-transport defect. V3 now requires complete externally delivered cue envelopes carrying the real question payload, stage id and canonical SHA-256; pre-delivery secrecy remains strict, while post-delivery the subject must read and answer the payload. Empty/trigger-only/wrong-stage cues are INVALID_CUE and do not advance. A Pydantic report validator plus CLI recomputes cue hashes, enforces stage order, rejects prohibited pre-report reads recorded by the subject, and verifies report filename plus report-only Git provenance. The focused Fresh-Agent Continuity v3 workflow now gates validator compilation, cue/report protocol, continuity documents, capability registry and session handoff separately. Exact-head focused run 32997044194 and full CI run 32997043958 both succeeded on handoff head 30e49c5f4a110f055235cd5f2a15727ba2945127. The old v2 report remains immutable historical evidence and is explicitly not an accepted v3 PASS.",
     "current_task": "Run the user-requested Fresh-Agent Continuity Drill v3 as a genuine external black-box continuity test against this closed checkpoint. No substantive research, capability expansion or industry implementation is active while the v3 rerun is pending.",
-    "why_now": "The first external seq111 drill exposed a controller/harness transport bug rather than a semantic-recovery failure. The harness has now been redesigned and machine-gated, so the remaining task is to prove that a genuinely fresh subject can recover Longcycle and answer the actual externally delivered DUMB-02/DUMB-03 payloads without premature cue leakage, broad historical archaeology or same-session self-certification.",
+    "why_now": "The first external seq111 drill exposed a controller/harness transport bug rather than a semantic-recovery failure. The repaired harness and its focused/full CI gates are now green, so the remaining task is to prove that a genuinely fresh subject can recover Longcycle and answer the actual externally delivered DUMB-02/DUMB-03 payloads without premature cue leakage, broad historical archaeology or same-session self-certification.",
     "done_when": "A genuinely fresh external subject follows docs/development/fresh-agent-continuity-drill-subject.md, completes Stage 1, then receives the exact full DUMB-02 and DUMB-03 V3 cue envelopes only after the preceding wait markers, reads and answers the delivered payloads, records any malformed attempts without advancing the stage, reads no controller contract or earlier Fresh-Agent report body before completion, makes no product/handoff/capability/test/protocol mutation, and commits exactly one v3 report-only file. scripts/validate_fresh_agent_drill_report.py must accept the report including canonical cue hashes and Git provenance, and a maintainer must separately review semantic recovery before accepting PASS.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
@@ -79,13 +79,13 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32996663244,
-    "observed_head_sha": "6baa15b272b4cdd1bae5c017b689451f93f1b66f",
-    "conclusion": "failure",
-    "mypy_summary": "The latest previously observed full CI runs passed Mypy; no v3 type-system failure has been observed. Live CI must be refreshed after this handoff commit.",
-    "pytest_summary": "Focused Fresh-Agent Continuity v3 run 32996663244 passed validator compilation, v3 cue/report protocol tests, v3 continuity document contract tests and capability-registry contract tests. Its only failing focused step was Session handoff contract because seq111 still declared required_capability=bounded_execution while the canonical handoff contract requires high_capability_reasoning. This handoff corrects that mismatch; result remains unverified until live CI reruns.",
-    "ruff_summary": "Ruff remained successful in the latest observed full-CI attempts under the repository's current diagnostic policy.",
-    "refresh_instruction": "Resolve live HEAD independently after this seq111 v3 handoff commit and refresh both Fresh-Agent Continuity v3 focused CI and full CI. Do not treat the pre-handoff focused failure or any checkpoint snapshot as authority for the new live head."
+    "last_observed_run": 32997043958,
+    "observed_head_sha": "30e49c5f4a110f055235cd5f2a15727ba2945127",
+    "conclusion": "success",
+    "mypy_summary": "Exact-head full CI run 32997043958 succeeded on 30e49c5f4a110f055235cd5f2a15727ba2945127; Mypy hard gate passed.",
+    "pytest_summary": "Exact-head full CI run 32997043958 succeeded with Pytest, capability generated-index consistency, memory-history audit, typed handoff, migrations and Evidence/no-lookahead hard gates all passing. Focused Fresh-Agent Continuity v3 run 32997044194 also succeeded on the same head: validator compilation, v3 cue/report protocol tests, continuity document contract tests, capability-registry contract tests and session-handoff contract tests all passed.",
+    "ruff_summary": "Ruff diagnostic step succeeded in exact-head full CI run 32997043958 under the repository's current policy.",
+    "refresh_instruction": "Live CI was refreshed successfully on handoff head 30e49c5f4a110f055235cd5f2a15727ba2945127. Future sessions must still refresh the live branch/head before treating this snapshot as current."
   },
   "workstreams": [
     {
@@ -117,10 +117,9 @@
       "workstream_id": "architecture-continuity-governance",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "fresh_agent_v3_harness_repaired_external_rerun_pending",
-      "summary": "The seq111 v2 external report exposed a cue-transport harness bug: contentless literal 'cue' messages could count as stages even though the subject was forbidden to invent hidden questions. V3 replaces that ambiguity with explicit payload envelopes, canonical cue digests, INVALID_CUE non-advancement, a requirement to read/answer valid delivered payloads, machine report validation, report-only Git provenance checks and a focused continuity workflow. The v2 report remains immutable historical evidence but is not an accepted continuity PASS.",
+      "status": "fresh_agent_v3_harness_green_external_rerun_pending",
+      "summary": "The seq111 v2 external report exposed a cue-transport harness bug: contentless literal 'cue' messages could count as stages even though the subject was forbidden to invent hidden questions. V3 replaces that ambiguity with explicit payload envelopes, canonical cue digests, INVALID_CUE non-advancement, a requirement to read/answer valid delivered payloads, machine report validation, report-only Git provenance checks and a focused continuity workflow. Focused and full CI are green on the final v3 handoff head. The v2 report remains immutable historical evidence but is not an accepted continuity PASS.",
       "next_actions": [
-        "Refresh focused v3 and full CI on this final handoff head; repair only continuity-harness defects if any remain.",
         "Launch the v3 drill in a genuinely fresh session using the staged full cue envelopes from the controller contract.",
         "Validate the report with scripts/validate_fresh_agent_drill_report.py and independently review semantic recovery/read boundaries/stage order before accepting PASS."
       ],
@@ -159,7 +158,6 @@
   ],
   "ordered_next_actions": [
     "Do not open new substantive research.",
-    "Refresh focused Fresh-Agent Continuity v3 CI and full CI on the live seq111 v3 handoff head.",
     "Run the external Fresh-Agent Continuity Drill v3 in a genuinely fresh session using complete staged cue envelopes, never trigger words alone.",
     "Machine-validate and independently review the resulting report before accepting PASS or resuming research."
   ]
