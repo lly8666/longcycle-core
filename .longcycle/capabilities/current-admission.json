@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-MEMORY-COUNTERFACTUAL-MS0118-015",
-  "intent": "Research sealed counterfactual lead MS-0118 as a balanced, contemporaneous, Evidence-first causal-discrimination packet for the 2016-2018 memory upcycle. Preserve at least three distinct explanatory axes: supplier wafer/capacity discipline, DRAM-node and planar-to-3D-NAND technology-transition constraints on effective supply, and server/mobile/content demand-mix growth. Price strength is an outcome signal, not evidence of coordination. Do not infer supplier coordination, causal coefficients, wafer losses, yield penalties or demand elasticity unless directly supported by claim-scoped sources. Preserve DRAM and NAND mechanisms separately even when they move in the same direction.",
+  "intent_id": "MEMORY-MEMORY-COUNTERFACTUAL-MS0119-016",
+  "intent": "Research sealed counterfactual lead MS-0119 as an Evidence-first inventory-amplification packet for the 2021-2023 memory downturn. Preserve end-market consumption, customer ship-in/procurement, customer inventory, supplier inventory, supplier bit supply, wafer starts/utilization and price as distinct claim scopes. Test whether customer inventory correction caused DRAM/NAND procurement to fall below end-market consumption and whether supplier inventory accumulation then elicited production cuts, while preserving genuine macro/end-demand weakness as a separate concurrent mechanism. Do not claim pull-forward, double ordering, causal weights or a single 'demand collapse' scalar unless directly supported by claim-scoped primary or methodological-primary evidence.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -16,20 +16,19 @@
     "CAP-0006",
     "CAP-0007"
   ],
-  "rationale_summary": "The sealed atlas already identifies the 2016-2017 upcycle as a shared DRAM/NAND landmark while explicitly warning that the two products tightened for different reasons. MS-0118 is the corresponding counterfactual lead: test supplier-discipline explanations against technology-transition effective-supply constraints and demand-mix surprises rather than choosing a hindsight narrative from price alone. Existing source, Evidence, research-hypothesis and execution owners are sufficient; no new semantic owner is required for the Evidence-first phase.",
-  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-01.jsonl",
+  "rationale_summary": "The campaign maturity index identifies customer-side inventory disclosures as a thin area, and sealed lead MS-0119 specifically challenges the reduction of the 2022 downturn to end-demand collapse. Primary supplier materials already expose the required separation: customers reduced DRAM/NAND procurement below end-market consumption while correcting inventory, suppliers accumulated inventory as supply exceeded demand, and producers subsequently cut wafer starts. Existing Evidence and research-hypothesis owners are sufficient; no new semantic owner is required for the Evidence-first phase.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/evidence-final-maturity-index-v1.json",
   "unmet_requirement": null,
   "evidence_refs": [
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/coverage-matrix-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-01.jsonl"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/evidence-final-maturity-index-v1.json"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0118-2017-upcycle-competing-explanations-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0119-2022-inventory-amplification-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounded-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounding-receipt-v1.json",
-    ".github/workflows/memory-ms0118-2017-upcycle-grounded-evidence.yml",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounding-receipt-v1.json",
+    ".github/workflows/memory-ms0119-2022-inventory-grounded-evidence.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
