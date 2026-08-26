@@ -1,30 +1,37 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "CONTINUITY-TYPED-HANDOFF-PREFLIGHT-012",
-  "intent": "Repair the seq109 handoff field-semantic drift and extend the existing continuity/governance integration so the capability hard gate validates .longcycle/handoff/current.json through the canonical SessionHandoffCheckpoint model before full pytest. Keep workstream lifecycle state in status rather than inventing structural roles, and keep non-campaign research indexes in deep_context_paths rather than reusing memory-campaign coverage_path.",
+  "intent_id": "MEMORY-STORAGE-CROSS-INDUSTRY-MS0112-013",
+  "intent": "Research MS-0112 as a bounded cross-industry proof that hyperscaler capital/infrastructure spending and server CPU/platform transitions are distinct upstream demand drivers for server DRAM and enterprise SSD. Reuse the existing grounded Microsoft/Micron cross-industry packet, add only claim-scoped server-platform-cycle evidence that is materially missing, preserve capex, server/platform transition, DRAM demand/content and enterprise-SSD demand as separate scopes, and create no synthetic causal scalar unless a source explicitly supplies the bridge.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0009",
-    "CAP-0010"
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0006",
+    "CAP-0007"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0009",
-    "CAP-0010"
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0006",
+    "CAP-0007"
   ],
-  "rationale_summary": "Seq109 exposed a control-plane validation gap: the canonical typed handoff model rejects an invented workstream role and a campaign-only coverage_path when memory_campaign is null, but capability_registry.validate_handoff currently checks only that the compact capability index appears in resume_read_set. Reuse CAP-0009 as the semantic owner of handoff shape and CAP-0010 as the owner of the preflight hard gate; do not create another schema or validator.",
-  "rationale_details_ref": "docs/development/session-handoff-protocol.md",
+  "rationale_summary": "The repository already contains grounded Microsoft cloud/AI capex-and-server-spend evidence and Micron hyperscale SSD demand evidence, so repeating a generic AI-demand packet would add little. The missing MS-0112 increment is the server CPU/platform-cycle axis and, only where explicitly sourced, its memory-content or storage-demand bridge. Existing source preservation, Evidence, bounded research orchestration and execution owners can represent this without new semantic ownership.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json",
   "unmet_requirement": null,
   "evidence_refs": [
-    "src/longcycle/application/session_handoff.py",
-    "tests/test_session_handoff.py",
-    "scripts/capability_registry.py"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICROSOFT-2024-07-30-CLOUD-AI-CAPEX-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-HYPERSCALE-SSD-DEMAND-v1.json"
   ],
   "planned_paths": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0112-server-platform-demand-bridge-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-AMD-2024-SERVER-PLATFORM-CYCLE-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-SERVER-DRAM-PLATFORM-BRIDGE-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounded-evidence-v1.json",
+    ".github/workflows/storage-ms0112-server-platform-grounded-evidence.yml",
     ".longcycle/capabilities/current-admission.json",
-    ".longcycle/handoff/current.json",
-    "scripts/capability_registry.py",
-    "tests/test_capability_registry.py"
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
 }
