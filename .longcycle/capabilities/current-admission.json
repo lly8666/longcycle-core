@@ -1,39 +1,28 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "GROUNDED-NUMERIC-JUDGMENT-OUTCOME-003",
-  "intent": "Extend existing CAP-0003/CAP-0004 grounded projection seams so a source-grounded numeric forecast and directly comparable numeric Reality can be persisted and evaluated without flattening values into text or inventing a correctness threshold. Reuse existing Fact/Judgment numeric fields, FactDimensions comparability hashing, the existing PostgreSQL semantic catalog and Outcome numeric_error columns; add no new semantic owner or schema shape.",
+  "intent_id": "FRESH-AGENT-DRILL-HARNESS-ISOLATION-004",
+  "intent": "Repair the existing CAP-0009 Fresh-Agent continuity drill harness after the seq103 external run showed controller/subject conflation: preserve the failing report, separate controller-only future cues and pass criteria from the subject-visible operating contract, and add a regression that prevents future-cue leakage without changing Longcycle product semantics or creating a new capability owner.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0003",
-    "CAP-0004"
+    "CAP-0009"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0003",
-    "CAP-0004"
+    "CAP-0009"
   ],
-  "rationale_summary": "The Gartner 2024 PC forecast/revision packet is a concrete source-grounded case that existing database/domain owners can represent. The bounded helpers needed numeric wiring; the first production attempt also used an ad-hoc pct_yoy unit even though 0003_research_domains.sql already seeds the canonical ratio unit. This remains an extension of CAP-0003/CAP-0004: reuse the existing catalog vocabulary, register the claim-specific PC YoY-growth predicate against ratio, and compare fail-closed on predicate/dimensions/unit identity while preserving preliminary status and no-lookahead.",
-  "rationale_details_ref": "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
+  "rationale_summary": "The seq103 report at subject HEAD ba0f6d5b4975d86428462536acae1b9ef8af20c5 recovered DUMB-01/02/03 semantics correctly but violated staged execution because v1 exposed DUMB-02/DUMB-03 cue text and execution instructions in the same repository document the tested Agent was told to read. This is an observed continuity-test harness defect owned by CAP-0009, not evidence for a new semantic owner. V2 keeps the old FAIL immutable, moves future stimuli and expected-answer criteria to a controller-only contract, gives the tested Agent a separate subject contract with explicit stop/wait tokens, and tests that future cue text is absent from the subject contract.",
+  "rationale_details_ref": ".longcycle/handoff/rehearsals/fresh-agent-external-103-ba0f6d5.json",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ddr5-platform-device-forecast-revision-productization-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounding-receipt-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ddr5-platform-device-forecast-revision-grounding-receipt-v1.json",
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0004.json"
+    ".longcycle/handoff/rehearsals/fresh-agent-external-103-ba0f6d5.json",
+    ".longcycle/capabilities/cards/CAP-0009.json",
+    "docs/development/session-handoff-protocol.md"
   ],
   "planned_paths": [
-    "src/longcycle/application/judgment_projection.py",
-    "src/longcycle/application/reality_projection.py",
-    "src/longcycle/application/numeric_outcome_evaluation.py",
-    "scripts/execute_grounded_numeric_outcome_evaluation.py",
-    "tests/test_numeric_outcome_projection.py",
-    "migrations/0035_standard_semantic_catalog.sql",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-feb-2024-growth-judgment-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-mar-may-2024-growth-judgment-projection-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/gartner-pc-2024-preliminary-growth-reality-projection-v1.json",
-    ".github/workflows/storage-gartner-pc-numeric-outcome.yml",
-    "docs/devlog/2026-08-25-storage-numeric-outcome-productization.md",
+    "docs/development/fresh-agent-continuity-drill.md",
+    "docs/development/fresh-agent-continuity-drill-subject.md",
+    "tests/test_fresh_agent_drill_protocol.py",
+    ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
