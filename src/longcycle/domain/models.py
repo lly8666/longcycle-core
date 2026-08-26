@@ -56,6 +56,18 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
 
 
+def canonical_decimal_identity(value: Decimal | None) -> str | None:
+    """Return a scale-insensitive identity for an exact Decimal value."""
+    if value is None:
+        return None
+    if value == 0:
+        return "0"
+    if not value.is_finite():
+        return str(value)
+    text = format(value, "f")
+    return text.rstrip("0").rstrip(".") if "." in text else text
+
+
 def require_aware_datetime(value: datetime | None, field_name: str | None) -> datetime | None:
     if value is not None and (value.tzinfo is None or value.utcoffset() is None):
         raise ValueError(f"{field_name or 'datetime'} must include a timezone")
@@ -562,6 +574,8 @@ class FactAssertion(DomainModel):
     @property
     def immutable_fingerprint(self) -> str:
         payload = self.model_dump(mode="json", exclude={"status"})
+        if self.value_type == FactValueKind.NUMERIC:
+            payload["normalized_number"] = canonical_decimal_identity(self.normalized_number)
         return hashlib.sha256(canonical_json(payload).encode()).hexdigest()
 
     @property
@@ -585,7 +599,7 @@ class FactAssertion(DomainModel):
         if self.value_type == FactValueKind.NUMERIC:
             payload = {
                 "kind": self.value_type.value,
-                "number": str(self.normalized_number) if self.normalized_number is not None else None,
+                "number": canonical_decimal_identity(self.normalized_number),
                 "unit": self.normalized_unit,
             }
         elif self.value_type == FactValueKind.BOOLEAN:

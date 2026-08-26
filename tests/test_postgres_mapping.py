@@ -99,6 +99,74 @@ class PostgresMappingTest(unittest.TestCase):
         self.assertEqual(restored.evidence[0].evidence_fragment_id, evidence_id)
         self.assertEqual(restored.evidence[0].evidence_role, FactEvidenceRole.SUPPORTING)
 
+    def test_numeric_fingerprints_ignore_postgres_decimal_scale(self) -> None:
+        industry_id = uuid4()
+        evidence_id = uuid4()
+        dimensions = FactDimensions()
+        row = {
+            "id": uuid4(),
+            "subject_entity_id": None,
+            "subject_industry_node_id": industry_id,
+            "subject_entity_type": None,
+            "predicate_code": "market.pc_shipments_yoy_growth",
+            "value_kind": FactValueKind.NUMERIC.value,
+            "raw_value": "1.3%",
+            "value_numeric": Decimal("0.013"),
+            "value_text": None,
+            "value_boolean": None,
+            "value_date": None,
+            "value_entity_id": None,
+            "value_json": None,
+            "unit_code": "ratio",
+            "canonical_payload": dimensions.canonical_payload,
+            "dimensions_complete": True,
+            "valid_time_kind": "period",
+            "valid_from": datetime(2024, 1, 1, tzinfo=UTC),
+            "valid_to": datetime(2025, 1, 1, tzinfo=UTC),
+            "observed_at": None,
+            "source_published_at": None,
+            "first_known_at": datetime(2025, 1, 16, tzinfo=UTC),
+            "source_connector_id": uuid4(),
+            "document_version_id": uuid4(),
+            "evidence_refs": [
+                {
+                    "evidence_fragment_id": evidence_id,
+                    "evidence_role": FactEvidenceRole.SUPPORTING.value,
+                }
+            ],
+            "extraction_run_id": uuid4(),
+            "extractor_name": "grounded-reality-projection",
+            "extractor_version": "2.0.0",
+            "normalizer_name": "assertion_normalizer",
+            "normalizer_version": "2.0.0",
+            "source_cluster": None,
+            "confidence": 1.0,
+            "source_quality": 1.0,
+            "extraction_certainty": 1.0,
+            "entity_match": 1.0,
+            "time_unit_completeness": 1.0,
+            "corroboration": 0.8,
+            "freshness": 1.0,
+            "conflict_penalty": 0.0,
+            "high_impact": False,
+            "status": FactStatus.CANDIDATE.value,
+            "supersedes_assertion_id": None,
+            "metadata": {},
+        }
+
+        source_scale = PostgresResearchRepository._assertion_from_row(row)
+        db_scale = source_scale.model_copy(
+            update={"normalized_number": Decimal("0.013000000000")}
+        )
+        changed_value = source_scale.model_copy(
+            update={"normalized_number": Decimal("0.014000000000")}
+        )
+
+        self.assertEqual(source_scale.immutable_fingerprint, db_scale.immutable_fingerprint)
+        self.assertEqual(source_scale.value_fingerprint, db_scale.value_fingerprint)
+        self.assertNotEqual(source_scale.immutable_fingerprint, changed_value.immutable_fingerprint)
+        self.assertNotEqual(source_scale.value_fingerprint, changed_value.value_fingerprint)
+
 
 if __name__ == "__main__":
     unittest.main()
