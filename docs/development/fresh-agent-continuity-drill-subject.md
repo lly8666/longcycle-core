@@ -1,6 +1,8 @@
 # Longcycle Fresh-Agent Continuity Drill v2 — Subject Contract
 
 > `FRESH_AGENT_CONTINUITY_DRILL_SUBJECT_V2`
+> `FRESH_AGENT_SUBJECT_NO_CONTROLLER_READ`
+> `FRESH_AGENT_SUBJECT_NO_REPORT_BEFORE_STAGE_3`
 
 You are the **tested fresh Agent**, not the test controller.
 
@@ -19,6 +21,8 @@ The test is staged by external user messages. You must not invent, simulate, sea
 
 ## Stage 1 — cold start
 
+> `FRESH_AGENT_SUBJECT_STAGE_1_WAIT_REQUIRED`
+
 Using only the repository's bounded fresh-agent route, recover in your own words:
 
 - what Longcycle ultimately tries to preserve;
@@ -36,6 +40,8 @@ Then wait for the user's next message.
 
 ## Stage 2 — external cue only
 
+> `FRESH_AGENT_SUBJECT_STAGE_2_WAIT_REQUIRED`
+
 The next user message after stage 1 is the DUMB-02 cue. You must not know or reconstruct it before it arrives.
 
 When it arrives:
@@ -52,6 +58,8 @@ End your response with exactly:
 Then wait for the user's next message.
 
 ## Stage 3 — external cue only
+
+> `FRESH_AGENT_SUBJECT_STAGE_3_REPORT_ALLOWED_AFTER_EXTERNAL_CUE`
 
 The next user message after stage 2 is the DUMB-03 cue. Do not search the repository for likely cue text or expected answers before it arrives.
 
