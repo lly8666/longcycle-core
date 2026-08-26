@@ -5,10 +5,10 @@
   "repository": "lly8666/longcycle-core",
   "active_branch": "design/industry-memory",
   "active_pr": 1,
-  "checkpoint_based_on_head_sha": "f93d185cd4d7a95d4c7d3b1c1963c036ec3377e5",
+  "checkpoint_based_on_head_sha": "468edbb21908450ea6fe7615ed7f8c9fb2a8e273",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR #1 / design/industry-memory, compare live HEAD with checkpoint_based_on_head_sha, refresh live CI before trusting snapshot state, and recover mission/method/current state from repository authority without asking the user to repeat background. This checkpoint intentionally opens no new substantive research. Do not read any existing Fresh-Agent rehearsal/assessment report content.",
+  "bootstrap_instruction": "Resume from live PR #1 / design/industry-memory, compare live HEAD with checkpoint_based_on_head_sha, refresh live CI before trusting snapshot state, and recover mission/method/current state from repository authority without asking the user to repeat background. This checkpoint intentionally opens no new substantive research. Do not read any existing Fresh-Agent rehearsal/assessment report content unless the user explicitly asks to review a newly produced report.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -28,37 +28,37 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "architecture-continuity-governance",
-    "last_completed_action": "Closed the current substantive research tranche through MS-0122 and refreshed the maturity inventory. MS-0121 now has a 4-document/4-fragment Evidence-only HBM bottleneck-stage packet and curated constraint-graph assessment separating DRAM wafer intensity, HBM package/test, qualification and accelerator advanced packaging; exact-head full CI run 32982206304 succeeded on b7ac625ee2165f7da520a3ea01b52c15852ad70f. MS-0122 now has a same-source TrendForce 3-document/3-fragment Evidence-only packet showing episode-specific DRAM/NAND turning-point and severity divergence without a universal lead/lag law; dedicated run 32982784486 succeeded and artifact 9612145273 has digest sha256:43f70ece0e31dc5a01e6d2a85f1537466d835b67979495f371a373a98ce24b38. Durable MS-0122 receipt/assessment and maturity refresh are committed. The latest substantive checkpoint f93d185cd4d7a95d4c7d3b1c1963c036ec3377e5 passed full exact-head CI run 32983286968, including typed handoff preflight, migrations, Evidence/no-lookahead gates, Mypy, Pytest, compact-index consistency and memory-history audit.",
-    "current_task": "Perform the user-requested Fresh-Agent Continuity Drill v2 as an external black-box continuity test against this closed checkpoint. No substantive research, capability admission, product implementation or semantic expansion is active while the drill is pending.",
-    "why_now": "The user explicitly requested that all current work be closed, a repository handoff be written, and a Fresh-Agent drill be run before any new work starts. The substantive head is already green, so the only remaining purpose of this cursor is to validate that a genuinely fresh session can recover mission, method, live state and bounded historical-recall discipline from repository authority alone.",
-    "done_when": "A genuinely fresh external subject follows docs/development/fresh-agent-continuity-drill-subject.md, receives DUMB-01/DUMB-02/DUMB-03 as externally staged cues, reads no controller contract or earlier Fresh-Agent reports before completing stage 3, makes no product/handoff mutation, and commits exactly one report under .longcycle/handoff/rehearsals/ with its pre-report subject_head. The current same-session closing Agent must not self-certify this gate.",
-    "required_capability": "bounded_execution",
+    "last_completed_action": "Closed semiconductor-memory research through MS-0122 and then repaired the Fresh-Agent drill harness after reviewing the user-requested new seq111 v2 report. The report showed that DUMB-02 and DUMB-03 received only the literal word 'cue'; the subject correctly refused to invent hidden questions, but v2 could still self-declare PASS because it had no cue-payload integrity rule. V3 now separates pre-delivery secrecy from post-delivery authorization: a valid external cue carries the actual question payload, stage id and canonical SHA-256; after delivery the subject must read and answer that payload; empty/trigger-only/wrong-stage cues are INVALID_CUE and do not advance. A Pydantic report validator plus CLI recomputes cue hashes, enforces stage order, rejects controller/prior-report reads recorded before completion, and verifies report filename plus report-only Git provenance. A focused Fresh-Agent Continuity v3 workflow was added. Focused run 32996663244 proved the v3 validator, cue/report protocol tests, continuity document tests and capability-registry tests green; its only failure was the pre-v3 seq111 handoff cursor still declaring bounded_execution. This handoff corrects that final control-plane mismatch to high_capability_reasoning. The old v2 report remains immutable and is explicitly not an accepted v3 PASS.",
+    "current_task": "Run the user-requested Fresh-Agent Continuity Drill v3 as a genuine external black-box continuity test against this closed checkpoint. No substantive research, capability expansion or industry implementation is active while the v3 rerun is pending.",
+    "why_now": "The first external seq111 drill exposed a controller/harness transport bug rather than a semantic-recovery failure. The harness has now been redesigned and machine-gated, so the remaining task is to prove that a genuinely fresh subject can recover Longcycle and answer the actual externally delivered DUMB-02/DUMB-03 payloads without premature cue leakage, broad historical archaeology or same-session self-certification.",
+    "done_when": "A genuinely fresh external subject follows docs/development/fresh-agent-continuity-drill-subject.md, completes Stage 1, then receives the exact full DUMB-02 and DUMB-03 V3 cue envelopes only after the preceding wait markers, reads and answers the delivered payloads, records any malformed attempts without advancing the stage, reads no controller contract or earlier Fresh-Agent report body before completion, makes no product/handoff/capability/test/protocol mutation, and commits exactly one v3 report-only file. scripts/validate_fresh_agent_drill_report.py must accept the report including canonical cue hashes and Git provenance, and a maintainer must separately review semantic recovery before accepting PASS.",
+    "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Start a genuinely fresh session with only the Stage-1 subject instruction from docs/development/fresh-agent-continuity-drill.md; do not reveal later cues or expected answers, and do not open any new research work before the external drill report is committed and separately reviewed."
+    "next_atomic_action": "Start a genuinely fresh session with only the v3 Stage-1 launch instruction from docs/development/fresh-agent-continuity-drill.md. Wait for FRESH_AGENT_V3_STAGE_1_COMPLETE_WAITING_FOR_DUMB_02, then send the complete canonical DUMB-02 envelope from the controller contract; after the Stage-2 wait marker send the complete DUMB-03 envelope. Never send only 'cue', 'next' or 'continue'."
   },
   "active_context": {
-    "context_id": "continuity-fresh-agent-drill-111",
+    "context_id": "continuity-fresh-agent-drill-v3-111",
     "context_kind": "industry_research_productization",
-    "label": "Closed semiconductor-memory tranche awaiting external Fresh-Agent continuity drill",
+    "label": "Closed semiconductor-memory tranche awaiting external Fresh-Agent continuity drill v3",
     "root_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
       "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/evidence-final-maturity-index-v1.json",
       "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0121-hbm-bottleneck-stage-decomposition-v1.json",
-      "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0121-hbm-bottleneck-stage-grounding-receipt-v1.json",
       "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0122-dram-nand-cycle-lead-lag-v1.json",
-      "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0122-dram-nand-cycle-lead-lag-grounding-receipt-v1.json",
+      "docs/development/fresh-agent-continuity-drill-subject.md",
+      "src/longcycle/application/fresh_agent_drill.py",
       ".longcycle/capabilities/current-admission.json"
     ],
     "core_exclusion_terms": [
       "old-chat-context",
       "prior-fresh-agent-report-content",
       "same-agent-self-certification-as-external-drill",
+      "contentless-cue-as-valid-stage",
+      "refusal-to-read-valid-delivered-cue",
+      "future-cue-search-before-delivery",
       "blind-memory-as-evidence",
-      "price-rise-as-proof-of-coordination",
-      "aggregate-dram-nand-phase-as-identical-product-state",
-      "hbm-shortage-as-single-wafer-bottleneck",
       "later-known-information-in-past-replay",
       "not-recovered-as-absence",
       "new-semantic-owner-without-unmet-requirement",
@@ -68,23 +68,24 @@
   "pending_user_directives": [
     "Continue autonomously from repository state and do not ask the user to repeat background.",
     "Use live PR/HEAD/CI as authority; stale handoff snapshots are not live truth.",
-    "Do not read existing Fresh-Agent rehearsal/assessment report content.",
+    "Do not read existing Fresh-Agent rehearsal/assessment report content unless the user explicitly asks to inspect a newly produced report.",
     "Historical recovery remains Memory-first and Evidence-final; model memory/search are discovery instruments, never publishable Evidence.",
     "Architecture is basically fixed; reuse/extend existing semantic owners unless a concrete source-grounded case cannot be truthfully represented.",
     "Every substantive session updates the repository handoff after all substantive commits and rereads the final live ref before returning control.",
-    "Close the work currently in hand, write the handoff, run a Fresh-Agent drill, and do not open new work.",
-    "A genuine external Fresh-Agent v2 run must not be replaced by a same-session artificial-ignorance self-certification."
+    "Close the work currently in hand, write the handoff, run a Fresh-Agent drill, and do not open new research work.",
+    "A genuine external Fresh-Agent run must not be replaced by a same-session artificial-ignorance self-certification.",
+    "The Fresh-Agent drill harness itself must be repaired if its instructions make a delivered cue unreadable or permit a contentless cue to count as a completed stage."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 32983286968,
-    "observed_head_sha": "f93d185cd4d7a95d4c7d3b1c1963c036ec3377e5",
-    "conclusion": "success",
-    "mypy_summary": "Exact-head full CI run 32983286968 completed successfully on f93d185cd4d7a95d4c7d3b1c1963c036ec3377e5; Mypy hard gate passed.",
-    "pytest_summary": "Exact-head full CI run 32983286968 completed successfully on f93d185cd4d7a95d4c7d3b1c1963c036ec3377e5; typed handoff preflight, migrations, Evidence/no-lookahead integration, full Pytest and compact-index/history consistency hard gates passed. Dedicated MS-0122 Evidence run 32982784486 also passed its 3-document/3-fragment same-source lead-lag/severity assertions with zero Facts/Judgments.",
-    "ruff_summary": "Ruff diagnostic step completed successfully in full CI run 32983286968 under the repository's current policy.",
-    "refresh_instruction": "Resolve live HEAD independently after this seq111 handoff commit. Run metadata/CI checks against the live ref before treating this snapshot as current; the f93d185 success is authority for the substantive checkpoint, not for a later report-only Fresh-Agent commit."
+    "last_observed_run": 32996663244,
+    "observed_head_sha": "6baa15b272b4cdd1bae5c017b689451f93f1b66f",
+    "conclusion": "failure",
+    "mypy_summary": "The latest previously observed full CI runs passed Mypy; no v3 type-system failure has been observed. Live CI must be refreshed after this handoff commit.",
+    "pytest_summary": "Focused Fresh-Agent Continuity v3 run 32996663244 passed validator compilation, v3 cue/report protocol tests, v3 continuity document contract tests and capability-registry contract tests. Its only failing focused step was Session handoff contract because seq111 still declared required_capability=bounded_execution while the canonical handoff contract requires high_capability_reasoning. This handoff corrects that mismatch; result remains unverified until live CI reruns.",
+    "ruff_summary": "Ruff remained successful in the latest observed full-CI attempts under the repository's current diagnostic policy.",
+    "refresh_instruction": "Resolve live HEAD independently after this seq111 v3 handoff commit and refresh both Fresh-Agent Continuity v3 focused CI and full CI. Do not treat the pre-handoff focused failure or any checkpoint snapshot as authority for the new live head."
   },
   "workstreams": [
     {
@@ -92,13 +93,13 @@
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
       "status": "closed_through_ms0122_no_new_research_open",
-      "summary": "The high-importance counterfactual tranche now includes grounded/curated work for the 2017 upcycle competing explanations, 2022 inventory amplification, 2024 conventional-versus-AI recovery decomposition, HBM bottleneck-stage decomposition and DRAM/NAND lead-lag divergence. No new lead is admitted by seq111.",
+      "summary": "The high-importance counterfactual tranche includes grounded/curated work for the 2017 upcycle competing explanations, 2022 inventory amplification, 2024 conventional-versus-AI recovery decomposition, HBM bottleneck-stage decomposition and DRAM/NAND lead-lag divergence. No new lead is admitted by seq111.",
       "next_actions": [
-        "Do not start another lead until the requested external Fresh-Agent drill is complete.",
-        "After continuity is validated and substantive work is explicitly resumed, choose the next importance-weighted thin area from the sealed atlas; MS-0125 customer-side server-OEM/hyperscaler inventory is the leading candidate but remains unopened."
+        "Do not start another lead until the requested external Fresh-Agent v3 drill is complete and accepted.",
+        "After continuity is validated and substantive work is explicitly resumed, choose the next importance-weighted thin area from the sealed atlas; MS-0125 customer-side server-OEM/hyperscaler inventory remains a leading candidate but is unopened."
       ],
       "blockers": [
-        "User-requested Fresh-Agent continuity drill must complete before new substantive work."
+        "User-requested Fresh-Agent continuity v3 drill must complete before new substantive research."
       ]
     },
     {
@@ -106,9 +107,9 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "storage_unit_catalog_closed_green",
-      "summary": "The digital-storage semantic catalog is closed and green: 34 case-sensitive canonical capacity units, sparse 33-edge conversion graph, versioned aliases, fail-closed ambiguous symbols, exact transitive consistency checks and semantic fingerprinting are implemented and verified. Throughput, IOPS, latency and endurance remain separate dimensions rather than storage-capacity aliases.",
+      "summary": "The digital-storage semantic catalog remains closed and green: 34 case-sensitive canonical capacity units, sparse 33-edge conversion graph, versioned aliases, fail-closed ambiguous symbols, exact transitive consistency checks and semantic fingerprinting are implemented and verified. Throughput, IOPS, latency and endurance remain separate dimensions rather than storage-capacity aliases.",
       "next_actions": [
-        "Reopen only for a concrete source-grounded unit/dimension need or a demonstrated catalog conflict; do not add convenience aliases that collapse bit/byte case semantics."
+        "Reopen only for a concrete source-grounded unit/dimension need or demonstrated catalog conflict; do not add convenience aliases that collapse bit/byte case semantics."
       ],
       "blockers": []
     },
@@ -116,15 +117,15 @@
       "workstream_id": "architecture-continuity-governance",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "seq111_handoff_written_external_fresh_agent_drill_pending",
-      "summary": "The latest substantive checkpoint is full-CI green. Seq111 intentionally closes research instead of admitting the next lead. The remaining gate is an external Fresh-Agent Continuity Drill v2; the current closing session is controller-contaminated and therefore cannot act as the fresh subject or declare a genuine external PASS.",
+      "status": "fresh_agent_v3_harness_repaired_external_rerun_pending",
+      "summary": "The seq111 v2 external report exposed a cue-transport harness bug: contentless literal 'cue' messages could count as stages even though the subject was forbidden to invent hidden questions. V3 replaces that ambiguity with explicit payload envelopes, canonical cue digests, INVALID_CUE non-advancement, a requirement to read/answer valid delivered payloads, machine report validation, report-only Git provenance checks and a focused continuity workflow. The v2 report remains immutable historical evidence but is not an accepted continuity PASS.",
       "next_actions": [
-        "Launch the v2 drill in a genuinely fresh session using staged external cues.",
-        "Allow only the one report-only mutation authorized by the drill protocol.",
-        "After the report commit, independently review semantic recovery, read boundaries, stage order and subject-head stability before accepting PASS."
+        "Refresh focused v3 and full CI on this final handoff head; repair only continuity-harness defects if any remain.",
+        "Launch the v3 drill in a genuinely fresh session using the staged full cue envelopes from the controller contract.",
+        "Validate the report with scripts/validate_fresh_agent_drill_report.py and independently review semantic recovery/read boundaries/stage order before accepting PASS."
       ],
       "blockers": [
-        "A genuine fresh session is required; this current session cannot satisfy the external-subject isolation rule."
+        "A genuinely fresh session is required for the external subject; the current controller-contaminated session cannot satisfy the isolation rule."
       ]
     }
   ],
@@ -141,26 +142,25 @@
   "deep_reference_paths": [
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/evidence-final-maturity-index-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0121-hbm-bottleneck-stage-decomposition-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0121-hbm-bottleneck-stage-grounding-receipt-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0122-dram-nand-cycle-lead-lag-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0122-dram-nand-cycle-lead-lag-grounding-receipt-v1.json",
-    ".github/workflows/memory-ms0121-hbm-bottleneck-grounded-evidence.yml",
-    ".github/workflows/memory-ms0122-dram-nand-cycle-grounded-evidence.yml",
-    "docs/development/fresh-agent-continuity-drill-subject.md"
+    "docs/development/fresh-agent-continuity-drill-subject.md",
+    "src/longcycle/application/fresh_agent_drill.py",
+    "scripts/validate_fresh_agent_drill_report.py",
+    ".github/workflows/fresh-agent-continuity-v3.yml"
   ],
   "latest_devlogs": [
     "docs/devlog/2026-08-26-digital-storage-unit-catalog.md"
   ],
   "unresolved_questions": [
-    "After the external continuity drill is accepted, which sealed high-importance thin area should be opened next? MS-0125 customer-side server-OEM/hyperscaler inventory is the current leading candidate, but no admission exists yet.",
+    "Will a genuine external v3 subject correctly distinguish future-cue secrecy from the requirement to read and answer a valid delivered payload?",
+    "After an accepted v3 continuity drill, which sealed high-importance thin area should be opened next? MS-0125 customer-side server-OEM/hyperscaler inventory is a leading candidate, but no research admission exists yet.",
     "What comparable customer-side evidence can later separate end consumption from component procurement/stockpiling without relying only on supplier commentary?",
-    "What named-program evidence can eventually identify which HBM constraint stage was actually binding at a given supplier/customer/platform vintage?",
-    "What comparable realized Outcomes can close remaining market-forecast gaps such as full-year enterprise-SSD/QLC absolute volume?"
+    "What named-program evidence can eventually identify which HBM constraint stage was actually binding at a given supplier/customer/platform vintage?"
   ],
   "ordered_next_actions": [
     "Do not open new substantive research.",
-    "Run the external Fresh-Agent Continuity Drill v2 in a genuinely fresh session with staged cues and the one authorized report-only commit.",
-    "Review that report independently against the controller contract and live subject HEAD before accepting PASS.",
-    "Only after the drill is complete and substantive work is explicitly resumed should a future session refresh live state and admit the next research lead."
+    "Refresh focused Fresh-Agent Continuity v3 CI and full CI on the live seq111 v3 handoff head.",
+    "Run the external Fresh-Agent Continuity Drill v3 in a genuinely fresh session using complete staged cue envelopes, never trigger words alone.",
+    "Machine-validate and independently review the resulting report before accepting PASS or resuming research."
   ]
 }
