@@ -1,34 +1,39 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-STORAGE-TRENDFORCE-GROUNDING-008",
-  "intent": "Resume the seq107 storage-market trajectory cursor after closing the digital-storage unit substrate. Ground the four content-verified TrendForce captures through the existing source/archive and Evidence owners before any Judgment or Reality projection. Preserve April 2024 QLC-enterprise-SSD 30 EB and August 2024 AI-related-SSD >45 EB as distinct contemporaneous expectation scopes; preserve December 2024 3Q24 procurement/revenue measurements and March-2025-known 4Q24 revenue measurements as later observation candidates with explicit no-lookahead. Create no Fact or Judgment in this step.",
+  "intent_id": "MEMORY-STORAGE-TRENDFORCE-TRAJECTORY-009",
+  "intent": "Project the successfully grounded TrendForce market packet through existing semantic-catalog, Judgment and Reality owners. Preserve the April 30 EB QLC-enterprise-SSD full-year forecast as a numeric contemporaneous Judgment; preserve the August greater-than-45 EB AI-related-SSD estimate without collapsing its open lower bound to an exact number; project 3Q24 procurement/revenue observations and March-2025-known 4Q24 revenue observations as explicit period-scoped Reality. Keep different market scopes distinct and preserve no-lookahead.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
     "CAP-0001",
     "CAP-0002",
+    "CAP-0003",
+    "CAP-0004",
     "CAP-0007"
   ],
   "closest_existing_capability_ids": [
     "CAP-0001",
     "CAP-0002",
+    "CAP-0003",
+    "CAP-0004",
     "CAP-0007"
   ],
-  "rationale_summary": "Four TrendForce captures are already content-verified and trajectory-assessed, but they are not yet immutable Grounded Evidence. The existing materialized-source and Evidence execution seams can represent them without new architecture. The packet must pin exact capture SHA-256 values and retain scope/time guards: 30 EB QLC enterprise SSD and >45 EB AI-related SSD are different forecast predicates, while 3Q24/4Q24 observations are quarterly volume/revenue measurements and do not resolve a full-year absolute 2024 EB/unit Outcome.",
+  "rationale_summary": "Grounded Evidence is now executable and durable. Reuse CAP-0003 predicates/units and CAP-0004 Judgment semantics rather than creating another market model. Register only the typed predicates needed for the 30 EB forecast and quarterly realized observations. Keep the >45 EB estimate textual with explicit lower-bound metadata because the current Judgment value contract cannot truthfully encode an open numeric lower bound; do not coerce it to exact 45 EB.",
   "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-trendforce-market-trajectory-v1.json",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-trendforce-market-trajectory-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-04-23-QLC-ENTERPRISE-SSD-30EB-FORECAST-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-08-12-AI-SSD-45EB-ESTIMATE-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-12-11-ENTERPRISE-SSD-Q3-PROCUREMENT-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2025-03-06-ENTERPRISE-SSD-Q4-REVENUE-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/semantic/storage-unit-semantic-catalog-execution-receipt-v1.json"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/semantic/storage-unit-semantic-catalog-execution-receipt-v1.json",
+    "src/longcycle/application/judgment_projection.py",
+    "src/longcycle/application/reality_projection.py"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounded-evidence-v2.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounding-receipt-v1.json",
-    ".github/workflows/storage-enterprise-ssd-trendforce-grounded-evidence.yml",
+    "migrations/0038_storage_market_trajectory_predicates.sql",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/enterprise-ssd-trendforce-market-judgment-projection-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/enterprise-ssd-trendforce-market-judgment-execution-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/enterprise-ssd-trendforce-market-reality-projection-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/enterprise-ssd-trendforce-market-reality-execution-receipt-v1.json",
+    ".github/workflows/storage-enterprise-ssd-trendforce-trajectory.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
