@@ -1,0 +1,134 @@
+name: Memory MS-0121 HBM bottleneck Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/memory-ms0121-hbm-bottleneck-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2023-12-20-HBM3E-NVIDIA-QUALIFICATION-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-04-11-HBM-PACKAGING-BACKEND-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TSMC-2024-04-18-COWOS-CAPACITY-TIGHT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-HBM3E-WAFER-TRADE-RATIO-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0121-hbm-bottleneck-stage-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/memory-ms0121-hbm-bottleneck-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0121-hbm-bottleneck-stage-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/memory-ms0121-hbm-bottleneck-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert bottleneck-stage separation and no-lookahead vintages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-MS0121-HBM-BOTTLENECK-STAGE-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 4, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 4, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+
+          roles = {item["claim_context"]["claim_role"] for item in result["fragments"]}
+          assert roles == {
+              "hbm3e_platform_qualification_in_progress",
+              "hbm_frontend_backend_packaging_stage_separation",
+              "accelerator_cowos_capacity_tightness",
+              "hbm3e_wafer_supply_trade_ratio_vs_d5",
+          }, roles
+          assert all("universal_bottleneck" not in role for role in roles)
+          assert "hbm_frontend_backend_packaging_stage_separation" in roles
+          assert "accelerator_cowos_capacity_tightness" in roles
+
+          spec = json.loads(Path(os.environ["SPEC"]).read_text(encoding="utf-8"))
+          by_role = {
+              item["claim_context"]["claim_role"]: item["claim_context"]["known_time"]["upper_bound"]
+              for item in spec["fragments"]
+          }
+          assert by_role["hbm3e_platform_qualification_in_progress"] < by_role["hbm_frontend_backend_packaging_stage_separation"]
+          assert by_role["hbm_frontend_backend_packaging_stage_separation"] < by_role["accelerator_cowos_capacity_tightness"]
+          assert by_role["accelerator_cowos_capacity_tightness"] < by_role["hbm3e_wafer_supply_trade_ratio_vs_d5"]
+          april_cutoff = "2024-04-30T23:59:59Z"
+          assert by_role["accelerator_cowos_capacity_tightness"] <= april_cutoff
+          assert by_role["hbm3e_wafer_supply_trade_ratio_vs_d5"] > april_cutoff
+
+          layers = {item["claim_context"]["epistemic_layer"] for item in result["fragments"]}
+          assert layers == {
+              "evidence_only_supplier_qualification",
+              "evidence_only_technical_stage",
+              "evidence_only_advanced_packaging_capacity_observation",
+              "evidence_only_supplier_supply_mechanism",
+          }, layers
+          print("MEMORY_MS0121_HBM_BOTTLENECK_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-ms0121-hbm-bottleneck-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7
