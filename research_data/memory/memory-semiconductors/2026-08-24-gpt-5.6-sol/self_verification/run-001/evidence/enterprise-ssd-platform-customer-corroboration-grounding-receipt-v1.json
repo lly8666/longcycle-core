@@ -1,0 +1,106 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-PLATFORM-CUSTOMER-CORROBORATION-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-platform-customer-corroboration-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/storage-enterprise-ssd-platform-customer-grounded-evidence.yml",
+    "run_id": 32939874492,
+    "head_sha": "bbe215fa6e7d8c197fdece2957ffe7df031121da",
+    "conclusion": "success",
+    "artifact_id": 9596143597,
+    "artifact_name": "storage-enterprise-ssd-platform-customer-evidence-32939874492",
+    "artifact_digest": "sha256:857c0ad574706ff58cdb6d8671cd67031a559e679b6c1c739ebea0c058a489f3"
+  },
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "specificity_boundary_assertions_passed": true
+  },
+  "source_connectors": [
+    {
+      "source": "VAST Data",
+      "source_connector_id": "d4c184e1-80af-5c2a-b52b-57333ed389c1",
+      "authority_class": "authoritative_primary",
+      "claim_scope": "technical_specification"
+    },
+    {
+      "source": "NVIDIA",
+      "source_connector_id": "eb2e8e3d-e010-5775-b0a0-7f6a2675498a",
+      "authority_class": "authoritative_primary",
+      "claim_scope": "technical_specification"
+    },
+    {
+      "source": "DUG Technology",
+      "source_connector_id": "c2776da9-ad17-5444-9fa3-4adfeac179ba",
+      "authority_class": "primary_self_statement",
+      "claim_scope": "self_statement"
+    }
+  ],
+  "documents": [
+    {
+      "document_key": "vast_ebox_2024_nvme_configuration",
+      "document_id": "c21400f5-946b-57c4-9868-4f8580fb8b1d",
+      "content_sha256": "96827d20d4516d2f284ab2707ecc704f8ba6409526ee784a4399ab88db55e89b",
+      "first_known_at": "2024-12-17T00:00:00Z"
+    },
+    {
+      "document_key": "vast_ebox_2026_p5336_qlc_bom",
+      "document_id": "3a9db725-dbba-5fac-ba6e-6c42b117409e",
+      "content_sha256": "4a1c62762e3ce6cea34ab037f063733639bccb81bb0315754cdef4ab2238cf2d",
+      "first_known_at": "2026-07-10T00:00:00Z"
+    },
+    {
+      "document_key": "nvidia_gb200_micron_nvme_later_doc",
+      "document_id": "daccd191-b489-5604-9322-605510f4e034",
+      "content_sha256": "b2416d781c3d1209019366321a2f383367174a35b8862987139e173aaae20dec",
+      "first_known_at": "2026-08-26T06:44:29Z"
+    },
+    {
+      "document_key": "dug_vast_qlc_deployment_2022",
+      "document_id": "95656491-5c33-5ecd-8683-51aaf1278ce6",
+      "content_sha256": "d72448c6f3bf7b479269eb0bd1a95bc5d2b48a7695f2e9a4b70d21e011018aa6",
+      "first_known_at": "2022-06-21T00:00:00Z"
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-VAST-2024-12-16-EBOX-NINE-30TB-NVME",
+      "evidence_fragment_id": "60820a8b-3d7e-57d3-bf80-f06d23fa435f",
+      "fragment_sha256": "b39c0f5a18e7e64cce316c631a53e555e2e760e963d3d186525816ad15c83824",
+      "claim_role": "platform_owner_ebox_nvme_configuration",
+      "epistemic_layer": "evidence_only_platform_configuration"
+    },
+    {
+      "fragment_key": "EVF-VAST-2026-07-09-EBOX-P5336-QLC-BOM",
+      "evidence_fragment_id": "9c788e8d-1ece-5b1b-9218-5f46573dfb25",
+      "fragment_sha256": "8deafb358d52aa621ef9f8b3b40c96c2b8a78ae3475059487e9860bc25dc866f",
+      "claim_role": "platform_owner_p5336_qlc_bom_later_known",
+      "epistemic_layer": "evidence_only_later_known_platform_bom"
+    },
+    {
+      "fragment_key": "EVF-NVIDIA-GB200-MICRON-NVME-LATER-DOC",
+      "evidence_fragment_id": "00b039e8-23e1-5394-963d-2148325a5154",
+      "fragment_sha256": "96dd1ed14ea3cc82e2ffa6d49f81d82c6c471a90d1ae335e5e23d3445d046901",
+      "claim_role": "platform_owner_micron_nvme_gb200_later_known",
+      "epistemic_layer": "evidence_only_later_known_platform_integration"
+    },
+    {
+      "fragment_key": "EVF-DUG-2022-06-20-VAST-QLC-DEPLOYMENT",
+      "evidence_fragment_id": "513e2855-e445-56ef-a01d-70a3301981c6",
+      "fragment_sha256": "10571a8508f19bff2471018cd812825dd05e667bb8d7be5c6289f7f5a3dc82b5",
+      "claim_role": "customer_owner_vast_qlc_deployment",
+      "epistemic_layer": "evidence_only_customer_deployment"
+    }
+  ],
+  "semantic_guards": [
+    "The December 2024 VAST EBox source establishes nine 30TB NVMe SSDs but does not name vendor, model or QLC; later BOM evidence cannot fill those fields retroactively.",
+    "The July 2026 VAST BOM establishes a current SMC Gen2 EBox configuration with nine Solidigm D5-P5336 61.44TB QLC drives but does not establish the first qualification or deployment date.",
+    "NVIDIA later documentation independently establishes Micron NVMe presence in GB200 configurations, but it does not name Micron 9550 or prove the supplier-claimed October 2024 Recommended Vendor List event.",
+    "DUG provides named customer-owner evidence of a deployed VAST QLC flash tier in 2022 but does not identify the underlying QLC SSD vendor/model.",
+    "Grounded Evidence creates no Fact or Judgment; no new Reality predicate is introduced merely to promote corroboration."
+  ]
+}
