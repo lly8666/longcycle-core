@@ -1,0 +1,87 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0119-2022-INVENTORY-AMPLIFICATION-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0119",
+  "authority": "curated_research_assessment_over_grounded_evidence",
+  "subject": "Inventory amplification in the 2021-2023 memory downturn without reducing procurement, consumption and inventory to one demand scalar",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounding-receipt-v1.json"
+  ],
+  "assessment": {
+    "status": "inventory_amplification_supported_end_demand_weakness_concurrent_double_ordering_unresolved",
+    "supported": [
+      {
+        "explanatory_axis": "pre_downturn_supplier_baseline",
+        "finding": "Samsung's July 2021 report described strong server and PC memory demand and substantially low Samsung chip inventory after stronger shipments.",
+        "meaning": "A strong-demand/low-supplier-inventory state existed before the later downturn, but this supplier-specific baseline does not establish customer inventory levels or prove that customers had previously double ordered."
+      },
+      {
+        "explanatory_axis": "customer_destocking_amplification",
+        "finding": "By September 2022 Micron explicitly stated that customer inventory adjustments were depressing DRAM and NAND demand to well below end-market consumption levels.",
+        "meaning": "Procurement or ship-in weakness was more severe than underlying consumption, directly supporting a de-stocking amplification mechanism rather than treating observed supplier demand as a pure end-market signal."
+      },
+      {
+        "explanatory_axis": "supplier_inventory_accumulation",
+        "finding": "The same September 2022 Micron vintage expected supply growth to run significantly above demand growth and linked that imbalance to very high supplier inventories in both DRAM and NAND.",
+        "meaning": "The inventory correction propagated upstream: weak customer procurement relative to consumption coexisted with excess supplier inventory."
+      },
+      {
+        "explanatory_axis": "genuine_end_demand_weakness",
+        "finding": "Samsung's October 2022 report independently said customer inventory adjustments exceeded expectations while consumer-product demand continued to weaken, with both DRAM and NAND bit growth below guidance.",
+        "meaning": "Inventory amplification did not replace macro/end-demand weakness. The evidence supports two concurrent layers: weaker consumption and an additional procurement drag from inventory correction."
+      },
+      {
+        "explanatory_axis": "supplier_production_response",
+        "finding": "In November 2022 Micron announced an approximately 20% reduction in DRAM and NAND wafer starts versus fiscal Q4 2022 and explicitly linked lower future bit supply to improving total supply-chain inventory.",
+        "meaning": "At least one major supplier responded to the inventory imbalance through production cuts, while the associated calendar-2023 bit-supply language remained forward management expectation."
+      },
+      {
+        "explanatory_axis": "destocking_progress",
+        "finding": "By December 2022 Micron said aggregate customer inventory remained high but was declining in absolute volume because end-market consumption was outpacing ship-in.",
+        "meaning": "This is a direct point-in-time description of de-stocking: customers could consume more memory than they were purchasing from suppliers while inventory normalized."
+      }
+    ],
+    "not_established": [
+      "The packet does not establish that customers previously double ordered, pulled demand forward or engaged in channel stuffing.",
+      "The packet does not quantify customer inventory in units, days or dollars across the industry.",
+      "The packet does not quantify how much of the downturn came from weaker end-market consumption versus inventory correction.",
+      "Micron's supplier-inventory observations are not audited inventory measurements for all competitors.",
+      "Micron's approximately 20% wafer-start cut does not establish equivalent Samsung or SK hynix production cuts.",
+      "The calendar-2023 DRAM/NAND bit-supply statements in the November vintage are expectations, not realized industry Outcomes.",
+      "The packet does not recover module/distributor/spot-channel inventory sufficiently to map every intermediate inventory location."
+    ],
+    "point_in_time_interpretation": {
+      "as_of_2021_07_30": "A researcher can observe strong Samsung server/PC memory demand and low Samsung supplier inventory. No later customer de-stocking evidence is available, and prior double ordering is not established.",
+      "as_of_2022_09_30": "A researcher can now directly observe Micron's statement that customer inventory adjustments are pushing DRAM/NAND demand below end-market consumption while supplier inventories become very high. Later Samsung corroboration and production cuts remain unavailable.",
+      "as_of_2022_10_28": "Samsung independently adds that customer inventory adjustments exceeded expectations while consumer demand also weakened. The downturn should now be represented as genuine end-demand weakness plus an inventory-amplification layer, not as either mechanism alone.",
+      "as_of_2022_11_17": "Micron's approximately 20% DRAM/NAND wafer-start reduction becomes visible as a supplier response to market and inventory conditions. Its future bit-supply plan remains an expectation.",
+      "as_of_2022_12_22": "Micron additionally states that customer inventories remain high but are declining because end-market consumption exceeds ship-in, directly showing the de-stocking gap beginning to normalize."
+    },
+    "counterfactual_evaluation": {
+      "hypothesis_simple_end_demand_collapse_only": "insufficiently_supported",
+      "reason_simple_end_demand_collapse_only": "Samsung directly supports weaker consumer demand, but Micron directly states that customer inventory adjustment drove DRAM/NAND demand below end-market consumption. Supplier-facing demand therefore cannot be treated as a pure consumption measure.",
+      "hypothesis_inventory_amplification_material": "strongly_supported",
+      "reason_inventory_amplification_material": "September and December Micron vintages directly expose procurement/ship-in below consumption during inventory correction, while November shows a supplier production response to accumulated supply-chain inventory.",
+      "hypothesis_prior_double_ordering": "unresolved",
+      "reason_prior_double_ordering": "The 2021 baseline shows strong demand and low Samsung inventory but does not directly establish customer double ordering or pull-forward. No such claim should be backfilled from the later de-stocking outcome.",
+      "preferred_research_representation": "Model end-market consumption, customer procurement/ship-in, customer inventory, supplier inventory and production response as distinct state variables. Preserve their vintages and do not collapse them into one demand index."
+    },
+    "representation_decision": "Keep the causal synthesis in the CAP-0006 research-only lane. The packet materially supports inventory amplification, but causal weights and the prehistory of customer ordering remain unresolved.",
+    "canonical_projection_decision": "Do not create a canonical causal Reality predicate from this packet. Micron's approximately 20% wafer-start reduction is a candidate for a separate supplier-specific Reality projection; its future bit-supply statements are Judgment/Expectation candidates. Qualitative customer-inventory and demand relationships remain Evidence unless separately represented through existing typed predicates.",
+    "outcome_for_ms0119": "MS-0119 is supported as a correction to the simple-demand-collapse narrative. The 2022 downturn contained genuine end-demand weakness, but customer de-stocking pushed procurement below consumption, supplier inventories accumulated, and at least Micron subsequently reduced production. Prior double ordering remains unproven."
+  },
+  "stop_rule": {
+    "closed_surface": "Do not repeat generic searches claiming that 2022 memory demand simply collapsed, and do not infer prior double ordering from the later existence of de-stocking. The first packet already establishes the inventory-amplification mechanism at useful point-in-time depth.",
+    "reopen_when": [
+      "A primary customer, distributor or module-maker source directly quantifies inventory or purchasing versus consumption across the 2021-2023 turn.",
+      "A primary source directly documents double ordering, pull-forward or cancellation behavior rather than implying it from later inventory correction.",
+      "Comparable supplier production/utilization data allow the November Micron response to be placed in an industry-wide supply trajectory.",
+      "Methodological-primary spot/contract/channel inventory data materially improve the mapping between customer de-stocking and pricing."
+    ]
+  },
+  "next_research_direction": {
+    "candidate": "continue_counterfactual_pass",
+    "rationale": "The inventory thin area is now materially improved. Continue to the next high-importance sealed counterfactual mechanism rather than adding more examples of the same 2022 de-stocking narrative."
+  }
+}
