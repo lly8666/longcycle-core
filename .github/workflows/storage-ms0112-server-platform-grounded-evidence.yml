@@ -1,0 +1,113 @@
+name: Storage MS-0112 server platform Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-ms0112-server-platform-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICROSOFT-2024-07-30-CLOUD-AI-CAPEX-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-SERVER-PLATFORM-CYCLE-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-AMD-2024-10-10-EPYC-TURIN-DDR5-PLATFORM-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/storage-ms0112-server-platform-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/storage-ms0112-server-platform-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only acceptance and scope separation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-MS0112-SERVER-PLATFORM-DEMAND-BRIDGE-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 3, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 6, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+          assert len(result["documents"]) == 3
+          assert len(result["fragments"]) == 6
+          roles = {item["claim_context"]["claim_role"] for item in result["fragments"]}
+          assert {
+              "hyperscaler_capex_server_procurement",
+              "server_unit_growth_expectation",
+              "customer_ai_server_product_roadmap_cadence",
+              "server_cpu_platform_generation",
+              "server_cpu_platform_compatibility",
+              "server_cpu_ddr5_memory_interface",
+          } == roles, roles
+          print("STORAGE_MS0112_SERVER_PLATFORM_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-ms0112-server-platform-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7
