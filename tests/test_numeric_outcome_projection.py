@@ -169,7 +169,7 @@ def test_percent_source_alias_normalizes_to_canonical_ratio() -> None:
 
 def test_numeric_outcome_records_realized_minus_forecast_without_threshold() -> None:
     judgment = _judgment()
-    reality = _reality()
+    reality = FactAssertion.model_validate(_reality().model_dump(mode="json"))
     outcome = NumericOutcomeObservation(
         canonical_fact_version_id=UUID(int=7),
         evidence_fragment_id=reality.evidence[0].evidence_fragment_id,
@@ -177,13 +177,15 @@ def test_numeric_outcome_records_realized_minus_forecast_without_threshold() -> 
         comparability_hash=reality.dimensions.comparability_hash,
         value_numeric=reality.normalized_number,
         unit_code=reality.normalized_unit,
-        occurrence_from=reality.valid_time.start,
-        occurrence_to=reality.valid_time.end,
+        occurrence_from=reality.valid_time.start_utc,
+        occurrence_to=reality.valid_time.end_utc,
         occurrence_precision=reality.valid_time_precision,
         occurrence_text=reality.valid_time_text,
         first_known_at=reality.known_at,
     )
 
+    assert reality.valid_time.start_utc == datetime(2024, 1, 1, tzinfo=UTC)
+    assert reality.valid_time.end_utc == datetime(2025, 1, 1, tzinfo=UTC)
     evaluation = evaluate_numeric_outcome(
         judgment,
         outcome,
@@ -208,8 +210,8 @@ def test_numeric_outcome_fails_closed_on_scope_mismatch() -> None:
         comparability_hash="0" * 64,
         value_numeric=reality.normalized_number,
         unit_code=reality.normalized_unit,
-        occurrence_from=reality.valid_time.start,
-        occurrence_to=reality.valid_time.end,
+        occurrence_from=reality.valid_time.start_utc,
+        occurrence_to=reality.valid_time.end_utc,
         occurrence_precision=reality.valid_time_precision,
         occurrence_text=reality.valid_time_text,
         first_known_at=reality.known_at,
