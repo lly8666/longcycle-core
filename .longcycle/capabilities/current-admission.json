@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-MEMORY-EXPORT-CONTROLS-MS0115-014",
-  "intent": "Research sealed lead MS-0115 as an Evidence-first policy-and-production trajectory: semiconductor-equipment export controls can change the ability of China-based memory fabs to migrate technology or expand capacity even when installed fabs continue operating. Preserve operating-fab evidence, memory-specific regulatory thresholds, VEU authorization state and later authorization revocation as separate point-in-time claims. Do not convert policy status into a synthetic DRAM/NAND bit-supply estimate unless a source explicitly quantifies the effect.",
+  "intent_id": "MEMORY-MEMORY-COUNTERFACTUAL-MS0118-015",
+  "intent": "Research sealed counterfactual lead MS-0118 as a balanced, contemporaneous, Evidence-first causal-discrimination packet for the 2016-2018 memory upcycle. Preserve at least three distinct explanatory axes: supplier wafer/capacity discipline, DRAM-node and planar-to-3D-NAND technology-transition constraints on effective supply, and server/mobile/content demand-mix growth. Price strength is an outcome signal, not evidence of coordination. Do not infer supplier coordination, causal coefficients, wafer losses, yield penalties or demand elasticity unless directly supported by claim-scoped sources. Preserve DRAM and NAND mechanisms separately even when they move in the same direction.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -16,23 +16,20 @@
     "CAP-0006",
     "CAP-0007"
   ],
-  "rationale_summary": "MS-0115 adds a distinct supply-side policy mechanism after MS-0112 closed a demand-side bridge. Official company sources can establish operating DRAM/NAND fabs in Wuxi/Xi'an; BIS sources can establish 2022 memory-specific licensing thresholds, 2023 VEU authorization and the later revocation state. Existing source/Evidence/orchestration/execution owners are sufficient; the first step remains Evidence-only and must keep operating capacity, authorization state, technology migration and future bit supply separate.",
-  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-10.jsonl",
+  "rationale_summary": "The sealed atlas already identifies the 2016-2017 upcycle as a shared DRAM/NAND landmark while explicitly warning that the two products tightened for different reasons. MS-0118 is the corresponding counterfactual lead: test supplier-discipline explanations against technology-transition effective-supply constraints and demand-mix surprises rather than choosing a hindsight narrative from price alone. Existing source, Evidence, research-hypothesis and execution owners are sufficient; no new semantic owner is required for the Evidence-first phase.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-01.jsonl",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0112-server-platform-demand-bridge-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/coverage-matrix-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-01.jsonl"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0115-export-control-memory-supply-trajectory-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2019-04-18-WUXI-DRAM-TECH-MIGRATION-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2014-05-09-XIAN-NAND-FAB-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2022-10-07-PRC-MEMORY-FAB-THRESHOLDS-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2023-10-13-KOREA-MEMORY-VEU-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2025-08-29-PRC-VEU-REVOCATION-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0115-export-control-memory-supply-grounded-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0115-export-control-memory-supply-grounding-receipt-v1.json",
-    ".github/workflows/memory-ms0115-export-control-grounded-evidence.yml",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0118-2017-upcycle-competing-explanations-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounding-receipt-v1.json",
+    ".github/workflows/memory-ms0118-2017-upcycle-grounded-evidence.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
