@@ -21,7 +21,7 @@ Ronna/quetta decimal prefixes are standardized but are not yet needed by the bou
 
 ## Canonical symbols and ambiguity
 
-Canonical symbols are case-sensitive. `GB` is a gigabyte; common exact source spellings such as `Gb`/`gb` mean gigabit. Likewise `KiB` and `Kib` must never become the same value through blanket lower-casing.
+Canonical symbols are case-sensitive. `GB` is a gigabyte and the common exact spelling `Gb` is a gigabit. Non-standard all-lower-case `gb` is deliberately **not** guessed, because its case-fold family contains both byte and bit meanings. Likewise `KiB` and `Kib` must never become the same value through blanket lower-casing.
 
 Resolution therefore follows this order:
 
@@ -31,7 +31,7 @@ Resolution therefore follows this order:
 4. legacy case-fold fallback only when the whole case-fold family has one semantic target;
 5. otherwise preserve the raw unit for review and fail closed.
 
-This deliberately makes ambiguous casing such as `KB` non-canonical: `kB` is the SI kilobyte and exact `kb` is a kilobit alias, so an unspecified `KB` must not be guessed as either decimal kB or binary KiB.
+This deliberately makes ambiguous casing such as `KB`, `gb` and `gB` non-canonical: `kB` is the SI kilobyte, exact `kb` is a kilobit alias, `GB` is a gigabyte and exact `Gb` is a gigabit. A source that erases those meaningful case distinctions must not be silently interpreted as decimal bytes, decimal bits or IEC binary bytes.
 
 ## Conversion graph
 
