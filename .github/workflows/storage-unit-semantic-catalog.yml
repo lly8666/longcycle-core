@@ -1,0 +1,173 @@
+name: Storage unit semantic catalog
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-unit-semantic-catalog.yml'
+      - 'migrations/0036_digital_storage_unit.sql'
+      - 'migrations/0037_digital_storage_semantic_catalog.sql'
+      - 'src/longcycle/application/normalization.py'
+      - 'src/longcycle/adapters/storage/semantic_catalog.py'
+      - 'tests/test_storage_unit_semantics.py'
+      - 'tests/test_normalization_and_schedule.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  storage-units:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      CATALOG_RECEIPT: ${{ github.workspace }}/.artifacts/storage-unit-semantic-catalog.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres]'
+
+      - name: Unit semantic regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_storage_unit_semantics.py
+          tests/test_normalization_and_schedule.py
+
+      - name: Migrate fresh PostgreSQL
+        run: longcycle --json db upgrade
+
+      - name: Assert storage catalog and runtime closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$(dirname "$CATALOG_RECEIPT")"
+          python - <<'PY'
+          import json
+          import os
+          from decimal import Decimal
+          from pathlib import Path
+
+          import psycopg
+          from psycopg.rows import dict_row
+
+          from longcycle.adapters.storage.semantic_catalog import PostgresSemanticCatalog
+
+          with psycopg.connect(os.environ['LONGCYCLE_DATABASE_URL'], row_factory=dict_row) as conn:
+              units = conn.execute(
+                  "SELECT code,dimension,decimal_scale FROM core.units ORDER BY code"
+              ).fetchall()
+              conversions = conn.execute(
+                  """
+                  SELECT from_unit,to_unit,multiplier,additive_offset AS offset,valid_from,valid_to
+                  FROM core.unit_conversion_versions
+                  WHERE (valid_from IS NULL OR valid_from <= current_date)
+                    AND (valid_to IS NULL OR valid_to > current_date)
+                  ORDER BY from_unit,to_unit
+                  """
+              ).fetchall()
+              aliases = conn.execute(
+                  """
+                  SELECT alias,unit_code,match_mode,valid_from,valid_to
+                  FROM core.unit_alias_versions
+                  WHERE (valid_from IS NULL OR valid_from <= current_date)
+                    AND (valid_to IS NULL OR valid_to > current_date)
+                  ORDER BY alias,match_mode
+                  """
+              ).fetchall()
+              predicates = conn.execute(
+                  """
+                  SELECT code,schema_version,value_kinds,temporal_mode,dimension_schema_version,
+                         required_dimensions,allowed_dimensions,canonical_unit_code,high_impact,
+                         reconciliation_policy,unit_dimension_name
+                  FROM core.predicate_definitions
+                  WHERE active
+                  ORDER BY code,schema_version
+                  """
+              ).fetchall()
+              storage_unit_rows = conn.execute(
+                  "SELECT code,display_name,attributes FROM core.units WHERE dimension='digital_storage' ORDER BY code"
+              ).fetchall()
+              storage_edge_count = conn.execute(
+                  """
+                  SELECT count(*) AS n
+                  FROM core.unit_conversion_versions c
+                  JOIN core.units f ON f.code=c.from_unit
+                  JOIN core.units t ON t.code=c.to_unit
+                  WHERE f.dimension='digital_storage' AND t.dimension='digital_storage'
+                    AND c.valid_from IS NULL AND c.valid_to IS NULL
+                  """
+              ).fetchone()['n']
+
+          assert len(storage_unit_rows) == 34, len(storage_unit_rows)
+          assert storage_edge_count == 33, storage_edge_count
+          by_code = {row['code']: row for row in storage_unit_rows}
+          for code in ('B','kB','MB','GB','TB','PB','EB','ZB','YB','KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'):
+              assert code in by_code, code
+          assert by_code['EB']['attributes']['conversion_status'] == 'declared_via_sparse_graph'
+          assert not any(row['alias'] == 'KB' for row in aliases)
+
+          runtime = PostgresSemanticCatalog.from_rows(predicates, conversions, units, aliases)
+          normalizer = runtime.normalizer
+          assert normalizer._resolve_unit('GB') == 'GB'
+          assert normalizer._resolve_unit('Gb') == 'Gbit'
+          assert normalizer._resolve_unit('gb') == 'Gbit'
+          assert normalizer._resolve_unit('gB') is None
+          assert normalizer._resolve_unit('KB') is None
+          assert normalizer._resolve_unit('GIGABYTES') == 'GB'
+          assert normalizer.unit_conversions[('TB','B')].multiplier == Decimal('1000000000000')
+          assert normalizer.unit_conversions[('TiB','B')].multiplier == Decimal('1099511627776')
+          assert normalizer.unit_conversions[('TiB','TB')].multiplier == Decimal('1.099511627776')
+          assert {'b','kb','gb','tib'} <= normalizer.ambiguous_unit_casefolds
+
+          payload = {
+              'schema_version': 'longcycle-storage-unit-semantic-catalog-execution/v1',
+              'storage_unit_count': len(storage_unit_rows),
+              'authoritative_storage_edge_count': storage_edge_count,
+              'active_alias_count': len(aliases),
+              'semantic_fingerprint': runtime.fingerprint,
+              'checks': {
+                  'decimal_binary_separated': True,
+                  'bit_byte_case_semantics_preserved': True,
+                  'ambiguous_KB_fail_closed': True,
+                  'transitive_graph_conversion': True,
+                  'semantic_snapshot_includes_aliases': True,
+              },
+          }
+          Path(os.environ['CATALOG_RECEIPT']).write_text(
+              json.dumps(payload, indent=2, sort_keys=True) + '\n', encoding='utf-8'
+          )
+          print('STORAGE_UNIT_SEMANTIC_CATALOG_PASS', json.dumps(payload, sort_keys=True))
+          PY
+
+      - name: Upload semantic catalog execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-unit-semantic-catalog-${{ github.run_id }}
+          path: ${{ env.CATALOG_RECEIPT }}
+          if-no-files-found: error
+          retention-days: 7
