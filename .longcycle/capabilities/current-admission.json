@@ -1,34 +1,26 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-MEMORY-COUNTERFACTUAL-MS0119-016",
-  "intent": "Research sealed counterfactual lead MS-0119 as an Evidence-first inventory-amplification packet for the 2021-2023 memory downturn. Preserve end-market consumption, customer ship-in/procurement, customer inventory, supplier inventory, supplier bit supply, wafer starts/utilization and price as distinct claim scopes. Test whether customer inventory correction caused DRAM/NAND procurement to fall below end-market consumption and whether supplier inventory accumulation then elicited production cuts, while preserving genuine macro/end-demand weakness as a separate concurrent mechanism. Do not claim pull-forward, double ordering, causal weights or a single 'demand collapse' scalar unless directly supported by claim-scoped primary or methodological-primary evidence.",
+  "intent_id": "MEMORY-MEMORY-COUNTERFACTUAL-MS0120-017",
+  "intent": "Research sealed counterfactual lead MS-0120 as an Evidence-first product-line decomposition of the 2023-2025 memory recovery. Test the alternative to a single 'AI caused the 2024 recovery' narrative by preserving conventional DRAM/NAND supply cuts and inventory normalization separately from HBM and enterprise-SSD AI-driven mix strength. Reuse already-grounded supplier-cut/recovery and HBM/enterprise-storage trajectories, and add only the missing contemporaneous 2024 bridge evidence needed to distinguish broad conventional recovery from AI-specific mix. Do not infer an AI causal share, industry-wide HBM substitution coefficient, or enterprise-SSD AI-only demand quantity unless directly measured by claim-scoped sources.",
   "governance_mode": "converging",
   "disposition": "extend",
-  "target_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
-    "CAP-0006",
-    "CAP-0007"
-  ],
-  "closest_existing_capability_ids": [
-    "CAP-0001",
-    "CAP-0002",
-    "CAP-0006",
-    "CAP-0007"
-  ],
-  "rationale_summary": "The campaign maturity index identifies customer-side inventory disclosures as a thin area, and sealed lead MS-0119 specifically challenges the reduction of the 2022 downturn to end-demand collapse. Primary supplier materials already expose the required separation: customers reduced DRAM/NAND procurement below end-market consumption while correcting inventory, suppliers accumulated inventory as supply exceeded demand, and producers subsequently cut wafer starts. Existing Evidence and research-hypothesis owners are sufficient; no new semantic owner is required for the Evidence-first phase.",
-  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/evidence-final-maturity-index-v1.json",
+  "target_capability_ids": ["CAP-0001", "CAP-0002", "CAP-0006", "CAP-0007"],
+  "closest_existing_capability_ids": ["CAP-0001", "CAP-0002", "CAP-0006", "CAP-0007"],
+  "rationale_summary": "Existing executed trajectories already prove supplier production cuts, a later conventional PC/mobile memory-demand improvement milestone, and separate 2024 HBM3E production/supply states. Existing enterprise-SSD research also keeps AI-specific demand magnitude unresolved. MS-0120 therefore needs a bounded bridge, not another broad search: recover contemporaneous 2024 source statements that separate conventional DRAM/NAND recovery or inventory normalization from HBM/AI and enterprise-SSD mix strength.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-10.jsonl",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-qlc-ai-storage-demand-productization-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/evidence-final-maturity-index-v1.json"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0119-2022-inventory-amplification-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0120-2024-recovery-product-line-decomposition-v1.json",
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounded-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounding-receipt-v1.json",
-    ".github/workflows/memory-ms0119-2022-inventory-grounded-evidence.yml",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0120-2024-recovery-decomposition-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0120-2024-recovery-decomposition-grounding-receipt-v1.json",
+    ".github/workflows/memory-ms0120-2024-recovery-grounded-evidence.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
