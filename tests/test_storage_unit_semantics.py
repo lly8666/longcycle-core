@@ -62,7 +62,6 @@ class StorageUnitSemanticsTest(unittest.TestCase):
             {"alias": "b", "unit_code": "bit", "match_mode": "exact", "valid_from": None, "valid_to": None},
             {"alias": "kb", "unit_code": "kbit", "match_mode": "exact", "valid_from": None, "valid_to": None},
             {"alias": "Gb", "unit_code": "Gbit", "match_mode": "exact", "valid_from": None, "valid_to": None},
-            {"alias": "gb", "unit_code": "Gbit", "match_mode": "exact", "valid_from": None, "valid_to": None},
             {"alias": "gigabyte", "unit_code": "GB", "match_mode": "casefold", "valid_from": None, "valid_to": None},
             {"alias": "gigabytes", "unit_code": "GB", "match_mode": "casefold", "valid_from": None, "valid_to": None},
         ]
@@ -115,19 +114,20 @@ class StorageUnitSemanticsTest(unittest.TestCase):
 
         byte_value = runtime.normalizer.normalize(self._fact("GB"))
         bit_value = runtime.normalizer.normalize(self._fact("Gb"))
-        lower_bit_value = runtime.normalizer.normalize(self._fact("gb"))
+        ambiguous_lower = runtime.normalizer.normalize(self._fact("gb"))
         ambiguous_case = runtime.normalizer.normalize(self._fact("gB"))
         ambiguous_k = runtime.normalizer.normalize(self._fact("KB"))
 
         self.assertEqual(byte_value.normalized_number, Decimal("1000000000"))
         self.assertEqual(bit_value.normalized_number, Decimal("125000000"))
-        self.assertEqual(lower_bit_value.normalized_number, Decimal("125000000"))
-        self.assertIsNone(ambiguous_case.normalized_unit)
-        self.assertEqual(ambiguous_case.metadata["ambiguous_unit"], "gB")
-        self.assertFalse(ambiguous_case.dimensions_complete)
-        self.assertIsNone(ambiguous_k.normalized_unit)
-        self.assertEqual(ambiguous_k.metadata["ambiguous_unit"], "KB")
-        self.assertFalse(ambiguous_k.dimensions_complete)
+        for unresolved, raw in (
+            (ambiguous_lower, "gb"),
+            (ambiguous_case, "gB"),
+            (ambiguous_k, "KB"),
+        ):
+            self.assertIsNone(unresolved.normalized_unit)
+            self.assertEqual(unresolved.metadata["ambiguous_unit"], raw)
+            self.assertFalse(unresolved.dimensions_complete)
 
     def test_inconsistent_conversion_cycle_fails_semantic_snapshot(self) -> None:
         units = [
