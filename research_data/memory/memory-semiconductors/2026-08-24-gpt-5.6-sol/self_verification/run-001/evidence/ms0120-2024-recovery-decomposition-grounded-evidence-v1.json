@@ -1,0 +1,131 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0120-2024-RECOVERY-DECOMPOSITION-001",
+  "epistemic_guardrails": [
+    "This bridge packet supplements already-grounded supplier-cut, conventional-recovery, HBM and enterprise-SSD trajectories; it does not duplicate or re-promote those assets.",
+    "A broad DRAM/NAND price rebound and AI/HBM mix strength are separate market dimensions. Neither is sufficient by itself to establish the causal share of AI in industry recovery.",
+    "January 2024 capacity-utilization language and October 2024 conventional-DRAM/HBM mix language are forecasts or forecast framing, not realized full-year Outcomes.",
+    "The June NAND statement may support an observed first-half production-control recovery mechanism at TrendForce scope but does not quantify each supplier's utilization or AI contribution.",
+    "SK hynix's April conventional-DRAM recovery statement is a company outlook and must remain separate from its observed AI-memory sales states and from later realized conventional demand.",
+    "October evidence is later-known and must not appear in January, April or June replay.",
+    "Grounding creates EvidenceFragments only. Cross-packet causal synthesis remains research-only unless separate typed claims are directly supported."
+  ],
+  "sources": [
+    {
+      "key": "trendforce_memory_market",
+      "name": "TrendForce semiconductor memory research",
+      "publisher_domain": "trendforce.com",
+      "kind": "research",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {"claim_scope":"market_forecast","authority_class":"methodological_primary","authority_basis":"published_methodology","rationale":"TrendForce is methodological-primary for its own contemporaneous DRAM/NAND price and product-mix forecasts."},
+        {"claim_scope":"market_measurement","authority_class":"methodological_primary","authority_basis":"published_methodology","rationale":"TrendForce is methodological-primary for its own contemporaneous DRAM/NAND market observations and decomposition."}
+      ]
+    },
+    {
+      "key": "skhynix_newsroom",
+      "name": "SK hynix Newsroom",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {"claim_scope":"self_statement","authority_class":"primary_self_statement","authority_basis":"direct_speaker_record","rationale":"SK hynix is primary for its own market outlook and distinction between AI-memory demand and conventional-DRAM recovery."}
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key":"trendforce_memory_price_rally_capacity_control_2024_01_19",
+      "vintage_id":"2024-01-19",
+      "source_key":"trendforce_memory_market",
+      "retrieval_url":"https://www.trendforce.com/presscenter/news/20240119-12005.html",
+      "original_source_url":"https://www.trendforce.com/presscenter/news/20240119-12005.html",
+      "external_id":"trendforce-memory-price-rally-capacity-control-2024-01-19",
+      "title":"TrendForce January 2024 memory price-rally capacity-control capture",
+      "published_at":null,
+      "first_known_at":"2024-01-20T00:00:00Z",
+      "expected_sha256":"b7addb107bfd07f85911a7fd4d94dda7f470016a05b23963c13273a71812bd87",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-01-19-MEMORY-PRICE-RALLY-CAPACITY-CONTROL-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TRENDFORCE-2024-01-19-MEMORY-PRICE-RALLY-CAPACITY-CONTROL-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"skhynix_ai_conventional_dram_recovery_2024_04_25",
+      "vintage_id":"2024-04-25",
+      "source_key":"skhynix_newsroom",
+      "retrieval_url":"https://news.skhynix.com/sk-hynix-announces-1q24-financial-results/",
+      "original_source_url":"https://news.skhynix.com/sk-hynix-announces-1q24-financial-results/",
+      "external_id":"skhynix-ai-conventional-dram-recovery-2024-04-25",
+      "title":"SK hynix April 2024 AI and conventional DRAM recovery split capture",
+      "published_at":null,
+      "first_known_at":"2024-04-26T00:00:00Z",
+      "expected_sha256":"3da5cf181bd9aca38e4a74b76a9161cdc40a5c4da9507ea4a2be201eb4555c6f",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-04-25-AI-CONVENTIONAL-DRAM-RECOVERY-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-SKHYNIX-2024-04-25-AI-CONVENTIONAL-DRAM-RECOVERY-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"trendforce_nand_recovery_production_split_2024_06_28",
+      "vintage_id":"2024-06-28",
+      "source_key":"trendforce_memory_market",
+      "retrieval_url":"https://www.trendforce.com/presscenter/news/20240628-12210.html",
+      "original_source_url":"https://www.trendforce.com/presscenter/news/20240628-12210.html",
+      "external_id":"trendforce-nand-recovery-production-ai-consumer-2024-06-28",
+      "title":"TrendForce June 2024 NAND recovery production-control capture",
+      "published_at":null,
+      "first_known_at":"2024-06-29T00:00:00Z",
+      "expected_sha256":"51b76846556dfa086e7cae105710d933e58420c57e7c7a24baa6d858e83c0ec0",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-06-28-NAND-RECOVERY-PRODUCTION-AI-CONSUMER-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TRENDFORCE-2024-06-28-NAND-RECOVERY-PRODUCTION-AI-CONSUMER-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"trendforce_conventional_dram_hbm_mix_2024_10_09",
+      "vintage_id":"2024-10-09",
+      "source_key":"trendforce_memory_market",
+      "retrieval_url":"https://www.trendforce.com/presscenter/news/20241009-12325.html",
+      "original_source_url":"https://www.trendforce.com/presscenter/news/20241009-12325.html",
+      "external_id":"trendforce-conventional-dram-hbm-mix-divergence-2024-10-09",
+      "title":"TrendForce October 2024 conventional DRAM and HBM mix divergence capture",
+      "published_at":null,
+      "first_known_at":"2024-10-10T00:00:00Z",
+      "expected_sha256":"d96ac22863553e36b4c9dc121d4703dabad3f099bc931a9843e53063dcf2c01f",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-10-09-CONVENTIONAL-DRAM-HBM-MIX-DIVERGENCE-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TRENDFORCE-2024-10-09-CONVENTIONAL-DRAM-HBM-MIX-DIVERGENCE-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key":"EVF-MS0120-JAN24-CAPACITY-CONTROL-PRICE-RALLY",
+      "document_key":"trendforce_memory_price_rally_capacity_control_2024_01_19",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"The persistence of this rally in memory prices during 2024 will largely hinge on suppliers’ ongoing and effective control over their capacity utilization rates.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0120-001","claim_role":"broad_memory_price_rally_capacity_utilization_condition","claim_scope":"market_forecast","authority_class":"methodological_primary","epistemic_layer":"evidence_only_market_expectation","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-01-20T00:00:00Z"},"scope":"dram_nand_2024_price_rally_capacity_utilization_condition","comparability_guard":"Forward condition for sustaining a broad price rally; not a realized AI causal share or supplier-specific utilization measurement.","linked_memory_lead_ids":["MS-0120"]}
+    },
+    {
+      "fragment_key":"EVF-MS0120-APR24-AI-CONVENTIONAL-DRAM-SPLIT",
+      "document_key":"skhynix_ai_conventional_dram_recovery_2024_04_25",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"demand for AI memory continues to rise, while the market for the conventional DRAM also starts to recover from the second half.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0120-002","claim_role":"ai_memory_growth_and_conventional_dram_recovery_separated","claim_scope":"self_statement","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_supplier_outlook","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-04-26T00:00:00Z"},"scope":"skhynix_2024_ai_memory_vs_conventional_dram_outlook","comparability_guard":"Company outlook: AI demand direction and conventional-DRAM recovery timing remain separate; conventional recovery is not yet realized.","linked_memory_lead_ids":["MS-0120"]}
+    },
+    {
+      "fragment_key":"EVF-MS0120-JUN24-NAND-REB0UND-PRODUCTION-CONTROL",
+      "document_key":"trendforce_nand_recovery_production_split_2024_06_28",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"This year, NAND Flash prices saw a robust rebound as manufacturers kept production in check during the first half, helping them regain profitability.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0120-003","claim_role":"nand_first_half_price_rebound_with_production_restraint","claim_scope":"market_measurement","authority_class":"methodological_primary","epistemic_layer":"evidence_only_market_observation","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-06-29T00:00:00Z"},"scope":"nand_first_half_2024_price_rebound_production_control","comparability_guard":"Observed broad NAND recovery mechanism at methodological-primary scope; no supplier-specific utilization or AI-only causal fraction is inferred.","linked_memory_lead_ids":["MS-0120"]}
+    },
+    {
+      "fragment_key":"EVF-MS0120-OCT24-CONVENTIONAL-DRAM-HBM-MIX-DIVERGENCE",
+      "document_key":"trendforce_conventional_dram_hbm_mix_2024_10_09",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"conventional DRAM expected to increase by only 0–5%. However, benefiting from the rising share of HBM, the average price of overall DRAM",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0120-004","claim_role":"conventional_dram_price_vs_hbm_mix_divergence_forecast","claim_scope":"market_forecast","authority_class":"methodological_primary","epistemic_layer":"evidence_only_product_mix_forecast","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-10-10T00:00:00Z"},"scope":"q4_2024_conventional_dram_vs_overall_dram_hbm_mix_forecast","comparability_guard":"October forecast showing product-mix divergence; unavailable to first-half replay and not a realized Q4 price Outcome.","linked_memory_lead_ids":["MS-0120"]}
+    }
+  ],
+  "acceptance":{"required_documents":4,"required_fragments":4,"facts_created":0,"judgments_created":0}
+}
