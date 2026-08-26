@@ -1,0 +1,54 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0121-HBM-BOTTLENECK-STAGE-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0121-hbm-bottleneck-stage-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/memory-ms0121-hbm-bottleneck-grounded-evidence.yml",
+    "run_id": 32981565246,
+    "head_sha": "806c9d39bafa21881b2ba1379f395e2d0bfa45d4",
+    "conclusion": "success",
+    "artifact_id": 9611662646,
+    "artifact_name": "memory-ms0121-hbm-bottleneck-32981565246",
+    "artifact_digest": "sha256:579fb1bd4cd6be76600fb8c0d84f95f85ee6e4cbc9dca4123570d867b0537557"
+  },
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "hbm_frontend_and_backend_stages_separated": true,
+    "hbm_backend_and_accelerator_cowos_packaging_separated": true,
+    "qualification_stage_preserved_without_completion_claim": true,
+    "wafer_trade_ratio_not_promoted_to_universal_bottleneck": true,
+    "december_to_june_no_lookahead_order_passed": true,
+    "universal_bottleneck_ranking_not_created": true
+  },
+  "documents": [
+    {"document_key":"micron_hbm3e_nvidia_qualification_2023_12_20","document_id":"71a268ac-5191-56ac-a725-a52c3b301dec","content_sha256":"58bce426471bdef67c162e48470ff3f73c642dceefe84fa5fc1b5d8fd9d3caf2","canonical_artifact_id":"3b568a52-99c7-5cb2-8573-86ae58271f2e","canonical_artifact_sha256":"e91cefdb61c9a28cd197036591bca8ce9f9e1f0a0f914ae5ab4e33e6afe04674","first_known_at":"2023-12-21T00:00:00Z"},
+    {"document_key":"skhynix_hbm_packaging_backend_2024_04_11","document_id":"b2f5d56e-c225-527f-8ace-d36ca029e6bd","content_sha256":"1f4d2f3c8dd1dd62d01a380b1b0ffb5b411a2ea17a3e8653b8a9241c0e748691","canonical_artifact_id":"9fb643ba-1b0d-53d6-84fd-c6164b9fbb80","canonical_artifact_sha256":"da51ce00682639e84c621e3054f63a19263617df64c044455ff3aec14f483fac","first_known_at":"2024-04-12T00:00:00Z"},
+    {"document_key":"tsmc_cowos_capacity_tight_2024_04_18","document_id":"dbe17369-7529-55b6-b4ce-d092844bc9f2","content_sha256":"eccf98b90e559a9e10900976e876bd2f80b36507ce2363d80599ff402acb04aa","canonical_artifact_id":"b99e6c9a-77fe-58d7-8add-6a0ece8a4062","canonical_artifact_sha256":"a4b182566857ba1705ea39a606c528fa80f51a01719d518f82c8acd71980997d","first_known_at":"2024-04-19T00:00:00Z"},
+    {"document_key":"micron_hbm3e_wafer_trade_ratio_2024_06_26","document_id":"05a72ac8-fd5d-5238-90bc-dffe7f9286be","content_sha256":"94400f9d81f636a5e81590d44e07f9fe06918799ff573bcc9327136a0c87ce19","canonical_artifact_id":"2c2cfd9e-659b-5dad-9a76-f1912490ddb4","canonical_artifact_sha256":"74da5d1aef7e02cccc9d5582d25462695a7b6449d641bb39e5e910120381bddd","first_known_at":"2024-06-27T00:00:00Z"}
+  ],
+  "fragments": [
+    {"fragment_key":"EVF-MS0121-DEC23-HBM3E-PLATFORM-QUALIFICATION-IN-PROGRESS","evidence_fragment_id":"9cbbb5ac-3ae4-5fd6-923a-c543b905e8de","fragment_sha256":"0a30abe4805d63ddf0d7ccf66d7b1c0441955a85840f9cb29e086f4e2cf8b723","claim_role":"hbm3e_platform_qualification_in_progress","epistemic_layer":"evidence_only_supplier_qualification"},
+    {"fragment_key":"EVF-MS0121-APR24-HBM-FRONTEND-BACKEND-STAGE-SEPARATION","evidence_fragment_id":"1f5d6313-c3c2-56fb-b216-8ab8623fbd7a","fragment_sha256":"c49fed71b9cecf8f858fe57b4c59badf527581686668f1382a8401093ea6a231","claim_role":"hbm_frontend_backend_packaging_stage_separation","epistemic_layer":"evidence_only_technical_stage"},
+    {"fragment_key":"EVF-MS0121-APR24-COWOS-CAPACITY-TIGHT","evidence_fragment_id":"033d709c-c13f-5702-bd32-bcaecbe85a60","fragment_sha256":"4e60bd09895f99106655a8dfc9c755ecab86a12c7dd246aba0cd986847b5e502","claim_role":"accelerator_cowos_capacity_tightness","epistemic_layer":"evidence_only_advanced_packaging_capacity_observation"},
+    {"fragment_key":"EVF-MS0121-JUN24-HBM3E-THREE-X-WAFER-TRADE-RATIO","evidence_fragment_id":"278b78a9-4969-5b3b-8f14-49f8575b5062","fragment_sha256":"fadedeb91d7d2c1a03f29ee100ed1e0bbd72d8923c7e32106983fec7ac605b82","claim_role":"hbm3e_wafer_supply_trade_ratio_vs_d5","epistemic_layer":"evidence_only_supplier_supply_mechanism"}
+  ],
+  "reused_grounded_assets": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-coreweave-h200-market-grounding-receipt-v1.json"
+  ],
+  "semantic_guards": [
+    "HBM scarcity is represented as a multi-stage constraint problem rather than one wafer-shortage scalar.",
+    "Micron's December 2023 samples and final-stage qualification remain distinct from completed qualification, customer supply and platform availability.",
+    "SK hynix front-end wafer fabrication and HBM package-and-test are separate manufacturing stages; this packet does not invent a dated packaging-capacity shortage from stage separation alone.",
+    "TSMC CoWoS capacity tightness is downstream accelerator advanced-packaging evidence and is not merged with memory-side TSV/MR-MUF package-and-test capacity.",
+    "Micron's approximately-three-times HBM3E wafer-supply trade ratio versus D5 supports silicon-intensity and non-HBM displacement mechanisms but does not establish that wafer supply was the sole binding HBM stage.",
+    "The December-April-June vintages remain point-in-time ordered; later wafer-intensity evidence is not backdated into the December qualification state.",
+    "No universal bottleneck ranking or cross-supplier causal coefficient is created."
+  ]
+}
