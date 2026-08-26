@@ -100,8 +100,13 @@ jobs:
               "market_observed_enterprise_ssd_procurement_volume_qoq",
               "market_observed_enterprise_ssd_revenue_qoq",
               "market_observed_enterprise_ssd_major_supplier_revenue",
-              "market_observed_enterprise_ssd_revenue_qoq_4q24",
           }, roles
+          revenue_qoq = [
+              row for row in result["fragments"]
+              if row["claim_context"]["claim_role"] == "market_observed_enterprise_ssd_revenue_qoq"
+          ]
+          assert len(revenue_qoq) == 2, revenue_qoq
+          assert {row["claim_context"]["observed_period"]["label"] for row in revenue_qoq} == {"3Q24", "4Q24"}
           print("STORAGE_ENTERPRISE_SSD_TRENDFORCE_EVIDENCE_PASS")
           PY
 
