@@ -75,6 +75,18 @@ jobs:
           print(f"CAPABILITY_REGISTRY_METADATA_PASS active={len(active)}")
           PY
 
+      - name: Typed session handoff contract (hard gate)
+        id: handoff_contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from longcycle.application.session_handoff import SessionHandoffCheckpoint
+
+          path = Path(".longcycle/handoff/current.json")
+          SessionHandoffCheckpoint.model_validate_json(path.read_text(encoding="utf-8"))
+          print("SESSION_HANDOFF_TYPED_PASS")
+          PY
+
       - name: PostgreSQL migrations (hard gate)
         id: migrations
         run: longcycle --json db upgrade
@@ -180,6 +192,7 @@ jobs:
         run: |
           echo "repair_memory=${{ steps.repair_memory.outcome }} (hard gate)"
           echo "capabilities=${{ steps.capabilities.outcome }} (hard gate)"
+          echo "handoff_contract=${{ steps.handoff_contract.outcome }} (hard gate)"
           echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
           echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
           echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
