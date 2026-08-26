@@ -1,0 +1,47 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0119-2022-INVENTORY-AMPLIFICATION-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/memory-ms0119-2022-inventory-grounded-evidence.yml",
+    "run_id": 32975251433,
+    "head_sha": "26c1e42d4d60bcebb9912446096a0d9271a512d3",
+    "conclusion": "success",
+    "artifact_id": 9609203651,
+    "artifact_name": "memory-ms0119-2022-inventory-32975251433",
+    "artifact_digest": "sha256:9183d01827b2848ef4086371efff82701b0fd90f81a20104e10dd52bebfab2df"
+  },
+  "acceptance": {
+    "persisted_document_versions": 5,
+    "persisted_evidence_fragments": 5,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "inventory_and_end_demand_roles_separated": true,
+    "september_to_december_no_lookahead_order_passed": true,
+    "double_ordering_or_pull_forward_not_promoted": true
+  },
+  "documents": [
+    {"document_key":"samsung_q2_2021_memory_demand_inventory_baseline","document_id":"a5a97798-ff61-5f6d-8a26-7a68c6d658fd","content_sha256":"e6f5243ad5cba58ed1bb42b1efc85cd254cf182570138d0b8cc9df95e236a4ff","first_known_at":"2021-07-30T00:00:00Z"},
+    {"document_key":"micron_fq4_2022_customer_inventory_amplification","document_id":"31fe6117-9692-5ed0-ada6-ba9b9fdad8c0","content_sha256":"c9089cd5179e8535a76954c15c68ef220c0cfdc35c87bbf640da2fb06d8a02c8","first_known_at":"2022-09-30T00:00:00Z"},
+    {"document_key":"samsung_q3_2022_customer_inventory_adjustments","document_id":"611eb358-6b63-53a8-a31b-cc3c77555f8c","content_sha256":"5e6add9ab748e3988235a1c2d1718a0c2a94d4366bb4f3a46f9900be98b2ef1a","first_known_at":"2022-10-28T00:00:00Z"},
+    {"document_key":"micron_wafer_start_reductions_2022_11_16","document_id":"ea1b24a2-b7e2-56ed-ac82-2d392ce01758","content_sha256":"624fc7f1e5e69c384d149961c0fe320805da118e1897a0b29c1acb70f19c3472","first_known_at":"2022-11-17T00:00:00Z"},
+    {"document_key":"micron_customer_inventory_destock_2022_12_21","document_id":"6b175194-47ad-53b5-bd78-e94fa2344059","content_sha256":"ea68e19003bf4a1b69eeb3b9a01f499ff92f22813800b4b5820477bf8dd1b43b","first_known_at":"2022-12-22T00:00:00Z"}
+  ],
+  "fragments": [
+    {"fragment_key":"EVF-MS0119-SAMSUNG-2021-DEMAND-INVENTORY-BASELINE","evidence_fragment_id":"722bce9e-bd5a-51ed-bf76-27860015be59","fragment_sha256":"9804acce1806ae71d184ab3528fec47014c2d3b7a699682ac44a644384ac10a5","claim_role":"pre_downturn_strong_demand_and_low_supplier_inventory_baseline","epistemic_layer":"evidence_only_pre_downturn_baseline"},
+    {"fragment_key":"EVF-MS0119-MICRON-SEP22-INVENTORY-AMPLIFICATION","evidence_fragment_id":"65755db1-d254-59ba-9d7f-c194d332f2c7","fragment_sha256":"8f1a45236e63565909ec0948c05d2a378bb80bbc561618469a1acfa2cc22b032","claim_role":"customer_destocking_below_consumption_and_supplier_inventory_accumulation","epistemic_layer":"evidence_only_inventory_amplification_observation"},
+    {"fragment_key":"EVF-MS0119-SAMSUNG-OCT22-INVENTORY-AND-END-DEMAND","evidence_fragment_id":"ec7e2a78-5f2b-5808-9441-426bf1408af6","fragment_sha256":"f3504d970ae081eaeea21970156bf69539a27425e431b9dd56512db587bedd62","claim_role":"customer_inventory_correction_and_end_demand_weakness_coexist","epistemic_layer":"evidence_only_supplier_market_commentary"},
+    {"fragment_key":"EVF-MS0119-MICRON-NOV22-WAFER-START-SUPPLY-RESPONSE","evidence_fragment_id":"82f562da-3d9f-53a5-be34-78da6a07a13d","fragment_sha256":"b3782aee0319ec6044ab4aacce92c5a13c1c82d5682cba8db390cdc593f81de2","claim_role":"wafer_start_cut_and_future_supply_response_to_inventory","epistemic_layer":"evidence_only_supplier_action_and_expectation"},
+    {"fragment_key":"EVF-MS0119-MICRON-DEC22-CUSTOMER-DESTOCK","evidence_fragment_id":"f768b6d6-1eee-51e2-b202-d40c90bc8842","fragment_sha256":"6b06e9ca1682b8fea4e0316c838ce46c005b0f611ea820430a0b197fa2556ee2","claim_role":"customer_inventory_high_but_declining_as_consumption_outpaces_shipin","epistemic_layer":"evidence_only_destocking_observation"}
+  ],
+  "semantic_guards": [
+    "2021 Samsung demand and inventory form a supplier-specific baseline, not proof of industry or customer inventory state.",
+    "September 2022 directly supports procurement below end-market consumption and high supplier inventories as an inventory-amplification state.",
+    "October 2022 independently preserves customer inventory correction and weaker consumer demand as concurrent mechanisms.",
+    "November 2022 proves a Micron wafer-start action while future bit-supply language remains management expectation.",
+    "December 2022 directly exposes de-stocking because end-market consumption exceeded ship-in while customer inventory remained high but declined.",
+    "No source in this packet proves prior double ordering, pull-forward, channel stuffing or a single causal weight for the downturn."
+  ]
+}
