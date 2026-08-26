@@ -1,0 +1,59 @@
+{
+  "schema_version": "longcycle-judgment-execution-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-JUDGMENT-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-MARKET-TRAJECTORY-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/enterprise-ssd-trendforce-market-judgment-projection-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/storage-enterprise-ssd-trendforce-trajectory.yml",
+    "run_id": 32937967021,
+    "head_sha": "95e66f3e5418a4e64da9e4a3a2f1a768064a8945",
+    "conclusion": "success",
+    "artifact_id": 9595516724,
+    "artifact_name": "storage-enterprise-ssd-trendforce-trajectory-32937967021",
+    "artifact_digest": "sha256:2d2ce4c4580a09b4d3b634a020ca9123b479fb25c1d49d5f6a61f59e4d2c85b5"
+  },
+  "verification": {
+    "judgment_count": 2,
+    "evidence_link_count": 2,
+    "idempotent_reappend_passed": true,
+    "all_first_known_times_derived_from_grounded_evidence": true,
+    "target_precision_preserved": true,
+    "no_revision_relation_asserted_between_different_scopes": true
+  },
+  "judgments": [
+    {
+      "judgment_key": "trendforce-qlc-enterprise-ssd-30eb-2024-04",
+      "judgment_id": "d585440d-c79f-51e2-815a-0b8227804099",
+      "first_known_at": "2024-04-24T00:00:00Z",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "value_kind": "numeric",
+      "value_numeric": 30,
+      "unit_code": "EB",
+      "predicate_code": "storage.qlc_enterprise_ssd_bit_shipments",
+      "comparability_hash": "cbac1bd07b6a95ec6e6bbb160afe8a8a06949ecb33fded86ba349210a01470e5",
+      "dimensions_complete": true,
+      "semantic_guard": "Contemporaneous QLC-enterprise-SSD full-year forecast; no realized full-year Outcome has been recovered."
+    },
+    {
+      "judgment_key": "trendforce-ai-related-ssd-gt45eb-2024-08",
+      "judgment_id": "31f64180-40f3-533b-ac32-9dd0bf1d30c2",
+      "first_known_at": "2024-08-13T00:00:00Z",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "value_kind": "text",
+      "value_text": "greater than 45 EB",
+      "lower_bound_metadata": {
+        "qualifier": "greater_than",
+        "value": 45,
+        "unit": "EB"
+      },
+      "predicate_code": null,
+      "comparability_hash": null,
+      "dimensions_complete": false,
+      "semantic_guard": "The current Judgment value contract cannot encode an open numeric lower bound without false exactness; the primary value therefore remains text. Different scope from the April QLC-enterprise-SSD forecast; no revision relation is asserted."
+    }
+  ]
+}
