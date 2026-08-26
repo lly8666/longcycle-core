@@ -1,0 +1,98 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0122-DRAM-NAND-CYCLE-LEAD-LAG-001",
+  "epistemic_guardrails": [
+    "DRAM and NAND may share broad macro up/down phases without sharing quarter-synchronous turning points, severity or causal mechanisms.",
+    "The 2018 source contains both observed 3Q18 price directions and a 4Q18 DRAM forecast. The Evidence role uses the observed 3Q18 divergence; the forward DRAM statement is not promoted as realized Outcome.",
+    "The October 2022 statement that NAND was more severe than DRAM is a methodological-primary comparative assessment, not a common numerical severity scale.",
+    "The January 2024 source dates NAND rebound to 3Q23 and DRAM contract-price reversal to 4Q23. This supports one-episode lead/lag and must not be generalized into a permanent NAND-leading rule.",
+    "Existing 2017, 2022 and 2024 research packets remain authoritative for their own mechanism decompositions and are reused rather than duplicated here.",
+    "No fragment may create a DRAM/NAND correlation coefficient, a universal phase-lock rule, or identical causal mechanisms from aggregate co-movement.",
+    "Grounding creates EvidenceFragments only. Cross-cycle synthesis remains research-only unless separately supported by typed claims."
+  ],
+  "sources": [
+    {
+      "key": "trendforce_memory_market",
+      "name": "TrendForce semiconductor memory research",
+      "publisher_domain": "trendforce.com",
+      "kind": "research",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {"claim_scope":"market_measurement","authority_class":"methodological_primary","authority_basis":"published_methodology","rationale":"TrendForce/DRAMeXchange is methodological-primary for its own contemporaneous DRAM and NAND price, balance and comparative market measurements."},
+        {"claim_scope":"industry_expectation","authority_class":"methodological_primary","authority_basis":"published_methodology","rationale":"TrendForce/DRAMeXchange is methodological-primary for its own contemporaneous DRAM and NAND market forecasts, which remain separate from realized measurements."}
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key":"trendforce_dram_nand_downturn_lead_lag_2018_10_09",
+      "vintage_id":"2018-10-09",
+      "source_key":"trendforce_memory_market",
+      "retrieval_url":"https://www.trendforce.com/presscenter/news/20181009-10059.html",
+      "original_source_url":"https://www.trendforce.com/presscenter/news/20181009-10059.html",
+      "external_id":"trendforce-dram-nand-downturn-lead-lag-2018-10-09",
+      "title":"TrendForce October 2018 DRAM/NAND downturn lead-lag capture",
+      "published_at":null,
+      "first_known_at":"2018-10-10T00:00:00Z",
+      "expected_sha256":"fe2f1aae8ceca13e18a8ce4be3a6da7b2e779c5277460794dc0603f3db755ff3",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2018-10-09-DRAM-NAND-DOWNTURN-LEAD-LAG-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TRENDFORCE-2018-10-09-DRAM-NAND-DOWNTURN-LEAD-LAG-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"trendforce_nand_more_severe_than_dram_2022_10_03",
+      "vintage_id":"2022-10-03",
+      "source_key":"trendforce_memory_market",
+      "retrieval_url":"https://www.trendforce.com/presscenter/news/20221003-11403.html",
+      "original_source_url":"https://www.trendforce.com/presscenter/news/20221003-11403.html",
+      "external_id":"trendforce-nand-more-severe-than-dram-2022-10-03",
+      "title":"TrendForce October 2022 NAND-versus-DRAM severity capture",
+      "published_at":null,
+      "first_known_at":"2022-10-04T00:00:00Z",
+      "expected_sha256":"3869d5454f52e3d32c2c12aa4110338b44678261858ea14c400c451040d9ffc0",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2022-10-03-NAND-MORE-SEVERE-THAN-DRAM-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TRENDFORCE-2022-10-03-NAND-MORE-SEVERE-THAN-DRAM-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"trendforce_dram_nand_recovery_lead_lag_2024_01_19",
+      "vintage_id":"2024-01-19",
+      "source_key":"trendforce_memory_market",
+      "retrieval_url":"https://www.trendforce.com/presscenter/news/20240119-12005.html",
+      "original_source_url":"https://www.trendforce.com/presscenter/news/20240119-12005.html",
+      "external_id":"trendforce-dram-nand-recovery-lead-lag-2024-01-19",
+      "title":"TrendForce January 2024 DRAM/NAND recovery lead-lag capture",
+      "published_at":null,
+      "first_known_at":"2024-01-20T00:00:00Z",
+      "expected_sha256":"4b34f2ee41d71e3a3f70170fd8d2592b19823dd542195d8b996800d797015cb8",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-01-19-DRAM-NAND-RECOVERY-LEAD-LAG-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TRENDFORCE-2024-01-19-DRAM-NAND-RECOVERY-LEAD-LAG-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key":"EVF-MS0122-2018Q3-DRAM-NAND-PRICE-DIRECTION-DIVERGENCE",
+      "document_key":"trendforce_dram_nand_downturn_lead_lag_2018_10_09",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"According to DRAMeXchange, a division of TrendForce, DRAM products have begun to see a weak price trend, showing only a 1~2% QoQ hike in contract prices for 3Q18 due to the continued oversupply, despite the coming of holiday sales season. DRAMeXchange expects the quotations of DRAM products to decline by 5% or more QoQ in 4Q18, terminating the super cycle of price growth for nine consecutive quarters. NAND Flash experienced a price drop of around 10% in 3Q18 and expects a steeper drop of 10~15% in the fourth quarter, considering the impacts of trade war.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0122-001","claim_role":"dram_nand_2018q3_price_direction_divergence","claim_scope":"market_measurement","authority_class":"methodological_primary","epistemic_layer":"evidence_only_cross_product_turning_point","stance":"supports","known_time":{"precision":"day","upper_bound":"2018-10-10T00:00:00Z"},"scope":"trendforce_2018q3_dram_positive_vs_nand_negative_price_direction","comparability_guard":"Uses same-source 3Q18 direction to establish non-synchronous downturn timing. The embedded 4Q18 DRAM decline statement remains a forecast and is not promoted as realized Outcome.","linked_memory_lead_ids":["MS-0122"]}
+    },
+    {
+      "fragment_key":"EVF-MS0122-OCT22-NAND-MORE-SEVERE-THAN-DRAM",
+      "document_key":"trendforce_nand_more_severe_than_dram_2022_10_03",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"In terms of NAND Flash, the market situation is more severe than that of DRAM. As the average contract price of mainstream capacity wafers has fallen to their cash cost and is approaching the periphery of selling at a loss for various manufacturers, Kioxia also announced that it will reduce NAND Flash capacity utilization by 30% from October on the heels of Micron’s announcement.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0122-002","claim_role":"nand_2022_downturn_more_severe_than_dram","claim_scope":"market_measurement","authority_class":"methodological_primary","epistemic_layer":"evidence_only_cross_product_severity","stance":"supports","known_time":{"precision":"day","upper_bound":"2022-10-04T00:00:00Z"},"scope":"trendforce_oct2022_nand_vs_dram_downturn_severity","comparability_guard":"Comparative severity statement without a shared numeric scale; Kioxia's utilization action remains supplier-specific and does not become an industry-wide cut percentage.","linked_memory_lead_ids":["MS-0122","MS-0119"]}
+    },
+    {
+      "fragment_key":"EVF-MS0122-2023Q3Q4-NAND-RECOVERY-LEADS-DRAM",
+      "document_key":"trendforce_dram_nand_recovery_lead_lag_2024_01_19",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"TrendForce’s latest analysis reveals that the downswing of DRAM contract prices, which had lasted for eight consecutive quarters since 4Q21, was finally reversed in 4Q23. Likewise, NAND Flash rebounded in 3Q23 after four quarters of decline.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0122-003","claim_role":"nand_2023_recovery_turn_precedes_dram_by_one_quarter","claim_scope":"market_measurement","authority_class":"methodological_primary","epistemic_layer":"evidence_only_cross_product_turning_point","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-01-20T00:00:00Z"},"scope":"trendforce_2023q3_nand_rebound_vs_2023q4_dram_reversal","comparability_guard":"One-episode turning-point lead in TrendForce aggregate price series; not a permanent NAND-leading law and not proof of identical product baskets or mechanisms.","linked_memory_lead_ids":["MS-0122","MS-0120"]}
+    }
+  ],
+  "acceptance":{"required_documents":3,"required_fragments":3,"facts_created":0,"judgments_created":0}
+}
