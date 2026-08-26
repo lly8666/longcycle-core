@@ -1,0 +1,122 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0118-2017-UPCYCLE-COMPETING-EXPLANATIONS-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/memory-ms0118-2017-upcycle-grounded-evidence.yml",
+    "run_id": 32971571306,
+    "head_sha": "44d4ad9f052c54a746c0ed085470268ff0f6a32f",
+    "conclusion": "success",
+    "artifact_id": 9607815008,
+    "artifact_name": "memory-ms0118-2017-upcycle-32971571306",
+    "artifact_digest": "sha256:a85ee656705f4daeda0cfea9ea72a99b906969ddb47f8fd9cf4f7551cf521f28"
+  },
+  "acceptance": {
+    "persisted_document_versions": 6,
+    "persisted_evidence_fragments": 7,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "competing_explanation_roles_separated": true,
+    "april_2017_no_lookahead_boundary_passed": true,
+    "industry_expectation_roles_remain_evidence_only": true
+  },
+  "documents": [
+    {
+      "document_key": "trendforce_dram_wafer_capacity_outlook_2016_12_14",
+      "document_id": "6cb38d96-242b-5561-a1e3-4478a42dcd57",
+      "content_sha256": "f814ccb28d53e038429043101c04e188f6c683b66f1f286118eb8875598fe2c1",
+      "first_known_at": "2016-12-15T00:00:00Z"
+    },
+    {
+      "document_key": "trendforce_nand_wafer_capacity_outlook_2016_12_21",
+      "document_id": "a359be2e-087c-50c6-af7b-a1b377dc5dcd",
+      "content_sha256": "d69bdff7e9576ff902ee34c4c8afca186b5591f523a74ea786da60cd15aa5961",
+      "first_known_at": "2016-12-22T00:00:00Z"
+    },
+    {
+      "document_key": "skhynix_q1_dram_bit_asp_2017_04_25",
+      "document_id": "c646d20b-2acc-5b97-9ad0-e0b935364cb5",
+      "content_sha256": "203741a4e017adb5d0678255f1f03bac369ff6324e60651c4c2d2398a7fa481f",
+      "first_known_at": "2017-04-26T00:00:00Z"
+    },
+    {
+      "document_key": "samsung_server_mobile_memory_demand_2017_04_27",
+      "document_id": "5df3e980-8d93-5ba5-bd3b-a320cb90cb2c",
+      "content_sha256": "1726822c18574a04e461d028eb3707777359d8bf34a68b29c8a207c39c85969f",
+      "first_known_at": "2017-04-28T00:00:00Z"
+    },
+    {
+      "document_key": "micron_tech_migration_no_new_wafer_2017_09_26",
+      "document_id": "0c88d89b-c408-508e-a1d3-75dcb795ea5f",
+      "content_sha256": "22718c631cd7ccd7073a4a5e734130e5e818ffdefd756f5fcec55ca5d74b013e",
+      "first_known_at": "2017-09-27T00:00:00Z"
+    },
+    {
+      "document_key": "trendforce_nand_transition_capacity_loss_2017_09_27",
+      "document_id": "b00c34f5-8229-5cd6-b979-277323fc6066",
+      "content_sha256": "757ae762c0d3dc002285bd26f3e1a79fca653262b4d2c093d740f83fd1f1e60a",
+      "first_known_at": "2017-09-28T00:00:00Z"
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MS0118-TRENDFORCE-DRAM-WAFER-CAPACITY-FLAT-EXPECTATION",
+      "evidence_fragment_id": "2ff7545b-d12f-5f01-aded-dc2eb4bc42bb",
+      "fragment_sha256": "6d5ddd69bee2b0859255f2c8154917944830cdfc70a85c9fe49389db9551118d",
+      "claim_role": "dram_2017_wafer_capacity_expectation",
+      "epistemic_layer": "evidence_only_industry_expectation"
+    },
+    {
+      "fragment_key": "EVF-MS0118-TRENDFORCE-NAND-WAFER-CAPACITY-6PCT-EXPECTATION",
+      "evidence_fragment_id": "9c39aefc-1a23-5cdb-8e67-3d4feeb0dca3",
+      "fragment_sha256": "c116dbd0ccf46c9e09f21399c71601bbc440850e4f733c5b6eb496da45f25c26",
+      "claim_role": "nand_2017_wafer_capacity_growth_expectation",
+      "epistemic_layer": "evidence_only_industry_expectation"
+    },
+    {
+      "fragment_key": "EVF-MS0118-SKHYNIX-Q1-DRAM-BIT-SHIPMENTS-QOQ",
+      "evidence_fragment_id": "18ec1219-1829-53ab-8ccd-07db6f26cde6",
+      "fragment_sha256": "f0ab5522ebd9972454a16e82b9461a072bdf5f7caf8524d1c3df484a3074a09f",
+      "claim_role": "skhynix_q1_2017_dram_bit_shipments_qoq",
+      "epistemic_layer": "evidence_only_supplier_reported_outcome"
+    },
+    {
+      "fragment_key": "EVF-MS0118-SKHYNIX-Q1-DRAM-ASP-QOQ",
+      "evidence_fragment_id": "39c5a272-5239-5be9-9724-6c7701ed64a2",
+      "fragment_sha256": "2f70f993c06a090e235bb16d0db35c88f364b63ad0494d0febecd73149d58828",
+      "claim_role": "skhynix_q1_2017_dram_asp_qoq",
+      "epistemic_layer": "evidence_only_supplier_reported_outcome"
+    },
+    {
+      "fragment_key": "EVF-MS0118-SAMSUNG-SERVER-MOBILE-MEMORY-DEMAND",
+      "evidence_fragment_id": "7f5ee148-6908-52a9-838f-86233b8387bc",
+      "fragment_sha256": "fb4b80ea003228f6d18371913a6d8b377bbf931b71895d292ce9ae090d8f2701",
+      "claim_role": "server_mobile_memory_demand_strength_self_statement",
+      "epistemic_layer": "evidence_only_supplier_market_commentary"
+    },
+    {
+      "fragment_key": "EVF-MS0118-MICRON-FY2018-NO-NEW-WAFER-CAPACITY-GUIDANCE",
+      "evidence_fragment_id": "eab7931d-4d25-56b1-9faa-5e3d7f84d44a",
+      "fragment_sha256": "c59399306a66d7f9d7527712abf5f8a789d48c4b8fe78e789f054fcc75b91809",
+      "claim_role": "micron_fy2018_capex_technology_migration_no_new_wafer_guidance",
+      "epistemic_layer": "evidence_only_management_guidance"
+    },
+    {
+      "fragment_key": "EVF-MS0118-TRENDFORCE-NAND-TRANSITION-CAPACITY-LOSS",
+      "evidence_fragment_id": "eba7ef2e-ac2f-5d43-abf1-8bc5d0651634",
+      "fragment_sha256": "17d3216e4c0885dfc6fa2d5fa612208283878e465858e89e58d28cb3402d56ba",
+      "claim_role": "nand_3d_transition_effective_capacity_loss_observation",
+      "epistemic_layer": "evidence_only_market_observation"
+    }
+  ],
+  "semantic_guards": [
+    "2017 DRAM wafer-capacity flatness and NAND wafer-capacity growth are contemporaneous expectations, not realized full-year Outcomes.",
+    "SK hynix Q1 shipment and ASP changes are supplier-specific outcomes; price strength does not prove supplier coordination.",
+    "Samsung's server/mobile demand statement supports a demand-mix explanation but does not quantify industry bit-demand growth.",
+    "Micron's no-new-wafer-capacity statement is its own fiscal-2018 management guidance and cannot be generalized across suppliers.",
+    "TrendForce's September 2017 NAND transition-capacity-loss observation is unavailable to an April 2017 replay and is NAND-specific.",
+    "The packet preserves competing explanations rather than collapsing wafer capacity, technology transition, demand mix and price into one cause."
+  ]
+}
