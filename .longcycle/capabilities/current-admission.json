@@ -1,27 +1,39 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "FRESH-AGENT-DRILL-HARNESS-ISOLATION-004",
-  "intent": "Repair the existing CAP-0009 Fresh-Agent continuity drill harness after the seq103 external run showed controller/subject conflation: preserve the failing report, separate controller-only future cues and pass criteria from the subject-visible operating contract, and add a regression that prevents future-cue leakage without changing Longcycle product semantics or creating a new capability owner.",
+  "intent_id": "MEMORY-STORAGE-ENTERPRISE-SSD-QLC-RESUME-005",
+  "intent": "Resume the existing memory-semiconductors storage-productization lane for enterprise SSD / QLC / AI-storage demand. Reuse the current source-preservation, Grounded Evidence, canonical Reality/comparability, Judgment-Outcome, no-lookahead replay/research-only and historical verification-depth owners. Preserve product-capacity specifications as technical evidence without inferring shipments, installed base, exabytes, adoption or market demand; promote only claim-scoped source-grounded observations that satisfy the existing owner contracts.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0009"
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0003",
+    "CAP-0004",
+    "CAP-0005",
+    "CAP-0006"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0009"
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0003",
+    "CAP-0004",
+    "CAP-0005",
+    "CAP-0006"
   ],
-  "rationale_summary": "The seq103 report at subject HEAD ba0f6d5b4975d86428462536acae1b9ef8af20c5 recovered DUMB-01/02/03 semantics correctly but violated staged execution because v1 exposed DUMB-02/DUMB-03 cue text and execution instructions in the same repository document the tested Agent was told to read. This is an observed continuity-test harness defect owned by CAP-0009, not evidence for a new semantic owner. V2 keeps the old FAIL immutable, moves future stimuli and expected-answer criteria to a controller-only contract, gives the tested Agent a separate subject contract with explicit stop/wait tokens, and tests that future cue text is absent from the subject contract.",
-  "rationale_details_ref": ".longcycle/handoff/rehearsals/fresh-agent-external-103-ba0f6d5.json",
+  "rationale_summary": "No new semantic owner is required. CAP-0001 owns truthful source identity/preservation; CAP-0002 owns exact claim-scoped Evidence; CAP-0003 owns Reality normalization/comparability and rejects guidance or inferred occurrence as Reality; CAP-0004 owns contemporaneous expectation/revision and later Outcome; CAP-0005 owns no-lookahead/research-only researcher visibility; CAP-0006 owns Memory-first verification and unresolved-search depth. The storage batch is a productization composition across those owners, with a hard negative case that high-capacity QLC product specifications do not establish market adoption or demand quantities.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/cross-industry-demand-bridge-productization-v1.json",
   "unmet_requirement": null,
   "evidence_refs": [
-    ".longcycle/handoff/rehearsals/fresh-agent-external-103-ba0f6d5.json",
-    ".longcycle/capabilities/cards/CAP-0009.json",
-    "docs/development/session-handoff-protocol.md"
+    ".longcycle/capabilities/cards/CAP-0001.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
+    ".longcycle/capabilities/cards/CAP-0003.json",
+    ".longcycle/capabilities/cards/CAP-0004.json",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/cards/CAP-0006.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/cross-industry-demand-bridge-productization-v1.json"
   ],
   "planned_paths": [
-    "docs/development/fresh-agent-continuity-drill.md",
-    "docs/development/fresh-agent-continuity-drill-subject.md",
-    "tests/test_fresh_agent_drill_protocol.py",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/**",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
