@@ -1,0 +1,316 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0115-EXPORT-CONTROL-MEMORY-SUPPLY-001",
+  "epistemic_guardrails": [
+    "This packet grounds operating-fab, technology-migration and regulatory-policy statements only; it creates no synthetic bit-supply estimate and no canonical causal coefficient.",
+    "A China-based DRAM/NAND fab being operational does not establish its later wafer capacity, technology node, yield or bit output.",
+    "The October 2022 BIS thresholds are regulatory scope conditions, not proof that a named fab was denied equipment or reduced production.",
+    "The October 2023 VEU state is a general-authorization regime for eligible items, not unrestricted equipment access and not proof of technology migration speed.",
+    "The August 2025 VEU-revocation policy is later-known evidence. It must not appear in a 2022-2024 replay and must not rewrite the earlier VEU state.",
+    "The 2025 distinction between allowing existing-fab operation and not intending to approve capacity expansion or technology upgrades must remain explicit; current production and future effective supply are not the same semantic dimension.",
+    "Grounding creates EvidenceFragments only. Reality/Judgment/policy-trajectory projection remains a separate existing-owner decision."
+  ],
+  "sources": [
+    {
+      "key": "skhynix_newsroom",
+      "name": "SK hynix Newsroom",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "SK hynix is primary for the operating status, expansion history and stated physical technology-migration constraints of its Wuxi DRAM fab."
+        }
+      ]
+    },
+    {
+      "key": "samsung_newsroom",
+      "name": "Samsung Global Newsroom",
+      "publisher_domain": "news.samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung is primary for the operating status and NAND/V-NAND product identity of its Xi'an memory fab."
+        }
+      ]
+    },
+    {
+      "key": "bis_regulatory",
+      "name": "U.S. Department of Commerce Bureau of Industry and Security",
+      "publisher_domain": "bis.gov",
+      "kind": "government",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "regulatory_primary",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "BIS is authoritative for the U.S. export-control thresholds, VEU authorization state and later licensing-policy state stated in its own rules and official releases."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "skhynix_wuxi_dram_technology_migration_2019_04_18",
+      "vintage_id": "2019-04-18",
+      "source_key": "skhynix_newsroom",
+      "retrieval_url": "https://news.skhynix.com/en/sk-hynix-completes-expanded-fab-c2f-in-wuxi-china/",
+      "original_source_url": "https://news.skhynix.com/en/sk-hynix-completes-expanded-fab-c2f-in-wuxi-china/",
+      "external_id": "skhynix-wuxi-c2f-dram-technology-migration-2019-04-18",
+      "title": "SK hynix Wuxi DRAM fab technology-migration capture",
+      "published_at": null,
+      "first_known_at": "2019-04-19T00:00:00Z",
+      "expected_sha256": "96ca01b38f1dec28ae8f65d7449f635836dc9a5c8dd8c0bb55f920d253cd47fe",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2019-04-18-WUXI-DRAM-TECH-MIGRATION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2019-04-18-WUXI-DRAM-TECH-MIGRATION-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "samsung_xian_nand_fab_2014_05_09",
+      "vintage_id": "2014-05-09",
+      "source_key": "samsung_newsroom",
+      "retrieval_url": "https://news.samsung.com/global/samsung-announces-operation-of-its-memory-facility-in-xian-china",
+      "original_source_url": "https://news.samsung.com/global/samsung-announces-operation-of-its-memory-facility-in-xian-china",
+      "external_id": "samsung-xian-nand-fab-operation-2014-05-09",
+      "title": "Samsung Xi'an NAND fab operating baseline capture",
+      "published_at": null,
+      "first_known_at": "2014-05-10T00:00:00Z",
+      "expected_sha256": "7fafb9e75bd7246fac05ead776fa036e185551d8c79797175d67724ece9a3894",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2014-05-09-XIAN-NAND-FAB-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2014-05-09-XIAN-NAND-FAB-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "bis_prc_memory_thresholds_2022_10_07",
+      "vintage_id": "2022-10-07",
+      "source_key": "bis_regulatory",
+      "retrieval_url": "https://www.bis.gov/press-release/commerce-implements-new-export-controls-advanced-computing-semiconductor-manufacturing-items-peoples",
+      "original_source_url": "https://www.bis.gov/press-release/commerce-implements-new-export-controls-advanced-computing-semiconductor-manufacturing-items-peoples",
+      "external_id": "bis-prc-memory-fab-thresholds-2022-10-07",
+      "title": "BIS 2022 PRC memory-fab export-control thresholds capture",
+      "published_at": null,
+      "first_known_at": "2022-10-08T00:00:00Z",
+      "expected_sha256": "4212fb2e3fa625d4b1fa92af2f56a3bc3eac76225484a3251557143110d03c9b",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2022-10-07-PRC-MEMORY-FAB-THRESHOLDS-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-BIS-2022-10-07-PRC-MEMORY-FAB-THRESHOLDS-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "bis_korea_memory_veu_2023_10_13",
+      "vintage_id": "2023-10-13",
+      "source_key": "bis_regulatory",
+      "retrieval_url": "https://www.bis.gov/press-release/commerce-issues-rule-strengthen-national-security-partnership-secure-semiconductor-supply-chains-republic",
+      "original_source_url": "https://www.bis.gov/press-release/commerce-issues-rule-strengthen-national-security-partnership-secure-semiconductor-supply-chains-republic",
+      "external_id": "bis-korea-memory-veu-2023-10-13",
+      "title": "BIS 2023 Samsung/SK hynix PRC-fab VEU capture",
+      "published_at": null,
+      "first_known_at": "2023-10-14T00:00:00Z",
+      "expected_sha256": "80c83d7c32c14faffb0db09d2091d848ffce53fc9c77dd2689da9faf01d68ea6",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2023-10-13-KOREA-MEMORY-VEU-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-BIS-2023-10-13-KOREA-MEMORY-VEU-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "bis_prc_veu_revocation_2025_08_29",
+      "vintage_id": "2025-08-29",
+      "source_key": "bis_regulatory",
+      "retrieval_url": "https://media.bis.gov/press-release/department-commerce-closes-export-controls-loophole-foreign-owned-semiconductor-fabs-china",
+      "original_source_url": "https://media.bis.gov/press-release/department-commerce-closes-export-controls-loophole-foreign-owned-semiconductor-fabs-china",
+      "external_id": "bis-prc-veu-revocation-2025-08-29",
+      "title": "BIS 2025 foreign-owned PRC-fab VEU revocation capture",
+      "published_at": null,
+      "first_known_at": "2025-08-30T00:00:00Z",
+      "expected_sha256": "af661571dfe78f55471634be2e947f48cf7df6785f77367baebb7623f2cb6e94",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2025-08-29-PRC-VEU-REVOCATION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-BIS-2025-08-29-PRC-VEU-REVOCATION-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "known_time_policy": "conservative_next_day_utc_upper_bound_later_known_policy"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MS0115-SKHYNIX-WUXI-DRAM-TECH-MIGRATION",
+      "document_key": "skhynix_wuxi_dram_technology_migration_2019_04_18",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "C2F is an expansion of the existing DRAM production line, C2, in Wuxi. The Company decided to expand its production line in 2016 in order to solve the shortage of production space due to technology migration. However, with technology scaling, the number of processes has increased and the equipment has become larger, which led to the shortage of the cleanroom space. SK hynix, therefore, has invested a total of 950 billion KRW from June 2017 to April 2019 to secure additional production space.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-001",
+        "claim_role": "memory_fab_technology_migration_equipment_space_requirement",
+        "claim_scope": "self_statement",
+        "authority_class": "primary_self_statement",
+        "epistemic_layer": "evidence_only_operating_fab_physical_mechanism",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2019-04-19T00:00:00Z"},
+        "scope": "skhynix_wuxi_dram_c2_c2f_technology_migration",
+        "comparability_guard": "Physical migration mechanism and operating-fab baseline only; no later policy effect or bit output is inferred.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0115-SAMSUNG-XIAN-NAND-FAB",
+      "document_key": "samsung_xian_nand_fab_2014_05_09",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Samsung Electronics announced that its memory fabrication line in Xi’an China has begun full-scale manufacturing operations. The new facility will manufacture Samsung’s advanced NAND flash memory chips: 3D V-NAND.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-002",
+        "claim_role": "operating_prc_nand_fab_baseline",
+        "claim_scope": "self_statement",
+        "authority_class": "primary_self_statement",
+        "epistemic_layer": "evidence_only_operating_fab_baseline",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2014-05-10T00:00:00Z"},
+        "scope": "samsung_xian_nand_vnand_fab_operating_baseline",
+        "comparability_guard": "Operating NAND fab at the 2014 vintage only; later capacity/layer count is not inferred.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2022-DRAM-THRESHOLD",
+      "document_key": "bis_prc_memory_thresholds_2022_10_07",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Adds new license requirements for items destined to a semiconductor fabrication “facility” in the PRC that fabricates ICs meeting specified thresholds. The relevant memory thresholds are DRAM memory chips of 18nm half-pitch or less and NAND flash memory chips with 128 layers or more.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-003",
+        "claim_role": "prc_dram_fab_export_control_threshold",
+        "claim_scope": "regulatory_primary",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_regulatory_scope",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2022-10-08T00:00:00Z"},
+        "scope": "prc_dram_18nm_half_pitch_or_less_license_threshold",
+        "comparability_guard": "Regulatory threshold only; no named-fab denial or supply loss is inferred.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2022-NAND-THRESHOLD",
+      "document_key": "bis_prc_memory_thresholds_2022_10_07",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Adds new license requirements for items destined to a semiconductor fabrication “facility” in the PRC that fabricates ICs meeting specified thresholds. The relevant memory thresholds are DRAM memory chips of 18nm half-pitch or less and NAND flash memory chips with 128 layers or more.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-004",
+        "claim_role": "prc_nand_fab_export_control_threshold",
+        "claim_scope": "regulatory_primary",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_regulatory_scope",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2022-10-08T00:00:00Z"},
+        "scope": "prc_nand_128_layers_or_more_license_threshold",
+        "comparability_guard": "Regulatory threshold only; no named-fab denial or supply loss is inferred.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2023-MEMORY-VEU",
+      "document_key": "bis_korea_memory_veu_2023_10_13",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Samsung’s and SK hynix’s PRC facilities are Validated End-Users (VEUs). VEUs can apply for, and after national security review and approval by the U.S. government, obtain a general authorization to acquire certain items rather than seeking multiple individual licenses. The rule issued today allows these companies to continue their operations in the PRC.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-005",
+        "claim_role": "foreign_owned_prc_memory_fab_veu_authorization",
+        "claim_scope": "regulatory_primary",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_regulatory_authorization_state",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2023-10-14T00:00:00Z"},
+        "scope": "samsung_skhynix_prc_fab_veu_general_authorization_2023",
+        "comparability_guard": "VEU is a regulatory authorization state for eligible items, not unrestricted equipment access or a memory-supply quantity.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2025-EXISTING-FAB-OPERATION",
+      "document_key": "bis_prc_veu_revocation_2025_08_29",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Former VEU participants will have 120 days following publication of the rule in the Federal Register to apply for and obtain export licenses. Going forward, BIS intends to grant export license applications to allow former VEU participants to operate their existing fabs in China. However, BIS does not intend to grant licenses to expand capacity or upgrade technology at fabs in China.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-006",
+        "claim_role": "post_veu_existing_fab_operation_license_intent",
+        "claim_scope": "regulatory_primary",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_later_known_regulatory_state",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2025-08-30T00:00:00Z"},
+        "scope": "former_veu_prc_existing_fab_operation_license_intent_2025",
+        "comparability_guard": "Later-known 2025 policy only; do not backdate into 2022-2024 replay or equate operation with upgrade permission.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2025-NO-UPGRADE-EXPANSION",
+      "document_key": "bis_prc_veu_revocation_2025_08_29",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Former VEU participants will have 120 days following publication of the rule in the Federal Register to apply for and obtain export licenses. Going forward, BIS intends to grant export license applications to allow former VEU participants to operate their existing fabs in China. However, BIS does not intend to grant licenses to expand capacity or upgrade technology at fabs in China.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0115-007",
+        "claim_role": "post_veu_no_capacity_or_technology_upgrade_license_intent",
+        "claim_scope": "regulatory_primary",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_later_known_regulatory_state",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2025-08-30T00:00:00Z"},
+        "scope": "former_veu_prc_no_capacity_expansion_or_technology_upgrade_intent_2025",
+        "comparability_guard": "Later-known policy intent about future expansion/upgrade; no numerical wafer or bit-supply impact is inferred.",
+        "linked_memory_lead_ids": ["MS-0115"]
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 5,
+    "required_fragments": 7,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
