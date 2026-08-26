@@ -27,6 +27,7 @@ def test_fresh_agent_continuity_drill_stays_black_box_and_bounded() -> None:
 
 
 def test_fresh_agent_drill_uses_handoff_sequence_as_fixed_cadence() -> None:
+    # FRESH_AGENT_DRILL_CADENCE_V1 -- stable Repair Memory invariant identifier.
     drill = (ROOT / "docs" / "development" / "fresh-agent-continuity-drill.md").read_text(
         encoding="utf-8"
     )
