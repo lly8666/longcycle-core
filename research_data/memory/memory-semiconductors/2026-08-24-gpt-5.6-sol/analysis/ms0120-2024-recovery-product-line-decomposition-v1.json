@@ -1,0 +1,98 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0120-2024-RECOVERY-PRODUCT-LINE-DECOMPOSITION-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0120",
+  "authority": "curated_research_assessment_over_grounded_cross_packet_evidence",
+  "subject": "Whether the 2023-2025 memory recovery should be represented as an AI-caused industry-wide upswing or as conventional DRAM/NAND cycle recovery plus AI-driven HBM and enterprise-product mix overlays",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0120-2024-recovery-decomposition-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-qlc-ai-storage-demand-productization-v1.json"
+  ],
+  "assessment": {
+    "status": "ai_only_recovery_narrative_rejected_product_line_decomposition_supported",
+    "supported": [
+      {
+        "explanatory_axis": "conventional_cycle_supply_response",
+        "finding": "The already-grounded combined-recovery trajectory preserves a 2022 Micron DRAM/NAND wafer-start reduction and subsequent supplier production-cut expectations before later conventional PC/mobile demand improvement became known.",
+        "meaning": "Conventional DRAM/NAND entered the later recovery with a documented non-AI supply-correction mechanism already in motion; a broad 2024 recovery therefore cannot be attributed to AI merely because AI products were strong at the same time."
+      },
+      {
+        "explanatory_axis": "conventional_demand_recovery_precedes_2024_ai_mix_decomposition",
+        "finding": "The combined-recovery trajectory records Samsung's Q3 2023 PC/mobile memory-demand improvement as a later-known Reality milestone, with no-lookahead replay preserving its November 2023 known time.",
+        "meaning": "At least one conventional end-market recovery signal existed before the 2024 HBM/product-mix bridge assembled here. This does not prove a full conventional recovery, but it rejects a chronology in which all recovery begins with 2024 AI demand."
+      },
+      {
+        "explanatory_axis": "broad_price_recovery_capacity_condition",
+        "finding": "In January 2024 TrendForce framed persistence of the broad DRAM/NAND price rally as depending on continued supplier control of capacity utilization.",
+        "meaning": "Contemporaneous market framing still treated supply discipline/utilization as material to broad memory pricing after the downturn; this is distinct from AI-specific demand strength and remains an expectation rather than a realized causal coefficient."
+      },
+      {
+        "explanatory_axis": "ai_and_conventional_dram_separate_trajectories",
+        "finding": "In April 2024 SK hynix explicitly described AI-memory demand as continuing to rise while separately expecting conventional DRAM to begin recovering in the second half.",
+        "meaning": "The supplier itself did not describe AI memory and conventional DRAM as one homogeneous demand trajectory. Product-line decomposition is therefore more faithful than an aggregate 'AI recovery' label."
+      },
+      {
+        "explanatory_axis": "nand_recovery_supply_mechanism",
+        "finding": "By June 2024 TrendForce described the observed first-half NAND price rebound as occurring while manufacturers kept production in check.",
+        "meaning": "NAND provides a direct broad-recovery example in which supply restraint is part of the observed rebound mechanism; this cannot be replaced by an HBM narrative because HBM is a DRAM product family and the packet does not establish an AI-only NAND causal share."
+      },
+      {
+        "explanatory_axis": "hbm_ai_mix_strength",
+        "finding": "The existing HBM3E trajectory separately preserves 2024 HBM3E production, sampling and customer-supply states and their contemporaneous Judgments without merging those states into conventional DRAM.",
+        "meaning": "AI demand is strongly material to HBM/high-value memory mix and should remain visible as a separate product trajectory rather than being minimized simply because conventional recovery also had supply/inventory mechanics."
+      },
+      {
+        "explanatory_axis": "enterprise_ssd_ai_overlay",
+        "finding": "Existing enterprise-SSD/QLC research has multiple 2024 commercialization and qualification signals around data-center/AI storage while explicitly leaving AI-only industry demand magnitude unresolved.",
+        "meaning": "AI is also a credible high-value NAND/SSD mix overlay, but supplier revenue, qualification and vendor shipment signals do not establish how much of total NAND recovery was caused by AI."
+      },
+      {
+        "explanatory_axis": "aggregate_dram_mix_distortion",
+        "finding": "By October 2024 TrendForce's Q4 outlook explicitly separated weak conventional-DRAM price momentum from an uplift to overall DRAM pricing associated with the rising HBM share.",
+        "meaning": "Aggregate DRAM metrics can move differently from conventional DRAM because product mix changes. An industry-level price or revenue upswing therefore cannot be read as a homogeneous demand recovery without product decomposition."
+      }
+    ],
+    "not_established": [
+      "The packet does not quantify the percentage of the 2024 memory recovery caused by AI, supplier cuts, inventory normalization or conventional end-market demand.",
+      "The packet does not establish that AI demand was irrelevant; HBM and enterprise/data-center storage evidence materially supports an AI-driven high-value mix overlay.",
+      "The January capacity-utilization condition is not a realized full-year supplier-utilization measurement.",
+      "The April conventional-DRAM second-half recovery statement is a supplier outlook, not a realized industry Outcome.",
+      "The October conventional-DRAM/HBM price decomposition is a forecast and must not be backdated into first-half 2024 replay.",
+      "The enterprise-SSD evidence does not establish an industry-wide AI-only NAND demand quantity or causal fraction.",
+      "No cross-product substitution coefficient between HBM capacity allocation and conventional DRAM bit supply is established here."
+    ],
+    "point_in_time_interpretation": {
+      "as_of_2023_10_31": "A researcher can observe prior supplier production cuts and some conventional PC/mobile recovery signals from the existing combined-recovery trajectory, but cannot yet use the later January/April/June/October 2024 bridge or later HBM mix decomposition.",
+      "as_of_2024_01_20": "The broad memory-price rally is contemporaneously framed as depending on continued capacity-utilization control. This strengthens the non-AI conventional-cycle explanation but still provides no AI causal share.",
+      "as_of_2024_04_26": "SK hynix now explicitly separates continuing AI-memory demand growth from an expected second-half conventional-DRAM recovery, while the independent HBM3E trajectory already exposes product-specific AI-memory states.",
+      "as_of_2024_06_29": "TrendForce additionally describes a first-half NAND price rebound associated with restrained production. The conventional-cycle explanation now spans both DRAM/NAND supply correction while AI strength remains separately visible in HBM and enterprise storage.",
+      "as_of_2024_10_10": "A later TrendForce forecast explicitly shows conventional DRAM and HBM mix diverging in price contribution. Aggregate DRAM should now be interpreted with product-mix decomposition rather than as one homogeneous recovery series."
+    },
+    "counterfactual_evaluation": {
+      "hypothesis_ai_caused_the_whole_2024_memory_recovery": "rejected_as_overly_coarse",
+      "reason_ai_only": "The evidence preserves supply cuts and conventional-demand recovery before the 2024 AI bridge, a broad price-rally condition tied to capacity utilization, a NAND rebound associated with restrained production, and later explicit divergence between conventional DRAM and HBM mix. AI is clearly material in HBM/high-value enterprise products but is not demonstrated as the sole cause of the broad DRAM/NAND recovery.",
+      "hypothesis_conventional_cycle_plus_ai_mix_overlay": "strongly_supported_as_research_representation",
+      "reason_decomposition": "This representation fits the source scopes and chronology without forcing incomparable product lines into one causal scalar: conventional DRAM/NAND preserve cut/inventory/recovery dynamics, HBM preserves a distinct AI-memory trajectory, and enterprise SSD/QLC preserves a separate AI/data-center commercialization overlay.",
+      "preferred_research_representation": "Represent recovery as at least three parallel state families: conventional DRAM/NAND cycle state, HBM/AI product-mix state, and enterprise-SSD/data-center storage state. Aggregate price/revenue measures may be composed only with explicit mix semantics and should not inherit an unmeasured AI causal share."
+    },
+    "representation_decision": "Keep the cross-product causal synthesis in the CAP-0006 research-only lane. Reuse the existing typed supplier-cut/recovery and HBM trajectories as authoritative for their own scoped states rather than creating a new aggregate AI-recovery truth object.",
+    "canonical_projection_decision": "No new canonical causal predicate is needed. The January and October methodological-primary forecasts are potential CAP-0004 Judgment candidates if later product use requires typed replay; the June NAND rebound is a potential source-scoped Reality candidate only if an existing predicate can represent the observation without inventing a causal coefficient. Existing typed HBM and supplier-cut trajectories remain separate authority.",
+    "outcome_for_ms0120": "MS-0120 is supported. The 2024 memory recovery should not be summarized as simply 'caused by AI.' Conventional DRAM/NAND recovery retained ordinary cycle mechanics including production cuts, inventory normalization and conventional demand improvement, while AI materially strengthened HBM and high-value enterprise-product mix. The relative causal weights remain unresolved."
+  },
+  "stop_rule": {
+    "closed_surface": "Do not spend additional search budget on generic articles debating whether AI did or did not cause the memory recovery. The useful distinction is now product-line and state-variable decomposition, not another narrative vote.",
+    "reopen_when": [
+      "A methodological-primary source quantifies comparable conventional-DRAM, HBM and NAND/enterprise-SSD bit, revenue or price-mix contributions on the same period and denominator.",
+      "A primary or methodological-primary source directly quantifies the contribution of AI workloads to total DRAM or NAND demand rather than only HBM/eSSD product growth.",
+      "Realized Q4 2024 conventional-DRAM versus HBM price/mix data allow the October forecast to be evaluated as an Outcome.",
+      "Comparable capacity-allocation data quantify whether HBM production materially constrained conventional DRAM bit supply."
+    ]
+  },
+  "next_research_direction": {
+    "candidate": "MS-0121",
+    "rationale": "The AI-versus-conventional recovery decomposition is now sufficiently grounded. The next high-value counterfactual tests whether 2016-2018 NAND tightening is better explained by temporary 2D-to-3D transition loss versus demand/bit-growth dynamics."
+  }
+}
