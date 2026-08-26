@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-STORAGE-ENTERPRISE-SSD-QLC-RESUME-005",
-  "intent": "Resume the existing memory-semiconductors storage-productization lane for enterprise SSD / QLC / AI-storage demand. Reuse the current source-preservation, Grounded Evidence, canonical Reality/comparability, Judgment-Outcome, no-lookahead replay/research-only and historical verification-depth owners. Preserve product-capacity specifications as technical evidence without inferring shipments, installed base, exabytes, adoption or market demand; promote only claim-scoped source-grounded observations that satisfy the existing owner contracts.",
+  "intent_id": "MEMORY-STORAGE-ENTERPRISE-SSD-QLC-REALITY-006",
+  "intent": "Complete enterprise SSD / QLC / AI-storage productization through the existing Grounded Evidence and canonical Reality path. Reuse the current source-preservation, Grounded Evidence, Reality normalization/comparability, Judgment-Outcome, no-lookahead replay/research-only, historical verification-depth and fail-closed execution owners. The real storage packet exposed one bounded catalog gap: canonical numeric storage volume needs an explicit EB unit before a vendor-scoped exabyte observation can enter Fact persistence. Extend the existing normalization catalog rather than weakening unit validation, and project only source-specific observations whose scope, unit and temporal dimensions are complete for their narrow predicates.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -10,7 +10,8 @@
     "CAP-0003",
     "CAP-0004",
     "CAP-0005",
-    "CAP-0006"
+    "CAP-0006",
+    "CAP-0007"
   ],
   "closest_existing_capability_ids": [
     "CAP-0001",
@@ -18,10 +19,11 @@
     "CAP-0003",
     "CAP-0004",
     "CAP-0005",
-    "CAP-0006"
+    "CAP-0006",
+    "CAP-0007"
   ],
-  "rationale_summary": "No new semantic owner is required. CAP-0001 owns truthful source identity/preservation; CAP-0002 owns exact claim-scoped Evidence; CAP-0003 owns Reality normalization/comparability and rejects guidance or inferred occurrence as Reality; CAP-0004 owns contemporaneous expectation/revision and later Outcome; CAP-0005 owns no-lookahead/research-only researcher visibility; CAP-0006 owns Memory-first verification and unresolved-search depth. The storage batch is a productization composition across those owners, with a hard negative case that high-capacity QLC product specifications do not establish market adoption or demand quantities.",
-  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/cross-industry-demand-bridge-productization-v1.json",
+  "rationale_summary": "No new semantic owner is required. CAP-0001/CAP-0002 preserve and ground the five-document/seven-fragment source packet; CAP-0003 owns canonical Reality, units and comparability and already has an extension seam for predicate-specific normalization rules; CAP-0004 remains the owner if later contemporaneous guidance/Outcome is added; CAP-0005 keeps cross-vendor interpretation research-only and no-lookahead; CAP-0006 owns remaining unresolved-search depth; CAP-0007 owns fail-closed Evidence-to-Reality execution. The first Reality run correctly failed because EB was not registered, proving the catalog gate rather than justifying a bypass. The repair registers canonical EB and keeps source wording, narrow statistical scope and excluded claim roles intact.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-qlc-ai-storage-demand-productization-v1.json",
   "unmet_requirement": null,
   "evidence_refs": [
     ".longcycle/capabilities/cards/CAP-0001.json",
@@ -30,10 +32,14 @@
     ".longcycle/capabilities/cards/CAP-0004.json",
     ".longcycle/capabilities/cards/CAP-0005.json",
     ".longcycle/capabilities/cards/CAP-0006.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/cross-industry-demand-bridge-productization-v1.json"
+    ".longcycle/capabilities/cards/CAP-0007.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-qlc-ai-storage-demand-productization-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-qlc-ai-storage-demand-execution-receipt-v1.json"
   ],
   "planned_paths": [
     "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/**",
+    "migrations/0036_digital_storage_unit.sql",
+    ".github/workflows/storage-enterprise-ssd-qlc-ai-reality.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
