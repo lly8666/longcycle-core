@@ -1,0 +1,128 @@
+{
+  "schema_version": "longcycle-memory-corroboration-assessment/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "assessment_id": "MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-PLATFORM-CUSTOMER-CORROBORATION-001",
+  "created_at": "2026-08-26T06:52:03Z",
+  "authority": "curated_research_assessment_over_grounded_platform_primary_and_customer_primary_evidence",
+  "linked_memory_leads": [
+    "MS-0110",
+    "MS-0111"
+  ],
+  "grounded_evidence_receipt": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-platform-customer-corroboration-grounding-receipt-v1.json",
+  "findings": [
+    {
+      "finding_id": "PLAT-CORR-001",
+      "classification": "contemporaneous_platform_configuration",
+      "known_at": "2024-12-17T00:00:00Z",
+      "claim": "VAST Data's December 2024 EBox description specifies three SCM drives and nine 30TB NVMe SSDs.",
+      "supporting_evidence_fragment_id": "60820a8b-3d7e-57d3-bf80-f06d23fa435f",
+      "specificity": {
+        "platform": "VAST EBox",
+        "drive_count": 9,
+        "capacity_per_drive_text": "30TB",
+        "interface": "NVMe",
+        "vendor": "unresolved",
+        "model": "unresolved",
+        "nand_cell_type": "unresolved"
+      },
+      "disposition": "use_as_2024_platform_configuration_only"
+    },
+    {
+      "finding_id": "PLAT-CORR-002",
+      "classification": "later_known_platform_bom",
+      "known_at": "2026-07-10T00:00:00Z",
+      "claim": "VAST Data's July 2026 SMC Gen2 EBox BOM lists nine Solidigm D5-P5336 61.44TB PCIe 4 QLC U.2 drives per EBox.",
+      "supporting_evidence_fragment_id": "9c788e8d-1ece-5b1b-9218-5f46573dfb25",
+      "specificity": {
+        "platform": "VAST SMC Gen2 EBox",
+        "vendor": "Solidigm",
+        "model": "D5-P5336",
+        "capacity_per_drive_text": "61.44TB",
+        "nand_cell_type": "QLC",
+        "quantity_per_ebox": 9
+      },
+      "disposition": "current_platform_integration_corroborated_no_backdating"
+    },
+    {
+      "finding_id": "PLAT-CORR-003",
+      "classification": "later_known_platform_integration",
+      "known_at": "2026-08-26T06:44:29Z",
+      "claim": "NVIDIA's current DGX GB200 release notes independently document Micron NVMe drives in GB200/CX7-CX8 configurations.",
+      "supporting_evidence_fragment_id": "00b039e8-23e1-5394-963d-2148325a5154",
+      "specificity": {
+        "platform": "NVIDIA DGX GB200 NVL72",
+        "vendor": "Micron",
+        "device_class": "NVMe drive",
+        "model": "unresolved",
+        "specific_issue_first_publication_date": "unresolved"
+      },
+      "disposition": "generic_vendor_platform_corroboration_only_not_9550_or_2024_rvl"
+    },
+    {
+      "finding_id": "PLAT-CORR-004",
+      "classification": "named_customer_deployment_precedent",
+      "known_at": "2022-06-21T00:00:00Z",
+      "claim": "DUG Technology, describing its VAST HPCaaS deployment, states that the architecture uses a large QLC flash tier behind Intel Optane cache.",
+      "supporting_evidence_fragment_id": "513e2855-e445-56ef-a01d-70a3301981c6",
+      "specificity": {
+        "customer": "DUG Technology",
+        "platform": "VAST storage used for DUG HPCaaS",
+        "nand_cell_type": "QLC",
+        "drive_vendor": "unresolved",
+        "drive_model": "unresolved"
+      },
+      "disposition": "real_named_customer_qlc_deployment_precedent"
+    }
+  ],
+  "corroboration_matrix": {
+    "2024_vast_ebox_uses_nine_30tb_nvme": "direct_platform_primary_support",
+    "2024_vast_ebox_drives_are_solidigm_p5336_qlc": "not_established",
+    "2026_vast_smc_gen2_ebox_uses_nine_61_44tb_p5336_qlc": "direct_platform_primary_support",
+    "gb200_platform_contains_micron_nvme": "later_direct_platform_primary_support",
+    "gb200_2024_specific_micron_9550_rvl_event": "not_independently_established",
+    "named_customer_real_qlc_flash_deployment": "direct_customer_primary_support_from_2022"
+  },
+  "targeted_same_product_reverse_search": {
+    "query_families": [
+      "site:vastdata.com 2024 P5336 VAST Data",
+      "site:vastdata.com 2024 Solidigm P5336",
+      "site:docs.nvidia.com 2024 Micron 9550 GB200",
+      "site:nvidia.com 2024 Micron 9550 GB200",
+      "site:nvidia.com 2024 9550 NVMe GB200"
+    ],
+    "result": "no_direct_same_vintage_same_product_platform_owner_confirmation_recovered",
+    "absence_claim": "not_asserted",
+    "later_nonmatching_surfaces": [
+      {
+        "publisher": "VAST Data",
+        "surface": "2026 EBox and Ceres V2 validated-drive lists",
+        "finding": "P5336 QLC is explicitly validated in later VAST platform documentation.",
+        "why_not_2024_bridge": "Later validation does not establish the identity of the unnamed nine 30TB NVMe SSDs in the December 2024 EBox article."
+      },
+      {
+        "publisher": "NVIDIA",
+        "surface": "DGX B300 firmware update documentation",
+        "finding": "Later NVIDIA documentation explicitly names the Micron 9550 Gen5 SSD on DGX B300.",
+        "why_not_gb200_bridge": "B300 is a different NVIDIA platform generation and cannot independently establish the 2024 GB200 9550 RVL event."
+      }
+    ]
+  },
+  "reality_projection_disposition": {
+    "projection_created": false,
+    "reason": "The corroboration packet is valuable as Evidence, but the strongest newly grounded claims do not map cleanly onto an existing canonical Reality predicate without either losing specificity or introducing a new semantic owner solely for this packet. The project stop rule favors preserving Evidence and assessment rather than creating an artificial Fact surface."
+  },
+  "lead_dispositions": [
+    {
+      "lead_id": "MS-0110",
+      "status": "named_customer_qlc_deployment_precedent_grounded_and_later_platform_integration_corroborated",
+      "researcher_interpretation": "QLC enterprise storage is no longer supported only by SSD-vendor self-statements: DUG supplies a named customer-owner deployment precedent, and VAST later publishes an explicit P5336 QLC BOM."
+    },
+    {
+      "lead_id": "MS-0111",
+      "status": "platform_corroboration_deepened_2024_same_product_identity_still_unresolved",
+      "researcher_interpretation": "VAST's 2024 EBox configuration and later P5336 QLC BOM form a useful trajectory, but they cannot be collapsed into a claim that P5336 was the unnamed 30TB drive in 2024."
+    }
+  ],
+  "researcher_visible_boundary": "Independent evidence strengthens the general deployment/integration trajectory while narrowing what remains unknown. Later specificity must not be used to rewrite earlier ambiguous configurations.",
+  "next_action": "Stop repeating the same P5336/GB200 corroboration search unless a new primary surface appears. Advance to the next storage demand/adoption lead that can add a distinct customer workload, deployment scale, or directly measured consumption denominator while preserving the unresolved full-year QLC Outcome and 2024 same-product identity gaps."
+}
