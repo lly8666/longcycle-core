@@ -187,6 +187,13 @@ class SessionHandoffCheckpoint(BaseModel):
             or self.active_context.coverage_path is None
         ):
             raise ValueError("memory campaign requires active-context campaign_root and coverage_path")
+        if self.memory_campaign is None and (
+            self.active_context.campaign_root is not None
+            or self.active_context.coverage_path is not None
+        ):
+            raise ValueError(
+                "pre-campaign handoff must not retain active-context campaign_root or coverage_path"
+            )
 
         return self
 
