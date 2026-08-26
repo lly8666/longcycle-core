@@ -37,4 +37,4 @@ def test_fresh_agent_v2_controller_requires_external_stage_order() -> None:
     assert "Only after stage 1 is complete" in controller
     assert "Only after stage 2 is complete" in controller
     assert "Never send stages 2 and 3 together with the initial instruction" in controller
-    assert "The report is written **only after stage 3 has been externally supplied and answered**" in controller
+    assert "FRESH_AGENT_REPORT_AFTER_EXTERNAL_STAGE_3_ONLY" in controller

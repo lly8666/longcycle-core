@@ -67,6 +67,8 @@ Pass means it distinguishes full historical recovery from execution-stage source
 
 ## Report contract v2
 
+> `FRESH_AGENT_REPORT_AFTER_EXTERNAL_STAGE_3_ONLY`
+
 The only repository mutation authorized for the subject is one JSON report under:
 
 `.longcycle/handoff/rehearsals/fresh-agent-external-<continuity-sequence>-<subject-head-7>.json`
