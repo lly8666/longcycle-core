@@ -98,6 +98,9 @@ class AssertionNormalizer:
     unit_rules: dict[str, UnitRule] = field(default_factory=lambda: dict(DEFAULT_UNIT_RULES))
     unit_conversions: dict[tuple[str, str], UnitRule] = field(default_factory=dict)
     registered_units: frozenset[str] = DEFAULT_REGISTERED_UNITS
+    unit_aliases_exact: dict[str, str] = field(default_factory=dict)
+    unit_aliases_casefold: dict[str, str] = field(default_factory=dict)
+    ambiguous_unit_casefolds: frozenset[str] = frozenset()
     predicate_profiles: dict[str, PredicateProfile] = field(
         default_factory=lambda: dict(DEFAULT_PREDICATE_PROFILES)
     )
@@ -128,34 +131,53 @@ class AssertionNormalizer:
             raise ValueError(f"invalid {assertion.value_type.value} fact value: {assertion.value}") from exc
 
         metadata = dict(assertion.metadata)
-        unit = assertion.normalized_unit
+        raw_unit = assertion.normalized_unit
+        unit: str | None = None
         unit_valid = True
-        if assertion.value_type == FactValueKind.NUMERIC and number is not None and unit is not None:
-            normalized_unit_key = unit.strip().lower()
-            rule = None
-            if profile is not None and profile.canonical_unit is not None:
-                rule = self.unit_conversions.get(
-                    (normalized_unit_key, profile.canonical_unit.lower())
-                )
-            rule = rule or self.unit_rules.get(normalized_unit_key)
-            if rule:
-                number = number * rule.multiplier + rule.offset
-                unit = rule.canonical_unit
-            registered_lookup = {code.lower(): code for code in self.registered_units}
-            registered_code = registered_lookup.get(unit.strip().lower())
-            if registered_code is None:
-                metadata["unregistered_unit"] = assertion.normalized_unit
-                unit = None
+        if assertion.value_type == FactValueKind.NUMERIC and number is not None and raw_unit is not None:
+            unit = self._resolve_unit(raw_unit)
+            if unit is None:
+                lexical_rule = self.unit_rules.get(raw_unit.strip().casefold())
+                if lexical_rule is not None:
+                    number = number * lexical_rule.multiplier + lexical_rule.offset
+                    unit = self._resolve_unit(lexical_rule.canonical_unit)
+            if unit is None:
+                if raw_unit.strip().casefold() in self.ambiguous_unit_casefolds:
+                    metadata["ambiguous_unit"] = raw_unit
+                    metadata.pop("unregistered_unit", None)
+                else:
+                    metadata["unregistered_unit"] = raw_unit
+                    metadata.pop("ambiguous_unit", None)
                 unit_valid = False
             else:
-                unit = registered_code
                 metadata.pop("unregistered_unit", None)
+                metadata.pop("ambiguous_unit", None)
+                if profile is not None and profile.canonical_unit is not None:
+                    target_unit = self._resolve_unit(profile.canonical_unit)
+                    if target_unit is None:
+                        raise ValueError(
+                            f"predicate canonical unit is not registered: {profile.canonical_unit}"
+                        )
+                    if unit != target_unit:
+                        conversion = self.unit_conversions.get((unit, target_unit))
+                        if conversion is None:
+                            metadata["unit_conversion_unavailable"] = {
+                                "from_unit": unit,
+                                "to_unit": target_unit,
+                            }
+                            unit_valid = False
+                        else:
+                            number = number * conversion.multiplier + conversion.offset
+                            unit = target_unit
+                            metadata.pop("unit_conversion_unavailable", None)
+                    else:
+                        metadata.pop("unit_conversion_unavailable", None)
         elif assertion.value_type == FactValueKind.NUMERIC:
             unit_valid = False
-        elif unit is not None:
-            metadata["unexpected_unit"] = unit
-            unit = None
+        elif raw_unit is not None:
+            metadata["unexpected_unit"] = raw_unit
             unit_valid = False
+
         valid_time_kind = self._valid_time_kind(assertion, profile)
         dimensions_complete = self._dimensions_complete(
             assertion,
@@ -182,6 +204,32 @@ class AssertionNormalizer:
         )
         stable_id = self._stable_id(provisional)
         return provisional.model_copy(update={"id": stable_id})
+
+    def _resolve_unit(self, raw_unit: str) -> str | None:
+        """Resolve source-facing unit text without erasing meaningful symbol case.
+
+        Exact canonical symbols and exact aliases win. Case-folded aliases are only
+        admitted by the semantic catalog when the entire token family is unambiguous.
+        A legacy case-fold fallback remains for old catalog symbols (for example USD)
+        but is disabled for families such as GB/Gb and kB/kb.
+        """
+
+        token = raw_unit.strip()
+        if token in self.registered_units:
+            return token
+        exact_alias = self.unit_aliases_exact.get(token)
+        if exact_alias is not None:
+            return exact_alias
+        folded = token.casefold()
+        casefold_alias = self.unit_aliases_casefold.get(folded)
+        if casefold_alias is not None:
+            return casefold_alias
+        if folded in self.ambiguous_unit_casefolds:
+            return None
+        candidates = [code for code in self.registered_units if code.casefold() == folded]
+        if len(candidates) == 1:
+            return candidates[0]
+        return None
 
     @staticmethod
     def _parse_number(value: str) -> Decimal:
@@ -214,6 +262,12 @@ class AssertionNormalizer:
 
     @staticmethod
     def _stable_id(assertion: FactAssertion) -> UUID:
+        unresolved_unit = (
+            assertion.metadata.get("unregistered_unit")
+            or assertion.metadata.get("ambiguous_unit")
+            or assertion.metadata.get("unit_conversion_unavailable")
+            or ""
+        )
         return stable_uuid(
             "assertion-v2",
             str(assertion.document_id),
@@ -229,7 +283,7 @@ class AssertionNormalizer:
             assertion.extractor_version,
             assertion.normalizer_name,
             assertion.normalizer_version,
-            str(assertion.metadata.get("unregistered_unit") or ""),
+            canonical_json(unresolved_unit),
         )
 
     @staticmethod
@@ -272,7 +326,7 @@ class AssertionNormalizer:
             profile.canonical_unit is None
             or (
                 normalized_unit is not None
-                and normalized_unit.lower() == profile.canonical_unit.lower()
+                and normalized_unit == profile.canonical_unit
             )
         )
         dimension_bound_unit_complete = True
@@ -281,7 +335,7 @@ class AssertionNormalizer:
             dimension_bound_unit_complete = (
                 dimension_unit is not None
                 and normalized_unit is not None
-                and str(dimension_unit).lower() == normalized_unit.lower()
+                and str(dimension_unit) == normalized_unit
             )
         temporal_complete = valid_time_kind == profile.temporal_mode
         dimension_schema_complete = (
