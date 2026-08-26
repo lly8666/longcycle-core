@@ -135,7 +135,7 @@ jobs:
           normalizer = runtime.normalizer
           assert normalizer._resolve_unit('GB') == 'GB'
           assert normalizer._resolve_unit('Gb') == 'Gbit'
-          assert normalizer._resolve_unit('gb') == 'Gbit'
+          assert normalizer._resolve_unit('gb') is None
           assert normalizer._resolve_unit('gB') is None
           assert normalizer._resolve_unit('KB') is None
           assert normalizer._resolve_unit('GIGABYTES') == 'GB'
@@ -153,7 +153,7 @@ jobs:
               'checks': {
                   'decimal_binary_separated': True,
                   'bit_byte_case_semantics_preserved': True,
-                  'ambiguous_KB_fail_closed': True,
+                  'ambiguous_symbol_case_fail_closed': True,
                   'transitive_graph_conversion': True,
                   'semantic_snapshot_includes_aliases': True,
               },
