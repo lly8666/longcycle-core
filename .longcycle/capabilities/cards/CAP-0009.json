@@ -3,6 +3,7 @@
     "handoff",
     "session continuity",
     "fresh agent bootstrap",
+    "fresh agent drill",
     "resume cursor",
     "data plane handoff",
     "historical recall"
@@ -13,12 +14,19 @@
       "description": "Typed handoff checkpoint owns bounded current horizon/cursor reconstruction.",
       "kind": "application",
       "path": "src/longcycle/application/session_handoff.py"
+    },
+    {
+      "contains": "class FreshAgentContinuityReportV3(BaseModel):",
+      "description": "Fresh-Agent v3 report contract validates staged cue integrity, report semantics and controller-owned cue digests.",
+      "kind": "application",
+      "path": "src/longcycle/application/fresh_agent_drill.py"
     }
   ],
   "extension_seams": [
     "Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.",
     "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger.",
-    "Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff."
+    "Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff.",
+    "Tighten Fresh-Agent drill transport/report validation when a real rehearsal exposes a harness ambiguity, without weakening fresh-session isolation or turning the controller into the subject."
   ],
   "guards": [
     {
@@ -26,6 +34,24 @@
       "description": "Handoff tests enforce bounded bootstrap and live-head delta semantics.",
       "kind": "test",
       "path": "tests/test_session_handoff.py"
+    },
+    {
+      "contains": "test_fresh_agent_v3_literal_cue_cannot_be_reported_as_pass",
+      "description": "Fresh-Agent v3 rejects contentless trigger words as completed external cue payloads.",
+      "kind": "test",
+      "path": "tests/test_fresh_agent_drill_protocol.py"
+    },
+    {
+      "contains": "FRESH_AGENT_CONTINUITY_DRILL_CONTROLLER_V3",
+      "description": "Controller contract owns externally staged cue payloads and maintainer acceptance criteria; subject protocol never receives future payload text early.",
+      "kind": "protocol",
+      "path": "docs/development/fresh-agent-continuity-drill.md"
+    },
+    {
+      "contains": "FRESH_AGENT_SUBJECT_READ_DELIVERED_CUE_PAYLOAD",
+      "description": "Subject contract distinguishes pre-delivery secrecy from the requirement to read and answer a valid delivered cue.",
+      "kind": "protocol",
+      "path": "docs/development/fresh-agent-continuity-drill-subject.md"
     },
     {
       "contains": "HISTORICAL_RECALL_PROTOCOL_V1",
@@ -46,28 +72,39 @@
     "Replacing live Git/CI authority.",
     "Preloading all old industries/devlogs/repair cards.",
     "Maintaining a second continuously rewritten summary of all project history.",
-    "Transporting live PostgreSQL as session authority."
+    "Transporting live PostgreSQL as session authority.",
+    "Treating a same-session self-test as a genuine external Fresh-Agent pass.",
+    "Using hidden trigger words as substitutes for externally delivered drill questions."
   ],
   "owned_semantics": [
     "continuity.resume_cursor",
     "continuity.live_head_reconciliation",
     "continuity.resume_asset_identity",
-    "continuity.on_demand_history_recall"
+    "continuity.on_demand_history_recall",
+    "continuity.fresh_agent_external_stage_isolation",
+    "continuity.fresh_agent_cue_integrity",
+    "continuity.fresh_agent_report_provenance"
   ],
-  "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
-  "revisit_when": "Only replace if a stronger continuity authority preserves bounded cold-start recovery, live-ref freshness, explicit asset integrity and selective historical recall without requiring user restatement or preloading project history.",
+  "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, route into cold project history only when a relevant cue appears, and validate genuine staged Fresh-Agent continuity drills without allowing contentless cue triggers or same-session self-certification; live Git/CI and original repository history remain authority.",
+  "revisit_when": "Only replace if a stronger continuity authority preserves bounded cold-start recovery, live-ref freshness, explicit asset integrity, selective historical recall, genuine external-stage isolation, delivered-cue integrity and report-only provenance without requiring user restatement or preloading project history.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
     "src/longcycle/application/session_handoff.py",
     "src/longcycle/application/handoff_data_plane.py",
     "src/longcycle/application/handoff_freshness.py",
     "src/longcycle/application/handoff_drill.py",
+    "src/longcycle/application/fresh_agent_drill.py",
+    "scripts/validate_fresh_agent_drill_report.py",
     ".longcycle/handoff/**",
     "CONTINUE_HERE.md",
     "FRESH_AGENT_BOOTSTRAP.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development/continuity-architecture.md",
-    "docs/development/on-demand-history-recall.md"
+    "docs/development/on-demand-history-recall.md",
+    "docs/development/fresh-agent-continuity-drill.md",
+    "docs/development/fresh-agent-continuity-drill-subject.md",
+    "tests/test_fresh_agent_continuity_drill.py",
+    "tests/test_fresh_agent_drill_protocol.py"
   ],
   "status": "active",
   "supersedes": [],
@@ -75,6 +112,7 @@
     "handoff",
     "continuity",
     "bootstrap",
+    "fresh-agent",
     "historical-recall",
     "live-head",
     "data-plane"
