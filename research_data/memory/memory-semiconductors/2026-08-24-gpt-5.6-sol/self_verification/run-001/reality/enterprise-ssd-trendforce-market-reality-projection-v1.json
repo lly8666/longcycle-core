@@ -1,0 +1,122 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-MARKET-TRAJECTORY-001",
+  "allowed_claim_roles": [
+    "market_observed_enterprise_ssd_procurement_volume_qoq",
+    "market_observed_enterprise_ssd_revenue_qoq",
+    "market_observed_enterprise_ssd_major_supplier_revenue"
+  ],
+  "subjects": [
+    {
+      "id": "368965b9-eb5c-529c-8276-caf84fb88dc6",
+      "entity_type": "event",
+      "canonical_name": "Enterprise SSD market — 3Q24"
+    },
+    {
+      "id": "83ebc518-04e3-5ffc-b77b-baeab3d49543",
+      "entity_type": "event",
+      "canonical_name": "Enterprise SSD major suppliers — 4Q24"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "trendforce-enterprise-ssd-q3-procurement-volume-qoq",
+      "evidence_fragment_key": "EVF-TRENDFORCE-2024-12-11-ENTERPRISE-SSD-Q3-PROCUREMENT-QOQ",
+      "subject_entity_id": "368965b9-eb5c-529c-8276-caf84fb88dc6",
+      "predicate_code": "storage.enterprise_ssd_procurement_volume_qoq_growth",
+      "value_text": "total procurement volume for enterprise SSDs rose 15% compared to the previous quarter",
+      "value_kind": "numeric",
+      "value_numeric": 0.15,
+      "normalized_unit": "ratio",
+      "valid_time_kind": "period",
+      "valid_from": "2024-07-01T00:00:00Z",
+      "valid_to": "2024-10-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "3Q24",
+      "dimensions": {
+        "statistical_scope": "TrendForce enterprise SSD total procurement volume"
+      },
+      "dimensions_complete": true,
+      "metadata": {
+        "source_period": "3Q24",
+        "source_value_text": "rose 15% compared to the previous quarter",
+        "scope_guard": "Quarterly procurement-volume growth only; it does not establish an absolute EB/unit volume or revenue growth."
+      }
+    },
+    {
+      "fact_key": "trendforce-enterprise-ssd-q3-industry-revenue-qoq",
+      "evidence_fragment_key": "EVF-TRENDFORCE-2024-12-11-ENTERPRISE-SSD-Q3-REVENUE-QOQ",
+      "subject_entity_id": "368965b9-eb5c-529c-8276-caf84fb88dc6",
+      "predicate_code": "storage.enterprise_ssd_revenue_qoq_growth",
+      "value_text": "overall industry revenue up by an impressive 28.6% QoQ",
+      "value_kind": "numeric",
+      "value_numeric": 0.286,
+      "normalized_unit": "ratio",
+      "valid_time_kind": "period",
+      "valid_from": "2024-07-01T00:00:00Z",
+      "valid_to": "2024-10-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "3Q24",
+      "dimensions": {
+        "statistical_scope": "TrendForce enterprise SSD industry revenue"
+      },
+      "dimensions_complete": true,
+      "metadata": {
+        "source_period": "3Q24",
+        "source_value_text": "overall industry revenue up by an impressive 28.6% QoQ",
+        "scope_guard": "Industry revenue growth is distinct from procurement-volume growth and does not establish absolute storage volume."
+      }
+    },
+    {
+      "fact_key": "trendforce-enterprise-ssd-q4-major-supplier-revenue",
+      "evidence_fragment_key": "EVF-TRENDFORCE-2025-03-06-ENTERPRISE-SSD-Q4-MAJOR-SUPPLIER-REVENUE",
+      "subject_entity_id": "83ebc518-04e3-5ffc-b77b-baeab3d49543",
+      "predicate_code": "storage.enterprise_ssd_major_supplier_quarterly_revenue",
+      "value_text": "enterprise SSD revenue for major suppliers totaled US$7.34 billion",
+      "value_kind": "numeric",
+      "value_numeric": 7340000000,
+      "normalized_unit": "USD",
+      "valid_time_kind": "period",
+      "valid_from": "2024-10-01T00:00:00Z",
+      "valid_to": "2025-01-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "4Q24",
+      "dimensions": {
+        "statistical_scope": "TrendForce enterprise SSD major supplier revenue"
+      },
+      "dimensions_complete": true,
+      "metadata": {
+        "source_period": "4Q24",
+        "source_value_text": "US$7.34 billion",
+        "no_lookahead_guard": "First known at the conservative bound 2025-03-07; this 4Q24 valid-time observation must not appear in a 2024 knowledge-time replay.",
+        "scope_guard": "Major-supplier revenue is not an absolute EB/unit Outcome and is not assumed identical to the earlier overall-industry revenue scope."
+      }
+    },
+    {
+      "fact_key": "trendforce-enterprise-ssd-q4-major-supplier-revenue-qoq",
+      "evidence_fragment_key": "EVF-TRENDFORCE-2025-03-06-ENTERPRISE-SSD-Q4-REVENUE-QOQ",
+      "subject_entity_id": "83ebc518-04e3-5ffc-b77b-baeab3d49543",
+      "predicate_code": "storage.enterprise_ssd_revenue_qoq_growth",
+      "value_text": "marking a slight 0.5% QoQ decline",
+      "value_kind": "numeric",
+      "value_numeric": -0.005,
+      "normalized_unit": "ratio",
+      "valid_time_kind": "period",
+      "valid_from": "2024-10-01T00:00:00Z",
+      "valid_to": "2025-01-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "4Q24",
+      "dimensions": {
+        "statistical_scope": "TrendForce enterprise SSD major supplier revenue"
+      },
+      "dimensions_complete": true,
+      "metadata": {
+        "source_period": "4Q24",
+        "source_value_text": "0.5% QoQ decline",
+        "no_lookahead_guard": "First known at the conservative bound 2025-03-07; this 4Q24 valid-time observation must not appear in a 2024 knowledge-time replay.",
+        "scope_guard": "The predicate is shared with other enterprise-SSD revenue QoQ observations; statistical_scope and valid period preserve comparability boundaries."
+      }
+    }
+  ]
+}
