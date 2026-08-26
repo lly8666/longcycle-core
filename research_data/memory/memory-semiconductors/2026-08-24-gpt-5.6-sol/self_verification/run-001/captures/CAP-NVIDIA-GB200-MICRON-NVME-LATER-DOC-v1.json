@@ -1,0 +1,33 @@
+{
+  "schema_version": "longcycle-readable-web-capture/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "capture_state": "content_verified",
+  "captured_at": "2026-08-26T06:44:29Z",
+  "claim_relevant_content_preserved": true,
+  "raw_source_materialized": false,
+  "representation_media_type": "application/json",
+  "capture_id": "CAP-NVIDIA-GB200-MICRON-NVME-LATER-DOC-v1",
+  "publisher": "NVIDIA",
+  "publisher_domain": "nvidia.com",
+  "published_date": null,
+  "source_title": "Known Issues — NVIDIA DGX GB200 NVL72 Release Notes",
+  "source_url": "https://docs.nvidia.com/dgx/dgxgb200nvl72-release-notes/known-issues.html",
+  "source_media_type": "text/html",
+  "content_verification_mode": "interactive_web_read",
+  "claim_scope_hint": "platform_integration",
+  "linked_memory_lead_ids": [
+    "MS-0110",
+    "MS-0111"
+  ],
+  "claim_relevant_visible_text": "Micron NVMe drives may become unavailable when connected behind the Mellanox CX8 due to a PCIe Max Payload Issue. This issue does not impact GB200 with CX7, but it does impact GB200 with CX8.",
+  "source_document_history": {
+    "url": "https://docs.nvidia.com/dgx/dgxgb200nvl72-release-notes/document-history.html",
+    "earliest_release_date": "2025-06-09",
+    "current_document_last_updated": "2026-07-16",
+    "specific_issue_first_publication_date": "not_established"
+  },
+  "researcher_paraphrase": "NVIDIA’s later DGX GB200 release notes independently document Micron NVMe drives in GB200/CX7-CX8 platform configurations.",
+  "precision_guard": "The current NVIDIA documentation does not identify the Micron NVMe model as 9550, does not establish the 2024 Recommended Vendor List event, and cannot be assigned to the 2025-06-09 GA date because the first publication date of this specific issue is not established.",
+  "authority_boundary": "NVIDIA is platform-primary for the GB200 system behavior it documents. This is later-known independent platform corroboration of Micron NVMe presence, not contemporaneous proof of Micron’s October 2024 9550 qualification claim."
+}
