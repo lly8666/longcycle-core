@@ -1,0 +1,114 @@
+name: Storage enterprise SSD TrendForce Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-enterprise-ssd-trendforce-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-04-23-QLC-ENTERPRISE-SSD-30EB-FORECAST-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-08-12-AI-SSD-45EB-ESTIMATE-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-12-11-ENTERPRISE-SSD-Q3-PROCUREMENT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2025-03-06-ENTERPRISE-SSD-Q4-REVENUE-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounded-evidence-v2.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-trendforce-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounded-evidence-v2.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-trendforce-evidence-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute TrendForce Grounded Evidence
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-MARKET-TRAJECTORY-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 4, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 6, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+          assert len(result["documents"]) == 4
+          assert len(result["fragments"]) == 6
+          roles = {row["claim_context"]["claim_role"] for row in result["fragments"]}
+          assert roles == {
+              "market_forecast_qlc_enterprise_ssd_full_year_bits",
+              "market_estimate_ai_ssd_full_year_procurement_capacity",
+              "market_observed_enterprise_ssd_procurement_volume_qoq",
+              "market_observed_enterprise_ssd_revenue_qoq",
+              "market_observed_enterprise_ssd_major_supplier_revenue",
+              "market_observed_enterprise_ssd_revenue_qoq_4q24",
+          }, roles
+          print("STORAGE_ENTERPRISE_SSD_TRENDFORCE_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-enterprise-ssd-trendforce-evidence-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7
