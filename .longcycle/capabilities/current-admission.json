@@ -1,38 +1,34 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-STORAGE-UNIT-CATALOG-007",
-  "intent": "Extend the existing CAP-0003 semantic catalog so mainstream digital-storage quantities can be represented, normalized and compared without ad-hoc unit additions or case-folding ambiguity. Preserve exact canonical symbols for SI decimal and IEC binary units, add explicit aliases only where they are unambiguous, reuse core.unit_conversion_versions as a sparse authoritative conversion graph, derive inverse/transitive conversions in the runtime snapshot, and fail closed on ambiguous aliases, cross-dimension edges or inconsistent conversion paths. Keep CAP-0007 as the execution owner and resume the TrendForce Evidence cursor after this bounded semantic-infrastructure repair.",
+  "intent_id": "MEMORY-STORAGE-TRENDFORCE-GROUNDING-008",
+  "intent": "Resume the seq107 storage-market trajectory cursor after closing the digital-storage unit substrate. Ground the four content-verified TrendForce captures through the existing source/archive and Evidence owners before any Judgment or Reality projection. Preserve April 2024 QLC-enterprise-SSD 30 EB and August 2024 AI-related-SSD >45 EB as distinct contemporaneous expectation scopes; preserve December 2024 3Q24 procurement/revenue measurements and March-2025-known 4Q24 revenue measurements as later observation candidates with explicit no-lookahead. Create no Fact or Judgment in this step.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0003",
+    "CAP-0001",
+    "CAP-0002",
     "CAP-0007"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0003",
+    "CAP-0001",
+    "CAP-0002",
     "CAP-0007"
   ],
-  "rationale_summary": "The first storage-volume Reality exposed a real EB catalog gap. A one-off EB row is not durable enough for TB/PB/EB, TiB/PiB/EiB and bit-oriented sources, while the current runtime lower-cases unit codes and would make byte/bit symbols unsafe. Reuse CAP-0003's existing units, versioned conversions and semantic fingerprint: exact canonical symbols, explicit aliases, sparse same-dimension edges, graph closure/consistency checks, and fail-closed handling for unknown or ambiguous unit text. CAP-0007 remains the execution owner; no parallel units subsystem is added.",
-  "rationale_details_ref": "docs/devlog/2026-08-26-digital-storage-unit-catalog.md",
+  "rationale_summary": "Four TrendForce captures are already content-verified and trajectory-assessed, but they are not yet immutable Grounded Evidence. The existing materialized-source and Evidence execution seams can represent them without new architecture. The packet must pin exact capture SHA-256 values and retain scope/time guards: 30 EB QLC enterprise SSD and >45 EB AI-related SSD are different forecast predicates, while 3Q24/4Q24 observations are quarterly volume/revenue measurements and do not resolve a full-year absolute 2024 EB/unit Outcome.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-trendforce-market-trajectory-v1.json",
   "unmet_requirement": null,
   "evidence_refs": [
-    ".longcycle/capabilities/cards/CAP-0003.json",
-    ".longcycle/capabilities/cards/CAP-0007.json",
-    "migrations/0001_catalog.sql",
-    "migrations/0003_research_domains.sql",
-    "migrations/0036_digital_storage_unit.sql",
-    "src/longcycle/application/normalization.py",
-    "src/longcycle/adapters/storage/semantic_catalog.py",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/enterprise-ssd-qlc-ai-storage-reality-execution-receipt-v1.json"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-trendforce-market-trajectory-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-04-23-QLC-ENTERPRISE-SSD-30EB-FORECAST-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-08-12-AI-SSD-45EB-ESTIMATE-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-12-11-ENTERPRISE-SSD-Q3-PROCUREMENT-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2025-03-06-ENTERPRISE-SSD-Q4-REVENUE-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/semantic/storage-unit-semantic-catalog-execution-receipt-v1.json"
   ],
   "planned_paths": [
-    "docs/devlog/2026-08-26-digital-storage-unit-catalog.md",
-    "migrations/0037_digital_storage_semantic_catalog.sql",
-    "src/longcycle/application/normalization.py",
-    "src/longcycle/adapters/storage/semantic_catalog.py",
-    "tests/test_storage_unit_semantics.py",
-    ".github/workflows/storage-unit-semantic-catalog.yml",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/semantic/storage-unit-semantic-catalog-execution-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounded-evidence-v2.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-trendforce-market-trajectory-grounding-receipt-v1.json",
+    ".github/workflows/storage-enterprise-ssd-trendforce-grounded-evidence.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
