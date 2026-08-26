@@ -14,13 +14,16 @@ def test_fresh_agent_continuity_drill_stays_black_box_bounded_and_payload_explic
     bootstrap = (ROOT / "FRESH_AGENT_BOOTSTRAP.md").read_text(encoding="utf-8")
 
     assert "FRESH_AGENT_CONTINUITY_DRILL_CONTROLLER_V3" in drill
+    assert "FRESH_AGENT_DRILL_V3_EXPLICIT_CUE_PAYLOAD" in drill
+    assert "FRESH_AGENT_DRILL_V3_REPORT_MACHINE_VALIDATED" in drill
     assert "DUMB-01" in drill
     assert "DUMB-02" in drill
     assert "DUMB-03" in drill
     assert "external_fresh_agent_black_box" in drill
     assert "chat_history_allowed" in drill
     assert "unexpected_reads" in drill
-    assert "Do not read an earlier Fresh-Agent report" in drill
+    assert "earlier Fresh-Agent report bodies" in drill
+    assert "Reading this controller contract or an earlier Fresh-Agent report" in drill
     assert "Do not modify the product or handoff to make a run pass" in drill
     assert "only repository mutation authorized" in drill
     assert "The word `cue` by itself is not a cue" in drill
