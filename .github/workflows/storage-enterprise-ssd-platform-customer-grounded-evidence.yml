@@ -1,0 +1,117 @@
+name: Storage enterprise SSD platform-customer Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-enterprise-ssd-platform-customer-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-VAST-2024-12-16-EBOX-NINE-30TB-NVME-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-VAST-2026-07-09-EBOX-P5336-QLC-BOM-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-NVIDIA-GB200-MICRON-NVME-LATER-DOC-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-DUG-2022-06-20-VAST-QLC-DEPLOYMENT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-platform-customer-corroboration-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-platform-customer-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-platform-customer-corroboration-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-platform-customer-evidence-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute platform-customer Grounded Evidence
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only specificity boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-PLATFORM-CUSTOMER-CORROBORATION-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 4, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 4, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+          assert len(result["documents"]) == 4
+          assert len(result["fragments"]) == 4
+          by_role = {row["claim_context"]["claim_role"]: row for row in result["fragments"]}
+          assert set(by_role) == {
+              "platform_owner_ebox_nvme_configuration",
+              "platform_owner_p5336_qlc_bom_later_known",
+              "platform_owner_micron_nvme_gb200_later_known",
+              "customer_owner_vast_qlc_deployment",
+          }, set(by_role)
+          assert by_role["platform_owner_ebox_nvme_configuration"]["claim_context"]["known_time"]["upper_bound"] == "2024-12-17T00:00:00Z"
+          assert by_role["platform_owner_p5336_qlc_bom_later_known"]["claim_context"]["known_time"]["upper_bound"] == "2026-07-10T00:00:00Z"
+          assert by_role["platform_owner_micron_nvme_gb200_later_known"]["claim_context"]["known_time"]["upper_bound"] == "2026-08-26T06:44:29Z"
+          assert "No vendor/model/QLC identity" in by_role["platform_owner_ebox_nvme_configuration"]["claim_context"]["comparability_guard"]
+          assert "does not name Micron 9550" in by_role["platform_owner_micron_nvme_gb200_later_known"]["claim_context"]["comparability_guard"]
+          print("STORAGE_ENTERPRISE_SSD_PLATFORM_CUSTOMER_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-enterprise-ssd-platform-customer-evidence-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7
