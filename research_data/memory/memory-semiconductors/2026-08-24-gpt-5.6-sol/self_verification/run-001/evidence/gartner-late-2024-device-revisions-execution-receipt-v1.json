@@ -1,0 +1,64 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-gartner-late-device-revision-execution-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "694543772285a4addb0a97634ce6c731a38ab43a",
+  "dedicated_actions_run_id": 32920021641,
+  "full_ci_run_id": 32920021604,
+  "artifact_id": 9589521689,
+  "artifact_digest": "sha256:1f6b75534f503d16f73b720be9ad1c2335eb557acef6ad712541f1b9c9c83306",
+  "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/gartner-late-2024-device-revisions-grounded-evidence-v1.json",
+  "judgment_projection_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-jun-sep-dec-2024-growth-judgment-projection-v1.json",
+  "judgment_context_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-jun-sep-dec-2024-growth-context-v1.json",
+  "reality_projection_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/gartner-pc-2024-preliminary-growth-reality-projection-v1.json",
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 7,
+    "fact_assertions_created_by_evidence": 0,
+    "judgment_assertions_created_by_evidence": 0,
+    "late_judgments_persisted": 3,
+    "revision_relations_persisted": 2,
+    "comparable_pc_reality_count": 1,
+    "numeric_outcomes_persisted": 3,
+    "dedicated_workflow_conclusion": "success",
+    "full_ci_conclusion": "success"
+  },
+  "capture_sha256": {
+    "CAP-GARTNER-2024-06-20-DEVICE-FORECAST-REVISION-v1": "d0b70e4d6cd7720a24137ec3504973bca2d2e1e71edfbf594d706df179de1844",
+    "CAP-GARTNER-2024-09-25-DEVICE-FORECAST-REVISION-v1": "3f7de3cec661c0c7c6cee1c9b76451e264102faddf140d0af4458d31c3658af3",
+    "CAP-GARTNER-2024-12-13-DEVICE-FORECAST-REVISION-v1": "e15c5cbbc1936773a4329719b3d3bc04b72032e06728a751981c31888b1ab5b2",
+    "CAP-GARTNER-2025-01-20-MOBILE-4Q24-PRELIMINARY-v1": "a3b896327fe76b9e2f002f601d6a77a72aab62c2929a029627ef328b28a760e9"
+  },
+  "fragment_ids": {
+    "EVF-GARTNER-2024-06-PC-FORECAST": "71ab170a-28d4-51ad-a6dd-2b5c2705d726",
+    "EVF-GARTNER-2024-06-MOBILE-FORECAST": "7b927766-a60b-515c-8079-b50dc3d58f91",
+    "EVF-GARTNER-2024-09-PC-FORECAST": "69d7c01e-e662-5899-b657-5170b2a0dee9",
+    "EVF-GARTNER-2024-09-SMARTPHONE-FORECAST": "057135d3-22f3-5295-8328-a1dd0614cd4f",
+    "EVF-GARTNER-2024-12-PC-FORECAST": "f6f03391-ae1c-5395-87bf-527a0cc2fee8",
+    "EVF-GARTNER-2025-01-20-MOBILE-4Q24": "018cda97-52fd-5b50-af3f-8dde274ca2a4",
+    "EVF-GARTNER-2025-01-20-SMARTPHONE-4Q24": "05fbd187-d3af-5d85-84f6-a8ad4941a426"
+  },
+  "judgments": {
+    "gartner-pc-growth-2024-06": {"id": "a415887c-9b2c-5461-bfcd-250994eeed0c", "value_numeric": "0.019", "unit_code": "ratio"},
+    "gartner-pc-growth-2024-09": {"id": "91ef13ea-14b7-5dc7-8ded-df32db65a166", "value_numeric": "0.016", "unit_code": "ratio"},
+    "gartner-pc-growth-2024-12": {"id": "16297b3b-8e55-5589-9f37-8c9a1b2d3d8c", "value_numeric": "0.01", "unit_code": "ratio"}
+  },
+  "revision_relations": [
+    {"from_judgment_id": "91ef13ea-14b7-5dc7-8ded-df32db65a166", "to_judgment_id": "a415887c-9b2c-5461-bfcd-250994eeed0c", "relation_type": "revises"},
+    {"from_judgment_id": "16297b3b-8e55-5589-9f37-8c9a1b2d3d8c", "to_judgment_id": "91ef13ea-14b7-5dc7-8ded-df32db65a166", "relation_type": "revises"}
+  ],
+  "canonical_reality": {
+    "canonical_fact_version_id": "424a1e03-c161-5dee-b3e0-ce7d5fa308c9",
+    "normalized_number": "0.013",
+    "normalized_unit": "ratio",
+    "valid_time_precision": "year",
+    "known_at": "2025-01-16T00:00:00Z"
+  },
+  "outcomes": {
+    "gartner-pc-growth-2024-06": {"evaluation_id": "63a764a7-da31-569b-bebc-cf1496eb8cda", "numeric_error": "-0.006", "semantic_relation": "direct_match", "evaluation_status": "indeterminate"},
+    "gartner-pc-growth-2024-09": {"evaluation_id": "3674b46d-25d1-5f03-8ac1-c94c8f4d5f9b", "numeric_error": "-0.003", "semantic_relation": "direct_match", "evaluation_status": "indeterminate"},
+    "gartner-pc-growth-2024-12": {"evaluation_id": "7f600ede-3787-5e56-a583-8c03574dd75d", "numeric_error": "0.003", "semantic_relation": "direct_match", "evaluation_status": "indeterminate"}
+  },
+  "phone_outcome_boundary": "The recovered Gartner January 2025 mobile-phone artifact is a preliminary 4Q24 sales-to-end-users observation. It is preserved as Grounded Evidence but is not promoted as a calendar-2024 smartphone/mobile-phone Outcome. The accessible same-scope Gartner full-year phone result remains unresolved after bounded search-depth exhaustion; not_found != false.",
+  "boundary": "This receipt proves execution of the late Gartner PC forecast-revision extension through the existing Grounded Evidence, Judgment, Reality and numeric Outcome paths. It does not invent a correctness tolerance, overwrite earlier forecast vintages, backdate the January 2025 Reality, or substitute quarterly/cross-provider phone observations for a full-year same-scope Outcome."
+}
