@@ -12,7 +12,7 @@
     "CAP-0003",
     "CAP-0007"
   ],
-  "rationale_summary": "The first source-grounded storage-volume Reality correctly exposed a missing EB unit. A one-off EB row is sufficient for that historical fact but not for durable storage research: decimal TB/PB/EB, binary TiB/PiB/EiB and bit-oriented telecom/storage quantities must remain distinguishable, while the current runtime lower-cases canonical unit codes and therefore cannot safely admit byte/bit symbols that differ by case. The repository already owns versioned unit conversion rows and semantic-runtime fingerprinting, so this change extends those existing owners instead of introducing a parallel units subsystem. The persistent design is exact canonical symbols plus explicit aliases, sparse same-dimension conversion edges, runtime graph closure and consistency checks, with unknown or ambiguous unit text preserved for review rather than guessed.",
+  "rationale_summary": "The first storage-volume Reality exposed a real EB catalog gap. A one-off EB row is not durable enough for TB/PB/EB, TiB/PiB/EiB and bit-oriented sources, while the current runtime lower-cases unit codes and would make byte/bit symbols unsafe. Reuse CAP-0003's existing units, versioned conversions and semantic fingerprint: exact canonical symbols, explicit aliases, sparse same-dimension edges, graph closure/consistency checks, and fail-closed handling for unknown or ambiguous unit text. CAP-0007 remains the execution owner; no parallel units subsystem is added.",
   "rationale_details_ref": "docs/devlog/2026-08-26-digital-storage-unit-catalog.md",
   "unmet_requirement": null,
   "evidence_refs": [
@@ -30,7 +30,7 @@
     "migrations/0037_digital_storage_semantic_catalog.sql",
     "src/longcycle/application/normalization.py",
     "src/longcycle/adapters/storage/semantic_catalog.py",
-    "tests/test_normalization_and_schedule.py",
+    "tests/test_storage_unit_semantics.py",
     ".github/workflows/storage-unit-semantic-catalog.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
