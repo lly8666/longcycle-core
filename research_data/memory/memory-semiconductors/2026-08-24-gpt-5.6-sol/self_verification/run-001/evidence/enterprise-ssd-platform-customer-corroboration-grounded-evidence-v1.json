@@ -1,0 +1,270 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-PLATFORM-CUSTOMER-CORROBORATION-001",
+  "sources": [
+    {
+      "key": "vast_platform_docs",
+      "name": "VAST Data",
+      "publisher_domain": "vastdata.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "technical_specification",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "VAST Data is authoritative for the hardware configuration and BOM of its own storage platform at the publication vintage; later BOMs do not establish earlier component identity."
+        }
+      ]
+    },
+    {
+      "key": "nvidia_platform_docs",
+      "name": "NVIDIA",
+      "publisher_domain": "nvidia.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "technical_specification",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "NVIDIA is authoritative for the GB200 system behavior and component relationships documented in its own DGX release notes; current documentation does not establish an earlier publication date for a specific issue."
+        }
+      ]
+    },
+    {
+      "key": "dug_customer_docs",
+      "name": "DUG Technology",
+      "publisher_domain": "dug.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "DUG Technology is primary for its own deployed HPCaaS storage experience and architecture description; it is not authoritative for the manufacturing identity of unnamed QLC drives."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "vast_ebox_2024_nvme_configuration",
+      "source_key": "vast_platform_docs",
+      "external_id": "vast-ebox-nine-30tb-nvme-2024-12-16",
+      "title": "VAST 2024 EBox nine 30TB NVMe configuration capture",
+      "retrieval_url": "https://www.vastdata.com/blog/introducing-the-ebox",
+      "original_source_url": "https://www.vastdata.com/blog/introducing-the-ebox",
+      "published_at": null,
+      "first_known_at": "2024-12-17T00:00:00Z",
+      "vintage_id": "2024-12-16",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-VAST-2024-12-16-EBOX-NINE-30TB-NVME-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "96827d20d4516d2f284ab2707ecc704f8ba6409526ee784a4399ab88db55e89b",
+      "retrieval_provenance": {
+        "capture_id": "CAP-VAST-2024-12-16-EBOX-NINE-30TB-NVME-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "source_media_type": "text/html",
+        "representation_media_type": "application/json",
+        "research_capture_time": "2026-08-26T06:44:29Z",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "vast_ebox_2026_p5336_qlc_bom",
+      "source_key": "vast_platform_docs",
+      "external_id": "vast-ebox-p5336-qlc-bom-2026-07-09",
+      "title": "VAST 2026 SMC Gen2 EBox Solidigm P5336 QLC BOM capture",
+      "retrieval_url": "https://kb.vastdata.com/docs/smc-gen1-ebox-1u12drive-1",
+      "original_source_url": "https://kb.vastdata.com/docs/smc-gen1-ebox-1u12drive-1",
+      "published_at": null,
+      "first_known_at": "2026-07-10T00:00:00Z",
+      "vintage_id": "2026-07-09",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-VAST-2026-07-09-EBOX-P5336-QLC-BOM-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "4a1c62762e3ce6cea34ab037f063733639bccb81bb0315754cdef4ab2238cf2d",
+      "retrieval_provenance": {
+        "capture_id": "CAP-VAST-2026-07-09-EBOX-P5336-QLC-BOM-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "source_media_type": "text/html",
+        "representation_media_type": "application/json",
+        "research_capture_time": "2026-08-26T06:44:29Z",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "nvidia_gb200_micron_nvme_later_doc",
+      "source_key": "nvidia_platform_docs",
+      "external_id": "nvidia-gb200-micron-nvme-later-doc",
+      "title": "NVIDIA DGX GB200 later Micron NVMe integration capture",
+      "retrieval_url": "https://docs.nvidia.com/dgx/dgxgb200nvl72-release-notes/known-issues.html",
+      "original_source_url": "https://docs.nvidia.com/dgx/dgxgb200nvl72-release-notes/known-issues.html",
+      "published_at": null,
+      "first_known_at": "2026-08-26T06:44:29Z",
+      "vintage_id": "2026-08-26-current-doc",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-NVIDIA-GB200-MICRON-NVME-LATER-DOC-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "b2416d781c3d1209019366321a2f383367174a35b8862987139e173aaae20dec",
+      "retrieval_provenance": {
+        "capture_id": "CAP-NVIDIA-GB200-MICRON-NVME-LATER-DOC-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "source_media_type": "text/html",
+        "representation_media_type": "application/json",
+        "research_capture_time": "2026-08-26T06:44:29Z",
+        "known_time_policy": "capture_time_upper_bound_specific_issue_publication_unknown",
+        "document_history_url": "https://docs.nvidia.com/dgx/dgxgb200nvl72-release-notes/document-history.html",
+        "document_family_earliest_release": "2025-06-09"
+      }
+    },
+    {
+      "key": "dug_vast_qlc_deployment_2022",
+      "source_key": "dug_customer_docs",
+      "external_id": "dug-vast-qlc-hpcaas-2022-06-20",
+      "title": "DUG customer-owner VAST QLC deployment capture",
+      "retrieval_url": "https://dug.com/dug-and-vast-data-unlock-speed-scale-and-simplicity-to-power-hpcaas/",
+      "original_source_url": "https://dug.com/dug-and-vast-data-unlock-speed-scale-and-simplicity-to-power-hpcaas/",
+      "published_at": null,
+      "first_known_at": "2022-06-21T00:00:00Z",
+      "vintage_id": "2022-06-20",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-DUG-2022-06-20-VAST-QLC-DEPLOYMENT-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "d72448c6f3bf7b479269eb0bd1a95bc5d2b48a7695f2e9a4b70d21e011018aa6",
+      "retrieval_provenance": {
+        "capture_id": "CAP-DUG-2022-06-20-VAST-QLC-DEPLOYMENT-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "source_media_type": "text/html",
+        "representation_media_type": "application/json",
+        "research_capture_time": "2026-08-26T06:44:29Z",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-VAST-2024-12-16-EBOX-NINE-30TB-NVME",
+      "document_key": "vast_ebox_2024_nvme_configuration",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "A single AMD Genoa 48-core processor is at its heart, supported by 384GB of memory, three storage-class memory (SCM) drives, and nine 30TB NVMe SSDs.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-STORAGE-PLAT-001",
+        "claim_role": "platform_owner_ebox_nvme_configuration",
+        "claim_scope": "technical_specification",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_platform_configuration",
+        "stance": "supports",
+        "known_time": {
+          "precision": "day",
+          "upper_bound": "2024-12-17T00:00:00Z"
+        },
+        "scope": "vast_ebox_2024_nine_30tb_nvme_ssds",
+        "comparability_guard": "No vendor/model/QLC identity is present in the 2024 source. Later P5336 BOM evidence cannot be backdated.",
+        "linked_memory_lead_ids": [
+          "MS-0110",
+          "MS-0111"
+        ]
+      }
+    },
+    {
+      "fragment_key": "EVF-VAST-2026-07-09-EBOX-P5336-QLC-BOM",
+      "document_key": "vast_ebox_2026_p5336_qlc_bom",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Solidigm D5-P5336 61.44TB PCIe 4 QLC U.2 15mm <0.5 DWPD | 9",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-STORAGE-PLAT-002",
+        "claim_role": "platform_owner_p5336_qlc_bom_later_known",
+        "claim_scope": "technical_specification",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_later_known_platform_bom",
+        "stance": "supports",
+        "known_time": {
+          "precision": "day",
+          "upper_bound": "2026-07-10T00:00:00Z"
+        },
+        "scope": "vast_smc_gen2_ebox_nine_p5336_61_44tb_qlc",
+        "comparability_guard": "Current/later platform BOM integration only; it does not establish the component identity of VAST's December 2024 nine-30TB configuration or the first qualification/deployment date.",
+        "linked_memory_lead_ids": [
+          "MS-0110",
+          "MS-0111"
+        ]
+      }
+    },
+    {
+      "fragment_key": "EVF-NVIDIA-GB200-MICRON-NVME-LATER-DOC",
+      "document_key": "nvidia_gb200_micron_nvme_later_doc",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Micron NVMe drives may become unavailable when connected behind the Mellanox CX8 due to a PCIe Max Payload Issue. This issue does not impact GB200 with CX7, but it does impact GB200 with CX8.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-STORAGE-PLAT-003",
+        "claim_role": "platform_owner_micron_nvme_gb200_later_known",
+        "claim_scope": "technical_specification",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_later_known_platform_integration",
+        "stance": "supports",
+        "known_time": {
+          "precision": "instant",
+          "upper_bound": "2026-08-26T06:44:29Z"
+        },
+        "scope": "nvidia_dgx_gb200_micron_nvme_generic",
+        "comparability_guard": "The source does not name Micron 9550 and the first publication date of this specific known issue is not established. It cannot independently prove the supplier-claimed October 2024 9550 RVL qualification.",
+        "linked_memory_lead_ids": [
+          "MS-0110",
+          "MS-0111"
+        ]
+      }
+    },
+    {
+      "fragment_key": "EVF-DUG-2022-06-20-VAST-QLC-DEPLOYMENT",
+      "document_key": "dug_vast_qlc_deployment_2022",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "VAST is built on a high-performance, high-duty cycle Intel Optane cache in front of a huge amount of Quad-level cell (QLC) Flash storage. Once data has stopped changing, it is migrated from the Optane to the QLC.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-STORAGE-PLAT-004",
+        "claim_role": "customer_owner_vast_qlc_deployment",
+        "claim_scope": "self_statement",
+        "authority_class": "primary_self_statement",
+        "epistemic_layer": "evidence_only_customer_deployment",
+        "stance": "supports",
+        "known_time": {
+          "precision": "day",
+          "upper_bound": "2022-06-21T00:00:00Z"
+        },
+        "scope": "dug_hpcaas_vast_qlc_flash_tier",
+        "comparability_guard": "Named customer deployment precedent only. No underlying QLC SSD vendor/model is identified and this is not a 2024 P5336/GB200 deployment.",
+        "linked_memory_lead_ids": [
+          "MS-0110",
+          "MS-0111"
+        ]
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 4,
+    "required_fragments": 4,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
