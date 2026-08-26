@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0115-EXPORT-CONTROL-MEMORY-SUPPLY-TRAJECTORY-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0115",
+  "authority": "curated_research_assessment_over_grounded_evidence",
+  "subject": "Export-control policy, technology migration and the distinction between installed memory-fab capacity and future effective bit supply",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0115-export-control-memory-supply-grounding-receipt-v1.json"
+  ],
+  "assessment": {
+    "status": "policy_trajectory_supported_supply_quantification_unresolved",
+    "supported": [
+      {
+        "layer": "operating_fab_and_physical_migration_mechanism",
+        "finding": "SK hynix's Wuxi source establishes an operating DRAM production line and states that technology scaling increased process count and equipment size enough to require additional cleanroom space; Samsung's Xi'an source independently establishes an operating NAND/V-NAND fabrication site.",
+        "meaning": "Installed fabs are real productive assets, but technology migration is not a purely software or naming change; it can require additional physical equipment and fab-space capability."
+      },
+      {
+        "layer": "2022_regulatory_scope",
+        "finding": "BIS's October 2022 policy text established new licensing requirements for PRC semiconductor-fab items at explicit advanced-memory thresholds, including DRAM at 18nm half-pitch or less and NAND at 128 layers or more.",
+        "meaning": "Equipment access for advanced memory production became a policy-conditioned variable distinct from installed nameplate fab existence."
+      },
+      {
+        "layer": "2023_authorization_state",
+        "finding": "BIS's October 2023 policy state identified Samsung and SK hynix PRC facilities as Validated End-Users and described a general-authorization mechanism for eligible items, explicitly framed as allowing continued PRC operations.",
+        "meaning": "The 2022 control regime did not imply a single permanent binary 'blocked' state; authorization pathways themselves changed over time and must be replayed by vintage."
+      },
+      {
+        "layer": "2025_later_known_policy_state",
+        "finding": "BIS's August 2025 post-VEU policy explicitly separated intended licensing for operation of existing fabs from its stated intent not to grant licenses for capacity expansion or technology upgrades.",
+        "meaning": "Current fab operation and future migration/expansion capability are separable policy states. This is the strongest source-grounded support for MS-0115's core mechanism, but it is later-known and unavailable to 2022-2024 replay."
+      }
+    ],
+    "not_established": [
+      "The packet does not establish that a particular Samsung or SK hynix equipment shipment was denied under the 2022 rule.",
+      "The packet does not quantify lost wafer starts, utilization, yield, DRAM bits, NAND bits or supplier revenue attributable to export controls.",
+      "The packet does not establish the 2022-2025 technology node or NAND layer count actually running at Wuxi or Xi'an.",
+      "The packet does not establish a quantitative mapping from licensing status to future bit-supply growth.",
+      "The packet does not yet cover YMTC or CXMT, so it must not generalize foreign-owned PRC-fab authorization mechanics to domestic Chinese memory producers.",
+      "The 2025 licensing-intent language is a later policy state and must not be used to reinterpret what a 2023 researcher could have known."
+    ],
+    "point_in_time_interpretation": {
+      "as_of_2022_10": "A researcher can know that advanced PRC DRAM/NAND fab equipment access has entered a memory-specific licensing regime, but cannot know from this packet whether named foreign-owned fabs will lose operating continuity or future upgrade access.",
+      "as_of_2023_10": "A researcher can additionally know that Samsung and SK hynix PRC facilities have a VEU/general-authorization pathway intended to support continued operations. The correct state is not simply 'export controls block China memory fabs'.",
+      "as_of_2024_12_31": "The 2023 VEU authorization remains the latest grounded policy vintage in this packet. The 2025 revocation and explicit no-upgrade/no-expansion policy must remain hidden.",
+      "as_of_2025_08_30": "A later researcher can know the policy regime changed again: continued existing-fab operation and future capacity/technology upgrades are explicitly separated."
+    },
+    "representation_decision": "Keep operating-fab state, physical technology-migration requirements, regulatory thresholds, authorization mechanism and later licensing intent as separate Evidence-level claims with independent known times. Treat any numerical future-bit-supply consequence as a distinct research/model layer unless directly measured by an authoritative source.",
+    "canonical_projection_decision": "Do not add a new canonical Reality predicate for policy authorization in this single case. The existing Reality owner remains appropriate for measured industrial facts, but policy_text needs a stable reusable predicate design only after another real cross-industry policy trajectory demonstrates the same representation requirement.",
+    "outcome_for_ms0115": "The core mechanism is supported qualitatively and temporally: installed capacity can continue to exist while the policy state governing future expansion or technology migration changes. The magnitude of the resulting future DRAM/NAND bit-supply constraint remains unresolved."
+  },
+  "stop_rule": {
+    "closed_surface": "Do not turn generic export-control headlines into memory-supply numbers and do not repeatedly search the same Samsung/SK hynix VEU story without a new measurement or policy vintage.",
+    "reopen_when": [
+      "A company primary source quantifies the technology, capacity, equipment or output effect at a named PRC memory fab.",
+      "BIS or another authoritative regulator publishes a materially new policy vintage affecting these memory fabs.",
+      "A second cross-industry policy trajectory demonstrates a reusable need for typed policy-state projection in the semantic catalog.",
+      "Methodological-primary market research measures the effect on DRAM/NAND wafer or bit supply with explicit methodology."
+    ]
+  },
+  "next_research_direction": {
+    "principle": "Prefer a high-importance sealed lead that tests a different methodology rather than another adjacent AI or export-control narrative.",
+    "candidate": "MS-0118",
+    "rationale": "MS-0118 is a counterfactual lead around the 2017 memory upcycle—supplier discipline versus technology-transition supply constraints and demand-mix surprise—and would exercise Longcycle's ability to preserve competing causal explanations instead of selecting a hindsight narrative."
+  }
+}
