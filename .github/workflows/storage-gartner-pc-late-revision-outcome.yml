@@ -1,0 +1,245 @@
+name: Storage Gartner PC late revision Outcome
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-gartner-pc-late-revision-outcome.yml'
+      - 'migrations/0035_standard_semantic_catalog.sql'
+      - 'src/longcycle/domain/models.py'
+      - 'src/longcycle/application/judgment_projection.py'
+      - 'src/longcycle/application/reality_projection.py'
+      - 'src/longcycle/application/numeric_outcome_evaluation.py'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_judgment_persistence.py'
+      - 'scripts/execute_grounded_judgment_context.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'scripts/execute_grounded_numeric_outcome_evaluation.py'
+      - 'tests/test_numeric_outcome_projection.py'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-GARTNER-2024-06-20-DEVICE-FORECAST-REVISION-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-GARTNER-2024-09-25-DEVICE-FORECAST-REVISION-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-GARTNER-2024-12-13-DEVICE-FORECAST-REVISION-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-GARTNER-2025-01-20-MOBILE-4Q24-PRELIMINARY-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/gartner-late-2024-device-revisions-grounded-evidence-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ddr5-platform-device-forecast-revision-grounded-evidence-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-jun-sep-dec-2024-growth-judgment-projection-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-jun-sep-dec-2024-growth-context-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/gartner-pc-2024-preliminary-growth-reality-projection-v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  late-revision-outcome:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/storage-gartner-pc-late-blobs
+      REALITY_EVIDENCE_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ddr5-platform-device-forecast-revision-grounded-evidence-v1.json
+      LATE_EVIDENCE_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/gartner-late-2024-device-revisions-grounded-evidence-v1.json
+      LATE_JUDGMENT_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-jun-sep-dec-2024-growth-judgment-projection-v1.json
+      LATE_CONTEXT_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/judgments/gartner-pc-jun-sep-dec-2024-growth-context-v1.json
+      REALITY_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/gartner-pc-2024-preliminary-growth-reality-projection-v1.json
+      REALITY_EVIDENCE_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-reality-evidence.json
+      LATE_EVIDENCE_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-late-evidence.json
+      LATE_JUDGMENT_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-late-judgments.json
+      LATE_CONTEXT_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-late-context.json
+      REALITY_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-reality.json
+      JUN_OUTCOME_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-jun-outcome.json
+      SEP_OUTCOME_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-sep-outcome.json
+      DEC_OUTCOME_OUTPUT: ${{ github.workspace }}/.artifacts/gartner-pc-dec-outcome.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Numeric projection regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_numeric_outcome_projection.py
+          tests/test_judgment_projection.py
+          tests/test_reality_projection.py
+          tests/test_outcome_evaluation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Re-execute Reality Evidence packet
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py "$REALITY_EVIDENCE_SPEC"
+          --material-root "$GITHUB_WORKSPACE" --output "$REALITY_EVIDENCE_OUTPUT"
+
+      - name: Execute late-revision Grounded Evidence packet
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py "$LATE_EVIDENCE_SPEC"
+          --material-root "$GITHUB_WORKSPACE" --output "$LATE_EVIDENCE_OUTPUT"
+
+      - name: Assert late Evidence-only acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY2'
+          import json, os
+          from pathlib import Path
+          payload=json.loads(Path(os.environ['LATE_EVIDENCE_OUTPUT']).read_text(encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result=payload['result']
+          assert result['task_id']=='EVT-MEMORY-SEMICONDUCTORS-GARTNER-LATE-2024-DEVICE-REVISIONS-001'
+          acceptance=result['acceptance']
+          assert acceptance['persisted_document_versions']==4, acceptance
+          assert acceptance['persisted_evidence_fragments']==7, acceptance
+          assert acceptance['fact_assertions_created']==0, acceptance
+          assert acceptance['judgment_assertions_created']==0, acceptance
+          assert len(result['documents'])==4
+          assert len(result['fragments'])==7
+          print('STORAGE_GARTNER_LATE_EVIDENCE_PASS')
+          PY2
+
+      - name: Persist June September December Gartner PC Judgments
+        run: >-
+          python scripts/execute_grounded_judgment_persistence.py "$LATE_JUDGMENT_SPEC" "$LATE_EVIDENCE_OUTPUT"
+          --output "$LATE_JUDGMENT_OUTPUT"
+
+      - name: Persist late Judgment revision context
+        run: >-
+          python scripts/execute_grounded_judgment_context.py "$LATE_CONTEXT_SPEC" "$LATE_JUDGMENT_OUTPUT" "$LATE_EVIDENCE_OUTPUT"
+          --output "$LATE_CONTEXT_OUTPUT"
+
+      - name: Persist preliminary Gartner PC Reality
+        run: >-
+          python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" "$REALITY_EVIDENCE_OUTPUT"
+          --output "$REALITY_OUTPUT"
+
+      - name: Evaluate June numeric Outcome
+        run: >-
+          python scripts/execute_grounded_numeric_outcome_evaluation.py "$LATE_JUDGMENT_OUTPUT" "$REALITY_OUTPUT"
+          --judgment-key gartner-pc-growth-2024-06 --reality-fact-key gartner-pc-growth-2024-preliminary
+          --output "$JUN_OUTCOME_OUTPUT"
+
+      - name: Evaluate September numeric Outcome
+        run: >-
+          python scripts/execute_grounded_numeric_outcome_evaluation.py "$LATE_JUDGMENT_OUTPUT" "$REALITY_OUTPUT"
+          --judgment-key gartner-pc-growth-2024-09 --reality-fact-key gartner-pc-growth-2024-preliminary
+          --output "$SEP_OUTCOME_OUTPUT"
+
+      - name: Evaluate December numeric Outcome
+        run: >-
+          python scripts/execute_grounded_numeric_outcome_evaluation.py "$LATE_JUDGMENT_OUTPUT" "$REALITY_OUTPUT"
+          --judgment-key gartner-pc-growth-2024-12 --reality-fact-key gartner-pc-growth-2024-preliminary
+          --output "$DEC_OUTCOME_OUTPUT"
+
+      - name: Assert late point-in-time numeric Outcome acceptance
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY2'
+          import json, os
+          from decimal import Decimal
+          from pathlib import Path
+          import psycopg
+          from psycopg.rows import dict_row
+
+          def load(name):
+              return json.loads(Path(os.environ[name]).read_text(encoding='utf-8'))
+
+          judgments=load('LATE_JUDGMENT_OUTPUT')['judgments']
+          by_key={row['metadata']['judgment_key']:row for row in judgments}
+          expected={
+              'gartner-pc-growth-2024-06':Decimal('0.019'),
+              'gartner-pc-growth-2024-09':Decimal('0.016'),
+              'gartner-pc-growth-2024-12':Decimal('0.010'),
+          }
+          for key,value in expected.items():
+              row=by_key[key]
+              assert row['value_kind']=='numeric'
+              assert Decimal(str(row['value_numeric']))==value
+              assert row['unit_code']=='ratio'
+              assert row['predicate_code']=='market.pc_shipments_yoy_growth'
+              assert row['dimensions_complete'] is True
+
+          context=load('LATE_CONTEXT_OUTPUT')
+          assert context['verification']['relation_count']==2, context
+          assert [row['relation_type'] for row in context['relations']]==['revises','revises'], context
+
+          ids=[row['id'] for row in judgments]
+          with psycopg.connect(os.environ['LONGCYCLE_DATABASE_URL'],row_factory=dict_row) as conn:
+              rows=conn.execute(
+                  'SELECT id,value_kind,value_numeric,unit_code,predicate_code,comparability_hash,dimensions_complete '
+                  'FROM research.judgment_assertions WHERE id = ANY(%s::uuid[])',
+                  (ids,),
+              ).fetchall()
+          assert len(rows)==3, rows
+          for row in rows:
+              assert row['value_kind']=='numeric'
+              assert row['value_numeric'] is not None
+              assert row['unit_code']=='ratio'
+              assert row['predicate_code']=='market.pc_shipments_yoy_growth'
+              assert row['comparability_hash'] is not None
+              assert row['dimensions_complete'] is True
+
+          reality=load('REALITY_OUTPUT')
+          fact=reality['facts'][0]['fact']
+          assert Decimal(str(fact['normalized_number']))==Decimal('0.013')
+          assert fact['normalized_unit']=='ratio'
+          assert fact['known_at']=='2025-01-16T00:00:00Z'
+          assert reality['verification']['canonical_reality_count']==1
+
+          for name,error in [
+              ('JUN_OUTCOME_OUTPUT',Decimal('-0.006')),
+              ('SEP_OUTCOME_OUTPUT',Decimal('-0.003')),
+              ('DEC_OUTCOME_OUTPUT',Decimal('0.003')),
+          ]:
+              payload=load(name)
+              evaluation=payload['evaluation']
+              assert evaluation['semantic_relation']=='direct_match'
+              assert evaluation['evaluation_status']=='indeterminate'
+              assert Decimal(str(evaluation['numeric_error']))==error
+              assert evaluation['outcome_first_known_at']=='2025-01-16T00:00:00Z'
+              assert payload['verification']['predicate_dimensions_unit_match_required'] is True
+              assert payload['verification']['no_correctness_tolerance_inferred'] is True
+
+          print('STORAGE_GARTNER_PC_LATE_NUMERIC_OUTCOME_PASS')
+          PY2
+
+      - name: Upload typed execution receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-gartner-pc-late-revision-outcome-${{ github.run_id }}
+          path: |
+            ${{ env.REALITY_EVIDENCE_OUTPUT }}
+            ${{ env.LATE_EVIDENCE_OUTPUT }}
+            ${{ env.LATE_JUDGMENT_OUTPUT }}
+            ${{ env.LATE_CONTEXT_OUTPUT }}
+            ${{ env.REALITY_OUTPUT }}
+            ${{ env.JUN_OUTCOME_OUTPUT }}
+            ${{ env.SEP_OUTCOME_OUTPUT }}
+            ${{ env.DEC_OUTCOME_OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7
