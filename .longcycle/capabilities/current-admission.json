@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "MEMORY-STORAGE-CROSS-INDUSTRY-MS0112-013",
-  "intent": "Research MS-0112 as a bounded cross-industry proof that hyperscaler capital/infrastructure spending and server CPU/platform transitions are distinct upstream demand drivers for server DRAM and enterprise SSD. Reuse the existing grounded Microsoft/Micron cross-industry packet, add only claim-scoped server-platform-cycle evidence that is materially missing, preserve capex, server/platform transition, DRAM demand/content and enterprise-SSD demand as separate scopes, and create no synthetic causal scalar unless a source explicitly supplies the bridge.",
+  "intent_id": "MEMORY-MEMORY-EXPORT-CONTROLS-MS0115-014",
+  "intent": "Research sealed lead MS-0115 as an Evidence-first policy-and-production trajectory: semiconductor-equipment export controls can change the ability of China-based memory fabs to migrate technology or expand capacity even when installed fabs continue operating. Preserve operating-fab evidence, memory-specific regulatory thresholds, VEU authorization state and later authorization revocation as separate point-in-time claims. Do not convert policy status into a synthetic DRAM/NAND bit-supply estimate unless a source explicitly quantifies the effect.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -16,21 +16,23 @@
     "CAP-0006",
     "CAP-0007"
   ],
-  "rationale_summary": "The repository already contains grounded Microsoft cloud/AI capex-and-server-spend evidence and Micron hyperscale SSD demand evidence, so repeating a generic AI-demand packet would add little. The missing MS-0112 increment is the server CPU/platform-cycle axis. The executed packet now separates hyperscaler server procurement, a contemporaneous server-unit expectation, reported AI-server roadmap cadence, EPYC generation/SP5 compatibility and DDR5 interface facts without inventing a DRAM/SSD demand scalar.",
-  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json",
+  "rationale_summary": "MS-0115 adds a distinct supply-side policy mechanism after MS-0112 closed a demand-side bridge. Official company sources can establish operating DRAM/NAND fabs in Wuxi/Xi'an; BIS sources can establish 2022 memory-specific licensing thresholds, 2023 VEU authorization and the later revocation state. Existing source/Evidence/orchestration/execution owners are sufficient; the first step remains Evidence-only and must keep operating capacity, authorization state, technology migration and future bit supply separate.",
+  "rationale_details_ref": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-10.jsonl",
   "unmet_requirement": null,
   "evidence_refs": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounded-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICROSOFT-2024-07-30-CLOUD-AI-CAPEX-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-HYPERSCALE-SSD-DEMAND-v1.json"
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0112-server-platform-demand-bridge-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json"
   ],
   "planned_paths": [
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0112-server-platform-demand-bridge-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-SERVER-PLATFORM-CYCLE-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-AMD-2024-10-10-EPYC-TURIN-DDR5-PLATFORM-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounded-evidence-v1.json",
-    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounding-receipt-v1.json",
-    ".github/workflows/storage-ms0112-server-platform-grounded-evidence.yml",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0115-export-control-memory-supply-trajectory-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2019-04-18-WUXI-DRAM-TECH-MIGRATION-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2014-05-09-XIAN-NAND-FAB-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2022-10-07-PRC-MEMORY-FAB-THRESHOLDS-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2023-10-13-KOREA-MEMORY-VEU-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-BIS-2025-08-29-PRC-VEU-REVOCATION-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0115-export-control-memory-supply-grounded-evidence-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0115-export-control-memory-supply-grounding-receipt-v1.json",
+    ".github/workflows/memory-ms0115-export-control-grounded-evidence.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/handoff/current.json"
   ],
