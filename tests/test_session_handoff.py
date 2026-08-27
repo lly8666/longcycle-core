@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HANDOFF = ROOT / ".longcycle" / "handoff" / "current.json"
 PROTOCOL = ROOT / "docs" / "development" / "session-handoff-protocol.md"
 CONTINUE_HERE = ROOT / "CONTINUE_HERE.md"
+BASELINE_POINTER = ".longcycle/baseline/current.json"
 
 
 class SessionHandoffContractTest(unittest.TestCase):
@@ -26,8 +27,10 @@ class SessionHandoffContractTest(unittest.TestCase):
 
         self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v5")
         self.assertEqual(checkpoint.repository, "lly8666/longcycle-core")
-        self.assertEqual(checkpoint.active_branch, "design/industry-memory")
-        self.assertEqual(checkpoint.active_pr, 1)
+        # Post-Baseline development must not hard-code the old architecture-exploration
+        # branch/PR. Live Git + the typed handoff own the current branch dynamically.
+        self.assertTrue(checkpoint.active_branch)
+        self.assertTrue(checkpoint.active_pr is None or checkpoint.active_pr > 0)
         self.assertEqual(checkpoint.provenance_ordering, "git_commit_graph")
         self.assertTrue(checkpoint.live_refresh_required)
         self.assertTrue(checkpoint.do_not_ask_user_to_repeat)
@@ -37,6 +40,7 @@ class SessionHandoffContractTest(unittest.TestCase):
             ".longcycle/handoff/data-plane.json",
         )
         self.assertIn(checkpoint.data_plane_manifest_path, checkpoint.resume_read_set)
+        self.assertIn(BASELINE_POINTER, checkpoint.resume_read_set)
         self.assertEqual(checkpoint.ci.authority, "snapshot_not_authoritative")
         self.assertTrue(checkpoint.strategic_horizon.medium_term_goal)
         self.assertTrue(checkpoint.strategic_horizon.short_term_goal)
@@ -135,12 +139,15 @@ class SessionHandoffContractTest(unittest.TestCase):
             "CONTINUE_HERE.md",
             ".longcycle/handoff/current.json",
             ".longcycle/handoff/data-plane.json",
+            ".longcycle/capabilities/active-index.json",
+            BASELINE_POINTER,
         }
         self.assertTrue(required.issubset(read_set))
         self.assertLessEqual(len(read_set), 8)
         self.assertFalse(any(path.startswith("docs/devlog/") for path in read_set))
         self.assertNotIn("docs/development/project-constitution.md", read_set)
         self.assertNotIn("docs/development/session-handoff-protocol.md", read_set)
+        self.assertNotIn(".longcycle/capabilities/current-admission.json", read_set)
 
     def test_workstreams_are_explicitly_attached_to_parent_goals(self) -> None:
         checkpoint = SessionHandoffCheckpoint.model_validate_json(
