@@ -1,0 +1,244 @@
+from __future__ import annotations
+
+from datetime import date
+from enum import StrEnum
+from typing import Any
+from uuid import UUID
+
+from pydantic import Field, model_validator
+
+from .models import DomainModel
+
+
+class ClaimScope(StrEnum):
+    LEGAL_DISCLOSURE = "legal_disclosure"
+    OFFICIAL_STATISTIC = "official_statistic"
+    SELF_STATEMENT = "self_statement"
+    MANAGEMENT_GUIDANCE = "management_guidance"
+    MARKET_MEASUREMENT = "market_measurement"
+    PROJECT_STATUS = "project_status"
+    POLICY_TEXT = "policy_text"
+    THIRD_PARTY_FACT = "third_party_fact"
+    INDUSTRY_EXPECTATION = "industry_expectation"
+    TECHNICAL_SPECIFICATION = "technical_specification"
+    OTHER = "other"
+
+
+class AuthorityClass(StrEnum):
+    AUTHORITATIVE_PRIMARY = "authoritative_primary"
+    AUTHORITATIVE_REDISTRIBUTOR = "authoritative_redistributor"
+    PRIMARY_SELF_STATEMENT = "primary_self_statement"
+    METHODOLOGICAL_PRIMARY = "methodological_primary"
+    REPUTABLE_SECONDARY = "reputable_secondary"
+    SECONDARY = "secondary"
+    DISCOVERY_ONLY = "discovery_only"
+
+
+class AuthorityBasis(StrEnum):
+    LEGAL_MANDATE = "legal_mandate"
+    OFFICIAL_RECORD = "official_record"
+    DIRECT_SPEAKER_RECORD = "direct_speaker_record"
+    PUBLISHED_METHODOLOGY = "published_methodology"
+    VERBATIM_OFFICIAL_REDISTRIBUTION = "verbatim_official_redistribution"
+    EDITORIAL_VERIFICATION = "editorial_verification"
+    SECONDARY_CITATION = "secondary_citation"
+    UNKNOWN = "unknown"
+
+
+class SourceAuthorityProfile(DomainModel):
+    claim_scope: ClaimScope
+    authority_class: AuthorityClass
+    authority_basis: AuthorityBasis
+    rationale: str = Field(min_length=1)
+    valid_from: date | None = None
+    valid_to: date | None = None
+
+    @model_validator(mode="after")
+    def valid_window(self) -> SourceAuthorityProfile:
+        if self.valid_from is not None and self.valid_to is not None:
+            if self.valid_to <= self.valid_from:
+                raise ValueError("authority profile valid_to must be after valid_from")
+        return self
+
+
+class MemoryLeadKind(StrEnum):
+    LANDMARK = "landmark"
+    MISSING_EVENT = "missing_event"
+    ACTOR = "actor"
+    TERMINOLOGY = "terminology"
+    METRIC = "metric"
+    MECHANISM = "mechanism"
+    PRICING_RULE = "pricing_rule"
+    CONTRACT_CHANGE = "contract_change"
+    PROCESS_BOTTLENECK = "process_bottleneck"
+    PROJECT_PATTERN = "project_pattern"
+    INVENTORY_PATTERN = "inventory_pattern"
+    CAPITAL_CYCLE = "capital_cycle"
+    POLICY_SHIFT = "policy_shift"
+    TECHNOLOGY_SHIFT = "technology_shift"
+    CROSS_INDUSTRY_DEPENDENCY = "cross_industry_dependency"
+    NARRATIVE = "narrative"
+    CAUSAL_HYPOTHESIS = "causal_hypothesis"
+    ANOMALY = "anomaly"
+    FAILURE_DEAD_END = "failure_dead_end"
+
+
+class MemoryBasis(StrEnum):
+    REMEMBERED_EVENT = "remembered_event"
+    REMEMBERED_ACTOR_OR_NAME = "remembered_actor_or_name"
+    REMEMBERED_MECHANISM = "remembered_mechanism"
+    ASSOCIATIVE_INFERENCE = "associative_inference"
+    MIXED = "mixed"
+
+
+class PrecisionRisk(StrEnum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    UNKNOWN = "unknown"
+
+
+class EntityResolutionState(StrEnum):
+    STABLE = "stable"
+    PARTIALLY_RESOLVED = "partially_resolved"
+    AMBIGUOUS = "ambiguous"
+    UNRESOLVED = "unresolved"
+
+
+class EvidenceStance(StrEnum):
+    SUPPORTS = "supports"
+    CONTRADICTS = "contradicts"
+    CONTEXT = "context"
+    WEAK_MATCH = "weak_match"
+    UNRELATED = "unrelated"
+
+
+class MemoryAuditDisposition(StrEnum):
+    UNRESOLVED = "unresolved"
+    SEEK_PRIMARY = "seek_primary"
+    PRIMARY_SUPPORTS_LEAD = "primary_supports_lead"
+    PRIMARY_CONTRADICTS_LEAD = "primary_contradicts_lead"
+    AUTHORITATIVE_CONFLICT = "authoritative_conflict"
+    SECONDARY_ONLY_SUPPORT = "secondary_only_support"
+    SECONDARY_ONLY_CONTRADICTION = "secondary_only_contradiction"
+    SCOPE_MISMATCH = "scope_mismatch"
+
+
+class DirectSourceSearchStatus(StrEnum):
+    NOT_ATTEMPTED = "not_attempted"
+    ONGOING = "ongoing"
+    EXHAUSTED_NOT_FOUND = "exhausted_not_found"
+    BLOCKED_CLOSED_SOURCE = "blocked_closed_source"
+    PARTIALLY_RECOVERED = "partially_recovered"
+
+
+class MemoryHypothesisDisposition(StrEnum):
+    UNRESOLVED = "unresolved"
+    INDIRECTLY_CORROBORATED = "indirectly_corroborated"
+    INDIRECTLY_CONTRADICTED = "indirectly_contradicted"
+    MIXED = "mixed"
+    INSUFFICIENT_BASIS = "insufficient_basis"
+
+
+class MemoryLead(DomainModel):
+    id: UUID
+    kind: MemoryLeadKind
+    summary: str = Field(min_length=1)
+    claim_scope: ClaimScope
+    memory_basis: MemoryBasis = MemoryBasis.MIXED
+    memory_confidence: float = Field(ge=0, le=1)
+    importance_score: float = Field(ge=0, le=1)
+    novelty_score: float = Field(ge=0, le=1)
+    searchability_score: float = Field(ge=0, le=1)
+    precision_risk: PrecisionRisk = PrecisionRisk.UNKNOWN
+    entity_resolution_state: EntityResolutionState = EntityResolutionState.UNRESOLVED
+    uncertain_fields: tuple[str, ...] = ()
+    aliases_or_old_terms: tuple[str, ...] = ()
+    why_search_may_miss_it: str | None = None
+    suggested_queries: tuple[str, ...] = ()
+    disconfirmation_queries: tuple[str, ...] = ()
+    suggested_source_types: tuple[str, ...] = ()
+    disconfirmation_source_types: tuple[str, ...] = ()
+    satellite_trigger: str | None = None
+
+    @property
+    def search_priority(self) -> float:
+        """Priority for investigation, never a probability that the lead is true."""
+        return (
+            0.35 * self.importance_score
+            + 0.25 * self.novelty_score
+            + 0.20 * self.searchability_score
+            + 0.20 * self.memory_confidence
+        )
+
+
+class EvidenceAssessment(DomainModel):
+    evidence_fragment_id: UUID
+    stance: EvidenceStance
+    authority_class: AuthorityClass
+    claim_scope: ClaimScope
+    scope_match: bool
+    independent_cluster: str | None = None
+
+
+class MemoryAuditResult(DomainModel):
+    disposition: MemoryAuditDisposition
+    reason_codes: tuple[str, ...]
+    supporting_evidence_ids: tuple[UUID, ...] = ()
+    contradicting_evidence_ids: tuple[UUID, ...] = ()
+
+    @property
+    def lead_may_publish_as_fact(self) -> bool:
+        """A memory lead itself is never publishable, regardless of audit outcome."""
+        return False
+
+
+class MemoryHypothesisAssessment(DomainModel):
+    """Research-only inference when direct claim evidence remains unavailable.
+
+    It preserves potentially important industrial memory without silently converting
+    model recall or logical consistency into publishable history.
+    """
+
+    id: UUID
+    lead_id: UUID
+    disposition: MemoryHypothesisDisposition
+    direct_source_search_status: DirectSourceSearchStatus
+    inference_confidence: float = Field(ge=0, le=1)
+    reasoning_summary: str = Field(min_length=1)
+    supporting_evidence_ids: tuple[UUID, ...] = ()
+    contradicting_evidence_ids: tuple[UUID, ...] = ()
+    supporting_lead_ids: tuple[UUID, ...] = ()
+    alternative_explanations: tuple[str, ...] = ()
+    falsification_conditions: tuple[str, ...] = ()
+    search_receipt: dict[str, Any] = Field(default_factory=dict)
+    assessor_name: str = Field(min_length=1)
+    assessor_version: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def preserves_research_only_boundary(self) -> MemoryHypothesisAssessment:
+        if self.lead_id in self.supporting_lead_ids:
+            raise ValueError("a memory hypothesis cannot cite itself as supporting memory")
+        if set(self.supporting_evidence_ids) & set(self.contradicting_evidence_ids):
+            raise ValueError("one evidence fragment cannot be both supporting and contradicting")
+        if self.disposition == MemoryHypothesisDisposition.INDIRECTLY_CORROBORATED:
+            if self.direct_source_search_status not in {
+                DirectSourceSearchStatus.EXHAUSTED_NOT_FOUND,
+                DirectSourceSearchStatus.BLOCKED_CLOSED_SOURCE,
+                DirectSourceSearchStatus.PARTIALLY_RECOVERED,
+            }:
+                raise ValueError("indirect corroboration requires a bounded direct-source search outcome")
+            if not self.supporting_evidence_ids:
+                raise ValueError("indirect corroboration requires archived indirect evidence")
+            if not self.alternative_explanations:
+                raise ValueError("indirect corroboration must preserve alternative explanations")
+            if not self.falsification_conditions:
+                raise ValueError("indirect corroboration must state falsification conditions")
+            if not self.search_receipt:
+                raise ValueError("indirect corroboration requires a search receipt")
+        return self
+
+    @property
+    def may_publish_as_fact(self) -> bool:
+        """Indirect corroboration is research context, never a Fact/Judgment authority shortcut."""
+        return False

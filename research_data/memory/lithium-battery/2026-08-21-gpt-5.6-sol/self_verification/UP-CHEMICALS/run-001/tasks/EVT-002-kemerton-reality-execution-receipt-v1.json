@@ -1,0 +1,60 @@
+{
+  "schema_version": "longcycle-grounded-reality-execution-receipt/v1",
+  "task_id": "EVT-002-KEMERTON-REALITY-V1",
+  "source_evidence_task_id": "EVT-002-KEMERTON-EVIDENCE-V2",
+  "workflow": {
+    "run_id": 32551760009,
+    "artifact_id": 9470254373,
+    "artifact_name": "kemerton-reality-v1-32551760009",
+    "artifact_digest": "sha256:c73a7d90cc46b3895e07c415f594781371ac1eaadc45b78f6d3a291771ff77cb",
+    "active_branch_head": "e7c98eb3286781114cdd7939047f8e0f5e3dc03c"
+  },
+  "fact_assertion": {
+    "id": "d983723b-c9a9-58f3-bf30-6e87bad1bbfa",
+    "entity_type": "production_line",
+    "entity_id": "ba9bcc13-482f-548d-a450-9d9089012778",
+    "predicate_code": "project.first_product_status",
+    "value": "achieved first product",
+    "valid_from": "2022-07-01T00:00:00Z",
+    "valid_to": "2022-08-01T00:00:00Z",
+    "valid_time_precision": "month",
+    "valid_time_text": "July 2022",
+    "first_known_at": "2022-08-03T16:27:49Z",
+    "source_connector_id": "dc48642a-b91e-567e-a45c-bb1f53b7eafb",
+    "document_version_id": "ba0151fa-bdc9-5723-a39c-6d59da73faad",
+    "evidence_fragment_id": "d1ce2700-8adc-56e2-bd80-d52958a5717e",
+    "extraction_run_id": "34d18de3-c846-5f7d-bdf6-a09dabb56c33",
+    "reconciliation": {
+      "decision": "accept",
+      "score": 0.97,
+      "reason_codes": ["quality_gate_passed"],
+      "status": "trusted",
+      "evaluator_name": "rule_reconciler",
+      "evaluator_version": "2.0.0"
+    }
+  },
+  "canonical_reality": {
+    "id": "cffd26d4-01f7-5736-bddb-a42c17748935",
+    "fact_key_id": "703c14da-90f0-5102-8734-d434f918a6b9",
+    "predicate_code": "project.first_product_status",
+    "value_kind": "text",
+    "value_text": "achieved first product",
+    "valid_from": "2022-07-01T00:00:00Z",
+    "valid_to": "2022-08-01T00:00:00Z",
+    "valid_time_precision": "month",
+    "valid_time_text": "July 2022",
+    "market_known_at": "2022-08-03T16:27:49Z",
+    "confidence": 0.97,
+    "publication_status": "trusted"
+  },
+  "verification": {
+    "real_fixed_sources_regrounded_in_same_postgres_run": true,
+    "normal_fact_assertion_path_used": true,
+    "normal_reconciliation_path_used": true,
+    "canonical_reality_created": true,
+    "all_reconciled_accept": true,
+    "month_precision_preserved": true,
+    "no_exact_occurrence_day_claimed": true,
+    "blind_memory_mutated": false
+  }
+}

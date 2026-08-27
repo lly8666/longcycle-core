@@ -1,0 +1,351 @@
+name: ADC SV-005 BLENREP Grounded Evidence probe
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/adc-sv005-blenrep-grounded-evidence.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-source-plane-receipt-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'src/longcycle/adapters/sources/http.py'
+      - 'src/longcycle/adapters/sources/local.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+      - 'src/longcycle/adapters/storage/postgres_source_locators.py'
+      - 'migrations/0028_truthful_source_materialization.sql'
+      - 'migrations/0029_source_representation_fetch_state.sql'
+      - 'migrations/0030_source_representation_fetch_state_unambiguous.sql'
+      - 'migrations/0031_explicit_raw_source_materialization.sql'
+      - 'tests/test_source_locator_materialization.py'
+      - 'tests/test_materialized_source_representation.py'
+      - 'tests/test_research_orchestration.py'
+  pull_request:
+    paths:
+      - '.github/workflows/adc-sv005-blenrep-grounded-evidence.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-source-plane-receipt-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'src/longcycle/adapters/sources/http.py'
+      - 'src/longcycle/adapters/sources/local.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+      - 'src/longcycle/adapters/storage/postgres_source_locators.py'
+      - 'migrations/0028_truthful_source_materialization.sql'
+      - 'migrations/0029_source_representation_fetch_state.sql'
+      - 'migrations/0030_source_representation_fetch_state_unambiguous.sql'
+      - 'migrations/0031_explicit_raw_source_materialization.sql'
+      - 'tests/test_source_locator_materialization.py'
+      - 'tests/test_materialized_source_representation.py'
+      - 'tests/test_research_orchestration.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/sv005-blobs
+      SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json
+      WEB_VERIFY_RECEIPT: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json
+      PREPARED_SPEC: ${{ github.workspace }}/.artifacts/SV-005-grounded-evidence-runtime-spec.json
+      MATERIAL_ROOT: ${{ github.workspace }}/.artifacts/sv005-materials
+      OUTPUT: ${{ github.workspace }}/.artifacts/SV-005-grounded-evidence-execution.json
+      RELEASE_TAG: longcycle-dev-binary-cache
+      RELEASE_ASSET: longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip
+      RELEASE_SHA256: eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install -e '.[dev,postgres,s3,duckdb]'
+          python -m pip install 'pypdf==6.15.0'
+
+      - name: Source lifecycle regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_source_locator_materialization.py
+          tests/test_materialized_source_representation.py
+          tests/test_research_orchestration.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Restore already-materialized legacy PDF pack
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$MATERIAL_ROOT/pdf" "$MATERIAL_ROOT/web" .artifacts/release
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir .artifacts/release
+          actual="$(sha256sum ".artifacts/release/$RELEASE_ASSET" | awk '{print $1}')"
+          echo "SV005_LEGACY_RELEASE_SHA actual=$actual expected=$RELEASE_SHA256"
+          test "$actual" = "$RELEASE_SHA256"
+          unzip -q ".artifacts/release/$RELEASE_ASSET" -d .artifacts/release/unpacked
+          cp .artifacts/release/unpacked/federal-register-blenrep-revocation-2023.pdf "$MATERIAL_ROOT/pdf/"
+          cp .artifacts/release/unpacked/gsk-dreamm7-readout-2024-02-05.pdf "$MATERIAL_ROOT/pdf/"
+
+      - name: Validate Drive capture receipt and materialize reviewed webpage representations
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import copy
+          import hashlib
+          import json
+          import os
+          from collections import defaultdict
+          from pathlib import Path
+
+          spec_path = Path(os.environ['SPEC'])
+          receipt_path = Path(os.environ['WEB_VERIFY_RECEIPT'])
+          prepared_path = Path(os.environ['PREPARED_SPEC'])
+          root = Path(os.environ['MATERIAL_ROOT'])
+          spec = json.loads(spec_path.read_text(encoding='utf-8'))
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+
+          capsule = spec['acquisition_provenance']['webpage_capsule']
+          assert receipt['google_drive_file_id'] == capsule['google_drive_file_id']
+          assert receipt['sha256'] == capsule['sha256']
+          assert receipt['capture_count'] == capsule['capture_count'] == 3
+          assert all(receipt['acceptance'].values()), receipt['acceptance']
+
+          docs = {row['key']: row for row in spec['documents']}
+          fragments_by_doc = defaultdict(list)
+          for fragment in spec['fragments']:
+              fragments_by_doc[fragment['document_key']].append(fragment)
+
+          source_id_by_document = {
+              'fda-initial-approval-2020': 'fda-blenrep-accelerated-approval-2020',
+              'gsk-dreamm3-2022': 'gsk-dreamm3-2022-11-07',
+              'gsk-withdrawal-judgment-2022': 'gsk-blenrep-withdrawal-2022-11-22',
+          }
+          receipt_by_source = {row['source_id']: row for row in receipt['capture_checks']}
+          runtime_spec = copy.deepcopy(spec)
+          runtime_docs = {row['key']: row for row in runtime_spec['documents']}
+
+          for document_key, source_id in source_id_by_document.items():
+              doc = docs[document_key]
+              check = receipt_by_source[source_id]
+              assert check['visible_text_sha256'] == doc['retrieval_provenance']['capture_row_text_sha256']
+              fragment_checks = {row['fragment_key']: row for row in check['fragment_checks']}
+              excerpts = []
+              for fragment in fragments_by_doc[document_key]:
+                  excerpt = fragment['excerpt']
+                  recorded = fragment_checks[fragment['fragment_key']]
+                  assert recorded['present'] is True
+                  assert hashlib.sha256(excerpt.encode('utf-8')).hexdigest() == recorded['excerpt_sha256']
+                  excerpts.append(excerpt)
+              material = '\n'.join(excerpts)
+              path = root / doc['material_path']
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(material, encoding='utf-8')
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == doc['expected_sha256'] == check['runtime_material_sha256']
+
+              provenance = runtime_docs[document_key]['retrieval_provenance']
+              provenance.update({
+                  'mode': 'verified_private_drive_capsule_receipt',
+                  'drive_reverification_receipt': str(receipt_path),
+                  'raw_source_materialized': False,
+                  'source_capture_state': 'content_verified',
+                  'source_media_type': 'text/html',
+                  'content_verification_mode': 'authorized_drive_capsule_reverification',
+                  'claim_relevant_content_preserved': True,
+              })
+              print(f'SV005_DRIVE_REPRESENTATION_PASS key={document_key} sha={digest}')
+
+          prepared_path.parent.mkdir(parents=True, exist_ok=True)
+          prepared_path.write_text(json.dumps(runtime_spec, indent=2) + '\n', encoding='utf-8')
+          PY
+
+      - name: Verify all material SHA pins and PDF page excerpts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import io
+          import json
+          import os
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          spec = json.loads(Path(os.environ['PREPARED_SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['MATERIAL_ROOT'])
+          docs = {row['key']: row for row in spec['documents']}
+          for doc in docs.values():
+              path = root / doc['material_path']
+              assert path.is_file(), path
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == doc['expected_sha256'], (path, digest, doc['expected_sha256'])
+
+          for fragment in spec['fragments']:
+              doc = docs[fragment['document_key']]
+              if doc['content_type'] != 'application/pdf':
+                  material = (root / doc['material_path']).read_text(encoding='utf-8')
+                  assert fragment['excerpt'] in material, fragment['fragment_key']
+                  continue
+              reader = PdfReader(io.BytesIO((root / doc['material_path']).read_bytes()), strict=False)
+              page_number = fragment['page']
+              page_text = ' '.join((reader.pages[page_number - 1].extract_text() or '').split())
+              excerpt = ' '.join(fragment['excerpt'].split())
+              assert excerpt.casefold() in page_text.casefold(), (fragment['fragment_key'], page_number, excerpt)
+          print('SV005_MATERIAL_INTEGRITY_PASS')
+          PY
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$PREPARED_SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only and source-materialization boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import asyncio
+          import json
+          import os
+          import psycopg
+
+          payload = json.load(open(os.environ['OUTPUT'], encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 5, result
+          assert len(result['fragments']) == 9, result
+          assert result['acceptance'] == {
+              'persisted_document_versions': 5,
+              'persisted_evidence_fragments': 9,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }, result['acceptance']
+          documents = {row['document_key']: row for row in result['documents']}
+          assert documents['fda-initial-approval-2020']['source_authority_profiles'][0]['authority_class'] == 'authoritative_primary'
+          assert documents['federal-register-revocation-2023']['source_authority_profiles'][0]['authority_class'] == 'authoritative_primary'
+          assert documents['gsk-dreamm3-2022']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          assert documents['gsk-withdrawal-judgment-2022']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          assert documents['gsk-dreamm7-2024']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+
+          expected = {
+              'FDA-BLENREP-ACCELERATED-APPROVAL-2020-08-05': ('content_verified', 'text/html', False),
+              'GSK-DREAMM3-2022-11-07': ('content_verified', 'text/html', False),
+              'GSK-BLENREP-US-MARKETING-AUTHORISATION-2022-11-22': ('content_verified', 'text/html', False),
+              'FR-2023-06576': ('materialized', 'application/pdf', True),
+              'GSK-DREAMM7-2024-02-05': ('materialized', 'application/pdf', True),
+          }
+
+          async def verify_database():
+              async with await psycopg.AsyncConnection.connect(os.environ['LONGCYCLE_DATABASE_URL']) as conn:
+                  cursor = await conn.execute(
+                      """
+                      SELECT external_id, source_capture_state, source_media_type,
+                             raw_materialized_document_version_id
+                      FROM evidence.documents
+                      WHERE external_id = ANY(%s)
+                      """,
+                      (list(expected),),
+                  )
+                  rows = await cursor.fetchall()
+              assert len(rows) == 5, rows
+              actual = {row[0]: (row[1], row[2], row[3] is not None) for row in rows}
+              assert actual == expected, actual
+
+          asyncio.run(verify_database())
+          print('SV005_GROUNDED_EVIDENCE_PASS')
+          PY
+
+      - name: Build execution artifact
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/out
+          cp "$SPEC" .artifacts/out/SV-005-grounded-evidence-spec-v1.json
+          cp "$WEB_VERIFY_RECEIPT" .artifacts/out/SV-005-drive-capsule-reverification-v1.json
+          if [[ -f "$PREPARED_SPEC" ]]; then cp "$PREPARED_SPEC" .artifacts/out/SV-005-grounded-evidence-runtime-spec.json; fi
+          if [[ -f "$OUTPUT" ]]; then cp "$OUTPUT" .artifacts/out/SV-005-grounded-evidence-execution.json; fi
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          out = Path('.artifacts/out')
+          manifest = {
+              'schema_version': 'longcycle-sv005-evidence-probe-artifact/v2',
+              'head_sha': os.environ['GITHUB_SHA'],
+              'files': [],
+          }
+          for path in sorted(out.glob('*.json')):
+              manifest['files'].append({
+                  'file_name': path.name,
+                  'size_bytes': path.stat().st_size,
+                  'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+              })
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Upload execution artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sv005-blenrep-grounded-evidence-${{ github.run_id }}
+          path: .artifacts/out
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish exact-head runtime status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$JOB_STATUS" == "success" ]]; then
+            state=success
+            description='BLENREP Evidence runtime passed'
+          else
+            state=failure
+            description='BLENREP Evidence runtime failed'
+          fi
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state="$state" \
+            -f context='longcycle/blenrep-grounded-evidence' \
+            -f description="$description" \
+            -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"

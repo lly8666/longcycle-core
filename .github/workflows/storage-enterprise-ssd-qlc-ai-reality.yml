@@ -1,0 +1,127 @@
+name: Storage enterprise SSD QLC AI Reality
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/storage-enterprise-ssd-qlc-ai-reality.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SOLIDIGM-2024-11-13-QLC-100EB-SHIPMENTS-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SOLIDIGM-2023-03-28-CDN-QLC-DEPLOYMENT-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-09-25-DATACENTER-SSD-REVENUE-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-KIOXIA-2024-11-08-FY24Q2-ENTERPRISE-SSD-SHIPMENTS-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-10-23-GB200-SSD-RVL-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-qlc-ai-storage-demand-grounded-evidence-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/enterprise-ssd-qlc-ai-storage-reality-projection-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'src/longcycle/application/reality_projection.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-qlc-reality-blobs
+      EVIDENCE_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/enterprise-ssd-qlc-ai-storage-demand-grounded-evidence-v1.json
+      REALITY_SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/enterprise-ssd-qlc-ai-storage-reality-projection-v1.json
+      EVIDENCE_OUTPUT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-qlc-evidence-execution.json
+      REALITY_OUTPUT: ${{ github.workspace }}/.artifacts/storage-enterprise-ssd-qlc-reality-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Reality projection regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_reality_projection.py
+          tests/test_fact_temporal_precision.py
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Rebuild Grounded Evidence in this PostgreSQL generation
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$EVIDENCE_SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$EVIDENCE_OUTPUT"
+
+      - name: Execute source-specific Reality projection
+        run: >-
+          python scripts/execute_grounded_reality_projection.py
+          "$REALITY_SPEC"
+          "$EVIDENCE_OUTPUT"
+          --output "$REALITY_OUTPUT"
+
+      - name: Assert bounded canonical Reality
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["REALITY_OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["schema_version"] == "longcycle-grounded-reality-execution/v1", payload
+          assert payload["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-QLC-AI-STORAGE-REALITY-001"
+          assert payload["source_evidence_task_id"] == "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-QLC-AI-STORAGE-DEMAND-001"
+          verification = payload["verification"]
+          assert verification["fact_count"] == 4, verification
+          assert verification["canonical_reality_count"] == 4, verification
+          assert verification["all_reconciled_accept"] is True, verification
+          assert verification["all_fact_evidence_ids_persisted"] is True, verification
+          assert verification["all_known_times_derived_from_grounded_evidence"] is True, verification
+          predicates = {row["predicate_code"] for row in payload["canonical_reality"]}
+          assert predicates == {
+              "storage.qlc_cumulative_shipments",
+              "product.commercialization_stage",
+              "storage.datacenter_ssd_quarterly_revenue",
+              "storage.enterprise_ssd_shipment_mix_direction",
+          }, predicates
+          forbidden = {"vendor_reported_customer_qlc_deployment", "supplier_reported_platform_qualification", "company_total_bit_growth_context"}
+          source_roles = {row["fact"]["metadata"]["source_claim_role"] for row in payload["facts"]}
+          assert not (source_roles & forbidden), source_roles
+          print("STORAGE_ENTERPRISE_SSD_QLC_AI_REALITY_PASS")
+          PY
+
+      - name: Upload Reality execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: storage-enterprise-ssd-qlc-ai-reality-${{ github.run_id }}
+          path: ${{ env.REALITY_OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7

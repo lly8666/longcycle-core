@@ -1,0 +1,127 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0115-EXPORT-CONTROL-MEMORY-SUPPLY-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0115-export-control-memory-supply-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/memory-ms0115-export-control-grounded-evidence.yml",
+    "run_id": 32967179248,
+    "head_sha": "8d833de5a22e8d8e30102bed1da90893e80abf25",
+    "conclusion": "success",
+    "artifact_id": 9606141488,
+    "artifact_name": "memory-ms0115-export-control-32967179248",
+    "artifact_digest": "sha256:52ae8927426caa7b01fbb7414b5d4960a3dab507b510d245ecfdf7789e60064d"
+  },
+  "acceptance": {
+    "persisted_document_versions": 5,
+    "persisted_evidence_fragments": 7,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "policy_state_scope_separation_passed": true,
+    "later_known_2025_cutoff_assertion_passed": true
+  },
+  "source_connectors": [
+    {
+      "source": "SK hynix Newsroom",
+      "source_connector_id": "bc1d8939-3ad9-5f9c-a9cb-40c9482038bc",
+      "claim_scope": "self_statement",
+      "authority_class": "primary_self_statement"
+    },
+    {
+      "source": "Samsung Global Newsroom",
+      "source_connector_id": "1c2a9410-5c4f-5fee-87b3-e792a10791be",
+      "claim_scope": "self_statement",
+      "authority_class": "primary_self_statement"
+    },
+    {
+      "source": "U.S. Department of Commerce Bureau of Industry and Security",
+      "source_connector_id": "e1e1bf03-a727-5441-acd7-80e082b72916",
+      "claim_scope": "policy_text",
+      "authority_class": "authoritative_primary"
+    }
+  ],
+  "documents": [
+    {
+      "document_key": "skhynix_wuxi_dram_technology_migration_2019_04_18",
+      "document_id": "489f684b-0de1-55f9-9770-2e03a834cc5b",
+      "content_sha256": "96ca01b38f1dec28ae8f65d7449f635836dc9a5c8dd8c0bb55f920d253cd47fe",
+      "first_known_at": "2019-04-19T00:00:00Z"
+    },
+    {
+      "document_key": "samsung_xian_nand_fab_2014_05_09",
+      "document_id": "a8d22431-1e91-5fe5-8657-f9d0e2edb290",
+      "content_sha256": "7fafb9e75bd7246fac05ead776fa036e185551d8c79797175d67724ece9a3894",
+      "first_known_at": "2014-05-10T00:00:00Z"
+    },
+    {
+      "document_key": "bis_prc_memory_thresholds_2022_10_07",
+      "document_id": "39de7ce4-6c75-5020-bd44-c75aeee2faf5",
+      "content_sha256": "4212fb2e3fa625d4b1fa92af2f56a3bc3eac76225484a3251557143110d03c9b",
+      "first_known_at": "2022-10-08T00:00:00Z"
+    },
+    {
+      "document_key": "bis_korea_memory_veu_2023_10_13",
+      "document_id": "5c676de4-28fc-52c2-904b-b5364925ded9",
+      "content_sha256": "80c83d7c32c14faffb0db09d2091d848ffce53fc9c77dd2689da9faf01d68ea6",
+      "first_known_at": "2023-10-14T00:00:00Z"
+    },
+    {
+      "document_key": "bis_prc_veu_revocation_2025_08_29",
+      "document_id": "5d969251-8d24-5887-a53d-90216137c68b",
+      "content_sha256": "af661571dfe78f55471634be2e947f48cf7df6785f77367baebb7623f2cb6e94",
+      "first_known_at": "2025-08-30T00:00:00Z"
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MS0115-SKHYNIX-WUXI-DRAM-TECH-MIGRATION",
+      "evidence_fragment_id": "f4f92ff2-9dbe-5f7f-b850-35038eb6620d",
+      "fragment_sha256": "43d14fbf5f37fef9dcb443e77d445075d62d047ada95b5170ab039526a493cd2",
+      "claim_role": "memory_fab_technology_migration_equipment_space_requirement"
+    },
+    {
+      "fragment_key": "EVF-MS0115-SAMSUNG-XIAN-NAND-FAB",
+      "evidence_fragment_id": "a67867ab-1624-5850-a534-65c36f2452d6",
+      "fragment_sha256": "7be3270c0a98393dd9916f00a1198191db4af4b4f429008c9fd08433e39302f6",
+      "claim_role": "operating_prc_nand_fab_baseline"
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2022-DRAM-THRESHOLD",
+      "evidence_fragment_id": "932a899c-45db-5efc-b4d6-f4b6ef3518f6",
+      "fragment_sha256": "4f0e41880233e0965b1ac6fe9076d96cc2319aef2b290dc171152eaa37f21470",
+      "claim_role": "prc_dram_fab_export_control_threshold"
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2022-NAND-THRESHOLD",
+      "evidence_fragment_id": "ea9d7a3f-d898-5043-9404-ed1814ee046d",
+      "fragment_sha256": "c88198dc92b0bacd259c07e9340ade29f6d79b1d713cd7557e7c960d3fb715a3",
+      "claim_role": "prc_nand_fab_export_control_threshold"
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2023-MEMORY-VEU",
+      "evidence_fragment_id": "919f5053-82af-5b31-bf27-0912e3c61b21",
+      "fragment_sha256": "aa2bd33ce8dbe50aa0ed9b21f1c89a9f5cedcaa460216742c4bedff6ab6d3750",
+      "claim_role": "foreign_owned_prc_memory_fab_veu_authorization"
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2025-EXISTING-FAB-OPERATION",
+      "evidence_fragment_id": "f830fe17-1fcb-5184-9e9d-51353d18b827",
+      "fragment_sha256": "705c175b1d80d85c9c226e4f79a2d9b81e6ea7d30f680cc87b7ad81337a412e0",
+      "claim_role": "post_veu_existing_fab_operation_license_intent"
+    },
+    {
+      "fragment_key": "EVF-MS0115-BIS-2025-NO-UPGRADE-EXPANSION",
+      "evidence_fragment_id": "fb6bf619-929a-569b-93e7-f641cee1652e",
+      "fragment_sha256": "f6f971a5edb1ce0c8ce24050e694aac57e4044d7975053184c3303f852e05827",
+      "claim_role": "post_veu_no_capacity_or_technology_upgrade_license_intent"
+    }
+  ],
+  "semantic_guards": [
+    "Installed/operating fab evidence and future technology-migration permission are separate semantic dimensions.",
+    "The 2022 BIS DRAM/NAND thresholds establish regulatory scope, not realized equipment denial, wafer loss or bit-supply reduction.",
+    "The 2023 VEU state establishes a general-authorization path for eligible items and continued operation; it is not unrestricted equipment access.",
+    "The 2025 post-VEU policy is later-known and must not rewrite 2022-2024 point-in-time replay.",
+    "The 2025 policy explicitly separates licensing intent for continued existing-fab operation from non-approval intent for capacity expansion or technology upgrades.",
+    "No Fact, Judgment or synthetic future-bit-supply estimate was created during Evidence execution."
+  ]
+}

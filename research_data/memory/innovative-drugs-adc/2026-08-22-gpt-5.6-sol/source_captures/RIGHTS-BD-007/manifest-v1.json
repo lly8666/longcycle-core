@@ -1,0 +1,81 @@
+{
+  "schema_version": "longcycle-source-capture-manifest/v1",
+  "lead_id": "RIGHTS-BD-007",
+  "policy": {
+    "readable_webpage_default": "interactive_read_to_faithful_visible_text_provenance_to_bounded_local_database_to_google_drive",
+    "pdf_raw_bytes_default": "github_actions_to_hash_verified_immutable_github_release_asset",
+    "legacy_capture_status": "The two repository-pinned faithful webpage text captures predate the local-database-to-Drive webpage default and remain valid immutable legacy capture material for this already-started lifecycle. Their former source-pack.zip binary wrapper was found structurally corrupt at runtime and has been retired from the live tree; Git history preserves the failed wrapper for audit, but it is not Evidence and is not an execution input.",
+    "tool_limit_rule": "A missing preferred acquisition mechanism may change capture representation but must never justify skipping readable source information.",
+    "evidence_boundary": "Search snippets and discovery summaries are not source captures. A faithful webpage capture must preserve directly read source content, source identity, capture mode, limitations and a digest of the immutable captured representation. Transport never changes source authority."
+  },
+  "source_pack": {
+    "status": "retired_corrupt_binary_wrapper",
+    "historical_path": "source-pack.zip",
+    "active_execution_input": false,
+    "previously_recorded_sha256": "0ac2cc7e3d769e51b308f1c7ed694432e1b6b6d2c89b50998652fee777554350",
+    "observed_repository_sha256": "efc1447d874a9e5e315bbeb7a45dfde5b53d6f80036047d56e9f4a48df67faf3",
+    "format": "zip",
+    "members_intended": [
+      "bms-2023-12-11-joint-announcement.capture.txt",
+      "sec-bms-2023-10k-systimmune-note.capture.txt"
+    ],
+    "integrity_observation": "GitHub Actions run 32627734185 proved both standalone capture SHA-256 pins matched while source-pack.zip did not match its recorded digest. Independent structural inspection of the exact repository bytes showed the ZIP central-directory structure was invalid. The wrapper was therefore retired rather than re-certified with the observed bad digest.",
+    "retirement_rule": "Do not reconstruct or upload a replacement binary wrapper from the interactive Agent. Grounded Evidence consumes the two independently pinned text captures directly. If a future portable webpage-capture bundle is required, use the current bounded local capture DB -> Google Drive handoff path.",
+    "audit_runs": [
+      32627545662,
+      32627734185
+    ]
+  },
+  "captures": [
+    {
+      "key": "bms-joint-announcement",
+      "material_path": "bms-2023-12-11-joint-announcement.capture.txt",
+      "sha256": "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186",
+      "capture_mode": "verbatim_visible_text_transcription",
+      "capture_scope": "claim_relevant_complete",
+      "original_url": "https://news.bms.com/news/details/2023/SystImmune-and-Bristol-Myers-Squibb-Announce-a-Global-Strategic-Collaboration-Agreement-for-the-Development-and-Commercialization-of-BL-B01D1/default.aspx",
+      "publisher_domain": "news.bms.com",
+      "source_cluster": "2023-12-11-joint-announcement",
+      "source_date": {
+        "value": "2023-12-11",
+        "precision": "day",
+        "basis": "publisher_date_label"
+      },
+      "captured_at": "2026-08-23T14:36:00+08:00",
+      "visual_status": "Publisher page exposed an image/tracking link that the reader could not fetch. No claim-relevant visual content was confirmed from that link; the limitation is retained rather than silently ignored."
+    },
+    {
+      "key": "sec-bms-2023-10k-systimmune-note",
+      "material_path": "sec-bms-2023-10k-systimmune-note.capture.txt",
+      "sha256": "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3",
+      "capture_mode": "verbatim_visible_text_transcription",
+      "capture_scope": "claim_relevant_complete",
+      "original_url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/bmy-20231231.htm",
+      "publisher_domain": "sec.gov",
+      "issuer": "Bristol-Myers Squibb Company",
+      "filing_type": "10-K",
+      "accession": "0000014272-24-000044",
+      "filing_date": {
+        "value": "2024-02-13",
+        "precision": "day",
+        "basis": "SEC filing index"
+      },
+      "period_of_report": "2023-12-31",
+      "source_cluster": "bms-2023-form-10k",
+      "captured_at": "2026-08-23T14:36:00+08:00",
+      "visual_status": "No claim-relevant figure is required for the captured SystImmune alliance section. Unrelated filing graphics remain outside this claim-scoped capture."
+    }
+  ],
+  "temporal_separation": {
+    "sealed_memory_wording": "2023-era",
+    "announcement_event": {
+      "value": "2023-12-11",
+      "precision": "day"
+    },
+    "transaction_effective_event": {
+      "value": "2024-02",
+      "precision": "month"
+    },
+    "rule": "Do not collapse announcement and effectiveness into one sharpened date and do not rewrite sealed memory."
+  }
+}

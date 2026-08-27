@@ -1,0 +1,69 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "ADC-SV-002-ROVA-T-GROUNDED-EVIDENCE-V1",
+  "status": "pass",
+  "spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-002-grounded-evidence-spec-v1.json",
+  "execution_head_sha": "7c7ffdd56f24a06465fc0a7373f84948bca3264e",
+  "control_issue": 89,
+  "workflow_run_id": 32581003171,
+  "failed_prior_attempt": {
+    "control_issue": 88,
+    "workflow_run_id": 32580812260,
+    "failure": "Ambiguous repeated HTML excerpt required explicit occurrence; no grounding rule was relaxed."
+  },
+  "source_pack": {
+    "transport": "github_release",
+    "release_tag": "longcycle-dev-binary-cache",
+    "file_name": "longcycle-adc-sv002-rova-t-acquisition-v1-run32580691882.zip",
+    "size_bytes": 2139635,
+    "sha256": "a244ed59d467b2aea8a693f02fa96034ef410f64fc80e777ef69daef226b304d",
+    "acquisition_run_id": 32580691882,
+    "acquisition_issue": 87
+  },
+  "generated_execution_relay": {
+    "transport": "google_drive",
+    "google_drive_file_id": "1Hcv0fsDqQqoyhFAUoCHm5BBfVPDlVEUC",
+    "file_name": "adc-sv002-grounded-evidence-32581003171.zip",
+    "size_bytes": 49727,
+    "sha256": "74ae4dc74d577a0bc404365d115f92a4413b9f4bb21966af434304b9c831c602",
+    "github_actions_artifact_id": 9477793758,
+    "github_actions_artifact_name": "adc-sv002-grounded-evidence-32581003171",
+    "github_actions_artifact_digest": "sha256:74ae4dc74d577a0bc404365d115f92a4413b9f4bb21966af434304b9c831c602",
+    "contains_external_source_bytes": false
+  },
+  "acceptance": {
+    "persisted_document_versions": 5,
+    "persisted_evidence_fragments": 9,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "documents": [
+    {"document_key":"stemcentrx-acquisition-2016","document_id":"970ad37c-a56d-5595-b5b7-0964c7e2b8dc","content_sha256":"807268c83ba7fcc7e70773815f9afddbd2c6957f3410dd5012ddd0d881470bd5","authority_class":"primary_self_statement","source_cluster":"abbvie-stemcentrx-origin"},
+    {"document_key":"tahoe-halt-2018","document_id":"367ac87a-1ae7-5199-9975-ceddf1aa2408","content_sha256":"6e4fc461f7ffb8ea2cceeff2bd806fe5b30080ffebd5a675896cb8753bfe53f3","authority_class":"primary_self_statement","source_cluster":"abbvie-stemcentrx-origin"},
+    {"document_key":"stemcentrx-impairment-8k-2019","document_id":"9c185a53-506e-55da-b8ab-4cfc65b65fb9","content_sha256":"ccdad7f84acd5000ed4397c84add094a7f1920bab3f4cb73dd3b1801d30defc9","authority_class":"authoritative_redistributor","retrieval_host":"investors.abbvie.com","upstream_identity":"SEC EDGAR / AbbVie Form 8-K Item 2.06","source_cluster":"abbvie-stemcentrx-origin"},
+    {"document_key":"meru-termination-2019","document_id":"eae049d8-d270-5ef7-9199-3031ada3bd6c","content_sha256":"5a082ec98ecf70eb917dc5da7a13b9b0f8d2a14c21b771fee4b160e13235eee2","authority_class":"primary_self_statement","source_cluster":"abbvie-stemcentrx-origin"},
+    {"document_key":"abbvie-2019-10k-impairments","document_id":"4ec70f52-df8b-58d8-a9b9-6a77387de7f2","content_sha256":"8a8d47fcf65b61337b714cfbc030c7e751ee84185832d68b0e4484b1398168a7","authority_class":"authoritative_redistributor","retrieval_host":"investors.abbvie.com","upstream_identity":"SEC EDGAR / AbbVie 2019 Form 10-K","source_cluster":"abbvie-stemcentrx-origin"}
+  ],
+  "parser_artifacts": [
+    {"document_key":"stemcentrx-impairment-8k-2019","artifact_id":"26a59219-51d3-5def-aadd-dacb0aafa100","artifact_type":"pdf-text-pages","artifact_sha256":"129f3bf58f351e4b201f8cb0624dfdd4801b2edecb84ba326ae0ee767896c454","parser_name":"pypdf-text","parser_version":"1.0.0+pypdf-6.15.0"},
+    {"document_key":"abbvie-2019-10k-impairments","artifact_id":"e3d8886e-2887-5ca1-a55d-76ec2c3a39f8","artifact_type":"pdf-text-pages","artifact_sha256":"87b1162abe4c69164bc97d1926647e6820ab8178e5f74fcb1dde7aeaaf3d5695","parser_name":"pypdf-text","parser_version":"1.0.0+pypdf-6.15.0"}
+  ],
+  "evidence_fragments": [
+    {"claim_id":"SV002-C01","fragment_key":"acquisition-peak-revenue-expectation","evidence_fragment_id":"6e2bbfd8-0f54-555a-ac5e-ab7b04a0c13a","document_id":"970ad37c-a56d-5595-b5b7-0964c7e2b8dc","locator":"visible-text:877:922","fragment_sha256":"1feed0beccf3fd494dd17195abad99386b44956df1168900f0f25ed9d9b68c70","epistemic_layer":"judgment"},
+    {"claim_id":"SV002-C02","fragment_key":"acquisition-early-orr-signal","evidence_fragment_id":"2c4adc87-6c6f-5769-9daf-7235b434ce30","document_id":"970ad37c-a56d-5595-b5b7-0964c7e2b8dc","locator":"visible-text:2919:2955","fragment_sha256":"284c622d82d0cec8f8394bdb46d09837da07f5e0a9532dbc2a4cf5565b838857","epistemic_layer":"reality","maturity_boundary":"Early Phase 1/2 signal only; explicit occurrence=1 selects the body paragraph."},
+    {"claim_id":"SV002-C03","fragment_key":"acquisition-transaction-value","evidence_fragment_id":"963c56b0-06ad-5b38-a21f-b3041e5c49cf","document_id":"970ad37c-a56d-5595-b5b7-0964c7e2b8dc","locator":"visible-text:5888:5932","fragment_sha256":"5225d0d872856d6d952b4a7e341375ca42e5d58189588de87d7775af79de38fe","epistemic_layer":"reality"},
+    {"claim_id":"SV002-C04","fragment_key":"tahoe-shorter-os","evidence_fragment_id":"e8c57088-3c8c-54f3-841d-b409d1ea9411","document_id":"367ac87a-1ae7-5199-9975-ceddf1aa2408","locator":"visible-text:1029:1111","fragment_sha256":"722c13de0f73e5b59dbdd3f254c697b1fa0340d3280b0391f3e99dfc5fedc920","epistemic_layer":"reality"},
+    {"claim_id":"SV002-C05","fragment_key":"impairment-estimated-net-impact","evidence_fragment_id":"e400fe1d-4510-59b3-902c-2398a302a5af","document_id":"9c185a53-506e-55da-b8ab-4cfc65b65fb9","artifact_id":"26a59219-51d3-5def-aadd-dacb0aafa100","locator":"$.pages[1].text","fragment_sha256":"bcad800337c140c11fce2d1e4ce59cb7793c6591ea6fc6385f9fbf7b76e6e07d","epistemic_layer":"reality","accounting_scope":"Estimated net impact combining impairment and contingent-consideration adjustment; not gross impairment charge."},
+    {"claim_id":"SV002-C06","fragment_key":"meru-no-survival-benefit","evidence_fragment_id":"4b15f89c-2f33-5718-a21f-b86fd7c85e29","document_id":"eae049d8-d270-5ef7-9199-3031ada3bd6c","locator":"visible-text:1064:1130","fragment_sha256":"33298ac40d3f233e672e60f3de03089f17e49275e1dc09c8531d7f381b8cc9f1","epistemic_layer":"reality"},
+    {"claim_id":"SV002-C07","fragment_key":"rova-t-program-terminated","evidence_fragment_id":"7943e659-c5fe-519a-a5a2-d1ab741fa1a1","document_id":"eae049d8-d270-5ef7-9199-3031ada3bd6c","locator":"visible-text:1319:1378","fragment_sha256":"9f516273c87ca47d967e8530a254ebff28fa0741b4c2b8bf5c47d58b8f3d07fa","epistemic_layer":"reality"},
+    {"claim_id":"SV002-C08","fragment_key":"2018-gross-impairment-charge","evidence_fragment_id":"eaeff50f-c1d1-5b54-a72a-f7f830b9fe1b","document_id":"4ec70f52-df8b-58d8-a9b9-6a77387de7f2","artifact_id":"e3d8886e-2887-5ca1-a55d-76ec2c3a39f8","locator":"$.pages[45].text","fragment_sha256":"55d04b76985761e74a74e34210e5fb042b1be175a1cba1721e0d38f9825520f1","epistemic_layer":"reality","accounting_scope":"2018 $5.1B intangible asset impairment charge."},
+    {"claim_id":"SV002-C09","fragment_key":"2019-remaining-value-impairment","evidence_fragment_id":"654b3ba7-b816-5d35-acbb-083e31dbeb8a","document_id":"4ec70f52-df8b-58d8-a9b9-6a77387de7f2","artifact_id":"e3d8886e-2887-5ca1-a55d-76ec2c3a39f8","locator":"$.pages[45].text","fragment_sha256":"49b3e4db9ef0deabf2decb44fb93dce1ad26f4ec8c9fae73a56c860ca99d036e","epistemic_layer":"reality","accounting_scope":"2019 $1.0B remaining IPR&D value impairment after program termination."}
+  ],
+  "accounting_scope_boundary": {
+    "approximately_4b": "January 2019 estimated net impact combining impairment and contingent-consideration adjustment.",
+    "5_1b": "2018 intangible asset impairment charge after TAHOE lowered regulatory-success probabilities.",
+    "1_0b": "2019 impairment of remaining Stemcentrx IPR&D after Rova-T program termination.",
+    "rule": "These measures are not competing estimates of one quantity and must remain separate assertions if promoted later."
+  },
+  "next_action": "Compare SV-001 and SV-002 as a no-lookahead success/revision versus failure/termination pair before deciding whether generic primitives require change or more ADC grounding is needed."
+}

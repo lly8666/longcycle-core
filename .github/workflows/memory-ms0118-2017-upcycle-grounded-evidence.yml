@@ -1,0 +1,142 @@
+name: Memory MS-0118 2017 upcycle Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/memory-ms0118-2017-upcycle-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2016-12-14-DRAM-2017-WAFER-CAPACITY-OUTLOOK-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2016-12-21-NAND-2017-WAFER-CAPACITY-OUTLOOK-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2017-09-27-NAND-3D-TRANSITION-CAPACITY-LOSS-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2017-04-25-Q1-DRAM-BIT-ASP-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2017-04-27-Q1-SERVER-MOBILE-MEMORY-DEMAND-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2017-09-26-FQ4-TECH-MIGRATION-NO-NEW-WAFER-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/memory-ms0118-2017-upcycle-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0118-2017-upcycle-competing-explanations-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/memory-ms0118-2017-upcycle-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert competing-explanation separation and April no-lookahead boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-MS0118-2017-UPCYCLE-COMPETING-EXPLANATIONS-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 6, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 7, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+          assert len(result["documents"]) == 6
+          assert len(result["fragments"]) == 7
+
+          roles = {item["claim_context"]["claim_role"] for item in result["fragments"]}
+          assert roles == {
+              "dram_2017_wafer_capacity_expectation",
+              "nand_2017_wafer_capacity_growth_expectation",
+              "skhynix_q1_2017_dram_bit_shipments_qoq",
+              "skhynix_q1_2017_dram_asp_qoq",
+              "server_mobile_memory_demand_strength_self_statement",
+              "micron_fy2018_capex_technology_migration_no_new_wafer_guidance",
+              "nand_3d_transition_effective_capacity_loss_observation",
+          }, roles
+
+          spec = json.loads(Path(os.environ["SPEC"]).read_text(encoding="utf-8"))
+          by_role = {
+              item["claim_context"]["claim_role"]: item["claim_context"]["known_time"]["upper_bound"]
+              for item in spec["fragments"]
+          }
+          april_cutoff = "2017-04-30T23:59:59Z"
+          assert by_role["dram_2017_wafer_capacity_expectation"] <= april_cutoff
+          assert by_role["nand_2017_wafer_capacity_growth_expectation"] <= april_cutoff
+          assert by_role["skhynix_q1_2017_dram_bit_shipments_qoq"] <= april_cutoff
+          assert by_role["skhynix_q1_2017_dram_asp_qoq"] <= april_cutoff
+          assert by_role["server_mobile_memory_demand_strength_self_statement"] <= april_cutoff
+          assert by_role["micron_fy2018_capex_technology_migration_no_new_wafer_guidance"] > april_cutoff
+          assert by_role["nand_3d_transition_effective_capacity_loss_observation"] > april_cutoff
+
+          expectation_roles = {
+              item["claim_context"]["claim_role"]
+              for item in result["fragments"]
+              if item["claim_context"]["epistemic_layer"] == "evidence_only_industry_expectation"
+          }
+          assert expectation_roles == {
+              "dram_2017_wafer_capacity_expectation",
+              "nand_2017_wafer_capacity_growth_expectation",
+          }, expectation_roles
+          print("MEMORY_MS0118_2017_UPCYCLE_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-ms0118-2017-upcycle-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7

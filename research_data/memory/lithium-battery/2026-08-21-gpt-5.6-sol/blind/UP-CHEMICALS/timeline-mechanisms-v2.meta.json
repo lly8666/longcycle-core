@@ -1,0 +1,38 @@
+{
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "shard_id": "UP-CHEMICALS",
+  "pass_id": "timeline-mechanisms-v2",
+  "prompt_version": "recall-v2",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "neighbor_shard_outputs_visible": false,
+  "lead_count": 28,
+  "status": "completed_unsealed_requires_validation",
+  "observed_improvements": [
+    "uncertain names/dates/ownership are mostly isolated in uncertain_fields",
+    "support and disconfirmation search paths are present on every record",
+    "why_search_may_miss_it is useful for old names, dead project history and contract opacity",
+    "satellite_trigger successfully identifies recurring out-of-shard topics instead of expanding them inline",
+    "remembered events and associative inferences are more clearly separated"
+  ],
+  "satellite_or_bridge_triggers": [
+    "SAT-LEPIDOLITE",
+    "MID-LFP",
+    "UP-CONCENTRATE",
+    "MID-CATHODE-INVENTORY",
+    "LOOP-RECYCLING",
+    "BRIDGE-OFFTAKE-NETWORK",
+    "UP-BRINE",
+    "MID-TERNARY",
+    "BRIDGE-INVENTORY",
+    "BAT-CELL-PRICING"
+  ],
+  "validation_failure_observed": {
+    "lead_id": "CH-008",
+    "field": "lead_kind",
+    "value": "technical_specification",
+    "problem": "value belongs to claim_scope enum, not MemoryLeadKind enum",
+    "policy": "preserve raw output; do not silently coerce semantic enum; generate a repair request"
+  },
+  "next_action": "add typed candidate validator + structural repair prompt; create recall-v3 with explicit enums and validation loop"
+}

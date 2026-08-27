@@ -1,0 +1,126 @@
+name: Memory MS-0122 DRAM NAND cycle Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/memory-ms0122-dram-nand-cycle-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2018-10-09-DRAM-NAND-DOWNTURN-LEAD-LAG-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2022-10-03-NAND-MORE-SEVERE-THAN-DRAM-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-01-19-DRAM-NAND-RECOVERY-LEAD-LAG-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0122-dram-nand-cycle-lead-lag-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/memory-ms0122-dram-nand-cycle-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0122-dram-nand-cycle-lead-lag-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/memory-ms0122-dram-nand-cycle-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert lead-lag separation and no universal phase lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-MS0122-DRAM-NAND-CYCLE-LEAD-LAG-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 3, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 3, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+
+          roles = {item["claim_context"]["claim_role"] for item in result["fragments"]}
+          assert roles == {
+              "dram_nand_2018q3_price_direction_divergence",
+              "nand_2022_downturn_more_severe_than_dram",
+              "nand_2023_recovery_turn_precedes_dram_by_one_quarter",
+          }, roles
+          assert all("universal" not in role for role in roles)
+          assert all("correlation" not in role for role in roles)
+
+          spec = json.loads(Path(os.environ["SPEC"]).read_text(encoding="utf-8"))
+          by_role = {
+              item["claim_context"]["claim_role"]: item["claim_context"]["known_time"]["upper_bound"]
+              for item in spec["fragments"]
+          }
+          assert by_role["dram_nand_2018q3_price_direction_divergence"] < by_role["nand_2022_downturn_more_severe_than_dram"]
+          assert by_role["nand_2022_downturn_more_severe_than_dram"] < by_role["nand_2023_recovery_turn_precedes_dram_by_one_quarter"]
+
+          layers = [item["claim_context"]["epistemic_layer"] for item in result["fragments"]]
+          assert layers.count("evidence_only_cross_product_turning_point") == 2, layers
+          assert layers.count("evidence_only_cross_product_severity") == 1, layers
+
+          source_ids = {item["source_id"] for item in result["documents"]}
+          assert len(source_ids) == 1, source_ids
+          print("MEMORY_MS0122_DRAM_NAND_CYCLE_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-ms0122-dram-nand-cycle-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7

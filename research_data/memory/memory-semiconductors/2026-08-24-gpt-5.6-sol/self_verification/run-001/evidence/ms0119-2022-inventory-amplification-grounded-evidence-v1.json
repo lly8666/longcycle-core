@@ -1,0 +1,162 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0119-2022-INVENTORY-AMPLIFICATION-001",
+  "epistemic_guardrails": [
+    "Ground point-in-time supplier statements about demand, procurement/ship-in, customer inventory, supplier inventory, wafer starts and future bit-supply plans without collapsing them into one demand scalar.",
+    "Customer inventory correction and weaker end-market demand are concurrent mechanisms; evidence for one must not erase the other.",
+    "Procurement or ship-in below end-market consumption supports de-stocking amplification but does not prove prior double ordering, pull-forward or channel stuffing.",
+    "Samsung's July 2021 state is a Samsung-specific pre-downturn baseline, not an industry inventory level.",
+    "Micron's November 2022 approximately 20% wafer-start reduction is a Micron action; its calendar-2023 supply statements are expectations, not realized industry Outcomes.",
+    "Later November and December observations must not leak into September or October replay.",
+    "Grounding creates EvidenceFragments only; causal assessment and typed Reality/Judgment projection remain separate decisions."
+  ],
+  "sources": [
+    {
+      "key": "samsung_newsroom",
+      "name": "Samsung Global Newsroom",
+      "publisher_domain": "news.samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung is primary for its own reported memory demand commentary, inventory state and bit-growth outcome."
+        }
+      ]
+    },
+    {
+      "key": "micron_ir",
+      "name": "Micron Investor Relations",
+      "publisher_domain": "investors.micron.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Micron is primary for its own management observations, wafer-start actions, supplier inventory statements and forward supply plans."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "samsung_q2_2021_memory_demand_inventory_baseline",
+      "vintage_id": "2021-07-29",
+      "source_key": "samsung_newsroom",
+      "retrieval_url": "https://news.samsung.com/global/samsung-electronics-announces-second-quarter-2021-results",
+      "original_source_url": "https://news.samsung.com/global/samsung-electronics-announces-second-quarter-2021-results",
+      "external_id": "samsung-q2-2021-memory-demand-inventory-baseline-2021-07-29",
+      "title": "Samsung Q2 2021 memory demand and inventory baseline capture",
+      "published_at": null,
+      "first_known_at": "2021-07-30T00:00:00Z",
+      "expected_sha256": "e6f5243ad5cba58ed1bb42b1efc85cd254cf182570138d0b8cc9df95e236a4ff",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2021-07-29-Q2-MEMORY-DEMAND-INVENTORY-BASELINE-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {"capture_id":"CAP-SAMSUNG-2021-07-29-Q2-MEMORY-DEMAND-INVENTORY-BASELINE-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key": "micron_fq4_2022_customer_inventory_amplification",
+      "vintage_id": "2022-09-29",
+      "source_key": "micron_ir",
+      "retrieval_url": "https://investors.micron.com/static-files/57a37d78-76c4-4170-9cb4-6a998864a715",
+      "original_source_url": "https://investors.micron.com/static-files/57a37d78-76c4-4170-9cb4-6a998864a715",
+      "external_id": "micron-fq4-2022-customer-inventory-amplification-2022-09-29",
+      "title": "Micron FQ4 2022 customer inventory amplification capture",
+      "published_at": null,
+      "first_known_at": "2022-09-30T00:00:00Z",
+      "expected_sha256": "c9089cd5179e8535a76954c15c68ef220c0cfdc35c87bbf640da2fb06d8a02c8",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-09-29-FQ4-CUSTOMER-INVENTORY-AMPLIFICATION-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {"capture_id":"CAP-MICRON-2022-09-29-FQ4-CUSTOMER-INVENTORY-AMPLIFICATION-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_pdf_read_and_screenshot","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key": "samsung_q3_2022_customer_inventory_adjustments",
+      "vintage_id": "2022-10-27",
+      "source_key": "samsung_newsroom",
+      "retrieval_url": "https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2022-results",
+      "original_source_url": "https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2022-results",
+      "external_id": "samsung-q3-2022-customer-inventory-adjustments-2022-10-27",
+      "title": "Samsung Q3 2022 customer inventory adjustments capture",
+      "published_at": null,
+      "first_known_at": "2022-10-28T00:00:00Z",
+      "expected_sha256": "5e6add9ab748e3988235a1c2d1718a0c2a94d4366bb4f3a46f9900be98b2ef1a",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2022-10-27-Q3-CUSTOMER-INVENTORY-ADJUSTMENTS-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {"capture_id":"CAP-SAMSUNG-2022-10-27-Q3-CUSTOMER-INVENTORY-ADJUSTMENTS-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key": "micron_wafer_start_reductions_2022_11_16",
+      "vintage_id": "2022-11-16",
+      "source_key": "micron_ir",
+      "retrieval_url": "https://investors.micron.com/news/press-release/2022/Micron-Announces-Further-Actions-to-Address-Market-Conditions-11-16-2022/default.aspx",
+      "original_source_url": "https://investors.micron.com/news/press-release/2022/Micron-Announces-Further-Actions-to-Address-Market-Conditions-11-16-2022/default.aspx",
+      "external_id": "micron-wafer-start-reductions-2022-11-16",
+      "title": "Micron November 2022 wafer-start reduction capture",
+      "published_at": null,
+      "first_known_at": "2022-11-17T00:00:00Z",
+      "expected_sha256": "624fc7f1e5e69c384d149961c0fe320805da118e1897a0b29c1acb70f19c3472",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-11-16-WAFER-START-REDUCTIONS-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {"capture_id":"CAP-MICRON-2022-11-16-WAFER-START-REDUCTIONS-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key": "micron_customer_inventory_destock_2022_12_21",
+      "vintage_id": "2022-12-21",
+      "source_key": "micron_ir",
+      "retrieval_url": "https://investors.micron.com/static-files/d1cf6092-abce-4bbf-94f9-f51d8d59a10a",
+      "original_source_url": "https://investors.micron.com/static-files/d1cf6092-abce-4bbf-94f9-f51d8d59a10a",
+      "external_id": "micron-customer-inventory-destock-2022-12-21",
+      "title": "Micron December 2022 customer inventory de-stocking capture",
+      "published_at": null,
+      "first_known_at": "2022-12-22T00:00:00Z",
+      "expected_sha256": "ea68e19003bf4a1b69eeb3b9a01f499ff92f22813800b4b5820477bf8dd1b43b",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-12-21-CUSTOMER-INVENTORY-DESTOCK-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {"capture_id":"CAP-MICRON-2022-12-21-CUSTOMER-INVENTORY-DESTOCK-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_pdf_read_and_screenshot","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MS0119-SAMSUNG-2021-DEMAND-INVENTORY-BASELINE",
+      "document_key": "samsung_q2_2021_memory_demand_inventory_baseline",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "The Memory Business reported a significant increase in earnings from the previous quarter, led by strong demand for server and PC memory, as well as stronger-than-expected increases in average sales prices for both DRAM and NAND chips. For DRAM, demand from datacenter companies was strong thanks to solid growth in Cloud service while continued trends for remote work and education lifted demand for PCs. Demand for mobile memory, however, saw a limited impact in the short term due to recurring waves of COVID-19 outbreaks at locations of global smartphone production bases and tight supplies of key components. The graphics market also grew in the second quarter on healthy demand for cryptocurrency and graphic cards for gaming PCs. Memory demand for game consoles also grew on new game launches, against the backdrop of rising need for home entertainment. Samsung was able to respond promptly to the strong server and PC demand, reporting a higher bit growth than the previous guidance, thanks to a preemptive adjustment to the Company’s production mix. As for NAND, demand was solid over sustained growth in content-per-box, particularly from major customers, even as tight supplies of components limited overall mobile phone production in the second quarter. Solid state drives (SSDs) reported growth due to increased investment in servers from datacenter companies and solid demand for laptops. NAND shipments in the quarter also exceeded the previous bit growth guidance while the portion of 128-layer 6th-generation V-NAND continued to increase. Looking to the second half of the year, the market is expected to see supply problems for components persist, as well as risks from the variant COVID-19 viruses and geopolitical tensions. However, the memory market’s fundamentals remain strong on the back of increasing 5G adoption and sustained demand for servers and PCs. Memory demand will likely be buoyed by new smartphone model launches, with the wider 5G availability driving growth in content-per-box. Increasing adoption of the latest CPU, along with growing enterprise PC demand to support the new remote work dynamics, is expected to support memory demand for servers and PCs. At the same time, Samsung’s chip inventory level has fallen to a substantially low level due to the stronger shipment last quarter than the previous guidance.",
+      "claim_context": {"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0119-001","claim_role":"pre_downturn_strong_demand_and_low_supplier_inventory_baseline","claim_scope":"self_statement","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_pre_downturn_baseline","stance":"supports","known_time":{"precision":"day","upper_bound":"2021-07-30T00:00:00Z"},"scope":"samsung_q2_2021_memory_demand_and_supplier_inventory_baseline","comparability_guard":"Samsung-specific baseline only; not customer inventory and not an industry inventory measure.","linked_memory_lead_ids":["MS-0119"]}
+    },
+    {
+      "fragment_key": "EVF-MS0119-MICRON-SEP22-INVENTORY-AMPLIFICATION",
+      "document_key": "micron_fq4_2022_customer_inventory_amplification",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "In addition, inventory adjustments at customers across all end markets are also contributing to demand weakness. These factors are depressing demand for DRAM and NAND to well below end market consumption levels. We are also seeing an extremely aggressive pricing environment. Due to the sharp decline in near-term demand, we expect supply growth to be significantly above demand growth in calendar 2022, contributing to very high supplier inventories for both DRAM and NAND.",
+      "claim_context": {"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0119-002","claim_role":"customer_destocking_below_consumption_and_supplier_inventory_accumulation","claim_scope":"management_guidance","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_inventory_amplification_observation","stance":"supports","known_time":{"precision":"day","upper_bound":"2022-09-30T00:00:00Z"},"scope":"micron_sep2022_customer_demand_below_consumption_and_high_supplier_inventory","comparability_guard":"Supports de-stocking amplification but does not prove prior double ordering or quantify the procurement gap.","linked_memory_lead_ids":["MS-0119"]}
+    },
+    {
+      "fragment_key": "EVF-MS0119-SAMSUNG-OCT22-INVENTORY-AND-END-DEMAND",
+      "document_key": "samsung_q3_2022_customer_inventory_adjustments",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "For the Memory Business, as customers’ inventory adjustments exceeded market expectations and the demand for consumer products continued to weaken, both DRAM and NAND bit growth were below guidance and its earnings declined compared to the previous quarter.",
+      "claim_context": {"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0119-003","claim_role":"customer_inventory_correction_and_end_demand_weakness_coexist","claim_scope":"self_statement","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_supplier_market_commentary","stance":"supports","known_time":{"precision":"day","upper_bound":"2022-10-28T00:00:00Z"},"scope":"samsung_q3_2022_inventory_adjustment_consumer_weakness_bit_growth_below_guidance","comparability_guard":"Preserves genuine end-demand weakness separately from inventory correction; Samsung-specific bit-growth result only.","linked_memory_lead_ids":["MS-0119"]}
+    },
+    {
+      "fragment_key": "EVF-MS0119-MICRON-NOV22-WAFER-START-SUPPLY-RESPONSE",
+      "document_key": "micron_wafer_start_reductions_2022_11_16",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Micron Technology, Inc. (Nasdaq: MU), today announced that in response to market conditions, the company is reducing DRAM and NAND wafer starts by approximately 20% versus fiscal fourth quarter 2022. These reductions will be made across all technology nodes where Micron has meaningful output. Micron is also working toward additional capex cuts. In calendar 2023, Micron now expects its year-on-year bit supply growth to be negative for DRAM, and in the single-digit percentage range for NAND. Recently, the market outlook for calendar 2023 has weakened. In order to significantly improve total inventory in the supply chain, Micron believes that in calendar 2023, year-on-year DRAM bit supply will need to shrink and NAND bit supply growth will need to be significantly lower than previous estimates.",
+      "claim_context": {"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0119-004","claim_role":"wafer_start_cut_and_future_supply_response_to_inventory","claim_scope":"management_guidance","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_supplier_action_and_expectation","stance":"supports","known_time":{"precision":"day","upper_bound":"2022-11-17T00:00:00Z"},"scope":"micron_nov2022_wafer_start_cut_and_calendar_2023_supply_plan","comparability_guard":"The approximately 20% cut is Micron-specific; future bit-supply statements remain expectations, not realized Outcomes.","linked_memory_lead_ids":["MS-0119"]}
+    },
+    {
+      "fragment_key": "EVF-MS0119-MICRON-DEC22-CUSTOMER-DESTOCK",
+      "document_key": "micron_customer_inventory_destock_2022_12_21",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Shipment volumes were impacted by our customers’ inventory adjustments, the trajectory of their end demand, and macroeconomic uncertainty. We believe that aggregate customer inventory, while still high, is coming down in absolute volume, as end market consumption outpaces ship-in.",
+      "claim_context": {"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0119-005","claim_role":"customer_inventory_high_but_declining_as_consumption_outpaces_shipin","claim_scope":"management_guidance","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_destocking_observation","stance":"supports","known_time":{"precision":"day","upper_bound":"2022-12-22T00:00:00Z"},"scope":"micron_dec2022_customer_inventory_declining_as_consumption_exceeds_shipin","comparability_guard":"Direct de-stocking observation; no customer-specific inventory quantity and no inference of prior double ordering.","linked_memory_lead_ids":["MS-0119"]}
+    }
+  ],
+  "acceptance": {"required_documents":5,"required_fragments":5,"facts_created":0,"judgments_created":0}
+}

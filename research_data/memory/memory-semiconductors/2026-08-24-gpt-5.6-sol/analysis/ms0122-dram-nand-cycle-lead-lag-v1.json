@@ -1,0 +1,88 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0122-DRAM-NAND-CYCLE-LEAD-LAG-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0122",
+  "authority": "curated_research_assessment_over_grounded_cross_packet_evidence",
+  "subject": "Whether DRAM and NAND should be represented as one synchronized memory cycle or as product-specific state trajectories that can share macro phases while diverging in turning points, severity and mechanisms",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0122-dram-nand-cycle-lead-lag-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0118-2017-upcycle-competing-explanations-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0119-2022-inventory-amplification-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0120-2024-recovery-product-line-decomposition-v1.json"
+  ],
+  "assessment": {
+    "status": "shared_macro_phase_supported_product_specific_turning_points_and_mechanisms_required",
+    "supported": [
+      {
+        "axis": "shared_macro_phase_not_shared_mechanism",
+        "finding": "The 2017 upcycle packet preserves simultaneous broad tightness while keeping DRAM wafer-capacity expectations, supplier DRAM shipment/ASP outcomes and server/mobile demand separate from NAND transition-related effective-capacity loss.",
+        "meaning": "DRAM and NAND can move in the same broad direction without sharing one causal mechanism. A common cycle label is therefore useful only as a coarse macro phase family."
+      },
+      {
+        "axis": "2018_downturn_turning_point_divergence",
+        "finding": "At the same October 2018 TrendForce vintage, NAND had already fallen materially in 3Q18 while DRAM contract prices were still slightly positive in that quarter; DRAM was only forecast to turn negative in 4Q18.",
+        "meaning": "The downturn was not quarter-synchronous in the cited aggregate price series. Turning points must remain product-local even when both products later occupy the same broad downcycle."
+      },
+      {
+        "axis": "2022_downturn_severity_divergence",
+        "finding": "At the same October 2022 TrendForce vintage, NAND market conditions were explicitly described as more severe than DRAM while both product families were in the broader memory downturn.",
+        "meaning": "Shared phase does not imply equal amplitude or stress. Severity should be stored per product and metric rather than inherited from an aggregate 'memory downturn' state."
+      },
+      {
+        "axis": "inventory_amplification_common_family_product_local_response",
+        "finding": "The 2022 inventory-amplification packet shows a shared de-stocking and supplier-inventory mechanism family, while its source-scoped actions and observations remain supplier/product specific.",
+        "meaning": "A mechanism family may span DRAM and NAND without implying identical customer inventory, price elasticity, wafer response or timing."
+      },
+      {
+        "axis": "2023_recovery_turning_point_divergence",
+        "finding": "TrendForce later dated the NAND rebound to 3Q23 and the DRAM contract-price reversal to 4Q23 in one same-source retrospective market statement.",
+        "meaning": "NAND led the cited aggregate recovery turning point by one quarter in this episode. This directly rejects a requirement that DRAM and NAND reverse in the same quarter."
+      },
+      {
+        "axis": "2024_product_mix_divergence",
+        "finding": "The 2024 recovery-decomposition packet independently separates conventional DRAM/NAND cycle mechanics from HBM/AI and enterprise-SSD/data-center overlays.",
+        "meaning": "As product mix becomes more heterogeneous, an aggregate memory-cycle label becomes even less suitable as the primary analytical state. Product-local trajectories should remain authoritative and any aggregate phase should be derived."
+      }
+    ],
+    "not_established": [
+      "The evidence does not establish that NAND always leads DRAM at downturns or recoveries.",
+      "The evidence does not establish a stable one-quarter lag between DRAM and NAND across cycles.",
+      "The evidence does not establish a single comparable elasticity, inventory metric or price basket across DRAM and NAND.",
+      "The evidence does not establish a universal correlation coefficient or phase-lock relationship.",
+      "The evidence does not establish that shared macro demand or supplier capex are sufficient to explain every episode of co-movement.",
+      "The 2018 4Q DRAM decline statement in the source is a contemporaneous forecast and is not treated as a realized Outcome in the new Evidence packet.",
+      "The 2022 comparative severity statement does not provide a common numerical severity denominator.",
+      "The assessment is not a comprehensive statistical study of all quarterly DRAM and NAND prices from 2016-2026."
+    ],
+    "point_in_time_interpretation": {
+      "as_of_2018_10_10": "A researcher can already observe non-synchronous product turning points: NAND is in a negative 3Q18 price state while DRAM remains slightly positive for that quarter. The later 2022 severity comparison and 2023 recovery timing are unavailable.",
+      "as_of_2022_10_04": "The broader memory downturn is shared, but NAND is explicitly assessed as more severe than DRAM. Product-specific severity therefore belongs in the live state rather than being inferred from the aggregate phase label.",
+      "as_of_2024_01_20": "A same-source retrospective now dates NAND's rebound to 3Q23 and DRAM's reversal to 4Q23. This establishes another episode of lead/lag while leaving the direction and size of any future lag unresolved.",
+      "cross_packet_context": "The 2017, 2022 and 2024 mechanism packets show why turning-point co-movement cannot substitute for mechanism evidence: supply transition, inventory amplification and high-value product mix are not interchangeable causal explanations."
+    },
+    "counterfactual_evaluation": {
+      "hypothesis_dram_and_nand_share_one_synchronized_cycle": "rejected_as_overly_coarse",
+      "reason_synchronized_cycle": "Two directly comparable same-source episodes show non-synchronous turning points, and the 2022 same-source comparison shows unequal severity. Existing mechanism packets also preserve product-specific causal structure. A single synchronized cycle state therefore loses material historical information.",
+      "hypothesis_shared_macro_phase_with_product_local_states": "strongly_supported_as_research_representation",
+      "reason_product_local": "This model preserves the useful observation that DRAM and NAND often experience common macro up/down regimes while allowing turning point, price direction, inventory state, supply mechanism and end-market mix to differ by product and vintage.",
+      "preferred_research_representation": "Use a derived common_macro_phase only as a coarse research composition over independently stored DRAM and NAND states. For each product line preserve dated turning_point, price_direction, inventory_state, supply_mechanism and end_market_mix. Cross-product relations such as coincident, leads, lags or diverges must be scoped to an explicit metric and period and must not become permanent product edges."
+    },
+    "representation_decision": "Do not create a canonical 'memory cycle' scalar that overrides product-local evidence. If an aggregate phase is useful for navigation or research composition, derive it from separately authoritative DRAM/NAND states and keep the derivation reversible.",
+    "canonical_projection_decision": "No new typed causal or correlation predicate is warranted. The three TrendForce comparison fragments are sufficient as Evidence for cross-product timing/severity research; any future typed turning-point model should first define product, metric, period and comparison semantics rather than persisting a generic cycle label.",
+    "outcome_for_ms0122": "MS-0122 is supported. DRAM and NAND often share a broad macro cycle family, but they should not be modeled as one synchronized state machine. Same-source evidence shows product-specific turning-point lead/lag and severity divergence, while existing research packets show distinct mechanisms. Aggregate co-movement is context, not a substitute for product-local history."
+  },
+  "stop_rule": {
+    "closed_surface": "Do not spend more search budget on generic claims that DRAM and NAND are 'the memory cycle' or on visually comparing unrelated provider charts. The current packet already proves that a synchronized single-state representation is too coarse.",
+    "reopen_when": [
+      "A methodological-primary source provides a directly comparable quarterly DRAM/NAND price, inventory or bit-balance series over multiple cycles with stable definitions.",
+      "A source documents a product-specific turning point that materially contradicts or extends the current 2018/2022/2023 examples.",
+      "A comparable mechanism dataset supports explicit lead/lag between supply additions, inventory normalization or end-market recovery across DRAM and NAND.",
+      "A product requires a typed cross-product phase relation with explicit metric, period and provenance semantics rather than a research-only composition."
+    ]
+  },
+  "next_research_direction": {
+    "candidate": "MS-0125",
+    "rationale": "The high-importance counterfactual cycle decomposition is now sufficiently grounded. Rather than spending the next budget on medium-priority layer-count or channel-name leads, move to the known high-importance negative-space gap at MS-0125: customer-side memory inventory at server OEMs and hyperscalers, which is needed to separate end demand from component stockpiling and directly addresses a current maturity thin area. MS-0123 and MS-0124 remain queued rather than discarded."
+  }
+}

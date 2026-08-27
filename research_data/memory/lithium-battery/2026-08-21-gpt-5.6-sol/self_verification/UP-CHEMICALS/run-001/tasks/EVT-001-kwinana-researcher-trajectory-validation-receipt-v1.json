@@ -1,0 +1,104 @@
+{
+  "schema_version": "longcycle-kwinana-researcher-trajectory-validation-receipt/v1",
+  "status": "pass",
+  "task_id": "EVT-001-KWINANA-RESEARCHER-TRAJECTORY-VALIDATION-V1",
+  "capability_disposition": {
+    "capability_id": "CAP-0005",
+    "disposition": "extend",
+    "new_replay_engine": false,
+    "schema_migration_required": false
+  },
+  "legacy_portable_memory": {
+    "source_workflow_run_id": 32557226950,
+    "source_artifact_id": 9471777542,
+    "source_artifact_name": "kwinana-typed-trajectory",
+    "source_artifact_sha256": "b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e",
+    "duckdb_file_name": "kwinana-memory.duckdb",
+    "duckdb_sha256": "b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd",
+    "duckdb_size_bytes": 2633728,
+    "original_generation_head_sha": "ff93c0f6f6cae7ff62a7b24ea507a5619affd93c"
+  },
+  "durable_generated_state": {
+    "transport": "google_drive",
+    "google_drive_file_id": "18UuYXp5SF1RDI5vrXMagmLYtq3PEonUa",
+    "file_name": "longcycle-lithium-kwinana-typed-trajectory-run32557226950.zip",
+    "size_bytes": 325964,
+    "sha256": "b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e",
+    "download_back_verified": true,
+    "internal_duckdb_sha256_after_download_back": "b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd",
+    "contains_external_source_bytes": false
+  },
+  "compatibility_failure_before_repair": {
+    "implementation_head_sha": "f6ec7333d0c1d9d87330b9ca97df93d53b729285",
+    "workflow_run_id": 32613833307,
+    "error": "CatalogException: Table with name judgment_rationale_memory does not exist",
+    "root_cause": "The current DuckDB reader treated additive optional v1 context tables as mandatory. The historical Kwinana v1 generation predates judgment_rationale_memory and judgment_relation_memory, and its Reality rows also predate observed_at fields.",
+    "integrity_status": "source artifact digest and internal DuckDB SHA verified before failure"
+  },
+  "compatibility_repair": {
+    "reader_commit": "58c648ba5c9420937a7640960b4b3f44460a70be",
+    "regression_test_commit": "c5e05b913fd4576adf8d9156baccb0e9bb03a913",
+    "boundary": "Read additive legacy v1 generations without mutating them: missing Judgment rationale/relation tables map to empty typed context and missing Reality observation columns map to observed_time=null. Knowledge-cutoff filtering, Reality/Judgment/Outcome identity and all stored historical fields remain unchanged.",
+    "write_migration": false,
+    "legacy_bytes_mutated": false
+  },
+  "successful_real_replay": {
+    "implementation_head_sha": "c5e05b913fd4576adf8d9156baccb0e9bb03a913",
+    "workflow_run_id": 32614041360,
+    "output_artifact_id": 9486374029,
+    "output_artifact_name": "kwinana-researcher-trajectory-32614041360",
+    "output_artifact_sha256": "b2f40c25efdede45763be6277bc03853cb43574f4363a3947b38e83402e34477",
+    "cutoffs": [
+      {
+        "knowledge_cutoff": "2021-12-31T23:59:59Z",
+        "counts": {
+          "reality": 0,
+          "judgments": 4,
+          "outcomes": 0,
+          "judgment_rationales": 0,
+          "judgment_relations": 0
+        }
+      },
+      {
+        "knowledge_cutoff": "2022-12-02T23:59:59Z",
+        "counts": {
+          "reality": 0,
+          "judgments": 4,
+          "outcomes": 0,
+          "judgment_rationales": 0,
+          "judgment_relations": 0
+        }
+      },
+      {
+        "knowledge_cutoff": "2022-12-03T23:59:59Z",
+        "counts": {
+          "reality": 1,
+          "judgments": 5,
+          "outcomes": 1,
+          "judgment_rationales": 0,
+          "judgment_relations": 0
+        }
+      }
+    ],
+    "assertions": {
+      "later_reality_and_outcome_absent_before_known_time": true,
+      "related_milestone_outcome_appears_only_when_grounded_reality_is_known": true,
+      "valid_time_2022_11_30_does_not_leak_before_known_time_2022_12_03": true,
+      "historical_time_and_known_time_remain_separate": true,
+      "trajectory_is_read_only_presentation_over_cap_0005": true
+    }
+  },
+  "researcher_readability": {
+    "assessment": "pass",
+    "pre_disclosure": "The view exposes the historical sequence of commissioning, come-online, full-line-operation and design-capacity guidance while preserving the 2021 production-timing caveat, with no later Reality or Outcome leakage.",
+    "post_disclosure": "The 2022-12-03 view adds a later commercial-production-capability Reality and a linked related_milestone/indeterminate Outcome without rewriting the earlier full-line-operation Judgment or manufacturing a synthetic delay."
+  },
+  "deferred_outcome_polarity_pressure": {
+    "pressure_id": "non_direct_outcome_implication_polarity",
+    "cross_industry_tested": true,
+    "promotion_gate_met": false,
+    "decision": "do_not_add_migration_0026",
+    "reason": "Kwinana independently reproduces a researcher-visible historical tension between an earlier full-line-operation target and a later commercial-production-capability milestone, but the milestones are not identical and the later Reality alone does not establish whether or when the earlier target was realized. Typing supports/undermines here would exceed the grounded evidence. Existing related_milestone + indeterminate semantics remain the truthful representation.",
+    "next_reopen_condition": "Reopen only when another source-grounded cross-industry case provides enough evidence to type implication polarity independently of semantic comparability, or when the existing typed relation causes a demonstrated researcher/product failure rather than mere interpretive inconvenience."
+  }
+}

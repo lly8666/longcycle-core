@@ -1,0 +1,92 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v3",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-JUDGMENT-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-MARKET-TRAJECTORY-001",
+  "allowed_claim_roles": [
+    "market_forecast_qlc_enterprise_ssd_full_year_bits",
+    "market_estimate_ai_ssd_full_year_procurement_capacity"
+  ],
+  "subjects": [
+    {
+      "id": "4fa28a7f-8788-5b0f-a2d7-09e5bd67b105",
+      "entity_type": "event",
+      "canonical_name": "Global QLC enterprise SSD bit shipments — calendar 2024"
+    },
+    {
+      "id": "cc0bc0f1-72f8-5c94-9262-83055362e95b",
+      "entity_type": "event",
+      "canonical_name": "Global AI-related SSD procurement capacity — calendar 2024"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "trendforce-qlc-enterprise-ssd-30eb-2024-04",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-TRENDFORCE-2024-04-23-QLC-ENTERPRISE-SSD-30EB-FORECAST",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "4fa28a7f-8788-5b0f-a2d7-09e5bd67b105",
+      "speaker_name_text": "TrendForce",
+      "speaker_role": "market research publisher",
+      "topic_code": "storage.qlc_enterprise_ssd_bit_shipments",
+      "predicate_code": "storage.qlc_enterprise_ssd_bit_shipments",
+      "dimensions": {
+        "statistical_scope": "global QLC enterprise SSD bit shipments"
+      },
+      "dimensions_complete": true,
+      "judgment_kind": "forecast",
+      "target_time_kind": "period",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "calendar 2024",
+      "value_kind": "numeric",
+      "value_numeric": 30,
+      "unit_code": "EB",
+      "summary": "TrendForce forecast QLC enterprise SSD bit shipments to reach 30 EB in calendar 2024.",
+      "metadata": {
+        "vintage": "2024-04-23",
+        "source_term": "QLC enterprise SSD bits",
+        "source_value_text": "30 exabytes in 2024",
+        "measurement_scope": "global QLC enterprise SSD bit shipments",
+        "scope_guard": "This is a contemporaneous full-year forecast, not a realized Outcome. Do not treat the later AI-related SSD procurement estimate as a revision of this series."
+      }
+    },
+    {
+      "judgment_key": "trendforce-ai-related-ssd-gt45eb-2024-08",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-TRENDFORCE-2024-08-12-AI-SSD-GT45EB-ESTIMATE",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "cc0bc0f1-72f8-5c94-9262-83055362e95b",
+      "speaker_name_text": "TrendForce",
+      "speaker_role": "market research publisher",
+      "topic_code": "storage.ai_related_ssd_procurement_capacity",
+      "dimensions_complete": false,
+      "judgment_kind": "forecast",
+      "target_time_kind": "period",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "calendar 2024",
+      "value_kind": "text",
+      "value_text": "greater than 45 EB",
+      "summary": "TrendForce estimated 2024 AI-related SSD procurement capacity would exceed 45 EB.",
+      "metadata": {
+        "vintage": "2024-08-12",
+        "source_term": "AI-related SSD procurement capacity",
+        "source_value_text": "will exceed 45 EB in 2024",
+        "measurement_scope": "global AI-related SSD procurement capacity",
+        "numeric_lower_bound": 45,
+        "numeric_lower_bound_unit": "EB",
+        "numeric_qualifier": "greater_than",
+        "representation_guard": "The current Judgment projection contract cannot represent an open numeric lower bound without false exactness, so the primary value remains text while the lower bound is preserved as metadata.",
+        "scope_guard": "Different workload/product scope from the April QLC-enterprise-SSD forecast; no Judgment revision relation is asserted."
+      }
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "aliases": [
+    "source archive",
+    "source acquisition",
+    "archive-now",
+    "preserve-now",
+    "document archival",
+    "source locator",
+    "deferred materialization",
+    "raw source preservation",
+    "source identity read",
+    "source provenance drilldown"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class DocumentArchiver:",
+      "description": "Shared source application boundary archives immutable source-derived versions without promoting claims.",
+      "kind": "application",
+      "path": "src/longcycle/application/source_archive.py"
+    },
+    {
+      "contains": "class PostgresSourceLocatorRegistry",
+      "description": "Registers source/document identity and locator/content-verification state before optional raw-file materialization, reusing the same evidence.documents identity.",
+      "kind": "adapter",
+      "path": "src/longcycle/adapters/storage/postgres_source_locators.py"
+    },
+    {
+      "contains": "class PostgresEvidenceDrilldownReader",
+      "description": "Reads logical source identity, retrieval context and current preservation/materialization provenance for Evidence drilldown without moving Evidence truth ownership out of CAP-0002.",
+      "kind": "adapter",
+      "path": "src/longcycle/adapters/storage/postgres_evidence.py"
+    }
+  ],
+  "extension_seams": [
+    "Add SourcePlugin/transport adapters behind the existing source/archive ports.",
+    "Add source discovery/watchlist behavior without changing logical document identity semantics.",
+    "Add later materialization workers that enrich locator/content-verified documents with raw bytes only after identity/content verification.",
+    "Add storage-neutral source-identity/preservation read projections that expose existing provenance without inferring claim authority or rewriting representation identity."
+  ],
+  "guards": [
+    {
+      "contains": "class ArchiveAndQueueTest",
+      "description": "Archive regression tests preserve content-addressed/source-version behavior.",
+      "kind": "test",
+      "path": "tests/test_archive_and_queue.py"
+    },
+    {
+      "contains": "class SourceLocatorMaterializationTest",
+      "description": "Locator lifecycle tests prevent document-version persistence from being mistaken for raw-byte materialization and keep later raw materialization explicit/version-scoped.",
+      "kind": "test",
+      "path": "tests/test_source_locator_materialization.py"
+    },
+    {
+      "contains": "class MaterializedSourceRepresentationTest",
+      "description": "Materialized-source tests require truthful provenance when local bytes are a readable representation of an upstream PDF rather than the raw PDF itself.",
+      "kind": "test",
+      "path": "tests/test_materialized_source_representation.py"
+    },
+    {
+      "contains": "POSTGRES_EVIDENCE_DRILLDOWN_SMOKE_PASS",
+      "description": "Real PostgreSQL drilldown proves current materialization provenance can be read without relabelling the earlier Evidence representation as raw source bytes.",
+      "kind": "runtime",
+      "path": "scripts/smoke_postgres_evidence_drilldown.py"
+    }
+  ],
+  "id": "CAP-0001",
+  "maturity": "stable",
+  "non_goals": [
+    "Evidence claim grounding or Fact/Judgment promotion.",
+    "Treating retrieval host, a .pdf suffix, or locator existence as claim authority/content proof.",
+    "Requiring byte-identical PDF materialization before claim-relevant content that was actually read can be preserved for Evidence.",
+    "Owning Evidence fragment text, claim truth, or historical replay composition merely because source provenance is exposed to a reader."
+  ],
+  "owned_semantics": [
+    "source.logical_document_identity",
+    "source.locator_content_materialization_lifecycle",
+    "source.fetch_archive_boundary",
+    "source.raw_version_identity",
+    "source.deferred_raw_materialization_integrity",
+    "source.researcher_identity_preservation_read"
+  ],
+  "purpose": "Own source identity and preservation across locator_verified, content_verified and materialized states so readable/verifiable source information is not lost or blocked by transport friction. Preserved readable representations may create document versions without claiming raw-source materialization; later verified raw bytes enrich the same logical document explicitly. Read projections may expose that existing identity and current preservation provenance without turning operational materialization state into historical market knowledge.",
+  "revisit_when": "Replace only if a stronger source-version authority preserves one logical document identity across locator/content/raw states, truthful representation provenance, immutable materialized bytes, contradiction-aware enrichment and storage-neutral provenance reads.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/source_archive.py",
+    "src/longcycle/ports/source.py",
+    "src/longcycle/ports/archive.py",
+    "src/longcycle/adapters/sources/**",
+    "src/longcycle/adapters/storage/filesystem.py",
+    "src/longcycle/adapters/storage/postgres_source_locators.py",
+    "src/longcycle/adapters/storage/postgres_evidence.py",
+    "migrations/0027_source_locator_materialization_state.sql",
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0029_source_representation_fetch_state.sql",
+    "migrations/0031_explicit_raw_source_materialization.sql",
+    "scripts/smoke_postgres_evidence_drilldown.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "source",
+    "archive",
+    "locator",
+    "provenance",
+    "materialization",
+    "immutable",
+    "collection",
+    "researcher-read"
+  ],
+  "title": "Source identity, preservation and deferred materialization"
+}

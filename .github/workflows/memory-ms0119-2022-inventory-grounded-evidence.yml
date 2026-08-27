@@ -1,0 +1,132 @@
+name: Memory MS-0119 2022 inventory Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/memory-ms0119-2022-inventory-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2021-07-29-Q2-MEMORY-DEMAND-INVENTORY-BASELINE-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-09-29-FQ4-CUSTOMER-INVENTORY-AMPLIFICATION-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2022-10-27-Q3-CUSTOMER-INVENTORY-ADJUSTMENTS-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-11-16-WAFER-START-REDUCTIONS-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-12-21-CUSTOMER-INVENTORY-DESTOCK-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/memory-ms0119-2022-inventory-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0119-2022-inventory-amplification-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/memory-ms0119-2022-inventory-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert inventory-amplification separation and no-lookahead vintages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-MS0119-2022-INVENTORY-AMPLIFICATION-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 5, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 5, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+          assert len(result["documents"]) == 5
+          assert len(result["fragments"]) == 5
+
+          roles = {item["claim_context"]["claim_role"] for item in result["fragments"]}
+          assert roles == {
+              "pre_downturn_strong_demand_and_low_supplier_inventory_baseline",
+              "customer_destocking_below_consumption_and_supplier_inventory_accumulation",
+              "customer_inventory_correction_and_end_demand_weakness_coexist",
+              "wafer_start_cut_and_future_supply_response_to_inventory",
+              "customer_inventory_high_but_declining_as_consumption_outpaces_shipin",
+          }, roles
+          assert all("double_order" not in role and "pull_forward" not in role for role in roles)
+
+          spec = json.loads(Path(os.environ["SPEC"]).read_text(encoding="utf-8"))
+          by_role = {
+              item["claim_context"]["claim_role"]: item["claim_context"]["known_time"]["upper_bound"]
+              for item in spec["fragments"]
+          }
+          assert by_role["pre_downturn_strong_demand_and_low_supplier_inventory_baseline"] < by_role["customer_destocking_below_consumption_and_supplier_inventory_accumulation"]
+          assert by_role["customer_destocking_below_consumption_and_supplier_inventory_accumulation"] < by_role["customer_inventory_correction_and_end_demand_weakness_coexist"]
+          assert by_role["customer_inventory_correction_and_end_demand_weakness_coexist"] < by_role["wafer_start_cut_and_future_supply_response_to_inventory"]
+          assert by_role["wafer_start_cut_and_future_supply_response_to_inventory"] < by_role["customer_inventory_high_but_declining_as_consumption_outpaces_shipin"]
+
+          september_cutoff = "2022-09-30T23:59:59Z"
+          assert by_role["customer_destocking_below_consumption_and_supplier_inventory_accumulation"] <= september_cutoff
+          assert by_role["customer_inventory_correction_and_end_demand_weakness_coexist"] > september_cutoff
+          assert by_role["wafer_start_cut_and_future_supply_response_to_inventory"] > september_cutoff
+          assert by_role["customer_inventory_high_but_declining_as_consumption_outpaces_shipin"] > september_cutoff
+          print("MEMORY_MS0119_2022_INVENTORY_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-ms0119-2022-inventory-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7

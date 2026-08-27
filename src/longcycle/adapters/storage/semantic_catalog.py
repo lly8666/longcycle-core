@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+from collections import deque
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from decimal import Decimal
+from decimal import Decimal, localcontext
+from fractions import Fraction
 from typing import Any
 
 from longcycle.application.normalization import (
@@ -46,7 +48,8 @@ class PostgresSemanticCatalog(PostgresSupport):
             )
             conversion_cursor = await connection.execute(
                 """
-                SELECT from_unit, to_unit, multiplier, offset, valid_from, valid_to
+                SELECT from_unit, to_unit, multiplier, additive_offset AS offset,
+                       valid_from, valid_to
                 FROM core.unit_conversion_versions
                 WHERE (valid_from IS NULL OR valid_from <= current_date)
                   AND (valid_to IS NULL OR valid_to > current_date)
@@ -56,22 +59,34 @@ class PostgresSemanticCatalog(PostgresSupport):
             unit_cursor = await connection.execute(
                 "SELECT code, dimension, decimal_scale FROM core.units ORDER BY code"
             )
+            alias_cursor = await connection.execute(
+                """
+                SELECT alias, unit_code, match_mode, valid_from, valid_to
+                FROM core.unit_alias_versions
+                WHERE (valid_from IS NULL OR valid_from <= current_date)
+                  AND (valid_to IS NULL OR valid_to > current_date)
+                ORDER BY alias, match_mode, valid_from NULLS FIRST
+                """
+            )
             predicate_rows = await predicate_cursor.fetchall()
             conversion_rows = await conversion_cursor.fetchall()
             unit_rows = await unit_cursor.fetchall()
-        return self.from_rows(predicate_rows, conversion_rows, unit_rows)
+            alias_rows = await alias_cursor.fetchall()
+        return self.from_rows(predicate_rows, conversion_rows, unit_rows, alias_rows)
 
     @staticmethod
     def from_rows(
         predicate_rows: Sequence[Mapping[str, Any]],
         conversion_rows: Sequence[Mapping[str, Any]],
         unit_rows: Sequence[Mapping[str, Any]],
+        alias_rows: Sequence[Mapping[str, Any]] = (),
     ) -> SemanticRuntime:
-        registered_units = frozenset(str(row["code"]) for row in unit_rows)
+        unit_codes = [str(row["code"]) for row in unit_rows]
+        registered_units = frozenset(unit_codes)
         if not registered_units:
             raise ValueError("semantic catalog has no registered units")
-        if len({code.lower() for code in registered_units}) != len(registered_units):
-            raise ValueError("unit codes must be unique under case-insensitive resolution")
+        if len(registered_units) != len(unit_codes):
+            raise ValueError("semantic catalog contains duplicate unit codes")
 
         profiles: dict[str, PredicateProfile] = {}
         policies: dict[str, ReconciliationPolicy] = {}
@@ -109,38 +124,37 @@ class PostgresSemanticCatalog(PostgresSupport):
                 row.get("reconciliation_policy") or {}
             )
 
-        conversions: dict[tuple[str, str], UnitRule] = {}
-        for row in conversion_rows:
-            from_unit = str(row["from_unit"])
-            to_unit = str(row["to_unit"])
-            if from_unit not in registered_units or to_unit not in registered_units:
-                raise ValueError("unit conversion references an unregistered unit")
-            if unit_dimensions[from_unit] != unit_dimensions[to_unit]:
-                raise ValueError("unit conversion crosses incompatible dimensions")
-            conversion_key = (from_unit.lower(), to_unit.lower())
-            if conversion_key in conversions:
-                raise ValueError("multiple active unit conversions share one unit pair")
-            conversions[conversion_key] = UnitRule(
-                canonical_unit=to_unit,
-                multiplier=Decimal(row["multiplier"]),
-                offset=Decimal(row["offset"]),
+        exact_aliases, casefold_aliases, ambiguous_casefolds = (
+            PostgresSemanticCatalog._build_alias_catalog(
+                registered_units,
+                alias_rows,
             )
+        )
+        conversions = PostgresSemanticCatalog._build_conversion_closure(
+            conversion_rows,
+            registered_units,
+            unit_dimensions,
+        )
 
         fingerprint_payload = {
             "predicates": [dict(row) for row in predicate_rows],
             "conversions": [dict(row) for row in conversion_rows],
             "units": [dict(row) for row in unit_rows],
+            "aliases": [dict(row) for row in alias_rows],
         }
         fingerprint = hashlib.sha256(
             canonical_json(fingerprint_payload).encode("utf-8")
         ).hexdigest()
-        version = f"2.1.0+catalog.{fingerprint[:16]}"
+        version = f"2.2.0+catalog.{fingerprint[:16]}"
         return SemanticRuntime(
             normalizer=AssertionNormalizer(
                 normalizer_version=version,
                 predicate_profiles=profiles,
                 unit_conversions=conversions,
                 registered_units=registered_units,
+                unit_aliases_exact=exact_aliases,
+                unit_aliases_casefold=casefold_aliases,
+                ambiguous_unit_casefolds=ambiguous_casefolds,
             ),
             reconciler=Reconciler(
                 predicate_policies=policies,
@@ -148,6 +162,136 @@ class PostgresSemanticCatalog(PostgresSupport):
             ),
             fingerprint=fingerprint,
         )
+
+    @staticmethod
+    def _build_alias_catalog(
+        registered_units: frozenset[str],
+        alias_rows: Sequence[Mapping[str, Any]],
+    ) -> tuple[dict[str, str], dict[str, str], frozenset[str]]:
+        exact_aliases: dict[str, str] = {}
+        casefold_aliases: dict[str, str] = {}
+        targets_by_fold: dict[str, set[str]] = {}
+
+        for code in registered_units:
+            targets_by_fold.setdefault(code.casefold(), set()).add(code)
+
+        for row in alias_rows:
+            alias = str(row["alias"])
+            unit_code = str(row["unit_code"])
+            match_mode = str(row["match_mode"])
+            if unit_code not in registered_units:
+                raise ValueError("unit alias references an unregistered unit")
+            if not alias or alias != alias.strip():
+                raise ValueError("unit alias must be non-empty and trimmed")
+            if match_mode == "exact":
+                canonical_collision = alias if alias in registered_units else None
+                if canonical_collision is not None and canonical_collision != unit_code:
+                    raise ValueError("exact unit alias collides with a canonical unit code")
+                existing = exact_aliases.get(alias)
+                if existing is not None and existing != unit_code:
+                    raise ValueError("multiple active exact unit aliases share one token")
+                exact_aliases[alias] = unit_code
+                targets_by_fold.setdefault(alias.casefold(), set()).add(unit_code)
+            elif match_mode == "casefold":
+                folded = alias.casefold()
+                existing = casefold_aliases.get(folded)
+                if existing is not None and existing != unit_code:
+                    raise ValueError("multiple active casefold unit aliases share one token")
+                casefold_aliases[folded] = unit_code
+            else:
+                raise ValueError(f"unsupported unit alias match mode: {match_mode}")
+
+        # A case-fold alias claims every casing of its token. It is therefore unsafe
+        # if canonical/exact case-sensitive spellings in the same family mean
+        # different units (for example GB versus exact alias Gb -> Gbit).
+        for folded, unit_code in casefold_aliases.items():
+            existing_targets = targets_by_fold.get(folded, set())
+            if existing_targets and existing_targets != {unit_code}:
+                raise ValueError("casefold unit alias collides with case-sensitive unit semantics")
+            targets_by_fold.setdefault(folded, set()).add(unit_code)
+
+        ambiguous = frozenset(
+            folded for folded, targets in targets_by_fold.items() if len(targets) > 1
+        )
+        return exact_aliases, casefold_aliases, ambiguous
+
+    @staticmethod
+    def _build_conversion_closure(
+        conversion_rows: Sequence[Mapping[str, Any]],
+        registered_units: frozenset[str],
+        unit_dimensions: Mapping[str, str],
+    ) -> dict[tuple[str, str], UnitRule]:
+        # Graph edges are exact affine transforms y = x*m + o. Fractions make
+        # consistency checks exact even after inverse and transitive composition.
+        graph: dict[str, list[tuple[str, Fraction, Fraction]]] = {
+            code: [] for code in registered_units
+        }
+        direct_pairs: set[tuple[str, str]] = set()
+
+        for row in conversion_rows:
+            from_unit = str(row["from_unit"])
+            to_unit = str(row["to_unit"])
+            if from_unit not in registered_units or to_unit not in registered_units:
+                raise ValueError("unit conversion references an unregistered unit")
+            if unit_dimensions[from_unit] != unit_dimensions[to_unit]:
+                raise ValueError("unit conversion crosses incompatible dimensions")
+            pair = (from_unit, to_unit)
+            if pair in direct_pairs:
+                raise ValueError("multiple active unit conversions share one unit pair")
+            direct_pairs.add(pair)
+
+            multiplier = Fraction(Decimal(row["multiplier"]))
+            offset = Fraction(Decimal(row["offset"]))
+            if multiplier == 0:
+                raise ValueError("unit conversion multiplier cannot be zero")
+
+            graph[from_unit].append((to_unit, multiplier, offset))
+            graph[to_unit].append(
+                (
+                    from_unit,
+                    Fraction(1, 1) / multiplier,
+                    -offset / multiplier,
+                )
+            )
+
+        conversions: dict[tuple[str, str], UnitRule] = {}
+        for source in sorted(registered_units):
+            transforms: dict[str, tuple[Fraction, Fraction]] = {
+                source: (Fraction(1, 1), Fraction(0, 1))
+            }
+            queue: deque[str] = deque([source])
+            while queue:
+                current = queue.popleft()
+                current_multiplier, current_offset = transforms[current]
+                for target, edge_multiplier, edge_offset in graph[current]:
+                    candidate = (
+                        current_multiplier * edge_multiplier,
+                        current_offset * edge_multiplier + edge_offset,
+                    )
+                    existing = transforms.get(target)
+                    if existing is None:
+                        transforms[target] = candidate
+                        queue.append(target)
+                    elif existing != candidate:
+                        raise ValueError(
+                            "inconsistent unit conversion graph: multiple paths imply different transforms"
+                        )
+
+            for target, (multiplier, offset) in transforms.items():
+                if target == source:
+                    continue
+                conversions[(source, target)] = UnitRule(
+                    canonical_unit=target,
+                    multiplier=PostgresSemanticCatalog._fraction_to_decimal(multiplier),
+                    offset=PostgresSemanticCatalog._fraction_to_decimal(offset),
+                )
+        return conversions
+
+    @staticmethod
+    def _fraction_to_decimal(value: Fraction) -> Decimal:
+        with localcontext() as context:
+            context.prec = 100
+            return Decimal(value.numerator) / Decimal(value.denominator)
 
     @staticmethod
     def _policy_from_payload(payload: Mapping[str, Any]) -> ReconciliationPolicy:

@@ -1,0 +1,125 @@
+{
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "blind_stage_status": "up_chemicals_sealed_self_verification_active",
+  "total_raw_leads_so_far": 683,
+  "total_formal_typed_leads_so_far": 625,
+  "legacy_experimental_raw_leads": {
+    "total": 58,
+    "files": [
+      {"shard_id":"UP-HARDROCK","file":"timeline-actors-v1.jsonl","lead_count":30,"prompt_version":"recall-v1"},
+      {"shard_id":"UP-CHEMICALS","file":"timeline-mechanisms-v2.jsonl","lead_count":28,"prompt_version":"recall-v2"}
+    ],
+    "policy": "preserved as immutable prompt-evolution experiments; excluded from strict typed compact indexes"
+  },
+  "search_visibility": "self_verification",
+  "search_scope": {
+    "allowed_shards": ["UP-CHEMICALS"],
+    "forbidden_unsealed_shards": true,
+    "active_run": "UP-CHEMICALS-SV-001",
+    "blind_mutation_from_search": "forbidden"
+  },
+  "state_authority": {
+    "raw_counts": "deterministic-derived from all blind JSONL and handoff drill",
+    "formal_typed_counts": "deterministic-derived from v3+ blind JSONL after explicit repair overlays",
+    "novelty_labels": "curated research assessment",
+    "bridge_and_satellite_priority": "curated research assessment",
+    "ci": "not stored here; refresh live GitHub Actions"
+  },
+  "sealed_shards": ["UP-CHEMICALS"],
+  "shards": [
+    {"shard_id":"UP-HARDROCK","lead_count":71,"formal_typed_lead_count":41,"self_gap_batches":4,"status":"high_novelty_ordinary_gap_v6_with_duplicate"},
+    {"shard_id":"UP-BRINE","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"UP-CONCENTRATE","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"UP-CHEMICALS","lead_count":81,"formal_typed_lead_count":53,"self_gap_batches":6,"status":"sealed_after_streak_3_and_negative_space_review"},
+    {"shard_id":"MID-LFP","lead_count":56,"formal_typed_lead_count":56,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-TERNARY","lead_count":42,"formal_typed_lead_count":42,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"MID-ANODE","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"MID-SEPARATOR","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"MID-ELECTROLYTE","lead_count":34,"formal_typed_lead_count":34,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"BAT-CELL","lead_count":58,"formal_typed_lead_count":58,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"},
+    {"shard_id":"DOWN-NEV","lead_count":59,"formal_typed_lead_count":59,"self_gap_batches":4,"status":"high_novelty_ordinary_gap_v6_with_duplicate"},
+    {"shard_id":"DOWN-ESS","lead_count":54,"formal_typed_lead_count":54,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3_with_repair_overlay"},
+    {"shard_id":"DOWN-OTHER","lead_count":32,"formal_typed_lead_count":32,"self_gap_batches":2,"status":"high_novelty_pre2019_deferred"},
+    {"shard_id":"LOOP-RECYCLING","lead_count":39,"formal_typed_lead_count":39,"self_gap_batches":3,"status":"high_novelty_pre2019_batch3"}
+  ],
+  "saturation_experiment": {
+    "result": "all 14 primary shards completed ordinary batch2; ten selected cycle-forming shards completed targeted 2015-2018 batch3. Matrix-driven ordinary probes then measured novelty decay. UP-CHEMICALS completed three independent consecutive low-novelty probes and passed a separate all-lens negative-space review, becoming the first legitimately sealed shard. Other shards remain unsealed and fresh search remains forbidden for them.",
+    "ordinary_batch2": "14/14 primary shards remained high novelty",
+    "pre2019_batch3": [
+      {"shard_id":"UP-HARDROCK","non_duplicate":"6/6"},
+      {"shard_id":"UP-CHEMICALS","non_duplicate":"6/6"},
+      {"shard_id":"DOWN-NEV","non_duplicate":"6/6"},
+      {"shard_id":"MID-LFP","non_duplicate":"6/6"},
+      {"shard_id":"MID-TERNARY","non_duplicate":"6/6"},
+      {"shard_id":"BAT-CELL","non_duplicate":"6/6"},
+      {"shard_id":"UP-BRINE","non_duplicate":"6/6"},
+      {"shard_id":"UP-CONCENTRATE","non_duplicate":"5/5"},
+      {"shard_id":"DOWN-ESS","non_duplicate":"6/6"},
+      {"shard_id":"LOOP-RECYCLING","non_duplicate":"5/5"}
+    ],
+    "pre2019_deferred": ["MID-ANODE","MID-ELECTROLYTE","MID-SEPARATOR","DOWN-OTHER"],
+    "ordinary_gap_probes": [
+      {"shard_id":"UP-HARDROCK","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0},
+      {"shard_id":"DOWN-NEV","pass_id":"ordinary-gap-batch4-v6","new_category":2,"useful_refinement":2,"duplicate":1,"low_novelty":false,"consecutive_low_novelty_batches":0},
+      {"shard_id":"UP-CHEMICALS","pass_id":"ordinary-gap-batch4-v6","new_category":0,"useful_refinement":2,"duplicate":3,"low_novelty":true,"consecutive_low_novelty_batches":1},
+      {"shard_id":"UP-CHEMICALS","pass_id":"ordinary-gap-batch5-v6","new_category":0,"useful_refinement":1,"duplicate":4,"low_novelty":true,"consecutive_low_novelty_batches":2},
+      {"shard_id":"UP-CHEMICALS","pass_id":"ordinary-gap-batch6-v6","new_category":0,"useful_refinement":1,"duplicate":4,"low_novelty":true,"consecutive_low_novelty_batches":3}
+    ],
+    "seal_reviews": [
+      {
+        "shard_id": "UP-CHEMICALS",
+        "artifact": "analysis/up-chemicals-seal-review-v1.json",
+        "verdict": "sealed",
+        "reason": "three consecutive low-novelty probes plus explicit ten-lens review found no material first-order empty cell and all required long-tail categories were represented"
+      }
+    ],
+    "interpretation": "The first seal demonstrates that the campaign can stop based on measured information decay rather than arbitrary lead count. A sealed blind atlas is frozen as a historical research vintage; it is not evidence and its claims are not publishable until verified."
+  },
+  "horizon_revision": {
+    "primary_period": ["2015-01-01","2026-12-31"],
+    "decision_path": "docs/research/lithium-battery-cycle-horizon-v2.md",
+    "manifest_revision_path": "docs/research/lithium-battery-memory-exhaustion-horizon-v2.json",
+    "earlier_than_2015": "selective antecedent backfill only",
+    "reason": "2019 truncates the previous upswing, project sanctioning, policy and technology expectations needed to explain 2019-2020 Reality"
+  },
+  "pre2019_new_dimensions": {
+    "UP-HARDROCK": ["brownfield restart supply","pre-production offtake/project finance","top-of-cycle leverage and ramp overlap","DSO-to-concentrate product transition","mine-to-hydroxide linked capex expectations","contemporaneous future-supply pipeline forecasts"],
+    "UP-BRINE": ["Atacama 2016-2018 contract reset","Olaroz original commercial ramp","Cauchari-Olaroz pre-2019 ownership/finance chain","Argentina pre-2019 project-pipeline expectation vintage","Qinghai pre-2019 salt-lake technology/capex wave","pre-downturn brine cost/supply forecast assumptions"],
+    "UP-CONCENTRATE": ["pre-production offtake/prepayment as project finance","Mt Marion early product-grade mix and plant-upgrade semantics","Wodgina pre-concentrator DSO transition","pre-2019 captive-versus-merchant concentrate market structure","2017-2018 project-by-project concentrate supply expectation vintage"],
+    "UP-CHEMICALS": ["Kwinana investment vintage","Kemerton investment vintage","pre-2019 hydroxide-premium expectations","high-price lepidolite/converter capex","converter-side feedstock lockups","2017-2018 grade/spread semantics"],
+    "DOWN-NEV": ["subsidy-fraud/data-quality reset","energy-density subsidy incentives","dual-credit planning constraint","pre-2019 A00 vehicle-mix intensity","2018 Tesla Shanghai expectation vintage","2018 subsidy-phase-down expectations"],
+    "DOWN-ESS": ["California Aliso Canyon emergency-storage procurement","Hornsdale grid-service expectation reset","China 2018 grid-side storage investment wave","Korea ESS policy boom to safety reset","pre-IRA solar-coupled storage tax structure","pre-2019 short-duration grid-service demand semantics"],
+    "LOOP-RECYCLING": ["2017-2018 cobalt-driven scrap economics","pre-2019 captive recycling ownership roots","China Tower second-life feedstock diversion","first retirement-wave expectation vintage","manufacturing-capacity/yield roots of early scrap feedstock"],
+    "MID-LFP": ["commercial-vehicle first-wave LFP demand","policy-driven ternary substitution expectation","pre-2019 cathode capex reallocation","application-specific LFP counter-consensus","2017-2018 LFP pricing lag","survivor-bias actor gap"],
+    "MID-TERNARY": ["2017-2018 NCM811 expectation vintage","cobalt-price route pressure","pre-2019 ternary capex wave","high-nickel effective-capacity constraints","cobalt sourcing-risk motive","811 commercialization optimism vocabulary"],
+    "BAT-CELL": ["battery whitelist/market-access structure","first-wave GWh overcapacity","pre-2019 survivor-bias actor gap","CATL IPO expectation vintage","foreign-cell re-entry expectations","format-route expectation and stranded specialization"]
+  },
+  "primary_schema_conclusions": [
+    "capacity is a state chain, not one number",
+    "project maturity and production milestones must be explicit",
+    "price facts require spec/market/contract/delivery/lag semantics",
+    "inventory requires location/WIP/ownership semantics",
+    "demand requires unit intensity and stock-flow replacement semantics",
+    "technology requires promise/pilot/qualification/SOP/mass-production/adoption states",
+    "entity relationships require owner/operator/offtake/customer roles with validity time",
+    "expectations must preserve competing contemporaneous explanations and forecast vintages"
+  ],
+  "high_priority_bridge_set": [
+    "BRIDGE-CAPACITY-SEMANTICS","BRIDGE-CAPEX-PROJECT-LIFECYCLE","BRIDGE-PRODUCT-SEMANTICS","BRIDGE-CUSTOMER-QUALIFICATION","BRIDGE-ENTITY-ALIASES","BRIDGE-OFFTAKE-NETWORK","BRIDGE-PRICING-CONTRACTS","BRIDGE-MARGIN-TRANSMISSION","BRIDGE-INVENTORY","BRIDGE-MATERIAL-INTENSITY","BRIDGE-METRIC-SEMANTICS","BRIDGE-DEMAND-STOCK-FLOW","BRIDGE-EXPECTATION-VINTAGES","BRIDGE-TRADE-POLICY","BRIDGE-QUALITY-REALIZED-PERFORMANCE","BRIDGE-SUPPLY-RESPONSE","BRIDGE-OWNERSHIP-SEMANTICS","BRIDGE-LOGISTICS-REALIZED-SUPPLY","BRIDGE-MARKET-ACCESS","BRIDGE-TECHNOLOGY-POLICY","BRIDGE-POLICY-DEMAND","BRIDGE-EXPECTATION-DISTRIBUTION"
+  ],
+  "high_priority_satellite_set": [
+    "SAT-LEPIDOLITE","SAT-DLE","SAT-NICKEL-INDONESIA","SAT-GRAPHITIZATION","SAT-SILICON-ANODE","SAT-ELECTROLYTE-ADDITIVES","SAT-LIFSI","SAT-SODIUM-ION","SAT-SOLID-STATE","SAT-BATTERY-EQUIPMENT","SAT-LARGE-CYLINDRICAL","SAT-BATTERY-SWAP","SAT-RESIDENTIAL-STORAGE","SAT-LONG-DURATION-STORAGE","SAT-SECOND-LIFE","SAT-MINING-SERVICES","SAT-INDUSTRIAL-MOBILITY","SAT-DATACENTER-BACKUP","SAT-COBALT-SUPPLY"
+  ],
+  "next_phase": {
+    "goal": "execute UP-CHEMICALS-SV-001 self-verification discovery without mutating the sealed blind atlas",
+    "actions": [
+      "execute the six declared query families using high-capability fresh search scoped only to UP-CHEMICALS",
+      "prioritize dated primary company, regulatory and government sources and run contradiction-oriented queries",
+      "persist discovery-v1.json outside blind/ with candidate source targets and unresolved questions, never Facts or Judgments",
+      "turn precise high-value discoveries into bounded claim-scoped evidence task packets",
+      "archive original source documents before any publishable assertion",
+      "keep fresh search forbidden for every unsealed shard"
+    ]
+  },
+  "self_verification_policy": "fresh search is permitted only for active run UP-CHEMICALS-SV-001 on sealed shard UP-CHEMICALS; the sealed blind atlas is immutable and all 13 unsealed shards remain search_visibility=none"
+}

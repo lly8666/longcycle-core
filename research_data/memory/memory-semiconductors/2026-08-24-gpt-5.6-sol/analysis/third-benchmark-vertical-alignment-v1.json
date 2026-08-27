@@ -1,0 +1,95 @@
+{
+  "schema_version": "longcycle-benchmark-vertical-alignment/v1",
+  "benchmark_id": "memory-semiconductors-third-benchmark",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "reviewed_head": "859b681f39033027f64ba6d613ad8e375acf0c92",
+  "reviewed_at": "2026-08-24",
+  "parent_goal": "Prove point-in-time industrial memory transfers across genuinely different industries without collapsing time, authority or related-product comparability semantics.",
+  "review_scope": [
+    "supplier-cut and recovery trajectory",
+    "HBM3E lifecycle-state separation and Judgment revision",
+    "SK hynix direct customer-supply Outcome",
+    "CoreWeave H200 related later milestone",
+    "Samsung HBM3E 12H direct mass-production Outcome"
+  ],
+  "cases": [
+    {
+      "case_id": "supplier-cut-recovery",
+      "semantic_pressure": "A later NAND-specific production-reduction decision is related to earlier broad investment/production guidance without inheriting the earlier investment magnitude or becoming the same milestone.",
+      "observed_result": "Existing Judgment relation and Outcome semantics preserved the later decision as a reaffirming cognition relation while the later Samsung recovery milestone remained related_milestone, indeterminate and not timing-comparable.",
+      "owner_fit": ["CAP-0004", "CAP-0005", "CAP-0007"],
+      "generic_gap": false
+    },
+    {
+      "case_id": "hbm3e-status-separation",
+      "semantic_pressure": "Development, customer sampling, volume/mass production, customer supply, platform shipment and qualification are distinct states, and Samsung 8H current production must remain separate from 12H forward production plans.",
+      "observed_result": "Existing Reality and Judgment owners preserved variant-specific current states, forward-looking plans, and the later Q2 plan as a narrowing of the earlier H1 plan without merging lifecycle states or rewriting prior cognition.",
+      "owner_fit": ["CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
+      "generic_gap": false
+    },
+    {
+      "case_id": "skhynix-direct-supply-outcome",
+      "semantic_pressure": "Later evidence proves the same customer-supply milestone occurred in March 2024, while the original target only said 'from late March 2024'.",
+      "observed_result": "Existing Outcome semantics represented realized/direct_match while retaining timing_relation=not_comparable because month-precision occurrence cannot manufacture a day-level comparison against an approximate target.",
+      "owner_fit": ["CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
+      "generic_gap": false
+    },
+    {
+      "case_id": "h200-related-market-milestone",
+      "semantic_pressure": "A later H200 market/deployment statement is historically related to a Q2 platform-shipment Judgment but does not prove the same shipment-start event or Micron supplier identity.",
+      "observed_result": "Existing source/Evidence ownership allowed the later milestone to be preserved as Grounded Evidence without forcing Reality/Outcome promotion or weakening semantic comparability.",
+      "owner_fit": ["CAP-0001", "CAP-0002", "CAP-0004", "CAP-0007"],
+      "generic_gap": false
+    },
+    {
+      "case_id": "samsung-12h-direct-production-outcome",
+      "semantic_pressure": "Later primary evidence directly establishes HBM3E 12-stack mass production and sales, but does not state the production onset date needed to judge whether the earlier Q2 target was on time or late.",
+      "observed_result": "Existing Reality semantics preserved state=true with unknown onset; existing Outcome semantics represented realized/direct_match with unknown occurrence precision and timing_relation=not_comparable; no synthetic start date or timing delta was created.",
+      "owner_fit": ["CAP-0002", "CAP-0003", "CAP-0004", "CAP-0005", "CAP-0007"],
+      "generic_gap": false
+    }
+  ],
+  "cross_case_owner_assessment": [
+    {
+      "capability_id": "CAP-0001",
+      "assessment": "Source identity and content-verified representation were sufficient for readable web/PDF material without requiring transport semantics to become claim authority."
+    },
+    {
+      "capability_id": "CAP-0002",
+      "assessment": "Claim-scoped Grounded Evidence correctly separated source-derived support from later Reality/Judgment/Outcome promotion and permitted evidence-only stopping points."
+    },
+    {
+      "capability_id": "CAP-0003",
+      "assessment": "Canonical Reality and temporal semantics handled product/state comparability, coarse valid time, observation time and true-state/unknown-onset cases without semiconductor-specific fields."
+    },
+    {
+      "capability_id": "CAP-0004",
+      "assessment": "Judgment revision and Outcome evaluation handled narrowing/reaffirmation, direct_match versus related_milestone, and precision-aware non-comparability without rewriting original expectations."
+    },
+    {
+      "capability_id": "CAP-0005",
+      "assessment": "Typed point-in-time replay preserved historical visibility and prevented later Reality/Outcome from leaking into earlier cutoffs."
+    },
+    {
+      "capability_id": "CAP-0007",
+      "assessment": "Generic orchestration composed the existing semantic owners and passed bounded PostgreSQL/replay trajectories without absorbing semiconductor-specific semantics."
+    }
+  ],
+  "unmet_generic_requirements": [],
+  "residual_evidence_gaps": [
+    {
+      "gap": "Direct primary evidence that NVIDIA H200 platform shipments actually began in calendar Q2 2024.",
+      "blocking": false,
+      "reason": "The benchmark already contains direct and related Outcome boundary tests. Missing direct source recovery here is an evidence gap, not a demonstrated representation or orchestration gap."
+    },
+    {
+      "gap": "Samsung primary evidence for completed named-customer or named-platform HBM3E 12H qualification.",
+      "blocking": false,
+      "reason": "Sampling, mass production/sales and unnamed qualification-phase wording remain truthfully distinct. The absence of a named completed qualification does not imply a missing generic status owner."
+    }
+  ],
+  "decision": "close_benchmark_no_generic_capability_gap",
+  "decision_rationale": "Across multiple semiconductor counterexamples, the existing generic source/Evidence/Reality/Judgment/Outcome/replay/orchestration owners preserved authority, lifecycle-state distinctions, valid/known-time boundaries, direct versus related Outcome semantics, source-supported temporal precision and no-lookahead replay. Further local source recovery or semiconductor-specific architecture would improve benchmark completeness rather than test a demonstrated parent-goal gap.",
+  "stop_rule": "Do not resume H200 calendar-Q2 shipment or named-qualification recovery, add semiconductor-specific state schemas, or change generic capability ownership unless a later cross-industry comparison demonstrates that one of those gaps is necessary to represent a genuinely missing generic semantic.",
+  "next_parent_level_action": "Leave the semiconductor lane and compare the durable lithium-battery, innovative-drugs ADC and memory-semiconductor benchmark results at the cross-industry level to identify only semantics that repeat across industries or a concrete generic gap that survived all three."
+}

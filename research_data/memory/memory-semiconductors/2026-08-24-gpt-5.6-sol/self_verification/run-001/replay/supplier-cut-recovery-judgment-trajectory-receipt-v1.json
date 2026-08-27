@@ -1,0 +1,68 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-judgment-trajectory-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "bc11abda4209716a544b77aa5421536a3f014ab2",
+  "default_branch_broker_commit": "3c3dd2198ffd5df4026c344551094c25c845d3e1",
+  "trigger_issue": 146,
+  "actions_run_id": 32705099146,
+  "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/supplier-cut-recovery-judgment-trajectory-v1.json",
+  "execution_schema": "longcycle-epistemic-trajectory-execution/v1",
+  "phases": ["grounded_evidence", "reality_projection", "judgment_persistence"],
+  "promotion_evidence_fragments": {
+    "EVF-SAMSUNG-CUT-PROMOTION": "9fb49c21-625c-5063-9aeb-79be0228dc3f",
+    "EVF-SAMSUNG-RECOVERY-PROMOTION": "e3d34f57-1f32-575e-811f-36aacbef4c4a",
+    "EVF-MICRON-CUT-PROMOTION": "ca6bddb8-83a4-5521-8454-0a0f1f7c66bb",
+    "EVF-SKHYNIX-CUT-PROMOTION": "beeef47a-6c3b-5e46-9e64-74ba0062160d"
+  },
+  "reality": {
+    "fact_assertion_id": "50a3d80e-fad6-564e-bace-5ecfb003c10f",
+    "canonical_fact_version_id": "4c0cfee7-49d3-5882-9906-69b01fee69c0",
+    "verification": {
+      "fact_count": 1,
+      "canonical_reality_count": 1,
+      "all_reconciled_accept": true,
+      "all_fact_evidence_ids_persisted": true,
+      "all_known_times_derived_from_grounded_evidence": true,
+      "stable_assertion_to_canonical_mapping": true,
+      "valid_time_semantics_preserved": true,
+      "observation_semantics_preserved": true
+    }
+  },
+  "judgments": [
+    {
+      "judgment_key": "2023-samsung-certain-product-production-cut-plan",
+      "judgment_id": "777ab662-7439-5da8-9dbe-9967be7fa38a",
+      "first_known_at": "2023-04-12T00:00:00Z",
+      "target_precision": "unknown",
+      "epistemic_boundary": "Management commitment/plan; not executed production Reality."
+    },
+    {
+      "judgment_key": "2023-samsung-second-half-demand-recovery-expectation",
+      "judgment_id": "f04484bd-69cc-5662-b3a4-313fe9f7539b",
+      "first_known_at": "2023-04-28T00:00:00Z",
+      "target_precision": "half_year",
+      "target_text": "second half of 2023",
+      "epistemic_boundary": "Contemporaneous forecast; later recovery evidence must be separate revision/outcome evidence."
+    },
+    {
+      "judgment_key": "2022-skhynix-2023-investment-and-production-reduction-guidance",
+      "judgment_id": "89a84bcf-9c06-5ee5-85c9-a5ed6cd2c69f",
+      "first_known_at": "2022-10-27T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "2023",
+      "epistemic_boundary": "The >50% magnitude applies only to investment; production reduction has no source-supported percentage."
+    }
+  ],
+  "judgment_verification": {
+    "judgment_count": 3,
+    "evidence_link_count": 3,
+    "idempotent_reappend_passed": true,
+    "all_first_known_times_derived_from_grounded_evidence": true,
+    "target_precision_preserved": true,
+    "known_time_required_only_for_projection_cited_fragments": true
+  },
+  "outcome_count": 0,
+  "replay_verified": false,
+  "boundary": "This receipt proves the first storage-semiconductor Evidence -> Reality/Judgment trajectory only. It intentionally makes no Outcome claim and performs no later-cutoff replay until later source evidence is grounded."
+}

@@ -1,0 +1,15 @@
+{
+  "source_file": "expectations-failures-metrics-v3.jsonl",
+  "repair_policy": "structural_only_no_new_historical_content",
+  "repairs": [
+    {
+      "lead_id": "ESS-C006",
+      "field": "lead_kind",
+      "original": "capacity_cycle",
+      "repaired": "capital_cycle",
+      "reason": "capacity_cycle is not an allowed MemoryLeadKind; intended semantic is capital_cycle"
+    }
+  ],
+  "raw_file_must_remain_unchanged": true,
+  "ingestion_rule": "apply repair overlay before typed candidate validation"
+}

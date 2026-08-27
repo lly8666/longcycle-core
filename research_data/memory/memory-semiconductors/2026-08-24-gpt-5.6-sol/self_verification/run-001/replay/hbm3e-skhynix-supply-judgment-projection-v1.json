@@ -1,0 +1,34 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "MEMORY-SEMICONDUCTORS-HBM3E-SKHYNIX-SUPPLY-JUDGMENTS-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-HBM3E-SKHYNIX-SUPPLY-TRAJECTORY-001",
+  "allowed_claim_roles": ["issuer_hbm3e_status_statement"],
+  "subjects": [
+    {"id": "24493701-d1f3-5eb4-86d6-3c1be70da617", "entity_type": "legal_entity", "canonical_name": "SK hynix Inc."}
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2024-skhynix-hbm3e-late-march-customer-supply-plan",
+      "evidence_refs": [{"fragment_key": "EVF-SKHYNIX-HBM3E-MARCH-SUPPLY-TRAJECTORY", "evidence_role": "statement"}],
+      "subject_entity_id": "24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "speaker_name_text": "SK hynix",
+      "speaker_role": "management",
+      "topic_code": "operations.hbm3e_customer_supply_timing",
+      "judgment_kind": "commitment",
+      "target_time_kind": "unknown",
+      "target_precision": "approximate",
+      "target_text": "from late March 2024",
+      "value_kind": "text",
+      "value_text": "SK hynix stated that HBM3E produced at volume would be supplied to a customer from late March 2024.",
+      "summary": "At the March 19, 2024 vintage, SK hynix had begun HBM3E volume production and described customer supply as beginning from late March. The qualitative target is preserved exactly as contemporaneous Judgment; later evidence must not rewrite it into a precise date.",
+      "metadata": {
+        "product_family": "HBM3E",
+        "variant": "8H",
+        "customer_identity": "unnamed",
+        "timing_guard": "Do not translate 'late March' into an invented exact date.",
+        "reality_guard": "The March 19 statement is not itself proof that later customer supply had already occurred.",
+        "qualification_guard": "Customer-supply timing is not a generic platform-qualification claim."
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0112-SERVER-PLATFORM-DEMAND-BRIDGE-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0112",
+  "authority": "curated_research_assessment_over_grounded_evidence",
+  "subject": "Hyperscaler capital allocation and server CPU/platform cycles as distinct upstream demand axes for server DRAM and enterprise SSD",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/cross-industry-demand-bridge-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounding-receipt-v1.json"
+  ],
+  "assessment": {
+    "status": "bounded_cross_industry_mechanism_supported_without_causal_scalar",
+    "supported": [
+      {
+        "axis": "hyperscaler_capital_allocation_to_server_procurement",
+        "finding": "Microsoft's FY2024 Q4 source supports that the non-land/build portion of its cloud-and-AI spend was primarily servers, including CPUs and GPUs, deployed against customer demand signals.",
+        "epistemic_boundary": "Primary for Microsoft's own spend composition and procurement framing only; it does not quantify DRAM, NAND, HBM, enterprise-SSD bits, supplier share or supplier revenue."
+      },
+      {
+        "axis": "server_market_expectation",
+        "finding": "Micron's June 2024 prepared remarks preserve a contemporaneous calendar-2024 server-unit growth expectation.",
+        "epistemic_boundary": "This is an Expectation/Judgment candidate, not realized server-shipment Reality and not a direct memory-bit forecast."
+      },
+      {
+        "axis": "ai_server_roadmap_cadence",
+        "finding": "Micron reported annual new-product cadence on customer AI-server roadmaps.",
+        "epistemic_boundary": "Reported customer-roadmap cadence is not proof of actual shipment dates, installed-base replacement rate or memory consumption."
+      },
+      {
+        "axis": "server_cpu_platform_transition",
+        "finding": "AMD's October 2024 5th Gen EPYC launch establishes a concrete server CPU platform generation with SP5 compatibility and a 12-channel DDR5 memory interface.",
+        "epistemic_boundary": "Technical platform facts do not establish adoption volume, populated DIMM count, DIMM capacity, DRAM bits per server, SSD attachment, enterprise-SSD capacity or total market demand."
+      },
+      {
+        "axis": "enterprise_ssd_demand_context",
+        "finding": "The previously grounded Micron hyperscale-SSD source independently preserves Micron's contemporaneous assessment that hyperscale SSD demand was improving, driven primarily by AI training and inference infrastructure.",
+        "epistemic_boundary": "This is supplier management assessment of its market context; it does not prove that any named hyperscaler's capex flowed to Micron or provide an industry-wide NAND-bit coefficient."
+      }
+    ],
+    "not_established": [
+      "No source in the grounded packet supplies a quantitative mapping from hyperscaler capex dollars to server DRAM bits, HBM bits, NAND bits, enterprise-SSD units or enterprise-SSD exabytes.",
+      "No source in the grounded packet supplies a quantitative mapping from a CPU/platform generation transition to DRAM content per server, SSD capacity per server or aggregate memory demand.",
+      "The server-unit growth statement is not realized shipment Reality and must not be combined with platform specifications to synthesize a memory-bit total.",
+      "Microsoft capex, Micron market assessment and AMD platform specifications are separate claim-scoped observations; cross-source temporal adjacency is not canonical causality.",
+      "No single 'data center demand' scalar is justified by this packet."
+    ],
+    "representation_decision": "Represent hyperscaler capital allocation, server market expectations, server-product roadmap cadence, CPU/platform generation and memory/storage demand observations as separate typed claims with their own valid/known times. Create an explicit cross-industry relation only when a source states the bridge or when a future derived analytical layer is clearly labeled as a model rather than Reality.",
+    "canonical_projection_decision": "Do not create new Reality predicates or a synthetic demand coefficient from this assessment. The current value is Evidence-level mechanism separation plus a curated research relation boundary.",
+    "outcome_for_ms0112": "The lead is materially advanced: both upstream axes are independently grounded and semantically separable. The stronger claim that either axis quantitatively determines server DRAM or enterprise-SSD demand remains unresolved."
+  },
+  "stop_rule": {
+    "closed_search_surface": "Do not repeat generic AI/data-center demand searches that merely restate capex growth, server growth or AI enthusiasm without supplying a claim-scoped bridge.",
+    "reopen_when": [
+      "A hyperscaler or server OEM directly reports memory or storage content/procurement tied to a named server-platform vintage.",
+      "A methodological-primary server/memory source publishes memory-content-per-server or storage-content-per-server by platform generation with explicit methodology.",
+      "A supplier/customer primary source explicitly links a named platform transition to DRAM/HBM/NAND/enterprise-SSD procurement volume."
+    ]
+  },
+  "next_research_direction": {
+    "principle": "Prefer the next sealed Memory Atlas lead that adds a new mechanism or independent observation rather than elaborating MS-0112 with more correlated capex headlines.",
+    "candidate_action": "After closing seq110, recover the next high-importance unresolved cross-industry or counterfactual lead from the deterministic normalized lead index and admit it under existing semantic owners before new substantive work."
+  }
+}

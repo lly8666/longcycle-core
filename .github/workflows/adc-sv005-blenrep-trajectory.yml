@@ -1,0 +1,447 @@
+name: ADC SV-005 BLENREP trajectory
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/adc-sv005-blenrep-trajectory.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-reality-projection-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-judgment-projection-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'scripts/execute_grounded_judgment_persistence.py'
+      - 'scripts/execute_grounded_outcome_evaluation.py'
+      - 'scripts/export_integrated_replay_duckdb.py'
+      - 'scripts/replay_integrated_history.py'
+      - 'src/longcycle/application/reality_projection.py'
+      - 'src/longcycle/application/judgment_projection.py'
+      - 'src/longcycle/application/outcome_evaluation.py'
+      - 'src/longcycle/adapters/storage/postgres_epistemic.py'
+      - 'src/longcycle/adapters/storage/duckdb_epistemic.py'
+  pull_request:
+    paths:
+      - '.github/workflows/adc-sv005-blenrep-trajectory.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-reality-projection-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-judgment-projection-v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  trajectory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/sv005-trajectory-blobs
+      EVIDENCE_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json
+      WEB_VERIFY_RECEIPT: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-drive-capsule-reverification-v1.json
+      REALITY_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-reality-projection-v1.json
+      JUDGMENT_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-005-judgment-projection-v1.json
+      PREPARED_SPEC: ${{ github.workspace }}/.artifacts/SV-005-grounded-evidence-runtime-spec.json
+      MATERIAL_ROOT: ${{ github.workspace }}/.artifacts/sv005-trajectory-materials
+      EVIDENCE_OUTPUT: ${{ github.workspace }}/.artifacts/SV-005-grounded-evidence-execution.json
+      REALITY_OUTPUT: ${{ github.workspace }}/.artifacts/SV-005-reality-execution.json
+      JUDGMENT_OUTPUT: ${{ github.workspace }}/.artifacts/SV-005-judgment-execution.json
+      OUTCOME_OUTPUT: ${{ github.workspace }}/.artifacts/SV-005-outcome-execution.json
+      MEMORY_DB: ${{ github.workspace }}/.artifacts/SV-005-integrated-memory.duckdb
+      MEMORY_MANIFEST: ${{ github.workspace }}/.artifacts/SV-005-integrated-memory-manifest.json
+      REPLAY_2022: ${{ github.workspace }}/.artifacts/SV-005-replay-2022-11-23.json
+      REPLAY_2023: ${{ github.workspace }}/.artifacts/SV-005-replay-2023-03-31.json
+      REPLAY_2024: ${{ github.workspace }}/.artifacts/SV-005-replay-2024-02-06.json
+      SUBJECT_ID: b5254c47-1de6-5850-a99f-5e5b829884a8
+      RELEASE_TAG: longcycle-dev-binary-cache
+      RELEASE_ASSET: longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip
+      RELEASE_SHA256: eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install -e '.[dev,postgres,s3,duckdb]'
+          python -m pip install 'pypdf==6.15.0'
+
+      - name: Validate projection specs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          from longcycle.application.reality_projection import GroundedRealityProjectionSpec
+          from longcycle.application.judgment_projection import GroundedJudgmentProjectionSpec
+
+          reality = GroundedRealityProjectionSpec.model_validate_json(Path(os.environ['REALITY_SPEC']).read_text(encoding='utf-8'))
+          judgment = GroundedJudgmentProjectionSpec.model_validate_json(Path(os.environ['JUDGMENT_SPEC']).read_text(encoding='utf-8'))
+          assert len(reality.facts) == 8
+          assert len(judgment.judgments) == 1
+          assert judgment.judgments[0].judgment_kind.value == 'commitment'
+          assert judgment.judgments[0].target_time_kind.value == 'unknown'
+          print('SV005_PROJECTION_SPEC_PASS')
+          PY
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Restore already-materialized legacy PDF bytes
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$MATERIAL_ROOT/pdf" "$MATERIAL_ROOT/web" .artifacts/release
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir .artifacts/release
+          actual="$(sha256sum ".artifacts/release/$RELEASE_ASSET" | awk '{print $1}')"
+          test "$actual" = "$RELEASE_SHA256"
+          unzip -q ".artifacts/release/$RELEASE_ASSET" -d .artifacts/release/unpacked
+          cp .artifacts/release/unpacked/federal-register-blenrep-revocation-2023.pdf "$MATERIAL_ROOT/pdf/"
+          cp .artifacts/release/unpacked/gsk-dreamm7-readout-2024-02-05.pdf "$MATERIAL_ROOT/pdf/"
+          echo "SV005_LEGACY_PDF_RESTORE_PASS sha=$actual"
+
+      - name: Reconstruct verified webpage representations without network fetch
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import copy
+          import hashlib
+          import json
+          import os
+          from collections import defaultdict
+          from pathlib import Path
+
+          spec_path = Path(os.environ['EVIDENCE_SPEC'])
+          receipt_path = Path(os.environ['WEB_VERIFY_RECEIPT'])
+          prepared_path = Path(os.environ['PREPARED_SPEC'])
+          root = Path(os.environ['MATERIAL_ROOT'])
+          spec = json.loads(spec_path.read_text(encoding='utf-8'))
+          receipt = json.loads(receipt_path.read_text(encoding='utf-8'))
+          capsule = spec['acquisition_provenance']['webpage_capsule']
+          assert receipt['google_drive_file_id'] == capsule['google_drive_file_id']
+          assert receipt['sha256'] == capsule['sha256']
+          assert receipt['capture_count'] == capsule['capture_count'] == 3
+          assert all(receipt['acceptance'].values())
+
+          docs = {row['key']: row for row in spec['documents']}
+          fragments_by_doc = defaultdict(list)
+          for fragment in spec['fragments']:
+              fragments_by_doc[fragment['document_key']].append(fragment)
+          source_id_by_document = {
+              'fda-initial-approval-2020': 'fda-blenrep-accelerated-approval-2020',
+              'gsk-dreamm3-2022': 'gsk-dreamm3-2022-11-07',
+              'gsk-withdrawal-judgment-2022': 'gsk-blenrep-withdrawal-2022-11-22',
+          }
+          receipt_by_source = {row['source_id']: row for row in receipt['capture_checks']}
+          runtime_spec = copy.deepcopy(spec)
+          runtime_docs = {row['key']: row for row in runtime_spec['documents']}
+          for document_key, source_id in source_id_by_document.items():
+              doc = docs[document_key]
+              check = receipt_by_source[source_id]
+              assert check['visible_text_sha256'] == doc['retrieval_provenance']['capture_row_text_sha256']
+              fragment_checks = {row['fragment_key']: row for row in check['fragment_checks']}
+              excerpts = []
+              for fragment in fragments_by_doc[document_key]:
+                  excerpt = fragment['excerpt']
+                  recorded = fragment_checks[fragment['fragment_key']]
+                  assert recorded['present'] is True
+                  assert hashlib.sha256(excerpt.encode('utf-8')).hexdigest() == recorded['excerpt_sha256']
+                  excerpts.append(excerpt)
+              material = '\n'.join(excerpts)
+              path = root / doc['material_path']
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(material, encoding='utf-8')
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == doc['expected_sha256'] == check['runtime_material_sha256']
+              runtime_docs[document_key]['retrieval_provenance'].update({
+                  'mode': 'verified_private_drive_capsule_receipt',
+                  'drive_reverification_receipt': str(receipt_path),
+                  'raw_source_materialized': False,
+                  'source_capture_state': 'content_verified',
+                  'source_media_type': 'text/html',
+                  'content_verification_mode': 'authorized_drive_capsule_reverification',
+                  'claim_relevant_content_preserved': True,
+              })
+          prepared_path.parent.mkdir(parents=True, exist_ok=True)
+          prepared_path.write_text(json.dumps(runtime_spec, indent=2) + '\n', encoding='utf-8')
+          print('SV005_OFFLINE_WEB_REPRESENTATION_PASS')
+          PY
+
+      - name: Verify source material SHA pins and PDF excerpts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import io
+          import json
+          import os
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          spec = json.loads(Path(os.environ['PREPARED_SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['MATERIAL_ROOT'])
+          docs = {row['key']: row for row in spec['documents']}
+          for doc in docs.values():
+              path = root / doc['material_path']
+              assert path.is_file(), path
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == doc['expected_sha256']
+          for fragment in spec['fragments']:
+              doc = docs[fragment['document_key']]
+              if doc['content_type'] != 'application/pdf':
+                  assert fragment['excerpt'] in (root / doc['material_path']).read_text(encoding='utf-8')
+                  continue
+              reader = PdfReader(io.BytesIO((root / doc['material_path']).read_bytes()), strict=False)
+              page_text = ' '.join((reader.pages[fragment['page'] - 1].extract_text() or '').split())
+              assert ' '.join(fragment['excerpt'].split()).casefold() in page_text.casefold()
+          print('SV005_TRAJECTORY_MATERIAL_INTEGRITY_PASS')
+          PY
+
+      - name: Execute Grounded Evidence
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$PREPARED_SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$EVIDENCE_OUTPUT"
+
+      - name: Assert Evidence gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os
+          payload = json.load(open(os.environ['EVIDENCE_OUTPUT'], encoding='utf-8'))
+          result = payload['result']
+          assert payload['ok'] is True
+          assert len(result['documents']) == 5
+          assert len(result['fragments']) == 9
+          assert result['acceptance'] == {
+              'persisted_document_versions': 5,
+              'persisted_evidence_fragments': 9,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }
+          print('SV005_EVIDENCE_GATE_PASS')
+          PY
+
+      - name: Persist and reconcile canonical Reality
+        run: >-
+          python scripts/execute_grounded_reality_projection.py
+          "$REALITY_SPEC"
+          "$EVIDENCE_OUTPUT"
+          --output "$REALITY_OUTPUT"
+
+      - name: Persist 2022 contemporaneous Judgment
+        run: >-
+          python scripts/execute_grounded_judgment_persistence.py
+          "$JUDGMENT_SPEC"
+          "$EVIDENCE_OUTPUT"
+          --output "$JUDGMENT_OUTPUT"
+
+      - name: Evaluate DREAMM-7 only as related milestone
+        run: >-
+          python scripts/execute_grounded_outcome_evaluation.py
+          "$JUDGMENT_OUTPUT"
+          "$REALITY_OUTPUT"
+          --judgment-key 2022-post-failure-dreamm-programme-continuation
+          --reality-fact-key 2024-dreamm7-positive-pfs
+          --semantic-relation related_milestone
+          --output "$OUTCOME_OUTPUT"
+
+      - name: Seal integrated industrial memory
+        run: >-
+          python scripts/export_integrated_replay_duckdb.py
+          "$MEMORY_DB"
+          --subject-id "$SUBJECT_ID"
+          --manifest-output "$MEMORY_MANIFEST"
+
+      - name: Replay 2022 cutoff
+        run: >-
+          python scripts/replay_integrated_history.py
+          "$MEMORY_DB"
+          2022-11-23T12:00:00Z
+          --subject-id "$SUBJECT_ID"
+          --output "$REPLAY_2022"
+
+      - name: Replay 2023 legal-record cutoff
+        run: >-
+          python scripts/replay_integrated_history.py
+          "$MEMORY_DB"
+          2023-03-31T12:00:00Z
+          --subject-id "$SUBJECT_ID"
+          --output "$REPLAY_2023"
+
+      - name: Replay 2024 combination-readout cutoff
+        run: >-
+          python scripts/replay_integrated_history.py
+          "$MEMORY_DB"
+          2024-02-06T12:00:00Z
+          --subject-id "$SUBJECT_ID"
+          --output "$REPLAY_2024"
+
+      - name: Assert Reality Judgment Outcome and no-lookahead boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          reality = json.loads(Path(os.environ['REALITY_OUTPUT']).read_text(encoding='utf-8'))
+          judgment = json.loads(Path(os.environ['JUDGMENT_OUTPUT']).read_text(encoding='utf-8'))
+          outcome = json.loads(Path(os.environ['OUTCOME_OUTPUT']).read_text(encoding='utf-8'))
+          replay_2022 = json.loads(Path(os.environ['REPLAY_2022']).read_text(encoding='utf-8'))
+          replay_2023 = json.loads(Path(os.environ['REPLAY_2023']).read_text(encoding='utf-8'))
+          replay_2024 = json.loads(Path(os.environ['REPLAY_2024']).read_text(encoding='utf-8'))
+
+          summary = {
+              'reality_count': len(reality['facts']),
+              'canonical_reality_count': len(reality['canonical_reality']),
+              'judgment_count': len(judgment['judgments']),
+              'outcome_relation': outcome['semantic_relation'],
+              'outcome_status': outcome['persisted_row']['evaluation_status'],
+              'replay_2022_counts': [len(replay_2022['reality']), len(replay_2022['judgments']), len(replay_2022['outcomes'])],
+              'replay_2023_counts': [len(replay_2023['reality']), len(replay_2023['judgments']), len(replay_2023['outcomes'])],
+              'replay_2024_counts': [len(replay_2024['reality']), len(replay_2024['judgments']), len(replay_2024['outcomes'])],
+          }
+          print('SV005_TRAJECTORY_ACTUAL ' + json.dumps(summary, sort_keys=True))
+
+          assert len(reality['facts']) == 8, reality
+          assert len(reality['canonical_reality']) == 8, reality
+          assert reality['verification']['all_reconciled_accept'] is True
+          assert len(judgment['judgments']) == 1, judgment
+          assert judgment['verification']['judgment_count'] == 1
+          assert judgment['verification']['idempotent_reappend_passed'] is True
+          projected_judgment = judgment['judgments'][0]
+          assert projected_judgment['metadata']['judgment_key'] == '2022-post-failure-dreamm-programme-continuation'
+          assert projected_judgment['first_known_at'].startswith('2022-11-23T12:00:00')
+          assert projected_judgment['target_time_kind'] == 'unknown'
+          assert projected_judgment['target_precision'] == 'unknown'
+
+          row = outcome['persisted_row']
+          assert outcome['semantic_relation'] == 'related_milestone'
+          assert row['semantic_relation'] == 'related_milestone'
+          assert row['evaluation_status'] == 'indeterminate'
+          assert row['timing_relation'] == 'not_comparable'
+          assert row['timing_delta_value'] is None
+          assert outcome['verification']['non_direct_never_claims_realization'] is True
+          assert outcome['verification']['no_fake_day_level_timing_error'] is True
+
+          assert (len(replay_2022['reality']), len(replay_2022['judgments']), len(replay_2022['outcomes'])) == (4, 1, 0), replay_2022
+          predicates_2022 = {row['predicate_code'] for row in replay_2022['reality']}
+          assert 'regulatory.us_written_bla_withdrawal_request' not in predicates_2022
+          assert 'regulatory.us_bla_revocation' not in predicates_2022
+          assert 'clinical.dreamm7_regimen_identity' not in predicates_2022
+          assert 'clinical.dreamm7_pfs_outcome' not in predicates_2022
+
+          assert (len(replay_2023['reality']), len(replay_2023['judgments']), len(replay_2023['outcomes'])) == (6, 1, 0), replay_2023
+          predicates_2023 = {row['predicate_code'] for row in replay_2023['reality']}
+          assert 'regulatory.us_written_bla_withdrawal_request' in predicates_2023
+          assert 'regulatory.us_bla_revocation' in predicates_2023
+          assert 'clinical.dreamm7_pfs_outcome' not in predicates_2023
+
+          assert (len(replay_2024['reality']), len(replay_2024['judgments']), len(replay_2024['outcomes'])) == (8, 1, 1), replay_2024
+          predicates_2024 = {row['predicate_code'] for row in replay_2024['reality']}
+          assert 'clinical.dreamm7_regimen_identity' in predicates_2024
+          assert 'clinical.dreamm7_pfs_outcome' in predicates_2024
+          assert replay_2024['judgments'][0]['known_at'].startswith('2022-11-23T12:00:00')
+          assert replay_2024['outcomes'][0]['semantic_relation'] == 'related_milestone'
+          assert replay_2024['outcomes'][0]['evaluation_status'] == 'indeterminate'
+
+          assert replay_2022['boundary']['future_rows_are_filtered_before_snapshot_materialization'] is True
+          assert replay_2024['boundary']['judgment_is_not_rewritten_by_outcome'] is True
+          print('SV005_TRAJECTORY_REPLAY_PASS')
+          PY
+
+      - name: Build trajectory artifact
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/out
+          for path in \
+            "$EVIDENCE_SPEC" "$WEB_VERIFY_RECEIPT" "$REALITY_SPEC" "$JUDGMENT_SPEC" \
+            "$PREPARED_SPEC" "$EVIDENCE_OUTPUT" "$REALITY_OUTPUT" "$JUDGMENT_OUTPUT" \
+            "$OUTCOME_OUTPUT" "$MEMORY_DB" "$MEMORY_MANIFEST" \
+            "$REPLAY_2022" "$REPLAY_2023" "$REPLAY_2024"; do
+            if [[ -f "$path" ]]; then cp "$path" .artifacts/out/; fi
+          done
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          out = Path('.artifacts/out')
+          manifest = {
+              'schema_version': 'longcycle-sv005-trajectory-artifact/v1',
+              'head_sha': os.environ['GITHUB_SHA'],
+              'files': [],
+          }
+          for path in sorted(out.iterdir()):
+              if path.is_file() and path.name != 'manifest.json':
+                  manifest['files'].append({
+                      'file_name': path.name,
+                      'size_bytes': path.stat().st_size,
+                      'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
+                  })
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Upload trajectory artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sv005-blenrep-trajectory-${{ github.run_id }}
+          path: .artifacts/out
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish exact-head trajectory status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "$JOB_STATUS" == "success" ]]; then
+            state=success
+            description='BLENREP Reality/Judgment/Outcome/replay passed'
+          else
+            state=failure
+            description='BLENREP trajectory runtime failed'
+          fi
+          gh api --method POST \
+            "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA" \
+            -f state="$state" \
+            -f context='longcycle/blenrep-trajectory' \
+            -f description="$description" \
+            -f target_url="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"

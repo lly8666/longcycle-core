@@ -1,0 +1,190 @@
+{
+  "schema_version": "longcycle-evt003-programmatic-redistributor-cognition-replay-receipt/v1",
+  "trajectory_id": "EVT-003",
+  "research_question": "How the high-nickel to lithium-hydroxide demand thesis changed across the 2018 and 2019 Q1 knowledge vintages, why it changed, and what was knowable at each point in time.",
+  "substantive_head_before_receipt": "a9e66d87e092ba344e4c059f7fa133b1e8ac5d28",
+  "source_policy": {
+    "authority_class": "authoritative_redistributor",
+    "principle": "Verifiable formal listed-company announcements and filings may be acquired from reputable financial announcement databases, programmatic trading/financial data interfaces, or open-source announcement/data projects without automatic authority downgrade when the actual announcement payload and upstream identity are preserved and cross-checkable.",
+    "required_provenance": [
+      "actual retrieval host and URL",
+      "issuer identity",
+      "upstream filing or announcement system",
+      "upstream accession, filing id or announcement id",
+      "document title",
+      "source-supported publication or first-known time",
+      "exact archived bytes with SHA-256"
+    ],
+    "derived_data_boundary": "Metrics, ratios, standardized fields, classifications, forecasts or other values computed by an interface or project do not inherit the authority of an underlying filing and require separate claim-scoped assessment.",
+    "independence_boundary": "Multiple redistributors carrying the same upstream announcement remain one evidence cluster rather than independent corroboration.",
+    "open_source_search_result": "A bounded search of SEC downloader/crawler repositories found acquisition code but no stored Livent target filing payload; open-source code alone was not treated as Evidence."
+  },
+  "acquisition": {
+    "successful_run_id": 32568791877,
+    "artifact_id": 9474774438,
+    "artifact_name": "evt003-approved-redistributor-32568791877",
+    "sources": [
+      {
+        "document_key": "livent-2018-10k",
+        "retrieval_host": "annualreports.com",
+        "retrieval_url": "https://www.annualreports.com/HostedData/AnnualReportArchive/l/NYSE_LTHM_2018.pdf",
+        "upstream_system": "SEC EDGAR",
+        "upstream_external_id": "0001742924-19-000013",
+        "upstream_title": "Livent Corporation 2018 Form 10-K",
+        "raw_sha256": "1be8c5a50e6bc58cc2f44066d4c4e79296b2cc84a9bcdd321805691a3133a010",
+        "raw_bytes": 2640277,
+        "first_known_at": "2019-02-28T21:12:59Z",
+        "first_known_precision": "minute"
+      },
+      {
+        "document_key": "livent-2019q1-results-release",
+        "retrieval_host": "prnewswire.com",
+        "retrieval_url": "https://www.prnewswire.com/news-releases/livent-corporation-announces-first-quarter-2019-results-300845632.html",
+        "upstream_system": "Livent issuer release / SEC EDGAR Exhibit 99.1",
+        "upstream_external_id": "0001742924-19-000021:EX-99.1",
+        "upstream_title": "Livent Corporation Announces First Quarter 2019 Results",
+        "raw_sha256": "900981045b451644c9f44a450a46f5f011e77927523c22c6b03b3d6ad801de25",
+        "raw_bytes": 298256,
+        "first_known_at": "2019-05-07T20:30:59Z",
+        "first_known_precision": "minute"
+      }
+    ],
+    "transport_decision": "The successful redistributor payloads removed direct SEC byte retrieval from the critical path. The Q1 10-Q remains useful corroboration but its raw bytes are no longer required for this trajectory because the issuer-supplied May 7 results release directly states the contemporaneous timing revision and mechanism."
+  },
+  "grounded_evidence": {
+    "spec_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-grounded-evidence-spec-v2.json",
+    "successful_run_id": 32569165430,
+    "execution_artifact_id": 9474865547,
+    "document_versions": [
+      {
+        "key": "livent-2018-10k",
+        "document_version_id": "bf526d93-6983-52ea-b63c-096f0658115c",
+        "source_connector_id": "9d745b21-dee6-5eee-a515-a9ac74f346b9"
+      },
+      {
+        "key": "livent-2019q1-results-release",
+        "document_version_id": "795355d3-2a5b-5fe7-b73a-dc3d115219ce",
+        "source_connector_id": "a90bfbe2-a68e-5abc-8365-cbfef24ead53"
+      }
+    ],
+    "fragments": [
+      {
+        "fragment_key": "2018-structural-high-nickel-hydroxide-thesis",
+        "evidence_fragment_id": "c7dc068c-8e8e-5cad-b9d7-98c09b12fab9",
+        "claim_role": "management_expectation",
+        "known_time_upper_bound": "2019-02-28T21:12:59Z"
+      },
+      {
+        "fragment_key": "2019q1-demand-timing-revision",
+        "evidence_fragment_id": "fa8d088b-208b-5d8c-bd1d-73c8ea09c75d",
+        "claim_role": "management_expectation",
+        "known_time_upper_bound": "2019-05-07T20:30:59Z"
+      },
+      {
+        "fragment_key": "2019q1-customer-delay-rationale",
+        "evidence_fragment_id": "99b3a232-e32e-5a3c-9b26-5221fe214be3",
+        "claim_role": "judgment_rationale",
+        "known_time_upper_bound": "2019-05-07T20:30:59Z"
+      }
+    ],
+    "acceptance": {
+      "persisted_document_versions": 2,
+      "persisted_evidence_fragments": 3,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    }
+  },
+  "cognition": {
+    "judgment_spec_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-judgment-projection-v2.json",
+    "context_spec_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-hydroxide-judgment-context-v1.json",
+    "successful_replay_run_id": 32569365809,
+    "replay_artifact_id": 9474916578,
+    "subject_entity_id": "a6a75821-7ba6-532c-863c-1e656135cea9",
+    "judgments": [
+      {
+        "judgment_key": "2018-structural-high-nickel-hydroxide-thesis",
+        "judgment_id": "5570eb93-428b-5782-a9b7-9fcb4f8a9a93",
+        "kind": "thesis",
+        "topic_code": "industry.high_nickel_lithium_hydroxide_demand",
+        "first_known_at": "2019-02-28T21:12:59Z",
+        "target_time_kind": "unknown",
+        "target_precision": "unknown",
+        "semantic_summary": "Structural thesis: increasing high-nickel cathode adoption would increase the requirement for battery-grade lithium hydroxide."
+      },
+      {
+        "judgment_key": "2019q1-high-nickel-hydroxide-demand-timing",
+        "judgment_id": "3ff029ef-77e4-59bc-acfb-3045ebc4f68c",
+        "kind": "forecast",
+        "topic_code": "industry.high_nickel_lithium_hydroxide_demand",
+        "first_known_at": "2019-05-07T20:30:59Z",
+        "target_time_kind": "unknown",
+        "target_precision": "approximate",
+        "target_text": "late 2019 or early 2020",
+        "semantic_summary": "Near-term timing/strength revision: meaningful high-nickel-driven high-performance hydroxide demand was not expected until late 2019 or early 2020 and full-year volume/pricing forecasts were reduced."
+      }
+    ],
+    "rationales": [
+      {
+        "rationale_id": "627ad33f-21ef-5809-abad-2bcae58c9ec7",
+        "judgment_id": "3ff029ef-77e4-59bc-acfb-3045ebc4f68c",
+        "rationale_kind": "mechanism",
+        "evidence_fragment_id": "99b3a232-e32e-5a3c-9b26-5221fe214be3",
+        "semantic_summary": "Several major customers delayed commercial launches of high-nickel cathode chemistries, reducing near-term high-performance lithium hydroxide deliveries relative to prior indication."
+      }
+    ],
+    "relations": [],
+    "relation_decision": "No formal REVISES relation was created. The 2018 grounded object is a structural demand thesis while the 2019 grounded object is a near-term timing/strength forecast, so same-granularity revision identity is not established. The later vintage narrows near-term expectations without withdrawing the structural thesis."
+  },
+  "point_in_time_replay": {
+    "sealed_duckdb_sha256": "f340c47223bcfdc49d379bf038a8dbf89836569e137d71b096662f959604e336",
+    "sealed_duckdb_bytes": 2109440,
+    "duckdb_version": "1.5.5",
+    "typed_round_trip": true,
+    "final_counts": {
+      "reality": 0,
+      "judgments": 2,
+      "judgment_rationales": 1,
+      "judgment_relations": 0,
+      "outcomes": 0
+    },
+    "cutoffs": [
+      {
+        "knowledge_cutoff": "2019-02-28T21:12:58Z",
+        "judgment_count": 0,
+        "rationale_count": 0
+      },
+      {
+        "knowledge_cutoff": "2019-05-07T20:30:58Z",
+        "visible_judgment_keys": [
+          "2018-structural-high-nickel-hydroxide-thesis"
+        ],
+        "rationale_count": 0
+      },
+      {
+        "knowledge_cutoff": "2019-05-07T20:30:59Z",
+        "visible_judgment_keys": [
+          "2018-structural-high-nickel-hydroxide-thesis",
+          "2019q1-high-nickel-hydroxide-demand-timing"
+        ],
+        "rationale_count": 1,
+        "relation_count": 0,
+        "outcome_count": 0
+      }
+    ],
+    "no_lookahead_passed": true
+  },
+  "outcome_decision": {
+    "outcome_created": false,
+    "reason": "EVT-003 is a cognition-vintage trajectory. No later source-backed outcome with sufficiently comparable semantics was required to prove the historical expectation revision, and creating one merely to fill a Reality/Judgment/Outcome template would manufacture comparability."
+  },
+  "verification": {
+    "authority_and_materialized_code_ci_run_id": 32568003854,
+    "authority_and_materialized_code_ci_head": "1c3c4bfd967290affef0cd1ac7013fa7cf2f2c68",
+    "current_spec_head_ci_run_id": 32569296412,
+    "current_spec_head_ci": "success",
+    "grounded_evidence_run_id": 32569165430,
+    "grounded_cognition_replay_run_id": 32569365809,
+    "sealed_blind_memory_mutated": false
+  },
+  "next_research_direction": "EVT-003 is complete enough to stop local optimization. Move to the next semantically orthogonal trajectory inside sealed UP-CHEMICALS that can force a different cross-industry primitive or prove existing abstractions without reopening source-transport infrastructure."
+}

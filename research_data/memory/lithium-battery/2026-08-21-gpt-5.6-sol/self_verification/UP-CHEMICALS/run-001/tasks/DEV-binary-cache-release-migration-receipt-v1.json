@@ -1,0 +1,46 @@
+{
+  "schema_version": "longcycle-dev-binary-cache-migration-receipt/v1",
+  "status": "complete",
+  "development_policy": {
+    "binary_store": "github_release",
+    "release_tag": "longcycle-dev-binary-cache",
+    "git_history_contains_large_binaries": false,
+    "google_drive_heavy_binary_default": false,
+    "restore_mode": "download_only_the_required_asset_to_action_or_sandbox_verify_sha256_then_use_locally",
+    "terminal_production_archive": "deferred_until_product_is_operational_then_move_to_dedicated_server_or_object_store"
+  },
+  "migration_run": {
+    "workflow_run_id": 32571975621,
+    "broker_issue": 73,
+    "verification": "Every Release asset was downloaded back from the Release and its outer SHA-256 matched before Drive deletion."
+  },
+  "release_assets": [
+    {"file_name":"longcycle-duckdb-offline-runtime-py313-v3-release.zip","size_bytes":21660136,"sha256":"acecdd4590788eaa823191228d6c7441d06acdae1e8dcdfc9b73dc7a7b5c8582"},
+    {"file_name":"longcycle-evt003-approved-redistributor-acquisition-run32568791877.zip","size_bytes":2692182,"sha256":"76d3c74452b48de6a3ecf68b61b2ac37a4a9915ea4fece33d1f7c57ef185e0a8"},
+    {"file_name":"longcycle-evt003-judgment-replay-run32569365809.zip","size_bytes":23170,"sha256":"208314238b4fc43587108a61aaf5377457acb6fd55a493a91f356aa93ef88177"},
+    {"file_name":"longcycle-evt004-contract-margin-acquisition-run32570106526.zip","size_bytes":7638136,"sha256":"f0c31409be382d39456aaa6021576e8b07521d7e723f40d6f1969b40d32319b9"},
+    {"file_name":"longcycle-evt004-contract-margin-replay-run32570715478.zip","size_bytes":30219,"sha256":"9f09929101a9645dce011b316ea7e379ca73b025cdde9f9bb72bb0e319580b01"},
+    {"file_name":"longcycle-kemerton-grounded-run28.zip","size_bytes":826670,"sha256":"a568232b15b77696ce0a271b74fd32fb7066fb37476a58288bff68e59a00558f"},
+    {"file_name":"longcycle-kwinana-grounded-run19.zip","size_bytes":337920,"sha256":"1f2ec083a79532a2283562973a31e6af3941ad8bf6e72c108692bab19a368c13"}
+  ],
+  "drive_cleanup": {
+    "status": "complete",
+    "deleted_heavy_asset_file_ids": [
+      "18gqxLCTM6_3ZELRRhZhK8ZYehNOSY7_Q",
+      "18PeEW9lPEXYDo1Rc42yYvGPJ7dSyXnm1",
+      "1XjFgL8UKVpF6mE0bD0xdJY0uJ4d1iiRh",
+      "1uMzVKDi8S8-9Q0ab4k3L_jMlv83-aa3y",
+      "1lKMX5x34mXBF3KKO5KGzQnk6XAuUja7E",
+      "1GsrKCwRk6gEybhYvb0RN7pCUS5Szw67J",
+      "166-PCimOEaDvbvvKf71_1NGFVEIcBPAh"
+    ],
+    "rule": "Do not create replacement Drive copies of heavy research binaries during development."
+  },
+  "integrity_boundary": {
+    "release_is_source_authority": false,
+    "release_is_terminal_archive": false,
+    "repository_receipts_and_sha_are_control_plane": true,
+    "raw_source_authority_remains_claim_scoped_and_separate_from_transport": true
+  },
+  "next_research_action": "Continue EVT-005 by acquiring the genuinely new FMC China lithium-hydroxide counterexample bytes in GitHub Actions, upload the unique acquisition pack to the same development Release, download it back and verify SHA, then run normal materialized Grounded Evidence v2."
+}

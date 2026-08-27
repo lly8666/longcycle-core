@@ -1,0 +1,47 @@
+{
+  "schema_version": "longcycle-drive-capsule-reverification/v1",
+  "task_id": "ADC-SV-005-BLENREP-DRIVE-CAPSULE-REVERIFY-V1",
+  "verification_mode": "authorized_google_drive_restore_plus_local_sqlite_read",
+  "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+  "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
+  "size_bytes": 24576,
+  "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+  "capture_count": 3,
+  "capture_checks": [
+    {
+      "source_id": "fda-blenrep-accelerated-approval-2020",
+      "visible_text_sha256": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+      "fragment_checks": [
+        {"fragment_key": "fda-initial-accelerated-approval", "excerpt_sha256": "557f703fcaf30ce142fafc7dcaaf23e5809ecae6a56ca569a87784368bd83bd4", "present": true},
+        {"fragment_key": "fda-ocular-risk-known-at-initial-vintage", "excerpt_sha256": "539308bb9ed218ae74024a097e7758557f0ff9b874ce75615bcd6b6321f7adfa", "present": true}
+      ],
+      "runtime_material_sha256": "548ff2ecc10145657e80153733f6d553ad33c5b62bb96215cd8e78f29a720cf7"
+    },
+    {
+      "source_id": "gsk-dreamm3-2022-11-07",
+      "visible_text_sha256": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+      "fragment_checks": [
+        {"fragment_key": "dreamm3-primary-endpoint-failure", "excerpt_sha256": "55c7d54a190a670c1cf3049d4b4cd88f6babc678bea000b23621054f1985165a", "present": true}
+      ],
+      "runtime_material_sha256": "55c7d54a190a670c1cf3049d4b4cd88f6babc678bea000b23621054f1985165a"
+    },
+    {
+      "source_id": "gsk-blenrep-withdrawal-2022-11-22",
+      "visible_text_sha256": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+      "fragment_checks": [
+        {"fragment_key": "gsk-public-withdrawal-process", "excerpt_sha256": "1ee0a8206101e5e26fded613fdc74105cb5ef736354174f2cd222c49b98863e0", "present": true},
+        {"fragment_key": "gsk-post-failure-development-commitment", "excerpt_sha256": "11b70680a91899c71b584a2f7e6e78b3cc2c18c50d13fdc475f8a7311119d5e6", "present": true}
+      ],
+      "runtime_material_sha256": "6cd6049d27152ac629a80957e0630bf97c166661e81492a5401c093afb84e726"
+    }
+  ],
+  "acceptance": {
+    "outer_sha_matches_handoff": true,
+    "all_three_visible_text_hashes_recomputed": true,
+    "all_five_spec_fragments_present": true,
+    "all_five_excerpt_hashes_recomputed": true,
+    "all_three_runtime_material_hashes_match_spec": true
+  },
+  "epistemic_boundary": "Acquisition/capture integrity receipt only. It proves the private Drive capsule contains the exact claim-scoped visible-text fragments used by the BLENREP Grounded Evidence spec; it does not promote Evidence, Fact, Judgment or Reality. Runtime may materialize the reviewed fragments deterministically from the spec after validating this receipt and must not re-fetch the source webpages.",
+  "next_action": "Remove live webpage fetching from the BLENREP PostgreSQL Grounded Evidence workflow and validate this receipt before normal archive/Evidence execution."
+}

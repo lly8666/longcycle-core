@@ -1,0 +1,58 @@
+{
+  "schema_version": "longcycle-artificial-ignorance-rehearsal/v1",
+  "continuity_sequence": 64,
+  "tested_head_sha": "b013f3da1631056f0cabb0bdad3dafb42a59c226",
+  "mode": "repository_only_artificial_ignorance",
+  "chat_history_allowed": false,
+  "challenge": "A fresh Agent must decide, without prior chat memory, how to preserve and hand off (a) a readable webpage and (b) a PDF requiring raw source bytes, and must state whether GitHub Actions should be used merely to archive readable webpage HTML.",
+  "inputs_read": [
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "CONTINUE_HERE.md",
+    ".longcycle/handoff/current.json",
+    ".longcycle/handoff/data-plane.json"
+  ],
+  "reconstructed_answer": {
+    "readable_webpage": "Read in the interactive research surface; preserve faithful visible text plus source/provenance metadata in a bounded local DuckDB capture capsule; checkpoint/close/hash it; hand the immutable capsule off through Google Drive; keep only compact locator/digest/restore metadata in Git.",
+    "pdf_raw_bytes": "Use the existing GitHub Actions acquisition lane to fetch/validate/hash/package the PDF and publish an immutable source pack to GitHub Release, with published-byte hash verification.",
+    "actions_for_readable_webpage_html": "No. Do not start GitHub Actions merely to fetch or archive HTML for a readable webpage.",
+    "per_page_git_handoff": "No by default. Batch webpage captures locally and hand off one bounded database/capsule through Drive when that is more efficient.",
+    "legacy_html_release_assets": "Existing immutable Release packs containing HTML/web bytes remain valid under their historical receipts and are restored only when needed; they are not the default path for new readable webpages.",
+    "epistemic_boundary": "Transport does not change source authority. A webpage capture DB is a capture/handoff envelope, not live PostgreSQL and not automatic Fact/Judgment publication."
+  },
+  "consistency_checks": [
+    {
+      "check": "bootstrap_route",
+      "result": "pass",
+      "detail": "FRESH_AGENT_BOOTSTRAP explicitly says readable webpage -> local database capture capsule -> Google Drive and PDF -> Actions -> Release."
+    },
+    {
+      "check": "continue_here_route",
+      "result": "pass",
+      "detail": "CONTINUE_HERE independently repeats the same representation-specific transport and rejects Action -> Release for new readable webpages."
+    },
+    {
+      "check": "typed_handoff_route",
+      "result": "pass",
+      "detail": "current.json continuity_sequence 64 encodes the same explicit user directive and makes this rehearsal the current quality gate."
+    },
+    {
+      "check": "data_plane_route",
+      "result": "pass",
+      "detail": "data-plane schema v3 sets transport_mode github_release_pdf_sources_google_drive_webcapsules_generated and has explicit webpage/PDF/legacy policies."
+    },
+    {
+      "check": "legacy_compatibility",
+      "result": "pass",
+      "detail": "All inputs agree that old Release packs containing HTML/web bytes remain immutable valid legacy assets and are not retroactively migrated."
+    }
+  ],
+  "contradictions_found": [],
+  "result": "pass",
+  "failure_if": [
+    "A fresh Agent chooses Actions/Release by default for a readable webpage.",
+    "A fresh Agent treats Drive transport as changing source authority.",
+    "A fresh Agent requires per-page Git commits for webpage handoff.",
+    "A fresh Agent concludes legacy HTML-containing Release assets must be rewritten or moved."
+  ],
+  "next_cursor": "Return to RIGHTS-BD-007 Grounded Evidence runtime inspection/execution; stop continuity optimization unless a future real transfer exposes a distinct failure."
+}

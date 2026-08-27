@@ -1,0 +1,66 @@
+{
+  "schema_version": "longcycle-no-lookahead-replay-fixture/v1",
+  "fixture_id": "EVT-001-KWINANA-REPLAY-V1",
+  "source_asset_id": "kwinana-grounded-run19-capsule",
+  "source_duckdb_sha256": "99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec",
+  "authority": "acceptance_fixture_not_evidence",
+  "purpose": "Apply the same generic no-lookahead evidence visibility contract to Kwinana, including conservative day-precision known-time bounds and later outcome/project-state evidence.",
+  "invariants": [
+    "A replay snapshot may contain only rows whose known_time_upper_bound is <= knowledge_cutoff.",
+    "Day-precision known-time bounds remain conservative; replay must not invent a more precise publication instant.",
+    "Expectation, risk caveat, project status and management reality declaration roles remain distinct.",
+    "The public snapshot contains no future fragment keys, excerpts, hidden-event counts or outcome hints.",
+    "The fixture validates evidence visibility only; it does not synthesize FactAssertions or Judgments."
+  ],
+  "cutoffs": [
+    {
+      "label": "one-second-before-2018-public-known-upper-bound",
+      "knowledge_cutoff": "2018-12-21T23:59:58Z",
+      "expected_visible_count": 0,
+      "must_exclude_fragment_keys": [
+        "2018-stage-commissioning-expectation"
+      ]
+    },
+    {
+      "label": "2018-public-known-upper-bound",
+      "knowledge_cutoff": "2018-12-21T23:59:59Z",
+      "expected_visible_count": 1,
+      "must_include_fragment_keys": [
+        "2018-stage-commissioning-expectation"
+      ]
+    },
+    {
+      "label": "2019-h2-expectation-known",
+      "knowledge_cutoff": "2019-04-30T23:59:59Z",
+      "expected_visible_count": 2
+    },
+    {
+      "label": "2021-revision-known",
+      "knowledge_cutoff": "2021-08-23T23:59:59Z",
+      "expected_visible_count": 5,
+      "must_include_fragment_keys": [
+        "2021-production-timing-uncertainty"
+      ]
+    },
+    {
+      "label": "one-second-before-2022-day-precision-disclosure-upper-bound",
+      "knowledge_cutoff": "2022-12-03T23:59:58Z",
+      "expected_visible_count": 5,
+      "must_exclude_fragment_keys": [
+        "2022-commercial-production-declaration",
+        "2022-continuous-production-capability"
+      ]
+    },
+    {
+      "label": "2022-day-precision-disclosure-known",
+      "knowledge_cutoff": "2022-12-03T23:59:59Z",
+      "expected_visible_count": 9,
+      "must_include_fragment_keys": [
+        "2022-commercial-production-declaration",
+        "2022-continuous-production-capability",
+        "2022-december-ramp-expectation-part-1",
+        "2022-december-ramp-expectation-part-2"
+      ]
+    }
+  ]
+}

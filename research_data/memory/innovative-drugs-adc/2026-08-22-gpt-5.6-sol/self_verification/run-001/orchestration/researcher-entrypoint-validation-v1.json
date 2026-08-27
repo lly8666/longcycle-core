@@ -1,0 +1,64 @@
+{
+  "schema_version": "longcycle-researcher-entrypoint-validation/v1",
+  "entrypoint": "longcycle research run",
+  "validated_branch_head_sha": "5bd53caca20829f488bbd00b32a5d48254ce2258",
+  "branch_ci": {
+    "run_id": 32589591948,
+    "run_number": 1271,
+    "conclusion": "success"
+  },
+  "operational_adapter": {
+    "workflow": ".github/workflows/research-orchestration-once.yml",
+    "main_commit": "4f51c5ce6d088fe83804de57b30d5d4ef064ee21",
+    "transport_boundary": "GitHub Release restore and outer source-pack SHA verification remain outside the semantic execution contract."
+  },
+  "validation_run": {
+    "issue": 106,
+    "github_actions_run_id": 32589672739,
+    "orchestration_spec": "SV-003-research-orchestration-v1.json",
+    "reported_entrypoint": "longcycle-research-run",
+    "generated_zip": {
+      "file_name": "longcycle-research-cli-validation-run32589672739.zip",
+      "size_bytes": 174655,
+      "sha256": "815df3cffaa902613bfe6e54eb02e2b8b2475b32745b3ee6feaefbb3a330daf0",
+      "google_drive_file_id": "18q-ZM0rUFf6X-ljoU_KrgBSGD1sQavdG"
+    },
+    "execution": {
+      "task_id": "ADC-SV-003-ENHERTU-ORCHESTRATION-V1",
+      "material_count": 5,
+      "repair_count": 1,
+      "evidence_acceptance": {
+        "persisted_document_versions": 5,
+        "persisted_evidence_fragments": 10,
+        "fact_assertions_created": 0,
+        "judgment_assertions_created": 0
+      },
+      "reality_verification": {
+        "fact_count": 10,
+        "canonical_reality_count": 10,
+        "all_reconciled_accept": true,
+        "all_known_times_derived_from_grounded_evidence": true,
+        "valid_time_semantics_preserved": true,
+        "observation_semantics_preserved": true
+      },
+      "portable_receipt": {
+        "contains_runner_absolute_home_path": false,
+        "contains_tmp_path": false
+      },
+      "workflow_log_gate": "RESEARCH_ORCHESTRATION_CLI_GATE_PASS"
+    }
+  },
+  "architecture_boundary": {
+    "new_task_subsystem_added": false,
+    "new_database_schema_added": false,
+    "new_epistemic_semantics_added": false,
+    "script_and_cli_share_execution_service": true,
+    "failure_receipt_persisted_before_cli_nonzero_exit": true
+  },
+  "user_surface": {
+    "command_shape": "longcycle --json research run <orchestration-spec> --source-pack <restored-pack.zip> --work-dir <empty-dir> --output <receipt.json> [--repo-root <repo>] [--skip-db-upgrade]",
+    "source_pack_restore": "The caller/adapter restores the repository-declared immutable pack; the execution service re-verifies filename, outer SHA and required material SHA values.",
+    "receipt": "The output path receives the same longcycle-research-orchestration-execution/v1 success receipt, or an ok=false machine-readable failure receipt."
+  },
+  "next_boundary": "Do not add another execution framework. Future real research tasks should create/review repo-owned orchestration specs, restore the declared source pack through the appropriate outer adapter, and invoke this entrypoint. Improve ergonomics only from observed researcher friction."
+}

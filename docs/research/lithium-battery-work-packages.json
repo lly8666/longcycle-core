@@ -1,0 +1,238 @@
+{
+  "schema_version": "longcycle-work-packages/v1",
+  "industry": "新能源锂电池",
+  "default_period": ["2019-01-01", "2026-12-31"],
+  "agent_contract": "docs/research/agent-collection-contract.md",
+  "collection_plan": "docs/research/lithium-battery-collection-plan.md",
+  "global_rules": [
+    "第一轮默认执行 discover；只有任务写明 extract-light 才摘录 claim",
+    "原文优先，转载只用于发现原始资料",
+    "不得把计划产能写成现有产能",
+    "不得把产量、销量、出货量、装车量混用",
+    "不得使用 cutoff 之后的材料重建历史 snapshot",
+    "付费墙只标记，不绕过权限",
+    "每个任务必须回传 search_log，包括未找到项"
+  ],
+  "packages": [
+    {
+      "task_id": "LB-001",
+      "priority": "P0",
+      "mode": "discover",
+      "title": "锂盐连续历史骨架",
+      "chain": ["upstream", "lithium_chemical"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "找到电池级碳酸锂、工业级碳酸锂、电池级氢氧化锂的长期价格、产量、库存和行业运行原始资料，建立可比较来源清单。",
+      "preferred_sources": ["miit.gov.cn", "SMM", "Mysteel/上海钢联", "广期所", "行业协会", "上市公司年报"],
+      "query_templates": [
+        "site:miit.gov.cn 锂离子电池 行业运行情况 {year}",
+        "电池级 碳酸锂 均价 {year} SMM",
+        "电池级 碳酸锂 产量 库存 {year}",
+        "碳酸锂 期货 仓单 广期所 {year}",
+        "氢氧化锂 均价 产量 {year}"
+      ],
+      "must_return": ["来源口径", "发布时间", "价格规格/单位", "产量/库存口径", "连续发布频率", "付费状态"],
+      "stop_condition": "至少找到 2 个可长期追溯的价格来源和 1 个官方/协会产量骨架；找不到年份必须列入 missing_targets"
+    },
+    {
+      "task_id": "LB-002",
+      "priority": "P0",
+      "mode": "extract-light",
+      "title": "锂资源与锂盐关键项目时间线",
+      "chain": ["upstream", "lithium_resource"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "搜集中国企业及显著影响中国供给的海外锂矿、盐湖、锂盐项目，追踪宣布、审批、开工、计划投产、延期、实际投产和爬坡。",
+      "preferred_sources": ["公司公告/年报", "项目环评", "地方政府/发改/工信", "矿业公司原始披露", "可靠行业媒体用于补线索"],
+      "query_templates": [
+        "公司名 锂 项目 环境影响报告书",
+        "公司名 锂 项目 开工 投产",
+        "公司名 锂盐 项目 延期",
+        "公司名 年报 锂 项目 产能",
+        "项目名 commissioning production guidance"
+      ],
+      "must_return": ["项目原始名称", "地点", "产品", "名义产能原文", "每个里程碑日期", "每次计划投产日期及 speaker", "实际投产证据", "locator"],
+      "stop_condition": "优先完成 20 个高影响项目的完整或部分 revision chain，不用为了数量收小项目"
+    },
+    {
+      "task_id": "LB-003",
+      "priority": "P0",
+      "mode": "discover",
+      "title": "动力电池月度需求与装车骨架",
+      "chain": ["battery", "power_battery"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "找到中国动力电池月度产量、销量、装车量、出口、化学体系和企业装车份额的原始连续资料。",
+      "preferred_sources": ["中国汽车动力电池产业创新联盟", "工信部", "协会原始 PDF/公众号材料"],
+      "query_templates": [
+        "中国汽车动力电池产业创新联盟 {year} {month} 动力电池 月度信息",
+        "动力电池 装车量 磷酸铁锂 三元 {year} {month}",
+        "动力电池 企业 装车量 排名 {year} {month}"
+      ],
+      "must_return": ["原始发布者", "原始/月度 PDF 或页面", "指标定义", "单位", "是否含其他电池", "企业榜单口径"],
+      "stop_condition": "尽量覆盖 2019 至今月度资料；缺失月份必须列清单，不用用媒体汇总冒充原始月报"
+    },
+    {
+      "task_id": "LB-004",
+      "priority": "P0",
+      "mode": "discover",
+      "title": "新能源汽车需求骨架",
+      "chain": ["downstream", "new_energy_vehicle"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "建立中国新能源汽车销量、纯电/插混结构及必要的出口历史来源清单，用于解释动力电池需求。",
+      "preferred_sources": ["中国汽车工业协会", "乘联会", "工信部", "海关/官方统计"],
+      "query_templates": [
+        "新能源汽车 销量 {year} {month} 中汽协",
+        "新能源乘用车 零售 批发 {year} {month} 乘联会",
+        "新能源汽车 出口 {year} {month}"
+      ],
+      "must_return": ["销量口径", "批发/零售区分", "BEV/PHEV 区分", "发布时间", "原始表或页面"],
+      "stop_condition": "确认至少一条 2019 至今连续月度主序列，并标记与其他来源口径差异"
+    },
+    {
+      "task_id": "LB-005",
+      "priority": "P0",
+      "mode": "extract-light",
+      "title": "头部电池企业产能与资本开支历史",
+      "chain": ["battery", "cell_manufacturer"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "entities": ["宁德时代", "比亚迪", "中创新航", "国轩高科", "亿纬锂能", "欣旺达"],
+      "objective": "从年报、募集文件、重大项目公告和投资者关系资料中建立产能、在建项目、资本开支与投产 guidance 时间线。",
+      "preferred_sources": ["公司官网 IR", "cninfo.com.cn", "上交所/深交所/港交所", "公司法定报告"],
+      "query_templates": [
+        "{company} {year} 年度报告 产能 GWh",
+        "{company} 投资者关系活动记录表 产能 投产",
+        "{company} 募投 项目 电池 GWh",
+        "{company} 重大投资 项目 公告 电池"
+      ],
+      "must_return": ["公司", "文件日期", "项目/基地", "规划产能", "现有产能", "在建产能", "资本开支", "投产 guidance", "修订/延期", "locator"],
+      "stop_condition": "每家公司至少形成年度主文件链；重大项目出现时间修订时必须保留各版，不覆盖"
+    },
+    {
+      "task_id": "LB-006",
+      "priority": "P0",
+      "mode": "extract-light",
+      "title": "2021-2023 管理层认知时间线",
+      "chain": ["expectation", "management"],
+      "period": ["2021-01-01", "2023-12-31"],
+      "entities": ["宁德时代", "比亚迪", "赣锋锂业", "天齐锂业", "亿纬锂能", "国轩高科"],
+      "objective": "重建周期关键阶段管理层对需求、锂价、供给、产能、项目进度和技术路线的公开判断。",
+      "preferred_sources": ["投资者关系活动记录", "业绩说明会", "年报管理层讨论", "公司公告/官网采访"],
+      "query_templates": [
+        "{company} 投资者关系活动记录表 2021 锂价 需求",
+        "{company} 投资者关系活动记录表 2022 产能 投产",
+        "{company} 业绩说明会 2023 行业 供需",
+        "{company} 年报 行业展望 2022"
+      ],
+      "must_return": ["speaker", "judgment_kind", "topic", "target_period", "原始预期", "理由", "风险/条件", "locator", "是否后续修订"],
+      "stop_condition": "每个公司每半年至少寻找一个高信息量原始材料；没有明确判断时不要硬凑"
+    },
+    {
+      "task_id": "LB-007",
+      "priority": "P0",
+      "mode": "extract-light",
+      "title": "2021-2023 券商与机构预期截面",
+      "chain": ["expectation", "analyst_consensus"],
+      "period": ["2021-01-01", "2023-12-31"],
+      "knowledge_cutoffs": ["2021-06-30", "2021-12-31", "2022-06-30", "2022-12-31", "2023-06-30", "2023-12-31"],
+      "objective": "在固定历史截面搜集当时对锂供需、锂价、新能源车销量、动力电池需求和关键新增供给的预测，保留预测修订。",
+      "preferred_sources": ["券商原始研究报告", "研究机构原始报告", "协会预测", "可靠报告库只用于定位原报告"],
+      "query_templates": [
+        "锂 行业 深度 {year} 供需 预测 券商",
+        "碳酸锂 价格 预测 {year} 研究报告",
+        "动力电池 需求 预测 {year} GWh 券商",
+        "新能源汽车 销量 预测 {year} 研究报告"
+      ],
+      "must_return": ["机构", "作者/团队", "发布日期", "cutoff", "目标年份", "预测值/区间", "供需平衡关键假设", "项目投产假设", "原始报告位置"],
+      "stop_condition": "每个 cutoff 优先 3-8 份高信息量报告；不要收几十份观点高度重复的日报"
+    },
+    {
+      "task_id": "LB-008",
+      "priority": "P1",
+      "mode": "discover",
+      "title": "磷酸铁锂供需与项目骨架",
+      "chain": ["midstream", "cathode", "LFP"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "建立 LFP 价格、产量、产能、开工和主要扩产项目来源地图，并找出产业链集中扩产阶段。",
+      "preferred_sources": ["工信部", "SMM", "Mysteel", "GGII", "上市公司公告/年报", "环评/地方政府"],
+      "query_templates": [
+        "磷酸铁锂 产量 产能 开工率 {year}",
+        "磷酸铁锂 价格 {year} SMM",
+        "公司名 磷酸铁锂 项目 环评",
+        "公司名 磷酸铁锂 项目 投产"
+      ],
+      "must_return": ["产品规格", "价格/产量口径", "项目名称", "规划产能", "实际投产资料", "主要公司"],
+      "stop_condition": "先做头部企业和大项目，避免把所有地方小项目都收进来"
+    },
+    {
+      "task_id": "LB-009",
+      "priority": "P1",
+      "mode": "discover",
+      "title": "三元材料供需骨架",
+      "chain": ["midstream", "cathode", "NCM"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "建立三元正极/前驱体的产量、产能、价格、技术结构和主要项目历史来源。",
+      "preferred_sources": ["工信部", "专业产业数据机构", "上市公司年报/公告", "环评"],
+      "query_templates": [
+        "三元材料 产量 产能 {year}",
+        "三元前驱体 产量 {year}",
+        "高镍 三元 占比 {year}",
+        "公司名 三元 项目 环评 投产"
+      ],
+      "must_return": ["NCM/前驱体区分", "规格/高镍口径", "价格/产量来源", "项目时间线候选"],
+      "stop_condition": "能够解释 LFP/NCM 结构变化即可，不为覆盖完整小品类牺牲质量"
+    },
+    {
+      "task_id": "LB-010",
+      "priority": "P1",
+      "mode": "discover",
+      "title": "负极与石墨化历史骨架",
+      "chain": ["midstream", "anode"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "寻找负极材料价格、产量、石墨化产能/加工费、电价约束和主要扩产项目资料。",
+      "preferred_sources": ["专业产业数据机构", "上市公司年报/公告", "地方政策/能耗文件", "环评"],
+      "query_templates": [
+        "负极材料 产量 价格 {year}",
+        "石墨化 加工费 {year}",
+        "石墨化 产能 项目 环评",
+        "负极 企业 年报 产能 石墨化"
+      ],
+      "must_return": ["人造/天然石墨区分", "石墨化口径", "加工费来源", "主要项目", "电力/能耗约束资料"],
+      "stop_condition": "优先建立 2021-2023 供给瓶颈与扩产资料，不要求一次覆盖所有负极路线"
+    },
+    {
+      "task_id": "LB-011",
+      "priority": "P1",
+      "mode": "discover",
+      "title": "储能电池需求历史骨架",
+      "chain": ["downstream", "energy_storage"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "区分储能新增装机、实际投运、电池出货和系统价格，建立中国及影响中国出口的主要海外需求资料。",
+      "preferred_sources": ["国家能源主管部门", "储能协会/研究机构", "公司年报", "海关", "海外官方能源统计"],
+      "query_templates": [
+        "新型储能 新增装机 投运 {year}",
+        "储能电池 出货量 {year}",
+        "储能系统 中标价格 {year}",
+        "储能电池 出口 {year}"
+      ],
+      "must_return": ["装机/投运区分", "功率 MW 与容量 MWh 区分", "电池出货口径", "国内/海外区分", "原始来源"],
+      "stop_condition": "至少建立年度/季度主骨架，并明确不同机构口径不可直接拼接之处"
+    },
+    {
+      "task_id": "LB-012",
+      "priority": "P1",
+      "mode": "extract-light",
+      "title": "关键政策与行业规范时间线",
+      "chain": ["policy"],
+      "period": ["2019-01-01", "2026-12-31"],
+      "objective": "保存真正改变需求、供给、准入、技术和贸易环境的政策原文及其生效时间。",
+      "preferred_sources": ["gov.cn", "miit.gov.cn", "财政部/税务总局", "国家能源主管部门", "欧盟/美国等官方站点"],
+      "query_templates": [
+        "锂离子电池 行业规范条件 {year}",
+        "新能源汽车 购置税 政策 {year}",
+        "新能源汽车 补贴 政策 {year}",
+        "新型储能 政策 {year}",
+        "battery tariff regulation China {year}"
+      ],
+      "must_return": ["政策原文", "发布日期", "生效日期", "失效/替代日期", "明确量化目标", "适用范围", "locator"],
+      "stop_condition": "只保留会改变产业行为的关键政策，不收泛泛讲话和重复解读"
+    }
+  ]
+}

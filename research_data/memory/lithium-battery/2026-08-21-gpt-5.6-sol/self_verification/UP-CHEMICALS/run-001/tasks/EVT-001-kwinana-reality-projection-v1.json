@@ -1,0 +1,34 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "EVT-001-KWINANA-REALITY-V1",
+  "source_evidence_task_id": "EVT-001-KWINANA-EVIDENCE-V1",
+  "allowed_claim_roles": ["management_reality_declaration"],
+  "subjects": [
+    {
+      "id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "entity_type": "production_line",
+      "canonical_name": "Kwinana Train 1 lithium hydroxide plant"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2022-train1-commercial-production-capability",
+      "evidence_fragment_key": "2022-commercial-production-declaration",
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "predicate_code": "project.commercial_production_capability",
+      "value_text": "reached capability for commercial production",
+      "valid_time_kind": "period",
+      "valid_from": "2022-11-30T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "from 2022-11-30",
+      "statistical_scope": "project milestone",
+      "extraction_confidence": 1.0,
+      "source_quality": 1.0,
+      "corroboration": 0.8,
+      "metadata": {
+        "semantic_guard": "This is management's declared commercial-production capability effective from 2022-11-30. It is not silently equated with earlier commissioning, come-online, full-line-operation or design-capacity milestones.",
+        "excluded_related_status": "The separate 2022-12-03 statement that the plant currently had continuous-production operating capability has unspecified onset and is intentionally not projected as a valid-from Fact."
+      }
+    }
+  ]
+}

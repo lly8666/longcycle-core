@@ -1,0 +1,39 @@
+{
+  "artifact_kind": "post_seal_discovery_not_evidence",
+  "lead_id": "RIGHTS-BD-007",
+  "pre_search_record_commit": "1a1901030c324aba7aca2726d3607392efd9c175",
+  "semantic_owner": "CAP-0006",
+  "search_boundary": "Search began only after the pre-search uncertainty record was committed; search output remains discovery, not Evidence.",
+  "blind_memory_time": "2023-era",
+  "discovered_announcement": {
+    "date": "2023-12-11",
+    "description": "Bristol Myers Squibb and SystImmune announced an exclusive license and collaboration agreement for BL-B01D1. The United States is joint development/commercialization; SystImmune retains Mainland China development/commercialization; BMS has development/commercialization responsibility in the rest of the world."
+  },
+  "discovered_effectiveness": {
+    "period": "2024-02",
+    "description": "BMS Form 10-K reports that the transaction became effective in February 2024. This is a separate event from the 2023-12-11 announcement."
+  },
+  "candidate_sources": [
+    {
+      "url": "https://news.bms.com/news/details/2023/SystImmune-and-Bristol-Myers-Squibb-Announce-a-Global-Strategic-Collaboration-Agreement-for-the-Development-and-Commercialization-of-BL-B01D1/default.aspx",
+      "source_cluster": "2023-12-11-joint-announcement",
+      "authority_candidate": "primary_self_statement"
+    },
+    {
+      "url": "https://systimmune.com/news-systimmune-and-bristol-myers-squibb-announce-a-global-strategic-collaboration-agreement-for-the-development-and-commercialization-of-bl-b01d1.html",
+      "source_cluster": "2023-12-11-joint-announcement",
+      "authority_candidate": "primary_self_statement",
+      "independence_note": "same joint announcement origin; not independent corroboration"
+    },
+    {
+      "url": "https://www.sec.gov/Archives/edgar/data/14272/000001427224000044/bmy-20231231.htm",
+      "source_cluster": "bms-2023-form-10k",
+      "authority_candidate": "authoritative_primary_legal_disclosure"
+    }
+  ],
+  "temporal_result": "The sealed fuzzy period was useful and supported; post-seal discovery refines it into distinct announcement and effectiveness times without rewriting the sealed memory.",
+  "archive_status": "not_materialized",
+  "archive_blocker": "Current execution surface has source discovery but no generic byte-preserving source-pack acquisition action; current branch workflows do not include a reusable acquisition workflow.",
+  "next_action": "Materialize the BMS announcement and SEC filing through the existing immutable archive boundary, then build claim-scoped Grounded Evidence and invoke CAP-0007 only after source-pack integrity passes.",
+  "architecture_assessment": "source-materialization friction, not a representation defect; no new architecture justified"
+}

@@ -1,0 +1,74 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "ADC-SV-003-ENHERTU-GROUNDED-EVIDENCE-V1",
+  "spec_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-grounded-evidence-spec-v1.json",
+  "spec_repair_path": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-grounded-evidence-spec-repair-v1.json",
+  "source_acquisition": {
+    "control_issue": 97,
+    "release_tag": "longcycle-dev-binary-cache",
+    "asset": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+    "asset_sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
+    "acquisition_run_id": 32586650020,
+    "source_identity_count": 7,
+    "grounded_document_count": 5,
+    "archived_not_grounded": [
+      "dailymed-enhertu-label-archive-2019-v3.zip",
+      "dailymed-enhertu-label-archive-2022-v11.zip"
+    ]
+  },
+  "spec_repair": {
+    "probe_issue": 99,
+    "probe_run_id": 32587261940,
+    "json_pointer": "/protocolSection/sponsorCollaboratorsModule/leadSponsor/name",
+    "previous_expected_value": "Daiichi Sankyo, Inc.",
+    "archived_current_value": "Daiichi Sankyo",
+    "repair_scope": "one expected exact value only; acceptance, source authority and fragment count unchanged"
+  },
+  "execution": {
+    "control_issue": 100,
+    "active_head": "2b15abe1fd06b99b305070a95d9c732f34521630",
+    "workflow_run_id": 32587776846,
+    "workflow_artifact_id": 9479505738,
+    "workflow_artifact_sha256": "2d83ff45146443a2740d9027a51764fbebd5742bbf776b5d4ec58424f3643f3e",
+    "generated_drive_file_id": "1yr70T9--ySqBH46qhPiOptcW3vg1wtUj",
+    "generated_drive_file_name": "longcycle-adc-sv003-grounded-evidence-run32587776846.zip",
+    "result": "pass"
+  },
+  "acceptance": {
+    "persisted_document_versions": 5,
+    "persisted_evidence_fragments": 10,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "documents": [
+    {"key":"collaboration-2019","document_id":"ddd42949-7def-5ae2-997f-948766408341","sha256":"ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e","first_known_at":"2019-03-30T00:00:00Z"},
+    {"key":"initial-us-approval-2019","document_id":"6af02bba-35a1-582c-899c-ac05f0d2ae96","sha256":"212c16146526acfa03976ca8b16744a3702ec3f512c475ab256baf774aa37d0d","first_known_at":"2019-12-24T00:00:00Z"},
+    {"key":"clinicaltrials-destiny-breast04-current","document_id":"0d705d44-94d0-59ee-81f3-4b0673ae5c9e","sha256":"6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b","first_known_at":"2026-08-22T18:00:00Z","canonical_json_artifact_id":"1ada659b-aa4e-549b-a38f-587cf521a4fb","canonical_json_artifact_sha256":"bc7f5247159fee5fe9d337c28d8af636e10d96600570904d93e845ffaae967dc"},
+    {"key":"destiny-breast04-readout-2022","document_id":"944fc2c5-b07c-510a-a5f1-7fb21b27de07","sha256":"a50b03f980a3d8286ac57322e0bb13182875f687940973d6b8064976f0e83191","first_known_at":"2022-02-22T00:00:00Z"},
+    {"key":"her2-low-us-approval-2022","document_id":"314b5367-22fb-5ead-8448-98df25e128f0","sha256":"cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947","first_known_at":"2022-08-06T00:00:00Z"}
+  ],
+  "fragments": [
+    {"key":"collaboration-japan-exclusive-rights","evidence_fragment_id":"3f5ff513-d4ea-5368-b146-486fc8de3175","locator":"$.pages[0].text","claim_role":"announced_territory_rights"},
+    {"key":"collaboration-daiichi-manufacturing","evidence_fragment_id":"633d9ce4-6c62-5455-8e78-6669bc94195d","locator":"$.pages[0].text","claim_role":"announced_manufacturing_role"},
+    {"key":"initial-us-approval-indication-2019","evidence_fragment_id":"4a5476cb-7eec-5d17-8229-5c83791755a3","locator":"$.pages[0].text","claim_role":"issuer_reported_regulatory_approval_scope"},
+    {"key":"initial-us-accelerated-approval-pathway-2019","evidence_fragment_id":"adea956a-c791-5a8c-9f9e-9a0c5baeaf62","locator":"$.pages[0].text","claim_role":"issuer_reported_accelerated_approval_pathway"},
+    {"key":"initial-us-ild-boxed-warning-2019","evidence_fragment_id":"0d478954-1ed7-5583-b6f7-61ad68fca4c0","locator":"$.pages[0].text","claim_role":"safety_state_at_initial_us_approval"},
+    {"key":"destiny-breast04-registry-nct-id","evidence_fragment_id":"c75d2ed5-be81-5b00-a384-677657ef600d","locator":"json-pointer:/protocolSection/identificationModule/nctId","claim_role":"trial_registry_identity_current"},
+    {"key":"destiny-breast04-registry-lead-sponsor","evidence_fragment_id":"57f5f44d-8325-5bf5-87df-7927b36ec9f6","locator":"json-pointer:/protocolSection/sponsorCollaboratorsModule/leadSponsor/name","claim_role":"trial_lead_sponsor_current"},
+    {"key":"destiny-breast04-positive-topline-2022","evidence_fragment_id":"ee64932a-0943-5b00-a499-9038b5818576","locator":"$.pages[0].text","claim_role":"trial_readout_topline"},
+    {"key":"destiny-breast04-her2-low-definition-2022","evidence_fragment_id":"4c9d1cdb-8e93-56ae-a1e8-256c67786aac","locator":"$.pages[0].text","claim_role":"trial_biomarker_definition"},
+    {"key":"her2-low-us-approval-and-safety-2022","evidence_fragment_id":"7baa1001-c84f-574c-83e2-dafb8e84076f","locator":"$.pages[0].text","claim_role":"issuer_reported_regulatory_approval_scope"}
+  ],
+  "epistemic_results": {
+    "json_evidence_grounded_structurally": true,
+    "json_exact_value_gate_preserved": true,
+    "current_registry_sponsor_not_backdated": true,
+    "initial_2019_ild_state_precedes_destiny_breast04_success": true,
+    "2019_accelerated_pathway_not_inherited_by_2022_her2_low_branch": true,
+    "2022_her2_low_legal_pathway_deliberately_unasserted_without_exact_fda_action_letter": true,
+    "daily_med_archives_preserved_without_forcing_new_parser": true,
+    "product_level_success_collapse_avoided": true
+  },
+  "sealed_blind_memory_mutated": false,
+  "next": "Project only the bounded Enhertu Reality facts needed to pressure indication, biomarker, readout, safety-vintage and role semantics. Keep 2019 HER2-positive accelerated approval, 2019 ILD warning, February 2022 HER2-low topline, August 2022 HER2-low approval scope and 2026 current registry sponsor as distinct time/scoped facts. Use existing primitives and do not add schema unless truthful representation fails."
+}

@@ -1,0 +1,93 @@
+{
+  "artifact": "negative-space-gap-matrix-v3",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "supersedes_for_next_probe_decision": "analysis/negative-space-gap-matrix-v2.json",
+  "purpose": "Re-rank first-order blind-memory gaps after the DOWN-NEV demand-translation probe while preserving prior matrix decisions as immutable history.",
+  "fresh_search_used": false,
+  "neighbor_raw_outputs_used_for_ranking": false,
+  "campaign_state": {
+    "raw_leads": 668,
+    "formal_typed_leads": 610,
+    "legacy_experimental_raw_leads": 58,
+    "sealed_shards": [],
+    "qualifying_low_novelty_streaks": 0,
+    "interpretation": "UP-HARDROCK and DOWN-NEV ordinary v6 probes each produced two new categories, two useful refinements and one duplicate. Novelty is measurably lower than the earlier all-new batches but remains materially high. Neither shard starts a seal streak."
+  },
+  "completed_probe": {
+    "shard_id": "DOWN-NEV",
+    "pass_id": "ordinary-gap-batch4-v6",
+    "target_gap": "reported_vehicle_activity_to_battery_material_demand",
+    "candidate_count": 5,
+    "new_category": 2,
+    "useful_refinement": 2,
+    "duplicate": 1,
+    "low_novelty": false,
+    "consecutive_low_novelty_batches": 0,
+    "newly_explicit_dimensions": [
+      "battery production/sales/installed-capacity GWh as distinct dated states between vehicle activity and material consumption",
+      "chemistry-specific installed-GWh-to-lithium-material intensity as an explicit cross-shard bridge"
+    ],
+    "refined_dimensions": [
+      "finished-vehicle inventory as batteries/materials already consumed before retail or registration",
+      "large-pack commercial vehicles as a vehicle-count-to-GWh mix correction"
+    ],
+    "duplicate_signal": "production/wholesale/retail/registration/export metric mismatch materially repeated existing NEV metric and inventory leads",
+    "judgment": "high_information_but_more_mature_than_earlier_batches"
+  },
+  "re_rank_reasoning": {
+    "UP-HARDROCK": {
+      "decision": "hold_after_probe",
+      "priority": "high",
+      "reason": "Effective-supply translation now has customer acceptance, material-balance and ramp-guidance states. More immediate hard-rock recall would be local drilling."
+    },
+    "DOWN-NEV": {
+      "decision": "hold_after_probe",
+      "priority": "high",
+      "reason": "Demand translation now separates vehicle metrics, battery production/installation timing, commercial-vehicle mix and chemistry-specific material intensity. Remaining gaps should be triggered by the replay rather than another immediate NEV pass."
+    },
+    "UP-CHEMICALS": {
+      "decision": "run_one_probe",
+      "priority": "very_high",
+      "target_gap": "nameplate_conversion_to_battery_grade_realized_supply",
+      "remaining_negative_space": [
+        "converter nameplate/commissioning versus stable battery-grade output through recovery, yield, purification and product qualification",
+        "feed availability and ownership across captive, tolling and merchant conversion",
+        "carbonate/hydroxide and technical/battery-grade substitution limits during 2018-2020 falling prices",
+        "concentrate arrival, WIP, finished chemical inventory, sales and customer acceptance as distinct dated states",
+        "converter ramp guidance and expectation revisions rather than only final nameplate or production outcomes"
+      ],
+      "reason": "The two outer legs of the first-order replay are now better specified: mine/concentrate effective supply upstream and vehicle/battery/material demand downstream. The largest remaining middle-layer ambiguity is how nominal conversion capacity became saleable battery-grade lithium chemical supply at each historical date."
+    },
+    "BAT-CELL": {
+      "decision": "conditional_after_conversion",
+      "priority": "high",
+      "reason": "The NEV probe exposed battery production-versus-installation timing, but BAT-CELL should only be re-opened if the conversion probe leaves a material inventory/qualification bridge between chemical supply and installed GWh."
+    },
+    "MID-LFP_and_MID-TERNARY": {
+      "decision": "hold_as_bridge_support",
+      "priority": "medium_high",
+      "reason": "Chemistry-specific lithium intensity is now explicitly identified as a bridge, but both cathode shards already have strong compact coverage. Do not expand them until a concrete replay residual requires chemistry-level refinement."
+    }
+  },
+  "probe_protocol": {
+    "next_probe_count": 1,
+    "next_shard": "UP-CHEMICALS",
+    "prompt": "prompts/ordinary-gap-v6.md",
+    "target": "Translate announced/commissioned converter capacity into stable saleable battery-grade lithium chemical supply and its contemporaneous expectation revisions. Do not collect more plant announcements for their own sake.",
+    "inputs_allowed": [
+      "UP-CHEMICALS deterministic compact index",
+      "this v3 row/reasoning for UP-CHEMICALS",
+      "prompts/ordinary-gap-v6.md",
+      "fixed campaign horizon/schema/methodology"
+    ],
+    "inputs_forbidden": [
+      "fresh web/search results",
+      "other shards' raw lead text",
+      "evidence archive material",
+      "later outcomes used to rewrite historical conversion expectations"
+    ],
+    "classification": ["new_category","useful_refinement","duplicate"],
+    "after_probe": "Re-rank again before any BAT-CELL, cathode or repeat-supply/demand probe. Do not auto-run a queue.",
+    "seal_effect": "Only an observed low-novelty batch can start a qualifying streak; all current shard streaks remain zero."
+  }
+}

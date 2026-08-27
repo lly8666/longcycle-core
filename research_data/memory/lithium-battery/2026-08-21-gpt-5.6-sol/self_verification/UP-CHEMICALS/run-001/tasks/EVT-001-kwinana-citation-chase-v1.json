@@ -1,0 +1,108 @@
+{
+  "schema_version": "longcycle-self-verification-citation-chase/v1",
+  "task_id": "EVT-001-KWINANA-GUIDANCE-TRAJECTORY",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "status": "bounded_timestamp_chase_complete_archive_pending",
+  "epistemic_boundary": {
+    "this_artifact_is_evidence": false,
+    "search_results_are_evidence": false,
+    "candidate_urls_are_evidence": false,
+    "blind_atlas_mutated": false,
+    "facts_created": false,
+    "judgments_created": false,
+    "archive_required_before_evidence": true
+  },
+  "scope": "Only arbitrate the two timestamp/date-granularity questions already recorded in EVT-001-kwinana-archive-plan-v1. Do not broaden Kwinana discovery.",
+  "findings": [
+    {
+      "question_id": "KWINANA-2018-PUBLIC-KNOWN-TIME",
+      "question": "Can the 2018-12-18 body dateline on Tianqi's commissioning release be used as exact public known_time?",
+      "verdict": "exact_first_party_publication_time_still_unresolved",
+      "reason": "The event date is well supported, but the surviving Tianqi web copies carry later page timestamps. A contemporaneous local report proves the event and commissioning status were public by 2018-12-21, but it does not prove when Tianqi's specific release first became public.",
+      "candidate_sources": [
+        {
+          "url": "https://en.tianqilithium.com/content/details17_41.html",
+          "source_role": "first_party_surviving_web_copy",
+          "page_timestamp": "2019-02-18",
+          "body_dateline": "2018-12-18",
+          "claim_anchor": "Stage One commissioning will commence at the end of this year; Stage Two expected to be commissioned at the end of 2019.",
+          "use": "archive as an expectation-bearing source, but do not assign known_time=2018-12-18 solely from its body dateline"
+        },
+        {
+          "url": "https://en.tianqilithium.com/content/details17_991.html",
+          "source_role": "first_party_duplicate_surviving_web_copy",
+          "page_timestamp": "2019-03-27",
+          "body_dateline": "2018-12-18",
+          "claim_anchor": "Same Kwinana staff-move / commissioning release text.",
+          "use": "preserve as evidence of current mirror/version ambiguity, not as an independent source"
+        },
+        {
+          "url": "https://www.soundtelegraph.com.au/news/perth/tianqi-lithium-office-opens-at-kwinana-plant-site-ng-b881057347z",
+          "source_role": "contemporaneous_local_reporting",
+          "published_time": "2018-12-21",
+          "claim_anchor": "Office opening occurred Tuesday 2018-12-18; Stage 1 construction was near completion and commissioning was about to begin.",
+          "use": "bounds public knowledge of the event/commissioning status to no later than 2018-12-21; not a substitute for first-party exact publication timestamp"
+        },
+        {
+          "url": "https://en.tianqilithium.com/Upload/File/201907/20190711155051_1322.pdf",
+          "source_role": "later_first_party_regulatory_response",
+          "document_period": "2019",
+          "claim_anchor": "States that the 24ktpa Kwinana project entered equipment commissioning on 2018-12-18.",
+          "use": "supports event valid_time, not exact contemporaneous public known_time"
+        }
+      ],
+      "temporal_representation": {
+        "event_valid_time_candidate": "2018-12-18",
+        "first_party_release_known_time": null,
+        "public_knowledge_upper_bound_candidate": "2018-12-21",
+        "precision_rule": "Until an archived contemporaneous filing/release timestamp is found, keep exact first-party known_time unresolved rather than backdating the surviving page to its body dateline."
+      },
+      "next_action": "During normal archive execution, archive the two Tianqi copies as one source-origin cluster plus the contemporaneous local report if useful for known-time bounding; continue a narrowly scoped exchange/archive lookup only if exact first-party known_time materially affects the replay fixture."
+    },
+    {
+      "question_id": "KWINANA-2022-COMMERCIAL-PRODUCTION-DATE",
+      "question": "Is 2022-11-30 inconsistent with later first-party descriptions saying commercial production began in December 2022?",
+      "verdict": "not_a_material_conflict_after_time_semantics_split",
+      "reason": "The December 2022 Tianqi project-progress disclosure says management expected output to improve from December and the company judged Train 1 capable of commercial production from 2022-11-30. Later annual-report wording uses month-level 'since December 2022'. IGO later states commercial production was declared on 2022-11-30. These can be represented as a day-level declaration/effective date plus month-level operating-period wording rather than forced into one date field.",
+      "candidate_sources": [
+        {
+          "url": "https://finance.sina.cn/2022-12-03/detail-imqqsmrp8414910.d.html",
+          "source_role": "publisher_reproduction_of_company_exchange_announcement",
+          "published_time": "2022-12-03",
+          "announcement_number": "2022-083",
+          "claim_anchor": "Company judges Train 1 reached the capability for commercial production from 2022-11-30; output expected to increase steadily from December 2022.",
+          "use": "discovery pointer to the exact Tianqi/CNINFO announcement that should be archived as the primary source"
+        },
+        {
+          "url": "https://announcements.asx.com.au/asxpdf/20230831/pdf/05tb4g9m07897r.pdf",
+          "source_role": "later_co_owner_primary_disclosure",
+          "document_date": "2023-08-31",
+          "claim_anchor": "IGO states commercial production was declared on Train 1 on 30 November 2022.",
+          "use": "later independent primary corroboration of the day-level declaration; not a replacement for the contemporaneous Tianqi announcement"
+        },
+        {
+          "url": "https://static.cninfo.com.cn/finalpage/2025-03-27/1222913103.PDF",
+          "source_role": "later_issuer_annual_report",
+          "document_date": "2025-03-27",
+          "claim_anchor": "Describes Train 1 as having achieved commercial production since December 2022 and still being in ramp-up.",
+          "use": "Outcome context with month-level precision; do not treat month-level wording as contradiction of the 2022-11-30 declaration/effective date"
+        }
+      ],
+      "temporal_representation": {
+        "company_declaration_known_time_candidate": "2022-12-03",
+        "commercial_production_effective_or_declaration_date": "2022-11-30",
+        "operating_period_month_label": "2022-12",
+        "expectation_horizon_from_same_disclosure": "output expected to improve steadily from 2022-12",
+        "precision_rule": "Store day-level declaration/effective date and month-level operating-period statement separately. Reopen conflict only if archived primary wording materially disagrees."
+      },
+      "next_action": "Archive the exact CNINFO/Tianqi 2022-083 announcement in the normal runtime and ground the 2022-11-30 and December-ramp statements to source locators. Downgrade the previous 2022-11-30 versus 2022-12 item from presumed date conflict to a temporal-granularity reconciliation item, subject to archived-primary confirmation."
+    }
+  ],
+  "impact_on_archive_plan": {
+    "selected_vintages_changed": false,
+    "broad_search_needed": false,
+    "blind_memory_reopened": false,
+    "recommended_update_after_archive": "Represent 2018 as unresolved exact first-party known_time with a public-knowledge upper bound unless a contemporaneous timestamp is archived. Represent 2022-11-30 and 2022-12 as different temporal semantics unless the archived 2022-083 primary source forces a conflict."
+  }
+}

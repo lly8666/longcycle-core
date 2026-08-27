@@ -1,0 +1,27 @@
+{
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "shard_id": "UP-HARDROCK",
+  "pass_id": "timeline-actors-v1",
+  "prompt_version": "recall-v1",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "neighbor_shard_outputs_visible": false,
+  "lead_count": 30,
+  "status": "completed_unsealed",
+  "observed_strengths": [
+    "recalled multiple failed/restarted assets rather than only successful mines",
+    "surfaced ownership/name changes useful for historical search",
+    "surfaced pricing/contract and effective-supply mechanisms",
+    "surfaced long-tail Africa and domestic China resource leads"
+  ],
+  "observed_issues": [
+    "several leads bundle event plus causal mechanism and are not fully atomic",
+    "memory_type recalled/inferred/mixed is too coarse",
+    "uncertain ownership/entity fields are only embedded in free text",
+    "no explicit disconfirmation query or falsification condition",
+    "no structured explanation of why normal search may miss the item",
+    "scope drift appeared: Yichun lepidolite belongs in a hard-rock satellite shard rather than pure spodumene",
+    "famous assets can still consume too much output budget"
+  ],
+  "next_action": "upgrade prompt/schema to v2 before running UP-CHEMICALS"
+}

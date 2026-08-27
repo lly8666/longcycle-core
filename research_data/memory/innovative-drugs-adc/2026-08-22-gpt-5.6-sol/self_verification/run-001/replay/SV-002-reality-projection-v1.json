@@ -1,0 +1,100 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "ADC-SV-002-ROVA-T-REALITY-V1",
+  "source_evidence_task_id": "ADC-SV-002-ROVA-T-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "randomized_failure_state",
+    "accounting_estimate_net_impact",
+    "program_termination_state",
+    "accounting_impairment_charge"
+  ],
+  "subjects": [
+    {
+      "id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "entity_type": "product",
+      "canonical_name": "rovalpituzumab tesirine"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2018-tahoe-shorter-overall-survival",
+      "evidence_fragment_key": "tahoe-shorter-os",
+      "subject_entity_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "predicate_code": "clinical.tahoe.randomized_os_result",
+      "value_text": "TAHOE showed shorter overall survival in the Rova-T arm than in the topotecan control arm.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2018-12-05T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "December 05, 2018 TAHOE halt announcement",
+      "statistical_scope": "TAHOE randomized overall-survival result",
+      "metadata": {
+        "temporal_guard": "The source supports the public observation date and comparative result, not an exact underlying analysis timestamp."
+      }
+    },
+    {
+      "fact_key": "2019-stemcentrx-estimated-net-impact",
+      "evidence_fragment_key": "impairment-estimated-net-impact",
+      "subject_entity_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "predicate_code": "accounting.stemcentrx.estimated_net_impact",
+      "value_text": "AbbVie estimated the net impact of the impairment plus related contingent-consideration adjustment at approximately $4 billion.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2019-01-04T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "January 04, 2019 Form 8-K",
+      "statistical_scope": "estimated net impact combining impairment and contingent-consideration adjustment",
+      "metadata": {
+        "accounting_scope_guard": "This is not the gross 2018 impairment charge and must not be reconciled as the same quantity as $5.1B or $1.0B."
+      }
+    },
+    {
+      "fact_key": "2019-rova-t-program-terminated",
+      "evidence_fragment_key": "rova-t-program-terminated",
+      "subject_entity_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "predicate_code": "program.rova_t.development_status",
+      "value_text": "AbbVie terminated the Rova-T research and development program.",
+      "valid_time_kind": "period",
+      "valid_from": "2019-08-29T00:00:00Z",
+      "valid_to": null,
+      "valid_time_precision": "day",
+      "valid_time_text": "August 29, 2019",
+      "statistical_scope": "Rova-T program development state",
+      "metadata": {
+        "terminal_state": true
+      }
+    },
+    {
+      "fact_key": "2018-stemcentrx-intangible-impairment",
+      "evidence_fragment_key": "2018-gross-impairment-charge",
+      "subject_entity_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "predicate_code": "accounting.stemcentrx.intangible_impairment_charge",
+      "value_text": "AbbVie recorded a $5.1 billion intangible asset impairment charge in 2018.",
+      "valid_time_kind": "period",
+      "valid_from": "2018-01-01T00:00:00Z",
+      "valid_to": "2019-01-01T00:00:00Z",
+      "valid_time_precision": "year",
+      "valid_time_text": "2018",
+      "statistical_scope": "2018 Stemcentrx intangible asset impairment charge",
+      "metadata": {
+        "knowledge_guard": "The 2018 valid time is historical occurrence scope; this fact must remain invisible before its 2020-02-22 grounded known-time bound."
+      }
+    },
+    {
+      "fact_key": "2019-stemcentrx-remaining-value-impairment",
+      "evidence_fragment_key": "2019-remaining-value-impairment",
+      "subject_entity_id": "7caaf8e0-efb4-5037-bebc-367f90054251",
+      "predicate_code": "accounting.stemcentrx.intangible_impairment_charge",
+      "value_text": "AbbVie recorded a $1.0 billion intangible asset impairment charge in 2019 after termination of the Rova-T program.",
+      "valid_time_kind": "period",
+      "valid_from": "2019-01-01T00:00:00Z",
+      "valid_to": "2020-01-01T00:00:00Z",
+      "valid_time_precision": "year",
+      "valid_time_text": "2019",
+      "statistical_scope": "2019 remaining Stemcentrx IPR&D impairment charge",
+      "metadata": {
+        "knowledge_guard": "The historical 2019 valid time must not leak into replay before the 2020-02-22 grounded known-time bound."
+      }
+    }
+  ]
+}

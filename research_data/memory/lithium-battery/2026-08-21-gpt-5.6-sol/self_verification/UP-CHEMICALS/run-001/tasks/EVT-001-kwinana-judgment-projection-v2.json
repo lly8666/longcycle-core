@@ -1,0 +1,114 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "EVT-001-KWINANA-JUDGMENTS-V2",
+  "source_evidence_task_id": "EVT-001-KWINANA-EVIDENCE-V1",
+  "allowed_claim_roles": ["expectation", "risk_caveat"],
+  "subjects": [
+    {
+      "id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "entity_type": "production_line",
+      "canonical_name": "Kwinana Train 1 lithium hydroxide plant"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2018-stage1-commissioning-year-end",
+      "evidence_refs": [
+        {"fragment_key": "2018-stage-commissioning-expectation", "evidence_role": "statement"}
+      ],
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "speaker_name_text": "Tianqi Lithium management",
+      "topic_code": "project.commissioning_start",
+      "judgment_kind": "guidance",
+      "target_time_kind": "unknown",
+      "target_precision": "approximate",
+      "target_text": "at the end of 2018",
+      "value_kind": "text",
+      "value_text": "Stage One commissioning expected to commence at the end of 2018",
+      "summary": "Management expected Kwinana Stage One commissioning around the end of 2018.",
+      "metadata": {
+        "semantic_guard": "The source says at the end of this year; no exact commissioning day is manufactured. The source fragment also mentions Stage Two, but this Judgment is scoped only to Stage One."
+      }
+    },
+    {
+      "judgment_key": "2019-phase1-come-online-h2",
+      "evidence_refs": [
+        {"fragment_key": "2019-h2-come-online-expectation", "evidence_role": "statement"}
+      ],
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "speaker_name_text": "Tianqi Lithium management",
+      "topic_code": "project.come_online",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2019-07-01T00:00:00Z",
+      "target_to": "2020-01-01T00:00:00Z",
+      "target_precision": "half_year",
+      "target_text": "in the second half of 2019",
+      "value_kind": "text",
+      "value_text": "Phase One expected to gradually come online in the second half of 2019",
+      "summary": "Management expected Kwinana Phase One to come online during H2 2019."
+    },
+    {
+      "judgment_key": "2021-full-line-operation-by-year-end",
+      "evidence_refs": [
+        {"fragment_key": "2021-full-line-expectation", "evidence_role": "statement"},
+        {"fragment_key": "2021-production-timing-uncertainty", "evidence_role": "caveat"}
+      ],
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "speaker_name_text": "Tianqi Lithium management",
+      "topic_code": "project.full_line_operation",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_to": "2022-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "by the end of 2021",
+      "value_kind": "text",
+      "value_text": "management aimed to achieve full-line connection and operation by the end of 2021",
+      "summary": "Management aimed for full-line operation by year-end 2021 while explicitly warning that production timing remained uncertain.",
+      "metadata": {
+        "range_semantics": "Open lower bound preserves the by-year-end wording instead of inventing a start date.",
+        "caveat_semantics": "The contemporaneous source explicitly says project production timing remains uncertain."
+      }
+    },
+    {
+      "judgment_key": "2021-design-capacity-q4-2022",
+      "evidence_refs": [
+        {"fragment_key": "2021-design-capacity-expectation", "evidence_role": "statement"},
+        {"fragment_key": "2021-production-timing-uncertainty", "evidence_role": "caveat"}
+      ],
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "speaker_name_text": "Tianqi Lithium management",
+      "topic_code": "project.design_capacity_ramp",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2022-10-01T00:00:00Z",
+      "target_to": "2023-01-01T00:00:00Z",
+      "target_precision": "quarter",
+      "target_text": "in the fourth quarter of 2022",
+      "value_kind": "text",
+      "value_text": "management aimed to reach design capacity in Q4 2022",
+      "summary": "Management aimed for design-capacity ramp in Q4 2022 while explicitly preserving uncertainty about production timing."
+    },
+    {
+      "judgment_key": "2022-december-output-ramp",
+      "evidence_refs": [
+        {"fragment_key": "2022-december-ramp-expectation-part-1", "evidence_role": "statement"},
+        {"fragment_key": "2022-december-ramp-expectation-part-2", "evidence_role": "statement"}
+      ],
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "speaker_name_text": "TLK management",
+      "topic_code": "project.output_ramp",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2022-12-01T00:00:00Z",
+      "target_precision": "month",
+      "target_text": "from December 2022 onward",
+      "value_kind": "text",
+      "value_text": "project output expected to improve steadily from December 2022 onward",
+      "summary": "Management expected Kwinana output to improve steadily beginning in December 2022.",
+      "metadata": {
+        "continuation_semantics": "The sentence is split across PDF pages; both archived fragments are required statement evidence for one Judgment."
+      }
+    }
+  ]
+}

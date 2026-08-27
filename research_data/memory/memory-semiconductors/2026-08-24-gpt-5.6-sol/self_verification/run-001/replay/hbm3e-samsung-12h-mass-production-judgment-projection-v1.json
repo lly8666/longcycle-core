@@ -1,0 +1,37 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-JUDGMENT-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-SAMSUNG-HBM3E-12H-TRAJECTORY-001",
+  "allowed_claim_roles": ["issuer_hbm3e_status_statement"],
+  "subjects": [
+    {"id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066", "entity_type": "legal_entity", "canonical_name": "Samsung Electronics Co., Ltd."}
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2024-samsung-hbm3e-12h-q2-mass-production-plan",
+      "evidence_refs": [
+        {"fragment_key": "EVF-SAMSUNG-HBM3E-12H-Q2-PLAN-TRAJECTORY", "evidence_role": "statement"}
+      ],
+      "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "speaker_name_text": "Samsung Electronics",
+      "speaker_role": "management",
+      "topic_code": "operations.hbm3e_12h_mass_production_plan",
+      "judgment_kind": "guidance",
+      "target_time_kind": "period",
+      "target_from": "2024-04-01T00:00:00Z",
+      "target_to": "2024-07-01T00:00:00Z",
+      "target_precision": "quarter",
+      "target_text": "second quarter of 2024",
+      "value_kind": "text",
+      "value_text": "Samsung planned to mass produce HBM3E 12H within the second quarter of 2024.",
+      "summary": "At the April 30, 2024 Q1-results vintage, Samsung planned HBM3E 12H mass production within Q2 2024. The plan remains immutable; later Q3 evidence is evaluated separately and cannot rewrite its target or manufacture an onset date.",
+      "metadata": {
+        "product_family": "HBM3E",
+        "variant": "12H",
+        "reality_guard": "The April sentence reports 8H production as current while 12H remains forward-looking.",
+        "timing_guard": "The target is Q2 at quarter precision; later state evidence with unknown onset cannot by itself establish whether the target timing was met or missed.",
+        "qualification_guard": "No named customer/platform qualification is inferred."
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "longcycle-self-verification-task/v1",
+  "task_id": "SV-003",
+  "rank": 3,
+  "trajectory": "fam-trastuzumab deruxtecan-nxki / Enhertu / DS-8201 / Daiichi Sankyo + AstraZeneca",
+  "blind_lead_ids": ["ADC-STACK-004", "ASSET-TRIAL-001", "REG-COMM-005", "RIGHTS-BD-001", "FAILURE-REV-013"],
+  "authority_class": "post_seal_search_discovery_not_evidence",
+  "refined_summary": "Search discovery confirms a branching success trajectory rather than a single success flag. Daiichi Sankyo and AstraZeneca announced a global development/commercialization collaboration in March 2019, with Daiichi retaining Japan rights. The first U.S. breast-cancer approval arrived in December 2019 under accelerated approval. DESTINY-Breast04 later tested a defined HER2-low population (IHC 1+ or IHC 2+/ISH-) and led to the August 2022 U.S. HER2-low breast-cancer approval. The current U.S. label retains a boxed warning for ILD/pneumonitis, demonstrating that safety trajectory is part of the asset state, not an annotation after success.",
+  "blind_memory_discrepancies": [],
+  "candidate_urls": [
+    "https://www.daiichisankyo.com/media/press_release/detail/index_3199.html",
+    "https://www.astrazeneca.com/media-centre/press-releases/2019/astrazeneca-and-daiichi-sankyo-enter-collaboration-for-novel-her-2-targeting-antibody-drug-conjugate.html",
+    "https://www.daiichisankyo.com/media/press_release/detail/index_3159.html",
+    "https://clinicaltrials.gov/study/NCT03734029",
+    "https://www.astrazeneca.com/media-centre/press-releases/2022/enhertu-improves-pfs-and-os-in-her2-low-bc.html",
+    "https://www.astrazeneca.com/media-centre/press-releases/2022/enhertu-approved-in-the-us-for-her2-low-mbc.html",
+    "https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/761139s041s043lbl.pdf"
+  ],
+  "possible_primary_source_types": ["Daiichi Sankyo/AstraZeneca collaboration agreement announcements and filings", "FDA approval/label records", "ClinicalTrials.gov DESTINY-Breast04 record/protocol/results", "contemporaneous trial publication/presentation"],
+  "source_origin_notes": ["Daiichi and AstraZeneca releases about the same collaboration are one deal-origin cluster, not two independent confirmations.", "ClinicalTrials.gov is sponsor-provided for design/history but useful for stable identifiers and dated record history.", "FDA label/approval records are regulator-origin and should anchor indication/safety state."],
+  "refined_queries": ["Daiichi AstraZeneca Enhertu March 2019 collaboration Japan rights", "Enhertu December 2019 accelerated approval DESTINY-Breast01", "DESTINY-Breast04 NCT03734029 HER2-low definition", "Enhertu HER2-low FDA August 2022 IHC 1+ 2+/ISH-", "Enhertu ILD pneumonitis boxed warning label", "Enhertu indication timeline gastric lung tumor agnostic early breast 2019 2026", "Enhertu manufacturing supply Daiichi responsibility", "HER2-low category pre-2022 terminology contradiction assay reproducibility"],
+  "what_counts_as_support": ["Contract/issuer material establishing partner/territory/manufacturing responsibilities at each time.", "Trial/protocol and regulator records establishing the exact population/endpoint behind each indication branch.", "Dated label versions establishing how ILD warning and indication scope changed."],
+  "what_counts_as_contradiction": ["Evidence that Japan rights were not retained by Daiichi in the 2019 collaboration.", "Evidence that the 2022 HER2-low approval used a materially different biomarker definition than IHC 1+ or IHC 2+/ISH-.", "Evidence that ILD risk was only recognized after the HER2-low expansion rather than during earlier development."],
+  "unresolved_questions": ["Which label versions best capture the evolution of ILD management and fatal-risk perception?", "How should HER2 expression category, assay and tumor type be modeled so HER2-low does not become a timeless asset attribute?", "Which contemporaneous expectations before DESTINY-Breast04 best show the category-changing hypothesis without importing later success?"],
+  "delegated_evidence_instructions": "Archive the 2019 collaboration, initial U.S. approval, DESTINY-Breast04 protocol/readout, 2022 HER2-low regulator state and representative label versions. Reconstruct asset×indication×biomarker×jurisdiction branches and ILD safety revisions. Do not collapse all Enhertu outcomes into one product-level success row."
+}

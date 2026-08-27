@@ -1,0 +1,168 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "ADC-SV-004-RC48-REALITY-V1",
+  "source_evidence_task_id": "ADC-SV-004-RC48-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "announced_rights_allocation",
+    "announced_development_role_allocation",
+    "regulatory_approval_state",
+    "regulatory_approval_state_later_recap",
+    "pfizer_group_collaboration_state",
+    "current_pipeline_cooperation_state",
+    "trial_lead_sponsor",
+    "trial_collaborator"
+  ],
+  "subjects": [
+    {
+      "id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "entity_type": "product",
+      "canonical_name": "disitamab vedotin / RC48"
+    },
+    {
+      "id": "313a476f-3d63-5e86-ba36-be3cf9ad8f1b",
+      "entity_type": "event",
+      "canonical_name": "NCT05911295 / SGNDV-001"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2021-announced-remegen-retained-territory",
+      "evidence_fragment_key": "announced-remegen-retained-territory",
+      "subject_entity_id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "predicate_code": "rights.remegen_retained_territory",
+      "value_text": "Asia excluding Japan and Singapore",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2021-08-09T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "August 9, 2021 joint announcement",
+      "statistical_scope": "announced license territory allocation",
+      "metadata": {
+        "role_semantics": "territory_rights",
+        "authority_boundary": "joint participant announcement, not filed contract text",
+        "identity_boundary": "Japan and Singapore are outside the announced retained RemeGen territory"
+      }
+    },
+    {
+      "fact_key": "2021-announced-global-development-lead",
+      "evidence_fragment_key": "announced-global-development-allocation",
+      "subject_entity_id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "predicate_code": "development.announced_global_lead",
+      "value_text": "Seagen",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2021-08-09T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "August 9, 2021 joint announcement",
+      "statistical_scope": "announced global development role",
+      "metadata": {
+        "role_semantics": "global_development_lead",
+        "authority_boundary": "announced allocation does not prove sponsor identity for every later trial"
+      }
+    },
+    {
+      "fact_key": "2021-china-gastric-approval",
+      "evidence_fragment_key": "china-gastric-approval-2021",
+      "subject_entity_id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "predicate_code": "regulatory.china_gastric_approval",
+      "value_text": "approved",
+      "valid_time_kind": "period",
+      "valid_from": "2021-06-09T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "June 9, 2021",
+      "statistical_scope": "China gastric/GEJ HER2-overexpression approval after at least two systemic chemotherapy regimens",
+      "metadata": {
+        "role_semantics": "regulatory_state",
+        "indication": "locally advanced or metastatic gastric cancer including GEJ adenocarcinoma",
+        "biomarker": "HER2 over-expression"
+      }
+    },
+    {
+      "fact_key": "2021-china-urothelial-approval-late-known",
+      "evidence_fragment_key": "china-urothelial-approval-2021-later-recap",
+      "subject_entity_id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "predicate_code": "regulatory.china_urothelial_approval",
+      "value_text": "approved",
+      "valid_time_kind": "period",
+      "valid_from": "2021-12-31T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "December 31, 2021",
+      "statistical_scope": "China urothelial approval as later recapped by RemeGen",
+      "metadata": {
+        "role_semantics": "regulatory_state",
+        "population_context": "HER2-overexpressing (IHC 2+ or 3+) locally advanced/metastatic urothelial carcinoma",
+        "no_lookahead_boundary": "valid from 2021-12-31 but not replay-visible from this Evidence until 2023-11-23"
+      }
+    },
+    {
+      "fact_key": "2025-pfizer-disitamab-collaboration-disclosure",
+      "evidence_fragment_key": "pfizer-2024-collaboration-state",
+      "subject_entity_id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "predicate_code": "collaboration.pfizer_group_counterparty",
+      "value_text": "RemeGen Co., Ltd.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2025-02-27T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "Pfizer 2024 Form 10-K filed/published February 27, 2025",
+      "statistical_scope": "Pfizer consolidated development collaboration disclosure",
+      "metadata": {
+        "role_semantics": "consolidated_collaboration",
+        "identity_boundary": "does not assert Pfizer replaced Seagen as named legal licensee or lead sponsor"
+      }
+    },
+    {
+      "fact_key": "2026-remegen-current-pfizer-cooperation",
+      "evidence_fragment_key": "remegen-current-global-pfizer-cooperation",
+      "subject_entity_id": "eb08b950-4cae-5224-8e42-21b89c56a0af",
+      "predicate_code": "collaboration.current_global_counterparty",
+      "value_text": "Pfizer",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2026-08-22T16:00:00Z",
+      "observed_at_precision": "minute",
+      "observed_at_text": "RemeGen pipeline snapshot acquired 2026-08-22",
+      "statistical_scope": "RemeGen global first-line urothelial pivotal/Phase III pipeline cooperation",
+      "metadata": {
+        "role_semantics": "current_pipeline_cooperation",
+        "identity_boundary": "pipeline cooperation wording is not legal-party substitution"
+      }
+    },
+    {
+      "fact_key": "2026-nct05911295-lead-sponsor",
+      "evidence_fragment_key": "nct05911295-lead-sponsor",
+      "subject_entity_id": "313a476f-3d63-5e86-ba36-be3cf9ad8f1b",
+      "predicate_code": "trial.lead_sponsor",
+      "value_text": "Seagen, a wholly owned subsidiary of Pfizer",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2026-08-22T16:00:00Z",
+      "observed_at_precision": "minute",
+      "observed_at_text": "ClinicalTrials.gov API snapshot acquired 2026-08-22",
+      "statistical_scope": "NCT05911295 registry lead-sponsor role",
+      "metadata": {
+        "role_semantics": "trial_lead_sponsor",
+        "trial_id": "NCT05911295",
+        "identity_boundary": "Seagen is the registry sponsor field; Pfizer is parent ownership context, not a replacement sponsor field"
+      }
+    },
+    {
+      "fact_key": "2026-nct05911295-collaborator",
+      "evidence_fragment_key": "nct05911295-collaborator-remegen",
+      "subject_entity_id": "313a476f-3d63-5e86-ba36-be3cf9ad8f1b",
+      "predicate_code": "trial.collaborator",
+      "value_text": "RemeGen Co., Ltd.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2026-08-22T16:00:00Z",
+      "observed_at_precision": "minute",
+      "observed_at_text": "ClinicalTrials.gov API snapshot acquired 2026-08-22",
+      "statistical_scope": "NCT05911295 registry collaborator role",
+      "metadata": {
+        "role_semantics": "trial_collaborator",
+        "trial_id": "NCT05911295",
+        "identity_boundary": "collaborator remains distinct from lead sponsor, parent company and territory rights holder"
+      }
+    }
+  ]
+}

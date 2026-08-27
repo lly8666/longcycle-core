@@ -1,0 +1,42 @@
+{
+  "schema_version": "longcycle-judgment-outcome-evaluation-receipt/v1",
+  "task_id": "EVT-002-KEMERTON-FIRST-PRODUCT-OUTCOME-V1",
+  "source_judgment_projection_task_id": "EVT-002-KEMERTON-JUDGMENTS-V1",
+  "source_evidence_task_id": "EVT-002-KEMERTON-EVIDENCE-V2",
+  "evaluation": {
+    "id": "9b9b0fa2-fc83-51f5-ac09-df32e8f7683b",
+    "judgment_key": "2022q1-kemerton1-first-product-may",
+    "judgment_id": "030ae747-fab6-5ca7-98b3-728d3c05d8b2",
+    "outcome_evidence_fragment_id": "6c2d3721-061a-5c06-803c-42ba8b353714",
+    "evaluation_status": "realized",
+    "target": {
+      "from": "2022-05-01T00:00:00Z",
+      "to": "2022-06-01T00:00:00Z",
+      "precision": "month",
+      "source_text": "May 2022"
+    },
+    "outcome": {
+      "from": "2022-07-01T00:00:00Z",
+      "to": "2022-08-01T00:00:00Z",
+      "precision": "month",
+      "source_text": "in July 2022",
+      "first_known_at": "2022-08-03T16:27:49Z"
+    },
+    "timing_relation": "after_target_window",
+    "timing_delta_value": 2,
+    "timing_delta_unit": "calendar_months",
+    "timing_error_days": null,
+    "explanation": "The May 2022 first-product expectation was eventually realized, but the first product was disclosed as occurring in July 2022. Because both target and realized occurrence are only supported at month precision, Longcycle records a two-calendar-month period shift and does not manufacture a day-level delay.",
+    "evaluator_name": "precision-aware-outcome-evaluator",
+    "evaluator_version": "1.0.0"
+  },
+  "no_lookahead": {
+    "evaluation_may_enter_replay_at_or_after": "2022-08-03T16:27:49Z",
+    "must_be_absent_before": "2022-08-03T16:27:49Z",
+    "later_outcome_rewrites_original_judgment": false
+  },
+  "persistence": {
+    "real_postgres_row_persisted": false,
+    "reason": "This is the first real benchmark evaluation receipt. PostgreSQL schema support is being added by migration 0019; canonical persistence follows after the new precision-aware gate is green."
+  }
+}

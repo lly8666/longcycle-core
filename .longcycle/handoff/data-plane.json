@@ -1,0 +1,117 @@
+{
+  "schema_version": "longcycle-handoff-data-plane/v4",
+  "transport_mode": "google_drive_webcapsules_generated_pdf_locator_deferred_materialization",
+  "webpage_capture_policy": "For a readable webpage, the default development path is interactive read -> faithful claim-scoped visible-text capture plus source/provenance metadata -> bounded local database capture capsule -> Google Drive handoff. Do not invoke GitHub Actions merely to fetch or archive webpage HTML. The local database is a capture/handoff envelope, not live PostgreSQL authority and not automatic Fact/Judgment publication. Preserve original URL, publisher/source identity, title/date when supported, capture timestamp, capture_mode, visible text, text SHA-256 and any material limitation.",
+  "pdf_source_policy": {
+    "default_mode": "locator_first_deferred_materialization",
+    "states": [
+      "locator_verified",
+      "content_verified",
+      "materialized"
+    ],
+    "locator_verified": "Publisher/document identity and PDF locator are verified. Record original URL, publisher/source identity, title/date when supported, filename when known, verification time/mode and materialization_status. Locator existence alone is not sufficient to prove a claim whose content was not read.",
+    "content_verified": "The Agent has actually read claim-relevant PDF content in a trustworthy interactive surface and can preserve a claim-scoped excerpt/page/section or equivalent readable grounding. This is sufficient to enter normal Evidence semantics even if raw PDF bytes have not yet been downloaded or hashed. Record capture/read mode and any representation limitation truthfully.",
+    "materialized": "A later normal-network Agent has downloaded the recorded PDF locator, verified document identity/content, and added raw byte size, SHA-256 and a durable storage locator. Materialization is completeness/integrity enrichment, not a prerequisite for already content-verified claim grounding.",
+    "mainstream_source_rule": "PDFs on mainstream official/regulatory/issuer/institutional publisher sites are accepted as legitimate source documents once publisher/document identity and locator are verified. Do not spend research time proving that GitHub Actions or the current Agent can download the bytes. Claim-scoped authority still comes from publisher/document role and scope; transport or the .pdf suffix never upgrades authority.",
+    "deferred_agent_instruction": "When a later Agent has normal network access, download pending_materialization PDFs from their recorded URLs, verify the document identity and previously grounded content, then append size/SHA/storage metadata. If materialized bytes contradict the earlier verified content or identity, fail closed and open an integrity repair instead of silently replacing the earlier record."
+  },
+  "github_actions_pdf_policy": "Do not create or run GitHub Actions merely to download new PDF source bytes. Actions may still be used for PostgreSQL/runtime execution. Historical one-shot PDF acquisition workflows and immutable Release packs are legacy development artifacts and remain valid under their existing receipts, but they are not the default path for new PDFs.",
+  "github_release_policy": "Existing immutable GitHub Release PDF/source packs remain valid historical materializations and may be reused when already available. Do not require a new Release asset before proceeding with content-verified PDF Evidence. New deferred raw-byte materialization may use an appropriate normal-network Agent and durable object/file transport chosen by the owning receipt; Release is no longer mandatory.",
+  "google_drive_folder_id": "1X0YKxmYZx7N0eQ3qjip9I36qMO288bZr",
+  "google_drive_policy": "Google Drive is the development handoff relay for bounded local webpage-capture databases and Longcycle-generated binary state: DuckDB/SQLite webpage capture capsules, replay materializations, execution/reconciliation outputs, generated database snapshots and offline runtimes. A webpage capture capsule contains source-derived visible text and provenance, so Drive transport does not turn that text into a generated research conclusion or change source authority. Deferred raw PDF materialization is optional and governed by its owning receipt rather than required by this handoff manifest. Drive is not live transactional database authority.",
+  "postgres_policy": "Do not transport a live PostgreSQL cluster as session state or place it in GitHub Release. PostgreSQL remains the transactional write/ops engine and is rebuilt in a service-capable runtime when writes, leases or outbox semantics are required. If a generated database snapshot is ever needed for handoff, it belongs in Google Drive and remains a snapshot rather than live authority.",
+  "duckdb_policy": "DuckDB is the preferred bounded local container for webpage visible-text capture capsules and portable read/replay state; SQLite is an acceptable bounded capture envelope when DuckDB is not available in the current interactive runtime. Before handoff, checkpoint/close the capsule, record SHA-256/size/schema/source count, upload the immutable capsule to Google Drive, and verify the downloaded bytes. After restore, research/replay capsules open read-only by default.",
+  "legacy_release_web_policy": "Previously produced immutable Release assets that include webpage/HTML bytes are grandfathered. Never mutate or silently relocate them. All new readable webpage captures follow local database -> Google Drive unless a future explicit architecture decision supersedes this policy.",
+  "historical_asset_index_policy": "This manifest is resume-relevant, not an exhaustive historical asset inventory. Assets no longer required by the live continuation cursor may be pruned from this file without deleting or invalidating them; durable research/execution receipts plus Git history retain their exact identities and restore metadata. Re-enter an old workstream through its durable receipt rather than keeping every historical binary in fresh-Agent context.",
+  "missing_required_asset_action": "Missing raw PDF bytes are not an integrity blocker when the claim-relevant PDF content has already been content_verified and the locator/provenance are preserved. Fail closed only when the claim depends on PDF content that was not actually read, when a required webpage/generated capsule is missing or corrupt, or when later PDF materialization contradicts the verified source identity/content.",
+  "supersession_policy": "Never silently replace a verified source identity, captured visible text, materialized byte object or generated capsule. A later PDF materialization enriches the same source locator with byte metadata only after identity/content verification; contradictory bytes create an integrity repair. Successor webpage/generated capsules get new Drive identities.",
+  "assets": [
+    {
+      "asset_id": "adc-sv005-blenrep-pdf-acquisition-run32630536037",
+      "role": "legacy_materialized_pdf_source_cache",
+      "required_for_current_task": false,
+      "transport": "github_release_legacy_materialization",
+      "release_tag": "longcycle-dev-binary-cache",
+      "google_drive_file_id": null,
+      "file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+      "size_bytes": 395045,
+      "sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998",
+      "materialization_status": "materialized_legacy_reusable_not_new_default",
+      "content_summary": "Already-acquired materialized copies of two BLENREP PDFs: the FDA/Federal Register legal revocation notice and GSK DREAMM-7 announcement. They remain a reusable historical cache, but BLENREP research is complete and a fresh Agent should not restore them merely to resume CAP-0007 productization.",
+      "components": [
+        {
+          "path": "federal-register-blenrep-revocation-2023.pdf",
+          "sha256": "2f6059f22be2a2fcc930c0e983881935cca1a1bb5cf02736f8981e5377697bbf",
+          "size_bytes": 235166,
+          "role": "authoritative FDA/Federal Register legal revocation record"
+        },
+        {
+          "path": "gsk-dreamm7-readout-2024-02-05.pdf",
+          "sha256": "020add783487f3a1999fca254fa34fc59a63d3c17654a2984307202c43a68178",
+          "size_bytes": 188552,
+          "role": "primary participant DREAMM-7 regimen/readout record"
+        }
+      ],
+      "restore_instruction": "Reuse only when an explicit regression or historical receipt genuinely requires these already-materialized bytes. Restore exact Release tag/name and verify the recorded hashes. Do not create a replacement/new PDF acquisition Action if this cache is unavailable; fall back to the source locator/content-verification policy."
+    },
+    {
+      "asset_id": "adc-sv005-blenrep-web-capture-v1",
+      "role": "webpage_source_capture_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+      "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
+      "size_bytes": 24576,
+      "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+      "content_summary": "Bounded SQLite handoff capsule containing three claim-scoped faithful visible-text captures and provenance records used by the completed BLENREP trajectory. It contains no raw HTML and performs no automatic Evidence/Fact/Judgment promotion.",
+      "components": [
+        {
+          "path": "webpage_capture:fda-blenrep-accelerated-approval-2020",
+          "sha256": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+          "size_bytes": null,
+          "role": "FDA 2020 claim-scoped visible text"
+        },
+        {
+          "path": "webpage_capture:gsk-dreamm3-2022-11-07",
+          "sha256": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+          "size_bytes": null,
+          "role": "GSK DREAMM-3 claim-scoped visible text"
+        },
+        {
+          "path": "webpage_capture:gsk-blenrep-withdrawal-2022-11-22",
+          "sha256": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+          "size_bytes": null,
+          "role": "GSK withdrawal/process and contemporaneous Judgment claim-scoped visible text"
+        }
+      ],
+      "restore_instruction": "Restore only when an explicit BLENREP replay/regression needs the source capture. Use Google Drive file id 1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt, verify outer SHA a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833, open read-only and verify row text hashes before materializing claim-scoped visible_text."
+    },
+    {
+      "asset_id": "adc-sv005-blenrep-integrated-memory-v1",
+      "role": "typed_replay_capsule",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1hG6UCJSPlVgobyFwhFWwMOzXhpUrLrvP",
+      "file_name": "longcycle-sv005-blenrep-integrated-memory-v1.duckdb",
+      "size_bytes": 2895872,
+      "sha256": "f44a33d291cbf049986cb8452bd85f6b2fd640f07661267b04dad2ce60d06bbf",
+      "content_summary": "Sealed typed epistemic replay generation from successful BLENREP runtime run 32637913005: 8 canonical Reality rows, 1 contemporaneous Judgment and 1 later Outcome; typed round-trip passed. This is generated portable replay state, not live PostgreSQL authority and not source Evidence.",
+      "restore_instruction": "Restore from Google Drive file id 1hG6UCJSPlVgobyFwhFWwMOzXhpUrLrvP only when replay/regression needs the completed BLENREP generation. Verify SHA f44a33d291cbf049986cb8452bd85f6b2fd640f07661267b04dad2ce60d06bbf and size 2895872, then open read-only by default."
+    },
+    {
+      "asset_id": "adc-sv005-blenrep-trajectory-runtime-v1",
+      "role": "offline_runtime",
+      "required_for_current_task": false,
+      "transport": "google_drive",
+      "release_tag": null,
+      "google_drive_file_id": "1vj7r_KaS_SNFgBMuebhf75IDuzgs5Y97",
+      "file_name": "longcycle-sv005-blenrep-trajectory-runtime-v1.zip",
+      "size_bytes": 47133,
+      "sha256": "0c39c627561a34ab8c5ac5827976d1987199f38d8dc0ab55b70d42f2a7fb21f8",
+      "content_summary": "Generated runtime capsule from successful BLENREP trajectory run 32637913005 containing Grounded Evidence, Reality, Judgment, Outcome, sealed-memory manifest and three point-in-time replay outputs. Source materials themselves remain governed by their source-plane receipts.",
+      "restore_instruction": "Restore from Google Drive file id 1vj7r_KaS_SNFgBMuebhf75IDuzgs5Y97 only for audit/regression. Verify SHA 0c39c627561a34ab8c5ac5827976d1987199f38d8dc0ab55b70d42f2a7fb21f8 before use. The durable semantic summary is research_data/.../replay/SV-005-blenrep-trajectory-runtime-receipt-v1.json."
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-PROMOTION-READY-001",
+  "epistemic_guardrails": [
+    "This task reuses the same four content-verified source representations; it does not modify source wording or the earlier 4/4/0/0 grounding receipt.",
+    "Source publication is known only at date precision, so historical knowability uses a conservative next-day UTC upper bound rather than inventing an intraday timestamp.",
+    "Micron's wording describes a current wafer-start reduction and may support Reality with unknown onset observed at the announcement vintage.",
+    "Samsung's production-cut statement is a plan/commitment, Samsung's recovery statement is an expectation, and SK hynix's 2023 reduction statement is guidance; these remain Judgment rather than executed Reality.",
+    "Cross-company numeric comparison is forbidden: Micron ~20% is wafer starts; SK hynix >50% is investment; Samsung states no percentage or exact product split."
+  ],
+  "sources": [
+    {
+      "key": "samsung_ir_materialized",
+      "name": "Samsung Electronics Investor Relations — content-verified web capture",
+      "publisher_domain": "samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung issuer IR disclosure is primary for Samsung's own production plan and contemporaneous management guidance."
+        }
+      ]
+    },
+    {
+      "key": "samsung_newsroom_materialized",
+      "name": "Samsung Electronics Global Newsroom — content-verified web capture",
+      "publisher_domain": "news.samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung's own earnings release is primary for its dated demand-recovery expectation."
+        }
+      ]
+    },
+    {
+      "key": "micron_ir_materialized",
+      "name": "Micron Investor Relations — content-verified web capture",
+      "publisher_domain": "investors.micron.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Micron's investor-relations release is primary for Micron's own announced DRAM and NAND wafer-start reduction."
+        }
+      ]
+    },
+    {
+      "key": "skhynix_newsroom_materialized",
+      "name": "SK hynix Newsroom — content-verified web capture",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "SK hynix's own earnings release is primary for its announced 2023 investment and production-reduction guidance."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "samsung_cut",
+      "vintage_id": "2023-04-11",
+      "source_key": "samsung_ir_materialized",
+      "retrieval_url": "https://www.samsung.com/global/ir/reports-disclosures/public-disclosure-view.84005/",
+      "original_source_url": "https://www.samsung.com/global/ir/reports-disclosures/public-disclosure-view.84005/",
+      "external_id": "samsung-1q23-pre-earnings-guidance-cut-promotion-ready",
+      "title": "Samsung 1Q 2023 Pre-Earnings Guidance — production cut capture",
+      "published_at": null,
+      "first_known_at": "2023-04-12T00:00:00Z",
+      "expected_sha256": "6f60a6d15dfecb7ad1faadef64dc5edf3b57a62ae7034afcf43be3fd8c09af9d",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-04-11-CUT-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2023-04-11-CUT-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2023-04-11",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T05:21:21Z"
+      }
+    },
+    {
+      "key": "samsung_recovery",
+      "vintage_id": "2023-04-27",
+      "source_key": "samsung_newsroom_materialized",
+      "retrieval_url": "https://news.samsung.com/global/samsung-electronics-announces-first-quarter-2023-results",
+      "original_source_url": "https://news.samsung.com/global/samsung-electronics-announces-first-quarter-2023-results",
+      "external_id": "samsung-q1-2023-results-recovery-promotion-ready",
+      "title": "Samsung Q1 2023 results — 2H recovery expectation capture",
+      "published_at": null,
+      "first_known_at": "2023-04-28T00:00:00Z",
+      "expected_sha256": "c380152fa4bbe08f39b4243d8aa6fd4bc74ae01c778e9c36973b74205e5eaaf0",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-04-27-RECOVERY-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2023-04-27-RECOVERY-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2023-04-27",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T05:21:21Z"
+      }
+    },
+    {
+      "key": "micron_cut",
+      "vintage_id": "2022-11-16",
+      "source_key": "micron_ir_materialized",
+      "retrieval_url": "https://investors.micron.com/news/press-release/2022/Micron-Announces-Further-Actions-to-Address-Market-Conditions-11-16-2022/default.aspx",
+      "original_source_url": "https://investors.micron.com/news/press-release/2022/Micron-Announces-Further-Actions-to-Address-Market-Conditions-11-16-2022/default.aspx",
+      "external_id": "micron-2022-11-16-cut-promotion-ready",
+      "title": "Micron Nov. 16, 2022 supply-cut capture",
+      "published_at": null,
+      "first_known_at": "2022-11-17T00:00:00Z",
+      "expected_sha256": "e16a28457514a5d16224658fa175d8814a704299198b3e7ead771ad3305cdeef",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2022-11-16-CUT-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-MICRON-2022-11-16-CUT-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2022-11-16",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T05:21:21Z"
+      }
+    },
+    {
+      "key": "skhynix_cut",
+      "vintage_id": "2022-10-26",
+      "source_key": "skhynix_newsroom_materialized",
+      "retrieval_url": "https://news.skhynix.com/en/sk-hynix-reports-third-quarter-2022-results/",
+      "original_source_url": "https://news.skhynix.com/en/sk-hynix-reports-third-quarter-2022-results/",
+      "external_id": "skhynix-q3-2022-cut-promotion-ready",
+      "title": "SK hynix Q3 2022 cut-plan capture",
+      "published_at": null,
+      "first_known_at": "2022-10-27T00:00:00Z",
+      "expected_sha256": "a839f1a1aacf1b4d9d8a1a0cab09bd1e16428364bf01b2b69154069797f334ea",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2022-10-26-CUT-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2022-10-26-CUT-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2022-10-26",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T05:21:21Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-SAMSUNG-CUT-PROMOTION",
+      "document_key": "samsung_cut",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "as we have now achieved sufficient supply capability for certain products, we plan to cut production of those products",
+      "claim_context": {
+        "claim_id": "MEMSEM-PROMO-J01",
+        "epistemic_layer": "judgment",
+        "claim_role": "management_production_cut_commitment",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0018", "MS-0050"],
+        "product_lines": ["DRAM", "NAND"],
+        "target_time": {"kind": "unknown", "precision": "unknown"},
+        "known_time": {"upper_bound": "2023-04-12T00:00:00Z", "precision": "day"},
+        "comparability_guard": "This is a plan/commitment for certain products, not proof of an executed cut, a DRAM/NAND percentage, an exact product list or a cross-company numeric comparison."
+      }
+    },
+    {
+      "fragment_key": "EVF-SAMSUNG-RECOVERY-PROMOTION",
+      "document_key": "samsung_recovery",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "In the second half, demand is expected to gradually recover as customer inventory levels will have declined due to inventory adjustments",
+      "claim_context": {
+        "claim_id": "MEMSEM-PROMO-J02",
+        "epistemic_layer": "judgment",
+        "claim_role": "management_demand_recovery_expectation",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0024", "MS-0081", "MS-0099"],
+        "product_lines": ["DRAM", "NAND"],
+        "target_time": {"kind": "period", "precision": "half_year", "text": "second half of 2023"},
+        "known_time": {"upper_bound": "2023-04-28T00:00:00Z", "precision": "day"},
+        "hindsight_guard": "This is the April 2023 contemporaneous expectation; later 2023/2024 demand and inventory evidence must be stored separately as revision/outcome evidence."
+      }
+    },
+    {
+      "fragment_key": "EVF-MICRON-CUT-PROMOTION",
+      "document_key": "micron_cut",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "the company is reducing DRAM and NAND wafer starts by approximately 20% versus fiscal fourth quarter 2022",
+      "claim_context": {
+        "claim_id": "MEMSEM-PROMO-R01",
+        "epistemic_layer": "reality",
+        "claim_role": "issuer_reported_current_wafer_start_reduction",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0018", "MS-0050"],
+        "product_lines": ["DRAM", "NAND"],
+        "observed_at": {"date": "2022-11-16", "precision": "day"},
+        "valid_effective_time": {"kind": "unknown", "precision": "unknown"},
+        "known_time": {"upper_bound": "2022-11-17T00:00:00Z", "precision": "day"},
+        "comparability_guard": "Approximately 20% is Micron-specific DRAM+NAND wafer starts versus fiscal Q4 2022; onset before the announcement is not made more precise and the metric is not directly comparable to SK hynix investment cuts or Samsung's product-cut plan."
+      }
+    },
+    {
+      "fragment_key": "EVF-SKHYNIX-CUT-PROMOTION",
+      "document_key": "skhynix_cut",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "Will reduce investment in 2023 by more than 50% YoY, while reducing production volume focusing on less profitable products",
+      "claim_context": {
+        "claim_id": "MEMSEM-PROMO-J03",
+        "epistemic_layer": "judgment",
+        "claim_role": "management_investment_production_reduction_guidance",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0018", "MS-0050"],
+        "product_lines": ["DRAM", "NAND"],
+        "target_time": {"kind": "period", "precision": "year", "text": "2023"},
+        "known_time": {"upper_bound": "2022-10-27T00:00:00Z", "precision": "day"},
+        "comparability_guard": "The >50% figure attaches only to 2023 investment YoY. The production-volume guidance gives no wafer-start, bit-supply or product-line percentage."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 4,
+    "required_fragments": 4,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

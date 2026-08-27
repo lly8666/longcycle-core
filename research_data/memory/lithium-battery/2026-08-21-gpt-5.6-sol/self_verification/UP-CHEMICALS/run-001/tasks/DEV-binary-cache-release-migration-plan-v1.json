@@ -1,0 +1,28 @@
+{
+  "schema_version": "longcycle-dev-binary-cache-migration-plan/v1",
+  "release_tag": "longcycle-dev-binary-cache",
+  "policy": {
+    "development_binary_store": "github_release",
+    "git_history_contains_large_binaries": false,
+    "google_drive_heavy_binary_default": false,
+    "restore_mode": "download_on_demand_to_action_or_sandbox_and_verify_sha256",
+    "terminal_production_archive_configured": false,
+    "future_production_archive": "server_or_object_store_after_product_proves_out"
+  },
+  "assets_to_migrate": [
+    {"file_name":"longcycle-kwinana-grounded-run19.zip","sha256":"1f2ec083a79532a2283562973a31e6af3941ad8bf6e72c108692bab19a368c13","actions_artifact_id":9466558674},
+    {"file_name":"longcycle-kemerton-grounded-run28.zip","sha256":"a568232b15b77696ce0a271b74fd32fb7066fb37476a58288bff68e59a00558f","actions_artifact_id":9467394803},
+    {"file_name":"longcycle-evt003-approved-redistributor-acquisition-run32568791877.zip","sha256":"76d3c74452b48de6a3ecf68b61b2ac37a4a9915ea4fece33d1f7c57ef185e0a8","actions_artifact_id":9474774438},
+    {"file_name":"longcycle-evt003-judgment-replay-run32569365809.zip","sha256":"208314238b4fc43587108a61aaf5377457acb6fd55a493a91f356aa93ef88177","actions_artifact_id":9474916578},
+    {"file_name":"longcycle-evt004-contract-margin-acquisition-run32570106526.zip","sha256":"f0c31409be382d39456aaa6021576e8b07521d7e723f40d6f1969b40d32319b9","actions_artifact_id":9475107860},
+    {"file_name":"longcycle-evt004-contract-margin-replay-run32570715478.zip","sha256":"9f09929101a9645dce011b316ea7e379ca73b025cdde9f9bb72bb0e319580b01","actions_artifact_id":9475245274}
+  ],
+  "runtime_rebuild": {
+    "file_name": "longcycle-duckdb-offline-runtime-py313-v3-release.zip",
+    "duckdb_version": "1.5.5",
+    "duckdb_wheel_sha256": "078e6a60dd8eedde5832f45422ca5c4a6b8c837aeabd8a56ca0b7d933f588053",
+    "pytz_version": "2025.2",
+    "pytz_wheel_sha256": "5ddf76296dd8c44c26eb8f4b6f35488f3ccbf6fbbd7adee0b7262d43f0ec2f00"
+  },
+  "delete_drive_only_after": "Every Release asset has been downloaded back from the Release and its SHA-256 verified."
+}

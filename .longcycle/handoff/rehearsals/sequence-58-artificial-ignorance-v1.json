@@ -1,0 +1,60 @@
+{
+  "schema_version": "longcycle-handoff-rehearsal/v1",
+  "continuity_sequence_tested": 58,
+  "subject_head": "0348acddf80bb8ed870bcd48175354cda540da63",
+  "mode": "same_agent_artificial_ignorance_three_scenario",
+  "independence_limit": "The executing Agent had prior project context, so this is a bounded-input rehearsal, not evidence of true fresh-Agent independence. A separate external fresh-Agent black-box drill is required.",
+  "chat_history_used_for_grading": false,
+  "scenarios": [
+    {
+      "id": "DUMB-01",
+      "prompt_class": "cold start without historical archaeology",
+      "allowed_reads": [
+        "GitHub issue #2",
+        "FRESH_AGENT_BOOTSTRAP.md",
+        "CONTINUE_HERE.md",
+        ".longcycle/handoff/current.json",
+        ".longcycle/capabilities/active-index.json",
+        "live PR #1 metadata",
+        "live exact-head CI"
+      ],
+      "unexpected_reads": [],
+      "recovered": "Longcycle is a point-in-time industrial-memory system. The live sequence-58 task is to validate a normal historical lifecycle beginning from one existing sealed fuzzy-time Memory Lead, preserving uncertainty and reusing CAP-0006 upstream discovery, normal source/Evidence boundaries, CAP-0007 execution and CAP-0005 replay only as justified. Cold project history is not required for this task merely to establish confidence.",
+      "authority_check": "Live PR head matched the sequence-58 handoff head and owner-only exact-head full validation run 32620324795 succeeded.",
+      "pass": true
+    },
+    {
+      "id": "DUMB-02",
+      "prompt_class": "fuzzy prior-history cue about uncertain time",
+      "cue": "I vaguely remember we discussed that uncertain historical time must not be sharpened into exact dates.",
+      "reads": [
+        ".longcycle/capabilities/active-index.json",
+        ".longcycle/repair-memory/active-index.json",
+        ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json",
+        "GitHub issue #42"
+      ],
+      "unexpected_reads": [],
+      "recovered": "The cue legitimately triggers bounded historical recall. Current owners are CAP-0003/CAP-0004 for Reality/Judgment temporal semantics and CAP-0009 for the recall route. RI-0003 supplies the active invariant and exact origin refs; issue #42 independently confirms the original state-as-of patch was required to preserve valid-time, observation-time and known-time separation. No broad devlog or issue crawl was needed.",
+      "authority_check": "The conclusion was verified against an exact origin ref rather than treating the Repair Memory summary or remembered phrase as historical authority.",
+      "pass": true
+    },
+    {
+      "id": "DUMB-03",
+      "prompt_class": "source-pack trap",
+      "reads": [
+        ".longcycle/handoff/current.json",
+        ".longcycle/capabilities/active-index.json"
+      ],
+      "unexpected_reads": [],
+      "recovered": "A convenient research-run/source-pack entrypoint does not redefine historical recovery. CAP-0007 explicitly owns only execution-stage source-pack/Evidence/Reality composition and routes historical discovery upstream to CAP-0006. CAP-0006 explicitly owns blind and fragmentary/approximate temporal Model Memory. Therefore historical recovery remains memory-first and Evidence-final, and fuzzy-time leads must not be discarded or assigned invented exact dates for acquisition convenience.",
+      "pass": true
+    }
+  ],
+  "semantic_score": {
+    "passed": 3,
+    "total": 3,
+    "success_rate": 1.0
+  },
+  "conclusion": "PASS_WITH_INDEPENDENCE_LIMIT",
+  "next_validation": "Run the repository-defined FRESH_AGENT_CONTINUITY_DRILL_V1 with a genuinely fresh Agent. That Agent may write only one report under .longcycle/handoff/rehearsals and must not read this rehearsal before completing its own three scenarios."
+}

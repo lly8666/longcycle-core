@@ -1,0 +1,29 @@
+{
+  "schema_version": "longcycle-self-verification-task/v1",
+  "task_id": "SV-004",
+  "rank": 4,
+  "trajectory": "disitamab vedotin / RC48 / Aidixi / RemeGen + Seagen/Pfizer",
+  "blind_lead_ids": ["ASSET-TRIAL-011", "RIGHTS-BD-004", "REG-COMM-007"],
+  "authority_class": "post_seal_search_discovery_not_evidence",
+  "refined_summary": "Search discovery materially sharpens two blind-memory uncertainties. RemeGen's 2021 license agreement with Seagen was executed on 2021-08-08 and became effective on 2021-09-15; Seagen received exclusive development/commercialization rights in all countries outside the RemeGen Territory, while RemeGen retained Asia excluding Japan and Singapore. RemeGen states that China approved disitamab vedotin for HER2-overexpressing locally advanced/metastatic gastric cancer on 2021-06-09 and that the urothelial-cancer indication was approved on 2021-12-31. A 2025 RemeGen annual report still described Pfizer/Seagen as conducting global trials, so the rights trajectory should not be assumed to have reverted merely because Pfizer acquired Seagen.",
+  "blind_memory_discrepancies": [
+    {"blind_fragment":"Seagen regional license recalled approximately as ex-Asia or ex-Greater-China-style","post_seal_refinement":"Contract defines RemeGen Territory as Asia excluding Japan and Singapore; Seagen territory is the rest of world, so Japan and Singapore belong on the Seagen side."},
+    {"blind_fragment":"China urothelial approval remembered only as an approximate 2021-2022 event","post_seal_refinement":"RemeGen later states NMPA marketing approval occurred on 2021-12-31."}
+  ],
+  "candidate_urls": [
+    "https://www.sec.gov/Archives/edgar/data/1060736/000119312521278354/d196037d8k.htm",
+    "https://www.sec.gov/Archives/edgar/data/1060736/000119312521278354/d196037dex21.htm",
+    "https://www.sec.gov/Archives/edgar/data/1060736/000106073622000016/sgen-20211231.htm",
+    "https://www.remegen.com/index.php?cid=115&id=386&v=show",
+    "https://www.remegen.com/index.php?cid=115&id=1731&v=show",
+    "https://www.remegen.com/uploadfile/2025/04/28/0928fe612b7bdeee1bd7ff62dd3de27c680f55b9e3b96.pdf",
+    "https://www1.hkexnews.hk/search/titlesearch.xhtml?category=0&lang=EN&market=SEHK&stockId=1000062365"
+  ],
+  "possible_primary_source_types": ["filed original RemeGen-Seagen license agreement and SEC 8-K/10-K", "RemeGen issuer announcements/annual reports and HKEX filings", "NMPA/CDE approval records", "ClinicalTrials.gov/Pfizer-Seagen trial records"],
+  "source_origin_notes": ["The filed license agreement is the strongest source for territory mechanics; Seagen 8-K/10-K summaries are the same transaction origin and should not be majority-voted.", "RemeGen website and HKEX filings are one issuer-origin cluster for company claims; NMPA/CDE originals should be preferred for approval-state Evidence when retrievable.", "Post-Pfizer Seagen program materials must distinguish legal owner, licensee, sponsor and operational trial role."],
+  "refined_queries": ["RemeGen Seagen August 8 2021 disitamab vedotin license agreement territory", "Seagen 8-K September 15 2021 RemeGen license effective", "RC48 June 9 2021 NMPA gastric conditional approval", "RC48 December 31 2021 urothelial marketing approval NMPA", "Pfizer Seagen disitamab vedotin global trial current rights", "disitamab vedotin clinical trial sponsor territory Japan Singapore", "RemeGen annual report 2025 disitamab vedotin Pfizer Seagen", "disitamab vedotin rights termination reversion amendment contradiction"],
+  "what_counts_as_support": ["Original contract language establishing territory and license scope.", "NMPA/CDE or issuer filing establishing each indication's approval date and exact biomarker/line-of-therapy scope.", "Post-Pfizer primary material showing whether the license remains active and who sponsors each global trial."],
+  "what_counts_as_contradiction": ["A later amendment/termination returning Seagen/Pfizer territory rights to RemeGen.", "Regulator records showing the remembered gastric or urothelial approval date/scope is wrong.", "Evidence that a trial attributed to Seagen/Pfizer is actually RemeGen-sponsored or region-specific, requiring role correction."],
+  "unresolved_questions": ["What exact label and HER2 threshold applied to the 2021 urothelial approval?", "Which 2026 indication approvals broadened the original label versus creating new regimen/biomarker branches?", "After Pfizer's Seagen acquisition, which entity is legal licensee, trial sponsor, commercial-right holder and manufacturing party in each territory?"],
+  "delegated_evidence_instructions": "Archive the filed 2021 license contract, regulator/issuer approval originals for gastric and urothelial indications, and a current post-Pfizer rights/sponsor source. Build separate relations for molecule owner/originator, licensee, sponsor, territory and indication-level regulatory state. Record the two blind-memory refinements here only; never edit the sealed blind archive."
+}

@@ -1,0 +1,72 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0006",
+  "status": "active",
+  "kind": "architecture",
+  "severity": "high",
+  "title": "New projections compose semantic owners instead of redefining them",
+  "scope": [
+    "src/longcycle/application/*view*.py",
+    "src/longcycle/application/*projection*.py",
+    "src/longcycle/adapters/storage/postgres_*.py",
+    "src/longcycle/ports/*.py",
+    "src/longcycle/domain/*.py",
+    "tests/test_*view*.py",
+    "scripts/smoke_postgres_*.py",
+    ".longcycle/capabilities/**",
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "CONTINUE_HERE.md"
+  ],
+  "tags": [
+    "semantic-owner",
+    "projection",
+    "composition",
+    "negative-case",
+    "capability-governance",
+    "fresh-agent",
+    "shadow-semantics"
+  ],
+  "failure_signature": "A new read/projection/composition layer passes its own tests but silently invents a second definition of an already-owned semantic such as source independence, historical visibility, current research scope, campaign sealing or authority class.",
+  "root_cause": "Cold start recovered mission and current task but treated capability discovery as sufficient. New paths had no path-scoped Repair Memory history, exact admission owner cards and their negative cases were not mandatory pre-implementation reads, and tests validated the new layer's assumptions instead of testing equivalence to the existing owner.",
+  "invariant": "Before substantive new projection/composition work, load every exact capability ID named by the current admission, read the relevant owner card/entrypoints/guards, enumerate which owner semantics the new layer imports, and reuse the typed owner contract or canonical primitive. If an adapter must read storage directly, prove semantic equivalence with owner negative cases. Fuzzy relevant lookup is discovery help, never authority.",
+  "anti_regression": [
+    "Do not invent a local proxy for an existing owner semantic just because the new layer is read-only or presentation-facing.",
+    "Do not let a new file escape semantic-owner review merely because path-scoped Repair Memory returns no match.",
+    "Do not use fuzzy capability search to recover owner IDs that are already explicitly present in current admission.",
+    "For every imported semantic, add at least one owner-derived negative case to the new layer's hard acceptance path.",
+    "Direct SQL may implement a storage adapter, but the adapter must preserve the existing owner semantic rather than interpreting table recency or identifiers as new truth rules."
+  ],
+  "guards": [
+    {
+      "kind": "test",
+      "path": "tests/test_capability_registry.py",
+      "contains": "fuzzy relevant() search is discovery help, not authority.",
+      "description": "Zero-context rehearsal restores exact admission target owners directly instead of trusting fuzzy retrieval."
+    },
+    {
+      "kind": "protocol",
+      "path": "FRESH_AGENT_BOOTSTRAP.md",
+      "contains": "Exact admission target IDs are authority; fuzzy capability search is discovery help only.",
+      "description": "Fresh-agent protocol requires exact owner recovery before new semantic composition."
+    },
+    {
+      "kind": "protocol",
+      "path": "CONTINUE_HERE.md",
+      "contains": "新 projection / composition 不能重新解释 owner 已经定义的语义",
+      "description": "Continuation protocol makes semantic-owner reuse explicit for newly created paths."
+    },
+    {
+      "kind": "runtime",
+      "path": "scripts/smoke_postgres_open_states.py",
+      "contains": "Must be ignored because it was recorded after seal",
+      "description": "Real PostgreSQL negative case proves a new projection cannot reinterpret post-seal append recency as sealed campaign truth."
+    }
+  ],
+  "revisit_when": "Revisit only if capability admission is replaced by a stronger exact semantic dependency graph that mechanically supplies owner contracts and negative cases to new composition work.",
+  "origin_refs": [
+    "incident:researcher-open-state-shadow-semantics",
+    "docs/development/assistant-session-standards-audit-v1.md",
+    "ci:researcher-open-states-negative-cases"
+  ],
+  "supersedes": []
+}

@@ -1,0 +1,184 @@
+from __future__ import annotations
+
+from datetime import UTC, datetime, timedelta
+from uuid import NAMESPACE_URL, uuid5
+
+import pytest
+
+from longcycle.application.historical_replay import (
+    ReplayEvidence,
+    ReplaySnapshot,
+    build_replay_frame,
+    build_replay_sequence,
+    build_replay_snapshot,
+    build_replay_transition,
+)
+
+
+def evidence(
+    fragment_key: str,
+    known_at: datetime,
+    *,
+    role: str = "management_expectation",
+) -> ReplayEvidence:
+    return ReplayEvidence(
+        fragment_key=fragment_key,
+        evidence_fragment_id=uuid5(NAMESPACE_URL, f"evidence:{fragment_key}"),
+        document_version_id=uuid5(NAMESPACE_URL, f"document:{fragment_key}"),
+        artifact_id=None,
+        locator=f"text:{len(fragment_key)}:{len(fragment_key) + 5}",
+        excerpt=f"statement {fragment_key}",
+        claim_role=role,
+        known_time_upper_bound=known_at,
+        known_time_precision="instant",
+        valid_effective_time=None,
+        expectation_horizon=None,
+    )
+
+
+def test_snapshot_exposes_only_evidence_knowable_by_cutoff() -> None:
+    first = datetime(2022, 5, 4, 16, 48, 41, tzinfo=UTC)
+    outcome = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    population = (
+        evidence("first-product-expectation", first),
+        evidence("first-product-outcome", outcome, role="outcome_milestone"),
+    )
+
+    before = build_replay_snapshot(
+        population,
+        knowledge_cutoff=outcome - timedelta(seconds=1),
+    )
+    at = build_replay_snapshot(population, knowledge_cutoff=outcome)
+
+    assert [item.fragment_key for item in before.evidence] == ["first-product-expectation"]
+    assert [item.fragment_key for item in at.evidence] == [
+        "first-product-expectation",
+        "first-product-outcome",
+    ]
+    serialized_before = before.model_dump(mode="json")
+    assert "first-product-outcome" not in str(serialized_before)
+    assert "hidden" not in serialized_before
+    assert "future" not in serialized_before
+
+
+def test_exact_known_time_boundary_is_inclusive() -> None:
+    known_at = datetime(2021, 8, 4, 16, 25, 25, tzinfo=UTC)
+    item = evidence("revision", known_at)
+
+    before = build_replay_snapshot(
+        (item,),
+        knowledge_cutoff=known_at - timedelta(microseconds=1),
+    )
+    at = build_replay_snapshot((item,), knowledge_cutoff=known_at)
+
+    assert before.evidence == ()
+    assert at.evidence == (item,)
+
+
+def test_sequence_is_monotone_and_deterministic() -> None:
+    t1 = datetime(2019, 1, 2, 23, 59, 59, tzinfo=UTC)
+    t2 = datetime(2019, 8, 7, 16, 57, 18, tzinfo=UTC)
+    population = (
+        evidence("z-second-at-first-time", t1),
+        evidence("a-first-at-first-time", t1),
+        evidence("later", t2),
+    )
+
+    snapshots = build_replay_sequence(
+        population,
+        knowledge_cutoffs=(t1, t2),
+    )
+
+    assert [item.fragment_key for item in snapshots[0].evidence] == [
+        "a-first-at-first-time",
+        "z-second-at-first-time",
+    ]
+    assert {item.fragment_key for item in snapshots[0].evidence}.issubset(
+        {item.fragment_key for item in snapshots[1].evidence}
+    )
+
+
+def test_frame_groups_visible_evidence_by_existing_claim_role() -> None:
+    cutoff = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    snapshot = build_replay_snapshot(
+        (
+            evidence("expectation-b", cutoff, role="management_expectation"),
+            evidence("status", cutoff, role="project_status"),
+            evidence("expectation-a", cutoff, role="management_expectation"),
+        ),
+        knowledge_cutoff=cutoff,
+    )
+
+    frame = build_replay_frame(snapshot)
+
+    assert [group.claim_role for group in frame.role_groups] == [
+        "management_expectation",
+        "project_status",
+    ]
+    assert [item.fragment_key for item in frame.role_groups[0].evidence] == [
+        "expectation-a",
+        "expectation-b",
+    ]
+
+
+def test_transition_contains_only_evidence_newly_knowable_in_window() -> None:
+    first = datetime(2022, 5, 4, 16, 48, 41, tzinfo=UTC)
+    outcome = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    population = (
+        evidence("first-product-expectation", first),
+        evidence("first-product-outcome", outcome, role="outcome_milestone"),
+    )
+    previous = build_replay_snapshot(
+        population,
+        knowledge_cutoff=outcome - timedelta(seconds=1),
+    )
+    current = build_replay_snapshot(population, knowledge_cutoff=outcome)
+
+    transition = build_replay_transition(previous, current)
+
+    assert [group.claim_role for group in transition.new_evidence_groups] == ["outcome_milestone"]
+    assert [item.fragment_key for item in transition.new_evidence_groups[0].evidence] == [
+        "first-product-outcome"
+    ]
+    serialized = transition.model_dump(mode="json")
+    assert "first-product-expectation" not in str(serialized)
+
+
+def test_transition_rejects_non_monotone_snapshots() -> None:
+    first = datetime(2022, 5, 4, 16, 48, 41, tzinfo=UTC)
+    second = datetime(2022, 8, 3, 16, 27, 49, tzinfo=UTC)
+    retained = evidence("retained", first)
+    previous = build_replay_snapshot((retained,), knowledge_cutoff=first)
+    current = build_replay_snapshot((), knowledge_cutoff=second)
+
+    with pytest.raises(ValueError, match="not monotone"):
+        build_replay_transition(previous, current)
+
+
+def test_naive_cutoff_is_rejected() -> None:
+    with pytest.raises(ValueError, match="timezone"):
+        build_replay_snapshot(
+            (),
+            knowledge_cutoff=datetime(2022, 1, 1),
+        )
+
+
+def test_snapshot_model_rejects_future_evidence() -> None:
+    cutoff = datetime(2022, 1, 1, tzinfo=UTC)
+    future = evidence("future", cutoff + timedelta(seconds=1))
+
+    with pytest.raises(ValueError, match="after the knowledge cutoff"):
+        ReplaySnapshot(
+            knowledge_cutoff=cutoff,
+            evidence=(future,),
+        )
+
+
+def test_sequence_requires_strictly_increasing_cutoffs() -> None:
+    cutoff = datetime(2022, 1, 1, tzinfo=UTC)
+
+    with pytest.raises(ValueError, match="strictly increasing"):
+        build_replay_sequence(
+            (),
+            knowledge_cutoffs=(cutoff, cutoff),
+        )

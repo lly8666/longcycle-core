@@ -1,0 +1,240 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+      - design/industry-memory
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e ".[dev,postgres,s3,duckdb]"
+
+      - name: Repair memory audit (hard gate)
+        id: repair_memory
+        run: python scripts/repair_memory.py audit
+
+      - name: Capability registry metadata audit (hard gate)
+        id: capabilities
+        run: |
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+
+          script = Path("scripts/capability_registry.py")
+          spec = importlib.util.spec_from_file_location("capability_registry_ci", script)
+          if spec is None or spec.loader is None:
+              raise RuntimeError("cannot load capability registry")
+          registry = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(registry)
+          cards = registry.load_cards()
+          active = {card["id"]: card for _, card in cards if card["status"] == "active"}
+          registry.validate_admission(active)
+          registry.validate_handoff()
+          generated = registry._canonical_json(registry.build_index(cards))
+          Path("/tmp/generated-active-index.json").write_text(generated, encoding="utf-8")
+          print(f"CAPABILITY_REGISTRY_METADATA_PASS active={len(active)}")
+          PY
+
+      - name: Typed session handoff contract (hard gate)
+        id: handoff_contract
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from longcycle.application.session_handoff import SessionHandoffCheckpoint
+
+          path = Path(".longcycle/handoff/current.json")
+          SessionHandoffCheckpoint.model_validate_json(path.read_text(encoding="utf-8"))
+          print("SESSION_HANDOFF_TYPED_PASS")
+          PY
+
+      - name: PostgreSQL migrations (hard gate)
+        id: migrations
+        run: longcycle --json db upgrade
+
+      - name: PostgreSQL repository smoke (hard gate)
+        id: postgres_repository
+        run: python scripts/smoke_postgres_repository.py
+
+      - name: PostgreSQL judgment aggregate smoke (hard gate)
+        id: postgres_judgments
+        run: python scripts/smoke_postgres_judgments.py
+
+      - name: PostgreSQL canonical Reality smoke (hard gate)
+        id: postgres_reality
+        run: python scripts/smoke_postgres_reality.py
+
+      - name: Typed industrial memory integration (hard gate)
+        id: epistemic_memory
+        run: python scripts/smoke_postgres_epistemic.py
+
+      - name: PostgreSQL researcher industry orientation (hard gate)
+        id: industry_orientation
+        run: python scripts/smoke_postgres_orientation.py
+
+      - name: Real-source researcher orientation acceptance (hard gate)
+        id: real_industry_orientation
+        run: python scripts/smoke_postgres_real_orientation.py
+
+      - name: PostgreSQL membership provenance guards (hard gate)
+        id: membership_provenance_guards
+        run: python scripts/smoke_postgres_membership_provenance_guards.py
+
+      - name: PostgreSQL researcher open states (hard gate)
+        id: researcher_open_states
+        run: python scripts/smoke_postgres_open_states_workspace.py
+
+      - name: PostgreSQL researcher Evidence drilldown (hard gate)
+        id: evidence_drilldown
+        run: python scripts/smoke_postgres_evidence_drilldown.py
+
+      - name: Materialized grounded Evidence integration (hard gate)
+        id: materialized_evidence
+        run: python scripts/smoke_materialized_grounded_evidence.py
+
+      - name: No-lookahead portable evidence replay smoke (hard gate)
+        id: replay
+        run: python scripts/smoke_no_lookahead_replay.py
+
+      - name: No-lookahead Judgment replay smoke (hard gate)
+        id: judgment_replay
+        run: python scripts/smoke_no_lookahead_judgment_replay.py
+
+      - name: Ruff (diagnostic during memory campaign)
+        id: ruff
+        continue-on-error: true
+        run: ruff check .
+
+      - name: Mypy (hard gate)
+        id: mypy
+        run: mypy src
+
+      - name: Pytest (hard gate)
+        id: pytest
+        run: pytest -q
+
+      - name: Build memory compact indexes (hard gate)
+        id: compact
+        run: >-
+          python scripts/build_memory_compact_indexes.py
+          research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol
+          .artifacts/memory-compact-indexes
+
+      - name: Audit memory history provenance (hard gate)
+        id: memory_history
+        run: >-
+          python scripts/audit_memory_history.py
+          research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol
+          .artifacts/memory-history-audit.json
+
+      - name: Capability generated index consistency (hard gate)
+        id: capability_index
+        run: |
+          if ! diff -u .longcycle/capabilities/active-index.json /tmp/generated-active-index.json; then
+            echo 'Capability cards are canonical; active-index.json is a stale generated artifact.'
+            echo 'Run: python scripts/capability_registry.py rebuild-index'
+            exit 1
+          fi
+
+      - name: Upload memory compact indexes
+        if: steps.compact.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-compact-indexes
+          path: .artifacts/memory-compact-indexes
+          if-no-files-found: error
+
+      - name: Upload memory history audit
+        if: steps.memory_history.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-history-audit
+          path: .artifacts/memory-history-audit.json
+          if-no-files-found: error
+
+      - name: Check summary
+        if: always()
+        run: |
+          echo "repair_memory=${{ steps.repair_memory.outcome }} (hard gate)"
+          echo "capabilities=${{ steps.capabilities.outcome }} (hard gate)"
+          echo "handoff_contract=${{ steps.handoff_contract.outcome }} (hard gate)"
+          echo "migrations=${{ steps.migrations.outcome }} (hard gate)"
+          echo "postgres_repository=${{ steps.postgres_repository.outcome }} (hard gate)"
+          echo "postgres_judgments=${{ steps.postgres_judgments.outcome }} (hard gate)"
+          echo "postgres_reality=${{ steps.postgres_reality.outcome }} (hard gate)"
+          echo "epistemic_memory=${{ steps.epistemic_memory.outcome }} (hard gate)"
+          echo "industry_orientation=${{ steps.industry_orientation.outcome }} (hard gate)"
+          echo "real_industry_orientation=${{ steps.real_industry_orientation.outcome }} (hard gate)"
+          echo "membership_provenance_guards=${{ steps.membership_provenance_guards.outcome }} (hard gate)"
+          echo "researcher_open_states=${{ steps.researcher_open_states.outcome }} (hard gate)"
+          echo "evidence_drilldown=${{ steps.evidence_drilldown.outcome }} (hard gate)"
+          echo "materialized_evidence=${{ steps.materialized_evidence.outcome }} (hard gate)"
+          echo "replay=${{ steps.replay.outcome }} (hard gate)"
+          echo "judgment_replay=${{ steps.judgment_replay.outcome }} (hard gate)"
+          echo "ruff=${{ steps.ruff.outcome }} (diagnostic only during the memory campaign)"
+          echo "mypy=${{ steps.mypy.outcome }} (hard gate)"
+          echo "pytest=${{ steps.pytest.outcome }} (hard gate)"
+          echo "compact=${{ steps.compact.outcome }} (hard gate)"
+          echo "memory_history=${{ steps.memory_history.outcome }} (hard gate)"
+          echo "capability_index=${{ steps.capability_index.outcome }} (hard gate)"
+
+      - name: Publish full CI success status
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          -f state=success
+          -f context=longcycle/full-ci
+          -f description='Full hard-gate CI passed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      - name: Publish full CI failure status
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          -f state=failure
+          -f context=longcycle/full-ci
+          -f description='One or more full CI hard gates failed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"

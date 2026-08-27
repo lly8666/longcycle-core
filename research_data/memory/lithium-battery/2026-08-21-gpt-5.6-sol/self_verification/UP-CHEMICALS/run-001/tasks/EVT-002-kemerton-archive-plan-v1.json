@@ -1,0 +1,174 @@
+{
+  "schema_version": "longcycle-evidence-archive-plan/v1",
+  "task_id": "EVT-002-KEMERTON-GUIDANCE-TRAJECTORY",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "status": "primary_targets_fixed_archive_not_executed",
+  "epistemic_boundary": {
+    "this_plan_is_evidence": false,
+    "web_discovery_is_evidence": false,
+    "blind_atlas_mutated": false,
+    "facts_created": false,
+    "judgments_created": false,
+    "archive_required_before_evidence": true
+  },
+  "execution_principle": "Archive one bounded primary trajectory that preserves management guidance, contractual schedule, project-state revisions and later outcome as distinct semantic roles. SEC retrieval of an Albemarle-authored disclosure is retrieval provenance, not independent corroboration. Do not collapse construction completion, successful commissioning, qualification, first product, commercial production or sales into one production date.",
+  "source_identity": {
+    "publisher_name": "Albemarle primary disclosures",
+    "publisher_domain": "investors.albemarle.com",
+    "allowed_retrieval_domains": [
+      "investors.albemarle.com",
+      "www.sec.gov"
+    ],
+    "authority_note": "Albemarle remains the publisher/claim authority for its releases and filings; SEC is the retrieval/filing transport. The 2019 contract schedule is primary contractual language filed by Albemarle and must be labeled contract_schedule, not management_guidance."
+  },
+  "required_vintages": [
+    {
+      "vintage_id": "KEMERTON-2019-LAUNCH-GUIDANCE",
+      "role": "ManagementExpectation",
+      "requested_url": "https://investors.albemarle.com/news-and-events/news/news-details/2019/ALBEMARLE-BEGINS-EARTHWORKS-AT-KEMERTON-PROJECT-REMAINS-ON-TARGET-IN-WESTERN-AUSTRALIA-EXPANSIONS-01-02-2019/default.aspx",
+      "source_type": "first_party_investor_release_html",
+      "source_date": "2019-01-02",
+      "known_time_candidate": "2019-01-02T23:59:59Z",
+      "target_claim_anchors": [
+        "Kemerton earthworks had begun and management said the site was on track with projections.",
+        "The project was described as 60,000 metric tons initial lithium-hydroxide capacity with expansion ability to 100,000 metric tons over time.",
+        "Commissioning was expected to start in stages during 2021."
+      ],
+      "expectation_horizon": "staged commissioning during 2021",
+      "capacity_scope": "project-level public management description before later contractual descoping detail",
+      "next_action": "archive exact investor-release bytes and ground launch/capacity/commissioning excerpts"
+    },
+    {
+      "vintage_id": "KEMERTON-2019-CONTRACT-SCHEDULE",
+      "role": "ContractSchedule",
+      "requested_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591319000078/exhibit1020630201910q.htm",
+      "source_type": "sec_filed_contract_html",
+      "sec_accession": "0000915913-19-000078",
+      "sec_accepted_at": "2019-08-07T16:57:18Z",
+      "known_time_candidate": "2019-08-07T16:57:18Z",
+      "target_claim_anchors": [
+        "Train 1 and Train 2 were each defined as initially 20,000 tpa and expected 25,000 tpa after a debottlenecking project.",
+        "The buyer was required to use reasonable endeavours to complete construction and successful Commissioning by 18 March 2021 for Train 1 and 25 July 2021 for Train 2, or as soon as reasonably possible afterward.",
+        "The agreement describes a descoping from three lithium-hydroxide processing trains to Train 1 and Train 2 and a 60/40 ownership context."
+      ],
+      "expectation_horizon": [
+        "Train 1 contract target 2021-03-18",
+        "Train 2 contract target 2021-07-25",
+        "debottlenecking around/after 2021 handover"
+      ],
+      "capacity_scope": "two contract-defined trains: 40kt initial, 50kt after debottlenecking; do not overwrite the January 2019 project-level 60kt public description",
+      "next_action": "archive exact SEC exhibit and ground contract-defined capacity, dates, descoping and ownership fragments separately from management guidance"
+    },
+    {
+      "vintage_id": "KEMERTON-2020-10K-GUIDANCE",
+      "role": "ManagementExpectationRevision",
+      "requested_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591321000018/alb-20201231.htm",
+      "source_type": "sec_filed_10k_html",
+      "sec_accession": "0000915913-21-000018",
+      "sec_accepted_at": "2021-02-19T16:37:48Z",
+      "known_time_candidate": "2021-02-19T16:37:48Z",
+      "target_claim_anchor": "Construction of Kemerton and La Negra was expected to be completed by the end of 2021, with sales volume from these plants beginning in 2022.",
+      "expectation_horizon": {
+        "construction_completion": "2021-year-end",
+        "sales_volume_begin": "2022"
+      },
+      "next_action": "archive exact 10-K and ground the Kemerton construction-completion and sales-volume guidance without importing later startup knowledge"
+    },
+    {
+      "vintage_id": "KEMERTON-2021Q2-REVISION",
+      "role": "ManagementExpectationRevision",
+      "requested_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591321000147/a2q21earningsreleaseex991.htm",
+      "source_type": "sec_filed_earnings_release_html",
+      "sec_accession": "0000915913-21-000147",
+      "sec_accepted_at": "2021-08-04T16:25:25Z",
+      "known_time_candidate": "2021-08-04T16:25:25Z",
+      "target_claim_anchors": [
+        "Kemerton I remained on track for construction completion later in 2021.",
+        "Labor shortages and COVID-19 travel restrictions led the company to prioritize Kemerton I and move Kemerton II construction completion to the end of 2022Q1.",
+        "Kemerton I and II were expected to reach commercial production in 2022 after an approximately six-month commissioning and qualification period."
+      ],
+      "expectation_horizon": [
+        "Kemerton I construction completion later 2021",
+        "Kemerton II construction completion by 2022Q1 end",
+        "commercial production during 2022 after ~6 month commissioning and qualification"
+      ],
+      "explicit_revision_cause": "labor shortages and COVID-19 travel restrictions in Western Australia",
+      "next_action": "archive exact EX-99.1 and preserve revision cause plus commissioning/qualification period separately from construction completion"
+    },
+    {
+      "vintage_id": "KEMERTON-2021Q4-MECHANICAL-COMPLETE",
+      "role": "ProjectStateAndExpectationRevision",
+      "requested_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000017/a4q21earningsreleaseex991.htm",
+      "source_type": "sec_filed_earnings_release_html",
+      "sec_accession": "0000915913-22-000017",
+      "sec_accepted_at": "2022-02-16T16:37:45Z",
+      "known_time_candidate": "2022-02-16T16:37:45Z",
+      "target_claim_anchors": [
+        "Kemerton I was mechanically complete and in the commissioning phase.",
+        "Kemerton II remained under construction with the construction team dedicated to it."
+      ],
+      "project_state_semantics": "mechanical completion is an achieved state; commissioning is subsequent and must not be collapsed into commercial production or qualification",
+      "next_action": "archive exact EX-99.1 and ground mechanical-complete versus commissioning state"
+    },
+    {
+      "vintage_id": "KEMERTON-2022Q1-FIRST-PRODUCT-EXPECTATION",
+      "role": "ManagementExpectationRevision",
+      "requested_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000101/a1q22earningsreleaseex991.htm",
+      "source_type": "sec_filed_earnings_release_html",
+      "sec_accession": "0000915913-22-000101",
+      "sec_accepted_at": "2022-05-04T16:48:41Z",
+      "known_time_candidate": "2022-05-04T16:48:41Z",
+      "target_claim_anchors": [
+        "Kemerton I remained in commissioning and was expected to achieve first product in May 2022.",
+        "Kemerton II remained on track for mechanical completion in the second half of 2022."
+      ],
+      "expectation_horizon": {
+        "Kemerton_I_first_product": "2022-05",
+        "Kemerton_II_mechanical_completion": "2022-H2"
+      },
+      "next_action": "archive exact EX-99.1 and ground first-product expectation distinctly from commercial production/qualification"
+    },
+    {
+      "vintage_id": "KEMERTON-2022Q2-FIRST-PRODUCT-OUTCOME",
+      "role": "OutcomeMilestone",
+      "requested_url": "https://www.sec.gov/Archives/edgar/data/915913/000091591322000134/a2q22earningsreleaseex991.htm",
+      "source_type": "sec_filed_earnings_release_html",
+      "sec_accession": "0000915913-22-000134",
+      "sec_accepted_at": "2022-08-03T16:27:49Z",
+      "known_time_candidate": "2022-08-03T16:27:49Z",
+      "target_claim_anchor": "Kemerton I achieved first product in July 2022.",
+      "milestone_valid_time": {
+        "from": "2022-07-01",
+        "to": "2022-07-31",
+        "precision": "month"
+      },
+      "temporal_interpretation": "This later outcome evaluates the May-2022 first-product expectation but must never be backfilled into earlier guidance vintages.",
+      "next_action": "archive exact EX-99.1 and ground July first-product outcome as a later milestone"
+    }
+  ],
+  "trajectory_acceptance": {
+    "minimum_required_archived_vintages": 7,
+    "all_required_vintages_must_archive": true,
+    "must_preserve": [
+      "source_document_digest",
+      "immutable_blob_locator",
+      "evidence_fragment_locator",
+      "source_published_or_known_time",
+      "contract_schedule_separately_from_management_guidance",
+      "construction_mechanical_completion_commissioning_qualification_first_product_sales_as_distinct_states",
+      "50kt_60kt_capacity_scope_and_vintage",
+      "explicit_delay_causes_only_when_primary_source_states_them",
+      "later_outcome_separately_from_prior_expectation"
+    ],
+    "must_not_do": [
+      "edit sealed blind memory",
+      "count Albemarle release and SEC-filed copy of the same disclosure as independent evidence",
+      "silently choose 50kt or 60kt as universally correct",
+      "collapse contract target dates into management guidance",
+      "collapse mechanical completion, commissioning, qualification, first product, commercial production and sales",
+      "rewrite prior expectations using the July-2022 first-product outcome"
+    ]
+  },
+  "next_action": "Archive these seven fixed primary vintages through the normal runtime, record exact content digests and visible-text anchors, then compile the grounded EvidenceFragment spec and portable DuckDB replay bundle using the proven EVT-001 path."
+}

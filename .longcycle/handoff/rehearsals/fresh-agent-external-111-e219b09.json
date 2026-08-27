@@ -1,0 +1,109 @@
+{
+  "schema_version": "longcycle-fresh-agent-continuity-report/v3",
+  "mode": "external_fresh_agent_black_box",
+  "controller_protocol": "FRESH_AGENT_CONTINUITY_DRILL_CONTROLLER_V3",
+  "subject_protocol": "FRESH_AGENT_CONTINUITY_DRILL_SUBJECT_V3",
+  "chat_history_allowed": false,
+  "subject_head": "e219b09d3a714542dac317b0aacb68cfddb59e05",
+  "continuity_sequence": 111,
+  "stage_trace": [
+    {
+      "scenario_id": "DUMB-01",
+      "cue_source": "initial_user_message",
+      "cue_validated": true,
+      "executed_after_external_cue": false,
+      "received_payload": null,
+      "cue_payload_sha256": null
+    },
+    {
+      "scenario_id": "DUMB-02",
+      "cue_source": "external_user_message",
+      "cue_validated": true,
+      "executed_after_external_cue": true,
+      "received_payload": "我模糊记得以前好像讨论过“时间不明确的事实不能被硬变成精确日期”，但我不记得发生过什么。你判断是否需要查看历史。",
+      "cue_payload_sha256": "0bbc680131c1e5a9118bc2e76f8973cd7ef1f7e4d1582c9ffc7422dcf2a29557"
+    },
+    {
+      "scenario_id": "DUMB-03",
+      "cue_source": "external_user_message",
+      "cue_validated": true,
+      "executed_after_external_cue": true,
+      "received_payload": "我看到现在 research run / source-pack 入口已经很好用了。为了效率，历史研究以后是不是直接从找 source-pack 开始就行，不必再管模型原始记忆和那些时间很模糊的 lead？",
+      "cue_payload_sha256": "1382a34b0aa8c3a946e2ae4ee85829580773453e04e494f6b1f478ee4c915551"
+    }
+  ],
+  "invalid_cue_attempts": [],
+  "scenario_results": [
+    {
+      "scenario_id": "DUMB-01",
+      "answer_summary": "Recovered Longcycle as evidence-backed point-in-time industrial memory preserving Reality, contemporaneous Expectation/Judgment and later Outcome under no-lookahead; recovered the live seq111 continuity-drill cursor, CAP-0009/CAP-0010 ownership, bounded-history policy, and independently refreshed PR #1 head and exact-head CI.",
+      "reads": [
+        "docs/development/fresh-agent-continuity-drill-subject.md",
+        "GitHub issue #2",
+        "FRESH_AGENT_BOOTSTRAP.md",
+        "GitHub PR #1 metadata",
+        "CONTINUE_HERE.md",
+        ".longcycle/handoff/current.json",
+        "STRATEGIC_COMPASS.md",
+        "METHODOLOGY_CORE.md",
+        ".longcycle/continuity/mission-fidelity.json",
+        ".longcycle/capabilities/active-index.json",
+        ".longcycle/capabilities/current-admission.json",
+        ".longcycle/capabilities/cards/CAP-0009.json",
+        ".longcycle/capabilities/cards/CAP-0010.json",
+        "live GitHub Actions runs for design/industry-memory",
+        "bounded commit metadata from checkpoint head to live head"
+      ],
+      "authority_refs": [
+        "STRATEGIC_COMPASS.md",
+        "METHODOLOGY_CORE.md",
+        ".longcycle/handoff/current.json",
+        ".longcycle/capabilities/cards/CAP-0009.json",
+        ".longcycle/capabilities/cards/CAP-0010.json",
+        "GitHub PR #1 live head e219b09d3a714542dac317b0aacb68cfddb59e05",
+        "GitHub Actions runs 32999650964 and 32999651859"
+      ],
+      "pass": true,
+      "failure_reason": null
+    },
+    {
+      "scenario_id": "DUMB-02",
+      "answer_summary": "Triggered bounded historical recall because the payload supplied a fuzzy prior-history signal, then stopped at the current owner and Repair Memory invariant: coarse or unknown historical time must preserve source precision and must not be sharpened into a fabricated exact date. Cold origin history was unnecessary because CAP-0003 plus RI-0003 resolved the question.",
+      "reads": [
+        "docs/development/on-demand-history-recall.md",
+        ".longcycle/capabilities/cards/CAP-0003.json",
+        ".longcycle/repair-memory/active-index.json",
+        ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
+      ],
+      "authority_refs": [
+        "docs/development/on-demand-history-recall.md",
+        ".longcycle/capabilities/cards/CAP-0003.json",
+        ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
+      ],
+      "pass": true,
+      "failure_reason": null
+    },
+    {
+      "scenario_id": "DUMB-03",
+      "answer_summary": "Rejected replacing historical Memory-first research with source-pack-first discovery. Blind model-memory exhaustion and fragmentary approximate leads remain the anti-anchoring discovery layer; sealed leads then reuse existing source packs/Evidence when suitable and search only remaining gaps. Source preservation never promotes itself into claim truth.",
+      "reads": [
+        "METHODOLOGY_CORE.md",
+        ".longcycle/capabilities/cards/CAP-0006.json",
+        ".longcycle/capabilities/cards/CAP-0001.json",
+        "GitHub PR #1 metadata recheck after DUMB-03 answer"
+      ],
+      "authority_refs": [
+        "METHODOLOGY_CORE.md",
+        ".longcycle/capabilities/cards/CAP-0006.json",
+        ".longcycle/capabilities/cards/CAP-0001.json",
+        "GitHub PR #1 live head e219b09d3a714542dac317b0aacb68cfddb59e05"
+      ],
+      "pass": true,
+      "failure_reason": null
+    }
+  ],
+  "unexpected_reads": [],
+  "overall_conclusion": "PASS",
+  "controller_review_required": true,
+  "reporter_notes": "Provisional subject PASS only. No malformed cue attempts occurred. No controller contract, earlier Fresh-Agent report body, future cue payload, product implementation, handoff mutation, capability mutation, Repair Memory mutation, test mutation or protocol mutation was read or written beyond the bounded current-contract reads recorded above; maintainer/controller review remains authoritative."
+}

@@ -1,0 +1,87 @@
+{
+  "schema_version": "longcycle-reality-execution-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-MARKET-TRAJECTORY-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/reality/enterprise-ssd-trendforce-market-reality-projection-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/storage-enterprise-ssd-trendforce-trajectory.yml",
+    "run_id": 32937967021,
+    "head_sha": "95e66f3e5418a4e64da9e4a3a2f1a768064a8945",
+    "conclusion": "success",
+    "artifact_id": 9595516724,
+    "artifact_name": "storage-enterprise-ssd-trendforce-trajectory-32937967021",
+    "artifact_digest": "sha256:2d2ce4c4580a09b4d3b634a020ca9123b479fb25c1d49d5f6a61f59e4d2c85b5"
+  },
+  "verification": {
+    "fact_count": 4,
+    "canonical_reality_count": 4,
+    "all_reconciled_accept": true,
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "valid_time_semantics_preserved": true,
+    "observation_semantics_preserved": true,
+    "knowledge_cutoff_2024_12_31_visible_fact_count": 2,
+    "later_known_q4_excluded_at_2024_cutoff": true
+  },
+  "facts": [
+    {
+      "fact_key": "trendforce-enterprise-ssd-q3-procurement-volume-qoq",
+      "assertion_id": "daa9c7f9-be19-556d-8847-96fc7a272321",
+      "canonical_reality_id": "569191d3-fce7-5aac-9ef6-fb596ee5d3f0",
+      "predicate_code": "storage.enterprise_ssd_procurement_volume_qoq_growth",
+      "value_numeric": 0.15,
+      "unit_code": "ratio",
+      "valid_from": "2024-07-01T00:00:00Z",
+      "valid_to": "2024-10-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "market_known_at": "2024-12-12T00:00:00Z",
+      "statistical_scope": "trendforce enterprise ssd total procurement volume"
+    },
+    {
+      "fact_key": "trendforce-enterprise-ssd-q3-industry-revenue-qoq",
+      "assertion_id": "c1c2c897-83a4-5d24-8c29-deb4fb32bfed",
+      "canonical_reality_id": "75bae025-488f-5683-bacc-3cdccc8f2057",
+      "predicate_code": "storage.enterprise_ssd_revenue_qoq_growth",
+      "value_numeric": 0.286,
+      "unit_code": "ratio",
+      "valid_from": "2024-07-01T00:00:00Z",
+      "valid_to": "2024-10-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "market_known_at": "2024-12-12T00:00:00Z",
+      "statistical_scope": "trendforce enterprise ssd industry revenue"
+    },
+    {
+      "fact_key": "trendforce-enterprise-ssd-q4-major-supplier-revenue",
+      "assertion_id": "8d1cf0f0-2940-5c5a-b542-30fb2f558743",
+      "canonical_reality_id": "0abaaa6a-928e-57a0-9613-8ffa497953f7",
+      "predicate_code": "storage.enterprise_ssd_major_supplier_quarterly_revenue",
+      "value_numeric": 7340000000,
+      "unit_code": "USD",
+      "valid_from": "2024-10-01T00:00:00Z",
+      "valid_to": "2025-01-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "market_known_at": "2025-03-07T00:00:00Z",
+      "statistical_scope": "trendforce enterprise ssd major supplier revenue"
+    },
+    {
+      "fact_key": "trendforce-enterprise-ssd-q4-major-supplier-revenue-qoq",
+      "assertion_id": "c0eff9ab-e380-53bd-932b-94a337ef86e4",
+      "canonical_reality_id": "9a1eda6d-bb55-575b-8f9d-e76a3e066fbe",
+      "predicate_code": "storage.enterprise_ssd_revenue_qoq_growth",
+      "value_numeric": -0.005,
+      "unit_code": "ratio",
+      "valid_from": "2024-10-01T00:00:00Z",
+      "valid_to": "2025-01-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "market_known_at": "2025-03-07T00:00:00Z",
+      "statistical_scope": "trendforce enterprise ssd major supplier revenue"
+    }
+  ],
+  "semantic_guards": [
+    "3Q24 procurement-volume growth and revenue growth are separate predicates.",
+    "3Q24 overall-industry revenue and 4Q24 major-supplier revenue use different statistical_scope values and are not assumed to be one directly comparable series.",
+    "4Q24 valid-time observations are first known only on 2025-03-07 and are excluded from 2024 knowledge-time replay.",
+    "No full-year 2024 absolute enterprise-SSD or QLC-enterprise-SSD EB/unit Outcome is claimed resolved."
+  ]
+}

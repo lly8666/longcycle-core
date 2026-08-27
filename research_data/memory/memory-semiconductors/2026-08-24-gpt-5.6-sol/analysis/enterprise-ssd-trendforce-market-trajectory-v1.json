@@ -1,0 +1,102 @@
+{
+  "schema_version": "longcycle-memory-productization-assessment/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "assessment_id": "MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-TRAJECTORY-001",
+  "created_at": "2026-08-26T04:52:00Z",
+  "authority": "curated_research_assessment_over_content_verified_methodological_primary_captures",
+  "linked_memory_leads": ["MS-0110", "MS-0111"],
+  "trajectory": [
+    {
+      "vintage": "2024-04-23",
+      "classification": "judgment",
+      "claim": "TrendForce forecast 2024 QLC enterprise SSD bit shipments at 30 EB, about four times 2023 volume.",
+      "capture_ref": "self_verification/run-001/captures/CAP-TRENDFORCE-2024-04-23-QLC-ENTERPRISE-SSD-30EB-FORECAST-v1.json",
+      "scope": "QLC enterprise SSD bits",
+      "target_period": "2024 full year",
+      "quantity": {"value": 30, "unit": "EB", "status": "forecast"}
+    },
+    {
+      "vintage": "2024-08-12",
+      "classification": "judgment",
+      "claim": "TrendForce estimated 2024 AI-related SSD procurement capacity above 45 EB.",
+      "capture_ref": "self_verification/run-001/captures/CAP-TRENDFORCE-2024-08-12-AI-SSD-45EB-ESTIMATE-v1.json",
+      "scope": "AI-related SSD procurement capacity",
+      "target_period": "2024 full year",
+      "quantity": {"value": 45, "unit": "EB", "qualifier": "greater_than", "status": "estimate"}
+    },
+    {
+      "vintage": "2024-12-11",
+      "classification": "reality_candidate",
+      "claim": "TrendForce reported 3Q24 total enterprise SSD procurement volume up 15% QoQ and industry revenue up 28.6% QoQ.",
+      "capture_ref": "self_verification/run-001/captures/CAP-TRENDFORCE-2024-12-11-ENTERPRISE-SSD-Q3-PROCUREMENT-v1.json",
+      "scope": "enterprise SSD market, 3Q24",
+      "quantities": [
+        {"metric": "procurement_volume_qoq", "value": 0.15, "unit": "ratio", "status": "observed_market_series"},
+        {"metric": "industry_revenue_qoq", "value": 0.286, "unit": "ratio", "status": "observed_market_series"}
+      ]
+    },
+    {
+      "vintage": "2025-03-06",
+      "classification": "reality_candidate_later_known",
+      "claim": "TrendForce reported 4Q24 enterprise SSD revenue for major suppliers at US$7.34B, down 0.5% QoQ.",
+      "capture_ref": "self_verification/run-001/captures/CAP-TRENDFORCE-2025-03-06-ENTERPRISE-SSD-Q4-REVENUE-v1.json",
+      "scope": "major enterprise SSD suppliers, 4Q24",
+      "quantities": [
+        {"metric": "major_supplier_revenue", "value": 7340000000, "unit": "USD", "status": "observed_market_series"},
+        {"metric": "revenue_qoq", "value": -0.005, "unit": "ratio", "status": "observed_market_series"}
+      ],
+      "no_lookahead_guard": "This March 2025 measurement cannot appear in a 2024 point-in-time replay."
+    }
+  ],
+  "comparability_findings": [
+    "The April 30 EB forecast and August greater-than-45 EB estimate are not revisions of the same predicate: QLC enterprise SSD bits and AI-related SSD procurement capacity have different product/workload scopes.",
+    "The 3Q24 15% procurement-volume growth is a realized quarterly direction/magnitude observation but does not reveal the absolute EB or unit denominator.",
+    "The 4Q24 US$7.34B major-supplier revenue observation is a later-known revenue Outcome surface, not an exabyte or unit Outcome.",
+    "No recovered public methodological-primary source in this bounded pass supplies a directly comparable realized full-year 2024 enterprise SSD or QLC enterprise SSD EB total."
+  ],
+  "lead_dispositions": [
+    {
+      "lead_id": "MS-0110",
+      "status": "industry_market_trajectory_deepened_full_year_absolute_volume_unresolved",
+      "researcher_interpretation": "The 2024 enterprise SSD demand acceleration is now supported not only by vendor self-statements but by a methodological-primary market trajectory: full-year capacity expectations during 2024, then realized 3Q procurement growth and later 4Q revenue measurement.",
+      "canonical_boundary": "Do not convert forecast EB, quarterly procurement growth and quarterly revenue into one synthetic demand series."
+    },
+    {
+      "lead_id": "MS-0111",
+      "status": "qlc_industry_forecast_available_realized_full_year_eb_unresolved",
+      "researcher_interpretation": "A methodological-primary April 2024 forecast places QLC enterprise SSD bit shipments at 30 EB for the year, complementing Solidigm's vendor-specific greater-than-100EB cumulative QLC history. The two measures are neither the same period nor the same market scope.",
+      "canonical_boundary": "The 30 EB number remains a Judgment vintage until a comparable realized annual QLC enterprise SSD measurement is recovered."
+    }
+  ],
+  "owner_routing": {
+    "source_identity": "CAP-0001",
+    "evidence_grounding": "CAP-0002",
+    "source_specific_reality": "CAP-0003",
+    "judgment_revision_and_outcome": "CAP-0004",
+    "researcher_composition_no_lookahead": "CAP-0005",
+    "historical_search_depth": "CAP-0006",
+    "execution": "CAP-0007"
+  },
+  "search_depth": {
+    "query_families": [
+      "2024 enterprise SSD shipments exabytes TrendForce",
+      "2024 QLC enterprise SSD 30 EB actual",
+      "2024 AI SSD procurement 45 EB actual",
+      "4Q24 enterprise SSD procurement volume exabyte"
+    ],
+    "source_types_examined": [
+      "TrendForce public press-center methodological-primary market releases",
+      "TrendForce public research abstract surfaces",
+      "public search for other methodological-primary enterprise-SSD absolute-volume series"
+    ],
+    "reverse_query_performed": true,
+    "status": "bounded_pass_absolute_full_year_volume_still_open_not_absent",
+    "not_found_semantics": "Failure to recover a public realized full-year 2024 EB/unit total does not prove that no such measured series exists, including inside paid market datasets."
+  },
+  "next_actions": [
+    "Ground the four TrendForce captures as one market-trajectory Evidence packet with forecast/estimate versus later market-observation roles kept separate.",
+    "Project the April and August full-year quantities only as contemporaneous Judgment/Expectation, never Reality.",
+    "Project the 3Q procurement/revenue growth and later-known 4Q major-supplier revenue only if predicate/scope/period semantics are explicit and no-lookahead is preserved.",
+    "Keep realized full-year 2024 enterprise SSD/QLC EB or unit Outcome unresolved pending a directly comparable methodological-primary measurement."
+  ]
+}

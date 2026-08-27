@@ -1,0 +1,113 @@
+{
+  "schema_version": "longcycle-research-receipt/v1",
+  "task_id": "EVT-003-HYDROXIDE-EXPECTATION-REVISION-V1",
+  "receipt_kind": "authoritative_announcement_redistributor_policy_and_gate",
+  "recorded_on": "2026-08-22",
+  "scope": {
+    "campaign": "2026-08-21-gpt-5.6-sol",
+    "industry": "lithium-battery",
+    "sealed_shard": "UP-CHEMICALS",
+    "source_family": "SVQ-003-HYDROXIDE-EXPECTATION-VINTAGE"
+  },
+  "user_directive": {
+    "summary": "For listed-company announcements, major finance portals including but not limited to Sina Finance, Tencent Finance, Tonghuashun, Xueqiu and Eastmoney are approved authoritative data sources when they preserve the formal announcement or original document.",
+    "interpretation": [
+      "The policy applies to formal listed-company announcements, statutory filings, periodic reports and announcement attachments, not to every article hosted by the same portal.",
+      "A portal copy of the formal announcement can be authoritative redistribution rather than ordinary secondary reporting.",
+      "The list of finance portals is illustrative rather than a hard-coded domain allowlist."
+    ]
+  },
+  "method_decision": {
+    "authority_class": "authoritative_redistributor",
+    "authority_basis": "verbatim_official_redistribution",
+    "claim_scope_requirement": "The archived payload must preserve or reliably map the same formal upstream announcement/filing claim; summaries, extracted quote pages and editorial rewrites remain secondary according to their actual content.",
+    "provenance_contract": [
+      "Preserve the actual retrieval host and retrieval URL.",
+      "Preserve upstream announcement identity separately: issuer, regulator/exchange system where known, announcement/filing/accession identifier, title, original URL and source-supported publication/known-time metadata where available.",
+      "Never record bytes obtained from a finance portal as if they were directly retrieved from the regulator or issuer server.",
+      "Multiple redistributors carrying the same upstream announcement are one evidence cluster, not independent corroboration."
+    ],
+    "storage_compatibility": "Legacy memory-audit disposition names PRIMARY_SUPPORTS_LEAD / PRIMARY_CONTRADICTS_LEAD remain unchanged for compatibility; generalized authoritative reason codes now cover authoritative redistributors."
+  },
+  "implementation": {
+    "commits": [
+      {
+        "sha": "62ba59aa9d98eadbca03defd7f68717c99fa6597",
+        "message": "feat: add authoritative redistributor authority class",
+        "effect": "Adds AuthorityClass.AUTHORITATIVE_REDISTRIBUTOR."
+      },
+      {
+        "sha": "549968502ad150f33aec064962dc4f31c410e9cc",
+        "message": "feat: treat authoritative redistributors as decisive evidence",
+        "effect": "Claim-scoped authoritative redistribution participates in decisive memory-lead adjudication while secondary reporting remains non-decisive."
+      },
+      {
+        "sha": "783c41997e0f95b8e162f716d597b031a50dc4d8",
+        "message": "feat: persist authoritative redistributor profiles",
+        "effect": "Migration 0025 adds authoritative_redistributor and verbatim_official_redistribution to PostgreSQL source-authority constraints."
+      },
+      {
+        "sha": "d86c3cbf6592282f5b3a5e783a50e9663ef71bdb",
+        "message": "test: cover authoritative announcement redistributors",
+        "effect": "Tests exact legal-disclosure support through an authoritative redistributor and preserves secondary-only behavior."
+      },
+      {
+        "sha": "1227acf23f730a61ec1e2db2117a284e38d5d9d3",
+        "message": "docs: recognize authoritative announcement redistributors",
+        "effect": "METHODOLOGY_CORE M3 now records the cross-industry announcement-redistribution policy and evidence-cluster rule."
+      }
+    ],
+    "migration": "0025_authoritative_redistributors.sql",
+    "generic_code_rule": "No finance-portal domain is hard-coded into domain or adjudication logic."
+  },
+  "verification": {
+    "github_actions_run": 32567193652,
+    "job": 97017453004,
+    "head_sha": "1227acf23f730a61ec1e2db2117a284e38d5d9d3",
+    "result": "success",
+    "postgres": "PostgreSQL 17.11; migrations 0001 through 0025 applied successfully.",
+    "runtime_gates": [
+      "REPAIR_MEMORY_AUDIT_PASS cards=4 active=4",
+      "POSTGRES_REPOSITORY_SMOKE_PASS",
+      "POSTGRES_JUDGMENT_SMOKE_PASS",
+      "POSTGRES_REALITY_SMOKE_PASS",
+      "POSTGRES_EPISTEMIC_MEMORY_SMOKE_PASS",
+      "MATERIALIZED_GROUNDED_EVIDENCE_SMOKE_PASS",
+      "NO_LOOKAHEAD_REPLAY_SMOKE_PASS",
+      "NO_LOOKAHEAD_JUDGMENT_REPLAY_SMOKE_PASS"
+    ],
+    "mypy": "Success: no issues found in 76 source files.",
+    "pytest": "234 passed in 1.47s.",
+    "memory_history": "raw=683 formal_typed=625; candidates-exceeding-current=0.",
+    "ruff": "Diagnostic-only campaign debt remains; it is not a hard correctness gate and was not broadened into this task."
+  },
+  "bounded_source_discovery": {
+    "conclusion": "Approved finance portals are a viable authoritative acquisition family, but the exact Livent Q1 2019 target payload URLs/bytes were not recovered in this bounded search.",
+    "positive_capability_evidence": [
+      {
+        "host": "basic.10jqka.com.cn",
+        "url": "https://basic.10jqka.com.cn/ajax/usaph/pubDetail/956a47bd59aa62bd_html",
+        "observation": "Tonghuashun US filing mirror exposes an SEC EX-99.1 document body and preserves filing/exhibit structure; this example references FMC Lithium/Livent separation history."
+      },
+      {
+        "host": "basic.10jqka.com.cn",
+        "url": "https://basic.10jqka.com.cn/ajax/usaph/pubDetail/5635de5bd7bacf8f_translation",
+        "observation": "Tonghuashun filing mirror explicitly identifies a filing submitted by Livent Corporation and the SEC file number, demonstrating upstream filing identity can survive redistribution."
+      }
+    ],
+    "target_identity": [
+      {
+        "document": "Livent 2019-05-07 8-K / Exhibit 99.1",
+        "accession": "0001742924-19-000021",
+        "known_time_anchor": "SEC Accepted 2019-05-07 16:56:37; this timestamp belongs only to that filing/results disclosure."
+      },
+      {
+        "document": "Livent Q1 2019 10-Q",
+        "accession": "0001742924-19-000025",
+        "known_time_rule": "Keep its own source-supported known-time; do not inherit the 8-K acceptance timestamp."
+      }
+    ],
+    "negative_result": "Exact-accession, title/date and company-code searches across approved finance-portal domains did not surface a target download URL in the search index. This is a discovery limitation, not evidence that the announcement copy is absent."
+  },
+  "next_atomic_action": "Use the approved finance announcement repositories directly rather than generic search-engine hash guessing. Start from Livent/LTHM company-announcement pages or portal filing endpoints around 2019-05-07, recover the exact 8-K Exhibit 99.1 and Q1 10-Q payloads, compute raw SHA-256 immediately, record actual retrieval host plus upstream accession identity, and execute grounded Evidence v2. Then acquire the locked 2018 10-K and project the source-backed Judgment vintages."
+}

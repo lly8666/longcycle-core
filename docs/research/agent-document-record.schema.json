@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://longcycle.local/schemas/agent-document-record/v2",
+  "title": "Longcycle historical collection document record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "mode",
+    "industry_path",
+    "topic",
+    "title",
+    "publisher",
+    "document_kind",
+    "published_at",
+    "first_known_at",
+    "date_uncertain",
+    "url",
+    "is_repost",
+    "source_origin_role",
+    "reality_rank",
+    "expectation_rank",
+    "material_roles",
+    "access_status"
+  ],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "mode": {"enum": ["discover", "extract-light"]},
+    "industry_path": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "topic": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "publisher": {"type": "string", "minLength": 1},
+    "document_kind": {
+      "enum": [
+        "government_release",
+        "annual_report",
+        "interim_report",
+        "prospectus",
+        "ir_record",
+        "exchange_filing",
+        "broker_report",
+        "association_data",
+        "eia",
+        "approval",
+        "policy",
+        "conference_transcript",
+        "interview",
+        "news",
+        "dataset",
+        "other"
+      ]
+    },
+    "published_at": {"type": ["string", "null"], "format": "date-time"},
+    "first_known_at": {"type": ["string", "null"], "format": "date-time"},
+    "retrieved_at": {"type": ["string", "null"], "format": "date-time"},
+    "date_uncertain": {"type": "boolean"},
+    "knowledge_cutoff": {"type": ["string", "null"], "format": "date-time"},
+    "url": {"type": "string", "minLength": 1},
+    "alternate_urls": {"type": "array", "items": {"type": "string"}, "default": []},
+    "is_repost": {"type": "boolean"},
+    "source_origin_role": {
+      "enum": [
+        "primary_original",
+        "direct_record",
+        "secondary_analysis",
+        "repost",
+        "discovery_only",
+        "uncertain"
+      ],
+      "description": "Agent hint about document originality only; not the final claim-scoped authority class."
+    },
+    "claimed_original_publisher": {"type": ["string", "null"]},
+    "claimed_primary_source": {"type": ["string", "null"]},
+    "independence_cluster_hint": {"type": ["string", "null"]},
+    "authority_notes": {
+      "type": ["string", "null"],
+      "description": "Only describe why the document appears original/secondary; agents must not assign final authority_class."
+    },
+    "reality_rank": {"enum": ["R1", "R2", "R3", "R4"]},
+    "expectation_rank": {"enum": ["E1", "E2", "E3", "E4"]},
+    "material_roles": {
+      "type": "array",
+      "items": {"enum": ["reality", "expectation", "policy", "discovery_only"]},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "speakers": {"type": "array", "items": {"type": "string"}, "default": []},
+    "target_periods": {"type": "array", "items": {"type": "string"}, "default": []},
+    "locators_to_review": {"type": "array", "items": {"type": "string"}, "default": []},
+
+    "source_media_type": {
+      "type": ["string", "null"],
+      "description": "Upstream media identity, e.g. application/pdf, independent of the currently preserved representation content type."
+    },
+    "source_file_name": {
+      "type": ["string", "null"],
+      "description": "Upstream file name when known, even when raw bytes are not yet materialized."
+    },
+    "source_capture_state": {
+      "enum": ["locator_verified", "content_verified", "materialized", null],
+      "description": "Source completeness state. locator_verified alone never proves claim content."
+    },
+    "materialization_status": {
+      "enum": ["pending_materialization", "materialized", "not_applicable", null]
+    },
+    "verification_mode": {
+      "type": ["string", "null"],
+      "description": "How document identity/locator was verified."
+    },
+    "content_verification_mode": {
+      "type": ["string", "null"],
+      "description": "How claim-relevant content was actually read when source_capture_state=content_verified."
+    },
+    "claim_relevant_content_preserved": {
+      "type": ["boolean", "null"],
+      "description": "Must be true before content_verified may support claim-level Evidence."
+    },
+    "readable_representation_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Digest of a faithful readable representation; not a raw-PDF hash unless raw bytes were actually materialized."
+    },
+    "raw_materialized_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "raw_materialized_storage_locator": {"type": ["string", "null"]},
+
+    "downloaded_file": {
+      "type": ["string", "null"],
+      "description": "Legacy/optional local raw file field. null is valid for locator/content-verified PDFs pending later materialization."
+    },
+    "sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[0-9a-f]{64}$",
+      "description": "Legacy downloaded-file hash when a raw file was actually downloaded. Prefer raw_materialized_sha256 for new records."
+    },
+    "access_status": {"enum": ["ok", "paywalled", "login_required", "missing", "broken"]},
+    "notes": {"type": ["string", "null"]},
+    "claims": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "oneOf": [
+          {"$ref": "#/$defs/realityClaim"},
+          {"$ref": "#/$defs/judgmentClaim"}
+        ]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"source_media_type": {"const": "application/pdf"}},
+        "required": ["source_media_type"]
+      },
+      "then": {
+        "required": ["source_capture_state", "materialization_status"]
+      }
+    },
+    {
+      "if": {
+        "properties": {"source_capture_state": {"const": "content_verified"}},
+        "required": ["source_capture_state"]
+      },
+      "then": {
+        "required": [
+          "content_verification_mode",
+          "claim_relevant_content_preserved",
+          "readable_representation_sha256"
+        ],
+        "properties": {
+          "claim_relevant_content_preserved": {"const": true}
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {"source_capture_state": {"const": "materialized"}},
+        "required": ["source_capture_state"]
+      },
+      "then": {
+        "required": ["raw_materialized_sha256"]
+      }
+    }
+  ],
+  "$defs": {
+    "commonClaim": {
+      "type": "object",
+      "required": ["claim_role", "statement", "locator", "confidence"],
+      "properties": {
+        "claim_role": {"enum": ["reality", "judgment"]},
+        "statement": {"type": "string", "minLength": 1, "maxLength": 160},
+        "locator": {"type": "string", "minLength": 1},
+        "confidence": {"enum": ["high", "medium", "low"]}
+      }
+    },
+    "realityClaim": {
+      "allOf": [
+        {"$ref": "#/$defs/commonClaim"},
+        {
+          "type": "object",
+          "required": ["claim_role", "subject_text", "predicate_hint", "raw_value", "statement", "locator", "confidence"],
+          "properties": {
+            "claim_role": {"const": "reality"},
+            "subject_text": {"type": "string"},
+            "predicate_hint": {"type": "string"},
+            "raw_value": {"type": ["string", "number", "boolean"]},
+            "raw_unit": {"type": ["string", "null"]},
+            "valid_period_text": {"type": ["string", "null"]}
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    },
+    "judgmentClaim": {
+      "allOf": [
+        {"$ref": "#/$defs/commonClaim"},
+        {
+          "type": "object",
+          "required": [
+            "claim_role",
+            "speaker_text",
+            "speaker_role",
+            "judgment_kind",
+            "subject_text",
+            "topic",
+            "target_period_text",
+            "raw_expected_value",
+            "statement",
+            "locator",
+            "rationales",
+            "confidence"
+          ],
+          "properties": {
+            "claim_role": {"const": "judgment"},
+            "speaker_text": {"type": "string"},
+            "speaker_role": {"enum": ["management", "analyst", "government", "association", "industry_expert", "customer", "other"]},
+            "judgment_kind": {"enum": ["forecast", "guidance", "target", "scenario", "risk", "thesis", "commitment"]},
+            "subject_text": {"type": "string"},
+            "topic": {"type": "string"},
+            "target_period_text": {"type": ["string", "null"]},
+            "raw_expected_value": {"type": ["string", "number", "boolean", "null"]},
+            "probability_text": {"type": ["string", "null"]},
+            "rationales": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["kind", "text", "locator"],
+                "properties": {
+                  "kind": {"enum": ["premise", "mechanism", "condition", "risk", "caveat", "counterargument"]},
+                  "text": {"type": "string"},
+                  "locator": {"type": "string"}
+                }
+              }
+            }
+          }
+        }
+      ],
+      "unevaluatedProperties": false
+    }
+  }
+}

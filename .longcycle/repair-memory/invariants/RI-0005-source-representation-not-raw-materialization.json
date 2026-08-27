@@ -1,0 +1,96 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0005",
+  "status": "active",
+  "kind": "architecture",
+  "severity": "critical",
+  "title": "Preserved source representation is not automatically raw-source materialization",
+  "scope": [
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0031_explicit_raw_source_materialization.sql",
+    "src/longcycle/adapters/sources/http.py",
+    "src/longcycle/adapters/sources/local.py",
+    "src/longcycle/adapters/sources/materialized.py",
+    "src/longcycle/adapters/storage/postgres_source_locators.py",
+    "src/longcycle/application/research_orchestration.py",
+    "src/longcycle/cli.py",
+    "tests/test_source_locator_materialization.py",
+    "tests/test_materialized_source_representation.py",
+    "tests/test_research_orchestration.py"
+  ],
+  "tags": [
+    "source",
+    "pdf",
+    "representation",
+    "materialization",
+    "grounded-evidence",
+    "orchestration",
+    "transport"
+  ],
+  "failure_signature": "Readable content is silently relabeled raw-materialized, raw state is inferred without verified raw bytes, orchestration requires source-pack/PDF download before already preserved claim content may enter Evidence, or locator existence alone is treated as claim proof.",
+  "root_cause": "Source identity, actually read claim content, preserved representation bytes and byte-identical upstream raw bytes were conflated, allowing transport mechanics to manufacture epistemic state or block research.",
+  "invariant": "New logical documents begin locator_verified. content_verified requires actually read claim-relevant content plus a faithful representation and may support Evidence without raw bytes. materialized requires an explicit raw=true fetch bound to raw_materialized_document_version_id. A document version alone never proves raw materialization. Orchestration v2 consumes verified prepared material without requiring Release/source-pack/PDF download; legacy v1 stays replay compatibility only.",
+  "anti_regression": [
+    "Do not default source_capture_state to materialized or let any document-version trigger imply raw bytes.",
+    "Do not allow materialized state without raw_materialized_document_version_id.",
+    "Do not infer raw=true when adapter provenance is missing; supported adapters must say raw=true or raw=false.",
+    "Do not label a readable-representation digest as a raw-PDF hash unless raw bytes were verified.",
+    "Do not let locator_verified support claim Evidence when relevant content was never read.",
+    "Do not require --source-pack or GitHub Release for research-orchestration/v2 or later default execution.",
+    "Do not rewrite legacy Release/source-pack receipts when transport policy changes; preserve replayability."
+  ],
+  "guards": [
+    {
+      "kind": "schema",
+      "path": "migrations/0028_truthful_source_materialization.sql",
+      "contains": "DROP TRIGGER IF EXISTS evidence_document_version_marks_materialized",
+      "description": "Removes the false document-version-equals-raw transition."
+    },
+    {
+      "kind": "schema",
+      "path": "migrations/0031_explicit_raw_source_materialization.sql",
+      "contains": "ALTER COLUMN source_capture_state SET DEFAULT 'locator_verified'",
+      "description": "New logical documents start locator-only rather than fabricated raw state."
+    },
+    {
+      "kind": "schema",
+      "path": "migrations/0031_explicit_raw_source_materialization.sql",
+      "contains": "documents_raw_materialization_state_consistency_check",
+      "description": "Materialized state requires an explicit raw document version."
+    },
+    {
+      "kind": "runtime",
+      "path": "src/longcycle/adapters/storage/postgres_source_locators.py",
+      "contains": "raw_source_identity_verified=true",
+      "description": "Deferred raw materialization is an explicit verified transition."
+    },
+    {
+      "kind": "runtime",
+      "path": "src/longcycle/application/research_orchestration.py",
+      "contains": "research orchestration v2 requires --material-root",
+      "description": "Default execution consumes prepared material rather than a Release pack."
+    },
+    {
+      "kind": "test",
+      "path": "tests/test_materialized_source_representation.py",
+      "contains": "test_content_verified_pdf_representation_emits_truthful_internal_markers",
+      "description": "Readable representations persist truthful non-raw provenance."
+    },
+    {
+      "kind": "test",
+      "path": "tests/test_source_locator_materialization.py",
+      "contains": "test_migrations_make_raw_materialization_explicit_and_version_scoped",
+      "description": "Regression locks explicit raw and version-scoped materialization."
+    }
+  ],
+  "revisit_when": "Only if a richer source-material graph still preserves separate logical source identity, read claim content, representation bytes and explicit raw-byte materialization without transport-specific Evidence prerequisites.",
+  "origin_refs": [
+    "user-directive:2026-08-23-stop-pdf-download-blocking",
+    "migration:0028",
+    "migration:0031",
+    "capability:CAP-0001",
+    "capability:CAP-0002",
+    "capability:CAP-0007"
+  ],
+  "supersedes": []
+}

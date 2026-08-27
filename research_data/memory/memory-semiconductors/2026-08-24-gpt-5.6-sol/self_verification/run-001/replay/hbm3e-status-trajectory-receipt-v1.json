@@ -1,0 +1,117 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-hbm3e-trajectory-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "a642ee079b2007e07187a539ad28ba575fca2eac",
+  "default_branch_broker_commit": "3c3dd2198ffd5df4026c344551094c25c845d3e1",
+  "trigger_issue": 153,
+  "actions_run_id": 32725906683,
+  "full_ci_run_id": 32725881851,
+  "full_ci_conclusion": "success",
+  "actions_artifact": {
+    "artifact_id": 9519486879,
+    "name": "research-orchestration-32725906683",
+    "digest": "sha256:31977f56329e2527d4e15d8fb8dcb76ba3bd85b1ce6811d682a14a445d2c4d42",
+    "expires_at": "2026-08-31T12:13:35Z"
+  },
+  "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-status-trajectory-v1.json",
+  "research_orchestration_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/hbm3e-status-promotion-orchestration-v2.json",
+  "grounded_evidence_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-status-grounded-evidence-v1.json",
+  "reality_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-reality-projection-v1.json",
+  "judgment_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-judgment-projection-v1.json",
+  "judgment_context_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-judgment-context-v1.json",
+  "execution_schema": "longcycle-epistemic-trajectory-execution/v1",
+  "phases": [
+    "grounded_evidence",
+    "reality_projection",
+    "judgment_persistence",
+    "judgment_context_persistence",
+    "seal_integrated_memory",
+    "point_in_time_replay"
+  ],
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created_during_grounding": 0,
+    "judgment_assertions_created_during_grounding": 0,
+    "canonical_reality_count": 4,
+    "judgment_count": 4,
+    "judgment_rationale_count": 0,
+    "judgment_relation_count": 1,
+    "outcome_count": 0,
+    "replay_verified": true,
+    "no_lookahead_sequence_verified": true,
+    "typed_round_trip": true,
+    "full_ci": "success"
+  },
+  "reality": {
+    "2024-micron-hbm3e-volume-production": {
+      "fact_assertion_id": "693947b2-613c-5a78-9ed8-06f9ba6d0bb0",
+      "canonical_fact_version_id": "434c1252-d4cf-5a26-bce4-68846f4a627d",
+      "known_at": "2024-02-27T00:00:00Z"
+    },
+    "2024-samsung-hbm3e-12h-customer-sampling": {
+      "fact_assertion_id": "c9695ffa-6ca9-5dbf-be28-81401f50a2b4",
+      "canonical_fact_version_id": "f7cc52c7-6d8a-5749-b976-ddd4c4d8195a",
+      "known_at": "2024-02-28T00:00:00Z"
+    },
+    "2024-skhynix-hbm3e-volume-production": {
+      "fact_assertion_id": "2c3a1aee-8a38-5950-8341-b67ad11cd956",
+      "canonical_fact_version_id": "f0a29fee-4d56-5fff-8bd2-963530fb9745",
+      "known_at": "2024-03-20T00:00:00Z"
+    },
+    "2024-samsung-hbm3e-8h-mass-production": {
+      "fact_assertion_id": "d4c4406f-521c-512b-aa21-46f3b96bcffd",
+      "canonical_fact_version_id": "5fab0d44-f802-52c4-8513-f1cf9cb23138",
+      "known_at": "2024-05-01T00:00:00Z"
+    }
+  },
+  "judgments": {
+    "2024-micron-hbm3e-h200-q2-shipment-expectation": {
+      "judgment_id": "d3821f20-98a3-5f8c-9fbf-28d8da828813",
+      "first_known_at": "2024-02-27T00:00:00Z",
+      "target_text": "second calendar quarter of 2024"
+    },
+    "2024-samsung-hbm3e-12h-1h-mass-production-plan": {
+      "judgment_id": "4fe3f5e0-2778-5062-9667-644e2fbbb2f1",
+      "first_known_at": "2024-02-28T00:00:00Z",
+      "target_text": "first half of 2024"
+    },
+    "2024-skhynix-hbm3e-late-march-customer-supply-plan": {
+      "judgment_id": "331a4e14-0b91-5f89-9caf-b05cd3811b74",
+      "first_known_at": "2024-03-20T00:00:00Z",
+      "target_text": "from late March 2024"
+    },
+    "2024-samsung-hbm3e-12h-q2-mass-production-plan": {
+      "judgment_id": "4ce41eec-5735-5bd3-a15d-6114c9df99e1",
+      "first_known_at": "2024-05-01T00:00:00Z",
+      "target_text": "second quarter of 2024"
+    }
+  },
+  "judgment_relation": {
+    "from_judgment_key": "2024-samsung-hbm3e-12h-q2-mass-production-plan",
+    "from_judgment_id": "4ce41eec-5735-5bd3-a15d-6114c9df99e1",
+    "to_judgment_key": "2024-samsung-hbm3e-12h-1h-mass-production-plan",
+    "to_judgment_id": "4fe3f5e0-2778-5062-9667-644e2fbbb2f1",
+    "relation_type": "narrows"
+  },
+  "sealed_memory": {
+    "database_sha256": "4b286345d4faa038fd79ce41a0c835c40e609205e9a4341160a547238ccf77a8",
+    "manifest_sha256": "82fde3f1731e8c794d555a4815d904d42694e851d98fdc3649890a36931348af",
+    "counts": {"reality": 4, "judgments": 4, "outcomes": 0},
+    "judgment_context_counts": {"rationales": 0, "relations": 1}
+  },
+  "replay_counts": [
+    {"knowledge_cutoff": "2024-02-27T00:00:00Z", "reality": 1, "judgments": 1, "outcomes": 0},
+    {"knowledge_cutoff": "2024-02-28T00:00:00Z", "reality": 2, "judgments": 2, "outcomes": 0},
+    {"knowledge_cutoff": "2024-03-20T00:00:00Z", "reality": 3, "judgments": 3, "outcomes": 0},
+    {"knowledge_cutoff": "2024-05-01T00:00:00Z", "reality": 4, "judgments": 4, "outcomes": 0}
+  ],
+  "state_boundary": [
+    "HBM3E customer sampling is a separate Reality state and is not evidence of named-customer or named-platform qualification.",
+    "Volume or mass production is not silently promoted to customer supply, platform shipment or qualification.",
+    "Micron H200 Q2 shipment timing, SK hynix late-March customer supply, and Samsung 12H production timing remain contemporaneous Judgments until later source evidence supports realization.",
+    "Samsung 8H mass-production Reality and 12H Q2 production-plan Judgment remain variant-specific and are not merged.",
+    "The Samsung Q2 plan narrows the earlier H1 timing window without rewriting either immutable Judgment or claiming realized 12H production."
+  ]
+}

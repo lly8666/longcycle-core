@@ -4,23 +4,41 @@ import asyncio
 import unittest
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
-from uuid import uuid4
+from uuid import UUID, uuid4
 
+from longcycle.adapters.storage.memory import InMemoryResearchRepository
+from longcycle.application.pipeline import CollectionPipeline
 from longcycle.application.quality import quality_score
 from longcycle.application.reconciliation import Reconciler
-from longcycle.application.pipeline import CollectionPipeline
-from longcycle.adapters.storage.memory import InMemoryResearchRepository
-from longcycle.domain.enums import Decision, EntityType, FactStatus, MarketBasis, ValidTimeKind
+from longcycle.domain.enums import (
+    Decision,
+    EntityType,
+    FactEvidenceRole,
+    FactStatus,
+    MarketBasis,
+    TemporalPrecision,
+    ValidTimeKind,
+)
 from longcycle.domain.models import (
     EvidenceFragment,
     ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     ReconciliationResult,
     SourceDocument,
     TimeRange,
 )
+
+
+def supporting_evidence(fragment_id: UUID | None = None) -> tuple[FactEvidenceRef, ...]:
+    return (
+        FactEvidenceRef(
+            evidence_fragment_id=fragment_id or uuid4(),
+            evidence_role=FactEvidenceRole.SUPPORTING,
+        ),
+    )
 
 
 def assertion(
@@ -46,7 +64,7 @@ def assertion(
         valid_time=TimeRange(start=datetime(2025, 1, 1, tzinfo=UTC)),
         source_id=source_id,
         document_id=uuid4(),
-        evidence_fragment_id=uuid4(),
+        evidence=supporting_evidence(),
         extraction_run_id=uuid4(),
         extractor_name="test",
         extractor_version="1",
@@ -86,8 +104,62 @@ class QualityAndReconciliationTest(unittest.TestCase):
         self.assertEqual(result.decision, Decision.ACCEPT)
         self.assertEqual(result.status, FactStatus.TRUSTED)
 
+    def test_unknown_valid_time_without_typed_observation_requires_review(self) -> None:
+        candidate = assertion().model_copy(
+            update={
+                "valid_time_kind": ValidTimeKind.UNKNOWN,
+                "valid_time": TimeRange(),
+                "valid_time_precision": TemporalPrecision.UNKNOWN,
+            }
+        )
+
+        result = Reconciler().reconcile(candidate, [])
+
+        self.assertEqual(result.decision, Decision.REVIEW)
+        self.assertIn("unknown_valid_time", result.reason_codes)
+
+    def test_unknown_onset_with_typed_observation_can_use_quality_gate(self) -> None:
+        candidate = assertion().model_copy(
+            update={
+                "valid_time_kind": ValidTimeKind.UNKNOWN,
+                "valid_time": TimeRange(),
+                "valid_time_precision": TemporalPrecision.UNKNOWN,
+                "observed_at": datetime(2025, 1, 2, tzinfo=UTC),
+                "observed_at_precision": TemporalPrecision.DAY,
+                "observed_at_text": "as of 2025-01-02",
+                "known_at": datetime(2025, 1, 3, tzinfo=UTC),
+            }
+        )
+
+        result = Reconciler().reconcile(candidate, [])
+
+        self.assertEqual(result.decision, Decision.ACCEPT)
+        self.assertEqual(result.status, FactStatus.TRUSTED)
+        self.assertIn("source_supported_unknown_onset", result.reason_codes)
+        self.assertIn("quality_gate_passed", result.reason_codes)
+
+    def test_unknown_onset_observed_after_known_time_requires_review(self) -> None:
+        candidate = assertion().model_copy(
+            update={
+                "valid_time_kind": ValidTimeKind.UNKNOWN,
+                "valid_time": TimeRange(),
+                "valid_time_precision": TemporalPrecision.UNKNOWN,
+                "observed_at": datetime(2025, 1, 4, tzinfo=UTC),
+                "observed_at_precision": TemporalPrecision.DAY,
+                "observed_at_text": "as of 2025-01-04",
+                "known_at": datetime(2025, 1, 3, tzinfo=UTC),
+            }
+        )
+
+        result = Reconciler().reconcile(candidate, [])
+
+        self.assertEqual(result.decision, Decision.REVIEW)
+        self.assertIn("unknown_valid_time", result.reason_codes)
+
     def test_conflicting_value_is_preserved_for_review(self) -> None:
-        existing = assertion(number="100", cluster="primary-a").model_copy(update={"status": FactStatus.TRUSTED})
+        existing = assertion(number="100", cluster="primary-a").model_copy(
+            update={"status": FactStatus.TRUSTED}
+        )
         candidate = existing.model_copy(
             update={
                 "id": uuid4(),
@@ -96,7 +168,7 @@ class QualityAndReconciliationTest(unittest.TestCase):
                 "source_id": uuid4(),
                 "source_cluster": "primary-b",
                 "document_id": uuid4(),
-                "evidence_fragment_id": uuid4(),
+                "evidence": supporting_evidence(),
             }
         )
         result = Reconciler().reconcile(candidate, [existing])
@@ -281,7 +353,7 @@ class RepositoryReconciliationContractTest(unittest.IsolatedAsyncioTestCase):
         original = assertion(number="100").model_copy(
             update={
                 "document_id": document_id,
-                "evidence_fragment_id": fragment.id,
+                "evidence": supporting_evidence(fragment.id),
                 "extraction_run_id": run_id,
             }
         )
@@ -384,7 +456,7 @@ class RepositoryReconciliationContractTest(unittest.IsolatedAsyncioTestCase):
                 "source_id": uuid4(),
                 "source_cluster": "source-b",
                 "document_id": uuid4(),
-                "evidence_fragment_id": uuid4(),
+                "evidence": supporting_evidence(),
             }
         )
         await repository.append_assertions((first, second))

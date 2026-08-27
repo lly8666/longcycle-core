@@ -1,0 +1,364 @@
+name: RIGHTS-BD-007 faithful-capture lifecycle probe
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/rights-bd-007-evidence-probe.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/bms-2023-12-11-joint-announcement.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/sec-bms-2023-10k-systimmune-note.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-reality-projection-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+      - 'src/longcycle/adapters/storage/postgres_epistemic.py'
+  pull_request:
+    paths:
+      - '.github/workflows/rights-bd-007-evidence-probe.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/bms-2023-12-11-joint-announcement.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007/sec-bms-2023-10k-systimmune-note.capture.txt'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-reality-projection-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'src/longcycle/adapters/sources/materialized.py'
+      - 'src/longcycle/adapters/storage/postgres_epistemic.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/rights-bd-007-blobs
+      SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-grounded-evidence-spec-v1.json
+      REALITY_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/RIGHTS-BD-007-reality-projection-v1.json
+      MATERIAL_ROOT: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/source_captures/RIGHTS-BD-007
+      OUTPUT: .artifacts/RIGHTS-BD-007-grounded-evidence-execution.json
+      REALITY_OUTPUT: .artifacts/RIGHTS-BD-007-reality-execution.json
+      REPLAY_OUTPUT: .artifacts/RIGHTS-BD-007-replay-check.json
+      SUBJECT_ID: b5c41865-3c23-537e-be7b-37e258d39c3d
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Verify capture materials and spec pins
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          check_sha() {
+            local path="$1"
+            local expected="$2"
+            local actual
+            if [[ ! -f "$path" ]]; then
+              echo "::error file=$path::Required capture material is missing"
+              return 1
+            fi
+            actual="$(sha256sum "$path" | awk '{print $1}')"
+            echo "RIGHTS_BD_007_SHA path=$path actual=$actual expected=$expected"
+            if [[ "$actual" != "$expected" ]]; then
+              echo "::error file=$path::SHA-256 mismatch actual=$actual expected=$expected"
+              return 1
+            fi
+          }
+
+          # The two independently pinned faithful captures are the Grounded Evidence inputs.
+          # A legacy source-pack.zip wrapper was found corrupt at runtime and retired from the
+          # live tree. It was packaging only, never an Evidence identity or executor input.
+          check_sha "$MATERIAL_ROOT/bms-2023-12-11-joint-announcement.capture.txt" "fb74a403e44d8287dc7ca934ce22bbc1856f531cdd3f94d0ac752a403bf6d186"
+          check_sha "$MATERIAL_ROOT/sec-bms-2023-10k-systimmune-note.capture.txt" "d2089b07ac157883bc482bff88114d11ef038f8cb350c757a09d0701d30b8de3"
+
+          python - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+          import os
+
+          spec = json.loads(Path(os.environ['SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['MATERIAL_ROOT'])
+          by_document = {row['key']: row for row in spec['documents']}
+          for row in by_document.values():
+              material = root / row['material_path']
+              digest = hashlib.sha256(material.read_bytes()).hexdigest()
+              assert digest == row['expected_sha256'], (material, digest, row['expected_sha256'])
+              provenance = row['retrieval_provenance']
+              assert provenance['capture_mode'] == 'verbatim_visible_text_transcription'
+              assert provenance['transport_is_not_source_authority'] is True
+          material_by_key = {
+              'bms-announcement-capture': (root / by_document['bms-announcement-capture']['material_path']).read_text(encoding='utf-8'),
+              'sec-10k-capture': (root / by_document['sec-10k-capture']['material_path']).read_text(encoding='utf-8'),
+          }
+          for fragment in spec['fragments']:
+              assert fragment['excerpt'] in material_by_key[fragment['document_key']], fragment['fragment_key']
+          print('RIGHTS_BD_007_CAPTURE_INTEGRITY_PASS')
+          PY
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$OUTPUT"
+
+      - name: Assert Grounded Evidence epistemic boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+
+          payload = json.load(open(os.environ['OUTPUT'], encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 2, result
+          assert len(result['fragments']) == 2, result
+          assert result['acceptance'] == {
+              'persisted_document_versions': 2,
+              'persisted_evidence_fragments': 2,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }, result['acceptance']
+          documents = {row['document_key']: row for row in result['documents']}
+          assert documents['bms-announcement-capture']['retrieval_provenance']['capture_mode'] == 'verbatim_visible_text_transcription'
+          assert documents['sec-10k-capture']['retrieval_provenance']['capture_mode'] == 'verbatim_visible_text_transcription'
+          assert documents['bms-announcement-capture']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          assert documents['sec-10k-capture']['source_authority_profiles'][0]['authority_class'] == 'authoritative_primary'
+          print('RIGHTS_BD_007_GROUNDED_EVIDENCE_PASS')
+          PY
+
+      - name: Execute Reality through assertion and reconciliation
+        run: >-
+          python scripts/execute_grounded_reality_projection.py
+          "$REALITY_SPEC"
+          "$OUTPUT"
+          --output "$REALITY_OUTPUT"
+
+      - name: Assert canonical Reality temporal separation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+
+          result = json.load(open(os.environ['REALITY_OUTPUT'], encoding='utf-8'))
+          verification = result['verification']
+          assert verification['fact_count'] == 2, result
+          assert verification['canonical_reality_count'] == 2, result
+          assert verification['all_reconciled_accept'] is True, result
+          assert verification['all_fact_evidence_ids_persisted'] is True, result
+          assert verification['all_known_times_derived_from_grounded_evidence'] is True, result
+          assert verification['valid_time_semantics_preserved'] is True, result
+          rows = {row['predicate_code']: row for row in result['canonical_reality']}
+          announced = rows['agreement.collaboration_announcement_status']
+          effective = rows['agreement.transaction_effectiveness_status']
+          assert announced['value_text'] == 'exclusive license and collaboration agreement announced', announced
+          assert announced['valid_time_precision'] == 'day', announced
+          assert str(announced['valid_from']).startswith('2023-12-11'), announced
+          assert str(announced['valid_to']).startswith('2023-12-12'), announced
+          assert str(announced['market_known_at']).startswith('2023-12-12 12:00:00'), announced
+          assert effective['value_text'] == 'transaction became effective', effective
+          assert effective['valid_time_precision'] == 'month', effective
+          assert effective['valid_time_text'] == 'February 2024', effective
+          assert str(effective['valid_from']).startswith('2024-02-01'), effective
+          assert str(effective['valid_to']).startswith('2024-03-01'), effective
+          assert str(effective['market_known_at']).startswith('2024-02-14 12:00:00'), effective
+          print('RIGHTS_BD_007_CANONICAL_REALITY_PASS')
+          PY
+
+      - name: Verify CAP-0005 no-lookahead replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import asyncio
+          import json
+          import os
+          from datetime import datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.postgres_epistemic import PostgresEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+
+          cuts = (
+              ('before_announcement_known', '2023-12-12T11:59:59+00:00'),
+              ('announcement_known', '2023-12-12T12:00:00+00:00'),
+              ('before_effectiveness_known', '2024-02-14T11:59:59+00:00'),
+              ('effectiveness_known', '2024-02-14T12:00:00+00:00'),
+          )
+
+          async def main():
+              reader = PostgresEpistemicMemoryReader(os.environ['LONGCYCLE_DATABASE_URL'])
+              subject = (MemorySubjectRef(entity_id=UUID(os.environ['SUBJECT_ID'])),)
+              payload = {
+                  'schema_version': 'rights-bd-007-cap-0005-replay-check/v1',
+                  'subject_id': os.environ['SUBJECT_ID'],
+                  'snapshots': {},
+                  'boundary': {
+                      'reader': 'PostgresEpistemicMemoryReader',
+                      'capability_owner': 'CAP-0005',
+                      'future_rows_filtered_by_knowledge_cutoff': True,
+                  },
+              }
+              try:
+                  for label, raw_cutoff in cuts:
+                      snapshot = await reader.snapshot(
+                          subject,
+                          knowledge_cutoff=datetime.fromisoformat(raw_cutoff),
+                      )
+                      payload['snapshots'][label] = {
+                          'knowledge_cutoff': raw_cutoff,
+                          'reality': [row.model_dump(mode='json') for row in snapshot.reality],
+                          'judgments': [row.model_dump(mode='json') for row in snapshot.judgments],
+                          'outcomes': [row.model_dump(mode='json') for row in snapshot.outcomes],
+                      }
+              finally:
+                  await reader.close()
+
+              before = payload['snapshots']['before_announcement_known']['reality']
+              announced = payload['snapshots']['announcement_known']['reality']
+              before_effective = payload['snapshots']['before_effectiveness_known']['reality']
+              effective = payload['snapshots']['effectiveness_known']['reality']
+              assert before == [], before
+              assert {row['predicate_code'] for row in announced} == {'agreement.collaboration_announcement_status'}, announced
+              assert {row['predicate_code'] for row in before_effective} == {'agreement.collaboration_announcement_status'}, before_effective
+              assert {row['predicate_code'] for row in effective} == {
+                  'agreement.collaboration_announcement_status',
+                  'agreement.transaction_effectiveness_status',
+              }, effective
+              assert announced[0]['known_at'].startswith('2023-12-12T12:00:00'), announced
+              month_row = next(row for row in effective if row['predicate_code'] == 'agreement.transaction_effectiveness_status')
+              assert month_row['valid_time']['precision'] == 'month', month_row
+              assert month_row['valid_time']['source_text'] == 'February 2024', month_row
+              assert month_row['known_at'].startswith('2024-02-14T12:00:00'), month_row
+              assert all(not snap['judgments'] and not snap['outcomes'] for snap in payload['snapshots'].values())
+              path = Path(os.environ['REPLAY_OUTPUT'])
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+              print('RIGHTS_BD_007_CAP_0005_REPLAY_PASS')
+
+          asyncio.run(main())
+          PY
+
+      - name: Upload lifecycle execution
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rights-bd-007-lifecycle-${{ github.run_id }}
+          path: |
+            .artifacts/RIGHTS-BD-007-grounded-evidence-execution.json
+            .artifacts/RIGHTS-BD-007-reality-execution.json
+            .artifacts/RIGHTS-BD-007-replay-check.json
+            .artifacts/rights-bd-007-blobs
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+
+      - name: Report exact-head lifecycle receipt
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts
+          evidence_sha="missing"
+          reality_sha="missing"
+          replay_sha="missing"
+          acceptance="unavailable"
+          reality_counts="unavailable"
+          replay_counts="unavailable"
+          if [[ -f "$OUTPUT" ]]; then
+            evidence_sha="$(sha256sum "$OUTPUT" | awk '{print $1}')"
+            acceptance="$(python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          payload = json.loads(Path(os.environ['OUTPUT']).read_text(encoding='utf-8'))
+          print(json.dumps((payload.get('result') or {}).get('acceptance'), sort_keys=True, separators=(',', ':')))
+          PY
+          )"
+          fi
+          if [[ -f "$REALITY_OUTPUT" ]]; then
+            reality_sha="$(sha256sum "$REALITY_OUTPUT" | awk '{print $1}')"
+            reality_counts="$(python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          payload = json.loads(Path(os.environ['REALITY_OUTPUT']).read_text(encoding='utf-8'))
+          v = payload.get('verification') or {}
+          print(json.dumps({'facts': v.get('fact_count'), 'canonical': v.get('canonical_reality_count'), 'all_reconciled_accept': v.get('all_reconciled_accept')}, sort_keys=True, separators=(',', ':')))
+          PY
+          )"
+          fi
+          if [[ -f "$REPLAY_OUTPUT" ]]; then
+            replay_sha="$(sha256sum "$REPLAY_OUTPUT" | awk '{print $1}')"
+            replay_counts="$(python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          payload = json.loads(Path(os.environ['REPLAY_OUTPUT']).read_text(encoding='utf-8'))
+          counts = {key: len(value['reality']) for key, value in payload['snapshots'].items()}
+          print(json.dumps(counts, sort_keys=True, separators=(',', ':')))
+          PY
+          )"
+          fi
+          receipt=.artifacts/RIGHTS-BD-007-runtime-receipt.md
+          cat > "$receipt" <<EOF
+          [RIGHTS-BD-007-LIFECYCLE-PROBE]
+
+          - head_sha: \`$HEAD_SHA\`
+          - run_id: \`$RUN_ID\`
+          - job_status: \`$JOB_STATUS\`
+          - evidence_sha256: \`$evidence_sha\`
+          - evidence_acceptance: \`$acceptance\`
+          - reality_sha256: \`$reality_sha\`
+          - reality_counts: \`$reality_counts\`
+          - replay_sha256: \`$replay_sha\`
+          - replay_reality_counts: \`$replay_counts\`
+          - run_url: https://github.com/$REPOSITORY/actions/runs/$RUN_ID
+          EOF
+          gh issue comment 2 --repo "$REPOSITORY" --body-file "$receipt"

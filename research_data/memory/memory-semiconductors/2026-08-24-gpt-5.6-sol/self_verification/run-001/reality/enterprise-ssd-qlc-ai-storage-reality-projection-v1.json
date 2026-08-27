@@ -1,0 +1,117 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-QLC-AI-STORAGE-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-QLC-AI-STORAGE-DEMAND-001",
+  "allowed_claim_roles": [
+    "vendor_cumulative_qlc_shipments",
+    "product_sampling_stage",
+    "vendor_reported_datacenter_ssd_revenue_milestone",
+    "vendor_shipment_mix_direction"
+  ],
+  "subjects": [
+    {
+      "id": "e1ea7340-fc43-5f24-9061-c2134aeb14d0",
+      "entity_type": "organization",
+      "canonical_name": "Solidigm"
+    },
+    {
+      "id": "4fa63283-aaa9-5ab0-9e88-5c52cf378998",
+      "entity_type": "product",
+      "canonical_name": "Solidigm D5-P5336 122TB"
+    },
+    {
+      "id": "36f95c54-ad2d-5c4d-9d58-81af957ecc16",
+      "entity_type": "organization",
+      "canonical_name": "Micron Technology, Inc."
+    },
+    {
+      "id": "eb3d7e74-986a-517a-9627-1fd2ba0961cc",
+      "entity_type": "organization",
+      "canonical_name": "Kioxia Holdings Corporation"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "solidigm-qlc-cumulative-shipments-over-100eb-by-2024-11",
+      "evidence_fragment_key": "EVF-SOLIDIGM-QLC-100EB-CUMULATIVE-SHIPMENTS",
+      "subject_entity_id": "e1ea7340-fc43-5f24-9061-c2134aeb14d0",
+      "predicate_code": "storage.qlc_cumulative_shipments",
+      "value_text": "more than 100EB of QLC-based product shipped since 2018",
+      "value_kind": "numeric",
+      "value_numeric": 100,
+      "normalized_unit": "EB",
+      "valid_time_kind": "period",
+      "valid_from": "2018-01-01T00:00:00Z",
+      "valid_to": "2024-11-14T00:00:00Z",
+      "valid_time_precision": "year",
+      "valid_time_text": "since 2018 through the 2024-11-13 source vintage",
+      "statistical_scope": "Solidigm-reported cumulative QLC-based product shipments; lower-bound quantity",
+      "dimensions_complete": true,
+      "metadata": {
+        "quantity_qualifier": "more_than",
+        "source_vintage": "2024-11-13",
+        "scope_guard": "Vendor-specific cumulative QLC-based product volume. It is not an industry total, 2024 annual enterprise-SSD shipment figure, installed base, unit count or AI-attributable demand quantity."
+      }
+    },
+    {
+      "fact_key": "solidigm-d5-p5336-122tb-sampling-by-2024-11",
+      "evidence_fragment_key": "EVF-SOLIDIGM-122TB-SAMPLING-STAGE",
+      "subject_entity_id": "4fa63283-aaa9-5ab0-9e88-5c52cf378998",
+      "predicate_code": "product.commercialization_stage",
+      "value_text": "sampling to customers",
+      "value_kind": "text",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-11-13T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "reported current in the 2024-11-13 source vintage",
+      "statistical_scope": "Solidigm D5-P5336 122TB commercialization stage",
+      "dimensions_complete": true,
+      "metadata": {
+        "source_vintage": "2024-11-13",
+        "scope_guard": "Sampling is a product-stage observation. It is not broad deployment, installed base, shipment volume or market adoption."
+      }
+    },
+    {
+      "fact_key": "micron-datacenter-ssd-quarterly-revenue-over-1b-fy24q4-report",
+      "evidence_fragment_key": "EVF-MICRON-FY24Q4-DATACENTER-SSD-REVENUE",
+      "subject_entity_id": "36f95c54-ad2d-5c4d-9d58-81af957ecc16",
+      "predicate_code": "storage.datacenter_ssd_quarterly_revenue",
+      "value_text": "data center SSD sales exceeded $1 billion in quarterly revenue for the first time",
+      "value_kind": "numeric",
+      "value_numeric": 1000000000,
+      "normalized_unit": "USD",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-09-25T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "reported in Micron FY2024 Q4 results on 2024-09-25",
+      "statistical_scope": "Micron-reported data-center SSD quarterly sales revenue; lower-bound quantity",
+      "dimensions_complete": true,
+      "metadata": {
+        "quantity_qualifier": "exceeded",
+        "source_vintage": "2024-09-25",
+        "scope_guard": "Company-specific revenue cannot be converted to SSD units, exabytes, installed base or AI-only NAND demand without additional claim-scoped evidence."
+      }
+    },
+    {
+      "fact_key": "kioxia-enterprise-ssd-main-driver-of-flash-shipment-increase-fy24q2-report",
+      "evidence_fragment_key": "EVF-KIOXIA-FY24Q2-ENTERPRISE-SSD-SHIPMENT-INCREASE",
+      "subject_entity_id": "eb3d7e74-986a-517a-9627-1fd2ba0961cc",
+      "predicate_code": "storage.enterprise_ssd_shipment_mix_direction",
+      "value_text": "flash memory shipments increased mainly in enterprise SSDs",
+      "value_kind": "text",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2024-11-08T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "reported in Kioxia FY2024 Q2 results on 2024-11-08",
+      "statistical_scope": "Kioxia flash-memory shipment increase mix",
+      "dimensions_complete": true,
+      "metadata": {
+        "source_vintage": "2024-11-08",
+        "scope_guard": "This supports enterprise SSD as the main mix driver of Kioxia's flash-memory shipment increase. It does not quantify enterprise-SSD-specific bit growth, units or exabytes; the separate approximately 10% company-wide bit-growth figure is not projected here."
+      }
+    }
+  ]
+}

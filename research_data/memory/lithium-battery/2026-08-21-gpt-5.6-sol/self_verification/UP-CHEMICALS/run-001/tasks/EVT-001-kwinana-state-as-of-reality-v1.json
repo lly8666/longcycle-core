@@ -1,0 +1,37 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "EVT-001-KWINANA-STATE-AS-OF-V1",
+  "source_evidence_task_id": "EVT-001-KWINANA-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "project_status"
+  ],
+  "subjects": [
+    {
+      "id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "entity_type": "production_line",
+      "canonical_name": "Kwinana Train 1 lithium hydroxide plant"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2022-train1-continuous-production-capability-as-of",
+      "evidence_fragment_key": "2022-continuous-production-capability",
+      "subject_entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+      "predicate_code": "project.continuous_production_capability",
+      "value_text": "had continuous-production operating capability",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2022-12-03T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "as of 2022-12-03",
+      "statistical_scope": "project operating capability",
+      "extraction_confidence": 1.0,
+      "source_quality": 1.0,
+      "corroboration": 0.8,
+      "metadata": {
+        "semantic_guard": "The source supports that continuous-production operating capability was true as of the 2022-12-03 disclosure day, but does not establish when that state began. valid_time therefore remains unknown; observed_at is not valid_from.",
+        "onset": "unspecified"
+      }
+    }
+  ]
+}

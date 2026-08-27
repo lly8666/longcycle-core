@@ -1,0 +1,108 @@
+{
+  "schema_version": "longcycle-sv005-grounded-evidence-runtime-receipt/v1",
+  "task_id": "ADC-SV-005-BLENREP-GROUNDED-EVIDENCE-V1",
+  "status": "pass",
+  "subject_head_sha": "53e7af42fac6a34424e64a6dd4f00d8058e5a5a7",
+  "github_actions": {
+    "workflow": ".github/workflows/adc-sv005-blenrep-grounded-evidence.yml",
+    "run_id": 32636739325,
+    "job_id": 97187538313,
+    "commit_status_context": "longcycle/blenrep-grounded-evidence",
+    "commit_status": "success"
+  },
+  "runtime": {
+    "postgresql": "17.11",
+    "python": "3.11.16",
+    "source_lifecycle_regression_tests": {
+      "passed": 18,
+      "failed": 0
+    },
+    "migrations_applied_through": "0031",
+    "migration_0031_checksum": "4bac77ea72a91a41296da827c75f9faebe5ef113e33ae402b633e738a1953f50"
+  },
+  "source_plane": {
+    "webpage_capture": {
+      "transport": "private_google_drive_capsule_verified_before_runtime",
+      "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+      "capsule_sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+      "verification_receipt": "SV-005-drive-capsule-reverification-v1.json",
+      "runtime_network_refetch": false,
+      "runtime_material_sha256": {
+        "fda-initial-approval-2020": "548ff2ecc10145657e80153733f6d553ad33c5b62bb96215cd8e78f29a720cf7",
+        "gsk-dreamm3-2022": "55c7d54a190a670c1cf3049d4b4cd88f6babc678bea000b23621054f1985165a",
+        "gsk-withdrawal-judgment-2022": "6cd6049d27152ac629a80957e0630bf97c166661e81492a5401c093afb84e726"
+      }
+    },
+    "legacy_pdf_materialization": {
+      "release_asset_file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+      "release_asset_sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998",
+      "documents": {
+        "federal-register-revocation-2023": "2f6059f22be2a2fcc930c0e983881935cca1a1bb5cf02736f8981e5377697bbf",
+        "gsk-dreamm7-2024": "020add783487f3a1999fca254fa34fc59a63d3c17654a2984307202c43a68178"
+      },
+      "policy": "legacy_reuse_only_not_new_pdf_download_default"
+    }
+  },
+  "grounded_evidence_acceptance": {
+    "persisted_document_versions": 5,
+    "persisted_evidence_fragments": 9,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "database_source_state": {
+    "FDA-BLENREP-ACCELERATED-APPROVAL-2020-08-05": {
+      "source_capture_state": "content_verified",
+      "source_media_type": "text/html",
+      "raw_materialized_document_version_present": false
+    },
+    "GSK-DREAMM3-2022-11-07": {
+      "source_capture_state": "content_verified",
+      "source_media_type": "text/html",
+      "raw_materialized_document_version_present": false
+    },
+    "GSK-BLENREP-US-MARKETING-AUTHORISATION-2022-11-22": {
+      "source_capture_state": "content_verified",
+      "source_media_type": "text/html",
+      "raw_materialized_document_version_present": false
+    },
+    "FR-2023-06576": {
+      "source_capture_state": "materialized",
+      "source_media_type": "application/pdf",
+      "raw_materialized_document_version_present": true
+    },
+    "GSK-DREAMM7-2024-02-05": {
+      "source_capture_state": "materialized",
+      "source_media_type": "application/pdf",
+      "raw_materialized_document_version_present": true
+    }
+  },
+  "authority_checks": {
+    "fda-initial-approval-2020": "authoritative_primary",
+    "federal-register-revocation-2023": "authoritative_primary",
+    "gsk-dreamm3-2022": "primary_self_statement",
+    "gsk-withdrawal-judgment-2022": "primary_self_statement",
+    "gsk-dreamm7-2024": "primary_self_statement"
+  },
+  "temporal_and_identity_guards": [
+    "2020 ocular toxicity burden is present at the initial approval vintage and is not narrated as a later surprise.",
+    "DREAMM-3 is BLENREP monotherapy versus PomDex and failed the confirmatory PFS superiority endpoint.",
+    "The 2022-11-22 GSK withdrawal-process statement is not the authoritative U.S. legal revocation effective date.",
+    "The 2022-11-22 development-continuation Judgment predates DREAMM-7/8 positive combination readouts and must remain free of later knowledge.",
+    "Federal Register written withdrawal request valid date 2022-11-18 and effective revocation valid date 2023-02-06 are both only knowable from this evidence at the conservative 2023-03-31 upper bound.",
+    "DREAMM-7 BVd combination is distinct from DREAMM-3 monotherapy; positive combination PFS is only a related later milestone for the earlier development-continuation Judgment."
+  ],
+  "artifact": {
+    "artifact_id": 9492515945,
+    "artifact_name": "sv005-blenrep-grounded-evidence-32636739325",
+    "artifact_zip_sha256": "98d9d5c3f72774a6a77653fb1dac2f9c3977c35e95853a4c322dad5933ae19d8",
+    "artifact_zip_size_bytes": 16776,
+    "members": {
+      "SV-005-drive-capsule-reverification-v1.json": "577a053ef08ba70ddfe87f3d326c92cee9fa444de11649a2c9e84067b6879a2f",
+      "SV-005-grounded-evidence-execution.json": "4ffaa65346d8bbead1455367530d1da9faf397a5bb91fa394e10e82ab1ad4adf",
+      "SV-005-grounded-evidence-runtime-spec.json": "2058da5196830a9f97b20d9110f019a837fdfa9772c11ac9480bbba9baebdac1",
+      "SV-005-grounded-evidence-spec-v1.json": "7d0bda7a1829589f46642dcefe3bb73245b0dc5d955e4f473b969167c4237b51"
+    }
+  },
+  "epistemic_boundary": "This receipt proves source preservation, representation truthfulness and Grounded Evidence persistence only. It does not itself publish Reality or Judgment. Downstream publication must use the existing typed Fact/Judgment projection and reconciliation paths, preserving valid/known time and regimen identity.",
+  "next_action": "Project only source-backed BLENREP Reality and the contemporaneous 2022 development-continuation Judgment, then evaluate DREAMM-7 only as a related_milestone and run point-in-time replay with no hindsight."
+}

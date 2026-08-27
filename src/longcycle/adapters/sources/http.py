@@ -16,7 +16,9 @@ def canonicalize_http_url(url: str) -> str:
     if parsed.scheme.lower() not in {"http", "https"} or not parsed.hostname:
         raise ValueError("only absolute HTTP(S) URLs are supported")
     host = parsed.hostname.lower()
-    default_port = (parsed.scheme.lower() == "http" and parsed.port == 80) or (parsed.scheme.lower() == "https" and parsed.port == 443)
+    default_port = (parsed.scheme.lower() == "http" and parsed.port == 80) or (
+        parsed.scheme.lower() == "https" and parsed.port == 443
+    )
     netloc = host if not parsed.port or default_port else f"{host}:{parsed.port}"
     path = parsed.path or "/"
     return urlunsplit((parsed.scheme.lower(), netloc, path, parsed.query, ""))
@@ -30,14 +32,30 @@ def _assert_public_host(url: str) -> None:
     if hostname.lower() in {"localhost", "localhost.localdomain"}:
         raise ValueError("local hosts are not allowed")
     try:
-        addresses = {item[4][0] for item in socket.getaddrinfo(hostname, parsed.port or 443, type=socket.SOCK_STREAM)}
+        addresses = {
+            item[4][0]
+            for item in socket.getaddrinfo(
+                hostname,
+                parsed.port or 443,
+                type=socket.SOCK_STREAM,
+            )
+        }
     except socket.gaierror as exc:
         raise ValueError(f"hostname cannot be resolved: {hostname}") from exc
     if not addresses:
         raise ValueError(f"hostname has no routable addresses: {hostname}")
     for address in addresses:
         ip = ipaddress.ip_address(address)
-        if any((ip.is_private, ip.is_loopback, ip.is_link_local, ip.is_multicast, ip.is_reserved, ip.is_unspecified)):
+        if any(
+            (
+                ip.is_private,
+                ip.is_loopback,
+                ip.is_link_local,
+                ip.is_multicast,
+                ip.is_reserved,
+                ip.is_unspecified,
+            )
+        ):
             raise ValueError(f"refusing non-public address for {hostname}")
 
 
@@ -69,7 +87,11 @@ class HttpDocumentSource:
 
     async def fetch(self, item: DiscoveryItem, context: FetchContext) -> RawPayload:
         url = canonicalize_http_url(item.url)
-        headers = {"User-Agent": self.user_agent, "Accept": "*/*", **context.conditional_headers}
+        headers = {
+            "User-Agent": self.user_agent,
+            "Accept": "*/*",
+            **context.conditional_headers,
+        }
         async with httpx.AsyncClient(
             timeout=context.timeout_seconds,
             follow_redirects=False,
@@ -79,7 +101,9 @@ class HttpDocumentSource:
             for _ in range(6):
                 self._assert_allowed(url)
                 async with client.stream("GET", url) as response:
-                    response_headers = {key.lower(): value for key, value in response.headers.items()}
+                    response_headers = {
+                        key.lower(): value for key, value in response.headers.items()
+                    }
                     if response.status_code in {301, 302, 303, 307, 308}:
                         location = response.headers.get("location")
                         if not location:
@@ -94,7 +118,13 @@ class HttpDocumentSource:
                         body.extend(chunk)
                         if len(body) > context.maximum_bytes:
                             raise ValueError(f"response exceeds {context.maximum_bytes} bytes")
-                    content_type = response.headers.get("content-type", "application/octet-stream").split(";", 1)[0]
+                    content_type = response.headers.get(
+                        "content-type", "application/octet-stream"
+                    ).split(";", 1)[0]
+                    # Internal provenance marker: these are the complete bytes returned by the
+                    # source transport, not a derived/readable representation. The database uses
+                    # this explicit marker rather than absence of metadata to bind a raw version.
+                    response_headers["x-longcycle-raw-source-materialized"] = "true"
                     return RawPayload(
                         content=bytes(body),
                         content_type=content_type,

@@ -1,0 +1,130 @@
+name: Memory MS-0120 2024 recovery Grounded Evidence
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/memory-ms0120-2024-recovery-grounded-evidence.yml'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-01-19-MEMORY-PRICE-RALLY-CAPACITY-CONTROL-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-04-25-AI-CONVENTIONAL-DRAM-RECOVERY-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-06-28-NAND-RECOVERY-PRODUCTION-AI-CONSUMER-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TRENDFORCE-2024-10-09-CONVENTIONAL-DRAM-HBM-MIX-DIVERGENCE-v1.json'
+      - 'research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0120-2024-recovery-decomposition-grounded-evidence-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/memory-ms0120-2024-recovery-blobs
+      SPEC: research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0120-2024-recovery-decomposition-grounded-evidence-v1.json
+      OUTPUT: ${{ github.workspace }}/.artifacts/memory-ms0120-2024-recovery-execution.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Grounded Evidence regression tests
+        run: >-
+          python -m pytest -q
+          tests/test_evidence_recording.py
+          tests/test_json_evidence_recording.py
+          tests/test_research_orchestration.py
+          tests/test_materialized_source_representation.py
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$GITHUB_WORKSPACE"
+          --output "$OUTPUT"
+
+      - name: Assert recovery decomposition and no-lookahead vintages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          payload = json.loads(Path(os.environ["OUTPUT"]).read_text(encoding="utf-8"))
+          assert payload["ok"] is True, payload
+          result = payload["result"]
+          assert result["task_id"] == "EVT-MEMORY-SEMICONDUCTORS-MS0120-2024-RECOVERY-DECOMPOSITION-001"
+          acceptance = result["acceptance"]
+          assert acceptance["persisted_document_versions"] == 4, acceptance
+          assert acceptance["persisted_evidence_fragments"] == 4, acceptance
+          assert acceptance["fact_assertions_created"] == 0, acceptance
+          assert acceptance["judgment_assertions_created"] == 0, acceptance
+
+          roles = {item["claim_context"]["claim_role"] for item in result["fragments"]}
+          assert roles == {
+              "broad_memory_price_rally_capacity_utilization_condition",
+              "ai_memory_growth_and_conventional_dram_recovery_separated",
+              "nand_first_half_price_rebound_with_production_restraint",
+              "conventional_dram_price_vs_hbm_mix_divergence_forecast",
+          }, roles
+          assert all("ai_causal_share" not in role for role in roles)
+
+          spec = json.loads(Path(os.environ["SPEC"]).read_text(encoding="utf-8"))
+          by_role = {
+              item["claim_context"]["claim_role"]: item["claim_context"]["known_time"]["upper_bound"]
+              for item in spec["fragments"]
+          }
+          assert by_role["broad_memory_price_rally_capacity_utilization_condition"] < by_role["ai_memory_growth_and_conventional_dram_recovery_separated"]
+          assert by_role["ai_memory_growth_and_conventional_dram_recovery_separated"] < by_role["nand_first_half_price_rebound_with_production_restraint"]
+          assert by_role["nand_first_half_price_rebound_with_production_restraint"] < by_role["conventional_dram_price_vs_hbm_mix_divergence_forecast"]
+          june_cutoff = "2024-06-30T23:59:59Z"
+          assert by_role["nand_first_half_price_rebound_with_production_restraint"] <= june_cutoff
+          assert by_role["conventional_dram_price_vs_hbm_mix_divergence_forecast"] > june_cutoff
+
+          layers = {item["claim_context"]["epistemic_layer"] for item in result["fragments"]}
+          assert "evidence_only_market_expectation" in layers
+          assert "evidence_only_market_observation" in layers
+          assert "evidence_only_supplier_outlook" in layers
+          assert "evidence_only_product_mix_forecast" in layers
+          print("MEMORY_MS0120_2024_RECOVERY_EVIDENCE_PASS")
+          PY
+
+      - name: Upload execution receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: memory-ms0120-2024-recovery-${{ github.run_id }}
+          path: ${{ env.OUTPUT }}
+          if-no-files-found: error
+          retention-days: 7

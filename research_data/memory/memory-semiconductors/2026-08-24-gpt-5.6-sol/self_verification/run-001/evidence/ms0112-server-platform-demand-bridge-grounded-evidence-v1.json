@@ -1,0 +1,266 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0112-SERVER-PLATFORM-DEMAND-BRIDGE-001",
+  "epistemic_guardrails": [
+    "Hyperscaler cloud/AI capital expenditure and server hardware procurement are not DRAM, NAND, HBM or enterprise-SSD demand quantities.",
+    "Micron's calendar-2024 server-unit growth statement is a contemporaneous expectation, not realized server shipment Reality.",
+    "A reported annual server-product roadmap cadence is not proof that every announced platform shipped on schedule or at a particular volume.",
+    "AMD EPYC generation, SP5 compatibility and DDR5 channel support are technical platform facts, not installed-base adoption, DIMM capacity or memory-bit demand.",
+    "The packet preserves capex/procurement, server-market expectation, product-roadmap cadence and platform memory interface as separate claims. No synthetic data-center demand scalar is created.",
+    "Grounding creates EvidenceFragments only. Any later Judgment or Reality projection must use an existing semantic owner and preserve known-time boundaries."
+  ],
+  "sources": [
+    {
+      "key": "microsoft_ir",
+      "name": "Microsoft Investor Relations",
+      "publisher_domain": "microsoft.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Microsoft's earnings call is primary for its own cloud/AI capex composition and demand-linked server procurement, not for downstream memory quantities."
+        }
+      ]
+    },
+    {
+      "key": "micron_ir",
+      "name": "Micron Investor Relations — Q3 FY2024 prepared remarks",
+      "publisher_domain": "investors.micron.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Micron's prepared remarks are primary for its own contemporaneous server-market expectation and report of customer AI-server roadmap cadence; these remain management statements rather than realized market measurements."
+        }
+      ]
+    },
+    {
+      "key": "amd_ir",
+      "name": "AMD Investor Relations",
+      "publisher_domain": "amd.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "technical_specification",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "AMD is authoritative for the generation, platform compatibility and memory-interface specification of its own EPYC 9005 server processors."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "microsoft_cloud_ai_capex_2024_07_30",
+      "source_key": "microsoft_ir",
+      "external_id": "microsoft-fy24-q4-cloud-ai-capex-demand-bridge",
+      "title": "Microsoft FY24 Q4 cloud/AI capex composition capture",
+      "retrieval_url": "https://www.microsoft.com/en-us/investor/events/fy-2024/earnings-fy-2024-q4",
+      "original_source_url": "https://www.microsoft.com/en-us/investor/events/fy-2024/earnings-fy-2024-q4",
+      "published_at": null,
+      "first_known_at": "2024-07-31T00:00:00Z",
+      "vintage_id": "2024-07-30",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICROSOFT-2024-07-30-CLOUD-AI-CAPEX-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "bf889a90b2aeaa77b370681efe14e3dda895bfba96651ea9d9fb1f67f602e40c",
+      "retrieval_provenance": {
+        "capture_id": "CAP-MICROSOFT-2024-07-30-CLOUD-AI-CAPEX-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "source_media_type": "text/html",
+        "representation_media_type": "application/json",
+        "research_capture_time": "2026-08-25T12:47:44Z",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "micron_server_platform_cycle_2024_06_26",
+      "source_key": "micron_ir",
+      "external_id": "micron-fq3-2024-server-platform-cycle",
+      "title": "Micron FQ3 2024 server-unit and AI-server roadmap cadence capture",
+      "retrieval_url": "https://investors.micron.com/static-files/4550f98c-1054-4847-a929-c17d520a0564",
+      "original_source_url": "https://investors.micron.com/static-files/4550f98c-1054-4847-a929-c17d520a0564",
+      "published_at": null,
+      "first_known_at": "2024-06-27T00:00:00Z",
+      "vintage_id": "2024-06-26",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-SERVER-PLATFORM-CYCLE-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "78cd31ed10523f56813e99467fa6e481b8a6fa9445eec3e8e51392f72d5dc0c6",
+      "retrieval_provenance": {
+        "capture_id": "CAP-MICRON-2024-06-26-SERVER-PLATFORM-CYCLE-v1",
+        "capture_schema_version": "longcycle-readable-source-representation/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_pdf_read",
+        "source_media_type": "application/pdf",
+        "representation_media_type": "application/json",
+        "source_pdf_page_number_one_based": 3,
+        "source_pdf_page_index_zero_based": 2,
+        "research_capture_time": "2026-08-26T09:24:00Z",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    },
+    {
+      "key": "amd_epyc_turin_ddr5_2024_10_10",
+      "source_key": "amd_ir",
+      "external_id": "amd-epyc-turin-ddr5-platform-2024-10-10",
+      "title": "AMD 5th Gen EPYC Turin DDR5 platform capture",
+      "retrieval_url": "https://ir.amd.com/news-events/press-releases/detail/1219/amd-launches-5th-gen-amd-epyc-cpus-maintaining-leadership-performance-and-features-for-the-modern-data-center",
+      "original_source_url": "https://ir.amd.com/news-events/press-releases/detail/1219/amd-launches-5th-gen-amd-epyc-cpus-maintaining-leadership-performance-and-features-for-the-modern-data-center",
+      "published_at": null,
+      "first_known_at": "2024-10-11T00:00:00Z",
+      "vintage_id": "2024-10-10",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-AMD-2024-10-10-EPYC-TURIN-DDR5-PLATFORM-v1.json",
+      "content_type": "application/json",
+      "expected_sha256": "ac5899ea4b1e72c881593391d12ecbebd6e6db8bddce28d92653c25b9075368f",
+      "retrieval_provenance": {
+        "capture_id": "CAP-AMD-2024-10-10-EPYC-TURIN-DDR5-PLATFORM-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "source_capture_state": "content_verified",
+        "raw_source_materialized": false,
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "source_media_type": "text/html",
+        "representation_media_type": "application/json",
+        "research_capture_time": "2026-08-26T09:24:00Z",
+        "known_time_policy": "conservative_next_day_utc_upper_bound"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MS0112-MICROSOFT-CLOUD-AI-SERVER-SPEND",
+      "document_key": "microsoft_cloud_ai_capex_2024_07_30",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "The remaining cloud and AI related spend is primarily for servers, both CPUs and GPUs, to serve customers based on demand signals.",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0112-001",
+        "claim_role": "hyperscaler_capex_server_procurement",
+        "claim_scope": "self_statement",
+        "authority_class": "primary_self_statement",
+        "epistemic_layer": "evidence_only_hyperscaler_capex_composition",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2024-07-31T00:00:00Z"},
+        "scope": "microsoft_cloud_ai_capex_server_cpu_gpu_spend",
+        "comparability_guard": "Do not convert Microsoft server spend into DRAM, NAND, HBM, SSD bits, units or supplier revenue.",
+        "linked_memory_lead_ids": ["MS-0112"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0112-MICRON-2024-SERVER-UNIT-FORECAST",
+      "document_key": "micron_server_platform_cycle_2024_06_26",
+      "json_pointer": "/server_unit_forecast_visible_text",
+      "expected_value": "industry server unit shipments are expected to grow in the mid to high single digits in calendar 2024",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0112-002",
+        "claim_role": "server_unit_growth_expectation",
+        "claim_scope": "management_guidance",
+        "authority_class": "primary_self_statement",
+        "epistemic_layer": "evidence_only_industry_expectation",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2024-06-27T00:00:00Z"},
+        "scope": "calendar_2024_industry_server_unit_growth_expectation",
+        "comparability_guard": "Forward-looking server-unit expectation only; it is not realized shipments and does not specify DRAM or SSD content per server.",
+        "linked_memory_lead_ids": ["MS-0112"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0112-MICRON-AI-SERVER-ROADMAP-CADENCE",
+      "document_key": "micron_server_platform_cycle_2024_06_26",
+      "json_pointer": "/server_platform_cadence_visible_text",
+      "expected_value": "annual cadence of new products",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0112-003",
+        "claim_role": "customer_ai_server_product_roadmap_cadence",
+        "claim_scope": "management_guidance",
+        "authority_class": "primary_self_statement",
+        "epistemic_layer": "evidence_only_reported_customer_roadmap",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2024-06-27T00:00:00Z"},
+        "scope": "micron_reported_customer_ai_server_roadmap_cadence",
+        "comparability_guard": "Reported roadmap cadence is not shipment timing, installed-base adoption or a memory-demand quantity.",
+        "linked_memory_lead_ids": ["MS-0112"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0112-AMD-EPYC-FIFTH-GENERATION",
+      "document_key": "amd_epyc_turin_ddr5_2024_10_10",
+      "json_pointer": "/platform_generation_visible_text",
+      "expected_value": "5th Gen AMD EPYC processors",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0112-004",
+        "claim_role": "server_cpu_platform_generation",
+        "claim_scope": "technical_specification",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_platform_generation",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2024-10-11T00:00:00Z"},
+        "scope": "amd_epyc_9005_turin_fifth_generation",
+        "comparability_guard": "Generation announcement does not measure server shipments or replacement rates.",
+        "linked_memory_lead_ids": ["MS-0112"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0112-AMD-EPYC-SP5-COMPATIBILITY",
+      "document_key": "amd_epyc_turin_ddr5_2024_10_10",
+      "json_pointer": "/platform_compatibility_visible_text",
+      "expected_value": "compatible with the broadly deployed SP5 platform",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0112-005",
+        "claim_role": "server_cpu_platform_compatibility",
+        "claim_scope": "technical_specification",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_platform_compatibility",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2024-10-11T00:00:00Z"},
+        "scope": "amd_epyc_9005_sp5_compatibility",
+        "comparability_guard": "SP5 compatibility is a platform constraint, not evidence of fleet adoption or a forced motherboard refresh.",
+        "linked_memory_lead_ids": ["MS-0112"]
+      }
+    },
+    {
+      "fragment_key": "EVF-MS0112-AMD-EPYC-DDR5-CHANNELS",
+      "document_key": "amd_epyc_turin_ddr5_2024_10_10",
+      "json_pointer": "/ddr5_channel_visible_text",
+      "expected_value": "12 channels of DDR5 memory per CPU",
+      "claim_context": {
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "claim_id": "MEMSEM-MS0112-006",
+        "claim_role": "server_cpu_ddr5_memory_interface",
+        "claim_scope": "technical_specification",
+        "authority_class": "authoritative_primary",
+        "epistemic_layer": "evidence_only_memory_interface",
+        "stance": "supports",
+        "known_time": {"precision": "day", "upper_bound": "2024-10-11T00:00:00Z"},
+        "scope": "amd_epyc_9005_ddr5_channels_per_cpu",
+        "comparability_guard": "Supported channels do not establish populated DIMM count, capacity per DIMM, DRAM bits per server or memory procurement volume.",
+        "linked_memory_lead_ids": ["MS-0112"]
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 3,
+    "required_fragments": 6,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

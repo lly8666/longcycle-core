@@ -1,0 +1,57 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0002",
+  "status": "active",
+  "kind": "architecture",
+  "severity": "high",
+  "title": "Epistemic integration gates use typed contracts, not storage internals",
+  "scope": [
+    "scripts/smoke_postgres_epistemic.py",
+    "scripts/replay_integrated_history.py",
+    "src/longcycle/ports/epistemic.py",
+    "src/longcycle/adapters/storage/postgres_epistemic.py",
+    "src/longcycle/adapters/storage/duckdb_epistemic.py",
+    ".github/workflows/ci.yml"
+  ],
+  "tags": [
+    "epistemic-memory",
+    "postgres",
+    "duckdb",
+    "integration-test",
+    "storage-boundary"
+  ],
+  "failure_signature": "A hard integration/replay path breaks because it knows an internal PostgreSQL or DuckDB table/column shape, or Postgres and DuckDB replay drift because acceptance is expressed separately in SQL rather than once through the typed memory contract.",
+  "root_cause": "Acceptance/replay code crossed the adapter boundary and treated one database schema as the product contract. That made storage refactors look like product failures and allowed separate backends to encode subtly different semantics.",
+  "invariant": "Product-level Reality/Judgment/Outcome replay and integration acceptance must consume EpistemicMemoryReader/typed industrial-memory records. Direct SQL is allowed inside storage adapters and narrowly adapter-specific tests, but not as the semantic contract for cross-backend acceptance or product replay CLIs.",
+  "anti_regression": [
+    "Do not make the integrated smoke or replay CLI discover Fact/Judgment/Outcome semantics by joining physical tables itself.",
+    "Do not add a DuckDB-only or PostgreSQL-only replay rule when the rule belongs in the shared typed memory model."
+  ],
+  "guards": [
+    {
+      "kind": "type",
+      "path": "src/longcycle/ports/epistemic.py",
+      "contains": "class EpistemicMemoryReader(Protocol):",
+      "description": "Storage-neutral reader is the public replay boundary."
+    },
+    {
+      "kind": "test",
+      "path": "scripts/smoke_postgres_epistemic.py",
+      "contains": "seal_industrial_memory(portable, timeline)",
+      "description": "Hard smoke reads PostgreSQL through the typed reader, seals the same timeline, and replays it through DuckDB."
+    },
+    {
+      "kind": "runtime",
+      "path": "scripts/replay_integrated_history.py",
+      "contains": "DuckDBEpistemicMemoryReader(database)",
+      "description": "User-facing integrated replay consumes the same typed DuckDB boundary rather than physical table names."
+    }
+  ],
+  "revisit_when": "Revisit only if the domain read contract itself is deliberately replaced by a stronger storage-neutral model; changing database products or table layouts alone is not sufficient.",
+  "origin_refs": [
+    "ci:typed-industrial-memory-integration",
+    "incident:outcome-smoke-undefined-column",
+    "benchmark:kwinana-typed-replay"
+  ],
+  "supersedes": []
+}

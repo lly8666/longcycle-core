@@ -1,0 +1,87 @@
+{
+  "aliases": [
+    "capability registry",
+    "feature inventory",
+    "anti duplication gate",
+    "architecture admission",
+    "semantic ownership"
+  ],
+  "entrypoints": [
+    {
+      "contains": "def audit() -> None:",
+      "description": "Repository governance CLI validates cards/index/admission/handoff integration and supports bounded relevant lookup.",
+      "kind": "script",
+      "path": "scripts/capability_registry.py"
+    }
+  ],
+  "extension_seams": [
+    "Improve deterministic discovery/routing without making opaque similarity a hard blocker.",
+    "Tighten admission requirements as governance_mode matures from converging toward core-locked architecture."
+  ],
+  "guards": [
+    {
+      "contains": "class CapabilityRegistryTest",
+      "description": "Governance tests cover index freshness, ownership uniqueness, admission policy and handoff bootstrap.",
+      "kind": "test",
+      "path": "tests/test_capability_registry.py"
+    },
+    {
+      "contains": "Capability registry metadata audit (hard gate)",
+      "description": "Full CI fails if capability ownership/index/admission/handoff integration drifts.",
+      "kind": "runtime",
+      "path": ".github/workflows/ci.yml"
+    },
+    {
+      "contains": "## Capability admission gate — do not create parallel semantic owners blindly",
+      "description": "Agent-wide operating instructions permanently require capability discovery/admission before material capability work.",
+      "kind": "protocol",
+      "path": "AGENTS.md"
+    },
+    {
+      "contains": "开始 material capability / product-surface / architecture 开发前",
+      "description": "The bounded continuation bootstrap keeps capability discovery/admission in every resumed development session.",
+      "kind": "protocol",
+      "path": "CONTINUE_HERE.md"
+    },
+    {
+      "contains": "before material capability/product/architecture work, discover the existing semantic owner",
+      "description": "The zero-context rendezvous explicitly recovers stable capability ownership before material development while CAP-0009 remains the owner of the bootstrap surface itself.",
+      "kind": "protocol",
+      "path": "FRESH_AGENT_BOOTSTRAP.md"
+    }
+  ],
+  "id": "CAP-0010",
+  "maturity": "experimental",
+  "non_goals": [
+    "Cataloguing every function/class/helper.",
+    "Replacing Git history, architecture docs or Repair Memory.",
+    "Using LLM similarity scores as authoritative duplicate detection."
+  ],
+  "owned_semantics": [
+    "governance.capability_inventory",
+    "governance.semantic_owner_uniqueness",
+    "governance.capability_admission"
+  ],
+  "purpose": "Own the sparse machine-readable map of what Longcycle already knows how to do and force material development to classify as reuse/extend/replace/new before creating new semantic ownership.",
+  "revisit_when": "Evolve when the architecture matures enough to raise governance_mode or when real development shows a false-positive/false-negative pattern that explicit ownership fields cannot express.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    ".longcycle/capabilities/**",
+    "scripts/capability_registry.py",
+    "docs/development/capability-governance.md",
+    "AGENTS.md",
+    "CONTINUE_HERE.md",
+    "tests/test_capability_registry.py",
+    ".github/workflows/ci.yml"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "architecture",
+    "governance",
+    "capability",
+    "ownership",
+    "anti-duplication"
+  ],
+  "title": "Stable capability ownership and admission governance"
+}

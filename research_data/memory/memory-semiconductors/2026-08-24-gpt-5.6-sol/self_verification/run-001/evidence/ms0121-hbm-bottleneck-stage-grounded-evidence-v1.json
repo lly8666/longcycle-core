@@ -1,0 +1,142 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0121-HBM-BOTTLENECK-STAGE-001",
+  "epistemic_guardrails": [
+    "HBM shortage is not synonymous with DRAM-wafer shortage. Front-end silicon intensity, HBM stack/package production, accelerator advanced packaging, customer qualification, customer supply and platform availability are separate stages.",
+    "This packet supplements already-grounded HBM3E sampling/production/customer-supply and H200 market-availability trajectories; it does not duplicate or re-promote those assets.",
+    "Micron's December 2023 qualification statement proves qualification was still a distinct live stage for its HBM3E/NVIDIA program; it does not prove qualification was the universal industry bottleneck.",
+    "SK hynix's Package & Test statement establishes a separate HBM back-end process after wafer fabrication and the importance of TSV/MR-MUF; it does not prove that SK hynix packaging capacity was constrained on April 11, 2024.",
+    "TSMC's April 2024 statement is CoWoS/advanced-packaging capacity evidence at TSMC scope. It does not prove HBM-stack supply was abundant or that CoWoS was the only accelerator bottleneck.",
+    "Micron's June 2024 approximately-3x HBM3E-versus-D5 wafer trade ratio supports silicon-intensity and non-HBM displacement mechanisms; it does not identify the immediate binding stage for HBM deliveries.",
+    "No fragment may create a universal bottleneck ranking, a cross-supplier causal coefficient, or a synthetic HBM-scarcity scalar.",
+    "Grounding creates EvidenceFragments only. Any cross-stage bottleneck assessment remains research-only unless separately supported by typed claims."
+  ],
+  "sources": [
+    {
+      "key": "micron_investor_relations",
+      "name": "Micron Technology Investor Relations",
+      "publisher_domain": "investors.micron.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {"claim_scope":"self_statement","authority_class":"primary_self_statement","authority_basis":"direct_speaker_record","rationale":"Micron is primary for its own HBM sampling, qualification, product ramp and prepared supply commentary."}
+      ]
+    },
+    {
+      "key": "skhynix_newsroom",
+      "name": "SK hynix Newsroom",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {"claim_scope":"technical_specification","authority_class":"primary_self_statement","authority_basis":"direct_speaker_record","rationale":"SK hynix is primary for its own front-end/back-end package-and-test process description and HBM packaging technology roles."}
+      ]
+    },
+    {
+      "key": "tsmc_investor_relations",
+      "name": "TSMC Investor Relations",
+      "publisher_domain": "investor.tsmc.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {"claim_scope":"self_statement","authority_class":"primary_self_statement","authority_basis":"direct_speaker_record","rationale":"TSMC is primary for its own CoWoS capacity, customer demand and OSAT-capacity commentary."}
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key":"micron_hbm3e_nvidia_qualification_2023_12_20",
+      "vintage_id":"2023-12-20",
+      "source_key":"micron_investor_relations",
+      "retrieval_url":"https://investors.micron.com/static-files/4e2b9359-c174-49b6-9c68-2b938b3c33d2",
+      "original_source_url":"https://investors.micron.com/static-files/4e2b9359-c174-49b6-9c68-2b938b3c33d2",
+      "external_id":"micron-hbm3e-nvidia-qualification-2023-12-20",
+      "title":"Micron December 2023 HBM3E NVIDIA qualification capture",
+      "published_at":null,
+      "first_known_at":"2023-12-21T00:00:00Z",
+      "expected_sha256":"58bce426471bdef67c162e48470ff3f73c642dceefe84fa5fc1b5d8fd9d3caf2",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2023-12-20-HBM3E-NVIDIA-QUALIFICATION-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-MICRON-2023-12-20-HBM3E-NVIDIA-QUALIFICATION-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"pdf_text_read_and_screenshot_verified","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"skhynix_hbm_packaging_backend_2024_04_11",
+      "vintage_id":"2024-04-11",
+      "source_key":"skhynix_newsroom",
+      "retrieval_url":"https://news.skhynix.com/en/top-team-insights-motto-of-package-and-technology-head-woojin-choi/",
+      "original_source_url":"https://news.skhynix.com/en/top-team-insights-motto-of-package-and-technology-head-woojin-choi/",
+      "external_id":"skhynix-hbm-packaging-backend-2024-04-11",
+      "title":"SK hynix April 2024 HBM Package & Test stage capture",
+      "published_at":null,
+      "first_known_at":"2024-04-12T00:00:00Z",
+      "expected_sha256":"1f4d2f3c8dd1dd62d01a380b1b0ffb5b411a2ea17a3e8653b8a9241c0e748691",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2024-04-11-HBM-PACKAGING-BACKEND-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-SKHYNIX-2024-04-11-HBM-PACKAGING-BACKEND-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"interactive_web_read","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"tsmc_cowos_capacity_tight_2024_04_18",
+      "vintage_id":"2024-04-18",
+      "source_key":"tsmc_investor_relations",
+      "retrieval_url":"https://investor.tsmc.com/schinese/encrypt/files/encrypt_file/reports/2024-04/34ff75e23e53246302ce3a8d90d0423c57c6b120/TSMC%201Q24%20Transcript.pdf",
+      "original_source_url":"https://investor.tsmc.com/schinese/encrypt/files/encrypt_file/reports/2024-04/34ff75e23e53246302ce3a8d90d0423c57c6b120/TSMC%201Q24%20Transcript.pdf",
+      "external_id":"tsmc-cowos-capacity-tight-2024-04-18",
+      "title":"TSMC April 2024 CoWoS capacity tightness capture",
+      "published_at":null,
+      "first_known_at":"2024-04-19T00:00:00Z",
+      "expected_sha256":"eccf98b90e559a9e10900976e876bd2f80b36507ce2363d80599ff402acb04aa",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-TSMC-2024-04-18-COWOS-CAPACITY-TIGHT-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-TSMC-2024-04-18-COWOS-CAPACITY-TIGHT-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"pdf_text_read_with_screenshot_attempt","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    },
+    {
+      "key":"micron_hbm3e_wafer_trade_ratio_2024_06_26",
+      "vintage_id":"2024-06-26",
+      "source_key":"micron_investor_relations",
+      "retrieval_url":"https://investors.micron.com/static-files/4550f98c-1054-4847-a929-c17d520a0564",
+      "original_source_url":"https://investors.micron.com/static-files/4550f98c-1054-4847-a929-c17d520a0564",
+      "external_id":"micron-hbm3e-wafer-trade-ratio-2024-06-26",
+      "title":"Micron June 2024 HBM3E wafer trade-ratio capture",
+      "published_at":null,
+      "first_known_at":"2024-06-27T00:00:00Z",
+      "expected_sha256":"94400f9d81f636a5e81590d44e07f9fe06918799ff573bcc9327136a0c87ce19",
+      "material_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-MICRON-2024-06-26-HBM3E-WAFER-TRADE-RATIO-v1.json",
+      "content_type":"application/json",
+      "retrieval_provenance":{"capture_id":"CAP-MICRON-2024-06-26-HBM3E-WAFER-TRADE-RATIO-v1","capture_schema_version":"longcycle-readable-web-capture/v1","source_capture_state":"content_verified","claim_relevant_content_preserved":true,"content_verification_mode":"pdf_text_read_and_screenshot_verified","known_time_policy":"conservative_next_day_utc_upper_bound"}
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key":"EVF-MS0121-DEC23-HBM3E-PLATFORM-QUALIFICATION-IN-PROGRESS",
+      "document_key":"micron_hbm3e_nvidia_qualification_2023_12_20",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"In fiscal Q1, we shipped samples of HBM3E to a number of key partners and are making good progress in our qualifications. Micron is in the final stages of qualifying our industry-leading HBM3E to be used in NVIDIA's next generation Grace Hopper GH200 and H200 platforms.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0121-001","claim_role":"hbm3e_platform_qualification_in_progress","claim_scope":"self_statement","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_supplier_qualification","stance":"supports","known_time":{"precision":"day","upper_bound":"2023-12-21T00:00:00Z"},"scope":"micron_hbm3e_nvidia_gh200_h200_qualification_status","comparability_guard":"Samples and qualification progress are not completed qualification, customer supply or packaged-GPU availability.","linked_memory_lead_ids":["MS-0121"]}
+    },
+    {
+      "fragment_key":"EVF-MS0121-APR24-HBM-FRONTEND-BACKEND-STAGE-SEPARATION",
+      "document_key":"skhynix_hbm_packaging_backend_2024_04_11",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"After wafers undergo the semiconductor front-end process in fabs, P&T oversees the back-end process where wafers are packaged into products and tested to ensure they meet customer expectations.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0121-002","claim_role":"hbm_frontend_backend_packaging_stage_separation","claim_scope":"technical_specification","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_technical_stage","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-04-12T00:00:00Z"},"scope":"skhynix_hbm_package_test_after_frontend_wafer_process","comparability_guard":"Establishes a distinct back-end process; does not establish a dated capacity shortage or bottleneck share.","linked_memory_lead_ids":["MS-0121","MS-0126"]}
+    },
+    {
+      "fragment_key":"EVF-MS0121-APR24-COWOS-CAPACITY-TIGHT",
+      "document_key":"tsmc_cowos_capacity_tight_2024_04_18",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"It's probably more than double this year as compared with last year. However, it's still not enough to meet the customers' demand",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0121-003","claim_role":"accelerator_cowos_capacity_tightness","claim_scope":"self_statement","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_advanced_packaging_capacity_observation","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-04-19T00:00:00Z"},"scope":"tsmc_2024_cowos_capacity_vs_customer_demand","comparability_guard":"TSMC CoWoS tightness is downstream system-package capacity evidence; it neither measures HBM wafer supply nor proves universal accelerator bottleneck ranking.","linked_memory_lead_ids":["MS-0121","MS-0109"]}
+    },
+    {
+      "fragment_key":"EVF-MS0121-JUN24-HBM3E-THREE-X-WAFER-TRADE-RATIO",
+      "document_key":"micron_hbm3e_wafer_trade_ratio_2024_06_26",
+      "json_pointer":"/claim_relevant_visible_text",
+      "expected_value":"Industrywide, HBM3E consumes approximately three times the wafer supply as D5 to produce a given number of bits in the same technology node.",
+      "claim_context":{"campaign_id":"MEMORY-SEMICONDUCTORS-001","claim_id":"MEMSEM-MS0121-004","claim_role":"hbm3e_wafer_supply_trade_ratio_vs_d5","claim_scope":"self_statement","authority_class":"primary_self_statement","epistemic_layer":"evidence_only_supplier_supply_mechanism","stance":"supports","known_time":{"precision":"day","upper_bound":"2024-06-27T00:00:00Z"},"scope":"industrywide_hbm3e_vs_d5_wafer_supply_per_equal_bits_same_node_micron_estimate","comparability_guard":"Quantifies silicon intensity and non-HBM displacement; does not identify the immediate binding HBM delivery stage and is not silently generalized to later HBM generations.","linked_memory_lead_ids":["MS-0121"]}
+    }
+  ],
+  "acceptance":{"required_documents":4,"required_fragments":4,"facts_created":0,"judgments_created":0}
+}

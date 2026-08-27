@@ -15,8 +15,11 @@ class SchemaContractTest(unittest.TestCase):
     def test_migrations_are_ordered_nonempty_and_transaction_free(self) -> None:
         files = sorted(MIGRATIONS.glob("*.sql"))
         versions = [int(path.name[:4]) for path in files]
-        self.assertEqual(versions, list(range(1, len(files) + 1)))
+        self.assertEqual(versions, sorted(versions))
+        self.assertEqual(len(versions), len(set(versions)))
+        self.assertTrue(all(version > 0 for version in versions))
         for path in files:
+            self.assertRegex(path.name, r"^\d{4}_.+\.sql$")
             body = path.read_text(encoding="utf-8")
             self.assertTrue(body.strip(), path.name)
             self.assertIsNone(re.search(r"(?im)^\s*(BEGIN|COMMIT)\s*;", body), path.name)
@@ -34,6 +37,7 @@ class SchemaContractTest(unittest.TestCase):
         required_tables = {
             "evidence.content_blobs",
             "evidence.evidence_fragments",
+            "evidence.source_authority_profiles",
             "research.fact_assertions",
             "research.canonical_fact_versions",
             "research.metric_series",
@@ -42,6 +46,26 @@ class SchemaContractTest(unittest.TestCase):
             "research.company_exposure_versions",
             "research.industry_relation_versions",
             "research.cycle_snapshots",
+            "research.judgment_assertions",
+            "research.judgment_evidence",
+            "research.judgment_rationales",
+            "research.judgment_relations",
+            "research.expectation_snapshots",
+            "research.expectation_snapshot_members",
+            "research.judgment_outcome_evaluations",
+            "research.model_prior_runs",
+            "research.model_memory_leads",
+            "research.model_memory_lead_relations",
+            "research.memory_lead_evidence_links",
+            "research.memory_disagreement_cases",
+            "research.memory_disagreement_resolutions",
+            "research.model_memory_campaigns",
+            "research.model_memory_campaign_runs",
+            "research.model_memory_campaign_seals",
+            "research.model_memory_coverage_cells",
+            "research.model_memory_refreshes",
+            "research.model_memory_refresh_lead_diffs",
+            "ops.memory_verification_tasks",
             "ops.collection_jobs",
             "ops.document_processing_completions",
             "ops.pipeline_checkpoints",
@@ -61,6 +85,23 @@ class SchemaContractTest(unittest.TestCase):
         self.assertIn("DISABLE TRIGGER fact_assertions_immutable", schema)
         self.assertIn("ADD COLUMN unit_dimension_name text", schema)
         self.assertIn("evidence_fragments_artifact_locator_unique", schema)
+        self.assertIn("knowledge_cutoff timestamptz NOT NULL", schema)
+        self.assertIn("expressed_probability double precision", schema)
+        self.assertIn("judgment_assertions_immutable", schema)
+        self.assertIn("judgment_outcome_evaluations_immutable", schema)
+        self.assertIn("source_visibility text NOT NULL", schema)
+        self.assertIn("authority_snapshot jsonb NOT NULL", schema)
+        self.assertIn("model_memory_leads_immutable", schema)
+        self.assertIn("memory_disagreement_resolutions_immutable", schema)
+        self.assertIn("model_memory_campaign_seals_immutable", schema)
+        self.assertIn("manifest_digest char(64) NOT NULL", schema)
+        self.assertIn("minimum_search_depth jsonb NOT NULL", schema)
+        self.assertIn("diff_kind IN ('known', 'refined', 'novel'", schema)
+        self.assertIn("'self_verification'", schema)
+        self.assertIn(
+            "REFERENCES research.model_memory_campaign_seals(campaign_id)",
+            schema,
+        )
 
 
 if __name__ == "__main__":

@@ -1,0 +1,174 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-combined-recovery-trajectory-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "subject_head": "4a97be26e46afc5e6a55096cbf2bdcb4014ef79a",
+  "default_branch_broker_commit": "3c3dd2198ffd5df4026c344551094c25c845d3e1",
+  "trigger_issue": 149,
+  "actions_run_id": 32709359697,
+  "actions_artifact": {
+    "artifact_id": 9513493697,
+    "name": "research-orchestration-32709359697",
+    "digest": "sha256:ca489b1bedac5e9066af4704e457737c6cc845a7c7dd268688a394bbc6b632eb",
+    "expires_at": "2026-08-31T09:02:55Z"
+  },
+  "trajectory_spec": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/combined-recovery-trajectory-v1.json",
+  "execution_schema": "longcycle-epistemic-trajectory-execution/v1",
+  "phases": [
+    "grounded_evidence",
+    "reality_projection",
+    "judgment_persistence",
+    "outcome_evaluation",
+    "seal_integrated_memory",
+    "point_in_time_replay"
+  ],
+  "grounded_evidence": {
+    "persisted_document_versions": 6,
+    "persisted_evidence_fragments": 6,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "fragment_ids": {
+      "EVF-MICRON-CUT-COMBINED": "c5d35628-e140-55e8-a4cf-b7ba121fae80",
+      "EVF-SAMSUNG-CUT-COMBINED": "94764dd2-e75d-5995-a058-29754bd126e3",
+      "EVF-SAMSUNG-RECOVERY-COMBINED": "3e772abf-63a8-5f8c-a0ac-ddeb52c202a5",
+      "EVF-SAMSUNG-Q3-RECOVERY-COMBINED": "73274c1a-7c85-5cb2-9e78-1fe6cd935b18",
+      "EVF-SKHYNIX-CUT-COMBINED": "10e58144-eaa7-5b5f-b6cf-4bca05a59cf4",
+      "EVF-SKHYNIX-Q2-NAND-CUT-COMBINED": "3fc67c11-17c7-5e8f-8360-c212fa25297e"
+    },
+    "execution_sha256": "1a4a2493a12318131ca292f48668079da511f7a27e7b4ba9175b2d2fffe014ce"
+  },
+  "reality": [
+    {
+      "fact_key": "2022-micron-dram-nand-wafer-start-reduction-combined",
+      "fact_assertion_id": "c64514fe-d83b-5dac-abfb-677d8dc569ea",
+      "canonical_fact_version_id": "51523cea-0daa-5fdd-8cfd-6af9e6917a1d",
+      "known_at": "2022-11-17T00:00:00Z",
+      "valid_time_precision": "unknown"
+    },
+    {
+      "fact_key": "2023-samsung-q3-pc-mobile-memory-demand-improvement",
+      "fact_assertion_id": "24c93d74-4dfe-58df-bae9-aa7417c17e50",
+      "canonical_fact_version_id": "18222850-5294-5ee1-96c1-b353ac769ebb",
+      "known_at": "2023-11-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "Q3 2023"
+    }
+  ],
+  "reality_verification": {
+    "fact_count": 2,
+    "canonical_reality_count": 2,
+    "all_reconciled_accept": true,
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "valid_time_semantics_preserved": true,
+    "observation_semantics_preserved": true
+  },
+  "judgments": [
+    {
+      "judgment_key": "2022-skhynix-2023-investment-and-production-reduction-guidance",
+      "judgment_id": "d12b4352-978d-5155-bcd7-a428f7fed71f",
+      "first_known_at": "2022-10-27T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "2023"
+    },
+    {
+      "judgment_key": "2023-samsung-certain-product-production-cut-plan",
+      "judgment_id": "b770a100-d419-5598-8029-7caa585b2e9e",
+      "first_known_at": "2023-04-12T00:00:00Z",
+      "target_precision": "unknown"
+    },
+    {
+      "judgment_key": "2023-samsung-second-half-demand-recovery-expectation",
+      "judgment_id": "e7f03a06-0b2d-5131-9c23-b731fdfe6d3b",
+      "first_known_at": "2023-04-28T00:00:00Z",
+      "target_precision": "half_year",
+      "target_text": "second half of 2023"
+    },
+    {
+      "judgment_key": "2023-skhynix-further-nand-production-reduction-decision",
+      "judgment_id": "5fff09ee-e122-53d2-91da-a2575a48b3ca",
+      "first_known_at": "2023-07-27T00:00:00Z",
+      "target_precision": "unknown",
+      "target_text": "further NAND production reduction; no exact execution date or percentage stated"
+    }
+  ],
+  "judgment_verification": {
+    "judgment_count": 4,
+    "evidence_link_count": 4,
+    "idempotent_reappend_passed": true,
+    "all_first_known_times_derived_from_grounded_evidence": true,
+    "target_precision_preserved": true,
+    "known_time_required_only_for_projection_cited_fragments": true
+  },
+  "outcome": {
+    "evaluation_id": "235c8a0f-45a7-52dd-9c8c-81d3d8939fcc",
+    "judgment_key": "2023-samsung-second-half-demand-recovery-expectation",
+    "reality_fact_key": "2023-samsung-q3-pc-mobile-memory-demand-improvement",
+    "canonical_fact_version_id": "18222850-5294-5ee1-96c1-b353ac769ebb",
+    "outcome_evidence_fragment_id": "73274c1a-7c85-5cb2-9e78-1fe6cd935b18",
+    "semantic_relation": "related_milestone",
+    "evaluation_status": "indeterminate",
+    "outcome_precision": "quarter",
+    "outcome_text": "Q3 2023",
+    "outcome_first_known_at": "2023-11-01T00:00:00Z",
+    "timing_relation": "not_comparable",
+    "timing_delta_value": null,
+    "verification": {
+      "postgres_persistence_completed": true,
+      "idempotent_reappend_passed": true,
+      "canonical_reality_linked": true,
+      "outcome_evidence_linked": true,
+      "outcome_known_time_preserved": true,
+      "semantic_relation_explicit": true,
+      "non_direct_never_claims_realization": true,
+      "no_fake_day_level_timing_error": true
+    }
+  },
+  "replay": {
+    "duckdb_sha256": "e88e9be6417c5dbd5deef95541efe5d07a6ee1c4f42165a96a8120db777e818e",
+    "duckdb_size_bytes": 2895872,
+    "manifest_sha256": "3c14274d8f09d5ecc9b73ce0cf85f76e7f7fa3aaae61813287e2db14b1a44ecf",
+    "manifest_counts": {
+      "reality": 2,
+      "judgments": 4,
+      "outcomes": 1
+    },
+    "judgment_context_counts": {
+      "rationales": 0,
+      "relations": 0
+    },
+    "snapshots": [
+      {
+        "key": "after-2022-supplier-guidance",
+        "knowledge_cutoff": "2022-11-17T00:00:00Z",
+        "reality": 1,
+        "judgments": 1,
+        "outcomes": 0
+      },
+      {
+        "key": "after-samsung-april-forecast",
+        "knowledge_cutoff": "2023-04-28T00:00:00Z",
+        "reality": 1,
+        "judgments": 3,
+        "outcomes": 0
+      },
+      {
+        "key": "after-skhynix-july-decision",
+        "knowledge_cutoff": "2023-07-27T00:00:00Z",
+        "reality": 1,
+        "judgments": 4,
+        "outcomes": 0
+      },
+      {
+        "key": "after-samsung-q3-recovery-observation",
+        "knowledge_cutoff": "2023-11-01T00:00:00Z",
+        "reality": 2,
+        "judgments": 4,
+        "outcomes": 1
+      }
+    ],
+    "no_lookahead_sequence_verified": true
+  },
+  "boundary": "This receipt proves a six-vintage storage-semiconductor Evidence -> Reality/Judgment -> non-direct Outcome -> point-in-time replay trajectory. The Samsung Q3 observation is only a related milestone for the April broad recovery forecast, so the Outcome is intentionally indeterminate and not timing-comparable. Judgment-context relations were not yet composed in run 32709359697 and remain the next admitted CAP-0007 composition extension."
+}

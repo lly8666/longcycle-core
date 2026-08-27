@@ -7,12 +7,13 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from longcycle.domain.enums import EntityType, ValidTimeKind
+from longcycle.domain.enums import EntityType, FactEvidenceRole, ValidTimeKind
 from longcycle.domain.models import (
     EvidenceFragment,
     ExtractionEnvelope,
     FactAssertion,
     FactDimensions,
+    FactEvidenceRef,
     QualityComponents,
     SourceDocument,
     TimeRange,
@@ -63,7 +64,7 @@ class JsonFixtureGateway:
 
     extractor_name = "json_fixture"
     extractor_version = "1.0.0"
-    model_name = None
+    model_name: str | None = None
 
     def __init__(self, *, source_quality: float = 0.9, source_cluster: str | None = None) -> None:
         self.source_quality = source_quality
@@ -108,7 +109,12 @@ class JsonFixtureGateway:
                     observed_at=fact.observed_at,
                     source_id=document.source_id,
                     document_id=document.id,
-                    evidence_fragment_id=fragment.id,
+                    evidence=(
+                        FactEvidenceRef(
+                            evidence_fragment_id=fragment.id,
+                            evidence_role=FactEvidenceRole.SUPPORTING,
+                        ),
+                    ),
                     extraction_run_id=run_id,
                     extractor_name=self.extractor_name,
                     extractor_version=self.extractor_version,
@@ -142,7 +148,7 @@ class JsonFixtureGateway:
 class NoopModelGateway:
     extractor_name = "noop"
     extractor_version = "1.0.0"
-    model_name = None
+    model_name: str | None = None
 
     async def extract(
         self,

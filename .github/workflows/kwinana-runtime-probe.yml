@@ -1,0 +1,217 @@
+name: Kwinana typed trajectory runtime probe
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .longcycle/kwinana-typed-runtime-trigger
+  push:
+    branches:
+      - design/industry-memory-runtime-probe
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  typed-trajectory:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+      TASK_ROOT: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks
+      KWINANA_SUBJECT_ID: 02c2e600-9be2-5c09-95ab-b532249df05b
+      PYTHONUNBUFFERED: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install exact Longcycle runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install -e '.[postgres,duckdb]'
+          python - <<'PY'
+          import duckdb
+          import pypdf
+          print('DUCKDB_VERSION', duckdb.__version__)
+          print('PYPDF_VERSION', pypdf.__version__)
+          PY
+
+      - name: Apply repository migrations
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p probe
+          longcycle --json db upgrade | tee probe/migrations.json
+          longcycle --json doctor --check-database | tee probe/doctor.json
+
+      - name: Archive and ground the four locked Kwinana vintages
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/execute_grounded_evidence_spec.py \
+            "$TASK_ROOT/EVT-001-kwinana-evidence-spec-v1.json" \
+            --output probe/kwinana-evidence-execution.json
+
+      - name: Persist role-aware contemporaneous Judgments
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/execute_grounded_judgment_persistence.py \
+            "$TASK_ROOT/EVT-001-kwinana-judgment-projection-v2.json" \
+            probe/kwinana-evidence-execution.json \
+            --output probe/kwinana-judgments.json
+
+      - name: Persist canonical commercial-production Reality
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/execute_grounded_reality_projection.py \
+            "$TASK_ROOT/EVT-001-kwinana-reality-projection-v1.json" \
+            probe/kwinana-evidence-execution.json \
+            --output probe/kwinana-reality.json
+
+      - name: Persist semantically related Outcome without false realization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/execute_grounded_outcome_evaluation.py \
+            probe/kwinana-judgments.json \
+            probe/kwinana-reality.json \
+            --judgment-key 2021-full-line-operation-by-year-end \
+            --reality-fact-key 2022-train1-commercial-production-capability \
+            --semantic-relation related_milestone \
+            --output probe/kwinana-related-outcome.json
+
+      - name: Seal typed PostgreSQL memory into portable DuckDB
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/export_integrated_replay_duckdb.py \
+            probe/kwinana-memory.duckdb \
+            --subject-id "$KWINANA_SUBJECT_ID" \
+            --manifest-output probe/kwinana-memory-manifest.json
+
+      - name: Verify no-lookahead typed replay and semantic Outcome boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import asyncio
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+          from longcycle.domain.enums import OutcomeSemanticRelation
+
+          database = Path('probe/kwinana-memory.duckdb')
+          subject = MemorySubjectRef(entity_id=UUID('02c2e600-9be2-5c09-95ab-b532249df05b'))
+          reader = DuckDBEpistemicMemoryReader(database)
+
+          def dt(value: str) -> datetime:
+              return datetime.fromisoformat(value.replace('Z', '+00:00'))
+
+          async def load(cutoff: str):
+              return await reader.snapshot((subject,), knowledge_cutoff=dt(cutoff))
+
+          before_2022 = asyncio.run(load('2021-12-31T23:59:59Z'))
+          pre_disclosure = asyncio.run(load('2022-12-02T23:59:59Z'))
+          disclosed = asyncio.run(load('2022-12-03T23:59:59Z'))
+
+          assert len(before_2022.judgments) == 4
+          assert len(before_2022.reality) == 0
+          assert len(before_2022.outcomes) == 0
+          assert len(pre_disclosure.judgments) == 4
+          assert len(pre_disclosure.reality) == 0
+          assert len(pre_disclosure.outcomes) == 0
+
+          assert len(disclosed.judgments) == 5
+          assert len(disclosed.reality) == 1
+          assert len(disclosed.outcomes) == 1
+          reality = disclosed.reality[0]
+          outcome = disclosed.outcomes[0]
+          assert reality.valid_time.start == dt('2022-11-30T00:00:00Z')
+          assert reality.known_at == dt('2022-12-03T23:59:59Z')
+          assert outcome.semantic_relation == OutcomeSemanticRelation.RELATED_MILESTONE
+          assert outcome.evaluation_status == 'indeterminate'
+          assert outcome.timing_relation == 'not_comparable'
+          assert outcome.timing_delta_value is None
+          assert outcome.timing_delta_unit is None
+
+          judgments_payload = json.load(open('probe/kwinana-judgments.json', encoding='utf-8'))
+          has_caveat = any(
+              item.get('metadata', {}).get('caveat_semantics')
+              for item in judgments_payload['judgments']
+          )
+          assert has_caveat
+
+          payload = {
+              'schema_version': 'longcycle-kwinana-typed-replay-proof/v1',
+              'before_2022': before_2022.model_dump(mode='json'),
+              'pre_disclosure': pre_disclosure.model_dump(mode='json'),
+              'disclosed': disclosed.model_dump(mode='json'),
+              'verification': {
+                  'effective_time_does_not_leak_before_known_time': True,
+                  'risk_caveat_survives_judgment_projection': True,
+                  'related_milestone_is_indeterminate': True,
+                  'related_milestone_has_no_timing_delta': True,
+                  'typed_duckdb_round_trip': True,
+              },
+          }
+          Path('probe/kwinana-replay-proof.json').write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(payload['verification'], indent=2))
+          PY
+
+      - name: Verify blind memory remained frozen and hash runtime proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- \
+            research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind/UP-CHEMICALS
+          sha256sum \
+            probe/kwinana-evidence-execution.json \
+            probe/kwinana-judgments.json \
+            probe/kwinana-reality.json \
+            probe/kwinana-related-outcome.json \
+            probe/kwinana-memory.duckdb \
+            probe/kwinana-replay-proof.json \
+            | tee probe/SHA256SUMS.txt
+          du -sh .longcycle/action-blobs probe
+
+      - name: Upload bounded runtime proof
+        uses: actions/upload-artifact@v4
+        with:
+          name: kwinana-typed-trajectory
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            probe/
+            .longcycle/action-blobs/

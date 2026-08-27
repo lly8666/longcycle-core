@@ -1,0 +1,86 @@
+{
+  "schema_version": "longcycle-researcher-readable-trajectory-validation/v1",
+  "capability_owner": "CAP-0005",
+  "fixture_role": "completed_blenrep_regression_only",
+  "implementation_head_sha": "786116f1e425e4ab43a00f69bb09f04f210cc701",
+  "workflow": ".github/workflows/research-trajectory-v1-sv005-proof.yml",
+  "workflow_run_id": 32647898143,
+  "workflow_conclusion": "success",
+  "status_context": "longcycle/generic-epistemic-trajectory",
+  "artifact": {
+    "id": 9495370760,
+    "name": "generic-epistemic-trajectory-32647898143",
+    "size_bytes": 52814,
+    "digest": "sha256:3fc599fe2cf4823e156735c14912ac2484fb4ea85716660e54e1358f8f8a6517",
+    "expires_at": "2026-09-06T15:14:40Z"
+  },
+  "product_entrypoints": {
+    "trajectory_execution": "longcycle research run",
+    "point_in_time_reading": "longcycle research replay"
+  },
+  "projection": {
+    "source": "already-filtered CAP-0005 PointInTimeMemorySnapshot",
+    "existing_flat_entries_preserved": true,
+    "added_fields": [
+      "knowledge_progression",
+      "judgment_storylines",
+      "unlinked_reality_entry_ids"
+    ],
+    "new_epistemic_records_created": false,
+    "presentation_decides_knowledge_visibility": false,
+    "causal_inference_added": false,
+    "realization_inference_added": false
+  },
+  "cutoff_regression": [
+    {
+      "cutoff": "2022-11-23T12:00:00Z",
+      "counts": {"reality": 4, "judgments": 1, "outcomes": 0},
+      "judgment_storyline_status": "judgment_visible_no_outcome"
+    },
+    {
+      "cutoff": "2023-03-31T12:00:00Z",
+      "counts": {"reality": 6, "judgments": 1, "outcomes": 0},
+      "judgment_storyline_status": "judgment_visible_no_outcome"
+    },
+    {
+      "cutoff": "2024-02-06T12:00:00Z",
+      "counts": {"reality": 8, "judgments": 1, "outcomes": 1},
+      "judgment_storyline_status": "outcome_visible",
+      "visible_outcome": {
+        "evaluation_status": "indeterminate",
+        "semantic_relation": "related_milestone",
+        "timing_relation": "not_comparable",
+        "linked_reality_predicate": "clinical.dreamm7_pfs_outcome"
+      }
+    }
+  ],
+  "no_lookahead_acceptance": {
+    "terminal_knowledge_progression_counts_equal_typed_snapshot_counts": true,
+    "future_outcome_absent_before_2024_cutoff": true,
+    "original_2022_judgment_payload_identical_between_2022_and_2024_views": true,
+    "related_milestone_remains_indeterminate": true,
+    "related_milestone_remains_not_comparable": true,
+    "researcher_summary_does_not_claim_realized": true,
+    "storylines_derive_only_from_filtered_snapshot": true,
+    "judgment_not_rewritten_by_outcome": true
+  },
+  "focused_contract_gate": {
+    "files": [
+      "tests/test_epistemic_trajectory.py",
+      "tests/test_research_orchestration.py",
+      "tests/test_trajectory_view.py",
+      "tests/test_cli_research.py"
+    ],
+    "result": "pass"
+  },
+  "first_run_diagnostic": {
+    "workflow_run_id": 32647650765,
+    "implementation_and_unit_contracts_passed": true,
+    "failure_scope": "workflow-only assertion typo",
+    "incorrect_expected_predicate": "trial.primary_endpoint_status",
+    "source_supported_predicate": "clinical.dreamm7_pfs_outcome",
+    "product_code_changed_to_fix_failure": false,
+    "resolution": "Corrected the regression assertion and reran the identical product path successfully."
+  },
+  "stop_rule": "The CAP-0005 researcher-reading surface is proven on the completed BLENREP fixture. Do not continue pharma-specific presentation polish or add another ADC case. Reuse this read model on future cross-industry tasks and extend only when real researcher friction exposes a truthful general gap."
+}

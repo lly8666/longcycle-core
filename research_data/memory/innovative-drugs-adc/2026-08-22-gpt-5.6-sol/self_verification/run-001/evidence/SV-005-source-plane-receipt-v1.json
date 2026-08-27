@@ -1,0 +1,124 @@
+{
+  "schema_version": "longcycle-sv005-source-plane-receipt/v1",
+  "task_id": "ADC-SV-005-BLENREP-SOURCE-PLANE-V1",
+  "trajectory": "belantamab mafodotin / BLENREP / monotherapy withdrawal -> combination-regimen redevelopment",
+  "feature_head_basis": "e944f1b02985f09d2ca9eb20eb858294d0ba6415",
+  "status": "pass_split_transport",
+  "transport_rule": "Raw runner-stable PDF bytes use GitHub Actions -> immutable Release. Readable official webpages use claim-scoped visible-text capture -> bounded local database -> Google Drive. Transport does not change source authority and neither acquisition-time text extraction nor capture automatically promotes Evidence, Fact, Judgment or Reality.",
+  "pdf_acquisition": {
+    "control_issue": 136,
+    "workflow_run_id": 32630536037,
+    "workflow_main_commit": "df8dc8732f85de049071d3115bff2074df6799de",
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset_file_name": "longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip",
+    "release_asset_size_bytes": 395045,
+    "release_asset_sha256": "eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998",
+    "download_back_verified": true,
+    "documents": [
+      {
+        "key": "federal-register-blenrep-revocation-2023",
+        "publisher": "Federal Register / U.S. Food and Drug Administration",
+        "url": "https://public-inspection.federalregister.gov/2023-06576.pdf",
+        "file_name": "federal-register-blenrep-revocation-2023.pdf",
+        "raw_sha256": "2f6059f22be2a2fcc930c0e983881935cca1a1bb5cf02736f8981e5377697bbf",
+        "raw_bytes": 235166,
+        "page_count": 2,
+        "authority_scope": "authoritative legal record for written withdrawal request, BLA revocation and effective date"
+      },
+      {
+        "key": "gsk-dreamm7-readout-2024-02-05",
+        "publisher": "GSK plc",
+        "url": "https://www.gsk.com/media/41dimrac/20240201-s-ea-blenrep-dreamm-7-final.pdf",
+        "file_name": "gsk-dreamm7-readout-2024-02-05.pdf",
+        "raw_sha256": "020add783487f3a1999fca254fa34fc59a63d3c17654a2984307202c43a68178",
+        "raw_bytes": 188552,
+        "page_count": 4,
+        "authority_scope": "primary participant record for DREAMM-7 regimen identity and company-reported top-line efficacy"
+      }
+    ]
+  },
+  "failed_pdf_diagnostics": [
+    {
+      "control_issue": 133,
+      "workflow_run_id": 32630071659,
+      "attempt": "historical FDA label lower-case .pdf plus two stable PDFs",
+      "result": "fail_closed_2_of_3",
+      "failure": "accessdata.fda.gov historical label returned HTTP 404 to GitHub runner; Federal Register and DREAMM-7 passed"
+    },
+    {
+      "control_issue": 134,
+      "workflow_run_id": 32630333436,
+      "attempt": "historical FDA label .Pdf case variant plus two stable PDFs",
+      "result": "fail_closed_2_of_3",
+      "failure": "same accessdata.fda.gov HTTP 404; two stable PDF raw SHA values reproduced exactly"
+    },
+    {
+      "control_issue": 135,
+      "workflow_run_id": 32630449955,
+      "attempt": "FDA Drugs@FDA accelerated-approval package plus two stable PDFs",
+      "result": "fail_closed_2_of_3",
+      "failure": "accessdata.fda.gov approval-package endpoint also returned HTTP 404 to GitHub runner; two stable PDF raw SHA values reproduced exactly"
+    }
+  ],
+  "fda_transport_diagnosis": {
+    "classification": "runner_retrieval_method_or_host_behavior_not_source_absence",
+    "finding": "The historical FDA label and Drugs@FDA approval-package material were readable through interactive web retrieval, but repeated GitHub-hosted runner urllib retrieval returned stable 404 across both accessdata endpoint forms. Longcycle therefore preserves the 2020 approval/safety information through the official FDA readable-webpage lane rather than declaring the source missing or weakening the PDF gate.",
+    "do_not_do": "Do not keep guessing accessdata URLs or describe the FDA source as unavailable. Do not put a fabricated raw-PDF identity into the Release pack."
+  },
+  "webpage_capture": {
+    "capsule_schema_version": "longcycle-webpage-capture-capsule/v1",
+    "task_id": "ADC-SV-005-BLENREP-WEB-CAPTURE-V1",
+    "transport": "google_drive",
+    "google_drive_file_id": "1N9RJZV710Xj67-6MUE90mvaLSnqKM3Rt",
+    "file_name": "longcycle-sv005-blenrep-web-capture-v1.sqlite",
+    "mime_type": "application/vnd.sqlite3",
+    "size_bytes": 24576,
+    "sha256": "a8852b4a1d27c027ecc47baee148b9eea59253643ec36b0f54346f9e821c2833",
+    "capture_count": 3,
+    "download_back_verified": true,
+    "capture_recorded_at": "2026-08-23T09:17:27.116868+00:00",
+    "captures": [
+      {
+        "source_id": "fda-blenrep-accelerated-approval-2020",
+        "url": "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-granted-accelerated-approval-belantamab-mafodotin-blmf-multiple-myeloma",
+        "publisher": "U.S. Food and Drug Administration",
+        "published_date": "2020-08-05",
+        "text_sha256": "52409659883b840d4713aa6b1f54cb8de37952ea62fe5872c930b617eedd5b60",
+        "word_count": 156,
+        "claim_scope": "2020 accelerated approval, indication, contemporaneous ocular warning/ophthalmic monitoring, BLENREP REMS and confirmatory-benefit contingency",
+        "limitation": "Current FDA page also contains later withdrawal update text; the capture deliberately excludes that later text from the 2020 claim-scoped excerpt."
+      },
+      {
+        "source_id": "gsk-dreamm3-2022-11-07",
+        "url": "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-dreamm-3-phase-iii-trial-for-blenrep/",
+        "publisher": "GSK plc",
+        "published_date": "2022-11-07",
+        "text_sha256": "804a86ac7109985340a19ed8a288ec8c308346cf0075002380a89a879d7d6aa9",
+        "word_count": 174,
+        "claim_scope": "DREAMM-3 monotherapy-vs-PomDex superiority design, failed primary PFS endpoint, HR/median PFS and continued DREAMM programme statement"
+      },
+      {
+        "source_id": "gsk-blenrep-withdrawal-2022-11-22",
+        "url": "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-blenrep-us-marketing-authorisation/",
+        "publisher": "GSK plc",
+        "published_date": "2022-11-22",
+        "text_sha256": "ed7b88c13e6d390ba60ce282a7e7e41fc9968b2376605f51aa9e442b81fc0f07",
+        "word_count": 183,
+        "claim_scope": "public withdrawal-process statement plus contemporaneous favourable benefit-risk and continue-DREAMM/work-with-FDA path-forward Judgment"
+      }
+    ],
+    "capsule_role": "bounded immutable handoff envelope for source-derived visible text and provenance; not live PostgreSQL authority"
+  },
+  "first_replay_source_set": [
+    "fda-blenrep-accelerated-approval-2020",
+    "gsk-dreamm3-2022-11-07",
+    "gsk-blenrep-withdrawal-2022-11-22",
+    "federal-register-blenrep-revocation-2023",
+    "gsk-dreamm7-readout-2024-02-05"
+  ],
+  "excluded_for_now": [
+    "DREAMM-8 is not needed for the first replay and must not be added for coverage count.",
+    "The 2025 U.S. combination approval is optional Outcome closure after the first DREAMM-7 replay proves the semantics; it is not required for initial Grounded Evidence."
+  ],
+  "evidence_boundary": "This receipt proves durable source acquisition/capture and transport integrity only. Acquisition verification text, webpage capture text and Release/Drive transport do not themselves create publishable Evidence, Fact, Judgment, Reality or Outcome. Grounded Evidence must still persist claim-scoped documents/fragments and accept zero automatic Fact/Judgment promotion before CAP-0003/CAP-0004 projection."
+}

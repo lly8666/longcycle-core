@@ -1,0 +1,198 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "ADC-SV-003-ENHERTU-REALITY-V1",
+  "source_evidence_task_id": "ADC-SV-003-ENHERTU-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "announced_territory_rights",
+    "announced_manufacturing_role",
+    "issuer_reported_regulatory_approval_scope",
+    "issuer_reported_accelerated_approval_pathway",
+    "safety_state_at_initial_us_approval",
+    "trial_registry_identity_current",
+    "trial_lead_sponsor_current",
+    "trial_readout_topline",
+    "trial_biomarker_definition"
+  ],
+  "subjects": [
+    {
+      "id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "entity_type": "product",
+      "canonical_name": "trastuzumab deruxtecan / ENHERTU"
+    },
+    {
+      "id": "e61c37b6-f415-5960-93ca-ffd421d18ed6",
+      "entity_type": "event",
+      "canonical_name": "DESTINY-Breast04 / NCT03734029"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2019-announced-japan-exclusive-holder",
+      "evidence_fragment_key": "collaboration-japan-exclusive-rights",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "rights.japan_exclusive_holder",
+      "value_text": "Daiichi Sankyo",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2019-03-29T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "March 29, 2019 collaboration announcement",
+      "statistical_scope": "announced Japan rights allocation",
+      "metadata": {
+        "role_semantics": "territory_rights",
+        "authority_boundary": "announced collaboration allocation, not every executed contract clause"
+      }
+    },
+    {
+      "fact_key": "2019-announced-manufacturing-role",
+      "evidence_fragment_key": "collaboration-daiichi-manufacturing",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "manufacturing.sole_responsible_party",
+      "value_text": "Daiichi Sankyo",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2019-03-29T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "March 29, 2019 collaboration announcement",
+      "statistical_scope": "announced manufacturing and supply role",
+      "metadata": {
+        "role_semantics": "manufacturing_supply",
+        "identity_boundary": "manufacturing role is distinct from territory rights and trial sponsor"
+      }
+    },
+    {
+      "fact_key": "2019-us-her2-positive-late-line-approval-scope",
+      "evidence_fragment_key": "initial-us-approval-indication-2019",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "regulatory.us_her2_positive_late_line_approval_scope",
+      "value_text": "adult unresectable or metastatic HER2-positive breast cancer after two or more prior anti-HER2-based regimens in the metastatic setting",
+      "valid_time_kind": "period",
+      "valid_from": "2019-12-20T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "December 20, 2019",
+      "statistical_scope": "U.S. initial HER2-positive breast-cancer indication branch",
+      "metadata": {
+        "role_semantics": "regulatory_scope",
+        "branch_identity": "HER2-positive late-line initial U.S. approval"
+      }
+    },
+    {
+      "fact_key": "2019-us-her2-positive-accelerated-pathway",
+      "evidence_fragment_key": "initial-us-accelerated-approval-pathway-2019",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "regulatory.us_her2_positive_initial_pathway",
+      "value_text": "accelerated approval based on tumor response rate and duration of response",
+      "valid_time_kind": "period",
+      "valid_from": "2019-12-20T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "December 20, 2019",
+      "statistical_scope": "2019 initial HER2-positive U.S. indication pathway",
+      "metadata": {
+        "role_semantics": "regulatory_pathway",
+        "branch_boundary": "must not be inherited by the distinct August 2022 HER2-low supplement"
+      }
+    },
+    {
+      "fact_key": "2019-us-ild-boxed-warning-state",
+      "evidence_fragment_key": "initial-us-ild-boxed-warning-2019",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "safety.ild_pneumonitis_boxed_warning",
+      "value_text": "present",
+      "valid_time_kind": "period",
+      "valid_from": "2019-12-20T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "December 20, 2019",
+      "statistical_scope": "U.S. initial approval safety state",
+      "metadata": {
+        "role_semantics": "safety_state",
+        "hindsight_guard": "ILD/pneumonitis boxed-warning state was already contemporaneously visible before DESTINY-Breast04"
+      }
+    },
+    {
+      "fact_key": "2022-destiny-breast04-positive-topline",
+      "evidence_fragment_key": "destiny-breast04-positive-topline-2022",
+      "subject_entity_id": "e61c37b6-f415-5960-93ca-ffd421d18ed6",
+      "predicate_code": "trial.destiny_breast04_topline_status",
+      "value_text": "statistically significant and clinically meaningful improvement in both PFS and OS",
+      "valid_time_kind": "period",
+      "valid_from": "2022-02-21T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "February 21, 2022",
+      "statistical_scope": "DESTINY-Breast04 sponsor-reported high-level Phase 3 readout",
+      "metadata": {
+        "role_semantics": "trial_readout",
+        "readout_maturity": "high-level topline",
+        "approval_boundary": "positive topline is not the August 2022 regulatory approval event"
+      }
+    },
+    {
+      "fact_key": "2022-destiny-breast04-her2-low-definition",
+      "evidence_fragment_key": "destiny-breast04-her2-low-definition-2022",
+      "subject_entity_id": "e61c37b6-f415-5960-93ca-ffd421d18ed6",
+      "predicate_code": "trial.her2_low_biomarker_definition",
+      "value_text": "IHC 1+ or IHC 2+ with negative ISH",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2022-02-21T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "February 21, 2022 topline announcement",
+      "statistical_scope": "DESTINY-Breast04 HER2-low population definition",
+      "metadata": {
+        "role_semantics": "trial_biomarker_definition",
+        "onset_boundary": "source establishes the definition by this readout vintage but does not prove that the definition began on this date"
+      }
+    },
+    {
+      "fact_key": "2022-us-her2-low-approval-scope",
+      "evidence_fragment_key": "her2-low-us-approval-and-safety-2022",
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "predicate_code": "regulatory.us_her2_low_approval_scope",
+      "value_text": "adult unresectable or metastatic HER2-low (IHC 1+ or IHC 2+/ISH-) breast cancer after specified prior chemotherapy",
+      "valid_time_kind": "period",
+      "valid_from": "2022-08-05T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "August 5, 2022",
+      "statistical_scope": "U.S. HER2-low metastatic breast-cancer indication branch",
+      "metadata": {
+        "role_semantics": "regulatory_scope",
+        "branch_identity": "HER2-low U.S. approval",
+        "legal_pathway_boundary": "does not assert accelerated-versus-regular legal pathway without the exact FDA action letter"
+      }
+    },
+    {
+      "fact_key": "2026-destiny-breast04-current-nct-id",
+      "evidence_fragment_key": "destiny-breast04-registry-nct-id",
+      "subject_entity_id": "e61c37b6-f415-5960-93ca-ffd421d18ed6",
+      "predicate_code": "trial.nct_id",
+      "value_text": "NCT03734029",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2026-08-22T18:00:00Z",
+      "observed_at_precision": "minute",
+      "observed_at_text": "ClinicalTrials.gov current snapshot acquired 2026-08-22",
+      "statistical_scope": "current registry identity snapshot",
+      "metadata": {
+        "role_semantics": "trial_registry_identity",
+        "no_backdating": "current snapshot is not represented as a 2018 or 2022 historical registry version"
+      }
+    },
+    {
+      "fact_key": "2026-destiny-breast04-current-lead-sponsor",
+      "evidence_fragment_key": "destiny-breast04-registry-lead-sponsor",
+      "subject_entity_id": "e61c37b6-f415-5960-93ca-ffd421d18ed6",
+      "predicate_code": "trial.lead_sponsor",
+      "value_text": "Daiichi Sankyo",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2026-08-22T18:00:00Z",
+      "observed_at_precision": "minute",
+      "observed_at_text": "ClinicalTrials.gov current snapshot acquired 2026-08-22",
+      "statistical_scope": "current NCT03734029 registry lead-sponsor role",
+      "metadata": {
+        "role_semantics": "trial_lead_sponsor",
+        "identity_boundary": "current registry sponsor is distinct from collaboration territory holder and manufacturing role",
+        "no_backdating": "current sponsor display value is not backdated to the trial's earlier vintages"
+      }
+    }
+  ]
+}

@@ -14,17 +14,41 @@ from longcycle.adapters.models import JsonFixtureGateway
 from longcycle.adapters.sources.http import HttpDocumentSource
 from longcycle.adapters.sources.local import LocalFolderSource
 from longcycle.adapters.sources.registry import SourceRegistry
+from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
 from longcycle.adapters.storage.filesystem import FileSystemArchiveStore
 from longcycle.adapters.storage.memory import InMemoryResearchRepository
+from longcycle.adapters.storage.postgres_epistemic import PostgresEpistemicMemoryReader
+from longcycle.adapters.storage.postgres_evidence import PostgresEvidenceDrilldownReader
+from longcycle.adapters.storage.postgres_open_states import PostgresOpenStateReader
+from longcycle.adapters.storage.postgres_orientation import PostgresIndustryOrientationReader
 from longcycle.adapters.storage.postgres_scheduler import PostgresScheduler
+from longcycle.application.epistemic_trajectory import execute_epistemic_trajectory_receipt
+from longcycle.application.evidence_drilldown import build_researcher_evidence_drilldown
+from longcycle.application.industry_orientation import build_researcher_industry_orientation
+from longcycle.application.open_state_view import build_researcher_open_state_view
 from longcycle.application.pipeline import CollectionPipeline
+from longcycle.application.research_orchestration import execute_research_orchestration_receipt
 from longcycle.application.scheduling import SchedulePolicy
+from longcycle.application.trajectory_view import build_researcher_trajectory_view
 from longcycle.config import Settings
 from longcycle.database import MigrationRunner
 from longcycle.domain.enums import Cadence, QualityGrade, SourceKind
-from longcycle.domain.models import CollectionPolicy, SourceDefinition, stable_uuid
+from longcycle.domain.epistemic import MemorySubjectRef
+from longcycle.domain.models import (
+    CollectionPolicy,
+    SourceDefinition,
+    require_aware_datetime,
+    stable_uuid,
+)
 from longcycle.ports.model import ExtractionTarget
 from longcycle.ports.source import DiscoveryContext, FetchContext
+
+
+_EPISTEMIC_TRAJECTORY_V1 = "longcycle-epistemic-trajectory/v1"
+_RESEARCH_ORCHESTRATION_VERSIONS = {
+    "longcycle-research-orchestration/v1",
+    "longcycle-research-orchestration/v2",
+}
 
 
 def _default_migrations_dir() -> Path:
@@ -32,6 +56,23 @@ def _default_migrations_dir() -> Path:
     if repository_dir.is_dir():
         return repository_dir
     return Path(__file__).resolve().with_name("sql_migrations")
+
+
+def _parse_aware_datetime(value: str) -> datetime:
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    checked = require_aware_datetime(parsed, "knowledge_cutoff")
+    assert checked is not None
+    return checked
+
+
+def _research_spec_schema_version(path: Path) -> str:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("research run spec must be a JSON object")
+    schema_version = payload.get("schema_version")
+    if not isinstance(schema_version, str) or not schema_version:
+        raise ValueError("research run spec has no schema_version")
+    return schema_version
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -50,6 +91,107 @@ def _parser() -> argparse.ArgumentParser:
     source = subparsers.add_parser("source", help="source plugin operations")
     source_sub = source.add_subparsers(dest="source_command", required=True)
     source_sub.add_parser("plugins", help="list installed source plugins")
+
+    research = subparsers.add_parser("research", help="research execution and replay operations")
+    research_sub = research.add_subparsers(dest="research_command", required=True)
+    research_run = research_sub.add_parser(
+        "run",
+        help=(
+            "execute one repository-owned fail-closed research-orchestration or "
+            "epistemic-trajectory spec"
+        ),
+    )
+    research_run.add_argument("spec", type=Path)
+    research_run.add_argument(
+        "--source-pack",
+        type=Path,
+        help=(
+            "legacy research-orchestration/v1 source-pack ZIP. New v2 orchestration and "
+            "epistemic trajectories use --material-root instead; raw PDF download/Release "
+            "packaging is not an epistemic prerequisite"
+        ),
+    )
+    research_run.add_argument(
+        "--material-root",
+        type=Path,
+        help=(
+            "transport-neutral local root containing preserved source material declared by "
+            "the Grounded Evidence spec"
+        ),
+    )
+    research_run.add_argument("--work-dir", type=Path, required=True)
+    research_run.add_argument("--output", type=Path, required=True)
+    research_run.add_argument(
+        "--repo-root",
+        type=Path,
+        default=Path.cwd(),
+        help="repository root used to resolve repo-owned Evidence/Reality/Judgment/trajectory specs",
+    )
+    research_run.add_argument(
+        "--skip-db-upgrade",
+        action="store_true",
+        help="skip database migration when PostgreSQL has already been upgraded",
+    )
+    research_replay = research_sub.add_parser(
+        "replay",
+        help="render a no-lookahead researcher trajectory view from portable industrial memory",
+    )
+    research_replay.add_argument("database", type=Path)
+    research_replay.add_argument("cutoff", type=_parse_aware_datetime)
+    research_replay.add_argument(
+        "--subject-id",
+        action="append",
+        default=[],
+        help="entity UUID to include in the point-in-time trajectory",
+    )
+    research_replay.add_argument(
+        "--industry-node-id",
+        action="append",
+        default=[],
+        help="industry taxonomy-node UUID to include in the point-in-time trajectory",
+    )
+    research_evidence = research_sub.add_parser(
+        "evidence",
+        help="read one claim-scoped Evidence fragment and its truthful source provenance",
+    )
+    research_evidence.add_argument("evidence_fragment_id", type=UUID)
+    research_evidence.add_argument("cutoff", type=_parse_aware_datetime)
+    research_orient = research_sub.add_parser(
+        "orient",
+        help="enter an industry through source-grounded membership and no-lookahead memory",
+    )
+    research_orient.add_argument("industry_node_id", type=UUID)
+    research_orient.add_argument("cutoff", type=_parse_aware_datetime)
+    research_open_states = research_sub.add_parser(
+        "open-states",
+        help=(
+            "render explicitly separated historical market knowledge and present-day "
+            "research-only analysis"
+        ),
+    )
+    research_open_states.add_argument("industry_node_id", type=UUID)
+    research_open_states.add_argument("cutoff", type=_parse_aware_datetime)
+    current_research_group = research_open_states.add_mutually_exclusive_group()
+    current_research_group.add_argument(
+        "--include-current-research",
+        action="store_const",
+        const="historical_plus_current_research",
+        dest="research_overlay_mode",
+        help=(
+            "include today's Memory disagreement/hypothesis/model-memory research section; "
+            "this is already the CLI default"
+        ),
+    )
+    current_research_group.add_argument(
+        "--historical-only",
+        action="store_const",
+        const="historical_only",
+        dest="research_overlay_mode",
+        help="show only historical market knowledge at the requested cutoff",
+    )
+    research_open_states.set_defaults(
+        research_overlay_mode="historical_plus_current_research"
+    )
 
     schedule = subparsers.add_parser("schedule", help="explain dynamic cadence")
     schedule.add_argument("--industry-id", type=UUID, required=True)
@@ -85,6 +227,8 @@ async def _doctor(settings: Settings, check_database: bool) -> dict[str, object]
         try:
             cursor = await connection.execute("SELECT current_database(), current_setting('server_version')")
             row = await cursor.fetchone()
+            if row is None:
+                raise RuntimeError("database doctor query returned no row")
             result["database"] = {"name": row[0], "version": row[1]}
         finally:
             await connection.close()
@@ -113,7 +257,7 @@ async def _demo() -> dict[str, object]:
                     "freight_basis": "delivered",
                     "currency_code": "CNY",
                     "frequency": "daily",
-                    "price_component": "average"
+                    "price_component": "average",
                 },
                 "valid_from": "2025-12-31",
                 "valid_to": "2026-01-01",
@@ -138,7 +282,12 @@ async def _demo() -> dict[str, object]:
         )
         repository = InMemoryResearchRepository([source])
         plugin = LocalFolderSource(source)
-        items = [item async for item in plugin.discover(DiscoveryContext(source=source, industry_id=industry_id))]
+        items = [
+            item
+            async for item in plugin.discover(
+                DiscoveryContext(source=source, industry_id=industry_id)
+            )
+        ]
         pipeline = CollectionPipeline(
             repository=repository,
             archive=FileSystemArchiveStore(root / "blobs"),
@@ -151,6 +300,111 @@ async def _demo() -> dict[str, object]:
             fetch_context=FetchContext(source=source),
         )
         return asdict(report)
+
+
+async def _research_replay(args: argparse.Namespace) -> dict[str, object]:
+    subjects = tuple(
+        [MemorySubjectRef(entity_id=UUID(value)) for value in args.subject_id]
+        + [MemorySubjectRef(industry_node_id=UUID(value)) for value in args.industry_node_id]
+    )
+    if not subjects:
+        raise ValueError("research replay requires at least one --subject-id or --industry-node-id")
+    reader = DuckDBEpistemicMemoryReader(args.database)
+    snapshot = await reader.snapshot(subjects, knowledge_cutoff=args.cutoff)
+    return build_researcher_trajectory_view(snapshot)
+
+
+async def _research_evidence(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
+    if not settings.database_url:
+        raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
+    reader = PostgresEvidenceDrilldownReader(settings.database_url)
+    try:
+        return await build_researcher_evidence_drilldown(
+            reader=reader,
+            evidence_fragment_id=args.evidence_fragment_id,
+            knowledge_cutoff=args.cutoff,
+        )
+    finally:
+        await reader.close()
+
+
+async def _research_orient(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
+    if not settings.database_url:
+        raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
+    catalog_reader = PostgresIndustryOrientationReader(settings.database_url)
+    memory_reader = PostgresEpistemicMemoryReader(settings.database_url)
+    try:
+        return await build_researcher_industry_orientation(
+            catalog_reader=catalog_reader,
+            memory_reader=memory_reader,
+            industry_node_id=args.industry_node_id,
+            knowledge_cutoff=args.cutoff,
+        )
+    finally:
+        await catalog_reader.close()
+        await memory_reader.close()
+
+
+async def _research_open_states(args: argparse.Namespace, settings: Settings) -> dict[str, object]:
+    if not settings.database_url:
+        raise RuntimeError("LONGCYCLE_DATABASE_URL is not configured")
+    catalog_reader = PostgresIndustryOrientationReader(settings.database_url)
+    memory_reader = PostgresEpistemicMemoryReader(settings.database_url)
+    open_state_reader = PostgresOpenStateReader(settings.database_url)
+    try:
+        return await build_researcher_open_state_view(
+            catalog_reader=catalog_reader,
+            memory_reader=memory_reader,
+            conflict_reader=open_state_reader,
+            current_research_reader=open_state_reader,
+            industry_node_id=args.industry_node_id,
+            knowledge_cutoff=args.cutoff,
+            research_overlay_mode=args.research_overlay_mode,
+        )
+    finally:
+        await catalog_reader.close()
+        await memory_reader.close()
+        await open_state_reader.close()
+
+
+def _research_run(args: argparse.Namespace) -> dict[str, object]:
+    schema_version = _research_spec_schema_version(args.spec)
+    if schema_version == _EPISTEMIC_TRAJECTORY_V1:
+        if args.source_pack is not None:
+            raise ValueError(
+                "epistemic trajectory is transport-neutral and does not accept --source-pack; "
+                "prepare source material outside the runner and use --material-root"
+            )
+        if args.material_root is None:
+            raise ValueError("epistemic trajectory requires --material-root")
+        payload = execute_epistemic_trajectory_receipt(
+            repo_root=args.repo_root,
+            spec_path=args.spec,
+            material_root_path=args.material_root,
+            work_dir=args.work_dir,
+            output_path=args.output,
+            skip_db_upgrade=bool(args.skip_db_upgrade),
+        )
+    elif schema_version in _RESEARCH_ORCHESTRATION_VERSIONS:
+        payload = execute_research_orchestration_receipt(
+            repo_root=args.repo_root,
+            spec_path=args.spec,
+            source_pack_path=args.source_pack,
+            material_root_path=args.material_root,
+            work_dir=args.work_dir,
+            output_path=args.output,
+            skip_db_upgrade=bool(args.skip_db_upgrade),
+        )
+    else:
+        raise ValueError(f"unsupported research run schema_version: {schema_version}")
+
+    if payload.get("ok") is not True:
+        error = payload.get("error")
+        raise RuntimeError(error if isinstance(error, str) else "research run failed")
+    result = payload.get("result")
+    if not isinstance(result, dict):
+        raise RuntimeError("research run returned no result object")
+    return result
 
 
 async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
@@ -168,6 +422,16 @@ async def _run(args: argparse.Namespace) -> dict[str, object] | list[object]:
         registry.register("http_document", HttpDocumentSource)
         registry.load_entry_points()
         return list(registry.names)
+    if args.command == "research" and args.research_command == "run":
+        return _research_run(args)
+    if args.command == "research" and args.research_command == "replay":
+        return await _research_replay(args)
+    if args.command == "research" and args.research_command == "evidence":
+        return await _research_evidence(args, settings)
+    if args.command == "research" and args.research_command == "orient":
+        return await _research_orient(args, settings)
+    if args.command == "research" and args.research_command == "open-states":
+        return await _research_open_states(args, settings)
     if args.command == "schedule":
         collection_policy = CollectionPolicy(
             industry_id=args.industry_id,

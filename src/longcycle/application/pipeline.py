@@ -6,7 +6,13 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from uuid import UUID
 
-from longcycle.domain.enums import Decision, EntityType, QualityGrade, ReviewSeverity, ValidTimeKind
+from longcycle.domain.enums import (
+    Decision,
+    EntityType,
+    QualityGrade,
+    ReviewSeverity,
+    ValidTimeKind,
+)
 from longcycle.domain.models import (
     DiscoveryItem,
     EvidenceFragment,
@@ -166,7 +172,10 @@ class CollectionPipeline:
                 canonical_json(source.model_dump(mode="json")),
             )
             if await self.repository.processing_completed(planned_run_id):
-                self.telemetry.increment("collection.documents_unchanged", source_id=str(item.source_id))
+                self.telemetry.increment(
+                    "collection.documents_unchanged",
+                    source_id=str(item.source_id),
+                )
                 return PipelineReport(
                     document_id=document.id,
                     content_sha256=document.content_sha256,
@@ -182,7 +191,11 @@ class CollectionPipeline:
             extraction = await self.repository.get_extraction(planned_run_id)
             attempt_cost_microunits = 0
             if extraction is None:
-                generated = await self.model.extract(document=document, content=payload.content, target=target)
+                generated = await self.model.extract(
+                    document=document,
+                    content=payload.content,
+                    target=target,
+                )
                 attempt_cost_microunits = generated.cost_microunits
                 if len(generated.candidates) > self.max_assertions_per_document:
                     raise ValueError("extraction exceeds assertion safety limit")
@@ -218,7 +231,12 @@ class CollectionPipeline:
             await self.repository.save_evidence(extraction.evidence)
             await self.repository.append_assertions(normalized)
 
-            counts = {Decision.ACCEPT: 0, Decision.REVIEW: 0, Decision.CONFLICT: 0, Decision.QUARANTINE: 0}
+            counts = {
+                Decision.ACCEPT: 0,
+                Decision.REVIEW: 0,
+                Decision.CONFLICT: 0,
+                Decision.QUARANTINE: 0,
+            }
             for assertion in normalized:
                 effective_result = await self.repository.reconcile_assertion(
                     assertion,
@@ -226,7 +244,9 @@ class CollectionPipeline:
                 )
                 counts[effective_result.decision] += 1
                 if effective_result.decision in {Decision.REVIEW, Decision.CONFLICT}:
-                    severity = ReviewSeverity.CRITICAL if assertion.high_impact else ReviewSeverity.MEDIUM
+                    severity = (
+                        ReviewSeverity.CRITICAL if assertion.high_impact else ReviewSeverity.MEDIUM
+                    )
                     await self.repository.enqueue_review(
                         ReviewItem(
                             id=stable_uuid(
@@ -245,7 +265,11 @@ class CollectionPipeline:
             await self.repository.complete_processing(planned_run_id)
 
             self.telemetry.increment("collection.documents", source_id=str(item.source_id))
-            self.telemetry.increment("collection.assertions", value=len(normalized), source_id=str(item.source_id))
+            self.telemetry.increment(
+                "collection.assertions",
+                value=len(normalized),
+                source_id=str(item.source_id),
+            )
             self.telemetry.observe(
                 "collection.cost_microunits",
                 attempt_cost_microunits,
@@ -266,12 +290,12 @@ class CollectionPipeline:
     @staticmethod
     def _validate_envelope(
         document: SourceDocument,
-        extraction: object,
+        extraction: ExtractionEnvelope,
         *,
         content: bytes | None = None,
     ) -> None:
-        candidates = getattr(extraction, "candidates", ())
-        evidence = getattr(extraction, "evidence", ())
+        candidates = extraction.candidates
+        evidence = extraction.evidence
         if extraction.document_id != document.id:
             raise ValueError("extraction envelope references a different document")
         evidence_ids = {fragment.id for fragment in evidence}
@@ -295,8 +319,11 @@ class CollectionPipeline:
         for candidate in candidates:
             if candidate.document_id != document.id:
                 raise ValueError("assertion references a different document")
-            if candidate.evidence_fragment_id not in evidence_ids:
-                raise ValueError("assertion has no evidence fragment in this extraction")
+            candidate_evidence_ids = {
+                item.evidence_fragment_id for item in candidate.evidence
+            }
+            if not candidate_evidence_ids.issubset(evidence_ids):
+                raise ValueError("assertion has evidence outside this extraction")
             if candidate.extraction_run_id != extraction.run_id:
                 raise ValueError("assertion extraction_run_id does not match envelope")
             if candidate.supersedes_id in candidate_ids:
@@ -307,6 +334,8 @@ class CollectionPipeline:
         document: SourceDocument,
         evidence: Sequence[object],
         content: bytes | None,
+        *,
+        allow_claim_context_annotation: bool = False,
     ) -> None:
         media_type = document.content_type.split(";", 1)[0].strip().lower()
         if content is None or media_type not in {
@@ -347,15 +376,15 @@ class CollectionPipeline:
                     raise ValueError("evidence JSON locator does not resolve")
                 located_corpus = [canonical_json(located)]
 
-                def collect_strings(value: object) -> None:
+                def collect_strings(value: object, corpus: list[str] = located_corpus) -> None:
                     if isinstance(value, str):
-                        located_corpus.append(value)
+                        corpus.append(value)
                     elif isinstance(value, list):
                         for item in value:
-                            collect_strings(item)
+                            collect_strings(item, corpus)
                     elif isinstance(value, dict):
                         for item in value.values():
-                            collect_strings(item)
+                            collect_strings(item, corpus)
 
                 collect_strings(located)
                 if excerpt is not None:
@@ -372,7 +401,18 @@ class CollectionPipeline:
                 ):
                     raise ValueError("structured evidence is not grounded at its JSON locator")
                 continue
-            if structured_payload is not None and getattr(fragment, "artifact_id", None) is None:
+            annotation_only = (
+                allow_claim_context_annotation
+                and isinstance(structured_payload, dict)
+                and set(structured_payload) == {"claim_context"}
+                and isinstance(structured_payload.get("claim_context"), dict)
+                and bool(structured_payload["claim_context"])
+            )
+            if (
+                structured_payload is not None
+                and getattr(fragment, "artifact_id", None) is None
+                and not annotation_only
+            ):
                 raise ValueError(
                     "structured evidence requires JSON or a persisted parser artifact"
                 )

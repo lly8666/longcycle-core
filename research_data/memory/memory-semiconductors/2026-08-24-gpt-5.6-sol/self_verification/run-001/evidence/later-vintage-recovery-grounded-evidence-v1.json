@@ -1,0 +1,146 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-LATER-VINTAGE-RECOVERY-001",
+  "epistemic_guardrails": [
+    "These later vintages are preserved separately from the April/October contemporaneous Judgments; they must never rewrite earlier expectations with hindsight.",
+    "Samsung Q3 2023 supports a scoped PC/mobile demand-improvement and customer-inventory-adjustment-completion observation, not a claim that every memory end-market recovered.",
+    "SK hynix July 2023 says the company decided to further reduce NAND production because NAND inventory was higher than DRAM; this is a management decision/commitment and is not by itself proof that the additional reduction had already been executed.",
+    "The earlier SK hynix >50% magnitude applies only to consolidated 2023 investment and must not be attached to NAND production, wafer starts or bit supply.",
+    "Grounding creates EvidenceFragments only; Reality/Judgment revision and Outcome comparability remain separate promotion decisions."
+  ],
+  "sources": [
+    {
+      "key": "samsung_newsroom_later_materialized",
+      "name": "Samsung Electronics Global Newsroom — later-vintage content-verified web capture",
+      "publisher_domain": "news.samsung.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "market_measurement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Samsung's own Q3 earnings release is primary for its dated report of PC/mobile memory demand and customer inventory-adjustment conditions."
+        }
+      ]
+    },
+    {
+      "key": "skhynix_newsroom_later_materialized",
+      "name": "SK hynix Newsroom — later-vintage content-verified web capture",
+      "publisher_domain": "news.skhynix.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "SK hynix's own Q2 earnings release is primary for its dated management decision to further reduce NAND production and its stated inventory rationale."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "samsung_q3_recovery_later",
+      "vintage_id": "2023-10-31",
+      "source_key": "samsung_newsroom_later_materialized",
+      "retrieval_url": "https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2023-results",
+      "original_source_url": "https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2023-results",
+      "external_id": "samsung-q3-2023-recovery-later-vintage",
+      "title": "Samsung Q3 2023 results — scoped memory recovery later vintage",
+      "published_at": null,
+      "first_known_at": "2023-11-01T00:00:00Z",
+      "expected_sha256": "bc92c7749400c96351b5b981b908a8939ffa38fe70c8d3c379bbb81f5c0940e8",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2023-10-31-RECOVERY-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SAMSUNG-2023-10-31-RECOVERY-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2023-10-31",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T08:47:51Z"
+      }
+    },
+    {
+      "key": "skhynix_q2_nand_cut_later",
+      "vintage_id": "2023-07-26",
+      "source_key": "skhynix_newsroom_later_materialized",
+      "retrieval_url": "https://news.skhynix.com/sk-hynix-reports-second-quarter-2023-financial-results/",
+      "original_source_url": "https://news.skhynix.com/sk-hynix-reports-second-quarter-2023-financial-results/",
+      "external_id": "skhynix-q2-2023-nand-cut-later-vintage",
+      "title": "SK hynix Q2 2023 results — further NAND reduction decision later vintage",
+      "published_at": null,
+      "first_known_at": "2023-07-27T00:00:00Z",
+      "expected_sha256": "a8b445dbbea3ea5601dd2e0807b5a16d02501a0f198f063a1af29dc06524e208",
+      "material_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SKHYNIX-2023-07-26-NAND-CUT-v1.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "capture_id": "CAP-SKHYNIX-2023-07-26-NAND-CUT-v1",
+        "capture_schema_version": "longcycle-readable-web-capture/v1",
+        "claim_relevant_content_preserved": true,
+        "content_verification_mode": "interactive_web_read",
+        "raw_source_materialized": false,
+        "source_capture_state": "content_verified",
+        "source_media_type": "text/html",
+        "published_date_only": "2023-07-26",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "research_capture_time": "2026-08-24T08:47:51Z"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-SAMSUNG-Q3-RECOVERY-LATER",
+      "document_key": "samsung_q3_recovery_later",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "PC and mobile demand improved by increasing adoption of high-density products in both DRAM and NAND and the completion of customers’ inventory adjustments.",
+      "claim_context": {
+        "claim_id": "MEMSEM-LATER-R01",
+        "epistemic_layer": "reality_candidate",
+        "claim_role": "realized_memory_recovery_milestone",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0024", "MS-0081", "MS-0099"],
+        "product_lines": ["DRAM", "NAND"],
+        "market_segments": ["PC", "mobile"],
+        "observed_at": {"date": "2023-10-31", "precision": "day"},
+        "valid_effective_time": {"kind": "period", "precision": "quarter", "text": "Q3 2023"},
+        "known_time": {"upper_bound": "2023-11-01T00:00:00Z", "precision": "day"},
+        "comparability_guard": "The observation is scoped to PC/mobile demand and completion of customer inventory adjustments. It is narrower than the April 2023 broad memory-demand recovery forecast and requires an explicit semantic-relation decision before Outcome evaluation."
+      }
+    },
+    {
+      "fragment_key": "EVF-SKHYNIX-Q2-NAND-CUT-LATER",
+      "document_key": "skhynix_q2_nand_cut_later",
+      "json_pointer": "/claim_relevant_visible_text",
+      "expected_value": "given that the inventory levels of NAND is higher than DRAM, the company has decided to further reduce NAND production.",
+      "claim_context": {
+        "claim_id": "MEMSEM-LATER-J01",
+        "epistemic_layer": "judgment",
+        "claim_role": "management_nand_additional_production_reduction_commitment",
+        "stance": "supports",
+        "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+        "linked_memory_lead_ids": ["MS-0018", "MS-0050"],
+        "product_lines": ["NAND"],
+        "target_time": {"kind": "unknown", "precision": "unknown"},
+        "known_time": {"upper_bound": "2023-07-27T00:00:00Z", "precision": "day"},
+        "revision_guard": "This later decision may reaffirm or narrow the October 2022 production-reduction guidance toward NAND, but the relation must be constructed explicitly after grounding.",
+        "comparability_guard": "No NAND production percentage is stated. The earlier >50% figure remains an investment-only magnitude and cannot be transferred to this decision."
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 2,
+    "required_fragments": 2,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

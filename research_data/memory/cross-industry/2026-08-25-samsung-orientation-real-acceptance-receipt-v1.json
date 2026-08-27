@@ -1,0 +1,111 @@
+{
+  "schema_version": "longcycle-researcher-entry-real-acceptance-receipt/v1",
+  "acceptance_id": "RESEARCHER-ENTRY-HISTORICAL-CLOSURE-SAMSUNG-001",
+  "diagnosis": {
+    "classification": "historical_closure_repair_not_new_capability",
+    "summary": "The source-grounded industry orientation capability had been anticipated in the v1 mental-map audit and later declared closed in v2, but its PostgreSQL hard smoke still manually inserted core.industry_entity_memberships after Fact reconciliation. This receipt closes that integration-proof gap with a governed resolution-backed projection and a real preserved source acceptance path.",
+    "history_refs": [
+      "docs/development/researcher-mental-map-gap-audit-v1.md",
+      "docs/development/researcher-mental-map-gap-audit-v2.md",
+      "docs/development/assistant-session-standards-audit-v1.md",
+      ".longcycle/repair-memory/invariants/RI-0006-semantic-owner-reuse.json"
+    ],
+    "process_correction": "Before naming a newly observed local defect as a new capability or new generic gap, perform on-demand repository history recall and compare the symptom against prior decisions, owners and closure evidence."
+  },
+  "capability_ownership": {
+    "reality_and_resolution_truth_owner": "CAP-0003",
+    "researcher_orientation_and_no_lookahead_read_owner": "CAP-0005",
+    "grounded_evidence_owner": "CAP-0002",
+    "new_semantic_owner_created": false,
+    "new_schema_created": false,
+    "bridge_role": "Materialize one already accepted industry.membership resolution into the existing catalog index without re-reconciling or inventing membership truth."
+  },
+  "implementation": {
+    "synthetic_bridge_verified_checkpoint": "1db2b042ff1dc71b01fd5bc4b68317db25262075",
+    "synthetic_bridge_full_ci_run_id": 32750547777,
+    "real_acceptance_checkpoint": "77333d377a5c0d594c37862ca0b5e8f3b251034e",
+    "real_acceptance_full_ci_run_id": 32751296759,
+    "real_acceptance_full_ci_status": "success",
+    "real_acceptance_broker_issue": 160,
+    "real_acceptance_broker_run_id": 32751445303,
+    "real_acceptance_broker_status": "pass",
+    "real_acceptance_broker_issue_state": "closed_completed",
+    "reality_spec_path": "research_data/memory/cross-industry/2026-08-25-samsung-orientation-membership-reality-v1.json",
+    "orchestration_spec_path": "research_data/memory/cross-industry/2026-08-25-samsung-orientation-real-acceptance-orchestration-v2.json",
+    "hard_gate_path": "scripts/smoke_postgres_real_orientation.py",
+    "full_ci_path": ".github/workflows/ci.yml"
+  },
+  "source_and_evidence": {
+    "source_capture_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/captures/CAP-SAMSUNG-2024-10-31-HBM3E-12H-MASS-PRODUCTION-v1.json",
+    "grounded_evidence_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-samsung-12h-mass-production-trajectory-evidence-v1.json",
+    "publisher_domain": "samsung.com",
+    "claim_scope": "Samsung reported that HBM3E 12-stack products were in mass production and generating sales in the third quarter of 2024.",
+    "q3_realization_fragment_key": "EVF-SAMSUNG-HBM3E-12H-Q3-REALIZED-TRAJECTORY",
+    "q3_realization_evidence_fragment_id": "d8c8b3fd-4b9e-5c3a-8251-6990d59135d3",
+    "q1_plan_fragment_key": "EVF-SAMSUNG-HBM3E-12H-Q2-PLAN-TRAJECTORY",
+    "q1_plan_evidence_fragment_id": "4914789a-1cbf-5c98-9aac-2d5c899bde80",
+    "persisted_document_versions": 2,
+    "persisted_evidence_fragments": 2
+  },
+  "membership_reality": {
+    "industry_node_id": "180d06d1-2f31-5a7c-8c43-16d0b3d3cce7",
+    "industry_current_canonical_name": "Memory Semiconductors",
+    "subject_entity_id": "e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+    "subject_current_canonical_name": "Samsung Electronics Co., Ltd.",
+    "predicate_code": "industry.membership",
+    "normalized_role": "hbm3e_producer",
+    "known_at": "2024-11-01T00:00:00Z",
+    "valid_time_kind": "unknown",
+    "valid_time_precision": "unknown",
+    "observed_at": "2024-10-31T00:00:00Z",
+    "observed_at_precision": "day",
+    "fact_assertion_id": "d8518f90-fc60-54d0-9c72-16210ae9964c",
+    "canonical_fact_version_id": "c52befc7-c4d5-5625-9f39-c54a9df200a1",
+    "fact_resolution_id": "721c2be8-5173-5913-9338-7e5b54064ab4",
+    "membership_projection_id": "36ecb26e-eda8-5eb7-ac69-ee3d42982d4b",
+    "reconciliation_decision": "accept",
+    "reconciliation_score": 0.94025,
+    "reconciliation_reason_codes": [
+      "source_supported_unknown_onset",
+      "quality_gate_passed"
+    ]
+  },
+  "researcher_acceptance": {
+    "before_cutoff": "2024-10-31T23:59:59Z",
+    "at_cutoff": "2024-11-01T00:00:00Z",
+    "before_cutoff_subject_count": 0,
+    "at_cutoff_subject_count": 1,
+    "at_cutoff_reality_count": 1,
+    "at_cutoff_judgment_count": 0,
+    "at_cutoff_outcome_count": 0,
+    "trajectory_reality_count": 1,
+    "trajectory_membership_historical_time_kind": "unknown",
+    "historical_open_state_count": 0,
+    "current_research_overlay_default_included": false,
+    "evidence_drilldown_before_cutoff": "fails_closed_not_knowable",
+    "evidence_drilldown_at_cutoff": "returns_exact_preserved_samsung_fragment",
+    "membership_projection_idempotent": true,
+    "manual_membership_insert_required": false
+  },
+  "strict_boundaries": [
+    "The source supports only the narrow normalized role hbm3e_producer for this acceptance proof; it does not establish market leadership, supplier importance, named-customer identity, named-platform qualification or conventional-DRAM status.",
+    "The source proves a producer state by the Q3 2024 reporting context but does not establish membership onset; valid_from and valid_to remain absent rather than converting observation time into occurrence time.",
+    "The taxonomy node and current canonical labels are current research ontology/catalog identity, not proof that a contemporaneous research team had curated the same labels at the historical cutoff.",
+    "Fact first_known_at controls historical membership visibility. Projection system_from/resolution time is curation provenance and must never be substituted for historical known time.",
+    "The membership projection consumes an already accepted CAP-0003 resolution and does not reimplement source independence, reconciliation or canonical Reality truth.",
+    "CAP-0005 orientation, trajectory and open-state presentation may expose the grounded membership but may not infer importance, causality, consensus, controversy or unknowns from its presence."
+  ],
+  "verification": {
+    "full_ci_real_source_gate": "pass",
+    "generic_broker_grounding_and_reality": "pass",
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "all_reconciled_accept": true,
+    "observation_semantics_preserved": true,
+    "valid_time_semantics_preserved": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "real_researcher_entry_loop_closed": true
+  },
+  "closure_decision": "close_historical_orientation_integration_gap",
+  "next_question": "With real source-grounded industry entry now proven, return to a read-only parent-level researcher-understanding synthesis. Do not add more orientation features or another industry by default; identify whether drivers/constraints remain only a composition need or expose one genuine cross-industry semantic failure."
+}

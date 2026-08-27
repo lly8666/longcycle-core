@@ -1,0 +1,91 @@
+{
+  "artifact": "negative-space-gap-matrix-v2",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "supersedes_for_next_probe_decision": "analysis/negative-space-gap-matrix-v1.json",
+  "purpose": "Re-rank first-order blind-memory gaps after the UP-HARDROCK matrix-driven ordinary probe without rewriting the v1 decision history.",
+  "fresh_search_used": false,
+  "neighbor_raw_outputs_used_for_ranking": false,
+  "inputs": [
+    "analysis/negative-space-gap-matrix-v1.json",
+    "analysis/coverage-index.json at 663 raw / 605 formal typed",
+    "UP-HARDROCK deterministic compact index before the v6 probe",
+    "blind/UP-HARDROCK/ordinary-gap-batch4-v6.jsonl classifications",
+    "prompts/ordinary-gap-v6.md"
+  ],
+  "campaign_state": {
+    "raw_leads": 663,
+    "formal_typed_leads": 605,
+    "legacy_experimental_raw_leads": 58,
+    "sealed_shards": [],
+    "qualifying_low_novelty_streaks": 0,
+    "interpretation": "The first ordinary v6 probe produced the campaign's first explicit duplicate observation but remained materially high novelty. No seal condition advanced. The correct response is cross-shard re-ranking, not another immediate UP-HARDROCK batch."
+  },
+  "completed_probe": {
+    "shard_id": "UP-HARDROCK",
+    "pass_id": "ordinary-gap-batch4-v6",
+    "target_gap": "effective_supply_translation",
+    "candidate_count": 5,
+    "new_category": 2,
+    "useful_refinement": 2,
+    "duplicate": 1,
+    "low_novelty": false,
+    "consecutive_low_novelty_batches": 0,
+    "newly_explicit_dimensions": [
+      "produced concentrate versus customer-acceptable/saleable concentrate as a separate effective-supply state",
+      "project-level ramp guidance revisions as an Expectation trajectory rather than only pipeline forecasts or final outcomes"
+    ],
+    "refined_dimensions": [
+      "ore-mined/ROM/processed/recovery/concentrate/inventory/shipment material-balance reconciliation",
+      "port parcel, customer acceptance and title-transfer timing between production, shipment and sales recognition"
+    ],
+    "duplicate_signal": "price-driven cut-off-grade, stockpile and mine-plan reoptimization materially repeated HR-H006 and was retained as duplicate rather than rewritten as novelty",
+    "judgment": "high_information_but_not_exhausted"
+  },
+  "re_rank_reasoning": {
+    "UP-HARDROCK": {
+      "decision": "hold_after_probe",
+      "priority": "high",
+      "remaining_first_order_gap": "second-tier/failed project paths and project-specific expectation chains remain, but another immediate hard-rock probe would have lower cross-shard information gain after the effective-supply state chain was materially improved",
+      "seal_effect": "none; latest batch is not low novelty"
+    },
+    "DOWN-NEV": {
+      "decision": "run_one_probe",
+      "priority": "very_high",
+      "target_gap": "reported_vehicle_activity_to_battery_material_demand",
+      "remaining_negative_space": [
+        "production/wholesale/retail/registration/export/inventory differences and which vintage was actually knowable at the time",
+        "vehicle-segment and battery-size mix needed to translate vehicle counts into installed battery GWh",
+        "installed battery GWh versus contemporaneous cathode/chemistry mix and lithium material demand",
+        "expectation revisions when subsidy phase-down, credit policy, Tesla localization and model mix changed the demand path"
+      ],
+      "reason": "After improving the supply-side effective-quantity chain, the largest first-order asymmetry in the 2019-2020 replay is now demand translation. Reported NEV activity cannot be treated as contemporaneous lithium demand without channel inventory, unit-intensity and chemistry semantics."
+    },
+    "UP-CHEMICALS": {
+      "decision": "conditional_after_down_nev",
+      "priority": "high",
+      "target_gap": "nameplate_conversion_to_battery_grade_realized_supply",
+      "reason": "Conversion remains the next structural bridge, but demand translation should be tested first so any residual chemical-supply gap is selected against an improved two-sided balance rather than by upstream-only intuition."
+    }
+  },
+  "probe_protocol": {
+    "next_probe_count": 1,
+    "next_shard": "DOWN-NEV",
+    "prompt": "prompts/ordinary-gap-v6.md",
+    "target": "Translate reported vehicle market activity into point-in-time battery/material demand. Do not collect more policy headlines unless they alter the measurement or expectation chain.",
+    "inputs_allowed": [
+      "DOWN-NEV deterministic compact index",
+      "this v2 row/reasoning for DOWN-NEV",
+      "prompts/ordinary-gap-v6.md",
+      "fixed campaign horizon/schema/methodology"
+    ],
+    "inputs_forbidden": [
+      "fresh web/search results",
+      "other shards' raw lead text",
+      "evidence archive material",
+      "later outcomes used to rewrite historical demand expectations"
+    ],
+    "classification": ["new_category","useful_refinement","duplicate"],
+    "after_probe": "Re-rank again before deciding whether UP-CHEMICALS remains next. A productive DOWN-NEV probe does not auto-authorize conversion work.",
+    "seal_effect": "Only an observed low-novelty batch can start a qualifying streak. No shard currently has one."
+  }
+}

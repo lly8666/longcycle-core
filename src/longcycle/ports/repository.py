@@ -4,6 +4,11 @@ from collections.abc import Sequence
 from typing import Protocol
 from uuid import UUID
 
+from longcycle.domain.judgments import (
+    JudgmentAssertion,
+    JudgmentRationale,
+    JudgmentRelation,
+)
 from longcycle.domain.models import (
     CollectionJob,
     DocumentArtifact,
@@ -68,6 +73,16 @@ class ResearchRepository(Protocol):
         ...
 
     async def enqueue_review(self, item: ReviewItem) -> None: ...
+
+
+class JudgmentRepository(Protocol):
+    """Append-only storage boundary for contemporaneous cognition and revisions."""
+
+    async def append_judgments(self, judgments: Sequence[JudgmentAssertion]) -> None: ...
+
+    async def append_rationales(self, rationales: Sequence[JudgmentRationale]) -> None: ...
+
+    async def append_relations(self, relations: Sequence[JudgmentRelation]) -> None: ...
 
 
 class JobQueue(Protocol):

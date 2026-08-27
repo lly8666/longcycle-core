@@ -1,0 +1,94 @@
+{
+  "schema_version": "longcycle-research-assessment/v1",
+  "assessment_id": "MS0121-HBM-BOTTLENECK-STAGE-DECOMPOSITION-v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "memory_lead_id": "MS-0121",
+  "authority": "curated_research_assessment_over_grounded_cross_packet_evidence",
+  "subject": "Whether HBM scarcity should be represented as DRAM-wafer scarcity or as a multi-stage constraint system spanning silicon intensity, HBM back-end packaging, customer qualification and downstream accelerator advanced packaging",
+  "grounded_inputs": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0121-hbm-bottleneck-stage-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-later-supply-grounding-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/hbm3e-coreweave-h200-market-grounding-receipt-v1.json"
+  ],
+  "assessment": {
+    "status": "multi_stage_bottleneck_model_supported_universal_binding_stage_unresolved",
+    "supported": [
+      {
+        "constraint_stage": "customer_platform_qualification",
+        "finding": "In December 2023 Micron reported that HBM3E samples had been shipped to key partners while qualification for NVIDIA GH200/H200 remained in its final stages.",
+        "meaning": "Sampling, qualification completion, customer supply and platform availability are distinct states. A product can exist and be sampled while qualification remains an independent gate."
+      },
+      {
+        "constraint_stage": "hbm_memory_backend_packaging",
+        "finding": "SK hynix explicitly describes package-and-test as a back-end process after front-end wafer fabrication, with HBM relying on advanced package technologies such as TSV and MR-MUF in its broader process description.",
+        "meaning": "HBM output cannot be modeled as wafer output alone. Memory-side stacking/package-and-test is a separate production stage, although this packet does not establish that SK hynix package capacity itself was constrained on the cited date."
+      },
+      {
+        "constraint_stage": "accelerator_advanced_packaging",
+        "finding": "In April 2024 TSMC said its CoWoS capacity was expected to more than double versus the prior year yet still be insufficient for customer demand, with OSAT partners used to complement capacity.",
+        "meaning": "A downstream accelerator-package bottleneck can coexist with HBM supply. CoWoS capacity is therefore a distinct constraint family from memory-side HBM package-and-test and from DRAM wafer capacity."
+      },
+      {
+        "constraint_stage": "dram_frontend_silicon_intensity",
+        "finding": "In June 2024 Micron estimated that HBM3E required approximately three times the wafer supply of D5 to produce the same number of bits on the same technology node.",
+        "meaning": "HBM carries a real front-end silicon opportunity cost and can displace non-HBM DRAM supply. This supports wafer tightness as one material mechanism without proving that wafer supply is always the immediate HBM delivery bottleneck."
+      },
+      {
+        "constraint_stage": "supplier_production_and_customer_supply_state",
+        "finding": "The existing HBM3E trajectory separately preserves supplier sampling, volume/mass production, customer-supply plans and later supply observations with known-time boundaries.",
+        "meaning": "The repository already has typed proof that HBM progresses through several operational states. The new bottleneck packet adds stage mechanics without collapsing or re-promoting those existing states."
+      },
+      {
+        "constraint_stage": "downstream_platform_availability",
+        "finding": "The existing CoreWeave packet later grounds H200 market availability while explicitly refusing to identify a specific HBM supplier or convert that later platform state into a direct realization of an earlier supplier shipment judgment.",
+        "meaning": "Platform availability is a further downstream state. It can lag or overlap memory qualification, supply and packaging stages, so later system availability must not be used to rewrite earlier bottleneck states."
+      }
+    ],
+    "not_established": [
+      "The evidence does not establish one universal HBM bottleneck that applies across suppliers, customers, products and dates.",
+      "The evidence does not establish that DRAM wafer capacity was unconstrained merely because CoWoS capacity was tight.",
+      "The evidence does not establish that CoWoS was the sole binding constraint for every AI accelerator or every HBM generation.",
+      "The SK hynix process description does not by itself prove a dated HBM package-and-test capacity shortage or quantify packaging yield loss.",
+      "Micron's approximately-three-times HBM3E/D5 wafer trade ratio is not silently generalized to HBM4, all process nodes or every supplier's realized production economics.",
+      "Micron's December 2023 qualification progress does not prove NVIDIA qualification completion on that date or an industry-wide qualification bottleneck.",
+      "The packet does not quantify a common denominator that ranks wafer supply, HBM package yield/throughput, CoWoS capacity and qualification delay by causal contribution to delivered accelerator volume.",
+      "Later H200 platform availability does not identify which HBM supplier, package route or earlier constraint determined a given delivered system."
+    ],
+    "point_in_time_interpretation": {
+      "as_of_2023_12_21": "A researcher can observe that Micron has shipped HBM3E samples and is still completing named-platform qualification. The later SK hynix process description, TSMC CoWoS tightness and Micron wafer-intensity estimate are unavailable and must not be backfilled into this December state.",
+      "as_of_2024_04_12": "A separate HBM back-end package-and-test stage is now explicitly visible in supplier process evidence. There is still no basis to rank memory packaging against wafer supply or downstream accelerator packaging as the universal binding constraint.",
+      "as_of_2024_04_19": "TSMC now reports CoWoS capacity tightness despite aggressive expansion. A researcher can therefore represent downstream advanced packaging as an independently evidenced constraint family without erasing memory-side package/test or qualification stages.",
+      "as_of_2024_06_27": "Micron adds a quantitative front-end silicon mechanism: HBM3E consumes substantially more wafer supply per equal bit than D5 on the same node. The correct model now contains both upstream silicon opportunity cost and independently evidenced downstream gates; neither is automatically dominant.",
+      "later_platform_state": "The separately grounded later H200 market-availability evidence may show downstream realization, but it remains later-known and cannot retrospectively decide which prior stage was binding at earlier cutoffs."
+    },
+    "counterfactual_evaluation": {
+      "hypothesis_hbm_shortage_equals_dram_wafer_shortage": "rejected_as_overly_coarse",
+      "reason_wafer_only": "Wafer intensity is materially supported, but the evidence also preserves independent qualification, HBM back-end package/test and CoWoS capacity stages. Treating HBM scarcity as a synonym for DRAM wafer scarcity would discard source-grounded downstream constraints.",
+      "hypothesis_hbm_is_a_multi_stage_constraint_system": "strongly_supported_as_research_representation",
+      "reason_multi_stage": "The packet grounds distinct stages with different authorities and dates, while existing HBM trajectories preserve production, customer supply and later platform availability. This representation explains how multiple constraints can coexist or hand off through a ramp without inventing a single bottleneck scalar.",
+      "preferred_research_representation": "Represent HBM as a constraint graph with separately dated state families: DRAM wafer/die capacity and silicon intensity; HBM stacking/package-and-test throughput and yield; customer/platform qualification; accelerator advanced packaging such as CoWoS; customer supply and platform availability. These stages may overlap in time and must not be forced into a strict serial queue unless a source establishes that ordering for a specific program."
+    },
+    "representation_decision": "Keep bottleneck ranking and cross-stage causal synthesis in the CAP-0006 research-only lane. Existing typed HBM production, sampling, supply and Judgment trajectories remain authoritative for their scoped states; the new packet adds stage-specific evidence without creating a universal scarcity object.",
+    "canonical_projection_decision": "Do not create a new canonical HBM-bottleneck predicate or scalar from this packet. TSMC CoWoS tightness and Micron's wafer trade ratio could become separately typed source-scoped observations only if a future product use requires those exact states and the existing semantic catalog can represent them without collapsing stages. Qualification and HBM production states already have established typed trajectories and should be reused.",
+    "outcome_for_ms0121": "MS-0121 is supported. HBM scarcity should be represented as a multi-stage constraint system rather than as a synonym for DRAM wafer shortage. Wafer intensity is a real upstream mechanism, while memory-side package/test, customer qualification and downstream CoWoS capacity are independently meaningful stages. Which stage was binding for a particular supplier, customer, product and date remains unresolved unless directly measured."
+  },
+  "cross_lead_effect": {
+    "MS-0109": "Deepened: TSMC CoWoS capacity tightness now provides claim-scoped primary evidence that accelerator packaging can cap system realization independently of HBM memory-supplier states.",
+    "MS-0126": "Deepened: SK hynix process evidence formally separates HBM package-and-test from wafer fabrication, but equipment-specific capacity, bonder/substrate constraints and comparable yield/throughput measurements remain open."
+  },
+  "stop_rule": {
+    "closed_surface": "Do not spend additional search budget on generic statements that HBM is in shortage or that AI packaging is tight. The useful research unit is now a dated, named stage with a measurable capacity, yield, qualification or supply state.",
+    "reopen_when": [
+      "A primary supplier source quantifies HBM package/test or TSV-stack capacity, utilization, yield or throughput across vintages.",
+      "A foundry/OSAT source provides comparable CoWoS or accelerator-package capacity and realized shipment constraints for a named platform.",
+      "A customer or platform owner provides dated qualification completion or delay evidence that can be compared with supplier production and supply states.",
+      "Comparable wafer allocation or bit-output data allow HBM silicon intensity to be linked to realized conventional-DRAM displacement without inventing a coefficient.",
+      "A source explicitly identifies the binding stage for a named HBM/platform program and period."
+    ]
+  },
+  "next_research_direction": {
+    "candidate": "MS-0122",
+    "rationale": "The HBM bottleneck counterfactual is now bounded by stage. The next sealed high-importance counterfactual tests another common aggregation error: whether DRAM and NAND truly share one cycle or only appear synchronized because macro demand and supplier capex overlap while product-specific supply concentration, elasticity, technology cadence and end-market mix create lead/lag."
+  }
+}

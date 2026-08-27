@@ -1,0 +1,55 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0120-2024-RECOVERY-DECOMPOSITION-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0120-2024-recovery-decomposition-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/memory-ms0120-2024-recovery-grounded-evidence.yml",
+    "first_run_id": 32976483744,
+    "first_run_conclusion": "failure",
+    "first_run_failure_class": "schema_validation_invalid_claim_scope_market_forecast",
+    "repair": "Reused the existing industry_expectation claim scope rather than extending the authority enum or weakening validation.",
+    "successful_run_id": 32976672273,
+    "head_sha": "dbb299c3a8835fca63335d2898de94d16fe91905",
+    "conclusion": "success",
+    "artifact_id": 9609753318,
+    "artifact_name": "memory-ms0120-2024-recovery-32976672273",
+    "artifact_digest": "sha256:c07a5470d5f4d68b555b53f7f696effd78d0ec01c591c7f54e73b00738d367f3"
+  },
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "product_line_decomposition_preserved": true,
+    "january_to_october_no_lookahead_order_passed": true,
+    "june_cutoff_hides_october_mix_forecast": true,
+    "ai_causal_share_not_promoted": true
+  },
+  "documents": [
+    {"document_key":"trendforce_memory_price_rally_capacity_control_2024_01_19","document_id":"4ff20836-d493-54ad-89a1-acb2100bd214","content_sha256":"b7addb107bfd07f85911a7fd4d94dda7f470016a05b23963c13273a71812bd87","canonical_artifact_id":"5164cbbb-077b-5cc6-9c45-517cbd82087f","canonical_artifact_sha256":"d6fa1867d0c5af376c26df882d65dc807b180ee4d5d2ba21f9edbb5d213f3568","first_known_at":"2024-01-20T00:00:00Z"},
+    {"document_key":"skhynix_ai_conventional_dram_recovery_2024_04_25","document_id":"167020ec-700a-5585-9a21-33ab47049c23","content_sha256":"3da5cf181bd9aca38e4a74b76a9161cdc40a5c4da9507ea4a2be201eb4555c6f","canonical_artifact_id":"7551e569-988a-5560-9c8c-605250d95cdd","canonical_artifact_sha256":"6f4ff7e438174864a44c6917f859fc4abecb3e554232e96e3e052b7574e99902","first_known_at":"2024-04-26T00:00:00Z"},
+    {"document_key":"trendforce_nand_recovery_production_split_2024_06_28","document_id":"cbe13edc-7a0c-5503-b08f-a8addda579b5","content_sha256":"51b76846556dfa086e7cae105710d933e58420c57e7c7a24baa6d858e83c0ec0","canonical_artifact_id":"e84c3754-88b1-5587-b7fa-3944a691a5d6","canonical_artifact_sha256":"88ae5be10ceeebdb1eaea1ef5a1597f49d53b8124094a0f22092461f320098ee","first_known_at":"2024-06-29T00:00:00Z"},
+    {"document_key":"trendforce_conventional_dram_hbm_mix_2024_10_09","document_id":"24eeade5-ed18-5504-af66-d8d14d406377","content_sha256":"d96ac22863553e36b4c9dc121d4703dabad3f099bc931a9843e53063dcf2c01f","canonical_artifact_id":"fd1aa385-9745-50dd-bacb-bcc135518c23","canonical_artifact_sha256":"1520031d2b6630a18ed875b6c691a4c1fc6cb45ffe44b9d06b4c2ca2a76db03a","first_known_at":"2024-10-10T00:00:00Z"}
+  ],
+  "fragments": [
+    {"fragment_key":"EVF-MS0120-JAN24-CAPACITY-CONTROL-PRICE-RALLY","evidence_fragment_id":"548bafd8-5888-52e2-8d22-d538c3deef9b","fragment_sha256":"875de18adc91e572fadf3bb8956f88167727bf9da9bc94093fb54ed0f6bb156e","claim_role":"broad_memory_price_rally_capacity_utilization_condition","epistemic_layer":"evidence_only_market_expectation"},
+    {"fragment_key":"EVF-MS0120-APR24-AI-CONVENTIONAL-DRAM-SPLIT","evidence_fragment_id":"a82dfda1-5c68-5ad7-b60f-e6b719d593f3","fragment_sha256":"68052be20cddcbe844fb04ff6d092cc945e0ee247da655680410b3773dfce3cc","claim_role":"ai_memory_growth_and_conventional_dram_recovery_separated","epistemic_layer":"evidence_only_supplier_outlook"},
+    {"fragment_key":"EVF-MS0120-JUN24-NAND-REBOUND-PRODUCTION-CONTROL","evidence_fragment_id":"bb853a41-4d50-57a4-a3d6-6523632f3735","fragment_sha256":"6935533358b94938c19a27d678f8d428b65eda94d680a2e5c9aef91e2e3e99b8","claim_role":"nand_first_half_price_rebound_with_production_restraint","epistemic_layer":"evidence_only_market_observation"},
+    {"fragment_key":"EVF-MS0120-OCT24-CONVENTIONAL-DRAM-HBM-MIX-DIVERGENCE","evidence_fragment_id":"9ed5183a-5d47-5cec-b036-14b8d566f032","fragment_sha256":"47284899915cf48a329b3a0f40a09a6398c80f5b2a1089de8c52b3cc2b7bb46f","claim_role":"conventional_dram_price_vs_hbm_mix_divergence_forecast","epistemic_layer":"evidence_only_product_mix_forecast"}
+  ],
+  "reused_grounded_assets": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/combined-recovery-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/replay/hbm3e-status-trajectory-receipt-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/enterprise-ssd-qlc-ai-storage-demand-productization-v1.json"
+  ],
+  "semantic_guards": [
+    "The broad memory recovery cannot be reduced to a single AI causal scalar from this packet.",
+    "January capacity-utilization control is an industry expectation/condition for sustaining broad price recovery, not a realized supplier-utilization measurement.",
+    "April preserves rising AI-memory demand and future conventional-DRAM recovery as separate company outlook claims.",
+    "June grounds a first-half NAND price rebound associated with production restraint at TrendForce market-measurement scope.",
+    "October grounds a later conventional-DRAM versus HBM mix divergence forecast and is hidden from first-half replay.",
+    "Existing supplier-cut, HBM and enterprise-SSD assets are reused rather than copied into this bridge packet; no prior typed claim is silently re-promoted."
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "longcycle-capability-admission/v2",
+  "intent_id": "ARCHITECTURE-BASELINE-V1-PREFREEZE-021",
+  "intent": "Close the accepted Fresh-Agent v3 continuity tranche and perform the final pre-Baseline v1 provenance hardening without opening new research or semantic ownership. Enforce at the PostgreSQL layer that industry-membership model judgment runs are immutable execution provenance and that industry-membership semantic decisions preserve their identity while only accumulating equivalent supporting assertions/judgment runs and moving last_confirmed_at forward. Then freeze the validated architecture through the existing CAP-0005/CAP-0010 ownership and Baseline governance rather than continuing open-ended architecture exploration.",
+  "governance_mode": "converging",
+  "disposition": "extend",
+  "target_capability_ids": ["CAP-0005", "CAP-0010"],
+  "closest_existing_capability_ids": ["CAP-0005", "CAP-0010"],
+  "rationale_summary": "Fresh-Agent Continuity Drill v3 has been externally completed and maintainer-accepted. The remaining pre-freeze gap is not a new semantic abstraction: CAP-0005 already treats membership judgment runs as append-only audit provenance and semantic decisions as stable conclusions that may only gain corroborating support. The application store already implements union-only support growth and monotonic last_confirmed_at, but migrations 0033/0034 do not prevent direct SQL UPDATE/DELETE from violating those invariants. Baseline v1 should lock the already-adopted semantics at the database boundary before architecture exploration is closed.",
+  "rationale_details_ref": ".longcycle/handoff/rehearsals/fresh-agent-external-111-e219b09.json",
+  "unmet_requirement": null,
+  "evidence_refs": [
+    ".longcycle/handoff/rehearsals/fresh-agent-external-111-e219b09.json",
+    "migrations/0033_industry_membership_judgment_runs.sql",
+    "migrations/0034_industry_membership_supporting_assertions.sql",
+    "src/longcycle/application/industry_membership_projection.py",
+    "src/longcycle/adapters/storage/postgres_orientation.py",
+    ".longcycle/capabilities/cards/CAP-0005.json",
+    ".longcycle/capabilities/cards/CAP-0010.json"
+  ],
+  "planned_paths": [
+    "migrations/0039_industry_membership_provenance_guards.sql",
+    "scripts/smoke_postgres_membership_provenance_guards.py",
+    ".github/workflows/ci.yml",
+    ".longcycle/capabilities/current-admission.json",
+    ".longcycle/handoff/current.json"
+  ],
+  "proposed_capability_id": null
+}

@@ -1,0 +1,62 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "ADC-SV-001-MIRVETUXIMAB-JUDGMENTS-V1",
+  "source_evidence_task_id": "ADC-SV-001-MIRVETUXIMAB-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "contemporaneous_exploratory_interpretation",
+    "forward_development_commitment"
+  ],
+  "subjects": [
+    {
+      "id": "66335cc8-4632-577c-86d4-42b9a2ef0484",
+      "entity_type": "product",
+      "canonical_name": "mirvetuximab soravtansine-gynx"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2019-forward1-scoring-interpretation",
+      "evidence_refs": [
+        {
+          "fragment_key": "forward1-scoring-exploratory-interpretation",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "66335cc8-4632-577c-86d4-42b9a2ef0484",
+      "speaker_name_text": "FORWARD I investigators / ImmunoGen",
+      "topic_code": "clinical.biomarker_scoring_interpretation",
+      "judgment_kind": "thesis",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "interpretation of the FORWARD I FRalpha subgroup definition",
+      "value_kind": "text",
+      "value_text": "The change from PS2+ to 10X scoring introduced lower-FRalpha-expression patients into the population treated as high expression and was a plausible explanation for the observed subgroup behavior.",
+      "summary": "By ESMO 2019, the FORWARD I investigators/sponsor were using the scoring-method change as a contemporaneous explanatory hypothesis for the failed trial's subgroup behavior.",
+      "metadata": {
+        "causal_guard": "This records the contemporaneous interpretation only. It does not claim that changing scoring caused later registrational success."
+      }
+    },
+    {
+      "judgment_key": "2019-mirasol-development-commitment",
+      "evidence_refs": [
+        {
+          "fragment_key": "mirasol-design-supported",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "66335cc8-4632-577c-86d4-42b9a2ef0484",
+      "speaker_name_text": "FORWARD I investigators / ImmunoGen",
+      "topic_code": "clinical.next_registrational_design",
+      "judgment_kind": "commitment",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "next phase III MIRASOL development step",
+      "value_kind": "text",
+      "value_text": "The FORWARD I analyses were considered sufficient to support the design of MIRASOL as the next phase III development step.",
+      "summary": "The 2019 ESMO presentation preserved a forward development commitment after the FORWARD I failure rather than a hindsight explanation written after later success.",
+      "metadata": {
+        "outcome_guard": "Later FDA approval is historically related to this development commitment but is not the same milestone and must not be auto-scored as direct realization."
+      }
+    }
+  ]
+}

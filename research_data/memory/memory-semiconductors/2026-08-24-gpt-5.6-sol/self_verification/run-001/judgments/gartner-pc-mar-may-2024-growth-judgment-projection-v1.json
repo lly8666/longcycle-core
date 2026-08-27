@@ -1,0 +1,85 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v3",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-GARTNER-PC-MAR-MAY-2024-JUDGMENTS-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-DDR5-PLATFORM-DEVICE-REVISION-001",
+  "allowed_claim_roles": [
+    "analyst_device_unit_growth_forecast_revision"
+  ],
+  "subjects": [
+    {
+      "id": "c46b9fde-ea50-553b-898c-9e02857b07d5",
+      "entity_type": "event",
+      "canonical_name": "Worldwide PC shipments — calendar 2024"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "gartner-pc-growth-2024-03",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-GARTNER-2024-03-DEVICE-FORECAST",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "c46b9fde-ea50-553b-898c-9e02857b07d5",
+      "speaker_name_text": "Gartner",
+      "speaker_role": "market research publisher",
+      "topic_code": "market.pc_shipments_yoy_growth",
+      "predicate_code": "market.pc_shipments_yoy_growth",
+      "dimensions": {
+        "statistical_scope": "worldwide pc shipments"
+      },
+      "dimensions_complete": true,
+      "judgment_kind": "forecast",
+      "target_time_kind": "period",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "calendar 2024",
+      "value_kind": "numeric",
+      "value_numeric": 0.024,
+      "unit_code": "ratio",
+      "summary": "Gartner expected the worldwide PC market to increase 2.4% in calendar 2024.",
+      "metadata": {
+        "vintage": "2024-03-26",
+        "measurement_scope": "worldwide PC shipments",
+        "source_value_text": "2.4%",
+        "revision_guard": "Persist as a later Judgment vintage; do not overwrite February cognition."
+      }
+    },
+    {
+      "judgment_key": "gartner-pc-growth-2024-05",
+      "evidence_refs": [
+        {
+          "fragment_key": "EVF-GARTNER-2024-05-DEVICE-FORECAST",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "c46b9fde-ea50-553b-898c-9e02857b07d5",
+      "speaker_name_text": "Gartner",
+      "speaker_role": "market research publisher",
+      "topic_code": "market.pc_shipments_yoy_growth",
+      "predicate_code": "market.pc_shipments_yoy_growth",
+      "dimensions": {
+        "statistical_scope": "worldwide pc shipments"
+      },
+      "dimensions_complete": true,
+      "judgment_kind": "forecast",
+      "target_time_kind": "period",
+      "target_from": "2024-01-01T00:00:00Z",
+      "target_to": "2025-01-01T00:00:00Z",
+      "target_precision": "year",
+      "target_text": "calendar 2024",
+      "value_kind": "numeric",
+      "value_numeric": 0.024,
+      "unit_code": "ratio",
+      "summary": "Gartner expected the worldwide PC market to grow 2.4% in calendar 2024.",
+      "metadata": {
+        "vintage": "2024-05-01",
+        "measurement_scope": "worldwide PC shipments",
+        "source_value_text": "2.4%",
+        "revision_guard": "Persist as a later Judgment vintage; do not overwrite February/March cognition."
+      }
+    }
+  ]
+}

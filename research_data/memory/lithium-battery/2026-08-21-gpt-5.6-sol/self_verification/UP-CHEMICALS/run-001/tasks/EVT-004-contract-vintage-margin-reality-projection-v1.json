@@ -1,0 +1,69 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN-REALITY-V1",
+  "source_evidence_task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN-EVIDENCE-V2",
+  "allowed_claim_roles": [
+    "commercial_contract_structure",
+    "margin_transmission_mechanism",
+    "inventory_accounting_policy"
+  ],
+  "subjects": [
+    {
+      "id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+      "entity_type": "organization",
+      "canonical_name": "Livent Corporation"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "livent-contract-fixed-formula-pricing-state",
+      "evidence_fragment_key": "2019-contract-fixed-formula-pricing",
+      "subject_entity_id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+      "predicate_code": "commercial.contract_pricing_structure",
+      "value_text": "most products were sold under long-term contracts often using fixed or formula-based prices",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2020-02-28T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "disclosed in Form 10-K filed 2020-02-28",
+      "statistical_scope": "company commercial contract structure",
+      "metadata": {
+        "temporal_guard": "The filing states the contract structure in the present tense but does not establish its onset. The filing date is an observation axis, not a manufactured valid-from date.",
+        "margin_semantics": "Realized selling price can be governed by contract vintage rather than same-day spot price."
+      }
+    },
+    {
+      "fact_key": "livent-cost-pass-through-constraint-state",
+      "evidence_fragment_key": "2019-contract-cost-pass-through-lag",
+      "subject_entity_id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+      "predicate_code": "commercial.cost_pass_through_constraint",
+      "value_text": "some contracts did not permit increased costs to be passed through in sale prices immediately or at all",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2020-02-28T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "disclosed in Form 10-K filed 2020-02-28",
+      "statistical_scope": "company commercial cost transmission structure",
+      "metadata": {
+        "temporal_guard": "The filing supports existence of the constraint but not an onset date or universal application to every contract.",
+        "margin_semantics": "Input-cost and realized-selling-price vintages can diverge."
+      }
+    },
+    {
+      "fact_key": "livent-domestic-inventory-fifo-from-2019-10-01",
+      "evidence_fragment_key": "2019-fifo-accounting-change",
+      "subject_entity_id": "6e0d564d-cf78-5b58-8ca2-42f8f5999b04",
+      "predicate_code": "inventory.accounting_method",
+      "value_text": "domestic inventories excluding materials and supplies were valued using FIFO",
+      "valid_time_kind": "period",
+      "valid_from": "2019-10-01T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "On October 1, 2019",
+      "statistical_scope": "domestic inventories excluding materials and supplies",
+      "metadata": {
+        "knowledge_guard": "The policy is effective from 2019-10-01, but with the currently grounded source it is not knowable to replay until the 2020-02-28 Form 10-K known-time.",
+        "margin_semantics": "Inventory-cost vintage and accounting method affect reported cost of sales independently of contemporaneous spot prices."
+      }
+    }
+  ]
+}

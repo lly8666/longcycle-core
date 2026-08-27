@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://longcycle.local/schemas/model-memory-lead/v2",
+  "title": "Longcycle Model Memory Lead v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "lead_kind",
+    "claim_scope",
+    "memory_basis",
+    "summary",
+    "approximate_period",
+    "memory_confidence",
+    "importance_score",
+    "novelty_score",
+    "searchability_score",
+    "precision_risk",
+    "entity_resolution_state",
+    "uncertain_fields",
+    "aliases_or_old_terms",
+    "why_search_may_miss_it",
+    "recalled_details",
+    "possible_actors"
+  ],
+  "properties": {
+    "lead_kind": {
+      "enum": [
+        "landmark",
+        "missing_event",
+        "actor",
+        "terminology",
+        "metric",
+        "mechanism",
+        "pricing_rule",
+        "contract_change",
+        "process_bottleneck",
+        "project_pattern",
+        "inventory_pattern",
+        "capital_cycle",
+        "policy_shift",
+        "technology_shift",
+        "cross_industry_dependency",
+        "narrative",
+        "causal_hypothesis",
+        "anomaly",
+        "failure_dead_end"
+      ]
+    },
+    "claim_scope": {
+      "enum": [
+        "legal_disclosure",
+        "official_statistic",
+        "self_statement",
+        "management_guidance",
+        "market_measurement",
+        "project_status",
+        "policy_text",
+        "third_party_fact",
+        "industry_expectation",
+        "technical_specification",
+        "other"
+      ]
+    },
+    "memory_basis": {
+      "enum": [
+        "remembered_event",
+        "remembered_actor_or_name",
+        "remembered_mechanism",
+        "associative_inference",
+        "mixed"
+      ],
+      "description": "What kind of latent-memory signal produced the lead. This is separate from truth confidence."
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "description": "One atomic unsourced recollection/search proposition, never a verified fact."
+    },
+    "approximate_period": {
+      "type": "array",
+      "prefixItems": [
+        {"type": ["string", "null"], "format": "date"},
+        {"type": ["string", "null"], "format": "date"}
+      ],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "memory_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Self-reported strength of recollection only. It is NOT a probability that the claim is true."
+    },
+    "importance_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "novelty_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "searchability_score": {"type": "number", "minimum": 0, "maximum": 1},
+    "precision_risk": {
+      "enum": ["low", "medium", "high", "unknown"],
+      "description": "Risk that specific names, dates, numbers, ownership or stage details are wrong even if the broad memory is useful."
+    },
+    "entity_resolution_state": {
+      "enum": ["stable", "partially_resolved", "ambiguous", "unresolved"]
+    },
+    "uncertain_fields": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "aliases_or_old_terms": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "why_search_may_miss_it": {
+      "type": ["string", "null"],
+      "description": "Historical-search archaeology hint: old name, ownership change, dead site, failed project, local-language term, repost chain, etc."
+    },
+    "recalled_details": {"type": "object"},
+    "possible_actors": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "suggested_queries": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true,
+      "description": "Optional search-planning hints. May be absent/empty in fragmentary blind recall; fill before delegated evidence search."
+    },
+    "disconfirmation_queries": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true,
+      "description": "Optional falsification-search hints. May be absent/empty at Atlas admission; required by delegated-search readiness."
+    },
+    "suggested_source_types": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true,
+      "description": "Optional source-planning hints, not an Atlas admission prerequisite."
+    },
+    "disconfirmation_source_types": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true,
+      "description": "Optional contradiction-source planning, completed before delegated evidence search when needed."
+    },
+    "satellite_trigger": {
+      "type": ["string", "null"],
+      "description": "If the lead repeatedly points outside the current shard, name a candidate satellite shard instead of expanding the tangent here."
+    },
+    "relations": {
+      "type": "array",
+      "description": "Optional recalled relations. Their absence must not make an otherwise useful lead inadmissible.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["target_ref", "relation_type", "explanation"],
+        "properties": {
+          "target_ref": {"type": "string", "minLength": 1},
+          "relation_type": {
+            "enum": [
+              "associated_with",
+              "possible_cause",
+              "possible_effect",
+              "predecessor",
+              "successor",
+              "search_synonym",
+              "same_episode",
+              "cross_chain_link",
+              "possible_revision"
+            ]
+          },
+          "explanation": {"type": "string"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-005-FMC-EFFECTIVE-SUPPLY-COUNTEREXAMPLE-EVIDENCE-V3",
+  "sources": [
+    {
+      "key": "annualreports-formal-filing",
+      "name": "AnnualReports formal filing redistribution",
+      "publisher_domain": "annualreports.com",
+      "kind": "data_vendor",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "legal_disclosure",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "The complete FMC 2017 Annual Report/Form 10-K PDF is preserved as a recognizable verbatim filing redistribution with issuer and SEC accession identity."
+        },
+        {
+          "claim_scope": "project_status",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "The redistributed annual filing preserves FMC's own lithium-hydroxide capacity, schedule, customer-qualification and commercial-production statements verbatim."
+        }
+      ]
+    },
+    {
+      "key": "fmc-investor-relations",
+      "name": "FMC Corporation investor relations",
+      "publisher_domain": "investors.fmc.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "FMC's own investor-relations release is the direct contemporaneous company statement for reported lithium segment drivers."
+        },
+        {
+          "claim_scope": "project_status",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "The issuer release directly attributes higher volume to the China lithium-hydroxide expansion."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "fmc-2017-annual-report",
+      "vintage_id": "FMC-CHINA-LIOH-2017-ANNUAL-REPORT",
+      "source_key": "annualreports-formal-filing",
+      "retrieval_url": "https://www.annualreports.com/HostedData/AnnualReportArchive/f/NYSE_FMC_2017.PDF",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/37785/000003778518000019/fmc201710k.htm",
+      "external_id": "0000037785-18-000019",
+      "title": "FMC Corporation 2017 Annual Report / Form 10-K",
+      "published_at": "2018-02-28T20:21:58Z",
+      "first_known_at": "2018-02-28T20:21:58Z",
+      "expected_sha256": "89048ed1dfd077464530eac10c74912da313d0fc35c6816dc6f4754f8bf68c7b",
+      "material_path": "fmc-2017-annual-report.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "mode": "github_actions_approved_redistributor_acquisition",
+        "acquisition_run_id": 32572209653,
+        "release_tag": "longcycle-dev-binary-cache",
+        "release_asset": "longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip",
+        "transport_is_not_source_authority": true,
+        "identity_cross_checks": [
+          "FMC Corporation",
+          "2017 Annual Report",
+          "SEC accession 0000037785-18-000019",
+          "SEC accepted 2018-02-28 15:21:58 ET"
+        ],
+        "upstream_announcement": {
+          "issuer": "FMC Corporation",
+          "system": "SEC EDGAR",
+          "external_id": "0000037785-18-000019",
+          "title": "FMC Corporation 2017 Form 10-K",
+          "original_url": "https://www.sec.gov/Archives/edgar/data/37785/000003778518000019/fmc201710k.htm"
+        }
+      }
+    },
+    {
+      "key": "fmc-2018q1-results",
+      "vintage_id": "FMC-CHINA-LIOH-2018Q1-RESULTS",
+      "source_key": "fmc-investor-relations",
+      "retrieval_url": "https://investors.fmc.com/news/news-details/2018/FMC-Corporation-Announces-First-Quarter-2018-Results/default.aspx",
+      "original_source_url": "https://investors.fmc.com/news/news-details/2018/FMC-Corporation-Announces-First-Quarter-2018-Results/default.aspx",
+      "external_id": "2018-05-02-Q1-results",
+      "title": "FMC Corporation Announces First Quarter 2018 Results",
+      "published_at": "2018-05-02T08:30:00Z",
+      "first_known_at": "2018-05-02T08:30:59Z",
+      "expected_sha256": "7d976bdbf477d8e6cde5d5909a285b152d22020c726a30763158dc84f653688f",
+      "expected_visible_text_sha256": "e30f52e9ecf07c10ea35a3e20170c72a812b7aecf27dea61619127160c56d057",
+      "material_path": "fmc-2018q1-results.html",
+      "content_type": "text/html; charset=utf-8",
+      "retrieval_provenance": {
+        "mode": "github_actions_first_party_acquisition",
+        "acquisition_run_id": 32572209653,
+        "release_tag": "longcycle-dev-binary-cache",
+        "release_asset": "longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip",
+        "identity_cross_checks": [
+          "FMC Corporation",
+          "FMC Corporation Announces First Quarter 2018 Results",
+          "issuer investor-relations URL",
+          "PR Newswire issuer feed timestamp 2018-05-02 04:30 ET"
+        ]
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2017-china-hydroxide-9kt-capacity",
+      "document_key": "fmc-2017-annual-report",
+      "page": 9,
+      "excerpt": "our lithium hydroxide production capacity by 90 percent in \n2017 by adding 9,000 metric tons of capacity at a new location \nin China.",
+      "claim_context": {
+        "claim_role": "project_capacity_state",
+        "known_time": {"upper_bound": "2018-02-28T20:21:58Z", "precision": "second", "basis": "SEC Form 10-K accepted timestamp"},
+        "capacity_semantics": {"product": "lithium hydroxide", "location": "China", "increment_metric_tons_per_year": 9000, "source_state": "capacity added"}
+      }
+    },
+    {
+      "fragment_key": "2017-china-hydroxide-ahead-and-qualified",
+      "document_key": "fmc-2017-annual-report",
+      "page": 9,
+      "excerpt": "The expansion was completed ahead of schedule and \nreceived full qualifications by our key customers.",
+      "claim_context": {
+        "claim_role": "project_status",
+        "known_time": {"upper_bound": "2018-02-28T20:21:58Z", "precision": "second", "basis": "SEC Form 10-K accepted timestamp"},
+        "effective_supply_semantics": {"states": ["completed_ahead_of_schedule", "key_customer_qualification_complete"]}
+      }
+    },
+    {
+      "fragment_key": "2017-china-hydroxide-commercial-production",
+      "document_key": "fmc-2017-annual-report",
+      "page": 14,
+      "excerpt": "Commercial sales from this facility began in June, and \nwe had full commercial production for the final four months of 2017.",
+      "claim_context": {
+        "claim_role": "project_status",
+        "known_time": {"upper_bound": "2018-02-28T20:21:58Z", "precision": "second", "basis": "SEC Form 10-K accepted timestamp"},
+        "effective_supply_semantics": {
+          "commercial_sales_start_text": "June 2017",
+          "commercial_sales_start_precision": "month",
+          "full_commercial_production_text": "final four months of 2017",
+          "full_commercial_production_precision": "month_period"
+        }
+      }
+    },
+    {
+      "fragment_key": "2018q1-china-hydroxide-ebitda-driver",
+      "document_key": "fmc-2018q1-results",
+      "excerpt": "Our lithium hydroxide expansion in China and price increases of about 30 percent on hydroxide led to a near doubling of Lithium segment EBITDA year-over-year.",
+      "claim_context": {
+        "claim_role": "management_performance_explanation",
+        "known_time": {"upper_bound": "2018-05-02T08:30:59Z", "precision": "minute", "basis": "PR Newswire issuer-feed publication minute"},
+        "effective_supply_semantics": {"dimension": "commercial_performance_contribution", "caveat": "The statement combines expansion and pricing effects, so it does not independently quantify volume contribution."}
+      }
+    },
+    {
+      "fragment_key": "2018q1-china-hydroxide-higher-volume",
+      "document_key": "fmc-2018q1-results",
+      "excerpt": "Higher volume from debottlenecking projects in Argentina and the hydroxide expansion in China , higher year-over-year prices on all product categories and lower operating costs were the main contributors to growth.",
+      "claim_context": {
+        "claim_role": "production_volume_proxy",
+        "known_time": {"upper_bound": "2018-05-02T08:30:59Z", "precision": "minute", "basis": "PR Newswire issuer-feed publication minute"},
+        "effective_supply_semantics": {"dimension": "realized_volume_contribution", "source_supported_inference": "The China hydroxide expansion contributed to higher reported lithium volume, but this sentence does not isolate its tonnage from Argentina debottlenecking."}
+      }
+    }
+  ],
+  "acceptance": {"required_documents": 2, "required_fragments": 5, "facts_created": 0, "judgments_created": 0}
+}

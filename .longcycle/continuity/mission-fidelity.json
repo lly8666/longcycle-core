@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-mission-fidelity/v1",
+  "purpose": "A semantic calibration rubric for fresh or long-running Agents. It is intentionally not an answer key and must be read only after the Agent has first reconstructed the mission in its own words.",
+  "first_pass_rule": "Read STRATEGIC_COMPASS.md and METHODOLOGY_CORE.md, then independently explain the mission and method without copying headings or quotations. Only after that first-pass synthesis may this contract be used for calibration.",
+  "required_facets": [
+    {
+      "id": "founding_problem",
+      "question": "Can you explain why preserving a long, true, comparable industrial history is more valuable than producing another current report or snapshot?"
+    },
+    {
+      "id": "missing_cognition",
+      "question": "Can you explain why final facts alone create hindsight and why contemporaneous Judgment/Expectation, rationale, conditions and revisions must survive separately from Reality?"
+    },
+    {
+      "id": "unknown_future_replay",
+      "question": "Can you explain what it means to turn an already-known historical future back into the uncertain future it was at that time?"
+    },
+    {
+      "id": "point_in_time",
+      "question": "Can you explain why point-in-time/no-lookahead is a first-principles acceptance condition rather than a technical timestamp detail?"
+    },
+    {
+      "id": "history_as_analysis",
+      "question": "Can you explain under what conditions a sufficiently long history can itself expose risks, opportunities and causal feedback using relatively simple reasoning?"
+    },
+    {
+      "id": "evidence_boundary",
+      "question": "Can you explain why model memory and search are discovery instruments while archived claim-scoped Evidence controls publishable historical truth?"
+    },
+    {
+      "id": "trajectory",
+      "question": "Can you explain why revisions, delays, cancellations, failures, restarts and wrong expectations must remain in the historical trajectory instead of being overwritten by final outcomes?"
+    },
+    {
+      "id": "cross_industry_destination",
+      "question": "Can you explain why any current industry is a proving ground rather than the product mission, and how reusable primitives should be promoted?"
+    },
+    {
+      "id": "researcher_understanding",
+      "question": "Can you explain why Longcycle succeeds only when a researcher can quickly build a defensible industry mental model—value chain, actors, key variables, historical trajectories, contemporaneous disputes, evidence and unknowns—rather than when an Agent merely completes an internal benchmark?"
+    },
+    {
+      "id": "means_vs_ends",
+      "question": "Can you distinguish product progress from tool metrics such as crawler capability, schema elegance, lead count, Agent count, benchmark score or completion rate, lint cleanliness or report volume?"
+    },
+    {
+      "id": "goal_hierarchy",
+      "question": "Can you connect the current atomic task upward through its short-term goal and medium-term capability proof to the terminal mission?"
+    }
+  ],
+  "common_misreadings": [
+    "Reciting Reality / Expectation / Outcome without explaining why all three are necessary.",
+    "Treating a Memory Atlas, crawler, RAG system, database, Agent framework or report generator as the product end state.",
+    "Treating model recollection or repeated web search results as historical evidence.",
+    "Treating the active benchmark industry as a permanent product boundary.",
+    "Optimizing Agent benchmark scores, completion rates or easy coverage while a human researcher still cannot quickly understand the industry's structure, history, disputes and evidence boundaries.",
+    "Treating ambiguity, counterexamples or hard cases as benchmark failures to hide rather than information that may invalidate an abstraction.",
+    "Treating more local technical work as progress when it no longer improves evidence quality, replay, comparability, researcher understanding, a main-path blocker or safe continuity.",
+    "Loading old devlogs or old industries by default because more context feels safer.",
+    "Following a stale TODO without checking live handoff and the task's parent goals."
+  ],
+  "calibration_rule": {
+    "pass": "All required facets can be explained causally in the Agent's own words and none of the common misreadings is present.",
+    "repair": "For any missing or contradicted facet, reread only the relevant Strategy/Method Core section, revise the internal mission model, and re-check before substantive work.",
+    "persistence": "Do not persist private chain-of-thought. Persist only concise decisions, alignment conclusions, task hierarchy and reproducible constraints when they materially change project state."
+  }
+}

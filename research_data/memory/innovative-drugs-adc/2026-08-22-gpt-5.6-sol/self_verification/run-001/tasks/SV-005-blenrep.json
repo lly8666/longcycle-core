@@ -1,0 +1,82 @@
+{
+  "schema_version": "longcycle-self-verification-task/v1",
+  "task_id": "SV-005",
+  "rank": 5,
+  "trajectory": "belantamab mafodotin / BLENREP / monotherapy withdrawal -> combination-regimen redevelopment",
+  "blind_lead_ids": ["ASSET-TRIAL-007", "REG-COMM-003", "FAILURE-REV-003", "FAILURE-REV-012"],
+  "authority_class": "post_seal_search_discovery_not_evidence",
+  "refined_summary": "Post-seal official-source discovery confirms the core memory arc but materially sharpens its state transitions. FDA granted BLENREP accelerated U.S. approval on 2020-08-05 for heavily pretreated relapsed/refractory multiple myeloma, based on response rate/duration from DREAMM-2; continued approval was contingent on confirmatory clinical benefit. The same FDA approval vintage already carried a boxed ocular-toxicity warning, required ophthalmic examinations and a BLENREP REMS, so keratopathy must not be narrated as a later surprise. On 2022-11-07 GSK reported that confirmatory DREAMM-3, a head-to-head superiority trial of belantamab monotherapy versus PomDex, did not meet its primary PFS endpoint (HR 1.03, 95% CI 0.72-1.47), while also stating that other DREAMM combination trials would continue. FDA and GSK had met on 2022-11-02; the later Federal Register notice records that GSK requested withdrawal/revocation in writing on 2022-11-18. GSK publicly announced on 2022-11-22 that it had initiated the U.S. withdrawal process at FDA's request while still stating that it believed the totality-of-data benefit-risk remained favourable and that it would continue the DREAMM programme and work with FDA on a path forward. FDA's biologics-license revocation became effective 2023-02-06; the Federal Register notice is dated 2023-03-20 and was published 2023-03-30, so these procedural dates must remain distinct. The development branch then changed regimen identity rather than simply reversing the monotherapy failure: DREAMM-7 reported a positive BVd-vs-DVd PFS result on 2024-02-05 and DREAMM-8 reported a positive BPd-vs-PVd PFS result on 2024-03-07. FDA later approved BLENREP with bortezomib+dexamethasone on 2025-10-23 for a different, earlier-line U.S. RRMM setting. This trajectory therefore separates monotherapy regulatory failure, persistent ocular burden, contemporaneous post-failure development Judgment, combination-regimen success and later regulatory re-entry.",
+  "blind_memory_discrepancies": [
+    "The memory lead's generic 'withdrawal after DREAMM-3' is too coarse. Source discovery distinguishes FDA/GSK discussion on 2022-11-02, GSK's written withdrawal request on 2022-11-18, GSK's public withdrawal-process announcement on 2022-11-22, FDA revocation effective 2023-02-06, and Federal Register notice dated 2023-03-20/published 2023-03-30.",
+    "Later revival is not BLENREP monotherapy returning unchanged. DREAMM-7 and DREAMM-8 are distinct combination regimens, and the 2025 U.S. approval is for BLENREP with bortezomib+dexamethasone in a different treatment-line scope."
+  ],
+  "candidate_urls": [
+    "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-granted-accelerated-approval-belantamab-mafodotin-blmf-multiple-myeloma",
+    "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-dreamm-3-phase-iii-trial-for-blenrep/",
+    "https://www.gsk.com/en-gb/media/press-releases/gsk-provides-update-on-blenrep-us-marketing-authorisation/",
+    "https://public-inspection.federalregister.gov/2023-06576.pdf",
+    "https://www.fda.gov/drugs/resources-information-approved-drugs/withdrawn-cancer-accelerated-approvals",
+    "https://www.gsk.com/en-gb/media/press-releases/dreamm-7-phase-iii-trial-shows-pfs-improvement-and-strong-os-trend-for-blenrep-combo-versus-soc-combo-in-multiple-myeloma/",
+    "https://www.gsk.com/en-gb/media/press-releases/gsk-announces-positive-results-from-dreamm-8-phase-iii-trial-for-blenrep-versus-standard-of-care-combination-in-relapsedrefractory-multiple-myeloma/",
+    "https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-belantamab-mafodotin-blmf-relapsed-or-refractory-multiple-myeloma"
+  ],
+  "possible_primary_source_types": [
+    "FDA initial accelerated-approval page and historical prescribing information",
+    "GSK contemporaneous DREAMM-3 result and U.S. withdrawal-process releases",
+    "FDA/Federal Register biologics-license revocation record",
+    "GSK contemporaneous DREAMM-7 and DREAMM-8 readout releases",
+    "FDA later combination-regimen approval record",
+    "ClinicalTrials.gov records for trial identity/design after snapshot-vintage checks"
+  ],
+  "source_origin_notes": [
+    "FDA approval, accelerated-approval withdrawal table and Federal Register revocation record are regulator-origin and authoritative for U.S. regulatory state within their exact scope.",
+    "GSK releases are primary participant records for trial top-line results, management interpretation and development commitment, but they do not replace FDA for the legal status of approval/revocation.",
+    "The 2022 GSK withdrawal release says the process was initiated on 2022-11-22; the Federal Register later records a written GSK withdrawal request dated 2022-11-18 and an FDA revocation effective 2023-02-06. Preserve each source-supported procedural event instead of selecting one generic withdrawal date.",
+    "DREAMM-7 BVd and DREAMM-8 BPd are regimen-level objects. Later efficacy must not be projected as belantamab-monotherapy efficacy or as direct reversal of DREAMM-3.",
+    "Current FDA pages may include later update text about withdrawal or reapproval. When replaying earlier vintages, use the source's explicit historical event dates and archive historical label/action material where needed rather than treating current page retrieval time as historical knowledge time."
+  ],
+  "refined_queries": [
+    "FDA BLENREP 2020 accelerated approval label BLA 761158 ocular boxed warning REMS",
+    "DREAMM-3 2022 primary PFS HR 1.03 PomDex belantamab",
+    "BLENREP November 18 2022 withdrawal request February 6 2023 revocation BLA 761158",
+    "BLENREP historical prescribing information 2020 keratopathy ophthalmic exams REMS",
+    "DREAMM-7 February 2024 BVd DVd PFS belantamab regimen",
+    "DREAMM-8 March 2024 BPd PVd PFS belantamab regimen",
+    "FDA October 23 2025 BLENREP bortezomib dexamethasone approval"
+  ],
+  "what_counts_as_support": [
+    "Regulator-origin material establishing the exact 2020 accelerated-approval indication, evidence basis, confirmatory condition and contemporaneous ocular-safety state.",
+    "A contemporaneous 2022 DREAMM-3 source establishing the superiority design, primary PFS endpoint, result and what was known before later combination success.",
+    "Regulator/legal records distinguishing written withdrawal request, effective BLA revocation and notice/publication dates.",
+    "Contemporaneous GSK sources showing the post-DREAMM-3 development Judgment before DREAMM-7/8 results were known.",
+    "Regimen-specific DREAMM-7/8 and regulator sources establishing later combination outcomes and any later approval without attributing them to monotherapy."
+  ],
+  "what_counts_as_contradiction": [
+    "Evidence that DREAMM-3 met its prespecified primary PFS superiority endpoint or was not the relevant confirmatory trial.",
+    "Evidence that the U.S. BLA remained legally active after the source-supported revocation effective date.",
+    "Evidence that ocular toxicity/keratopathy and ophthalmic monitoring were not already material at the initial U.S. approval vintage.",
+    "Evidence that DREAMM-7/8 evaluated the same monotherapy regimen/population as DREAMM-3; if regimen or line differs, keep branch identity explicit.",
+    "Evidence that the later U.S. approval used a materially different regimen or indication than remembered; revise the trajectory rather than treating re-entry as generic reapproval."
+  ],
+  "candidate_judgments": [
+    {
+      "source_vintage": "2022-11-22 GSK withdrawal-process announcement",
+      "speaker": "GSK / Sabine Luik, Chief Medical Officer",
+      "candidate": "After DREAMM-3 failure and initiation of U.S. withdrawal, GSK publicly maintained that the totality-of-data benefit-risk remained favourable and committed to continue DREAMM combination development and work with FDA on a path forward.",
+      "hindsight_guard": "This Judgment predates the positive DREAMM-7 and DREAMM-8 readouts and must exclude those later outcomes.",
+      "projection_status": "candidate_until_claim_scoped_evidence_is_archived"
+    }
+  ],
+  "candidate_outcome_relations": [
+    "DREAMM-3 is directly relevant to the accelerated-approval confirmatory condition, but do not convert that regulatory condition into an investor/company Judgment unless a speaker actually stated one.",
+    "DREAMM-7/8 positive combination readouts are later related milestones for the November-2022 development/path-forward Judgment, not direct realization of monotherapy benefit.",
+    "The 2025 U.S. combination approval is a later regulatory milestone with different regimen and line-of-therapy identity; it must not rewrite the 2020 monotherapy approval or 2023 revocation."
+  ],
+  "unresolved_questions": [
+    "Which exact historical FDA label/action-letter bytes best preserve the 2020 ocular warning, REMS and accelerated-approval condition without relying only on a current FDA summary page?",
+    "Should the November-2022 GSK statement be represented as one development-commitment Judgment plus a separate benefit-risk thesis, or does claim-scoped Evidence support only one of those interpretations?",
+    "What exact trial-registry historical snapshots are available for DREAMM-3/7/8, and can current registry snapshots be used only for identity without backdating mutable fields?",
+    "Which later regulator action is the cleanest bounded endpoint for the first replay: DREAMM-7/8 top-line success, a non-U.S. combination approval, or the 2025 U.S. BVd approval?"
+  ],
+  "delegated_evidence_instructions": "Archive claim-scoped originals for 2020 FDA approval/safety state, 2022-11-07 DREAMM-3 result, 2022-11-18/22 withdrawal request/process, 2023-02-06 effective BLA revocation, the 2022 post-failure GSK development Judgment, DREAMM-7 and DREAMM-8 regimen-specific positive readouts, and a later regulator combination approval only if needed for Outcome closure. Build point-in-time snapshots at initial approval, post-DREAMM-3/pre-withdrawal, post-revocation/pre-combination-readout, positive-combination-readout, and later regulatory re-entry. Preserve monotherapy versus BVd/BPd identity, U.S. jurisdiction, ocular-safety vintage and known-time. Search discovery is not Evidence; raw PDFs/labels requiring source bytes should use the existing Actions -> Release acquisition lane, while readable webpages should follow the current faithful visible-text capture -> bounded local DB -> Drive policy."
+}

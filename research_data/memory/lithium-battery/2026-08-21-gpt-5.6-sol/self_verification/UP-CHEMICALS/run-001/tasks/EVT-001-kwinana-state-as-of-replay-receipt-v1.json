@@ -1,0 +1,92 @@
+{
+  "schema_version": "longcycle-grounded-state-as-of-replay-receipt/v1",
+  "task_id": "EVT-001-KWINANA-STATE-AS-OF-V1",
+  "subject": {
+    "entity_id": "02c2e600-9be2-5c09-95ab-b532249df05b",
+    "canonical_name": "Kwinana Train 1 lithium hydroxide plant"
+  },
+  "purpose": "Durable receipt proving that a source-supported state can be canonical Reality when it is true as of a source-supported observation date but its onset is unknown, without converting observation time or known time into fabricated valid_from.",
+  "implementation": {
+    "state_as_of_substantive_sha": "a25120ab8706f5359b4da5e7ff89dea77d8942d4",
+    "canonical_observation_migration": "0024_canonical_observation_time.sql",
+    "reconciler_evaluator": "rule_reconciler/2.1.0",
+    "generic_acceptance_contract": [
+      "valid_time_kind is unknown",
+      "valid_from and valid_to are absent",
+      "valid_time_precision is unknown",
+      "observed_at is explicit and source-supported",
+      "observed_at_precision is explicit",
+      "observed_at is not later than known_at",
+      "the candidate still passes the normal conflict, impact and quality gates"
+    ]
+  },
+  "grounded_fact": {
+    "fact_key": "2022-train1-continuous-production-capability-as-of",
+    "predicate_code": "project.continuous_production_capability",
+    "value_text": "had continuous-production operating capability",
+    "source_fragment_key": "2022-continuous-production-capability",
+    "evidence_fragment_id": "fd56e1f7-a9d4-5f24-bb3b-eeed1e5ae0f6",
+    "valid_time": {
+      "kind": "unknown",
+      "start": null,
+      "end": null,
+      "precision": "unknown"
+    },
+    "observed_time": {
+      "kind": "instant",
+      "at": "2022-12-03T00:00:00Z",
+      "precision": "day",
+      "source_text": "as of 2022-12-03"
+    },
+    "known_at": "2022-12-03T23:59:59Z",
+    "canonical_publication_status": "trusted"
+  },
+  "fixed_sha_verification": {
+    "run_id": 32559454857,
+    "verified_sha": "a25120ab8706f5359b4da5e7ff89dea77d8942d4",
+    "result": "pass",
+    "postgres_version": "17.11",
+    "migrations_through": "0024",
+    "mypy": "success: no issues found in 74 source files",
+    "pytest": "220 passed",
+    "replay_counts": {
+      "2021-12-31T23:59:59Z": {
+        "reality": 0,
+        "judgments": 4,
+        "outcomes": 0
+      },
+      "2022-12-02T23:59:59Z": {
+        "reality": 0,
+        "judgments": 4,
+        "outcomes": 0
+      },
+      "2022-12-03T23:59:59Z": {
+        "reality": 2,
+        "judgments": 5,
+        "outcomes": 1
+      }
+    },
+    "verified_invariants": {
+      "unknown_onset_has_no_valid_bounds": true,
+      "observation_day_precision_preserved": true,
+      "known_time_remains_separate": true,
+      "no_lookahead_before_disclosure": true,
+      "existing_commercial_reality_unchanged": true,
+      "existing_related_outcome_unchanged": true,
+      "typed_duckdb_round_trip": true
+    },
+    "artifact_sha256": {
+      "kwinana-evidence-execution.json": "46ae4225f13ed4178dadb39265087f878fb88c51380c2ad6ddcc79662ad4b20f",
+      "kwinana-commercial-reality.json": "dc9fc246266f747c4a88b93fe5bb0b020d4404abd87e74e2f3bce1b8adc4df4e",
+      "kwinana-state-as-of-reality.json": "386b003311bd1ba7adb6956a97c78065c5c59dad1e7a905ae30ebfc6c3ce70cb",
+      "kwinana-related-outcome.json": "17d3f217fa617bbff5923f853ff139d5789184e1fce1639e2b45bf02d336fc75",
+      "kwinana-state-as-of-memory.duckdb": "722186ce159b8b05692482028e0bfe903d5b8f0b0d1414efefb379f066237200",
+      "kwinana-state-as-of-replay-proof.json": "0c3dfaccde3ebe2b3185e11674d434965b827a5f25f5e2684d13d586cb6f0096"
+    }
+  },
+  "regression_contract": {
+    "commercial_reality": "project.commercial_production_capability remains a period Reality effective 2022-11-30 and known 2022-12-03",
+    "outcome": "the 2021 full-line-operation Judgment versus 2022 commercial-production Reality remains related_milestone, indeterminate, not_comparable, with no synthetic timing delta"
+  },
+  "authority": "repository_receipt_from_fixed_sha_runtime_verification"
+}

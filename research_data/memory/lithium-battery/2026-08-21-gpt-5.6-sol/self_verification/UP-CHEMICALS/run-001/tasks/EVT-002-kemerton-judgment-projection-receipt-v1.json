@@ -1,0 +1,90 @@
+{
+  "schema_version": "longcycle-grounded-judgment-projection-receipt/v1",
+  "task_id": "EVT-002-KEMERTON-JUDGMENTS-V1",
+  "source_evidence_task_id": "EVT-002-KEMERTON-EVIDENCE-V2",
+  "source_database": {
+    "kind": "portable_evidence_duckdb",
+    "sha256": "98f01c54bcb5b3ded7c8e28974182f7aae8f6d1c32308b887df1091584a02a7e",
+    "validation_mode": "sandbox_read_only"
+  },
+  "scope": {
+    "projection_spec": "EVT-002-kemerton-judgment-projection-v1.json",
+    "projection_semantics": "Only grounded management_expectation and management_expectation_revision EvidenceFragments were eligible. Contract schedule and later outcome evidence were excluded from Judgment promotion.",
+    "postgres_persistence_completed": false,
+    "note": "This receipt proves deterministic projection against the real portable evidence pack. It does not claim that these seven real Kemerton judgments have already been inserted into PostgreSQL."
+  },
+  "judgments": [
+    {
+      "judgment_key": "2019-staged-commissioning-2021",
+      "judgment_id": "c59e5bd6-77e6-5681-9686-2d9d7f463272",
+      "evidence_fragment_id": "238b8dc8-584f-5200-a8e2-1d4c613a088f",
+      "first_known_at": "2019-01-02T23:59:59+00:00",
+      "target_precision": "year",
+      "target_text": "during the course of 2021"
+    },
+    {
+      "judgment_key": "2020-construction-completion-late-2021",
+      "judgment_id": "0b883828-5d8e-5077-9ef7-382e5577ebbc",
+      "evidence_fragment_id": "de1e2d9c-a394-5cc8-b52d-b5510b0f180f",
+      "first_known_at": "2021-02-19T16:37:48+00:00",
+      "target_precision": "approximate",
+      "target_text": "late 2021",
+      "target_from": null,
+      "target_to": null
+    },
+    {
+      "judgment_key": "2020-producing-sales-2022",
+      "judgment_id": "5b1a5b71-b570-5404-8de3-f08ec989e196",
+      "evidence_fragment_id": "b6e4d23e-f071-52b4-9f38-11194db37090",
+      "first_known_at": "2021-02-19T16:37:48+00:00",
+      "target_precision": "year",
+      "target_text": "in 2022"
+    },
+    {
+      "judgment_key": "2021q2-kemerton2-completion-by-q1-2022",
+      "judgment_id": "e6139a71-5f08-5539-8fff-f25365fcecf2",
+      "evidence_fragment_id": "7b94e96a-d214-521e-ab66-d43977cc3deb",
+      "first_known_at": "2021-08-04T16:25:25+00:00",
+      "target_precision": "quarter",
+      "target_text": "by the end of the first quarter 2022",
+      "target_from": null,
+      "target_to": "2022-04-01T00:00:00+00:00"
+    },
+    {
+      "judgment_key": "2021q2-commercial-production-2022",
+      "judgment_id": "0dc2cecb-a812-54a4-839f-4a2c04146928",
+      "evidence_fragment_id": "b486a1d4-c002-5b0e-a034-5e6453067048",
+      "first_known_at": "2021-08-04T16:25:25+00:00",
+      "target_precision": "year",
+      "target_text": "in 2022"
+    },
+    {
+      "judgment_key": "2022q1-kemerton1-first-product-may",
+      "judgment_id": "030ae747-fab6-5ca7-98b3-728d3c05d8b2",
+      "evidence_fragment_id": "ead141b5-4607-53db-b7cc-60f4dac691b8",
+      "first_known_at": "2022-05-04T16:48:41+00:00",
+      "target_precision": "month",
+      "target_text": "May 2022"
+    },
+    {
+      "judgment_key": "2022q1-kemerton2-mechanical-completion-h2",
+      "judgment_id": "d9294a3b-c7f6-5668-8bb9-1f1dd8c6c8fc",
+      "evidence_fragment_id": "4848b977-f84b-5627-9583-a637a1fe8e03",
+      "first_known_at": "2022-05-04T16:48:41+00:00",
+      "target_precision": "half_year",
+      "target_text": "the second half of 2022"
+    }
+  ],
+  "verification": {
+    "judgment_count": 7,
+    "statement_evidence_count": 7,
+    "claim_roles": [
+      "management_expectation",
+      "management_expectation_revision"
+    ],
+    "outcome_evidence_used_as_judgment": false,
+    "all_first_known_times_derived_from_cited_evidence": true,
+    "target_precision_preserved": true,
+    "fake_exact_date_for_late_2021": false
+  }
+}

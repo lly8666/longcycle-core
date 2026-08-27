@@ -1,0 +1,254 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-004-CONTRACT-VINTAGE-MARGIN-EVIDENCE-V2",
+  "sources": [
+    {
+      "key": "annualreports-formal-filing",
+      "name": "AnnualReports formal filing redistribution",
+      "publisher_domain": "annualreports.com",
+      "kind": "data_vendor",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "legal_disclosure",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "Complete listed-company Form 10-K PDF is preserved as a recognizable verbatim filing redistribution with issuer and SEC accession identity."
+        },
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "The redistributed filing preserves Livent's own contract, cost-pass-through and inventory-accounting disclosures verbatim."
+        }
+      ]
+    },
+    {
+      "key": "prnewswire-issuer-release",
+      "name": "PR Newswire issuer-supplied release redistribution",
+      "publisher_domain": "prnewswire.com",
+      "kind": "news",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "Issuer-supplied Livent results release is redistributed with issuer, publication time and release identity preserved."
+        },
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "The release preserves management's contemporaneous inventory-carry decision and stated customer-commitment rationale."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "livent-2019-10k",
+      "vintage_id": "LIVENT-CONTRACT-INVENTORY-2019-10K",
+      "source_key": "annualreports-formal-filing",
+      "retrieval_url": "https://www.annualreports.com/HostedData/AnnualReportArchive/l/NYSE_LTHM_2019.pdf",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm",
+      "external_id": "0001742924-20-000012",
+      "title": "Livent Corporation 2019 Form 10-K",
+      "published_at": "2020-02-28T20:33:00Z",
+      "first_known_at": "2020-02-28T20:33:59Z",
+      "expected_sha256": "bef71d35e435a41ed0143800c26d156ebd588e7d11a603dfec23a4dd9f5b6629",
+      "material_path": "livent-2019-10k-annualreports.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "mode": "github_actions_approved_redistributor_acquisition",
+        "acquisition_run_id": 32570106526,
+        "artifact_id": 9475107860,
+        "transport_is_not_source_authority": true,
+        "identity_cross_checks": [
+          "Livent Corporation",
+          "Form 10-K",
+          "SEC accession 0001742924-20-000012",
+          "fiscal year ended 2019-12-31",
+          "filing minute 2020-02-28 15:33 ET"
+        ],
+        "upstream_announcement": {
+          "issuer": "Livent Corporation",
+          "system": "SEC EDGAR",
+          "external_id": "0001742924-20-000012",
+          "title": "Livent Corporation 2019 Form 10-K",
+          "original_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292420000012/livent201910-k.htm"
+        }
+      }
+    },
+    {
+      "key": "livent-2019q3-results-release",
+      "vintage_id": "LIVENT-MARGIN-INVENTORY-2019Q3",
+      "source_key": "prnewswire-issuer-release",
+      "retrieval_url": "https://www.prnewswire.com/news-releases/livent-releases-third-quarter-2019-results-300952280.html",
+      "original_source_url": "https://ir.arcadiumlithium.com/investors/news/news-details/2019/Livent-Releases-Third-Quarter-2019-Results-11-05-2019/",
+      "external_id": "300952280",
+      "title": "Livent Releases Third Quarter 2019 Results",
+      "published_at": "2019-11-05T22:00:00Z",
+      "first_known_at": "2019-11-05T22:00:59Z",
+      "expected_sha256": "9d8687f57f1a7577a94a7e32e1943686ce180ebba2562e5d51e9b8afc5bd1efa",
+      "material_path": "livent-2019q3-prnewswire.html",
+      "content_type": "text/html; charset=UTF-8",
+      "retrieval_provenance": {
+        "mode": "github_actions_approved_redistributor_acquisition",
+        "acquisition_run_id": 32570106526,
+        "artifact_id": 9475107860,
+        "transport_is_not_source_authority": true,
+        "identity_cross_checks": [
+          "Livent Corporation",
+          "PR Newswire release 300952280",
+          "published 2019-11-05 17:00 ET",
+          "issuer investor-relations archive carries the same titled release"
+        ],
+        "upstream_announcement": {
+          "issuer": "Livent Corporation",
+          "system": "Livent issuer results release",
+          "external_id": "2019-11-05-Q3-results",
+          "title": "Livent Releases Third Quarter 2019 Results",
+          "original_url": "https://ir.arcadiumlithium.com/investors/news/news-details/2019/Livent-Releases-Third-Quarter-2019-Results-11-05-2019/"
+        }
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2019-contract-fixed-formula-pricing",
+      "document_key": "livent-2019-10k",
+      "page": 22,
+      "excerpt": "We enter into long-term contracts for most of our products and these contracts are often at fixed or formula-based prices",
+      "claim_context": {
+        "claim_role": "commercial_contract_structure",
+        "known_time": {
+          "upper_bound": "2020-02-28T20:33:59Z",
+          "precision": "minute",
+          "basis": "Form 10-K filing minute cross-checked against filing-index redistribution"
+        },
+        "margin_semantics": {
+          "dimension": "product_price_vintage",
+          "implication": "realized product price may follow contract terms rather than same-day spot price"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019-contract-cost-pass-through-lag",
+      "document_key": "livent-2019-10k",
+      "page": 22,
+      "excerpt": "do not permit us to pass on increased costs in sale prices immediately or at all.",
+      "claim_context": {
+        "claim_role": "margin_transmission_mechanism",
+        "known_time": {
+          "upper_bound": "2020-02-28T20:33:59Z",
+          "precision": "minute",
+          "basis": "Form 10-K filing minute cross-checked against filing-index redistribution"
+        },
+        "margin_semantics": {
+          "dimension": "cost_pass_through_timing",
+          "implication": "input-cost changes and realized selling prices need not share one vintage"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019-fifo-accounting-change",
+      "document_key": "livent-2019-10k",
+      "page": 62,
+      "excerpt": "On October 1, 2019, the Company elected to change its method of valuing its domestic inventories, excluding materials and supplies, to the first-in, first-out (\"FIFO\") method",
+      "claim_context": {
+        "claim_role": "inventory_accounting_policy",
+        "known_time": {
+          "upper_bound": "2020-02-28T20:33:59Z",
+          "precision": "minute",
+          "basis": "Form 10-K filing minute cross-checked against filing-index redistribution"
+        },
+        "effective_time": {
+          "from": "2019-10-01T00:00:00Z",
+          "precision": "day",
+          "source_text": "On October 1, 2019"
+        },
+        "margin_semantics": {
+          "dimension": "inventory_cost_vintage",
+          "implication": "reported cost of sales depends on inventory accounting and inventory acquisition/production vintage"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019-fifo-revenue-cost-matching-rationale",
+      "document_key": "livent-2019-10k",
+      "page": 62,
+      "excerpt": "the FIFO basis improves matching of cost of sales with the related revenues.",
+      "claim_context": {
+        "claim_role": "accounting_matching_rationale",
+        "known_time": {
+          "upper_bound": "2020-02-28T20:33:59Z",
+          "precision": "minute",
+          "basis": "Form 10-K filing minute cross-checked against filing-index redistribution"
+        },
+        "margin_semantics": {
+          "dimension": "revenue_cost_recognition_matching",
+          "implication": "realized margin requires matching recognized revenue with the associated inventory cost rather than contemporaneous spot prices"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019q3-ebitda-mix-feedstock-cost-driver",
+      "document_key": "livent-2019q3-results-release",
+      "excerpt": "Adjusted EBITDA and adjusted earnings per share were both in-line with the prior quarter and guidance ranges, reflecting favorable product / customer mix and lower costs from sourcing third-party carbonate.",
+      "claim_context": {
+        "claim_role": "management_performance_explanation",
+        "known_time": {
+          "upper_bound": "2019-11-05T22:00:59Z",
+          "precision": "minute",
+          "basis": "PR Newswire issuer-release publication minute"
+        },
+        "margin_semantics": {
+          "dimensions": ["product_customer_mix", "third_party_feedstock_cost"],
+          "implication": "reported profitability depended on realized mix and sourced feedstock cost, not a single benchmark spread"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019q3-hydroxide-inventory-carry-plan",
+      "document_key": "livent-2019q3-results-release",
+      "excerpt": "Livent has revised its fourth quarter and full-year 2019 guidance to align with its decision to carry up to 4,000 metric tons of hydroxide inventory into 2020 in order to meet higher customer commitments.",
+      "claim_context": {
+        "claim_role": "management_commitment",
+        "known_time": {
+          "upper_bound": "2019-11-05T22:00:59Z",
+          "precision": "minute",
+          "basis": "PR Newswire issuer-release publication minute"
+        },
+        "inventory_semantics": {
+          "product": "lithium hydroxide",
+          "quantity_upper_bound_metric_tons": 4000,
+          "target_text": "into 2020",
+          "reason": "meet higher customer commitments"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019q3-higher-customer-commitments-rationale",
+      "document_key": "livent-2019q3-results-release",
+      "excerpt": "in order to meet higher customer commitments.",
+      "claim_context": {
+        "claim_role": "judgment_rationale",
+        "known_time": {
+          "upper_bound": "2019-11-05T22:00:59Z",
+          "precision": "minute",
+          "basis": "PR Newswire issuer-release publication minute"
+        },
+        "mechanism": "higher customer commitments motivated deliberate hydroxide inventory carry into 2020"
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 2,
+    "required_fragments": 7,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

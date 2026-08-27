@@ -1,0 +1,168 @@
+{
+  "aliases": [
+    "memory campaign",
+    "blind recall",
+    "memory atlas",
+    "self verification",
+    "verification depth",
+    "fragmentary historical recall",
+    "research open state",
+    "memory disagreement",
+    "research hypothesis",
+    "coverage gap",
+    "model judgment",
+    "research analysis",
+    "current research workspace"
+  ],
+  "entrypoints": [
+    {
+      "contains": "def build_recall_pass_prompt(",
+      "description": "Memory campaign application primitives own blind/search separation and bounded saturation/depth rules.",
+      "kind": "application",
+      "path": "src/longcycle/application/memory_campaign.py"
+    },
+    {
+      "contains": "class CurrentResearchOpenStateReader(Protocol):",
+      "description": "Typed reader exposes current Memory disagreement, research-only hypothesis and model-memory coverage without promoting them into historical truth.",
+      "kind": "port",
+      "path": "src/longcycle/ports/open_states.py"
+    },
+    {
+      "contains": "def model_analysis_policy(",
+      "description": "Researcher interpretation explicitly permits labelled MODEL/JUDGMENT analysis while forbidding canonical Reality, membership-truth or historical-time promotion.",
+      "kind": "application",
+      "path": "src/longcycle/application/researcher_interpretation.py"
+    }
+  ],
+  "extension_seams": [
+    "Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.",
+    "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite.",
+    "Expose current research-only disagreement/hypothesis/coverage through typed readers while preserving its non-Evidence authority class.",
+    "Use research-only hypotheses for explicitly labelled analytical judgments such as causality, participant importance or ambiguous value-chain role when reasoning/context/confidence remain visible and the result is not promoted to canonical truth.",
+    "Show current research-only analysis by default in a present-day research workspace while retaining an explicit historical-only mode and never injecting the overlay into historical replay."
+  ],
+  "guards": [
+    {
+      "contains": "instead of fabricating precision",
+      "description": "Blind-recall prompt regression preserves fragmentary memory and approximate periods instead of rewarding exact-looking dates.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_fragmentary_recall_can_keep_an_open_ended_approximate_period",
+      "description": "Typed memory ingest accepts open-ended approximate periods while keeping precision risk explicit.",
+      "kind": "test",
+      "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_fragmentary_lead_may_omit_search_plan_fields_entirely",
+      "description": "Memory Atlas admission preserves useful fragmentary recall even when delegated-search planning fields are not yet available.",
+      "kind": "test",
+      "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_incomplete_search_plan_fails_at_delegation_boundary_not_atlas_admission",
+      "description": "Search-plan completeness remains fail-closed at delegated evidence-search readiness rather than deleting an admissible Memory Lead.",
+      "kind": "test",
+      "path": "tests/test_memory_ingest.py"
+    },
+    {
+      "contains": "test_unresolved_search_cannot_claim_exhaustion_before_minimum_depth",
+      "description": "An unresolved historical verification may not claim exhaustive stopping until the full minimum query-family/source-type/primary/reverse/citation depth is satisfied.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_authoritative_content_can_resolve_claim_without_search_quota",
+      "description": "Claim-scoped authoritative content may resolve a claim without mechanically satisfying unresolved-exhaustion query/source-count quotas.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_high_impact_resolved_claim_still_requires_reverse_check",
+      "description": "High-impact resolved claims retain the configured reverse-query guard even when generic unresolved-exhaustion depth is not required.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_model_analysis_policy_allows_analysis_but_never_truth_promotion",
+      "description": "Researcher interpretation allows useful MODEL/JUDGMENT analysis while forbidding canonical truth, membership or historical-time promotion.",
+      "kind": "test",
+      "path": "tests/test_researcher_interpretation.py"
+    },
+    {
+      "contains": "test_cli_defaults_to_explicit_plus_current_mode_with_historical_only_opt_out",
+      "description": "Product-facing current workspace defaults to research analysis while preserving an explicit historical-only opt-out.",
+      "kind": "test",
+      "path": "tests/test_research_workspace_policy.py"
+    },
+    {
+      "contains": "POSTGRES_RESEARCHER_OPEN_STATES_WORKSPACE_DEFAULT_PASS",
+      "description": "PostgreSQL smoke proves the unflagged current workspace exposes research-only disagreement/hypothesis while historical-only remains explicit and non-backdated.",
+      "kind": "runtime",
+      "path": "scripts/smoke_postgres_open_states_workspace.py"
+    }
+  ],
+  "id": "CAP-0006",
+  "maturity": "stable",
+  "non_goals": [
+    "Publishing Memory Leads, model judgments or research hypotheses as Fact/Judgment/Reality.",
+    "Treating search not-found as contradiction.",
+    "Presenting current research disagreement/hypothesis/model-memory coverage state as historical market knowledge.",
+    "Injecting today's research overlay into historical replay merely because the current workspace shows it by default.",
+    "Treating model-memory coverage cells as proof that the archive or real world lacks an event.",
+    "Forcing fragmentary recollection into exact dates or dropping useful leads because their time is approximate.",
+    "Requiring a complete positive/negative query and source plan before preserving an otherwise useful unsourced Memory Lead; planning completeness belongs to delegated-search readiness.",
+    "Allowing an unresolved historical verification to declare search exhaustion before the required minimum query-family/source-type/primary/reverse/citation depth.",
+    "Turning unresolved-exhaustion minimum depth into a corroboration or search-count quota after claim-scoped authoritative content has directly resolved the claim.",
+    "Hiding useful analytical hypotheses merely because they are not source truth; keep them visible with an explicit research-only/model label instead."
+  ],
+  "owned_semantics": [
+    "memory.blind_recall_isolation",
+    "memory.fragmentary_temporal_recall",
+    "memory.campaign_saturation_and_seal",
+    "memory.post_seal_verification_depth",
+    "memory.current_disagreement_hypothesis_coverage_state",
+    "memory.research_only_model_judgment_analysis",
+    "memory.current_workspace_default_visibility"
+  ],
+  "purpose": "Own blind memory-exhaustion, sealing, post-seal verification and explicitly research-only state around Memory Leads: disagreement cases, hypothesis assessments, model judgments and model-memory coverage. These states guide research and may carry useful labelled analysis such as causality, participant importance or ambiguous role, but remain below Evidence authority, never create canonical truth and are never backdated. Historical verification retains a hard minimum-depth stop gate to prevent model self-declared search completeness. A present-day research workspace may expose this lane by default; historical replay remains a separate no-lookahead surface.",
+  "revisit_when": "Only replace if blind recall, approximate lead preservation, immutable seal, calibrated unresolved-exhaustion depth, current research uncertainty, useful labelled model analysis, current-workspace visibility and Evidence-final authority remain auditable and append-only.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/memory_campaign.py",
+    "src/longcycle/application/memory_ingest.py",
+    "src/longcycle/application/memory_audit.py",
+    "src/longcycle/application/memory_history.py",
+    "src/longcycle/application/researcher_interpretation.py",
+    "src/longcycle/domain/open_states.py",
+    "src/longcycle/ports/open_states.py",
+    "src/longcycle/adapters/storage/postgres_open_states.py",
+    "migrations/0014_memory_leads_and_authority.sql",
+    "migrations/0015_memory_campaigns_and_model_refresh.sql",
+    "migrations/0017_memory_hypothesis_assessments.sql",
+    "tests/test_memory_campaign.py",
+    "tests/test_memory_ingest.py",
+    "tests/test_researcher_interpretation.py",
+    "tests/test_open_state_view.py",
+    "docs/research/**memory**"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "memory",
+    "blind-recall",
+    "approximate-time",
+    "uncertainty",
+    "seal",
+    "saturation",
+    "self-verification",
+    "research-only",
+    "model-judgment",
+    "current-workspace",
+    "analysis",
+    "coverage-gap",
+    "disagreement"
+  ],
+  "title": "Historical model-memory campaign and verification"
+}

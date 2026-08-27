@@ -1,0 +1,113 @@
+{
+  "aliases": [
+    "grounded evidence",
+    "evidence fragment grounding",
+    "json pointer evidence",
+    "pdf page evidence",
+    "pdf readable representation evidence",
+    "html visible text evidence",
+    "evidence drilldown",
+    "evidence fragment read",
+    "researcher evidence provenance"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class ArchivedEvidenceRecorder:",
+      "description": "ArchivedEvidenceRecorder owns fail-closed locator/value verification against preserved source-derived artifacts.",
+      "kind": "application",
+      "path": "src/longcycle/application/evidence_recording.py"
+    },
+    {
+      "contains": "class EvidenceDrilldownReader(Protocol):",
+      "description": "Storage-neutral Evidence read boundary retrieves one claim-scoped fragment by identity without exposing PostgreSQL tables to researcher product code.",
+      "kind": "port",
+      "path": "src/longcycle/ports/evidence.py"
+    },
+    {
+      "contains": "async def build_researcher_evidence_drilldown(",
+      "description": "Researcher projection preserves Evidence content, source-known timing and representation provenance while failing closed beyond the requested cutoff.",
+      "kind": "application",
+      "path": "src/longcycle/application/evidence_drilldown.py"
+    }
+  ],
+  "extension_seams": [
+    "Add a generic parser/artifact grounding mode when a new media type cannot be truthfully represented by existing locators.",
+    "Use a truthful source-derived readable representation when claim-relevant PDF content was actually read but raw PDF bytes are pending; preserve the upstream PDF identity/media type separately and never call the representation byte-identical PDF.",
+    "Add claim_context annotations without silently promoting them into Reality/Judgment.",
+    "Add read-only Evidence navigation by fragment identity through typed ports while preserving claim-scoped content, first-known visibility and exact representation identity."
+  ],
+  "guards": [
+    {
+      "contains": "class ArchivedEvidenceRecorderTest",
+      "description": "Grounding tests exercise archived excerpt/artifact boundaries.",
+      "kind": "test",
+      "path": "tests/test_evidence_recording.py"
+    },
+    {
+      "contains": "test_locator_only_is_not_claim_evidence",
+      "description": "Handoff regression keeps locator existence below claim-level Evidence while allowing content-verified readable representations to proceed.",
+      "kind": "test",
+      "path": "tests/test_handoff_data_plane.py"
+    },
+    {
+      "contains": "test_drilldown_preserves_representation_identity_after_later_raw_materialization",
+      "description": "Researcher Evidence read contracts preserve the exact representation used by the fragment even after later raw-source materialization.",
+      "kind": "test",
+      "path": "tests/test_evidence_drilldown.py"
+    },
+    {
+      "contains": "POSTGRES_EVIDENCE_DRILLDOWN_SMOKE_PASS",
+      "description": "Real PostgreSQL/CLI drilldown proves claim-scoped content, first-known cutoff and representation identity survive the normal persistence path.",
+      "kind": "runtime",
+      "path": "scripts/smoke_postgres_evidence_drilldown.py"
+    }
+  ],
+  "id": "CAP-0002",
+  "maturity": "core_locked",
+  "non_goals": [
+    "Fact/Judgment publication.",
+    "Search-result or model-memory promotion.",
+    "Promoting a PDF locator whose claim-relevant content was never read.",
+    "Pretending a text/visible capture is raw PDF bytes or erasing representation provenance.",
+    "Media-type shortcuts that lose exact locator/content integrity.",
+    "Inferring source authority, claim truth or researcher importance merely while rendering an Evidence fragment."
+  ],
+  "owned_semantics": [
+    "evidence.fragment.grounding",
+    "evidence.locator.integrity",
+    "evidence.readable_representation_truthfulness",
+    "evidence.structured_json_pointer_exactness",
+    "evidence.fragment.typed_read_by_id",
+    "evidence.fragment.historical_visibility"
+  ],
+  "purpose": "Own verification that a claim-scoped EvidenceFragment is exactly grounded in preserved source-derived content before epistemic promotion, and own the typed read boundary that returns that same fragment without exposing storage internals. Grounding/readback may use archived raw PDF/HTML/JSON or a truthful readable representation of content the Agent actually read; locator existence alone is never claim Evidence, later raw materialization never rewrites the fragment's original representation identity, and readback must fail closed when the fragment was not yet knowable at the requested cutoff.",
+  "revisit_when": "Only replace if the successor preserves claim-scoped immutable artifact lineage, exact locator semantics, truthful media/representation provenance, first-known visibility and fail-closed verification/readback across supported media.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/evidence_recording.py",
+    "src/longcycle/adapters/parsers.py",
+    "scripts/execute_grounded_evidence_spec.py",
+    "tests/test_evidence_recording.py",
+    "tests/test_json_evidence_recording.py",
+    "tests/test_handoff_data_plane.py",
+    "src/longcycle/domain/evidence.py",
+    "src/longcycle/ports/evidence.py",
+    "src/longcycle/adapters/storage/postgres_evidence.py",
+    "src/longcycle/application/evidence_drilldown.py",
+    "tests/test_evidence_drilldown.py",
+    "scripts/smoke_postgres_evidence_drilldown.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "evidence",
+    "locator",
+    "provenance",
+    "readable-representation",
+    "json-pointer",
+    "claim-scope",
+    "researcher-read",
+    "knowledge-cutoff"
+  ],
+  "title": "Claim-scoped Grounded Evidence"
+}

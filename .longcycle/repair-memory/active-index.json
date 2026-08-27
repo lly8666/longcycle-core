@@ -1,0 +1,132 @@
+{
+  "schema_version": "longcycle-repair-memory-index/v1",
+  "policy": "Route by path/tag, then load only matching active cards. Git is chronological cold history.",
+  "active": [
+    {
+      "id": "RI-0001",
+      "title": "Repository mutation success is proven by the live target ref",
+      "kind": "process",
+      "severity": "high",
+      "scope": [
+        ".github/workflows/**",
+        ".longcycle/handoff/**",
+        "scripts/*handoff*.py",
+        "scripts/*refactor*.py"
+      ],
+      "tags": ["github-actions", "handoff", "truth-hierarchy", "false-pass"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0001-live-ref-authority.json"
+    },
+    {
+      "id": "RI-0002",
+      "title": "Epistemic integration gates use typed contracts, not storage internals",
+      "kind": "architecture",
+      "severity": "high",
+      "scope": [
+        "scripts/smoke_postgres_epistemic.py",
+        "scripts/replay_integrated_history.py",
+        "src/longcycle/ports/epistemic.py",
+        "src/longcycle/adapters/storage/postgres_epistemic.py",
+        "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        ".github/workflows/ci.yml"
+      ],
+      "tags": ["epistemic-memory", "postgres", "duckdb", "integration-test", "storage-boundary"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json"
+    },
+    {
+      "id": "RI-0003",
+      "title": "Historical time preserves source precision, observation and knowledge boundaries",
+      "kind": "data",
+      "severity": "critical",
+      "scope": [
+        "migrations/0018_judgment_temporal_precision.sql",
+        "migrations/0019_precision_aware_outcome_timing.sql",
+        "migrations/0020_fact_valid_time_precision.sql",
+        "migrations/0021_canonical_valid_time_kind.sql",
+        "migrations/0024_canonical_observation_time.sql",
+        "src/longcycle/domain/epistemic.py",
+        "src/longcycle/adapters/storage/postgres_epistemic.py",
+        "src/longcycle/adapters/storage/duckdb_epistemic.py",
+        "tests/test_fact_temporal_precision.py",
+        "scripts/smoke_postgres_epistemic.py"
+      ],
+      "tags": ["reality", "judgment", "outcome", "valid-time", "observation-time", "known-time", "temporal-precision", "no-lookahead"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json"
+    },
+    {
+      "id": "RI-0004",
+      "title": "Fact provenance is multi-fragment but single-source-assertion scoped",
+      "kind": "data",
+      "severity": "critical",
+      "scope": [
+        "migrations/0022_fact_evidence_roles.sql",
+        "src/longcycle/domain/enums.py",
+        "src/longcycle/domain/models.py",
+        "src/longcycle/adapters/storage/postgres.py",
+        "src/longcycle/application/pipeline.py",
+        "src/longcycle/application/reality_projection.py",
+        "scripts/execute_grounded_reality_projection.py",
+        "scripts/smoke_postgres_epistemic.py"
+      ],
+      "tags": ["fact", "evidence", "provenance", "multi-fragment", "source-boundary"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0004-fact-provenance-multi-fragment.json"
+    },
+    {
+      "id": "RI-0005",
+      "title": "Preserved source representation is not automatically raw-source materialization",
+      "kind": "architecture",
+      "severity": "critical",
+      "scope": [
+        "migrations/0028_truthful_source_materialization.sql",
+        "migrations/0031_explicit_raw_source_materialization.sql",
+        "src/longcycle/adapters/sources/http.py",
+        "src/longcycle/adapters/sources/local.py",
+        "src/longcycle/adapters/sources/materialized.py",
+        "src/longcycle/adapters/storage/postgres_source_locators.py",
+        "src/longcycle/application/research_orchestration.py",
+        "src/longcycle/cli.py",
+        "tests/test_source_locator_materialization.py",
+        "tests/test_materialized_source_representation.py",
+        "tests/test_research_orchestration.py"
+      ],
+      "tags": ["source", "pdf", "representation", "materialization", "grounded-evidence", "orchestration", "transport"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0005-source-representation-not-raw-materialization.json"
+    },
+    {
+      "id": "RI-0006",
+      "title": "New projections compose semantic owners instead of redefining them",
+      "kind": "architecture",
+      "severity": "high",
+      "scope": [
+        "src/longcycle/application/*view*.py",
+        "src/longcycle/application/*projection*.py",
+        "src/longcycle/adapters/storage/postgres_*.py",
+        "src/longcycle/ports/*.py",
+        "src/longcycle/domain/*.py",
+        "tests/test_*view*.py",
+        "scripts/smoke_postgres_*.py",
+        ".longcycle/capabilities/**",
+        "FRESH_AGENT_BOOTSTRAP.md",
+        "CONTINUE_HERE.md"
+      ],
+      "tags": ["semantic-owner", "projection", "composition", "negative-case", "capability-governance", "fresh-agent", "shadow-semantics"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0006-semantic-owner-reuse.json"
+    },
+    {
+      "id": "RI-0007",
+      "title": "Handoff layers preserve planning granularity and are re-read before commit",
+      "kind": "architecture",
+      "severity": "high",
+      "scope": [
+        ".longcycle/handoff/**",
+        "CONTINUE_HERE.md",
+        "docs/development/session-handoff-protocol.md",
+        "docs/development/continuity-architecture.md",
+        "docs/development/fresh-agent-continuity-drill.md",
+        "tests/test_session_handoff.py",
+        "tests/test_fresh_agent_continuity_drill.py"
+      ],
+      "tags": ["handoff", "fresh-agent", "semantic-reread", "continuity", "tunnel-vision", "temporal-freshness", "deduplication", "recovery-drill"],
+      "card_path": ".longcycle/repair-memory/invariants/RI-0007-handoff-semantic-reread.json"
+    }
+  ]
+}

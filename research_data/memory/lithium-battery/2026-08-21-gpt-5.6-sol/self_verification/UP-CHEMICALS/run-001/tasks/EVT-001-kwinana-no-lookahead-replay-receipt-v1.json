@@ -1,0 +1,57 @@
+{
+  "schema_version": "longcycle-no-lookahead-replay-receipt/v1",
+  "fixture_id": "EVT-001-KWINANA-REPLAY-V1",
+  "fixture_path": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-001-kwinana-no-lookahead-replay-fixture-v1.json",
+  "source_asset_id": "kwinana-grounded-run19-capsule",
+  "source_duckdb_sha256": "99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec",
+  "validator": {
+    "kind": "independent_readonly_duckdb_probe",
+    "duckdb_version": "1.5.5",
+    "runtime_asset_id": "duckdb-offline-runtime-py313-v2",
+    "runtime_transport": "google_drive",
+    "ci_cross_check": {
+      "run_number": 711,
+      "run_id": 32548199429,
+      "no_lookahead_portable_replay_smoke": "success",
+      "pytest": "success",
+      "mypy": "success"
+    }
+  },
+  "integrity": {
+    "database_sha256_before": "99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec",
+    "database_sha256_after": "99362062b121679643611a53911bf2f20dcb4290c7baa22236aedd3272074dec",
+    "database_unchanged": true,
+    "evidence_total": 9,
+    "broken_document_refs": 0,
+    "broken_artifact_refs": 0,
+    "canonical_table_counts": {
+      "evidence.artifacts": 2,
+      "evidence.content_blobs": 6,
+      "evidence.document_fetches": 4,
+      "evidence.document_versions": 4,
+      "evidence.documents": 4,
+      "evidence.evidence_fragments": 9,
+      "evidence.publishers": 2,
+      "evidence.source_connectors": 2
+    }
+  },
+  "cutoff_results": [
+    {"knowledge_cutoff":"2018-12-21T23:59:58Z","visible_count":0,"excluded_fragment_keys":["2018-stage-commissioning-expectation"]},
+    {"knowledge_cutoff":"2018-12-21T23:59:59Z","visible_count":1,"included_fragment_keys":["2018-stage-commissioning-expectation"]},
+    {"knowledge_cutoff":"2019-04-30T23:59:59Z","visible_count":2},
+    {"knowledge_cutoff":"2021-08-23T23:59:59Z","visible_count":5,"included_fragment_keys":["2021-production-timing-uncertainty"]},
+    {"knowledge_cutoff":"2022-12-03T23:59:58Z","visible_count":5,"excluded_fragment_keys":["2022-commercial-production-declaration","2022-continuous-production-capability"]},
+    {"knowledge_cutoff":"2022-12-03T23:59:59Z","visible_count":9,"included_fragment_keys":["2022-commercial-production-declaration","2022-continuous-production-capability","2022-december-ramp-expectation-part-1","2022-december-ramp-expectation-part-2"]}
+  ],
+  "acceptance": {
+    "no_lookahead_boundary": "pass",
+    "day_precision_known_time_is_conservative": "pass",
+    "no_invented_publication_instant": "pass",
+    "deterministic_visibility": "pass",
+    "portable_database_read_only": "pass",
+    "company_specific_replay_logic": false,
+    "facts_created": 0,
+    "judgments_created": 0
+  },
+  "validation_payload_sha256": "b20957eab57626f16266345c036a32a1d883b35fb94d7ddee7170d7047894149"
+}

@@ -1,0 +1,504 @@
+from __future__ import annotations
+
+from collections import defaultdict
+from datetime import datetime
+from typing import Any
+from uuid import UUID
+
+from longcycle.domain.epistemic import MemorySubjectRef, PointInTimeMemorySnapshot
+from longcycle.domain.models import require_aware_datetime
+from longcycle.domain.orientation import (
+    IndustryOrientationCatalog,
+    IndustrySubjectDiscoveryRecord,
+    IndustrySubjectMembershipRecord,
+)
+from longcycle.ports.epistemic import EpistemicMemoryReader
+from longcycle.ports.orientation import IndustryOrientationReader
+
+from .research_enrichment import (
+    DETERMINISTIC_INDUSTRY_SUBJECTS,
+    EnrichmentComponentResult,
+    ExpectedResearchEnrichmentUnavailable,
+    ResearchEnrichmentContractViolation,
+    available_component,
+    defect,
+    overall_status,
+    unavailable_component,
+    unsupported_component,
+)
+
+
+def _membership_visible(
+    membership: IndustrySubjectMembershipRecord,
+    *,
+    knowledge_cutoff: datetime,
+) -> bool:
+    if membership.known_at > knowledge_cutoff:
+        return False
+    cutoff_date = knowledge_cutoff.date()
+    if membership.valid_from is not None and cutoff_date < membership.valid_from:
+        return False
+    if membership.valid_to is not None and cutoff_date >= membership.valid_to:
+        return False
+    return True
+
+
+def _visible_memberships(
+    catalog: IndustryOrientationCatalog,
+    *,
+    knowledge_cutoff: datetime,
+) -> tuple[IndustrySubjectMembershipRecord, ...]:
+    """Choose the latest source-knowable curated version for each entity/role.
+
+    ``system_from`` is only a deterministic tie-break among versions supported by
+    evidence that was already knowable by the cutoff. It is not itself a knowledge
+    timestamp and therefore never admits a membership across the cutoff.
+    """
+
+    selected: dict[tuple[UUID, str], IndustrySubjectMembershipRecord] = {}
+    for membership in catalog.memberships:
+        if not _membership_visible(membership, knowledge_cutoff=knowledge_cutoff):
+            continue
+        assert membership.subject.entity_id is not None
+        key = (membership.subject.entity_id, membership.role)
+        existing = selected.get(key)
+        candidate_order = (
+            membership.known_at,
+            membership.system_from,
+            str(membership.membership_id),
+        )
+        if existing is None:
+            selected[key] = membership
+            continue
+        existing_order = (
+            existing.known_at,
+            existing.system_from,
+            str(existing.membership_id),
+        )
+        if candidate_order > existing_order:
+            selected[key] = membership
+    return tuple(
+        sorted(
+            selected.values(),
+            key=lambda item: (
+                item.canonical_name.casefold(),
+                str(item.subject.entity_id),
+                item.role,
+            ),
+        )
+    )
+
+
+def _visible_discoveries(
+    discoveries: tuple[IndustrySubjectDiscoveryRecord, ...],
+    *,
+    industry_node_id: UUID,
+    knowledge_cutoff: datetime,
+) -> tuple[IndustrySubjectDiscoveryRecord, ...]:
+    """Defensively enforce the same no-lookahead boundary on discovery recall."""
+
+    selected: dict[tuple[str, UUID], IndustrySubjectDiscoveryRecord] = {}
+    for discovery in discoveries:
+        if discovery.industry_node_id != industry_node_id:
+            raise ValueError("industry discovery reader returned a record for another industry")
+        if discovery.known_at > knowledge_cutoff:
+            continue
+        selected[(discovery.basis_kind, discovery.basis_id)] = discovery
+    return tuple(
+        sorted(
+            selected.values(),
+            key=lambda item: (
+                item.canonical_name.casefold(),
+                str(item.subject.entity_id),
+                item.known_at,
+                item.basis_kind,
+                str(item.basis_id),
+            ),
+        )
+    )
+
+
+def _validate_capability_declaration(
+    catalog_reader: IndustryOrientationReader,
+) -> frozenset[str]:
+    """Validate claimed optional enrichment without requiring a declaration to exist.
+
+    Missing capability metadata means this reader provides only the truth-bearing catalog.
+    Once a reader explicitly claims optional support, the declaration itself is a contract:
+    malformed or unknown capability names still fail closed.
+    """
+
+    capabilities: frozenset[str] = getattr(catalog_reader, "capabilities", frozenset())
+    if not isinstance(capabilities, frozenset):
+        raise ResearchEnrichmentContractViolation(
+            "industry orientation reader capabilities must be a frozenset when declared"
+        )
+    unknown = set(capabilities) - {DETERMINISTIC_INDUSTRY_SUBJECTS}
+    if unknown:
+        raise ResearchEnrichmentContractViolation(
+            f"industry orientation reader declared unsupported capability names: {sorted(unknown)}"
+        )
+    return frozenset(capabilities)
+
+
+async def _load_industry_subject_universe(
+    *,
+    catalog_reader: IndustryOrientationReader,
+    industry_node_id: UUID,
+    knowledge_cutoff: datetime,
+) -> tuple[
+    datetime,
+    IndustryOrientationCatalog,
+    tuple[IndustrySubjectMembershipRecord, ...],
+    tuple[IndustrySubjectDiscoveryRecord, ...],
+    dict[UUID, MemorySubjectRef],
+    tuple[EnrichmentComponentResult, ...],
+]:
+    """Load direct truth plus optional deterministic discovery enrichment.
+
+    Truth-bearing catalog membership remains fail-closed. Optional deterministic discovery
+    is used only when the reader explicitly declares support; a missing declaration means
+    unsupported rather than defective. Expected provider/availability failures may degrade
+    with typed diagnostics; malformed declarations and implementation defects still raise.
+    A supported capability returning zero records is AVAILABLE with result_count=0.
+    """
+
+    checked = require_aware_datetime(knowledge_cutoff, "knowledge_cutoff")
+    assert checked is not None
+    catalog = await catalog_reader.industry_catalog(industry_node_id)
+    memberships = _visible_memberships(catalog, knowledge_cutoff=checked)
+    capabilities = _validate_capability_declaration(catalog_reader)
+
+    components: list[EnrichmentComponentResult] = []
+    raw_discoveries: tuple[IndustrySubjectDiscoveryRecord, ...]
+    if DETERMINISTIC_INDUSTRY_SUBJECTS not in capabilities:
+        raw_discoveries = ()
+        components.append(unsupported_component(DETERMINISTIC_INDUSTRY_SUBJECTS))
+    else:
+        try:
+            raw_discoveries = await catalog_reader.deterministic_industry_subjects(
+                industry_node_id,
+                knowledge_cutoff=checked,
+            )
+        except ExpectedResearchEnrichmentUnavailable as exc:
+            raw_discoveries = ()
+            components.append(unavailable_component(DETERMINISTIC_INDUSTRY_SUBJECTS, exc))
+        except Exception as exc:
+            raise defect(DETERMINISTIC_INDUSTRY_SUBJECTS, exc) from exc
+        else:
+            components.append(
+                available_component(
+                    DETERMINISTIC_INDUSTRY_SUBJECTS,
+                    result_count=len(raw_discoveries),
+                )
+            )
+
+    discoveries = _visible_discoveries(
+        raw_discoveries,
+        industry_node_id=industry_node_id,
+        knowledge_cutoff=checked,
+    )
+    subjects: dict[UUID, MemorySubjectRef] = {}
+    for membership in memberships:
+        assert membership.subject.entity_id is not None
+        subjects[membership.subject.entity_id] = membership.subject
+    for discovery in discoveries:
+        assert discovery.subject.entity_id is not None
+        subjects[discovery.subject.entity_id] = discovery.subject
+    return checked, catalog, memberships, discoveries, subjects, tuple(components)
+
+
+def _memory_counts(snapshot: PointInTimeMemorySnapshot) -> dict[str, dict[str, int]]:
+    counts: dict[str, dict[str, int]] = defaultdict(
+        lambda: {"reality": 0, "judgments": 0, "outcomes": 0}
+    )
+    for reality in snapshot.reality:
+        counts[reality.subject.key]["reality"] += 1
+    for judgment in snapshot.judgments:
+        counts[judgment.subject.key]["judgments"] += 1
+    for outcome in snapshot.outcomes:
+        counts[outcome.subject.key]["outcomes"] += 1
+    return counts
+
+
+def _evidence_by_subject(snapshot: PointInTimeMemorySnapshot) -> dict[str, set[str]]:
+    evidence: dict[str, set[str]] = defaultdict(set)
+    judgment_subjects = {
+        judgment.judgment_id: judgment.subject.key for judgment in snapshot.judgments
+    }
+    for reality in snapshot.reality:
+        evidence[reality.subject.key].update(
+            str(value) for value in reality.evidence_fragment_ids
+        )
+    for judgment in snapshot.judgments:
+        evidence[judgment.subject.key].update(
+            str(value) for value in judgment.evidence_fragment_ids
+        )
+    for rationale in snapshot.judgment_rationales:
+        subject_key = judgment_subjects.get(rationale.judgment_id)
+        if subject_key is not None and rationale.evidence_fragment_id is not None:
+            evidence[subject_key].add(str(rationale.evidence_fragment_id))
+    for outcome in snapshot.outcomes:
+        if outcome.outcome_evidence_fragment_id is not None:
+            evidence[outcome.subject.key].add(str(outcome.outcome_evidence_fragment_id))
+    return evidence
+
+
+def _judgment_relation_markers(
+    snapshot: PointInTimeMemorySnapshot,
+) -> dict[str, list[dict[str, Any]]]:
+    judgment_subjects = {
+        judgment.judgment_id: judgment.subject.key for judgment in snapshot.judgments
+    }
+    result: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for relation in snapshot.judgment_relations:
+        payload = {
+            "from_judgment_id": str(relation.from_judgment_id),
+            "to_judgment_id": str(relation.to_judgment_id),
+            "relation_type": relation.relation_type.value,
+            "reason_summary": relation.reason_summary,
+            "known_at": relation.known_at.isoformat(),
+        }
+        subject_keys = {
+            value
+            for value in (
+                judgment_subjects.get(relation.from_judgment_id),
+                judgment_subjects.get(relation.to_judgment_id),
+            )
+            if value is not None
+        }
+        for subject_key in sorted(subject_keys):
+            result[subject_key].append(payload)
+    return result
+
+
+def _direct_discovery_basis(membership: IndustrySubjectMembershipRecord) -> dict[str, Any]:
+    return {
+        "certainty": "direct",
+        "basis_kind": "industry_membership",
+        "basis_id": str(membership.membership_id),
+        "semantic_code": "industry.membership",
+        "known_at": membership.known_at.isoformat(),
+        "evidence_fragment_ids": [str(value) for value in membership.evidence_fragment_ids],
+    }
+
+
+def _membership_payload(membership: IndustrySubjectMembershipRecord) -> dict[str, Any]:
+    """Render durable semantic-decision provenance without inventing one execution mode."""
+
+    return {
+        "role": membership.role,
+        "exposure_type": membership.exposure_type,
+        "valid_from": (
+            membership.valid_from.isoformat() if membership.valid_from is not None else None
+        ),
+        "valid_to": (
+            membership.valid_to.isoformat() if membership.valid_to is not None else None
+        ),
+        "known_at": membership.known_at.isoformat(),
+        "confidence": membership.confidence,
+        "resolution_id": str(membership.resolution_id),
+        "semantic_decision_id": (
+            str(membership.semantic_decision_id)
+            if membership.semantic_decision_id is not None
+            else None
+        ),
+        "semantic_decision_supporting_run_count": (
+            membership.semantic_decision_supporting_run_count
+        ),
+        "semantic_decision_latest_reasoning_mode": (
+            membership.semantic_decision_latest_reasoning_mode
+        ),
+        "evidence_fragment_ids": [
+            str(value) for value in membership.evidence_fragment_ids
+        ],
+    }
+
+
+def _entailed_discovery_basis(discovery: IndustrySubjectDiscoveryRecord) -> dict[str, Any]:
+    return {
+        "certainty": "entailed",
+        "basis_kind": discovery.basis_kind,
+        "basis_id": str(discovery.basis_id),
+        "semantic_code": discovery.semantic_code,
+        "known_at": discovery.known_at.isoformat(),
+        "entailment_rule": discovery.entailment_rule,
+        "evidence_fragment_ids": [str(value) for value in discovery.evidence_fragment_ids],
+    }
+
+
+def _coverage_payload(counts: dict[str, int], evidence_count: int) -> dict[str, Any]:
+    grounded_count = counts["reality"] + counts["judgments"] + counts["outcomes"]
+    has_grounded_record = grounded_count > 0 or evidence_count > 0
+    return {
+        "archive_status": "grounded_records_present" if has_grounded_record else "no_grounded_record",
+        "grounded_record_count": grounded_count,
+        "evidence_fragment_count": evidence_count,
+        "world_state_inference": "none",
+        "absence_meaning": (
+            None
+            if has_grounded_record
+            else "research coverage may be incomplete or unresearched; archive absence is not a world-state unknown"
+        ),
+    }
+
+
+def _enrichment_payload(
+    components: tuple[EnrichmentComponentResult, ...],
+) -> dict[str, Any]:
+    payloads = [item.as_payload() for item in components]
+    availability = overall_status(components)
+    return {
+        "status": "degraded" if availability == "UNAVAILABLE_EXPECTED" else "complete",
+        "availability_status": availability,
+        "components": payloads,
+        "failures": [item for item in payloads if item["status"] == "UNAVAILABLE_EXPECTED"],
+    }
+
+
+async def build_researcher_industry_orientation(
+    *,
+    catalog_reader: IndustryOrientationReader,
+    memory_reader: EpistemicMemoryReader,
+    industry_node_id: UUID,
+    knowledge_cutoff: datetime,
+) -> dict[str, Any]:
+    """Build a broad but auditable researcher entry view at one knowledge cutoff."""
+
+    checked, catalog, visible_memberships, visible_discoveries, subjects, enrichment = (
+        await _load_industry_subject_universe(
+            catalog_reader=catalog_reader,
+            industry_node_id=industry_node_id,
+            knowledge_cutoff=knowledge_cutoff,
+        )
+    )
+
+    memberships_by_entity: dict[UUID, list[IndustrySubjectMembershipRecord]] = defaultdict(list)
+    discoveries_by_entity: dict[UUID, list[IndustrySubjectDiscoveryRecord]] = defaultdict(list)
+    for membership in visible_memberships:
+        assert membership.subject.entity_id is not None
+        memberships_by_entity[membership.subject.entity_id].append(membership)
+    for discovery in visible_discoveries:
+        assert discovery.subject.entity_id is not None
+        discoveries_by_entity[discovery.subject.entity_id].append(discovery)
+
+    snapshot_subjects = (
+        MemorySubjectRef(industry_node_id=industry_node_id),
+        *(subjects[entity_id] for entity_id in sorted(subjects, key=str)),
+    )
+    snapshot = await memory_reader.snapshot(snapshot_subjects, knowledge_cutoff=checked)
+    counts = _memory_counts(snapshot)
+    evidence = _evidence_by_subject(snapshot)
+    relation_markers = _judgment_relation_markers(snapshot)
+
+    rows_to_render: list[
+        tuple[
+            UUID,
+            str,
+            str,
+            list[IndustrySubjectMembershipRecord],
+            list[IndustrySubjectDiscoveryRecord],
+        ]
+    ] = []
+    for entity_id in subjects:
+        entity_memberships = memberships_by_entity.get(entity_id, [])
+        entity_discoveries = discoveries_by_entity.get(entity_id, [])
+        if entity_memberships:
+            canonical_name = entity_memberships[0].canonical_name
+            entity_type = entity_memberships[0].entity_type
+        elif entity_discoveries:
+            canonical_name = entity_discoveries[0].canonical_name
+            entity_type = entity_discoveries[0].entity_type
+        else:  # pragma: no cover
+            raise RuntimeError("orientation subject has no discovery basis")
+        rows_to_render.append(
+            (entity_id, canonical_name, entity_type, entity_memberships, entity_discoveries)
+        )
+
+    subject_rows: list[dict[str, Any]] = []
+    for entity_id, canonical_name, entity_type, entity_memberships, entity_discoveries in sorted(
+        rows_to_render,
+        key=lambda item: (item[1].casefold(), str(item[0])),
+    ):
+        subject_key = subjects[entity_id].key
+        subject_evidence = set(evidence.get(subject_key, set()))
+        for membership in entity_memberships:
+            subject_evidence.update(str(value) for value in membership.evidence_fragment_ids)
+        for discovery in entity_discoveries:
+            subject_evidence.update(str(value) for value in discovery.evidence_fragment_ids)
+        discovery_bases = [
+            *(_direct_discovery_basis(membership) for membership in entity_memberships),
+            *(_entailed_discovery_basis(discovery) for discovery in entity_discoveries),
+        ]
+        subject_counts = counts.get(
+            subject_key,
+            {"reality": 0, "judgments": 0, "outcomes": 0},
+        )
+        subject_rows.append(
+            {
+                "subject_id": str(entity_id),
+                "canonical_name": canonical_name,
+                "entity_type": entity_type,
+                "discovery_certainty": "direct" if entity_memberships else "entailed",
+                "discovery_bases": discovery_bases,
+                "memberships": [
+                    _membership_payload(membership) for membership in entity_memberships
+                ],
+                "memory_counts": subject_counts,
+                "archive_coverage": _coverage_payload(subject_counts, len(subject_evidence)),
+                "judgment_relation_markers": relation_markers.get(subject_key, []),
+                "evidence_fragment_ids": sorted(subject_evidence),
+                "trajectory_replay": {"subject_id": str(entity_id)},
+            }
+        )
+
+    industry_subject = MemorySubjectRef(industry_node_id=industry_node_id)
+    industry_counts = counts.get(
+        industry_subject.key,
+        {"reality": 0, "judgments": 0, "outcomes": 0},
+    )
+    industry_evidence_count = len(evidence.get(industry_subject.key, set()))
+    return {
+        "schema_version": "longcycle-researcher-industry-orientation/v1",
+        "knowledge_cutoff": checked.isoformat(),
+        "industry": {
+            "industry_node_id": str(catalog.industry.industry_node_id),
+            "canonical_name": catalog.industry.canonical_name,
+            "node_kind": catalog.industry.node_kind,
+            "archetype": catalog.industry.archetype,
+            "memory_counts": industry_counts,
+            "archive_coverage": _coverage_payload(industry_counts, industry_evidence_count),
+            "trajectory_replay": {"industry_node_id": str(industry_node_id)},
+        },
+        "subjects": subject_rows,
+        "explicit_open_states": [],
+        "research_enrichment": _enrichment_payload(enrichment),
+        "boundary": {
+            "membership_requires_fact_resolution_and_evidence": True,
+            "membership_semantic_selection_is_model_audited": True,
+            "model_semantic_decision_is_not_source_evidence_or_canonical_reality": True,
+            "membership_semantic_audit_preserves_repeated_model_runs": True,
+            "membership_visibility_uses_source_known_at": True,
+            "researcher_discovery_allows_deterministic_entailment": True,
+            "entailed_discovery_requires_grounded_explicit_industry_scope": True,
+            "entailed_discovery_does_not_create_membership_or_role": True,
+            "deterministic_role_entailment_allowed_when_rule_is_auditable": True,
+            "ambiguous_role_importance_causality_belong_to_labeled_model_judgment": True,
+            "presentation_does_not_promote_analysis_to_truth": True,
+            "truth_bearing_catalog_and_memory_reads_fail_closed": True,
+            "optional_research_discovery_enrichment_degrades_gracefully": True,
+            "optional_unavailability_is_typed_and_defects_raise": True,
+            "empty_optional_result_is_available_not_degraded": True,
+            "optional_capability_support_is_explicitly_declared": True,
+            "missing_optional_capability_declaration_means_unsupported_not_defect": True,
+            "system_from_is_not_historical_known_at": True,
+            "system_from_only_breaks_ties_between_already_knowable_versions": True,
+            "memory_visibility_delegated_to_epistemic_snapshot": True,
+            "same_knowledge_cutoff_used_for_membership_and_memory": True,
+            "same_knowledge_cutoff_used_for_membership_discovery_and_memory": True,
+            "canonical_labels_are_current_catalog_identity_not_historical_name_replay": True,
+            "archive_absence_is_research_coverage_not_world_state": True,
+            "presentation_invents_no_unknown_or_controversy": True,
+            "subject_order_is_lexical_not_importance_ranking": True,
+        },
+    }

@@ -1,0 +1,352 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "ADC-SV-003-ENHERTU-GROUNDED-EVIDENCE-V1",
+  "acquisition_provenance": {
+    "control_issue": 97,
+    "workflow_run_id": 32586650020,
+    "source_head_sha": "115b8c108c220f70fd18629af30d82d193c63285",
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset_file_name": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+    "release_asset_size_bytes": 2942940,
+    "release_asset_sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692",
+    "archived_but_not_grounded_label_vintages": [
+      "dailymed-enhertu-label-archive-2019-v3.zip",
+      "dailymed-enhertu-label-archive-2022-v11.zip"
+    ],
+    "label_archive_boundary": "The two DailyMed/NLM historical SPL ZIPs are durable original label vintages. This bounded pilot does not add an SPL/XML parser merely to ingest them. Acquisition-derived visible text is identity-check material only and is not publishable Evidence; contemporaneous safety Evidence below is grounded in original Daiichi Sankyo PDFs that quote the applicable boxed-warning state."
+  },
+  "epistemic_guardrails": [
+    "Do not collapse ENHERTU into a product-level success state. The 2019 HER2-positive late-line accelerated-approval branch and the 2022 HER2-low branch have different indication, biomarker and trial semantics.",
+    "The 2019 issuer release already records an ILD/pneumonitis boxed warning and fatal outcomes. Never narrate ILD risk as if it only became knowable after the 2022 HER2-low success.",
+    "The February 2022 DESTINY-Breast04 release is a positive topline readout, not the August 2022 U.S. approval event. Preserve these as separate vintages.",
+    "The current ClinicalTrials.gov JSON snapshot establishes registry identity and submitted sponsor role at the 2026 acquisition knowledge vintage; it must not be backdated to 2018 or 2022 without a historical registry snapshot.",
+    "Daiichi Sankyo issuer statements are primary participant records for collaboration terms and company-reported regulatory events, but they do not replace an FDA action letter where a claim specifically requires the regulator's legal characterization.",
+    "The exact FDA 2022 S-022 action-letter characterization remains outside this grounded set because the accessdata transport failed. Do not infer or publish accelerated-versus-regular approval status for the HER2-low supplement from this issuer pack alone.",
+    "The DailyMed archives remain source-first preserved originals even though they are not parsed into Evidence in this bounded run. Do not create architecture solely to force every archived source into the current executor."
+  ],
+  "sources": [
+    {
+      "key": "daiichi-issuer",
+      "name": "Daiichi Sankyo original press releases",
+      "publisher_domain": "daiichisankyo.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Daiichi Sankyo is a direct collaboration and development participant and its original releases are primary records for its announced rights, manufacturing role, trial readout and reported regulatory milestones."
+        }
+      ]
+    },
+    {
+      "key": "clinicaltrials-registry",
+      "name": "ClinicalTrials.gov API",
+      "publisher_domain": "clinicaltrials.gov",
+      "kind": "government",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "third_party_fact",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "ClinicalTrials.gov is the authoritative registry record for the submitted current NCT identity and lead-sponsor field of NCT03734029."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "collaboration-2019",
+      "vintage_id": "SV003-2019-03-COLLABORATION",
+      "source_key": "daiichi-issuer",
+      "retrieval_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/006988/190329_886_E.pdf",
+      "original_source_url": "https://www.daiichisankyo.com/media/press_release/detail/index_3199.html",
+      "external_id": "ONP-19-0013",
+      "title": "Daiichi Sankyo and AstraZeneca Announce Global Development and Commercialization Collaboration for DS-8201",
+      "published_at": null,
+      "first_known_at": "2019-03-30T00:00:00Z",
+      "expected_sha256": "ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e",
+      "material_path": "daiichi-astrazeneca-enhertu-collaboration-2019.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.daiichisankyo.com",
+        "published_date_only": "2019-03-29",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "daiichi-enhertu-collaboration-2019"
+      }
+    },
+    {
+      "key": "initial-us-approval-2019",
+      "vintage_id": "SV003-2019-12-US-INITIAL-APPROVAL",
+      "source_key": "daiichi-issuer",
+      "retrieval_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/007088/20191223_E.pdf",
+      "original_source_url": "https://www.daiichisankyo.com/media/press_release/detail/index_3159.html",
+      "external_id": "2019-12-20-ENHERTU-US-accelerated-approval",
+      "title": "ENHERTU Approved in the U.S. for HER2 Positive Unresectable or Metastatic Breast Cancer Following Two or More Prior Anti-HER2-Based Regimens",
+      "published_at": null,
+      "first_known_at": "2019-12-24T00:00:00Z",
+      "expected_sha256": "212c16146526acfa03976ca8b16744a3702ec3f512c475ab256baf774aa37d0d",
+      "material_path": "daiichi-enhertu-us-initial-approval-2019.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.daiichisankyo.com",
+        "published_date_only": "2019-12-23",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "daiichi-enhertu-initial-us-approval-2019"
+      }
+    },
+    {
+      "key": "clinicaltrials-destiny-breast04-current",
+      "vintage_id": "SV003-2026-08-NCT03734029",
+      "source_key": "clinicaltrials-registry",
+      "retrieval_url": "https://clinicaltrials.gov/api/v2/studies/NCT03734029",
+      "original_source_url": "https://clinicaltrials.gov/study/NCT03734029",
+      "external_id": "NCT03734029",
+      "title": "DESTINY-Breast04 / NCT03734029 registry record",
+      "published_at": null,
+      "first_known_at": "2026-08-22T18:00:00Z",
+      "expected_sha256": "6737c4734c439a7c5c0a0b41783d7a41bbc0c710724fef6d7ea491f6e6a0e04b",
+      "material_path": "clinicaltrials-destiny-breast04-current.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "retrieval_host": "clinicaltrials.gov",
+        "known_time_policy": "conservative_post_acquisition_upper_bound",
+        "source_cluster": "clinicaltrials-nct03734029-current-2026-08-22"
+      }
+    },
+    {
+      "key": "destiny-breast04-readout-2022",
+      "vintage_id": "SV003-2022-02-DESTINY-BREAST04-TOPLINE",
+      "source_key": "daiichi-issuer",
+      "retrieval_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/202202/20220221_E2.pdf",
+      "original_source_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/202202/20220221_E2.pdf",
+      "external_id": "2022-02-21-DESTINY-Breast04-high-level-readout",
+      "title": "ENHERTU Significantly Improved Both Progression-Free and Overall Survival in DESTINY-Breast04 Trial in Patients with HER2 Low Metastatic Breast Cancer",
+      "published_at": null,
+      "first_known_at": "2022-02-22T00:00:00Z",
+      "expected_sha256": "a50b03f980a3d8286ac57322e0bb13182875f687940973d6b8064976f0e83191",
+      "material_path": "daiichi-destiny-breast04-high-level-readout-2022-02-21.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.daiichisankyo.com",
+        "published_date_only": "2022-02-21",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "daiichi-destiny-breast04-topline-2022-02-21"
+      }
+    },
+    {
+      "key": "her2-low-us-approval-2022",
+      "vintage_id": "SV003-2022-08-US-HER2-LOW-APPROVAL",
+      "source_key": "daiichi-issuer",
+      "retrieval_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/202208/20220805_E.pdf",
+      "original_source_url": "https://www.daiichisankyo.com/files/news/pressrelease/pdf/202208/20220805_E.pdf",
+      "external_id": "2022-08-05-ENHERTU-US-HER2-low-approval",
+      "title": "ENHERTU Approved in the U.S. as the First HER2 Directed Therapy for Patients with HER2 Low Metastatic Breast Cancer",
+      "published_at": null,
+      "first_known_at": "2022-08-06T00:00:00Z",
+      "expected_sha256": "cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947",
+      "material_path": "daiichi-enhertu-us-her2-low-approval-2022.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.daiichisankyo.com",
+        "published_date_only": "2022-08-05",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "daiichi-enhertu-her2-low-us-approval-2022"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "collaboration-japan-exclusive-rights",
+      "document_key": "collaboration-2019",
+      "page": 1,
+      "excerpt": "except in Japan where Daiichi Sankyo will maintain exclusive rights.",
+      "claim_context": {
+        "claim_id": "SV003-C01",
+        "epistemic_layer": "reality",
+        "claim_role": "announced_territory_rights",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-collaboration-2019",
+        "territory": "Japan",
+        "counterparty": "Daiichi Sankyo",
+        "authority_boundary": "announced collaboration allocation, not a substitute for every clause of the executed agreement",
+        "known_time": {"upper_bound": "2019-03-30T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "collaboration-daiichi-manufacturing",
+      "document_key": "collaboration-2019",
+      "page": 1,
+      "excerpt": "Daiichi Sankyo will be solely responsible for manufacturing and the supply of",
+      "claim_context": {
+        "claim_id": "SV003-C02",
+        "epistemic_layer": "reality",
+        "claim_role": "announced_manufacturing_role",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-collaboration-2019",
+        "counterparty": "Daiichi Sankyo",
+        "known_time": {"upper_bound": "2019-03-30T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "initial-us-approval-indication-2019",
+      "document_key": "initial-us-approval-2019",
+      "page": 1,
+      "excerpt": "for the treatment of adult patients with unresectable or metastatic HER2 positive breast cancer who have received two or more prior anti-HER2-based regimens in the metastatic setting.",
+      "claim_context": {
+        "claim_id": "SV003-C03",
+        "epistemic_layer": "reality",
+        "claim_role": "issuer_reported_regulatory_approval_scope",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-initial-us-approval-2019",
+        "valid_effective_time": {"date": "2019-12-20", "precision": "day"},
+        "indication_branch": "HER2-positive unresectable/metastatic breast cancer after two or more prior anti-HER2 regimens",
+        "known_time": {"upper_bound": "2019-12-24T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "initial-us-accelerated-approval-pathway-2019",
+      "document_key": "initial-us-approval-2019",
+      "page": 1,
+      "excerpt": "This indication is approved under accelerated approval based on tumor response rate and duration of response.",
+      "claim_context": {
+        "claim_id": "SV003-C04",
+        "epistemic_layer": "reality",
+        "claim_role": "issuer_reported_accelerated_approval_pathway",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-initial-us-approval-2019",
+        "valid_effective_time": {"date": "2019-12-20", "precision": "day"},
+        "authority_boundary": "supports the 2019 initial indication's accelerated pathway only; says nothing about the legal pathway of the distinct August 2022 HER2-low supplement",
+        "known_time": {"upper_bound": "2019-12-24T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "initial-us-ild-boxed-warning-2019",
+      "document_key": "initial-us-approval-2019",
+      "page": 1,
+      "excerpt": "ENHERTU is approved with a Boxed WARNING for Interstitial Lung Disease (ILD)/pneumonitis and Embryo-Fetal Toxicity.",
+      "claim_context": {
+        "claim_id": "SV003-C05",
+        "epistemic_layer": "reality",
+        "claim_role": "safety_state_at_initial_us_approval",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-initial-us-approval-2019",
+        "valid_effective_time": {"date": "2019-12-20", "precision": "day"},
+        "safety_signal": "ILD/pneumonitis boxed warning",
+        "hindsight_guard": "risk state was contemporaneously visible before DESTINY-Breast04",
+        "known_time": {"upper_bound": "2019-12-24T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "destiny-breast04-registry-nct-id",
+      "document_key": "clinicaltrials-destiny-breast04-current",
+      "json_pointer": "/protocolSection/identificationModule/nctId",
+      "expected_value": "NCT03734029",
+      "claim_context": {
+        "claim_id": "SV003-C06",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_registry_identity_current",
+        "stance": "supports",
+        "source_cluster": "clinicaltrials-nct03734029-current-2026-08-22",
+        "role_boundary": "current registry identity only; do not backdate the current snapshot",
+        "known_time": {"upper_bound": "2026-08-22T18:00:00Z", "precision": "minute"}
+      }
+    },
+    {
+      "fragment_key": "destiny-breast04-registry-lead-sponsor",
+      "document_key": "clinicaltrials-destiny-breast04-current",
+      "json_pointer": "/protocolSection/sponsorCollaboratorsModule/leadSponsor/name",
+      "expected_value": "Daiichi Sankyo, Inc.",
+      "claim_context": {
+        "claim_id": "SV003-C07",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_lead_sponsor_current",
+        "stance": "supports",
+        "source_cluster": "clinicaltrials-nct03734029-current-2026-08-22",
+        "role_boundary": "registry lead-sponsor role is distinct from collaboration rights, manufacturing role and co-development economics",
+        "known_time": {"upper_bound": "2026-08-22T18:00:00Z", "precision": "minute"}
+      }
+    },
+    {
+      "fragment_key": "destiny-breast04-positive-topline-2022",
+      "document_key": "destiny-breast04-readout-2022",
+      "page": 1,
+      "excerpt": "demonstrated a statistically significant and clinically meaningful improvement in both progression-free survival (PFS) and overall survival (OS)",
+      "claim_context": {
+        "claim_id": "SV003-C08",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_readout_topline",
+        "stance": "supports",
+        "source_cluster": "daiichi-destiny-breast04-topline-2022-02-21",
+        "trial_id": "NCT03734029",
+        "readout_state": "positive topline PFS and OS",
+        "known_time": {"upper_bound": "2022-02-22T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "destiny-breast04-her2-low-definition-2022",
+      "document_key": "destiny-breast04-readout-2022",
+      "page": 1,
+      "excerpt": "HER2 low status was defined as an immunohistochemistry (IHC) score of 1+ or IHC2+ with a negative in-situ hybridization (ISH) score.",
+      "claim_context": {
+        "claim_id": "SV003-C09",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_biomarker_definition",
+        "stance": "supports",
+        "source_cluster": "daiichi-destiny-breast04-topline-2022-02-21",
+        "trial_id": "NCT03734029",
+        "biomarker_scope": "HER2-low = IHC 1+ or IHC 2+ with negative ISH",
+        "known_time": {"upper_bound": "2022-02-22T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "her2-low-us-approval-and-safety-2022",
+      "document_key": "her2-low-us-approval-2022",
+      "page": 1,
+      "excerpt": "for the treatment of adult patients with unresectable or metastatic HER2 low (IHC 1+ or IHC 2+/ISH-) breast cancer who have received a prior chemotherapy in the metastatic setting or developed disease recurrence during or within six months of completing adjuvant chemotherapy.",
+      "claim_context": {
+        "claim_id": "SV003-C10",
+        "epistemic_layer": "reality",
+        "claim_role": "issuer_reported_regulatory_approval_scope",
+        "stance": "supports",
+        "source_cluster": "daiichi-enhertu-her2-low-us-approval-2022",
+        "valid_effective_time": {"date": "2022-08-05", "precision": "day"},
+        "indication_branch": "HER2-low unresectable/metastatic breast cancer after specified prior chemotherapy",
+        "biomarker_scope": "IHC 1+ or IHC 2+/ISH-",
+        "known_time": {"upper_bound": "2022-08-06T00:00:00Z", "precision": "day"}
+      }
+    }
+  ],
+  "contradiction_checks": [
+    {
+      "claim_id": "SV003-C01-C02",
+      "would_contradict": "Executed collaboration text or a later amendment showing materially different Japan-rights or manufacturing allocation at the same relevant vintage. A later commercial arrangement alone does not rewrite the March 2019 announcement."
+    },
+    {
+      "claim_id": "SV003-C03-C05",
+      "would_contradict": "A contemporaneous FDA or issuer source showing a materially different December 2019 indication scope, non-accelerated pathway, or absence of the stated ILD/pneumonitis boxed warning."
+    },
+    {
+      "claim_id": "SV003-C06-C07",
+      "would_contradict": "The archived NCT03734029 JSON snapshot carrying a different NCT identity or lead-sponsor value at the same acquisition vintage."
+    },
+    {
+      "claim_id": "SV003-C08-C09",
+      "would_contradict": "A contemporaneous sponsor/regulator source showing the February 2022 topline did not report statistically significant PFS and OS improvement or used a materially different HER2-low definition."
+    },
+    {
+      "claim_id": "SV003-C10",
+      "would_contradict": "A contemporaneous regulator action or corrected issuer source showing a materially different August 2022 HER2-low U.S. indication population. The exact legal approval-pathway characterization is deliberately not asserted by this claim."
+    }
+  ],
+  "acceptance": {
+    "required_documents": 5,
+    "required_fragments": 10,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

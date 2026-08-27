@@ -1,0 +1,44 @@
+{
+  "schema_version": "longcycle-memory-judgment-discovery/v1",
+  "run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "packet_id": "SV1-SAMSUNG-RECOVERY-JUDGMENT-REVISION-2023",
+  "authority": "primary_source_discovery_only_not_grounded_evidence",
+  "lead_ids": ["MS-0024", "MS-0081", "MS-0099"],
+  "trajectory": [
+    {
+      "source_date": "2023-04-27",
+      "publisher": "Samsung Electronics",
+      "url": "https://news.samsung.com/global/samsung-electronics-announces-first-quarter-2023-results",
+      "judgment_scope": "memory demand and customer inventory normalization",
+      "target_window": "2H 2023",
+      "recalled_source_position": "Q2 demand recovery expected to remain limited; second-half demand expected to recover gradually as customer inventories decline after adjustments beginning in 2H 2022.",
+      "product_line_context": "DRAM Q1 bit growth missed prior guidance while NAND bit growth exceeded prior guidance; second-half DRAM and NAND product responses were described separately.",
+      "status": "content_observed_interactively_durable_capsule_pending"
+    },
+    {
+      "source_date": "2023-10-31",
+      "publisher": "Samsung Electronics",
+      "url": "https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2023-results",
+      "judgment_scope": "memory recovery after customer inventory adjustment",
+      "target_window": "4Q 2023 into 2024",
+      "recalled_source_position": "PC/mobile demand improved with customer inventory adjustments described as completed; both DRAM and NAND ASP increased QoQ, while Samsung stated memory market conditions were expected to recover in 2024 and overall demand to recover gradually as customer inventories normalize.",
+      "product_line_context": "HBM/DDR5/LPDDR5x/UFS were emphasized as high-value products, but broad memory recovery remained qualified by conventional-server weakness and macro uncertainty.",
+      "status": "content_observed_interactively_durable_capsule_pending"
+    },
+    {
+      "source_date": "2024-01-31",
+      "publisher": "Samsung Electronics",
+      "url": "https://news.samsung.com/global/samsung-electronics-announces-fourth-quarter-and-fy-2023-results",
+      "judgment_scope": "observed market recovery plus forward recovery pace",
+      "target_window": "1H/2H 2024",
+      "recalled_source_position": "Samsung reported market recovery versus the prior quarter, accelerated DRAM/NAND inventory depletion and DRAM profitability, while expecting moderate recovery in 1H 2024 and more significant improvement in 2H.",
+      "status": "content_observed_interactively_durable_capsule_pending"
+    }
+  ],
+  "interpretation_guard": "This packet records a source-dated evolving Judgment trajectory. It must not be flattened into a single forecast or evaluated using later information before normal Judgment/Outcome grounding. The April 2023 expectation is not silently overwritten by October 2023 or January 2024 statements.",
+  "next_evidence_work": [
+    "Durably capture the claim-scoped visible content/provenance for each source under CAP-0001/CAP-0002.",
+    "Represent each dated expectation as its own contemporaneous Judgment with target precision.",
+    "Only after source grounding, compare later observed inventory/price/profit conditions as Outcome without hindsight leakage."
+  ]
+}

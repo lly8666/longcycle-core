@@ -52,6 +52,129 @@ class FactValueKind(StrEnum):
     JSON = "json"
 
 
+class FactEvidenceRole(StrEnum):
+    SUPPORTING = "supporting"
+    CONTEXT = "context"
+    CAVEAT = "caveat"
+    CONTRADICTING = "contradicting"
+
+
+class JudgmentKind(StrEnum):
+    FORECAST = "forecast"
+    TARGET = "target"
+    GUIDANCE = "guidance"
+    SCENARIO = "scenario"
+    PROBABILITY = "probability"
+    RISK = "risk"
+    THESIS = "thesis"
+    COMMITMENT = "commitment"
+    CONSENSUS_STATEMENT = "consensus_statement"
+
+
+class JudgmentTargetTimeKind(StrEnum):
+    INSTANT = "instant"
+    PERIOD = "period"
+    TIMELESS = "timeless"
+    UNKNOWN = "unknown"
+
+
+class TemporalPrecision(StrEnum):
+    INSTANT = "instant"
+    SECOND = "second"
+    MINUTE = "minute"
+    HOUR = "hour"
+    DAY = "day"
+    WEEK = "week"
+    MONTH = "month"
+    QUARTER = "quarter"
+    HALF_YEAR = "half_year"
+    YEAR = "year"
+    RANGE = "range"
+    APPROXIMATE = "approximate"
+    UNKNOWN = "unknown"
+
+
+class JudgmentValueKind(StrEnum):
+    NUMERIC = "numeric"
+    NUMERIC_RANGE = "numeric_range"
+    TEXT = "text"
+    BOOLEAN = "boolean"
+    DATE = "date"
+    ENTITY = "entity"
+    JSON = "json"
+    DIRECTION = "direction"
+
+
+class JudgmentDirection(StrEnum):
+    UP = "up"
+    DOWN = "down"
+    FLAT = "flat"
+    POSITIVE = "positive"
+    NEGATIVE = "negative"
+    MIXED = "mixed"
+    UNCERTAIN = "uncertain"
+
+
+class JudgmentEvidenceRole(StrEnum):
+    STATEMENT = "statement"
+    RATIONALE = "rationale"
+    CONDITION = "condition"
+    CAVEAT = "caveat"
+    CONTEXT = "context"
+
+
+class JudgmentRationaleKind(StrEnum):
+    PREMISE = "premise"
+    MECHANISM = "mechanism"
+    CONDITION = "condition"
+    RISK = "risk"
+    CAVEAT = "caveat"
+    COUNTERARGUMENT = "counterargument"
+
+
+class JudgmentRelationType(StrEnum):
+    REVISES = "revises"
+    REAFFIRMS = "reaffirms"
+    WITHDRAWS = "withdraws"
+    NARROWS = "narrows"
+    WIDENS = "widens"
+    DEPENDS_ON = "depends_on"
+    SUPPORTS = "supports"
+    CONTRADICTS = "contradicts"
+
+
+class JudgmentOutcomeStatus(StrEnum):
+    REALIZED = "realized"
+    PARTIALLY_REALIZED = "partially_realized"
+    NOT_REALIZED = "not_realized"
+    NOT_YET_EVALUABLE = "not_yet_evaluable"
+    INVALIDATED = "invalidated"
+    INDETERMINATE = "indeterminate"
+
+
+class OutcomeSemanticRelation(StrEnum):
+    DIRECT_MATCH = "direct_match"
+    RELATED_MILESTONE = "related_milestone"
+    NOT_COMPARABLE = "not_comparable"
+
+
+class OutcomeTimingRelation(StrEnum):
+    WITHIN_TARGET_WINDOW = "within_target_window"
+    BEFORE_TARGET_WINDOW = "before_target_window"
+    AFTER_TARGET_WINDOW = "after_target_window"
+    OVERLAPS_TARGET_WINDOW = "overlaps_target_window"
+    NOT_COMPARABLE = "not_comparable"
+
+
+class TemporalDeltaUnit(StrEnum):
+    DAYS = "days"
+    WEEKS = "weeks"
+    CALENDAR_MONTHS = "calendar_months"
+    CALENDAR_QUARTERS = "calendar_quarters"
+    HALF_YEARS = "half_years"
+    CALENDAR_YEARS = "calendar_years"
+
+
 class JobStage(StrEnum):
     DISCOVER = "discover"
     FETCH = "fetch"

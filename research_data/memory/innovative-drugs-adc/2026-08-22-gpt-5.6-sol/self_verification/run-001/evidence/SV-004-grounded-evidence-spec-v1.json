@@ -1,0 +1,364 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "ADC-SV-004-RC48-GROUNDED-EVIDENCE-V1",
+  "acquisition_provenance": {
+    "control_issue": 93,
+    "workflow_run_id": 32582552363,
+    "source_head_sha": "61b5910877a50f3ee360d9cb001b262f5dc13c84",
+    "release_tag": "longcycle-dev-binary-cache",
+    "release_asset_file_name": "longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip",
+    "release_asset_size_bytes": 1739127,
+    "release_asset_sha256": "51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a",
+    "metadata_correction": "The acquisition workflow carried 2023-09-12 as metadata for RemeGen news id 1731. The archived issuer page itself states Release date: 2023.11.22, so Evidence known-time uses the source-supported 2023-11-22 publication date. Transport metadata never overrides archived source content."
+  },
+  "epistemic_guardrails": [
+    "The 2021 joint release supports announced license/territory terms, not every legal clause of the filed contract; do not silently promote press-release wording to contract-text authority.",
+    "RemeGen territory is Asia excluding Japan and Singapore; Japan and Singapore therefore remain outside the retained RemeGen territory in the announced agreement terms.",
+    "Pfizer's acquisition of Seagen does not by itself prove that Pfizer replaced Seagen as the named legal licensee under the 2021 agreement.",
+    "Pfizer group collaboration, Seagen trial sponsorship and RemeGen collaborator status are distinct roles and must not be collapsed into a generic partner relation.",
+    "The 2023 RemeGen urothelial source is a later recap of a 2021 approval. Preserve 2021-12-31 as valid/occurrence time and 2023-11-22/23 as the source's known-time boundary; do not backdate knowledge merely because the event occurred earlier.",
+    "Current pipeline and ClinicalTrials registry snapshots establish current operational roles only at their acquisition knowledge vintage unless an older archived version is separately grounded."
+  ],
+  "sources": [
+    {
+      "key": "remegen-joint-release",
+      "name": "RemeGen-hosted Seagen/RemeGen joint release",
+      "publisher_domain": "remegen.cn",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Joint participant statement directly announces the commercial territory and development allocation, while remaining distinct from the filed contract text."
+        }
+      ]
+    },
+    {
+      "key": "remegen-issuer",
+      "name": "RemeGen issuer pages",
+      "publisher_domain": "remegen.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "RemeGen issuer statements are primary for its own approval announcements, pipeline presentation and described collaboration state."
+        }
+      ]
+    },
+    {
+      "key": "pfizer-filing",
+      "name": "Pfizer Form 10-K",
+      "publisher_domain": "pfizer.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "legal_disclosure",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "legal_mandate",
+          "rationale": "Pfizer Form 10-K is a filed legal disclosure for Pfizer's consolidated R&D and collaboration presentation."
+        }
+      ]
+    },
+    {
+      "key": "clinicaltrials-registry",
+      "name": "ClinicalTrials.gov API",
+      "publisher_domain": "clinicaltrials.gov",
+      "kind": "government",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "third_party_fact",
+          "authority_class": "authoritative_primary",
+          "authority_basis": "official_record",
+          "rationale": "ClinicalTrials.gov is the authoritative registry record for the submitted current lead-sponsor and collaborator fields of NCT05911295."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "joint-license-release-2021",
+      "vintage_id": "SV004-2021-08-JOINT-LICENSE-RELEASE",
+      "source_key": "remegen-joint-release",
+      "retrieval_url": "https://www.remegen.cn/uploadfile/2022/04/16/202204161020582736.pdf",
+      "original_source_url": "https://www.remegen.cn/uploadfile/2022/04/16/202204161020582736.pdf",
+      "external_id": "2021-08-09-disitamab-license-joint-release",
+      "title": "Seagen and RemeGen Announce Exclusive Worldwide License and Co-Development Agreement for Disitamab Vedotin",
+      "published_at": null,
+      "first_known_at": "2021-08-10T00:00:00Z",
+      "expected_sha256": "1bd5859896df5f1374a0fbf366e58d160141709f7bb064241185abf377d24950",
+      "material_path": "remegen-seagen-joint-license-release-2021.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "www.remegen.cn",
+        "published_date_only": "2021-08-09",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "remegen-seagen-joint-license-release-2021"
+      }
+    },
+    {
+      "key": "gastric-approval-2021",
+      "vintage_id": "SV004-2021-06-GASTRIC-APPROVAL",
+      "source_key": "remegen-issuer",
+      "retrieval_url": "https://www.remegen.com/index.php?cid=115&id=386&v=show",
+      "original_source_url": "https://www.remegen.com/index.php?cid=115&id=386&v=show",
+      "external_id": "remegen-news-386",
+      "title": "Disitamab Vedotin has become the first ADC drug created and developed by a China biopharma to receive marketing approval!",
+      "published_at": null,
+      "first_known_at": "2021-06-11T00:00:00Z",
+      "expected_sha256": "7adcbc89b08556eaa25dafb1757f2226a5c4b6bbc66d559f92478f79324b650a",
+      "material_path": "remegen-gastric-approval-2021-06-09.html",
+      "content_type": "text/html",
+      "retrieval_provenance": {
+        "retrieval_host": "www.remegen.com",
+        "published_date_only": "2021-06-10",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "remegen-issuer"
+      }
+    },
+    {
+      "key": "urothelial-approval-recap-2023",
+      "vintage_id": "SV004-2023-11-UROTHELIAL-APPROVAL-RECAP",
+      "source_key": "remegen-issuer",
+      "retrieval_url": "https://www.remegen.com/index.php?cid=115&id=1731&v=show",
+      "original_source_url": "https://www.remegen.com/index.php?cid=115&id=1731&v=show",
+      "external_id": "remegen-news-1731",
+      "title": "JCO, a Top Oncology Journal, Published Research Results of Disitamab Vedotin of RemeGen in the Treatment of Urothelial Cancer",
+      "published_at": null,
+      "first_known_at": "2023-11-23T00:00:00Z",
+      "expected_sha256": "df25a64aa86b22a6850374e361339aca1389a7ccc01f4325c68f86965c8becbc",
+      "material_path": "remegen-urothelial-approval-date.html",
+      "content_type": "text/html",
+      "retrieval_provenance": {
+        "retrieval_host": "www.remegen.com",
+        "published_date_only": "2023-11-22",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "remegen-issuer",
+        "acquisition_metadata_discrepancy": "acquisition transport metadata said 2023-09-12; archived page says Release date: 2023.11.22"
+      }
+    },
+    {
+      "key": "pfizer-2024-10k",
+      "vintage_id": "SV004-2025-02-PFIZER-2024-10K",
+      "source_key": "pfizer-filing",
+      "retrieval_url": "https://s206.q4cdn.com/795948973/files/doc_financials/2024/ar/10K_Final.pdf",
+      "original_source_url": "https://investors.pfizer.com/files/doc_financials/2024/ar/10K_Final.pdf",
+      "external_id": "pfizer-2024-form-10-k",
+      "title": "Pfizer Inc. 2024 Form 10-K",
+      "published_at": null,
+      "first_known_at": "2025-02-28T00:00:00Z",
+      "expected_sha256": "152c8fe1e5a40805949e1519abb979b086c0268d85cd1c3ed05b64d78acc75bc",
+      "material_path": "pfizer-2024-10k-disitamab-collaboration.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "retrieval_host": "s206.q4cdn.com",
+        "published_date_only": "2025-02-27",
+        "known_time_policy": "conservative_next_day_utc_upper_bound",
+        "source_cluster": "pfizer-2024-form-10-k",
+        "upstream_announcement": {
+          "issuer": "Pfizer Inc.",
+          "system": "SEC Form 10-K / Pfizer investor relations",
+          "external_id": "pfizer-2024-form-10-k",
+          "title": "Pfizer Inc. 2024 Form 10-K"
+        }
+      }
+    },
+    {
+      "key": "remegen-current-pipeline",
+      "vintage_id": "SV004-2026-08-REMEGEN-CURRENT-PIPELINE",
+      "source_key": "remegen-issuer",
+      "retrieval_url": "https://www.remegen.com/?cid=102&v=listing",
+      "original_source_url": "https://www.remegen.com/?cid=102&v=listing",
+      "external_id": "remegen-pipeline-current-2026-08-22",
+      "title": "RemeGen Pipeline - Disitamab Vedotin global programs",
+      "published_at": null,
+      "first_known_at": "2026-08-22T16:00:00Z",
+      "expected_sha256": "73d89e0a3a7f39bf67302d311d369f8a30775b9f1562b027c996ae82da843d1a",
+      "material_path": "remegen-current-pipeline-pfizer-cooperation.html",
+      "content_type": "text/html",
+      "retrieval_provenance": {
+        "retrieval_host": "www.remegen.com",
+        "known_time_policy": "conservative_post_acquisition_upper_bound",
+        "source_cluster": "remegen-current-pipeline-2026-08-22"
+      }
+    },
+    {
+      "key": "clinicaltrials-nct05911295",
+      "vintage_id": "SV004-2026-08-NCT05911295",
+      "source_key": "clinicaltrials-registry",
+      "retrieval_url": "https://clinicaltrials.gov/api/v2/studies/NCT05911295",
+      "original_source_url": "https://clinicaltrials.gov/study/NCT05911295",
+      "external_id": "NCT05911295",
+      "title": "SGNDV-001 / NCT05911295 registry record",
+      "published_at": null,
+      "first_known_at": "2026-08-22T16:00:00Z",
+      "expected_sha256": "aadb6d74d774d7f895ac32c27937f6c4f22f774d9fe47b35c2c937123d77f6e3",
+      "material_path": "clinicaltrials-sgndv001-current-sponsor.json",
+      "content_type": "application/json",
+      "retrieval_provenance": {
+        "retrieval_host": "clinicaltrials.gov",
+        "known_time_policy": "conservative_post_acquisition_upper_bound",
+        "source_cluster": "clinicaltrials-nct05911295"
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "announced-remegen-retained-territory",
+      "document_key": "joint-license-release-2021",
+      "page": 2,
+      "excerpt": "RemeGen will retain development and commercialization rights for Asia, excluding Japan and Singapore.",
+      "claim_context": {
+        "claim_id": "SV004-C01",
+        "epistemic_layer": "reality",
+        "claim_role": "announced_rights_allocation",
+        "stance": "supports",
+        "source_cluster": "remegen-seagen-joint-license-release-2021",
+        "authority_boundary": "joint participant announcement, not filed contract text",
+        "territory": "Asia excluding Japan and Singapore",
+        "known_time": {"upper_bound": "2021-08-10T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "announced-global-development-allocation",
+      "document_key": "joint-license-release-2021",
+      "page": 2,
+      "excerpt": "Seagen will lead global development and RemeGen will fund and operationalize the portion of global clinical trials attributable to its territory.",
+      "claim_context": {
+        "claim_id": "SV004-C02",
+        "epistemic_layer": "reality",
+        "claim_role": "announced_development_role_allocation",
+        "stance": "supports",
+        "source_cluster": "remegen-seagen-joint-license-release-2021",
+        "authority_boundary": "joint participant announcement, not proof that every later trial has the same sponsor",
+        "known_time": {"upper_bound": "2021-08-10T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "china-gastric-approval-2021",
+      "document_key": "gastric-approval-2021",
+      "excerpt": "On June 9th, 2021, National Medical Products Administration(NMPA) announced that China's first independently developed antibody-drug conjugate (ADC)- Disitamab vedotin (trade name: Aidexi®, research code: RC48) was approved to market for the treatment of locally advanced or metastatic gastric cancer (including gastroesophageal junction adenocarcinoma) with HER2 over-expression in patients who have received at least two types of systemic chemotherapy.",
+      "claim_context": {
+        "claim_id": "SV004-C03",
+        "epistemic_layer": "reality",
+        "claim_role": "regulatory_approval_state",
+        "stance": "supports",
+        "source_cluster": "remegen-issuer",
+        "valid_time": {"date": "2021-06-09", "precision": "day"},
+        "scope": "locally advanced/metastatic gastric or GEJ adenocarcinoma, HER2 over-expression, after at least two systemic chemotherapy regimens",
+        "known_time": {"upper_bound": "2021-06-11T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "china-urothelial-approval-2021-later-recap",
+      "document_key": "urothelial-approval-recap-2023",
+      "excerpt": "Based on these two studies, the urothelial cancer indication of Disitamab Vedotin was approved for marketing in China by NMPA on December 31, 2021.",
+      "claim_context": {
+        "claim_id": "SV004-C04",
+        "epistemic_layer": "reality",
+        "claim_role": "regulatory_approval_state_later_recap",
+        "stance": "supports",
+        "source_cluster": "remegen-issuer",
+        "valid_time": {"date": "2021-12-31", "precision": "day"},
+        "population_context": "source discusses HER2-overexpressing (IHC 2+ or 3+) locally advanced/metastatic urothelial carcinoma",
+        "known_time": {"upper_bound": "2023-11-23T00:00:00Z", "precision": "day"},
+        "no_lookahead_boundary": "This source cannot make the approval replay-visible in 2021; an earlier source would be required for that knowledge vintage."
+      }
+    },
+    {
+      "fragment_key": "pfizer-2024-collaboration-state",
+      "document_key": "pfizer-2024-10k",
+      "page": 47,
+      "excerpt": "Disitamab vedotin is being developed in collaboration with RemeGen Co., Ltd.",
+      "claim_context": {
+        "claim_id": "SV004-C05",
+        "epistemic_layer": "reality",
+        "claim_role": "pfizer_group_collaboration_state",
+        "stance": "supports",
+        "source_cluster": "pfizer-2024-form-10-k",
+        "role_boundary": "Pfizer consolidated disclosure of collaboration; does not establish that Pfizer replaced Seagen as the named licensee or sponsor for every trial.",
+        "known_time": {"upper_bound": "2025-02-28T00:00:00Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "remegen-current-global-pfizer-cooperation",
+      "document_key": "remegen-current-pipeline",
+      "excerpt": "Combined PD-1 for 1L Urothelial Cancer Global Pivotal/Phase Ⅲ Cooperation with Pfizer",
+      "claim_context": {
+        "claim_id": "SV004-C06",
+        "epistemic_layer": "reality",
+        "claim_role": "current_pipeline_cooperation_state",
+        "stance": "supports",
+        "source_cluster": "remegen-current-pipeline-2026-08-22",
+        "role_boundary": "RemeGen pipeline presentation says Cooperation with Pfizer; this is not a legal-party substitution claim.",
+        "known_time": {"upper_bound": "2026-08-22T16:00:00Z", "precision": "minute"}
+      }
+    },
+    {
+      "fragment_key": "nct05911295-lead-sponsor",
+      "document_key": "clinicaltrials-nct05911295",
+      "json_pointer": "/protocolSection/sponsorCollaboratorsModule/leadSponsor/name",
+      "expected_value": "Seagen, a wholly owned subsidiary of Pfizer",
+      "claim_context": {
+        "claim_id": "SV004-C07",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_lead_sponsor",
+        "stance": "supports",
+        "source_cluster": "clinicaltrials-nct05911295",
+        "trial_id": "NCT05911295",
+        "role_boundary": "The registry names Seagen as lead sponsor while describing its Pfizer ownership; parent ownership is not itself the sponsor field.",
+        "known_time": {"upper_bound": "2026-08-22T16:00:00Z", "precision": "minute"}
+      }
+    },
+    {
+      "fragment_key": "nct05911295-collaborator-remegen",
+      "document_key": "clinicaltrials-nct05911295",
+      "json_pointer": "/protocolSection/sponsorCollaboratorsModule/collaborators/0/name",
+      "expected_value": "RemeGen Co., Ltd.",
+      "claim_context": {
+        "claim_id": "SV004-C08",
+        "epistemic_layer": "reality",
+        "claim_role": "trial_collaborator",
+        "stance": "supports",
+        "source_cluster": "clinicaltrials-nct05911295",
+        "trial_id": "NCT05911295",
+        "role_boundary": "Collaborator is a registry role distinct from lead sponsor, parent company and territory rights holder.",
+        "known_time": {"upper_bound": "2026-08-22T16:00:00Z", "precision": "minute"}
+      }
+    }
+  ],
+  "contradiction_checks": [
+    {
+      "claim_id": "SV004-C01-C02",
+      "would_contradict": "Filed contract or later amendment/termination showing materially different territory allocation or that the announced agreement never became operative; do not treat a later corporate acquisition alone as rights reversion."
+    },
+    {
+      "claim_id": "SV004-C03-C04",
+      "would_contradict": "NMPA/CDE original records showing different approval dates, indication scope or HER2 eligibility from the issuer statements."
+    },
+    {
+      "claim_id": "SV004-C05-C08",
+      "rule": "Do not reconcile Pfizer, Seagen and RemeGen into one partner identity. Check role and vintage first: parent/consolidated collaborator, legal licensee, lead sponsor and collaborator are separate claim scopes."
+    },
+    {
+      "claim_id": "SV004-C07-C08",
+      "would_contradict": "The archived NCT05911295 JSON snapshot naming a different lead sponsor or collaborator at the same knowledge vintage."
+    }
+  ],
+  "acceptance": {
+    "required_documents": 6,
+    "required_fragments": 8,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": "longcycle-blind-atlas-seal-review/v1",
+  "campaign_id": "ADC-20260822-GPT56SOL-001",
+  "reviewed_stage": "blind_recall_only",
+  "source_visibility": "none",
+  "contamination_check": {
+    "adc_web_search_used": false,
+    "adc_source_retrieval_used": false,
+    "search_snippets_used": false,
+    "selection_freshness_contents_imported": false,
+    "allowed_inputs": ["repository handoff/control plane","Longcycle Strategy/Method Core and model-memory exhaustion protocol","PILOT-000 scope/product acceptance/anti-contamination fields","non-ADC prior campaign directory/file conventions only","this model's unsourced memory plus earlier blind records in the same ADC campaign for atlas-only passes"]
+  },
+  "saturation_check": {
+    "policy": {"consecutive_low_novelty_passes":3,"max_high_importance_novel_per_low_pass":1},
+    "last_three_high_importance_novel_counts": [1,0,0],
+    "major_coverage_gaps_remain": false,
+    "required_long_tail_families_missing": [],
+    "passed": true
+  },
+  "raw_immutability": {
+    "rule": "Files under blind/ are immutable after this seal. Corrections/refinements must be separate artifacts.",
+    "files": [{"path":"research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind/passes-v1.jsonl","sha256":"5a8fbeaa843476c64464dbb507cfa658c7f449ae63168de0ede935d81e760bdf"}]
+  },
+  "seal_decision": "SEALED",
+  "stop_reason": "orthogonal_passes_reached_low_marginal_novelty",
+  "boundedness_note": "Seal means sufficient for the selected cross-industry semantic falsification pilot; it is not a claim that the entire ADC industry has been exhaustively remembered.",
+  "post_seal_rule": "Any web/search/self-verification must start in a new run and may only refine/search/verify; it cannot rewrite blind artifacts.",
+  "next_research_object": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/analysis/post-seal-pressure-candidates-v1.json"
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "longcycle-claim-scoped-evidence-task/v1",
+  "task_id": "EVT-001-KWINANA-GUIDANCE-TRAJECTORY",
+  "run_id": "UP-CHEMICALS-SV-001",
+  "shard_id": "UP-CHEMICALS",
+  "task_kind": "expectation_to_outcome_trajectory",
+  "claim_family": "Kwinana commissioning qualification ramp guidance",
+  "question": "At each dated disclosure vintage, what did Tianqi say Kwinana Train 1 would achieve next, when was that statement known, and what later primary disclosure revised or realized that milestone?",
+  "why_replay_critical": "The 2019-2020 lithium balance can be badly distorted if announced or commissioning-stage hydroxide capacity is counted as usable battery-grade supply. Kwinana provides a compact real trajectory from optimistic startup guidance through delayed qualification/ramp and later commercial production.",
+  "candidate_primary_urls": [
+    "https://en.tianqilithium.com/content/details17_41.html",
+    "https://en.tianqilithium.com/content/details17_259.html",
+    "https://en.tianqilithium.com/content/details17_725.html",
+    "https://en.tianqilithium.com/content/details17_700.html",
+    "https://en.tianqilithium.com/content/details17_1137.html"
+  ],
+  "required_time_semantics": {
+    "known_time": "publication or filing timestamp of each source",
+    "valid_time": "project milestone date or period described by that source",
+    "expectation_horizon": "future milestone date implied or explicitly forecast at that vintage",
+    "outcome": "later observed milestone must remain separate from earlier expectation"
+  },
+  "required_outputs": [
+    "fetch and archive the original source document or stable first-party page for each selected vintage",
+    "record source-document digest and immutable archive locator",
+    "extract only claim-scoped fragments about commissioning, first/qualified product, ramp, nameplate or commercial production",
+    "normalize source-defined milestone wording without erasing the original label",
+    "build ordered expectation revisions with known_time and expectation_horizon",
+    "attach later commercial-production evidence only as Outcome",
+    "record any contradiction or ambiguity rather than resolving by source count"
+  ],
+  "forbidden": [
+    "edit sealed blind Memory Leads",
+    "use a later retrospective to rewrite the content of an earlier expectation",
+    "treat duplicate Tianqi webpages as independent corroboration",
+    "promote a search snippet or unarchived URL to Evidence or Fact"
+  ],
+  "done_when": "At least four distinct dated Tianqi disclosure vintages are archived and the trajectory can show what was expected in 2018/2019, how the target changed by 2021, and the later commercial-production Outcome with every transition traceable to an original-source fragment."
+}

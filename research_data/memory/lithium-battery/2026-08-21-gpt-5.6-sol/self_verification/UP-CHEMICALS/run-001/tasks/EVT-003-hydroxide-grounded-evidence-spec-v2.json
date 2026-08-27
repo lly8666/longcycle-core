@@ -1,0 +1,177 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "EVT-003-HYDROXIDE-EXPECTATION-REDISTRIBUTED-EVIDENCE-V2",
+  "sources": [
+    {
+      "key": "annualreports-formal-filing",
+      "name": "AnnualReports formal filing redistribution",
+      "publisher_domain": "annualreports.com",
+      "kind": "data_vendor",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "industry_expectation",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "Complete listed-company Form 10-K PDF is preserved as a recognizable verbatim filing redistribution with issuer and SEC accession identity."
+        },
+        {
+          "claim_scope": "legal_disclosure",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "Complete listed-company Form 10-K PDF is preserved as a recognizable verbatim filing redistribution with issuer and SEC accession identity."
+        }
+      ]
+    },
+    {
+      "key": "prnewswire-issuer-release",
+      "name": "PR Newswire issuer-supplied release redistribution",
+      "publisher_domain": "prnewswire.com",
+      "kind": "news",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "industry_expectation",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "Issuer-supplied Livent release is redistributed verbatim with issuer, publication time, release identity and matching SEC 8-K exhibit identity preserved."
+        },
+        {
+          "claim_scope": "management_guidance",
+          "authority_class": "authoritative_redistributor",
+          "authority_basis": "verbatim_official_redistribution",
+          "rationale": "Issuer-supplied Livent release is redistributed verbatim with issuer, publication time, release identity and matching SEC 8-K exhibit identity preserved."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "livent-2018-10k",
+      "vintage_id": "LIVENT-HYDROXIDE-THESIS-2018-10K",
+      "source_key": "annualreports-formal-filing",
+      "retrieval_url": "https://www.annualreports.com/HostedData/AnnualReportArchive/l/NYSE_LTHM_2018.pdf",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm",
+      "external_id": "0001742924-19-000013",
+      "title": "Livent Corporation 2018 Form 10-K",
+      "published_at": "2019-02-28T21:12:00Z",
+      "first_known_at": "2019-02-28T21:12:59Z",
+      "expected_sha256": "1be8c5a50e6bc58cc2f44066d4c4e79296b2cc84a9bcdd321805691a3133a010",
+      "material_path": "livent-2018-10k-annualreports.pdf",
+      "content_type": "application/pdf",
+      "retrieval_provenance": {
+        "mode": "github_actions_approved_redistributor_acquisition",
+        "acquisition_run_id": 32568791877,
+        "artifact_id": 9474774438,
+        "transport_is_not_source_authority": true,
+        "identity_cross_checks": [
+          "Livent Corporation",
+          "Form 10-K",
+          "SEC accession 0001742924-19-000013",
+          "fiscal year ended 2018-12-31"
+        ],
+        "upstream_announcement": {
+          "issuer": "Livent Corporation",
+          "system": "SEC EDGAR",
+          "external_id": "0001742924-19-000013",
+          "title": "Livent Corporation 2018 Form 10-K",
+          "original_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm"
+        }
+      }
+    },
+    {
+      "key": "livent-2019q1-results-release",
+      "vintage_id": "LIVENT-HYDROXIDE-REVISION-2019Q1",
+      "source_key": "prnewswire-issuer-release",
+      "retrieval_url": "https://www.prnewswire.com/news-releases/livent-corporation-announces-first-quarter-2019-results-300845632.html",
+      "original_source_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000021/liventex991033119.htm",
+      "external_id": "300845632",
+      "title": "Livent Corporation Announces First Quarter 2019 Results",
+      "published_at": "2019-05-07T20:30:00Z",
+      "first_known_at": "2019-05-07T20:30:59Z",
+      "expected_sha256": "900981045b451644c9f44a450a46f5f011e77927523c22c6b03b3d6ad801de25",
+      "material_path": "livent-2019q1-prnewswire.html",
+      "content_type": "text/html; charset=UTF-8",
+      "retrieval_provenance": {
+        "mode": "github_actions_approved_redistributor_acquisition",
+        "acquisition_run_id": 32568791877,
+        "artifact_id": 9474774438,
+        "transport_is_not_source_authority": true,
+        "identity_cross_checks": [
+          "Livent Corporation",
+          "PR Newswire release 300845632",
+          "published 2019-05-07 16:30 ET",
+          "SEC 8-K accession 0001742924-19-000021 Exhibit 99.1"
+        ],
+        "upstream_announcement": {
+          "issuer": "Livent Corporation",
+          "system": "Livent issuer release / SEC EDGAR Exhibit 99.1",
+          "external_id": "0001742924-19-000021:EX-99.1",
+          "title": "Livent Corporation Announces First Quarter 2019 Results",
+          "original_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000021/liventex991033119.htm"
+        }
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "2018-structural-high-nickel-hydroxide-thesis",
+      "document_key": "livent-2018-10k",
+      "page": 18,
+      "excerpt": "Automotive OEMs have announced plans to introduce longer-range EV models using higher energy density batteries, and are increasingly doing so by moving to high nickel content cathode materials. This shift will increasingly require battery-grade lithium hydroxide in the production of cathode materials.",
+      "claim_context": {
+        "claim_role": "management_expectation",
+        "known_time": {
+          "upper_bound": "2019-02-28T21:12:59Z",
+          "precision": "minute",
+          "basis": "SEC filing availability cross-checked by filing index redistribution"
+        },
+        "expectation_semantics": {
+          "topic": "high-nickel cathode transition implies increasing battery-grade lithium hydroxide requirement",
+          "horizon": "future structural demand growth",
+          "vintage": "2018 Form 10-K"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019q1-demand-timing-revision",
+      "document_key": "livent-2019q1-results-release",
+      "excerpt": "Livent does not expect to see a meaningful change in demand for high-performance lithium hydroxide for use in high-nickel cathode chemistries until late 2019 or early 2020 and has reduced its full-year forecasts for volume and pricing accordingly.",
+      "claim_context": {
+        "claim_role": "management_expectation",
+        "known_time": {
+          "upper_bound": "2019-05-07T20:30:59Z",
+          "precision": "minute",
+          "basis": "PR Newswire issuer-release publication time"
+        },
+        "expectation_semantics": {
+          "topic": "high-nickel cathode transition timing and lithium hydroxide demand",
+          "horizon": "late 2019 or early 2020",
+          "revision_direction": "later/weaker near-term than prior expectation"
+        }
+      }
+    },
+    {
+      "fragment_key": "2019q1-customer-delay-rationale",
+      "document_key": "livent-2019q1-results-release",
+      "excerpt": "We are seeing weaker near-term demand for our high-performance lithium hydroxide, as several major customers have informed us about recent decisions to delay their own commercial launches of high-nickel cathode chemistries,\" continued Graves. \"This will result in lower delivered volumes of lithium hydroxide to these customers in 2019 than previously indicated and lower overall sales volumes for the year.",
+      "claim_context": {
+        "claim_role": "judgment_rationale",
+        "known_time": {
+          "upper_bound": "2019-05-07T20:30:59Z",
+          "precision": "minute",
+          "basis": "PR Newswire issuer-release publication time"
+        },
+        "mechanism": "customer high-nickel launch delays reduce near-term high-performance lithium hydroxide deliveries relative to prior indication"
+      }
+    }
+  ],
+  "acceptance": {
+    "required_documents": 2,
+    "required_fragments": 3,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}

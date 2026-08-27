@@ -1,0 +1,37 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-PROMOTION-READY-001",
+  "allowed_claim_roles": [
+    "issuer_reported_current_wafer_start_reduction"
+  ],
+  "subjects": [
+    {
+      "id": "eb2cb40d-1955-5b1f-a1d6-481b53d651d7",
+      "entity_type": "organization",
+      "canonical_name": "Micron Technology, Inc."
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2022-micron-dram-nand-wafer-start-reduction",
+      "evidence_fragment_key": "EVF-MICRON-CUT-PROMOTION",
+      "subject_entity_id": "eb2cb40d-1955-5b1f-a1d6-481b53d651d7",
+      "predicate_code": "operations.memory_wafer_start_reduction",
+      "value_text": "Micron was reducing DRAM and NAND wafer starts by approximately 20% versus fiscal Q4 2022.",
+      "valid_time_kind": "unknown",
+      "valid_time_precision": "unknown",
+      "observed_at": "2022-11-16T00:00:00Z",
+      "observed_at_precision": "day",
+      "observed_at_text": "November 16, 2022 announcement vintage",
+      "statistical_scope": "Micron DRAM + NAND wafer starts versus fiscal Q4 2022",
+      "metadata": {
+        "source_metric": "wafer_starts",
+        "magnitude_text": "approximately 20%",
+        "baseline": "fiscal Q4 2022",
+        "onset_guard": "The issuer wording establishes that the reduction was current by the November 16 announcement; it does not establish an earlier exact onset date.",
+        "comparability_guard": "Do not compare this 20% wafer-start reduction numerically with SK hynix's >50% investment guidance or Samsung's unspecified certain-product production-cut plan."
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-repair-invariant/v1",
+  "id": "RI-0007",
+  "status": "active",
+  "kind": "architecture",
+  "severity": "high",
+  "title": "Handoff layers preserve planning granularity and are re-read before commit",
+  "scope": [
+    ".longcycle/handoff/**",
+    "CONTINUE_HERE.md",
+    "docs/development/session-handoff-protocol.md",
+    "docs/development/continuity-architecture.md",
+    "docs/development/fresh-agent-continuity-drill.md",
+    "tests/test_session_handoff.py",
+    "tests/test_fresh_agent_continuity_drill.py"
+  ],
+  "tags": [
+    "handoff",
+    "fresh-agent",
+    "semantic-reread",
+    "continuity",
+    "tunnel-vision",
+    "temporal-freshness",
+    "deduplication",
+    "recovery-drill"
+  ],
+  "failure_signature": "A schema-valid handoff repeats one narrow blocker or next action across strategic horizon, cursor, campaign, workstream and ordered-action fields, or carries stale live/admission state, causing a fresh Agent to tunnel into the latest local task and miss the intended owner/history route.",
+  "root_cause": "The typed layers were introduced to preserve different planning horizons, but handoff writing became field-by-field and validation checked presence rather than whole-document semantic separation. Without a mandatory post-write reread, narrow tasks can collapse several layers into paraphrases and live fields can survive after their applicability changes.",
+  "invariant": "Every substantive handoff is a write-reread-normalize transaction. Preserve the original semantic scale of strategic horizon, workstream, cursor, campaign and CI fields; treat the cursor as the sole owner of the immediate task/next atomic action; refresh live facts without converting unobserved state into fact; reopen capability admission when a new material change falls outside the current admission; then re-read the final live target ref. Use continuity_sequence as the only scheduled Fresh-Agent drill counter and proactively raise every tenth handoff.",
+  "anti_regression": [
+    "Do not flatten strategic horizon, workstream and cursor into one TODO even when the current blocker is narrow.",
+    "Do not use bootstrap_instruction as a mini-devlog or duplicate current campaign/commit narrative that already has typed owners.",
+    "Do not consider schema validity sufficient; re-read the complete final handoff and remove semantic duplication or stale live state before commit.",
+    "Do not create a second mutable drill counter; scheduled cadence is derived from continuity_sequence.",
+    "Do not let a same-Agent rehearsal satisfy the every-tenth genuine Fresh-Agent drill requirement.",
+    "Manual or event-triggered drills may happen at any time but do not reset the fixed every-ten sequence cadence."
+  ],
+  "guards": [
+    {
+      "kind": "test",
+      "path": "tests/test_session_handoff.py",
+      "contains": "HANDOFF_SEMANTIC_REREAD_V1",
+      "description": "Handoff contract tests require the closing-Agent semantic reread rule to remain visible and keep bootstrap_instruction procedural."
+    },
+    {
+      "kind": "test",
+      "path": "tests/test_fresh_agent_continuity_drill.py",
+      "contains": "FRESH_AGENT_DRILL_CADENCE_V1",
+      "description": "Fresh-Agent drill tests pin the every-ten continuity_sequence cadence and manual-trigger non-reset rule."
+    },
+    {
+      "kind": "protocol",
+      "path": "CONTINUE_HERE.md",
+      "contains": "HANDOFF_SEMANTIC_REREAD_V1",
+      "description": "Every substantive session sees the write-reread-normalize closing discipline from the normal bootstrap path."
+    }
+  ],
+  "revisit_when": "Revisit only if handoff generation becomes transactionally derived from stronger typed state with an independently verified semantic recovery test, so manual whole-document reread and explicit cadence are no longer needed to prevent granularity or freshness drift.",
+  "origin_refs": [
+    "incident:sequence-87-handoff-granularity-collapse",
+    "docs/development/continuity-architecture.md",
+    "docs/development/session-handoff-protocol.md",
+    ".longcycle/handoff/current.json",
+    ".longcycle/handoff/rehearsals/README.md"
+  ],
+  "supersedes": []
+}

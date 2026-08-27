@@ -1,0 +1,121 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0112-SERVER-PLATFORM-DEMAND-BRIDGE-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0112-server-platform-demand-bridge-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/storage-ms0112-server-platform-grounded-evidence.yml",
+    "run_id": 32952946346,
+    "head_sha": "5c25791ee1bfdce170a0d80e0687f46bae3661fb",
+    "conclusion": "success",
+    "artifact_id": 9600884705,
+    "artifact_name": "storage-ms0112-server-platform-32952946346",
+    "artifact_digest": "sha256:233486538539922ec2cbbb7cde920cd3b3042ced1785e47a90530a9c3f72e463"
+  },
+  "acceptance": {
+    "persisted_document_versions": 3,
+    "persisted_evidence_fragments": 6,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "scope_separation_assertions_passed": true
+  },
+  "identity_derivation": {
+    "method": "deterministically_rederived_from_pinned_execution_inputs",
+    "rule_owner": "src/longcycle/domain/models.py stable_uuid_exact plus SourceDocument.from_payload, DocumentArtifact.create and EvidenceFragment.create",
+    "reason": "The Actions artifact is a ZIP and the conversation file text reader does not expand ZIP members. Longcycle identities are deterministic over pinned source identity, canonical URL, external id, content digest, parser identity, locator and canonical fragment payload, so the IDs below are reproducible without inventing runtime state.",
+    "execution_consistency": "Dedicated run 32952946346 successfully persisted exactly 3 document versions and 6 EvidenceFragments from the same pinned spec and material digests."
+  },
+  "source_connectors": [
+    {
+      "source": "Microsoft Investor Relations",
+      "source_connector_id": "31311bdb-76c2-5a0f-aca5-65f5364cf148",
+      "authority_class": "primary_self_statement",
+      "claim_scope": "self_statement"
+    },
+    {
+      "source": "Micron Investor Relations — Q3 FY2024 prepared remarks",
+      "source_connector_id": "fb28a712-d971-5be3-851d-0692cec356f0",
+      "authority_class": "primary_self_statement",
+      "claim_scope": "management_guidance"
+    },
+    {
+      "source": "AMD Investor Relations",
+      "source_connector_id": "cab7c9ab-1b58-5583-96ab-80b19f5e4924",
+      "authority_class": "authoritative_primary",
+      "claim_scope": "technical_specification"
+    }
+  ],
+  "documents": [
+    {
+      "document_key": "microsoft_cloud_ai_capex_2024_07_30",
+      "document_id": "2cb192e2-fa49-5811-b084-6dba13e83121",
+      "content_sha256": "bf889a90b2aeaa77b370681efe14e3dda895bfba96651ea9d9fb1f67f602e40c",
+      "first_known_at": "2024-07-31T00:00:00Z"
+    },
+    {
+      "document_key": "micron_server_platform_cycle_2024_06_26",
+      "document_id": "7a862577-4d0e-5eff-bbf6-b6afe70c506c",
+      "content_sha256": "78cd31ed10523f56813e99467fa6e481b8a6fa9445eec3e8e51392f72d5dc0c6",
+      "first_known_at": "2024-06-27T00:00:00Z"
+    },
+    {
+      "document_key": "amd_epyc_turin_ddr5_2024_10_10",
+      "document_id": "28f88aa3-0a4a-5c6e-b86a-569299fa7ad4",
+      "content_sha256": "ac5899ea4b1e72c881593391d12ecbebd6e6db8bddce28d92653c25b9075368f",
+      "first_known_at": "2024-10-11T00:00:00Z"
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "EVF-MS0112-MICROSOFT-CLOUD-AI-SERVER-SPEND",
+      "evidence_fragment_id": "9280e257-35e2-5537-8355-c89e4b919497",
+      "fragment_sha256": "0963a764faf6bf7fadbfceac199a647bc1eb16ecad4b10a961447484b32a19b2",
+      "claim_role": "hyperscaler_capex_server_procurement",
+      "epistemic_layer": "evidence_only_hyperscaler_capex_composition"
+    },
+    {
+      "fragment_key": "EVF-MS0112-MICRON-2024-SERVER-UNIT-FORECAST",
+      "evidence_fragment_id": "9c9c2614-2659-53a6-9de3-0aefb8aad6b4",
+      "fragment_sha256": "c822e51de1f7d0ef3273252b203248ff62ad8ab2070648b04a47626c8c1fc0f2",
+      "claim_role": "server_unit_growth_expectation",
+      "epistemic_layer": "evidence_only_industry_expectation"
+    },
+    {
+      "fragment_key": "EVF-MS0112-MICRON-AI-SERVER-ROADMAP-CADENCE",
+      "evidence_fragment_id": "4e19f166-0155-5d99-927c-70a92e004408",
+      "fragment_sha256": "1dea213e7dbf6a3a35ee4c6085e965c86e838978a5a686caeb30609cde2ace0a",
+      "claim_role": "customer_ai_server_product_roadmap_cadence",
+      "epistemic_layer": "evidence_only_reported_customer_roadmap"
+    },
+    {
+      "fragment_key": "EVF-MS0112-AMD-EPYC-FIFTH-GENERATION",
+      "evidence_fragment_id": "e481d16a-d4f8-5600-af7e-f4c5f8709ad1",
+      "fragment_sha256": "eb3d439688f5da4988ede0c522af8c4b18eb4fdd8ab52885219ade5ab5ef7ba9",
+      "claim_role": "server_cpu_platform_generation",
+      "epistemic_layer": "evidence_only_platform_generation"
+    },
+    {
+      "fragment_key": "EVF-MS0112-AMD-EPYC-SP5-COMPATIBILITY",
+      "evidence_fragment_id": "17dc3d6e-9bd1-538a-b95d-e8adef7f2231",
+      "fragment_sha256": "1f49d54bfb81ecef7c49087603fcfe607e58c7b1e7269debd4302748fcd8cc66",
+      "claim_role": "server_cpu_platform_compatibility",
+      "epistemic_layer": "evidence_only_platform_compatibility"
+    },
+    {
+      "fragment_key": "EVF-MS0112-AMD-EPYC-DDR5-CHANNELS",
+      "evidence_fragment_id": "ea57ba7e-13e9-587e-a4e4-92fc8a938914",
+      "fragment_sha256": "28d015ddeb709e6c0762f0b25167bab54337136641b31a529a1d5e90161a599b",
+      "claim_role": "server_cpu_ddr5_memory_interface",
+      "epistemic_layer": "evidence_only_memory_interface"
+    }
+  ],
+  "semantic_guards": [
+    "Microsoft cloud/AI capex composition establishes server CPU/GPU procurement tied to customer demand signals but no DRAM, NAND, HBM or SSD quantity.",
+    "Micron's calendar-2024 mid-to-high-single-digit server-unit growth statement is a contemporaneous expectation, not realized server shipment Reality.",
+    "Micron's report of annual new-product cadence on customer AI-server roadmaps is roadmap evidence, not proof of shipment timing, installed-base turnover or downstream memory consumption.",
+    "AMD 5th Gen EPYC generation, SP5 compatibility and 12-channel DDR5 support are platform facts, not evidence of adoption volume, populated DIMMs, DRAM bits per server or enterprise-SSD demand.",
+    "The packet proves that hyperscaler capital allocation and server-platform cycles can be represented as separate upstream axes. It does not prove a causal coefficient linking either axis to DRAM bits or enterprise-SSD bits.",
+    "Grounded Evidence creates no Fact or Judgment and no synthetic data-center demand scalar."
+  ]
+}

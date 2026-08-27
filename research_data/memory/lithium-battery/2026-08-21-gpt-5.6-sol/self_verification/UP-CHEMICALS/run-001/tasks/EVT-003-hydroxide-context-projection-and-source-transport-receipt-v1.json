@@ -1,0 +1,78 @@
+{
+  "schema_version": "longcycle-research-execution-receipt/v1",
+  "task_id": "EVT-003-HYDROXIDE-CONTEXT-AND-SOURCE-TRANSPORT-V1",
+  "parent_task_id": "EVT-003-HYDROXIDE-EXPECTATION-REVISION-V1",
+  "campaign_id": "2026-08-21-gpt-5.6-sol",
+  "industry": "lithium-battery",
+  "shard": "UP-CHEMICALS",
+  "authority_class": "curated_research_assessment_and_execution_receipt",
+  "substantive_code_head": "6faeb9298381399455c982173a947423985607b8",
+  "completed": {
+    "grounded_judgment_context_projection": {
+      "status": "verified",
+      "files": [
+        "src/longcycle/application/judgment_context_projection.py",
+        "scripts/execute_grounded_judgment_context.py",
+        "tests/test_judgment_context_projection.py"
+      ],
+      "purpose": "Project source-backed JudgmentRationale and JudgmentRelation objects around already-grounded Judgments without adding lithium-specific schema or migrations.",
+      "guards": [
+        "rationale Evidence known-time must not exceed the owning Judgment first_known_at",
+        "linked Judgment rationale input must not come from a later knowledge vintage",
+        "revision-family relations require the same Judgment subject and topic",
+        "revision-family relations point from later-or-equal cognition to earlier cognition",
+        "context keys and allowed rationale claim roles fail closed"
+      ],
+      "verification_run_id": 32562077475,
+      "verification": {
+        "postgresql_major": 17,
+        "migrations_through": "0024",
+        "mypy": "75 source files, no issues",
+        "focused_tests": "15 passed",
+        "postgres_epistemic_smoke": "PASS",
+        "full_pytest": "228 passed",
+        "blind_memory_mutation": "none"
+      }
+    },
+    "source_semantic_probe": {
+      "status": "sufficient_to_continue_bounded_recovery",
+      "livent_2018_10k": {
+        "sec_accession": "0001742924-19-000013",
+        "sec_primary_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm",
+        "same_filing_pdf_transport_candidate": "https://d18rn0p25nwr6d.cloudfront.net/CIK-0001742924/e6acfd3e-13e3-4827-86d8-dab653a7d0f2.pdf",
+        "identity_observation": "The PDF identifies Livent Corporation, Form 10-K, fiscal year ended 2018-12-31 and the same SEC filing accession family.",
+        "target_claim_observation": "The filing states that automotive OEMs were moving toward high-nickel cathode materials and that this shift would increasingly require battery-grade lithium hydroxide in cathode production.",
+        "archive_status": "not_yet_archived_by_grounded_evidence_executor",
+        "transport_status": "candidate_available_for_exact_byte_hashing"
+      },
+      "livent_2019q1_10q": {
+        "sec_accession": "0001742924-19-000025",
+        "sec_primary_url": "https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/livent03311910q.htm",
+        "target_claim_observation": "The contemporaneous filing states that the transition to higher-nickel cathode chemistries was progressing more slowly than anticipated, delaying lithium-hydroxide sales, with some customers using lower-cost carbonate or lower-performance hydroxide.",
+        "archive_status": "blocked_pending_authoritative_or_strongly_verified_same_content_transport",
+        "transport_status": "no_company_or_equivalent_same_content_byte_transport_verified_yet"
+      }
+    }
+  },
+  "retrieval_probe": {
+    "run_id": 32561514325,
+    "status": "failed_closed",
+    "result": "GitHub-hosted runner received HTTP 403 from direct SEC filing fetch before any source bytes were accepted into the archive.",
+    "interpretation": "This is a transport/access constraint, not evidence against the filing and not permission to downgrade source authority.",
+    "forbidden_fallback": "Do not treat a third-party filing mirror or search snippet as canonical source truth merely because SEC blocks the runner."
+  },
+  "semantic_assessment": {
+    "revises_edge_status": "not_persisted_yet",
+    "current_view": "The 2019 Q1 statement is strong evidence of a negative revision to the expected pace of the high-nickel-to-hydroxide transition. Whether it formally REVISES the full 2018 structural thesis must be decided only after both source vintages are archived and projected under one explicit subject/topic identity.",
+    "outcome_status": "not_required_at_this_stage",
+    "ambiguity_policy": "Preserve separate Judgment vintages if the semantic identity required for REVISES is not cleanly supportable."
+  },
+  "next_atomic_action": "Resolve an authoritative or strongly verifiable same-content byte transport for the Livent 2019 Q1 10-Q. Then hash/archive the locked 2018 10-K and 2019 Q1 10-Q, create EVT-003-hydroxide-evidence-spec-v1.json with conservative known-time bounds, and only after successful grounded Evidence execution project the two Judgment vintages plus source-backed rationale/revision context.",
+  "scope_guards": [
+    "Remain inside sealed UP-CHEMICALS.",
+    "Do not broaden into generic lithium-history search.",
+    "Do not mutate sealed blind-memory artifacts.",
+    "Do not create a formal REVISES relation before both vintages are grounded in archived Evidence.",
+    "Do not manufacture a later Outcome solely to complete a three-layer pattern."
+  ]
+}

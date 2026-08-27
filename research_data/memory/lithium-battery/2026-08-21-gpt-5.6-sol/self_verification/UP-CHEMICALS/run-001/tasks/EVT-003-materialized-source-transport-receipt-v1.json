@@ -1,0 +1,149 @@
+{
+  "schema_version": "longcycle-materialized-source-transport-receipt/v1",
+  "task_id": "EVT-003-MATERIALIZED-SOURCE-TRANSPORT-V1",
+  "status": "runtime_proven_transport_ready_real_source_material_pending",
+  "mission_alignment": {
+    "problem": "The locked Livent 2019 Q1 SEC filing is semantically identified, but direct SEC retrieval from GitHub-hosted execution returned HTTP 403 and no sufficiently authoritative first-party or strongly verified same-content mirror was available.",
+    "decision": "Add one generic materialized-file transport at the source acquisition boundary rather than downgrade source authority, introduce SEC-specific evidence semantics, or fork the grounded Evidence executor.",
+    "principle": "The local file is transport only. Evidence authority remains the publisher identity, canonical source URL, external source identifier, source-supported known-time and SHA-pinned source bytes.",
+    "no_local_optimization": "The transport was developed only because the real EVT-003 source path exposed a reusable acquisition blocker. It is now runtime-proven and should not receive further framework refinement unless real source replay exposes another defect."
+  },
+  "source_access_incident": {
+    "locked_source": "Livent 2019 Q1 Form 10-Q",
+    "sec_accession": "0001742924-19-000025",
+    "sec_primary_document": "livent03311910q.htm",
+    "github_hosted_sec_result": "HTTP 403 Forbidden",
+    "authority_policy": "Do not substitute an unverified third-party mirror merely to complete the trajectory.",
+    "remaining_retrieval_state": "Actual verified 2019 Q1 raw bytes have not yet been archived or materialized."
+  },
+  "implementation": {
+    "substantive_commits": [
+      {
+        "sha": "a3895aab5ecbdf7bc0e5e83fcc114cc313986039",
+        "message": "feat: add materialized source transport"
+      },
+      {
+        "sha": "e1cf0b9b80669e3df50638d8e39ead995b3eb051",
+        "message": "test: use regulator source kind for materialized transport"
+      },
+      {
+        "sha": "ffbdc6f28cdc2d3cf0045b64b1cf4014bb9bc04e",
+        "message": "test: add materialized grounded evidence smoke"
+      },
+      {
+        "sha": "4a551e4b85f9c643de28644935a7ed841b1ed6c2",
+        "message": "ci: prove materialized grounded evidence path"
+      }
+    ],
+    "files": [
+      "src/longcycle/adapters/sources/materialized.py",
+      "src/longcycle/application/source_registration.py",
+      "scripts/execute_grounded_evidence_spec.py",
+      "tests/test_materialized_source.py",
+      "scripts/smoke_materialized_grounded_evidence.py",
+      ".github/workflows/ci.yml"
+    ],
+    "generic_contract": {
+      "source_plugin": "materialized_file",
+      "grounded_evidence_schema": "longcycle-grounded-evidence-spec/v2",
+      "legacy_http_schema_compatibility": "longcycle-grounded-evidence-spec/v1 remains supported without modification",
+      "cli_input": "--material-root",
+      "required_materialized_document_fields": [
+        "material_path",
+        "expected_sha256",
+        "content_type"
+      ],
+      "source_identity_preserved": [
+        "publisher_domain",
+        "canonical retrieval/source URL",
+        "external source identifier",
+        "published_at / first_known_at",
+        "source quality and kind"
+      ],
+      "downstream_path": "MaterializedDocumentSource -> DocumentArchiver -> content-addressed archive -> normal parser artifact -> ArchivedEvidenceRecorder -> EvidenceFragment",
+      "fact_promotion": false,
+      "judgment_promotion": false
+    },
+    "safety_guards": [
+      "material_path must be relative to the configured material root",
+      "absolute paths are rejected",
+      "parent traversal using .. is rejected",
+      "resolved paths and symlinks may not escape the material root",
+      "materialized documents require an exact lowercase SHA-256",
+      "bytes are SHA-256 verified before entering the immutable archive",
+      "maximum source byte limits remain enforced",
+      "content type is explicit",
+      "the canonical source URL is never replaced by a local transport path"
+    ],
+    "industry_specific_conditionals": false,
+    "database_migration_added": false
+  },
+  "runtime_integration_proof": {
+    "ci_head_sha": "4a551e4b85f9c643de28644935a7ed841b1ed6c2",
+    "workflow_run_id": 32563367138,
+    "workflow_job_id": 97008292476,
+    "workflow_run_number": 1012,
+    "materialized_smoke": {
+      "result": "MATERIALIZED_GROUNDED_EVIDENCE_SMOKE_PASS",
+      "fixture_raw_sha256": "8dc9fbf64255c8bad49058bc8e35038f07cd068589914f3de3cfeb818a15e36e",
+      "fixture_visible_text_sha256": "1b218bdf2962a1c06376a4aae83930ae39c96742e6eff67aeb5654346d939f57",
+      "transport_plugin": "materialized_file",
+      "canonical_source_url_preserved": true,
+      "content_addressed_archive_exact_bytes": true,
+      "normal_html_visible_text_artifact": true,
+      "persisted_evidence_fragments": 1,
+      "fact_assertions_created": 0,
+      "judgment_assertions_created": 0
+    },
+    "hard_gates": {
+      "repair_memory_audit": "PASS cards=4 active=4",
+      "postgres_migrations": "PASS through 0024_canonical_observation_time.sql",
+      "postgres_repository_smoke": "PASS",
+      "postgres_judgment_smoke": "PASS",
+      "postgres_reality_smoke": "PASS",
+      "postgres_epistemic_memory_smoke": "PASS",
+      "materialized_grounded_evidence_smoke": "PASS",
+      "no_lookahead_replay_smoke": "PASS",
+      "no_lookahead_judgment_replay_smoke": "PASS",
+      "mypy": "Success: no issues found in 76 source files",
+      "pytest": "233 passed in 1.49s",
+      "memory_compact_indexes": "14 shards built",
+      "memory_history": {
+        "commits": 646,
+        "unique_blind_trees": 72,
+        "current_raw": 683,
+        "current_formal_typed": 625,
+        "candidates_exceeding_current": 0
+      },
+      "ruff": "diagnostic-only campaign debt remains; no Ruff cleanup was treated as a blocking product task"
+    }
+  },
+  "evt_003_state": {
+    "2018_10k": {
+      "semantic_source_identity_known": true,
+      "first_party_pdf_transport_candidate_known": true,
+      "actual_bytes_archived_in_evt_003": false,
+      "raw_sha_locked_in_final_evt_003_spec": false
+    },
+    "2019_q1_10q": {
+      "semantic_source_identity_known": true,
+      "negative_revision_language_known": true,
+      "actual_verified_raw_bytes_available": false,
+      "actual_bytes_archived_in_evt_003": false,
+      "raw_sha_locked_in_final_evt_003_spec": false
+    },
+    "formal_revision_relation_persisted": false,
+    "reason_not_complete": "The transport capability is proven, but the real 2019 Q1 filing bytes are still missing. No formal REVISES relation may be persisted until both source-backed Judgment vintages exist and same-object semantics plus chronology justify the relation."
+  },
+  "next_atomic_action": "Acquire the exact or strongly verified same-content Livent 2019 Q1 filing bytes in an approved acquisition/manual-relay environment, compute and pin the raw SHA-256, place the bytes under a bounded material root, then author and execute the final two-document grounded Evidence v2 spec for 2018 10-K and 2019 Q1 10-Q.",
+  "done_when": [
+    "2018 and 2019 filing source identities and known-times are source-supported",
+    "both real source byte payloads have locked SHA-256 digests",
+    "grounded Evidence v2 archives both through the normal immutable archive path",
+    "claim-scoped Evidence fragments are persisted with no Fact/Judgment promotion by the Evidence executor",
+    "two source-backed Judgment vintages are persisted",
+    "REVISES is persisted only if same semantic object and chronology are actually established",
+    "the resulting cognition history passes PostgreSQL to sealed DuckDB typed replay with no-lookahead"
+  ],
+  "stop_rule": "Do not add more generic source/archive/schema infrastructure before attempting the real two-vintage EVT-003 replay. Only a concrete defect exposed by that replay justifies reopening architecture work."
+}

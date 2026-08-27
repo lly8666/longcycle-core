@@ -1,0 +1,15 @@
+{
+  "source_file": "self-gap-batch2-v4.jsonl",
+  "repair_policy": "structural_only_no_new_historical_content",
+  "repairs": [
+    {
+      "lead_id": "ELY-H006",
+      "field": "lead_kind",
+      "original": "metric_definition",
+      "repaired": "metric",
+      "reason": "metric_definition is not an allowed MemoryLeadKind; the recalled claim is a metric-definition lead and maps structurally to metric"
+    }
+  ],
+  "raw_file_must_remain_unchanged": true,
+  "ingestion_rule": "apply repair overlay before typed candidate validation"
+}

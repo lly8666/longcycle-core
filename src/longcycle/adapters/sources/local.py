@@ -28,7 +28,11 @@ class LocalFolderSource:
         for pattern in self.patterns:
             for path in sorted(self.root.glob(pattern)):
                 resolved = path.resolve()
-                if resolved in seen or not resolved.is_file() or not resolved.is_relative_to(self.root):
+                if (
+                    resolved in seen
+                    or not resolved.is_file()
+                    or not resolved.is_relative_to(self.root)
+                ):
                     continue
                 seen.add(resolved)
                 stat = resolved.stat()
@@ -55,7 +59,15 @@ class LocalFolderSource:
         if len(content) > context.maximum_bytes:
             raise ValueError(f"file exceeds {context.maximum_bytes} bytes")
         content_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
-        return RawPayload(content=content, content_type=content_type, canonical_url=item.url)
+        return RawPayload(
+            content=content,
+            content_type=content_type,
+            canonical_url=item.url,
+            headers={
+                "x-longcycle-transport": self.plugin_name,
+                "x-longcycle-raw-source-materialized": "true",
+            },
+        )
 
     @staticmethod
     def _read_limited(path: Path, maximum_bytes: int) -> bytes:

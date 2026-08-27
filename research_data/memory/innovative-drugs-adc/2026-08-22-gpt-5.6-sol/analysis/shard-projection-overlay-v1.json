@@ -1,0 +1,10 @@
+{
+  "schema_version": "longcycle-deterministic-projection-overlay/v1",
+  "campaign_id": "ADC-20260822-GPT56SOL-001",
+  "reason": "The post-seal one-lead-per-line shard projections were added solely for existing handoff/audit line-count compatibility. Their in-record projection_of string is a non-authoritative hint and should not be resolved as a filesystem-relative locator.",
+  "canonical_projection_source": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind/passes-v1.jsonl",
+  "canonical_projection_source_sha256": "5a8fbeaa843476c64464dbb507cfa658c7f449ae63168de0ede935d81e760bdf",
+  "affected_pattern": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind/<shard_id>/sealed-leads-v1.jsonl",
+  "correction_policy": "Do not mutate sealed blind/projection files in place. Consumers must use this overlay for canonical source resolution.",
+  "epistemic_effect": "none; identity/provenance projection only, no Memory Lead content or status changed"
+}

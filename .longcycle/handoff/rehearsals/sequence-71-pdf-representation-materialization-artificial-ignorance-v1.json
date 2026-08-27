@@ -1,0 +1,84 @@
+{
+  "schema_version": "longcycle-artificial-ignorance-rehearsal/v1",
+  "continuity_sequence": 71,
+  "tested_head_sha": "6cc21305e44ee4f0a571b1be8674d5a0f4dcb24f",
+  "mode": "repository_only_artificial_ignorance",
+  "chat_history_allowed": false,
+  "challenge": "A fresh Agent must decide how to handle: (a) a mainstream official PDF whose identity/locator is verified but claim-relevant content is unread; (b) a PDF whose claim-relevant content was actually read and faithfully preserved as a readable local representation, producing a Longcycle document version while raw upstream PDF bytes remain unavailable; (c) later raw PDF materialization; (d) new research orchestration; and (e) historical Release/source-pack receipts. It must state whether document_version implies raw materialization and whether GitHub Actions should be created merely to download the PDF.",
+  "inputs_read": [
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "METHODOLOGY_CORE.md",
+    "CONTINUE_HERE.md",
+    ".longcycle/handoff/current.json",
+    ".longcycle/handoff/data-plane.json",
+    ".longcycle/capabilities/active-index.json",
+    ".longcycle/repair-memory/invariants/RI-0005-source-representation-not-raw-materialization.json",
+    "migrations/0028_truthful_source_materialization.sql",
+    "migrations/0030_source_representation_fetch_state_unambiguous.sql",
+    "src/longcycle/application/research_orchestration.py"
+  ],
+  "reconstructed_answer": {
+    "locator_only_case": "Persist publisher/upstream document identity, original PDF URL, filename/title/date when supported, verification metadata and locator_verified state. Treat the document identity as legitimate when the upstream source is verifiable, but do not use an unread locator to prove any claim.",
+    "content_verified_representation_case": "If claim-relevant PDF content was actually read and a faithful claim-scoped page/section/excerpt or equivalent readable representation is preserved with truthful provenance, normal Grounded Evidence may proceed before raw PDF bytes. The local representation may be archived as an immutable Longcycle document version, but upstream source_media_type remains PDF and source_capture_state remains content_verified; raw_source_materialized=false must be preserved.",
+    "document_version_boundary": "No. Existence of evidence.document_versions proves preserved source-derived bytes only. It does not prove byte-identical upstream raw PDF materialization. Migration 0028 explicitly removes the old generic transition, and representation-aware persistence keeps non-raw material below materialized state.",
+    "raw_materialization_case": "Later raw PDF bytes may enrich the same logical document only after raw source identity/content verification. Materialized state requires an explicit verified raw-source version transition with raw byte size/SHA/storage metadata; contradictory bytes trigger an integrity repair instead of silent replacement.",
+    "new_research_orchestration": "Use research-orchestration/v2 with a prepared local material root. Verify each Evidence document's declared material digest. Transport restoration/preparation stays outside the epistemic spec; Drive-derived readable representations, existing legacy raw files or later raw materialization may all prepare the material root truthfully.",
+    "legacy_v1_source_pack": "Historical research-orchestration/v1 GitHub Release/source-pack contracts remain replayable and fail-closed. Their existence does not make Release/source-pack a prerequisite for new research.",
+    "github_actions_for_pdf_download": "No. Do not create or run Actions merely to download new PDF source bytes. Actions remain valid for PostgreSQL/code/runtime execution.",
+    "legacy_blenrep_release_asset": "The already-existing BLENREP Release PDF pack may be reused when convenient because its bytes are already materialized and hash-pinned. If it is unavailable, do not manufacture a replacement acquisition Action; follow current locator/content-verification semantics.",
+    "authority_boundary": "Neither .pdf suffix, retrieval transport, readable representation nor raw materialization changes claim-scoped source authority."
+  },
+  "consistency_checks": [
+    {
+      "check": "bootstrap_and_continue_route",
+      "result": "pass",
+      "detail": "Both fresh-session bootstrap surfaces reject downloader-first behavior, require locator/content separation and allow Evidence before raw bytes only when claim-relevant content was actually read."
+    },
+    {
+      "check": "method_core_route",
+      "result": "pass",
+      "detail": "Method Core defines locator_verified -> content_verified -> materialized and explicitly puts source/content verification before optional raw-byte materialization."
+    },
+    {
+      "check": "typed_handoff_route",
+      "result": "pass",
+      "detail": "Sequence-71 current handoff explicitly states document_version does not imply raw materialization and v2 orchestration is transport-neutral."
+    },
+    {
+      "check": "data_plane_route",
+      "result": "pass",
+      "detail": "Data-plane v4 rejects new downloader Actions, permits content-verified Evidence before raw bytes and marks the existing BLENREP Release pack as legacy reusable rather than new default."
+    },
+    {
+      "check": "migration_route",
+      "result": "pass",
+      "detail": "Migration 0028 drops the broad document-version materialization trigger; migration 0030 requires explicit truthful non-raw representation provenance and keeps state content_verified unless a raw materialized version is already recorded."
+    },
+    {
+      "check": "orchestration_route",
+      "result": "pass",
+      "detail": "Research orchestration v2 rejects source_pack metadata and consumes a prepared local material root; v1 source_pack remains legacy compatibility only."
+    },
+    {
+      "check": "repair_memory_route",
+      "result": "pass",
+      "detail": "RI-0005 explicitly guards against document_version=raw-materialized, locator-only Evidence and v2 Release/source-pack requirements."
+    },
+    {
+      "check": "historical_compatibility",
+      "result": "pass",
+      "detail": "Existing Release packs and old receipts remain immutable/replayable; changed defaults are expressed through supersession rather than rewriting history."
+    }
+  ],
+  "contradictions_found": [],
+  "result": "pass",
+  "failure_if": [
+    "A fresh Agent treats locator_verified as claim Evidence without reading claim-relevant content.",
+    "A fresh Agent treats any document_version or readable text representation as proof that raw upstream PDF bytes were materialized.",
+    "A fresh Agent requires GitHub Release/source-pack for research-orchestration/v2.",
+    "A fresh Agent creates GitHub Actions merely to download a new PDF.",
+    "A fresh Agent rewrites or invalidates historical v1 Release/source-pack receipts instead of preserving them as legacy replay material.",
+    "A fresh Agent lets transport or .pdf suffix change claim-scoped authority."
+  ],
+  "next_cursor": "Close PDF transport optimization. Return immediately to the BLENREP 5-document/9-fragment Grounded Evidence runtime proof; use existing legacy materialized PDF bytes only if convenient, require zero Fact/Judgment promotion at Evidence stage, and do not reopen acquisition plumbing unless claim content is actually unread or later raw bytes contradict preserved content."
+}

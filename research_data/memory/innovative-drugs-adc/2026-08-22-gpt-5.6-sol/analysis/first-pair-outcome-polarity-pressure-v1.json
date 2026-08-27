@@ -1,0 +1,93 @@
+{
+  "schema_version": "longcycle-cross-industry-outcome-polarity-pressure/v1",
+  "assessment_status": "candidate_generic_primitive_not_yet_schema_committed",
+  "triggering_replay": {
+    "receipt": "research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/ADC-first-pair-replay-receipt-v1.json",
+    "workflow_run_id": 32581980862,
+    "replay_head_sha": "1b71d3c983cf5b66bebae812470559da59162cb6",
+    "result": "Reality/Judgment separation, valid-time/known-time separation and non-direct semantic comparability all passed."
+  },
+  "orthogonal_dimensions": {
+    "semantic_relation": {
+      "question": "Is the later Reality the same semantic target/milestone as the earlier Judgment?",
+      "existing_values": ["direct_match", "related_milestone", "not_comparable"],
+      "must_remain_authoritative_for_comparability": true
+    },
+    "evaluation_status": {
+      "question": "For a direct-match target, was the Judgment realized?",
+      "existing_values": ["realized", "partially_realized", "not_realized", "not_yet_evaluable", "indeterminate"],
+      "non_direct_rule": "Non-direct semantic relations remain indeterminate."
+    },
+    "candidate_implication": {
+      "question": "Without claiming direct realization, does the later Reality strengthen or weaken the historical Judgment/thesis?",
+      "candidate_values": ["supports", "undermines", "mixed", "neutral", "not_assessed"],
+      "status": "research_pressure_only"
+    }
+  },
+  "adc_opposite_pair": [
+    {
+      "trajectory": "mirvetuximab / Elahere",
+      "earlier_judgment": "2019-mirasol-development-commitment",
+      "later_reality": "2022-us-accelerated-approval",
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "researcher_implication": "supports",
+      "why_not_realized": "The 2019 object is a commitment/design step and the 2022 object is a later regulatory milestone, not the same target."
+    },
+    {
+      "trajectory": "Rova-T / Stemcentrx",
+      "earlier_judgment": "2016-rova-t-peak-revenue-thesis",
+      "later_reality": "2019-rova-t-program-terminated",
+      "semantic_relation": "related_milestone",
+      "evaluation_status": "indeterminate",
+      "researcher_implication": "undermines",
+      "why_not_not_realized": "Program termination strongly damages the commercial thesis but is not itself the semantic target 'peak revenue'; forcing not_realized would collapse comparability and outcome interpretation."
+    }
+  ],
+  "first_industry_cross_check": {
+    "direct_match_case": {
+      "artifact": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-first-product-outcome-evaluation-v1.json",
+      "result": "Existing direct-match semantics are sufficient: the May-2022 first-product Judgment was realized in July 2022 with after_target_window and a two-calendar-month delta at month precision.",
+      "implication_field_needed": false
+    },
+    "non_direct_cognition_case": {
+      "artifact": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-003-programmatic-redistributor-and-cognition-replay-receipt-v1.json",
+      "result": "No Outcome was created because no later source-backed Reality with sufficient comparability was needed; the system deliberately avoided manufacturing an Outcome merely to fill a template."
+    },
+    "non_direct_contract_case": {
+      "artifact": "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-004-contract-vintage-margin-replay-receipt-v1.json",
+      "result": "Later Reality and an earlier inventory commitment coexist, but no Outcome was created because exact outcome comparability was not grounded; existing primitives remained sufficient for that research question."
+    },
+    "interpretation": "The first industry proves that direct-match realization/timing must stay separate and that absence of a sufficiently grounded non-direct comparison should remain no Outcome, not neutral polarity. It does not yet provide an independent source-grounded non-direct supports/undermines pair."
+  },
+  "candidate_invariants": [
+    "Implication must never change semantic_relation.",
+    "Implication must never promote a non-direct Outcome from indeterminate to realized/not_realized.",
+    "Implication must never manufacture a timing relation or timing delta.",
+    "not_assessed is distinct from neutral: absence of assessment is not evidence of neutrality.",
+    "An implication annotation requires a linked canonical Reality, an explicit evaluator rationale and a knowledge time no earlier than that Reality's known time.",
+    "Implication is about the later Reality's bearing on the earlier Judgment, not whether the later Reality itself is favorable or unfavorable in isolation.",
+    "Multiple later Realities may have mixed implications without rewriting the immutable earlier Judgment."
+  ],
+  "rejected_shortcuts": [
+    "Do not overload evaluation_status for non-direct cases.",
+    "Do not overload semantic_relation with favorable/unfavorable meaning.",
+    "Do not infer polarity from temporal order, program status labels or market reaction alone.",
+    "Do not reuse MemoryLead EvidenceStance as-is because that enum answers a different evidence-vs-memory question and contains weak_match/unrelated semantics."
+  ],
+  "schema_gate": {
+    "decision_now": "do_not_add_migration_0026_yet",
+    "reason": "The opposite ADC pair proves a real researcher-facing information loss in free-text-only Outcome explanation, but the first-industry archive has not yet supplied an independent non-direct supports/undermines case. The current model remains truthful and no-lookahead-safe; the missing dimension affects typed researcher interpretation rather than factual correctness.",
+    "promote_to_schema_when": [
+      "A source-grounded non-pharma trajectory needs the same non-direct supports/undermines distinction, or a third-industry trajectory independently reproduces it.",
+      "The distinction cannot be losslessly queried from existing semantic_relation/evaluation_status without parsing explanation text.",
+      "Two bounded examples demonstrate that supports versus undermines can be assigned with explicit rationale without changing comparability or realization status."
+    ],
+    "falsify_candidate_when": [
+      "Researcher-facing replay can express and query the distinction using an existing generic typed relation without semantic abuse.",
+      "Cross-industry cases show the distinction is too subjective or unstable to persist as typed memory.",
+      "The only observed need remains an ADC-specific narrative convenience."
+    ]
+  },
+  "next_atomic_test": "Use the next grounded trajectory for orthogonal pressure, preferably RC48 rights/territory or Enhertu indication/readout identity; if it yields a non-direct later Reality that supports or undermines an earlier Judgment, evaluate the same implication candidate before migration 0026."
+}

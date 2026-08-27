@@ -1,0 +1,160 @@
+{
+  "schema_version": "longcycle-memory-outcome-search-assessment/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "assessment_id": "MEMORY-SEMICONDUCTORS-ENTERPRISE-SSD-TRENDFORCE-FULLYEAR-OUTCOME-001",
+  "created_at": "2026-08-26T06:39:13Z",
+  "authority": "curated_research_assessment_over_public_methodological_primary_search_surfaces",
+  "linked_memory_leads": ["MS-0110", "MS-0111"],
+  "target_judgment": {
+    "judgment_key": "trendforce-qlc-enterprise-ssd-30eb-2024-04",
+    "judgment_id": "d585440d-c79f-51e2-815a-0b8227804099",
+    "predicate_code": "storage.qlc_enterprise_ssd_bit_shipments",
+    "target_period": "2024 full year",
+    "value": 30,
+    "unit": "EB",
+    "statistical_scope": "trendforce global qlc enterprise ssd bit shipments",
+    "first_known_at": "2024-04-24T00:00:00Z"
+  },
+  "comparability_requirements": {
+    "required_period": "2024 full year",
+    "required_measure": "absolute shipment volume",
+    "accepted_units": ["EB", "units"],
+    "preferred_scope": "global QLC enterprise SSD bit shipments",
+    "minimum_semantic_relation": "direct_match_or_explicitly_bridgeable_same_series",
+    "reject_as_direct_outcome": [
+      "AI-related SSD procurement capacity",
+      "total enterprise SSD market without QLC breakout",
+      "quarterly procurement growth",
+      "quarterly revenue or revenue growth",
+      "supplier-specific cumulative shipments",
+      "supplier-specific quarterly shipments",
+      "NAND Flash total bit shipments",
+      "forecast or estimate repeated after the fact without realized measurement"
+    ]
+  },
+  "bounded_search": {
+    "started_from_live_head": "bf73372c9a15a74f462e125d6d832c3299753f89",
+    "baseline_full_ci": {
+      "run_id": 32938240348,
+      "conclusion": "success"
+    },
+    "query_families": [
+      "site:trendforce.com 2025 QLC enterprise SSD 2024 30 EB shipments actual TrendForce",
+      "site:trendforce.com 2025 enterprise SSD bit shipments 2024 EB QLC TrendForce",
+      "site:trendforce.com exact 30 EB enterprise SSD TrendForce 2025",
+      "site:trendforce.com QLC enterprise SSD 2024 EB TrendForce 2025",
+      "site:trendforce.com enterprise SSD 2024 exabyte TrendForce",
+      "site:trendforce.com enterprise SSD 2024 bit shipments TrendForce",
+      "site:trendforce.com/research/download QLC enterprise SSD 2024 TrendForce",
+      "site:trendforce.com/research/download enterprise SSD 4Q24 TrendForce",
+      "site:trendforce.com/research/download enterprise SSD 2024 shipment EB TrendForce",
+      "2024 QLC enterprise SSD exabytes shipments actual",
+      "2024 enterprise SSD exabytes shipments QLC",
+      "IDC/Omdia/TechInsights/Forward Insights 2024 enterprise SSD QLC exabytes shipments"
+    ],
+    "reverse_query_performed": true,
+    "exact_forecast_phrase_requery_performed": true,
+    "source_types_examined": [
+      "TrendForce public press-center releases",
+      "TrendForce public research-report abstract pages",
+      "TrendForce semiconductor research category indexes",
+      "public search for other methodological-primary annual enterprise-SSD volume series",
+      "scope-adjacent independent market modeling for falsification of accidental equivalence"
+    ],
+    "depth_disposition": "bounded_search_complete_for_public_surfaces"
+  },
+  "reviewed_primary_surfaces": [
+    {
+      "publisher": "TrendForce",
+      "published_at": "2024-04-23",
+      "url": "https://www.trendforce.com/presscenter/news/20240423-12122.html",
+      "surface_role": "target_forecast",
+      "finding": "Forecasts 2024 QLC enterprise SSD bit shipments at 30 EB; this remains the Judgment being evaluated, not realized Outcome."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2024-05-31",
+      "url": "https://www.trendforce.com/presscenter/news/20240531-12160.html",
+      "surface_role": "quarterly_market_update",
+      "finding": "Reports 1Q24 enterprise SSD revenue and greater-than-20-percent Q2 enterprise SSD bit-procurement growth; no full-year absolute QLC-enterprise-SSD EB or unit total."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2024-08-12",
+      "url": "https://www.trendforce.com/presscenter/news/20240812-12250.html",
+      "surface_role": "different_scope_full_year_estimate",
+      "finding": "Estimates greater-than-45 EB AI-related SSD procurement capacity for 2024; scope is broader/different and is not a revision or realized Outcome for the April QLC-enterprise-SSD series."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2024-11-25",
+      "url": "https://www.trendforce.com/research/category/selected_topics/tri_semiconductors?page=14",
+      "surface_role": "research_index_quarterly_enterprise_ssd_update",
+      "finding": "Public abstract exposes 3Q24 enterprise SSD revenue growth and shipment direction but no absolute full-year QLC-enterprise-SSD volume."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2024-12-11",
+      "url": "https://www.trendforce.com/presscenter/news/20241211-12406.html",
+      "surface_role": "realized_3q_market_measurement",
+      "finding": "Reports 3Q24 total enterprise SSD procurement volume up 15% QoQ and industry revenue up 28.6% QoQ; denominator remains absent."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2025-02-24",
+      "url": "https://www.trendforce.com/research/download/RP250224GD",
+      "surface_role": "later_4q24_research_abstract",
+      "finding": "Public 4Q24 enterprise-SSD report abstract describes demand/revenue conditions but does not expose a directly comparable 2024 full-year QLC-enterprise-SSD absolute EB or unit measurement."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2025-03-06",
+      "url": "https://www.trendforce.com/presscenter/news/20250306-12507.html",
+      "surface_role": "later_known_4q24_reality",
+      "finding": "Reports 4Q24 major-supplier enterprise SSD revenue at US$7.34B and -0.5% QoQ; revenue cannot evaluate the 30 EB shipment Judgment."
+    },
+    {
+      "publisher": "TrendForce",
+      "published_at": "2025-05-29",
+      "url": "https://www.trendforce.com/presscenter/news/20250529-12600.html",
+      "surface_role": "later_market_update_falsification_check",
+      "finding": "Discusses 2024 leadership in high-capacity products and 1Q25 shipment-bit/ASP changes, but still does not expose a realized full-year 2024 QLC-enterprise-SSD absolute volume."
+    }
+  ],
+  "scope_adjacent_non_matches": [
+    {
+      "publisher": "McKinsey",
+      "url": "https://www.mckinsey.com/industries/semiconductors/our-insights/generative-ai-spurs-new-demand-for-enterprise-ssds",
+      "claim": "Models the total eSSD market at 181 EB in 2024 under a baseline scenario.",
+      "disposition": "non_matching_model_scope",
+      "reason": "Total enterprise-SSD model scope is not QLC-enterprise-SSD realized bit shipments, and the value is presented as scenario modeling rather than a directly comparable TrendForce realized series."
+    }
+  ],
+  "result": {
+    "status": "not_recovered_at_bounded_public_methodological_primary_depth",
+    "outcome_created": false,
+    "reality_created": false,
+    "judgment_status": "remains_open_without_comparable_realized_outcome",
+    "absence_claim": "not_asserted",
+    "interpretation": "The April 2024 30 EB QLC-enterprise-SSD forecast remains a contemporaneous Judgment with no recovered directly comparable realized full-year public measurement. Public later TrendForce material supports strong quarterly enterprise-SSD demand and revenue observations but does not truthfully close the annual absolute-volume Outcome gap."
+  },
+  "guardrails": [
+    "not_found != false: this result records non-recovery on bounded public surfaces, not non-existence of a measured series.",
+    "Paid TrendForce datasets may contain unpublished annual absolute-volume fields; public abstract non-recovery cannot negate that possibility.",
+    "Do not evaluate the 30 EB Judgment using the greater-than-45 EB AI-related estimate, quarterly procurement growth, revenue, or supplier cumulative QLC shipments.",
+    "Do not infer annual absolute EB by chaining quarterly percentage changes without directly observed denominators."
+  ],
+  "lead_dispositions": [
+    {
+      "lead_id": "MS-0111",
+      "status": "bounded_public_outcome_search_closed_unresolved",
+      "researcher_interpretation": "The 30 EB 2024 QLC-enterprise-SSD forecast remains replayable as Judgment, but a public directly comparable realized annual Outcome was not recovered after deeper TrendForce and cross-publisher search."
+    },
+    {
+      "lead_id": "MS-0110",
+      "status": "market_trajectory_supported_without_full_year_absolute_closure",
+      "researcher_interpretation": "Quarterly methodological-primary observations substantiate enterprise-SSD demand acceleration, but they remain separate from annual absolute shipment volume."
+    }
+  ],
+  "next_action": "Advance to the next source-grounded storage lead: seek named customer/platform-owner corroboration of specific 2024 QLC enterprise-SSD deployment or platform qualification, while keeping the full-year annual Outcome gap explicitly unresolved."
+}

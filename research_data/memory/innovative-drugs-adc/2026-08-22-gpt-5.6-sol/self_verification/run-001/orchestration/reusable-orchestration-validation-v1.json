@@ -1,0 +1,115 @@
+{
+  "schema_version": "longcycle-research-orchestration-validation/v1",
+  "purpose": "Validate one campaign-agnostic fail-closed orchestration contract across two materially different already-grounded trajectories without adding domain branches or new epistemic semantics.",
+  "validated_head_sha": "25cb615c9b2c12a09318e42d87334f6dfdea76fd",
+  "branch_ci": {
+    "run_id": 32588797032,
+    "run_number": 1257,
+    "conclusion": "success"
+  },
+  "contract": {
+    "application_module": "src/longcycle/application/research_orchestration.py",
+    "runner": "scripts/execute_research_orchestration.py",
+    "workflow_adapter": ".github/workflows/research-orchestration-once.yml",
+    "properties": [
+      "repository-spec-driven",
+      "source-pack outer SHA verification",
+      "material SHA verification derived from Grounded Evidence spec",
+      "explicit repair overlay with from-value guard",
+      "existing Grounded Evidence executor composition",
+      "optional existing Reality executor composition",
+      "sealed immutable-path digest guard",
+      "portable machine-readable execution receipt"
+    ],
+    "non_goals": [
+      "no campaign-specific ADC branch",
+      "no new database migration",
+      "no new Evidence or Reality semantic model",
+      "no transport authority conflation",
+      "no automatic Fact or Judgment promotion from Grounded Evidence"
+    ]
+  },
+  "validations": [
+    {
+      "case": "SV-003 Enhertu",
+      "orchestration_spec": "SV-003-research-orchestration-v1.json",
+      "github_actions_run_id": 32588803368,
+      "generated_zip": {
+        "file_name": "longcycle-research-orchestration-sv003-run32588803368.zip",
+        "size_bytes": 175188,
+        "sha256": "29854b1caa558477e9b3cd493ee57b5e0881c83ea6a93cb696a574cc9e6b8be8",
+        "google_drive_file_id": "14N6hNtFOE1Fdnzfy1UJkkKWn7J2FaHJ7"
+      },
+      "source_pack": {
+        "file_name": "longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip",
+        "sha256": "21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692"
+      },
+      "material_count": 5,
+      "repair_count": 1,
+      "prepared_evidence_spec_sha256": "bc077005773461ee5997939e103708642c0f1d162b245c72e5cf2e1781b443d1",
+      "evidence_acceptance": {
+        "persisted_document_versions": 5,
+        "persisted_evidence_fragments": 10,
+        "fact_assertions_created": 0,
+        "judgment_assertions_created": 0
+      },
+      "reality_verification": {
+        "fact_count": 10,
+        "canonical_reality_count": 10,
+        "all_reconciled_accept": true,
+        "all_known_times_derived_from_grounded_evidence": true,
+        "valid_time_semantics_preserved": true,
+        "observation_semantics_preserved": true
+      },
+      "portable_receipt_check": {
+        "contains_runner_absolute_home_path": false,
+        "contains_tmp_path": false
+      }
+    },
+    {
+      "case": "SV-004 RC48",
+      "orchestration_spec": "SV-004-research-orchestration-v1.json",
+      "github_actions_run_id": 32588809141,
+      "generated_zip": {
+        "file_name": "longcycle-research-orchestration-sv004-run32588809141.zip",
+        "size_bytes": 152998,
+        "sha256": "7f2a0e755fdbae73afe070be487ef930a39941bc6e58f51ad234c68d774065cc",
+        "google_drive_file_id": "1V8oq3tA6kJAKyjprCF-U68IQzwGBnsDb"
+      },
+      "source_pack": {
+        "file_name": "longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip",
+        "sha256": "51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a"
+      },
+      "material_count": 6,
+      "repair_count": 0,
+      "prepared_evidence_spec_sha256": "f49a22ac714dce4f81dc9e103cc57edce829d1b07a448ceb17334ea7b0b8c5b7",
+      "evidence_acceptance": {
+        "persisted_document_versions": 6,
+        "persisted_evidence_fragments": 8,
+        "fact_assertions_created": 0,
+        "judgment_assertions_created": 0
+      },
+      "reality_verification": {
+        "fact_count": 8,
+        "canonical_reality_count": 8,
+        "all_reconciled_accept": true,
+        "all_known_times_derived_from_grounded_evidence": true,
+        "valid_time_semantics_preserved": true,
+        "observation_semantics_preserved": true
+      },
+      "portable_receipt_check": {
+        "contains_runner_absolute_home_path": false,
+        "contains_tmp_path": false
+      }
+    }
+  ],
+  "cross_case_assertions": {
+    "same_workflow_adapter": true,
+    "same_runner": true,
+    "same_contract_schema": true,
+    "campaign_specific_code_branch_required": false,
+    "sealed_blind_tree_digest_before_and_after": "98629af0c79c6e22d0b208fddb623dff3865d9ca7f5c2f2f2f5d6480adcabe43",
+    "new_schema_required": false
+  },
+  "next_boundary": "Treat this as a validated execution primitive. The next product step is a researcher-facing task entrypoint and durable task/receipt handoff that composes this runner; do not expand its semantic scope or return to ADC benchmark polishing."
+}

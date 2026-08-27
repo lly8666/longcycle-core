@@ -1,0 +1,21 @@
+{
+  "schema_version": "longcycle-memory-campaign/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "industry_family": "memory_semiconductors",
+  "bounded_scope": "DRAM_and_NAND_joint_historical_memory_campaign_with_product_line_comparability_preserved",
+  "campaign_period": {"start":"2016-01-01","end":"2026-08-24","precision":"day_bounds_for_campaign_only"},
+  "benchmark_sequence": 3,
+  "benchmark_lineage": ["lithium_battery","innovative_drugs","memory_semiconductors"],
+  "model_instrument": {"provider":"OpenAI / ChatGPT runtime","model":"GPT-5.6 Sol","model_version":"not exposed beyond product model name","declared_knowledge_cutoff":"unknown / not asserted"},
+  "blind_stage_completed_at": "2026-08-24",
+  "source_visibility": "none",
+  "epistemic_status": "all blind records are unsourced model-memory research leads, not Fact, Judgment, Reality, Outcome or Evidence",
+  "core_product_lines": ["DRAM","NAND"],
+  "hbm_scope": "HBM is a DRAM product branch; HBM metrics are never proxies for total DRAM.",
+  "blind_rules": ["No semiconductor web/search/source material was consumed during Stage A.","Preserve uncertain fragments instead of fabricating precision.","Keep DRAM/NAND price, inventory, bit growth, technology and qualification metrics distinct.","Canonical blind lead shards are immutable after this seal commit.","Memory Leads remain below Evidence authority.","not_found != false and reviewed_no_specific_memory != absence."],
+  "raw_layout": {"pass_index_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/pass-index-v1.json","canonical_lead_shard_pattern":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/blind/leads-01.jsonl .. leads-11.jsonl","pass_count":22,"lead_count":131,"shard_count":11,"immutable_after_seal":true},
+  "analysis_layout": {"normalized_index_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/normalized-leads-index-v1.json","relations_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/lead-relations-v1.json","coverage_matrix_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/coverage-matrix-v1.json","cross_product_cycle_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/cross-product-cycle-leads-v1.json","saturation_review_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/saturation-review-v1.json","coverage_index_path":"research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/coverage-index.json"},
+  "seal": {"status":"sealed","stop_reason":"orthogonal_passes_reached_low_marginal_novelty","ordered_canonical_blind_leads_sha256":"cdf2840abd2ac9ca1913d6becc805d20212a0080ae97ed9e24f75b0983ba596b","saturation_basis":"Final three orthogonal atlas-only gap passes each produced zero high-importance novel leads; both core product lines and required long-tail families were reviewed with no major unreviewed block.","reopen_rule":"new model vintage, explicit scope expansion, or later verified evidence exposing a major blind-category omission"},
+  "next_stage": "high_model_self_verification_search_discovery",
+  "next_stage_boundary": "Search begins only in a new post-seal run after this commit is live; search may refine or verify leads but may never rewrite Stage-A blind shards."
+}

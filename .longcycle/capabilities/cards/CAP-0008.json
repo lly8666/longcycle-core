@@ -1,0 +1,67 @@
+{
+  "aliases": [
+    "current collection scheduler",
+    "job queue",
+    "scheduler tick",
+    "collection cadence",
+    "leases"
+  ],
+  "entrypoints": [
+    {
+      "contains": "class SchedulePolicy:",
+      "description": "SchedulePolicy owns deterministic collection cadence/next-run decisions.",
+      "kind": "application",
+      "path": "src/longcycle/application/scheduling.py"
+    }
+  ],
+  "extension_seams": [
+    "Add source watchlist/scheduler adapters without moving current-source archival semantics into historical recovery.",
+    "Add operational priority signals while preserving lease/idempotency boundaries."
+  ],
+  "guards": [
+    {
+      "contains": "class NormalizationAndScheduleTest",
+      "description": "Scheduling tests cover deterministic cadence behavior alongside normalization regression coverage.",
+      "kind": "test",
+      "path": "tests/test_normalization_and_schedule.py"
+    },
+    {
+      "contains": "class ArchiveAndQueueTest",
+      "description": "Queue tests protect lease/idempotency behavior.",
+      "kind": "test",
+      "path": "tests/test_archive_and_queue.py"
+    }
+  ],
+  "id": "CAP-0008",
+  "maturity": "stable",
+  "non_goals": [
+    "Historical Memory Campaign search scheduling.",
+    "Research truth or Evidence authority.",
+    "Persisting operational mutable state as immutable research history."
+  ],
+  "owned_semantics": [
+    "ops.collection_cadence",
+    "ops.job_dispatch_and_lease",
+    "ops.retry_deadletter_boundary"
+  ],
+  "purpose": "Own cadence selection and due-work dispatch semantics for source-first current collection while keeping operational leases/retries separate from research history.",
+  "revisit_when": "Only replace if mutable operational cadence/lease/retry semantics remain separated from immutable research history and source archive authority.",
+  "schema_version": "longcycle-capability/v1",
+  "scope": [
+    "src/longcycle/application/scheduling.py",
+    "src/longcycle/adapters/storage/postgres_scheduler.py",
+    "src/longcycle/ports/repository.py",
+    "tests/test_archive_and_queue.py",
+    "tests/test_normalization_and_schedule.py"
+  ],
+  "status": "active",
+  "supersedes": [],
+  "tags": [
+    "scheduler",
+    "queue",
+    "current-collection",
+    "lease",
+    "operations"
+  ],
+  "title": "Current collection scheduling and operational queue"
+}

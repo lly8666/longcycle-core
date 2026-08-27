@@ -1,0 +1,92 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "MEMORY-SEMICONDUCTORS-HBM3E-REALITY-001",
+  "source_evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-HBM3E-STATUS-001",
+  "allowed_claim_roles": ["issuer_hbm3e_status_statement"],
+  "subjects": [
+    {"id":"eb2cb40d-1955-5b1f-a1d6-481b53d651d7","entity_type":"organization","canonical_name":"Micron Technology, Inc."},
+    {"id":"24493701-d1f3-5eb4-86d6-3c1be70da617","entity_type":"organization","canonical_name":"SK hynix Inc."},
+    {"id":"e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066","entity_type":"organization","canonical_name":"Samsung Electronics Co., Ltd."}
+  ],
+  "facts": [
+    {
+      "fact_key":"2024-micron-hbm3e-volume-production",
+      "evidence_fragment_key":"EVF-MICRON-HBM3E-STATUS",
+      "subject_entity_id":"eb2cb40d-1955-5b1f-a1d6-481b53d651d7",
+      "predicate_code":"operations.hbm3e_volume_production_status",
+      "value_text":"Micron reported that HBM3E volume production had begun by the February 26, 2024 announcement vintage.",
+      "valid_time_kind":"unknown",
+      "valid_time_precision":"unknown",
+      "observed_at":"2024-02-26T00:00:00Z",
+      "observed_at_precision":"day",
+      "observed_at_text":"February 26, 2024 announcement vintage",
+      "statistical_scope":"Micron HBM3E volume-production state",
+      "metadata":{
+        "product_family":"HBM3E",
+        "state":"volume_production",
+        "onset_guard":"The source establishes that volume production had begun by the announcement but does not state the exact onset date.",
+        "platform_guard":"The same source's H200 Q2 shipment language is future timing and is not part of this Reality fact."
+      }
+    },
+    {
+      "fact_key":"2024-skhynix-hbm3e-volume-production",
+      "evidence_fragment_key":"EVF-SKHYNIX-HBM3E-STATUS",
+      "subject_entity_id":"24493701-d1f3-5eb4-86d6-3c1be70da617",
+      "predicate_code":"operations.hbm3e_volume_production_status",
+      "value_text":"SK hynix reported that HBM3E volume production had begun by the March 19, 2024 announcement vintage.",
+      "valid_time_kind":"unknown",
+      "valid_time_precision":"unknown",
+      "observed_at":"2024-03-19T00:00:00Z",
+      "observed_at_precision":"day",
+      "observed_at_text":"March 19, 2024 announcement vintage",
+      "statistical_scope":"SK hynix HBM3E volume-production state",
+      "metadata":{
+        "product_family":"HBM3E",
+        "state":"volume_production",
+        "onset_guard":"The source establishes that volume production had begun by the announcement but does not state an earlier exact onset date.",
+        "customer_supply_guard":"The same sentence's late-March customer-supply timing is forward-looking and is not converted into current supply Reality."
+      }
+    },
+    {
+      "fact_key":"2024-samsung-hbm3e-12h-customer-sampling",
+      "evidence_fragment_key":"EVF-SAMSUNG-HBM3E-12H-SAMPLE-STATUS",
+      "subject_entity_id":"e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "predicate_code":"operations.hbm3e_customer_sampling_status",
+      "value_text":"Samsung reported that it had begun sampling HBM3E 12H to customers by the February 27, 2024 announcement vintage.",
+      "valid_time_kind":"unknown",
+      "valid_time_precision":"unknown",
+      "observed_at":"2024-02-27T00:00:00Z",
+      "observed_at_precision":"day",
+      "observed_at_text":"February 27, 2024 announcement vintage",
+      "statistical_scope":"Samsung HBM3E 12H customer-sampling state",
+      "metadata":{
+        "product_family":"HBM3E",
+        "variant":"12H",
+        "state":"customer_sampling",
+        "onset_guard":"The exact first sample-delivery date is not stated.",
+        "qualification_guard":"Customer sampling is not treated as proof of successful named-customer or named-platform qualification."
+      }
+    },
+    {
+      "fact_key":"2024-samsung-hbm3e-8h-mass-production",
+      "evidence_fragment_key":"EVF-SAMSUNG-HBM3E-PRODUCTION-STATUS",
+      "subject_entity_id":"e9ea0f8f-29a7-52de-94d3-ee4c1c9e9066",
+      "predicate_code":"operations.hbm3e_mass_production_status",
+      "value_text":"Samsung reported on April 30, 2024 that HBM3E 8H mass production had started during that month.",
+      "valid_time_kind":"unknown",
+      "valid_time_precision":"unknown",
+      "observed_at":"2024-04-30T00:00:00Z",
+      "observed_at_precision":"day",
+      "observed_at_text":"April 30, 2024 Q1 results vintage",
+      "statistical_scope":"Samsung HBM3E 8H mass-production state",
+      "metadata":{
+        "product_family":"HBM3E",
+        "variant":"8H",
+        "state":"mass_production",
+        "source_onset_window_text":"this month (April 2024)",
+        "onset_guard":"The source narrows onset to April 2024 but does not support an exact start day, so canonical valid onset remains unknown.",
+        "qualification_guard":"Mass production is not treated as proof of shipment to or qualification by a named accelerator platform."
+      }
+    }
+  ]
+}

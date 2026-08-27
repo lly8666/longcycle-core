@@ -1,0 +1,15 @@
+{
+  "source_file": "self-gap-batch2-v4.jsonl",
+  "repair_policy": "structural_only_no_new_historical_content",
+  "repairs": [
+    {
+      "lead_id": "HR-H006",
+      "field": "lead_kind",
+      "original": "supply_response",
+      "repaired": "mechanism",
+      "reason": "supply_response is not an allowed MemoryLeadKind; the raw lead already describes price-driven mine-plan reoptimization as a supply mechanism, so this repair changes only the enum container and adds no historical content"
+    }
+  ],
+  "raw_file_must_remain_unchanged": true,
+  "ingestion_rule": "apply repair overlay before typed candidate validation"
+}

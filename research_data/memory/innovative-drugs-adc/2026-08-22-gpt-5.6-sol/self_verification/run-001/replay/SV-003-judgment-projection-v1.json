@@ -1,0 +1,42 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "ADC-SV-003-ENHERTU-HER2LOW-JUDGMENT-V1",
+  "source_evidence_task_id": "ADC-SV-003-ENHERTU-JUDGMENT-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "executive_her2_low_treatment_thesis"
+  ],
+  "subjects": [
+    {
+      "id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "entity_type": "product",
+      "canonical_name": "trastuzumab deruxtecan / ENHERTU"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "2019-her2-low-treatment-redefinition-thesis",
+      "evidence_refs": [
+        {
+          "fragment_key": "2019-her2-low-treatment-redefinition-thesis",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "7560c74c-12cc-5551-ae8b-81bef9b25f6b",
+      "speaker_name_text": "Pascal Soriot",
+      "speaker_role": "Chief Executive Officer, AstraZeneca",
+      "topic_code": "clinical.her2_low_treatment_role",
+      "judgment_kind": "thesis",
+      "target_time_kind": "unknown",
+      "target_precision": "unknown",
+      "target_text": "future treatment role in HER2-low breast cancer; no exact target date stated",
+      "value_kind": "text",
+      "value_text": "ENHERTU had the potential to redefine breast cancer treatment for HER2-low expressing tumors.",
+      "summary": "In the March 2019 collaboration announcement, AstraZeneca CEO Pascal Soriot stated a forward-looking thesis that trastuzumab deruxtecan could redefine treatment in HER2-low breast cancer, before the later DESTINY-Breast04 readout and U.S. HER2-low approval were knowable.",
+      "metadata": {
+        "hindsight_guard": "Exclude 2022 DESTINY-Breast04 topline and HER2-low approval from the original Judgment projection; those enter only later Reality/Outcome context.",
+        "target_guard": "The source does not state an exact realization date, probability, market share or regulatory milestone for the broader treatment-redefinition thesis.",
+        "comparability_guard": "A later HER2-low approval is historically relevant but is not semantically identical to 'redefine breast cancer treatment'."
+      }
+    }
+  ]
+}

@@ -1,0 +1,385 @@
+{
+  "artifact": "negative-space-gap-matrix-v1",
+  "campaign": "2026-08-21-gpt-5.6-sol",
+  "purpose": "Rank the next blind-memory probes by first-order point-in-time replay information gain, distinguish deliberate horizon deferral from genuine negative space, and make the path toward legitimate shard sealing auditable.",
+  "fresh_search_used": false,
+  "neighbor_raw_outputs_used_for_ranking": false,
+  "inputs": [
+    "analysis/coverage-index.json",
+    "analysis/horizon-gap-priority-v1.json",
+    "current deterministic compact-index summaries for all 14 shards",
+    "prompts/self-gap-v4.md",
+    "docs/research/lithium-battery-cycle-horizon-v2.md"
+  ],
+  "authority": {
+    "counts_and_compact_metrics": "deterministic-derived",
+    "negative_space_labels": "curated research assessment",
+    "priority_and_replay_roles": "curated research assessment",
+    "seal_eligibility": "derived from campaign seal rule plus observed novelty state"
+  },
+  "campaign_state": {
+    "raw_leads": 658,
+    "formal_typed_leads": 600,
+    "legacy_experimental_raw_leads": 58,
+    "shard_count": 14,
+    "sealed_shards": [],
+    "selected_pre2019_batch3_shards": [
+      "UP-HARDROCK",
+      "UP-BRINE",
+      "UP-CONCENTRATE",
+      "UP-CHEMICALS",
+      "MID-LFP",
+      "MID-TERNARY",
+      "BAT-CELL",
+      "DOWN-NEV",
+      "DOWN-ESS",
+      "LOOP-RECYCLING"
+    ],
+    "deliberate_pre2019_deferrals": [
+      "MID-ANODE",
+      "MID-ELECTROLYTE",
+      "MID-SEPARATOR",
+      "DOWN-OTHER"
+    ],
+    "qualifying_low_novelty_streaks": 0,
+    "interpretation": "Every observed ordinary batch2 and every selected pre-2019 batch3 remained high novelty. No shard is close to seal by novelty criterion. The next task is to measure marginal novelty on first-order replay gaps rather than continue symmetric horizon widening."
+  },
+  "rubric": {
+    "gap_lenses": [
+      "time_and_transition",
+      "actors_and_survivor_bias",
+      "project_and_capacity_state",
+      "metric_and_product_semantics",
+      "pricing_contract_and_ownership",
+      "technology_qualification_and_yield",
+      "expectation_vintages_and_revisions",
+      "failure_and_dead_end",
+      "effective_supply_or_demand_translation",
+      "cross_shard_bridge_value"
+    ],
+    "priority_rule": "Prefer a missing dimension when recovering it could materially change the no-lookahead explanation of 2019-2020 Reality or connect a major supply/demand/price bridge. Do not prioritize a gap merely because a calendar period or shard has fewer leads.",
+    "horizon_rule": "A deliberate pre-2019 deferral is not a coverage failure. Reopen it only if a new first-order bridge or negative-space signal appears.",
+    "novelty_rule": "After each selected blind probe, classify every candidate as new_category, useful_refinement or duplicate/near_duplicate. One productive probe does not authorize the next-ranked probe automatically.",
+    "seal_rule": "Seal eligibility requires three consecutive low-novelty batches plus explicit negative-space review with no material uncovered dimension. A shard with a high-novelty latest batch has consecutive_low_novelty_batches=0."
+  },
+  "rows": [
+    {
+      "shard_id": "UP-HARDROCK",
+      "formal_typed_leads": 36,
+      "raw_leads": 66,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "First-order supply response: project sanctioning, restart/ramp, financing and delayed hard-rock tonnes that shape the 2019-2020 oversupply narrative.",
+      "remaining_negative_space": [
+        "mine milestone to usable SC6-equivalent supply translation, including recovery, product grade and ramp",
+        "nameplate versus shipped/qualified tonnes through temporary bottlenecks",
+        "management and market expectation revisions as projects moved from sanction to ramp or failure",
+        "second-tier/failed project paths that can correct survivor bias without expanding into exhaustive project history"
+      ],
+      "next_action": "run_one_ordinary_gap_probe",
+      "priority": "very_high",
+      "reason": "It is central to the 2019-2020 supply-side replay, yet the strict formal compact layer is relatively thin because 30 older raw leads are legacy v1 prompt experiments rather than typed navigation inputs. The next probe should target effective-supply translation, not more pre-2019 calendar coverage."
+    },
+    {
+      "shard_id": "DOWN-NEV",
+      "formal_typed_leads": 54,
+      "raw_leads": 54,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "First-order demand response: policy, vehicle mix and unit-intensity convert NEV market activity into battery and lithium demand.",
+      "remaining_negative_space": [
+        "wholesale/retail/registration/inventory differences that can make vehicle sales diverge from contemporaneous battery demand",
+        "vehicle-segment and battery-size mix revisions around subsidy transitions",
+        "demand expectation revisions when subsidy phase-down, credit policy and Tesla/local competition changed the forecast path",
+        "failed or transient demand channels that disappeared from later success-biased histories"
+      ],
+      "next_action": "conditional_after_up_hardrock",
+      "priority": "very_high",
+      "reason": "A replay cannot interpret lithium balance from supply alone. DOWN-NEV already has rich policy and metric coverage, so the next value is translation from reported vehicle activity into contemporaneous battery-material demand rather than more policy headlines."
+    },
+    {
+      "shard_id": "UP-CHEMICALS",
+      "formal_typed_leads": 38,
+      "raw_leads": 66,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "First-order conversion bridge between resource/concentrate availability and battery-grade lithium chemical supply/pricing.",
+      "remaining_negative_space": [
+        "converter nameplate to battery-grade realized output through commissioning, yield and customer qualification",
+        "tolling/captive/merchant feed relationships and their effect on observed margins and supply availability",
+        "carbonate/hydroxide and grade substitution limits during the 2018-2020 price decline",
+        "inventory and processing-lag semantics between concentrate arrival, chemical output and market sale"
+      ],
+      "next_action": "conditional_after_first_two_probes",
+      "priority": "high",
+      "reason": "The shard is structurally central and its formal layer is also thinner than raw history because legacy v2 experiments remain immutable. It should follow only if the first supply/demand probes show that conversion remains a first-order unresolved bridge."
+    },
+    {
+      "shard_id": "UP-CONCENTRATE",
+      "formal_typed_leads": 39,
+      "raw_leads": 39,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Supply/product bridge: mine output becomes differently graded, contracted and sometimes non-merchant converter feed.",
+      "remaining_negative_space": [
+        "shipment-grade and recovery normalization across DSO, lower-grade concentrate and SC6-equivalent tonnes",
+        "contracted versus merchant volume shares and renegotiation during falling prices",
+        "inventory location and title between mine, port, trader and converter",
+        "failed producer/offtake paths that affected effective availability rather than headline production"
+      ],
+      "next_action": "hold_after_recent_targeted_probe",
+      "priority": "high",
+      "reason": "The recent pre-2019 pass already added product-grade, offtake and merchant-structure dimensions. Re-probing immediately would risk local drilling; wait for the broader matrix probes to reveal whether a specific concentrate bridge remains blocking."
+    },
+    {
+      "shard_id": "UP-BRINE",
+      "formal_typed_leads": 54,
+      "raw_leads": 54,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Slow supply response: resource contracts, pond/residence-time physics and project ramp constrain how brine nameplate becomes effective lithium supply.",
+      "remaining_negative_space": [
+        "quota/resource rights versus actual recoverable and shipped output",
+        "pond chemistry, residence time, seasonality and ramp interactions expressed as contemporaneous operating expectations",
+        "project-specific expectation revisions after first production but before stable output",
+        "DLE and other technology claims whose later visibility can create survivor or hindsight bias"
+      ],
+      "next_action": "hold_after_recent_targeted_probe",
+      "priority": "high",
+      "reason": "The targeted pre-2019 pass was 6/6 non-duplicate and filled a major causal setup gap. It remains important, but immediate repeat work has lower cross-shard information value than testing the unresolved hard-rock and demand translations."
+    },
+    {
+      "shard_id": "BAT-CELL",
+      "formal_typed_leads": 58,
+      "raw_leads": 58,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Capacity-demand mediation: cell nameplate, utilization, qualification and format/customer mix determine whether upstream materials become sellable battery output.",
+      "remaining_negative_space": [
+        "nameplate versus qualified/utilized output through customer wins and losses",
+        "channel/cell inventory and temporary utilization changes around demand shocks",
+        "format-route and product-generation transitions that stranded specialized capacity",
+        "expectation revisions from IPO/capex guidance to realized customer and product mix"
+      ],
+      "next_action": "hold_pending_supply_demand_probes",
+      "priority": "high",
+      "reason": "The shard is central but already broad. Its next gap is best selected after supply and vehicle-demand translations expose where cell-level mediation is actually needed."
+    },
+    {
+      "shard_id": "MID-LFP",
+      "formal_typed_leads": 56,
+      "raw_leads": 56,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Chemistry substitution bridge: LFP share, application mix, utilization and policy determine lithium intensity and later ESS/EV demand composition.",
+      "remaining_negative_space": [
+        "application-specific realized mix versus broad chemistry narrative",
+        "capacity utilization and qualification behind announced cathode capacity",
+        "profitability/price-lag and inventory effects around chemistry switching",
+        "minority/counter-consensus expectations that survived the 2017-2019 ternary preference period"
+      ],
+      "next_action": "hold_pending_down_nev_probe",
+      "priority": "medium_high",
+      "reason": "Its next useful probe should be driven by a concrete vehicle-demand or cell-mix gap, not chemistry history for its own sake."
+    },
+    {
+      "shard_id": "MID-TERNARY",
+      "formal_typed_leads": 42,
+      "raw_leads": 42,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Chemistry and metal-intensity bridge: high-nickel qualification, cobalt economics and realized chemistry mix affect material demand and technology expectations.",
+      "remaining_negative_space": [
+        "announced high-nickel capability versus qualified mass-production yield",
+        "pack/application mix behind cathode shipment labels",
+        "cobalt/nickel price pass-through and substitution expectations at the point in time",
+        "failed qualification or delayed commercialization paths hidden by later adoption"
+      ],
+      "next_action": "hold_pending_down_nev_and_cell_probes",
+      "priority": "medium_high",
+      "reason": "The 2016-2018 expectation vintage is now represented. More work should be triggered by an unresolved demand/cell chemistry bridge rather than automatic depth symmetry."
+    },
+    {
+      "shard_id": "DOWN-ESS",
+      "formal_typed_leads": 54,
+      "raw_leads": 54,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Secondary demand curve: policy, duration, grid service and safety determine how storage MW becomes battery GWh demand.",
+      "remaining_negative_space": [
+        "project duration/service-stack revisions that change GWh intensity",
+        "procurement award versus commissioning/operation and cancellation semantics",
+        "market revenue-stack revisions before projects become repeatable demand",
+        "regional safety/qualification failures that temporarily interrupt demand"
+      ],
+      "next_action": "hold_after_recent_targeted_probe",
+      "priority": "medium",
+      "reason": "The pre-2019 probe added six structural antecedents. ESS matters strongly later in the cycle but is not the highest-value next explanation for the 2019-2020 lithium balance."
+    },
+    {
+      "shard_id": "LOOP-RECYCLING",
+      "formal_typed_leads": 39,
+      "raw_leads": 39,
+      "completed_passes": 3,
+      "pre2019_status": "targeted_complete",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Secondary-supply bridge: manufacturing scrap, retirement, second life, captive loops and metal economics determine recoverable material rather than headline recycling capacity.",
+      "remaining_negative_space": [
+        "feedstock ownership and merchant/captive share through the first retirement cohorts",
+        "manufacturing-scrap generation rates versus end-of-life collection",
+        "recovered-product qualification and actual return to battery supply",
+        "expectation revisions when forecast retirement waves met slower collection or second-life diversion"
+      ],
+      "next_action": "hold_after_conditional_targeted_probe",
+      "priority": "medium",
+      "reason": "The conditional pre-2019 probe successfully filled the secondary-supply bridge. Further ordinary work is second-order for the first replay until primary supply/demand uncertainty is reduced."
+    },
+    {
+      "shard_id": "MID-ANODE",
+      "formal_typed_leads": 32,
+      "raw_leads": 32,
+      "completed_passes": 2,
+      "pre2019_status": "deliberate_defer",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Supporting materials bridge: graphite feedstock, graphitization, qualification and energy cost affect bottlenecks but are not currently a first-order lithium-cycle blocker.",
+      "remaining_negative_space": [
+        "pre-2019 graphitization/feedstock causal setup is not represented in the compact horizon",
+        "qualification and utilization versus announced anode capacity",
+        "energy/power-cost bottlenecks and temporary regional constraints"
+      ],
+      "next_action": "defer_unless_first_order_bridge_emerges",
+      "priority": "medium_low",
+      "reason": "The missing pre-2019 period is deliberate, not an error. Reopen only if the replay reveals an anode-side bottleneck that materially changes cell output or chemistry interpretation."
+    },
+    {
+      "shard_id": "MID-ELECTROLYTE",
+      "formal_typed_leads": 34,
+      "raw_leads": 34,
+      "completed_passes": 2,
+      "pre2019_status": "deliberate_defer",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Supporting cost/quality bridge: salt, solvent and additive availability affect margin, safety and qualification more than primary lithium balance.",
+      "remaining_negative_space": [
+        "pre-2019 salt/solvent/additive history is intentionally not backfilled",
+        "customer qualification and formulation switching versus nominal material capacity",
+        "cross-material price transmission and temporary process bottlenecks"
+      ],
+      "next_action": "defer_unless_first_order_bridge_emerges",
+      "priority": "low",
+      "reason": "No current negative-space signal makes this a first-order blocker for 2019-2020 replay."
+    },
+    {
+      "shard_id": "MID-SEPARATOR",
+      "formal_typed_leads": 32,
+      "raw_leads": 32,
+      "completed_passes": 2,
+      "pre2019_status": "deliberate_defer",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Supporting qualification/capacity bridge: wet/dry process, coating and customer qualification can constrain cell output but are not currently a first-order lithium-cycle explanation.",
+      "remaining_negative_space": [
+        "pre-2019 qualification/capacity setup is intentionally deferred",
+        "qualified versus announced separator capacity",
+        "process-route/product-generation switching and stranded capacity"
+      ],
+      "next_action": "defer_unless_first_order_bridge_emerges",
+      "priority": "low",
+      "reason": "Do not confuse the absent pre-2019 compact horizon with an obligation to backfill; reopen only on a concrete cell-output bridge."
+    },
+    {
+      "shard_id": "DOWN-OTHER",
+      "formal_typed_leads": 32,
+      "raw_leads": 32,
+      "completed_passes": 2,
+      "pre2019_status": "deliberate_defer",
+      "latest_novelty_state": "high",
+      "consecutive_low_novelty_batches": 0,
+      "seal_eligible": false,
+      "replay_role": "Residual demand segmentation: two-wheelers, tools, consumer and industrial uses matter to completeness but are not a first-order driver of the benchmark downcycle.",
+      "remaining_negative_space": [
+        "pre-2019 residual-demand history is intentionally deferred",
+        "application-specific battery size, chemistry and replacement semantics",
+        "small but persistent demand channels that may be hidden by EV-centric aggregation"
+      ],
+      "next_action": "defer_unless_demand_residual_is_material",
+      "priority": "low",
+      "reason": "A blanket pass risks descriptive history with weak causal value. Reopen only if the demand balance leaves a material residual that cannot be explained by NEV/ESS."
+    }
+  ],
+  "next_probe_ranking": [
+    {
+      "rank": 1,
+      "shard_id": "UP-HARDROCK",
+      "decision": "run_one_probe",
+      "target_gap": "effective_supply_translation",
+      "reason": "Highest first-order replay value and a relatively thin formal typed layer; test mine/project history against usable SC6-equivalent supply, ramp, grade and expectation revisions rather than extending the calendar."
+    },
+    {
+      "rank": 2,
+      "shard_id": "DOWN-NEV",
+      "decision": "conditional",
+      "target_gap": "reported_vehicle_activity_to_battery_material_demand",
+      "reason": "Highest demand-side complement to the supply probe; run only after classifying the UP-HARDROCK result and confirming this remains the largest unresolved demand bridge."
+    },
+    {
+      "rank": 3,
+      "shard_id": "UP-CHEMICALS",
+      "decision": "conditional",
+      "target_gap": "nameplate_conversion_to_battery_grade_realized_supply",
+      "reason": "Conversion is the key bridge between mine/concentrate and usable lithium chemicals, but run only if the first probes show material residual uncertainty at this layer."
+    }
+  ],
+  "probe_protocol": {
+    "next_probe_count": 1,
+    "next_shard": "UP-HARDROCK",
+    "prompt_basis": "self-gap-v4 gap lenses, with a new bounded prompt version if needed to make novelty classification and first-order target explicit",
+    "inputs_allowed": [
+      "the target shard's deterministic compact index",
+      "this matrix row for the target shard",
+      "fixed campaign horizon and schema/methodology"
+    ],
+    "inputs_forbidden": [
+      "fresh web/search results",
+      "other shards' raw lead text",
+      "evidence archive material",
+      "later outcomes used to rewrite contemporaneous expectations"
+    ],
+    "classification": ["new_category","useful_refinement","duplicate_or_near_duplicate"],
+    "after_probe": "Recompute the target row's negative space and novelty state before deciding whether rank 2 remains next. Do not auto-run the queue.",
+    "seal_effect": "A high-novelty result resets consecutive_low_novelty_batches to 0. Only an observed low-novelty batch can start or extend the qualifying streak."
+  }
+}

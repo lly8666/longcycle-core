@@ -13,6 +13,7 @@ from .enums import (
     Cadence,
     Decision,
     EntityType,
+    FactEvidenceRole,
     FactStatus,
     FactValueKind,
     FreightBasis,
@@ -25,6 +26,7 @@ from .enums import (
     ReviewSeverity,
     SourceKind,
     TaxBasis,
+    TemporalPrecision,
     ValidTimeKind,
 )
 
@@ -54,9 +56,21 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str)
 
 
-def require_aware_datetime(value: datetime | None, field_name: str) -> datetime | None:
+def canonical_decimal_identity(value: Decimal | None) -> str | None:
+    """Return a scale-insensitive identity for an exact Decimal value."""
+    if value is None:
+        return None
+    if value == 0:
+        return "0"
+    if not value.is_finite():
+        return str(value)
+    text = format(value, "f")
+    return text.rstrip("0").rstrip(".") if "." in text else text
+
+
+def require_aware_datetime(value: datetime | None, field_name: str | None) -> datetime | None:
     if value is not None and (value.tzinfo is None or value.utcoffset() is None):
-        raise ValueError(f"{field_name} must include a timezone")
+        raise ValueError(f"{field_name or 'datetime'} must include a timezone")
     return value
 
 
@@ -309,8 +323,16 @@ class TimeRange(DomainModel):
         if isinstance(self.end, datetime):
             require_aware_datetime(self.end, "end")
         if self.start is not None and self.end is not None:
-            start = datetime.combine(self.start, datetime.min.time(), UTC) if isinstance(self.start, date) and not isinstance(self.start, datetime) else self.start
-            end = datetime.combine(self.end, datetime.min.time(), UTC) if isinstance(self.end, date) and not isinstance(self.end, datetime) else self.end
+            start = (
+                datetime.combine(self.start, datetime.min.time(), UTC)
+                if isinstance(self.start, date) and not isinstance(self.start, datetime)
+                else self.start
+            )
+            end = (
+                datetime.combine(self.end, datetime.min.time(), UTC)
+                if isinstance(self.end, date) and not isinstance(self.end, datetime)
+                else self.end
+            )
             if end <= start:
                 raise ValueError("time range end must be greater than start")
         return self
@@ -382,6 +404,11 @@ class FactDimensions(DomainModel):
         return hashlib.sha256(canonical_json(self.canonical_payload).encode()).hexdigest()
 
 
+class FactEvidenceRef(DomainModel):
+    evidence_fragment_id: UUID
+    evidence_role: FactEvidenceRole = FactEvidenceRole.SUPPORTING
+
+
 class FactAssertion(DomainModel):
     id: UUID = Field(default_factory=uuid4)
     entity_type: EntityType
@@ -399,12 +426,16 @@ class FactAssertion(DomainModel):
     dimensions_complete: bool = False
     valid_time_kind: ValidTimeKind = ValidTimeKind.UNKNOWN
     valid_time: TimeRange = Field(default_factory=TimeRange)
+    valid_time_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    valid_time_text: str | None = None
     observed_at: datetime | None = None
+    observed_at_precision: TemporalPrecision = TemporalPrecision.UNKNOWN
+    observed_at_text: str | None = None
     source_published_at: datetime | None = None
     known_at: datetime = Field(default_factory=utc_now)
     source_id: UUID
     document_id: UUID
-    evidence_fragment_id: UUID
+    evidence: tuple[FactEvidenceRef, ...]
     extraction_run_id: UUID
     extractor_name: str
     extractor_version: str
@@ -435,6 +466,118 @@ class FactAssertion(DomainModel):
     def normalize_value_kind(cls, value: Any) -> Any:
         return FactValueKind.NUMERIC.value if value == "number" else value
 
+    @model_validator(mode="before")
+    @classmethod
+    def restore_and_mirror_valid_time_precision(cls, value: Any) -> Any:
+        if not isinstance(value, dict):
+            return value
+        payload = dict(value)
+        legacy_evidence_id = payload.pop("evidence_fragment_id", None)
+        if legacy_evidence_id is not None:
+            if payload.get("evidence"):
+                raise ValueError(
+                    "FactAssertion cannot supply both evidence and legacy evidence_fragment_id"
+                )
+            payload["evidence"] = (
+                {
+                    "evidence_fragment_id": legacy_evidence_id,
+                    "evidence_role": FactEvidenceRole.SUPPORTING.value,
+                },
+            )
+        metadata = dict(payload.get("metadata") or {})
+        precision_key = "_longcycle_valid_time_precision"
+        text_key = "_longcycle_valid_time_text"
+        if "valid_time_precision" not in payload and precision_key in metadata:
+            payload["valid_time_precision"] = metadata[precision_key]
+        if "valid_time_text" not in payload and text_key in metadata:
+            payload["valid_time_text"] = metadata[text_key]
+        precision = payload.get("valid_time_precision", TemporalPrecision.UNKNOWN)
+        precision_value = precision.value if isinstance(precision, TemporalPrecision) else str(precision)
+        metadata[precision_key] = precision_value
+        source_text = payload.get("valid_time_text")
+        if source_text is not None:
+            metadata[text_key] = source_text
+        else:
+            metadata.pop(text_key, None)
+
+        observed_precision_key = "_longcycle_observed_at_precision"
+        observed_text_key = "_longcycle_observed_at_text"
+        if "observed_at_precision" not in payload and observed_precision_key in metadata:
+            payload["observed_at_precision"] = metadata[observed_precision_key]
+        if "observed_at_text" not in payload and observed_text_key in metadata:
+            payload["observed_at_text"] = metadata[observed_text_key]
+        if payload.get("observed_at") is not None:
+            observed_precision = payload.get(
+                "observed_at_precision",
+                TemporalPrecision.UNKNOWN,
+            )
+            observed_precision_value = (
+                observed_precision.value
+                if isinstance(observed_precision, TemporalPrecision)
+                else str(observed_precision)
+            )
+            metadata[observed_precision_key] = observed_precision_value
+            observed_text = payload.get("observed_at_text")
+            if observed_text is not None:
+                metadata[observed_text_key] = observed_text
+            else:
+                metadata.pop(observed_text_key, None)
+        else:
+            metadata.pop(observed_precision_key, None)
+            metadata.pop(observed_text_key, None)
+        payload["metadata"] = metadata
+        return payload
+
+    @model_validator(mode="after")
+    def valid_time_precision_matches_semantics(self) -> "FactAssertion":
+        bounded = {
+            TemporalPrecision.INSTANT,
+            TemporalPrecision.SECOND,
+            TemporalPrecision.MINUTE,
+            TemporalPrecision.HOUR,
+            TemporalPrecision.DAY,
+            TemporalPrecision.WEEK,
+            TemporalPrecision.MONTH,
+            TemporalPrecision.QUARTER,
+            TemporalPrecision.HALF_YEAR,
+            TemporalPrecision.YEAR,
+            TemporalPrecision.RANGE,
+        }
+        if self.valid_time_precision in bounded and self.valid_time_kind != ValidTimeKind.PERIOD:
+            raise ValueError("bounded fact valid-time precision requires period valid_time_kind")
+        if self.valid_time_precision == TemporalPrecision.APPROXIMATE and not self.valid_time_text:
+            raise ValueError("approximate fact valid time must preserve the source time text")
+        if self.valid_time_kind == ValidTimeKind.PERIOD and (
+            self.valid_time.start is None and self.valid_time.end is None
+        ):
+            raise ValueError("period fact valid time requires a start and/or end bound")
+        if self.observed_at is None:
+            if (
+                self.observed_at_precision != TemporalPrecision.UNKNOWN
+                or self.observed_at_text is not None
+            ):
+                raise ValueError("observed-at precision/text requires observed_at")
+        elif (
+            self.observed_at_precision == TemporalPrecision.APPROXIMATE
+            and not self.observed_at_text
+        ):
+            raise ValueError("approximate observed-at time must preserve the source time text")
+        if not self.evidence:
+            raise ValueError("FactAssertion requires at least one EvidenceFragment reference")
+        evidence_ids = [item.evidence_fragment_id for item in self.evidence]
+        if len(set(evidence_ids)) != len(evidence_ids):
+            raise ValueError("FactAssertion evidence fragments must be unique")
+        if not any(item.evidence_role == FactEvidenceRole.SUPPORTING for item in self.evidence):
+            raise ValueError("FactAssertion requires at least one supporting evidence fragment")
+        return self
+
+    @property
+    def immutable_fingerprint(self) -> str:
+        payload = self.model_dump(mode="json", exclude={"status"})
+        if self.value_type == FactValueKind.NUMERIC:
+            payload["normalized_number"] = canonical_decimal_identity(self.normalized_number)
+        return hashlib.sha256(canonical_json(payload).encode()).hexdigest()
+
     @property
     def scope_key(self) -> str:
         return canonical_json(
@@ -452,10 +595,11 @@ class FactAssertion(DomainModel):
 
     @property
     def value_fingerprint(self) -> str:
+        payload: dict[str, Any]
         if self.value_type == FactValueKind.NUMERIC:
             payload = {
                 "kind": self.value_type.value,
-                "number": str(self.normalized_number) if self.normalized_number is not None else None,
+                "number": canonical_decimal_identity(self.normalized_number),
                 "unit": self.normalized_unit,
             }
         elif self.value_type == FactValueKind.BOOLEAN:

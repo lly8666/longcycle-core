@@ -1,0 +1,300 @@
+# Exact-head retrigger after workflow registration.
+name: ADC SV-003 Enhertu Judgment Outcome pressure
+
+on:
+  push:
+    branches:
+      - design/industry-memory
+    paths:
+      - '.github/workflows/adc-sv003-enhertu-judgment-outcome-pressure.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-judgment-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-her2low-reality-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-judgment-projection-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-her2low-reality-pressure-projection-v1.json'
+      - 'scripts/execute_grounded_evidence_spec.py'
+      - 'scripts/execute_grounded_judgment_persistence.py'
+      - 'scripts/execute_grounded_reality_projection.py'
+      - 'scripts/execute_grounded_outcome_evaluation.py'
+  pull_request:
+    paths:
+      - '.github/workflows/adc-sv003-enhertu-judgment-outcome-pressure.yml'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-judgment-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-her2low-reality-grounded-evidence-spec-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-judgment-projection-v1.json'
+      - 'research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-her2low-reality-pressure-projection-v1.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  pressure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/blobs
+      RELEASE_TAG: longcycle-dev-binary-cache
+      RELEASE_ASSET: longcycle-adc-sv003-enhertu-acquisition-v2-run32586650020.zip
+      RELEASE_SHA256: 21b0dc3b716567a9242a10fafe984a4e0d3ad1ed7c9537fe3762996650a3a692
+      MATERIAL_ROOT: .artifacts/material
+      JUDGMENT_EVIDENCE_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-judgment-grounded-evidence-spec-v1.json
+      REALITY_EVIDENCE_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-003-her2low-reality-grounded-evidence-spec-v1.json
+      JUDGMENT_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-judgment-projection-v1.json
+      REALITY_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-003-her2low-reality-pressure-projection-v1.json
+      JUDGMENT_EVIDENCE_OUTPUT: .artifacts/judgment-evidence.json
+      REALITY_EVIDENCE_OUTPUT: .artifacts/reality-evidence.json
+      JUDGMENT_OUTPUT: .artifacts/judgment.json
+      REALITY_OUTPUT: .artifacts/reality.json
+      OUTCOME_OUTPUT: .artifacts/outcome.json
+      REPLAY_OUTPUT: .artifacts/replay.json
+      PRESSURE_OUTPUT: .artifacts/implication-pressure.json
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e '.[dev,postgres,s3,duckdb]'
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Restore only required archived source bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/acquisition "$MATERIAL_ROOT"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir .artifacts/acquisition
+          asset=".artifacts/acquisition/$RELEASE_ASSET"
+          actual="$(sha256sum "$asset" | awk '{print $1}')"
+          echo "SV003_RELEASE_SHA actual=$actual expected=$RELEASE_SHA256"
+          test "$actual" = "$RELEASE_SHA256"
+          unzip -q "$asset" -d .artifacts/acquisition/unpacked
+          python - <<'PY'
+          import hashlib
+          import os
+          import shutil
+          from pathlib import Path
+
+          root = Path('.artifacts/acquisition/unpacked')
+          material = Path(os.environ['MATERIAL_ROOT'])
+          targets = {
+              'ba158bf33500fa2238c3ae4409859fe306ced0b5df55e9c4014f911a29ef9a5e': 'daiichi-astrazeneca-enhertu-collaboration-2019.pdf',
+              'cac50e7399de144aec3d24c0f2ae65b47f2a61144213b1159d06d31452c11947': 'daiichi-enhertu-us-her2-low-approval-2022.pdf',
+          }
+          found = {}
+          for path in root.rglob('*'):
+              if not path.is_file():
+                  continue
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              if digest in targets:
+                  found[digest] = path
+          missing = sorted(set(targets) - set(found))
+          if missing:
+              raise SystemExit(f'missing required archived source SHA(s): {missing}')
+          for digest, destination in targets.items():
+              source = found[digest]
+              target = material / destination
+              shutil.copyfile(source, target)
+              assert hashlib.sha256(target.read_bytes()).hexdigest() == digest
+              print(f'SV003_SOURCE_RESTORED sha={digest} source={source} destination={target}')
+          PY
+
+      - name: Ground 2019 Judgment Evidence only
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$JUDGMENT_EVIDENCE_SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$JUDGMENT_EVIDENCE_OUTPUT"
+
+      - name: Persist 2019 contemporaneous Judgment
+        run: >-
+          python scripts/execute_grounded_judgment_persistence.py
+          "$JUDGMENT_SPEC"
+          "$JUDGMENT_EVIDENCE_OUTPUT"
+          --output "$JUDGMENT_OUTPUT"
+
+      - name: Ground 2022 Reality Evidence separately
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$REALITY_EVIDENCE_SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$REALITY_EVIDENCE_OUTPUT"
+
+      - name: Persist and reconcile 2022 canonical Reality
+        run: >-
+          python scripts/execute_grounded_reality_projection.py
+          "$REALITY_SPEC"
+          "$REALITY_EVIDENCE_OUTPUT"
+          --output "$REALITY_OUTPUT"
+
+      - name: Evaluate only as related milestone
+        run: >-
+          python scripts/execute_grounded_outcome_evaluation.py
+          "$JUDGMENT_OUTPUT"
+          "$REALITY_OUTPUT"
+          --judgment-key 2019-her2-low-treatment-redefinition-thesis
+          --reality-fact-key 2022-us-her2-low-approval-scope-pressure
+          --semantic-relation related_milestone
+          --output "$OUTCOME_OUTPUT"
+
+      - name: Assert no-lookahead typed replay and implication gap
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import asyncio
+          import json
+          import os
+          from datetime import datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.postgres_epistemic import PostgresEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+
+          dsn = os.environ['LONGCYCLE_DATABASE_URL']
+          subject = MemorySubjectRef(entity_id=UUID('7560c74c-12cc-5551-ae8b-81bef9b25f6b'))
+
+          def dt(value: str) -> datetime:
+              return datetime.fromisoformat(value.replace('Z', '+00:00'))
+
+          async def run():
+              reader = PostgresEpistemicMemoryReader(dsn)
+              try:
+                  cutoffs = {
+                      'before_judgment_known': '2019-03-29T23:59:59Z',
+                      'judgment_known': '2019-03-30T00:00:00Z',
+                      'before_reality_known': '2022-08-05T23:59:59Z',
+                      'reality_known': '2022-08-06T00:00:00Z',
+                  }
+                  rows = {}
+                  for key, value in cutoffs.items():
+                      snap = await reader.snapshot((subject,), knowledge_cutoff=dt(value))
+                      rows[key] = {
+                          'reality': len(snap.reality),
+                          'judgments': len(snap.judgments),
+                          'outcomes': len(snap.outcomes),
+                      }
+                  assert rows == {
+                      'before_judgment_known': {'reality': 0, 'judgments': 0, 'outcomes': 0},
+                      'judgment_known': {'reality': 0, 'judgments': 1, 'outcomes': 0},
+                      'before_reality_known': {'reality': 0, 'judgments': 1, 'outcomes': 0},
+                      'reality_known': {'reality': 1, 'judgments': 1, 'outcomes': 1},
+                  }, rows
+                  return rows
+              finally:
+                  await reader.close()
+
+          replay = asyncio.run(run())
+          outcome = json.loads(Path(os.environ['OUTCOME_OUTPUT']).read_text(encoding='utf-8'))
+          judgment = json.loads(Path(os.environ['JUDGMENT_OUTPUT']).read_text(encoding='utf-8'))
+          reality = json.loads(Path(os.environ['REALITY_OUTPUT']).read_text(encoding='utf-8'))
+          row = outcome['persisted_row']
+          assert row['semantic_relation'] == 'related_milestone', row
+          assert row['evaluation_status'] == 'indeterminate', row
+          assert row['timing_relation'] == 'not_comparable', row
+          assert row['timing_delta_value'] is None, row
+          assert judgment['judgments'][0]['target_precision'] == 'unknown', judgment
+          assert reality['canonical_reality'][0]['market_known_at'].startswith('2022-08-06'), reality
+          assert 'researcher_implication' not in row, row
+
+          assessment = {
+              'schema_version': 'longcycle-outcome-implication-pressure-assessment/v1',
+              'trajectory': 'trastuzumab deruxtecan / ENHERTU',
+              'earlier_judgment_key': '2019-her2-low-treatment-redefinition-thesis',
+              'later_reality_fact_key': '2022-us-her2-low-approval-scope-pressure',
+              'semantic_relation': 'related_milestone',
+              'evaluation_status': 'indeterminate',
+              'researcher_implication': 'supports',
+              'rationale': 'The later U.S. HER2-low approval is directionally consistent with the 2019 thesis that trastuzumab deruxtecan could redefine treatment for HER2-low tumors, but the regulatory approval milestone is not semantically identical to the broader treatment-redefinition thesis.',
+              'typed_query_gap': True,
+              'typed_query_gap_basis': 'The persisted Outcome preserves comparability and indeterminate realization correctly but has no typed researcher_implication field; supports survives only in this explicit research assessment.',
+              'no_lookahead_replay': replay,
+              'migration_0026_gate': {
+                  'decision': 'remain_deferred',
+                  'reason': 'This is a second grounded ADC trajectory and independently reproduces the information-loss pressure, but the recorded cross-industry promotion gate is not yet satisfied.'
+              }
+          }
+          Path(os.environ['REPLAY_OUTPUT']).write_text(json.dumps(replay, indent=2) + '\n', encoding='utf-8')
+          Path(os.environ['PRESSURE_OUTPUT']).write_text(json.dumps(assessment, indent=2) + '\n', encoding='utf-8')
+          print('SV003_JUDGMENT_OUTCOME_PRESSURE_PASS')
+          print(json.dumps(assessment, sort_keys=True))
+          PY
+
+      - name: Upload generated pressure outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sv003-enhertu-judgment-outcome-pressure-${{ github.run_id }}
+          path: |
+            .artifacts/judgment-evidence.json
+            .artifacts/reality-evidence.json
+            .artifacts/judgment.json
+            .artifacts/reality.json
+            .artifacts/outcome.json
+            .artifacts/replay.json
+            .artifacts/implication-pressure.json
+          if-no-files-found: warn
+          retention-days: 7
+
+      - name: Report exact-head pressure receipt
+        if: always()
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          HEAD_SHA: ${{ github.sha }}
+          REPOSITORY: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha_or_missing() {
+            if [[ -f "$1" ]]; then sha256sum "$1" | awk '{print $1}'; else echo missing; fi
+          }
+          judgment_sha="$(sha_or_missing "$JUDGMENT_OUTPUT")"
+          reality_sha="$(sha_or_missing "$REALITY_OUTPUT")"
+          outcome_sha="$(sha_or_missing "$OUTCOME_OUTPUT")"
+          pressure_sha="$(sha_or_missing "$PRESSURE_OUTPUT")"
+          cat > .artifacts/receipt.md <<EOF
+          [SV003-ENHERTU-JUDGMENT-OUTCOME-PRESSURE]
+
+          - head_sha: \`$HEAD_SHA\`
+          - run_id: \`$RUN_ID\`
+          - job_status: \`$JOB_STATUS\`
+          - judgment_sha256: \`$judgment_sha\`
+          - reality_sha256: \`$reality_sha\`
+          - outcome_sha256: \`$outcome_sha\`
+          - implication_pressure_sha256: \`$pressure_sha\`
+          - expected_semantic_relation: \`related_milestone\`
+          - expected_evaluation_status: \`indeterminate\`
+          - migration_0026: \`remain_deferred\`
+          - run_url: https://github.com/$REPOSITORY/actions/runs/$RUN_ID
+          EOF
+          gh issue comment 2 --repo "$REPOSITORY" --body-file .artifacts/receipt.md

@@ -1,0 +1,26 @@
+{
+  "schema_version": "longcycle-self-verification-task/v1",
+  "task_id": "SV-002",
+  "rank": 2,
+  "trajectory": "rovalpituzumab tesirine / Rova-T / Stemcentrx -> AbbVie",
+  "blind_lead_ids": ["ASSET-TRIAL-008", "FAILURE-REV-002", "RIGHTS-BD-013"],
+  "authority_class": "post_seal_search_discovery_not_evidence",
+  "refined_summary": "Search discovery sharpens the cognition-to-capital-to-failure arc. AbbVie announced the Stemcentrx acquisition on 2016-04-28 at about $5.8B upfront, described Rova-T as a multi-billion-dollar peak-revenue opportunity and cited 44% ORR in DLL3-high relapsed SCLC from early studies. TAHOE enrollment was halted on 2018-12-05 because overall survival was shorter with Rova-T than topotecan. AbbVie then recorded a large Stemcentrx-related impairment, and on 2019-08-29 terminated the Rova-T R&D program after MERU showed no survival benefit at interim analysis.",
+  "blind_memory_discrepancies": [],
+  "candidate_urls": [
+    "https://news.abbvie.com/2016-04-28-AbbVie-to-Expand-Oncology-Presence-Through-Acquisition-of-Stemcentrx-and-its-Novel-Late-Stage-Rova-T-Compound-for-Small-Cell-Lung-Cancer",
+    "https://www.sec.gov/Archives/edgar/data/1551152/000110465916116276/a16-9837_18k.htm",
+    "https://news.abbvie.com/2018-12-05-Phase-3-Trial-of-Rova-T-as-Second-line-Therapy-for-Advanced-Small-Cell-Lung-Cancer-TAHOE-STUDY-Halted",
+    "https://www.sec.gov/Archives/edgar/data/1551152/000110465919000836/a19-1169_28k.htm",
+    "https://news.abbvie.com/2019-08-29-AbbVie-Discontinues-Rovalpituzumab-Tesirine-Rova-T-Research-and-Development-Program",
+    "https://clinicaltrials.gov/study/NCT03061812",
+    "https://clinicaltrials.gov/study/NCT03033511"
+  ],
+  "possible_primary_source_types": ["AbbVie acquisition press release and SEC transaction filing", "AbbVie trial-halt/program-termination releases", "AbbVie SEC impairment filings", "ClinicalTrials.gov TAHOE/MERU records and protocols"],
+  "source_origin_notes": ["AbbVie press releases and AbbVie SEC filings are the same corporate origin for expectation/transaction claims, even when SEC gives stronger legal/accounting precision.", "TAHOE and MERU registry records are sponsor-submitted registry material; use them for design/identifier history, not as an independent vote.", "Accounting impairment amounts vary by gross/pre-tax/after-tax and contingent-consideration framing; preserve claim scope rather than forcing one number."],
+  "refined_queries": ["AbbVie Stemcentrx April 2016 Rova-T 5.8 billion multi-billion peak revenue", "Rova-T early DLL3 high 44% ORR 2016", "TAHOE NCT03061812 shorter overall survival topotecan December 2018", "Stemcentrx impairment January 2019 SEC 8-K", "MERU NCT03033511 no survival benefit August 2019", "Rova-T program terminated August 2019", "Rova-T accelerated approval decision 2018 single-arm magnitude", "Rova-T early promise selection bias DLL3 high later randomized failure"],
+  "what_counts_as_support": ["Contemporaneous acquisition materials preserving AbbVie's expected commercial/clinical thesis before randomized failure.", "TAHOE source documenting worse OS versus topotecan and the exact state change from active development to halted enrollment.", "MERU/program-termination source documenting final R&D stop and no survival benefit.", "SEC source linking clinical failure to impairment with accounting-scope precision."],
+  "what_counts_as_contradiction": ["Evidence that AbbVie did not materially base the acquisition thesis on Rova-T or did not communicate multi-billion-dollar expectations.", "A later randomized study showing a clinically meaningful benefit that caused the program to resume before termination.", "Evidence that impairment timing was driven by unrelated Stemcentrx assets rather than Rova-T probability changes."],
+  "unresolved_questions": ["What exact information was publicly known between the early 44% ORR narrative and AbbVie's 2018 decision not to seek accelerated approval?", "Which impairment figure is appropriate for each claim: carrying-value write-down, pre-tax impairment, after-tax net impact, or contingent-consideration adjustment?", "Can analyst/investor expectations at acquisition time be recovered without hindsight contamination?"],
+  "delegated_evidence_instructions": "Archive the 2016 acquisition announcement/filing, early Rova-T data source, 2018 accelerated-approval/TAHOE state changes, 2019 impairment filing and MERU termination. Build a point-in-time expectation trajectory: acquisition thesis -> accumulating uncertainty -> randomized harm/failure -> impairment -> termination. Preserve accounting measures as separate assertions."
+}

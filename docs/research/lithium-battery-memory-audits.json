@@ -1,0 +1,133 @@
+{
+  "schema_version": "longcycle-memory-audits/v1",
+  "industry": "新能源锂电池",
+  "protocol": "docs/research/model-memory-audit.md",
+  "authority_policy": "docs/research/source-authority-policy.md",
+  "output_schema": "docs/research/model-memory-lead.schema.json",
+  "rules": [
+    "blind_recall 必须在模型看到本轮搜索结果之前运行",
+    "memory_confidence 只是回忆强弱，不是真值概率",
+    "不得生成伪造引用、URL、报告名、页码或不确定的精确数值",
+    "每条 lead 都必须给 suggested_queries 和 suggested_source_types",
+    "与 archive 或网页冲突时不得多数投票，必须指定需要哪类 claim-scoped primary source",
+    "任何 memory lead 都不能直接写 FactAssertion 或 JudgmentAssertion"
+  ],
+  "audits": [
+    {
+      "audit_id": "LB-MEM-001",
+      "period": ["2019-01-01", "2020-12-31"],
+      "first_pass": "blind_recall",
+      "second_pass": "gap_audit",
+      "focus": [
+        "上一轮锂供给过剩如何形成以及哪些项目退出/延期",
+        "锂价和行业利润处于什么阶段",
+        "LFP 技术路线在当时的真实产业认知",
+        "哪些资本开支和资源项目被低价压制",
+        "当时为什么市场没有充分预期 2021-2022 的资源紧张",
+        "旧项目名、矿山名、行业术语和数据口径"
+      ],
+      "must_use_lenses": [
+        "historical_landmarks",
+        "historical_vocabulary",
+        "capital_cycle",
+        "technology_and_unit_intensity",
+        "contemporaneous_narratives",
+        "negative_space"
+      ]
+    },
+    {
+      "audit_id": "LB-MEM-002",
+      "period": ["2021-01-01", "2022-12-31"],
+      "first_pass": "blind_recall",
+      "second_pass": "gap_audit",
+      "focus": [
+        "锂辉石精矿、锂盐现货、长协、拍卖和公式定价机制",
+        "矿山与锂盐厂之间利润和定价权如何变化",
+        "资源包销、预付款、并购、锁量和车企/电池厂资源战略",
+        "项目从公告到有效供给的许可、设备、调试、回收率和爬坡瓶颈",
+        "锂盐、正极、电芯和整车不同位置的库存与采购行为",
+        "新能源车高增长和储能预期如何进入锂需求预测",
+        "当时的长期资源短缺叙事、价格预期及其关键理由",
+        "扩产融资、定增、IPO、设备订单和资本开支反应"
+      ],
+      "must_use_lenses": [
+        "pricing_and_contracts",
+        "effective_supply_bottlenecks",
+        "inventory_location",
+        "capital_cycle",
+        "cross_industry_dependencies",
+        "contemporaneous_narratives",
+        "negative_space"
+      ]
+    },
+    {
+      "audit_id": "LB-MEM-003",
+      "period": ["2023-01-01", "2024-12-31"],
+      "first_pass": "blind_recall",
+      "second_pass": "gap_audit",
+      "focus": [
+        "高价时期宣布的产能何时集中形成实际供给",
+        "哪一层先出现主动或被动去库存",
+        "电池排产、正极采购、锂盐库存和终端销量之间的时序",
+        "价格下跌对矿山、锂盐厂、材料厂现金成本和停复产的影响",
+        "管理层和券商如何修订此前的需求、供给和价格判断",
+        "LFP/NCM 结构变化及单位材料耗用变化",
+        "储能需求开始改变边际需求的时间和市场认知"
+      ],
+      "must_use_lenses": [
+        "effective_supply_bottlenecks",
+        "inventory_location",
+        "technology_and_unit_intensity",
+        "capital_cycle",
+        "contemporaneous_narratives",
+        "negative_space"
+      ]
+    },
+    {
+      "audit_id": "LB-MEM-004",
+      "period": ["2025-01-01", "2026-12-31"],
+      "first_pass": "blind_recall",
+      "second_pass": "gap_audit",
+      "focus": [
+        "低价对未来资源资本开支、关停和复产选择的影响",
+        "储能、电动车与海外需求的边际贡献",
+        "矿石、盐湖、回收等不同供给成本曲线的变化",
+        "贸易政策、海外补贴、关税和本地化要求",
+        "新技术对单位锂耗、材料结构和设备投资的影响",
+        "上一轮项目延期模式是否在新项目中重复"
+      ],
+      "must_use_lenses": [
+        "historical_landmarks",
+        "capital_cycle",
+        "technology_and_unit_intensity",
+        "cross_industry_dependencies",
+        "project_pattern",
+        "negative_space"
+      ]
+    },
+    {
+      "audit_id": "LB-MEM-005",
+      "period": ["2019-01-01", "2026-12-31"],
+      "first_pass": "association_expansion",
+      "second_pass": "gap_audit",
+      "focus": [
+        "把价格、库存、资本开支、项目进度、技术路线和终端需求连接成可能的时序关系",
+        "寻找普通产业链分类之外的外部变量",
+        "寻找今天已经不常被提起但当时影响决策的术语和叙事",
+        "找出 archive 中时间上突兀、因果链断裂或只有结果没有过程的片段",
+        "生成下一批低级 Agent 的 targeted search leads"
+      ],
+      "must_use_lenses": [
+        "historical_vocabulary",
+        "pricing_and_contracts",
+        "effective_supply_bottlenecks",
+        "inventory_location",
+        "capital_cycle",
+        "technology_and_unit_intensity",
+        "cross_industry_dependencies",
+        "contemporaneous_narratives",
+        "negative_space"
+      ]
+    }
+  ]
+}

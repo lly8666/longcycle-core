@@ -1,105 +1,212 @@
 # Longcycle Core
 
-行业周期研究平台的数据库与采集内核。当前版本只做后端：保存可追溯原文、事实断言、历史版本、产能项目、行业事件、公司敞口和采集运行状态；网页端不在本仓库范围内。
-
-## 已实现的边界
-
-- PostgreSQL 16+ 的四层数据模型：`core`、`evidence`、`research`、`ops`。
-- S3/R2/MinIO 或本地文件系统的 SHA-256 内容寻址原文库。
-- 可插拔 `SourcePlugin`、`ModelGateway`、Repository、Queue、Checkpoint 和 EventSink。
-- 本地文件与受限 HTTP 采集源；HTTP 源具备域名白名单、重定向复查、响应体上限和基础 SSRF 防护。
-- 原文归档 → 证据片段 → 抽取运行 → 原子断言 → 质量评分 → 冲突/复核 → 可信事实版本的完整链路。
-- 解析产物具有独立的 producer/version/input hash/content hash 血缘；结构化证据必须引用已持久化解析产物。
-- 数据库驱动的 predicate、维度 schema、单位换算与分 predicate 调和策略快照；规则指纹进入处理版本。
-- 同一事实键下“读取可信基线 → 调和 → 保存 evaluation”原子串行，避免并发冲突值双双发布。
-- 带租约、心跳、重试、死信、断点和确定性 fan-out 的 PostgreSQL 任务执行骨架。
-- 动态频率：行业热度与数据风险共同决定每日、每三日或每周采集，并带降频迟滞与事件覆盖。
-- 价格、产能、产量、项目、事件、上市公司收入/利润/成本/产能敞口、上下游关系和周期快照的数据库结构。
-
-当前还没有生产 AI 连接器、通用 PDF/OCR/Excel 解析器、语义目录热更新/部署装配、默认全阶段 handler 装配、对外 API 或网页。`JsonFixtureGateway` 是离线黄金测试适配器，不是生产模型。
-
-## 结构
+Longcycle 是一个**可按历史时点回放的产业长期记忆系统内核**。目标不是自动生成更多研报，也不是把网页抓取数量当成果，而是长期保存：
 
 ```text
-migrations/                   PostgreSQL 迁移；数据库是真实结构化数据源
-src/longcycle/domain/         不可变领域对象与枚举
-src/longcycle/ports/          可替换端口契约
-src/longcycle/application/    采集、归一、调和、调度、Worker、工作流
-src/longcycle/adapters/       HTTP/本地源、PostgreSQL、S3/文件、测试模型
-docs/                         架构、Schema 契约、采集 SDK、运维说明
-tests/                        无网络确定性测试
+Reality      当时真实发生了什么
+Judgment     当时的人如何判断未来、为什么
+Outcome      后来发生了什么，和此前 Judgment 有何关系
 ```
+
+核心认识：
+
+> **历史本身就是分析。**
+>
+> 对历史恢复：`memory-first, Evidence-final`。
+>
+> 对当下采集：`source-first, preserve-now`。
+
+## 第一性边界
+
+1. **Evidence 决定可发布历史。** 搜索结果、AI 摘要和 Model Memory 只能发现线索，不能直接成为 Fact/Judgment。
+2. **Reality 与 Judgment 分开。** “公司当时预计 X”是真实的历史 Judgment，不等于 X 后来真的发生。
+3. **No-lookahead。** 历史 replay 只能使用当时已经可知的信息；后来结果不能回填早期判断。
+4. **权威按 claim scope 判断。** 监管机构、issuer、行业机构、媒体各自只能在适合的 claim 范围内提供证明力。
+5. **同源不等于独立 corroboration。** 同一原始公告/PDF 的多个镜像仍属于一个 evidence cluster。
+6. **时间精度服从来源。** 不制造伪精度；known-time 仍使用保守、可证明的上界。
+7. **运输方式不改变 authority。** GitHub Release、Google Drive、本地文件、对象存储只是 transport / materialization 手段。
+
+## 历史恢复
 
 ```text
-来源发现
-  → 获取并归档原始字节
-  → 解析/抽取候选
-  → 绑定证据与版本
-  → 归一产品规格、地区、价格口径、单位和时间
-  → 质量评分与独立信源调和
-  → 可信事实/冲突/人工复核
-  → 指标序列、产能管线、事件影响、公司敞口、周期快照
+Blind Memory Exhaustion
+→ saturation / seal
+→ high-capability self-verification / search discovery
+→ claim-scoped evidence tasks
+→ source identity + claim-relevant content verification
+→ Evidence / Assertion / Reconciliation
+→ deferred raw-byte materialization where useful
 ```
 
-## 本地快速验证
+Blind Memory Atlas 在 seal 前不能被本轮 fresh search 污染；`not_found != false`。Memory Lead 永远低于 Evidence。
 
-要求 Python 3.11+：
+## 当下采集
 
-```powershell
-python -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -e ".[dev]"
-longcycle doctor
-longcycle source plugins
-longcycle demo
-python -m unittest discover -s tests -v
+```text
+source/watchlist
+→ proactive collection
+→ faithful content/version capture or verified source locator
+→ Reality / Judgment extraction
+→ revision tracking
+→ raw-file materialization when useful/available
 ```
 
-`longcycle demo` 完全离线，运行一条本地 JSON → 原文归档 → 事实抽取 → 归一 → 调和链路。
+`preserve-now` 的第一要求是**不要丢失现在可读、可定位、可证明的 source information**，而不是为了 byte-identical 下载阻塞研究。
 
-## PostgreSQL 与对象存储
+## PDF：identity / content / raw bytes 分开
 
-开发环境可复制 `.env.example`，然后启动基础设施：
+PDF 使用三个显式状态：
 
-```powershell
-Copy-Item .env.example .env
-docker compose up -d postgres minio minio-init
-docker compose run --rm migrate
+```text
+locator_verified
+→ content_verified
+→ materialized
 ```
 
-或直接连接已有 PostgreSQL 16+：
+### `locator_verified`
 
-```powershell
-$env:LONGCYCLE_DATABASE_URL='postgresql://longcycle:longcycle@localhost:5432/longcycle'
-pip install -e ".[postgres,s3]"
-longcycle db upgrade
-longcycle doctor --check-database
-longcycle scheduler-tick
+已经确认 publisher/document identity、原始 URL、文件名（能确定时）、title/date/文档号等。对于主流官方、监管、issuer、机构网站，这足以承认“这份 source document 确实存在”，不需要再证明某个 GitHub runner 能下载它。
+
+**但只确认链接存在不能证明具体 claim。**
+
+### `content_verified`
+
+当前 Agent 已通过可信界面实际读到 claim-relevant 内容，并保存了页码/章节/摘录或等价的忠实 readable representation。此时可以进入 Grounded Evidence，即使 raw PDF bytes 尚未下载。
+
+忠实文本表示必须保留：
+
+- upstream PDF identity / URL；
+- `source_media_type = application/pdf`；
+- truthful `content_verification_mode`；
+- `claim_relevant_content_preserved = true`；
+- representation byte/text digest；
+- 不能把 text representation 伪装成 raw PDF。
+
+### `materialized`
+
+以后有正常网络的 Agent 再下载 raw PDF，验证 document identity 与此前 content，补 raw size / SHA-256 / durable storage locator。这个状态是 completeness/integrity enrichment，不是 Evidence 的前置条件。
+
+如果 later raw bytes 与 earlier `content_verified` 身份/内容冲突，必须 fail closed，不能静默覆盖。
+
+**不要创建 GitHub Actions 仅仅为了下载新 PDF。** Actions 仍然可以用于 PostgreSQL、CI、runtime execution。已经存在的 Release source packs 是可复用的历史 materialization，但不是新 PDF 的默认 acquisition 路径。
+
+## 网页：本地 capture DB → Google Drive
+
+对当前 Agent 可以完整读取的网页：
+
+```text
+interactive read
+→ faithful claim-scoped visible text + provenance
+→ bounded local DuckDB/SQLite capture capsule
+→ checkpoint / SHA-256
+→ Google Drive handoff
 ```
 
-迁移使用会话级 advisory lock、逐文件事务和 SHA-256 校验；已应用迁移被修改时会拒绝继续。迁移角色需要创建 `pgcrypto`、`btree_gist`、`pg_trgm` 扩展的权限。
+网页 capture DB 是 source-derived capture/handoff envelope，不是 live PostgreSQL，也不会自动发布 Fact/Judgment。不要为了网页 HTML 专门启动 Actions，也不要为每一页正文制造 Git commit。
 
-`compose.yaml` 只用于本地开发，并未在本工作区运行验证，因为当前环境没有 Docker。生产环境应固定镜像 digest，使用托管 PostgreSQL 的 PITR、对象锁/版本控制和独立凭证管理。
+## 数据与存储架构
 
-## 关键设计原则
+PostgreSQL 使用四个 schema：
 
-1. AI 只能写候选断言，不能直接写可信事实。
-2. 每条可信事实都能回溯到归档原文、精确 locator、抽取器、prompt/schema/model 版本。
-3. 同一主体、predicate 和可比维度形成事实键；有效时间决定比较范围，不被混入维度哈希。
-4. 现货、长协、含税/未税、到厂/出厂、地区、规格和币种不完整时，不自动互证或判冲突。
-5. 原始产能、名义产能、有效产能、产量和利用率是不同指标。
-6. 来源断言和系统采用结论分别保存；修订追加版本，不覆盖历史。
-7. Queue 是至少一次语义，所有 handler 和外部副作用必须幂等。
+```text
+core      稳定身份、分类、产品、设施、单位、predicate
+evidence  publisher/source/document/material/artifact/Evidence/provenance
+research  Reality + Judgment + Outcome + Model Memory
+ops       queue/lease/checkpoint/review/outbox/audit
+```
 
-## 文档入口
+长期语义上需要区分：
 
-- [总体架构](docs/architecture.md)
-- [Schema 与时间契约](docs/schema-contracts.md)
-- [采集插件 SDK](docs/collector-sdk.md)
-- [运行、成本与安全](docs/operations.md)
+```text
+logical source document
+├─ verified locator
+├─ one or more preserved readable/material representations
+└─ optional verified raw-source materialization
+```
 
-## 当前验收
+一个 readable representation 可以形成 `document_version` / Evidence lineage，但这**不等于** raw PDF 已 materialized。Migration 0028/0029 与 `PostgresSourceLocatorRegistry` 专门守住这个区别。
 
-无需网络或数据库即可运行的单元测试覆盖：内容寻址归档、来源安全、断言归一与可比性、冲突分流、同文档不同目标抽取、队列租约与死信、Worker 并发、断点重放和 Outbox 幂等。
+### Grounded Evidence
 
-真实 PostgreSQL/S3 集成测试需要在具备相应服务的环境中执行；不能用当前纯内存测试替代上线前的并发、故障注入、备份恢复和对象一致性演练。
+```text
+preserved source-derived material
+→ immutable archived representation/version
+→ exact locator / artifact verification
+→ EvidenceFragment
+```
+
+Evidence 阶段本身创建 **0 FactAssertions / 0 Judgments**；Reality/Judgment 必须由后续显式 projection/reconciliation 产生。
+
+### Reality
+
+```text
+Evidence
+→ FactAssertion
+→ normalize / comparability
+→ reconciliation
+→ CanonicalFactVersion
+```
+
+### Judgment / Outcome
+
+```text
+Evidence
+→ JudgmentAssertion + rationale / revision
+→ Expectation snapshot
+→ later Reality
+→ OutcomeEvaluation
+```
+
+Outcome 不能改写原 Judgment。
+
+## Research orchestration
+
+`research-orchestration/v2` 是 transport-neutral execution contract：调用方先准备一个本地 material root，里面可以混合：
+
+- Drive webpage capsule 导出的 claim-scoped readable material；
+- 已存在的 legacy Release raw files；
+- 直接保存的 content-verified readable representation；
+- later normal-network Agent materialized 的 raw files。
+
+然后执行：
+
+```bash
+longcycle --json research run \
+  path/to/research-orchestration-v2.json \
+  --material-root path/to/prepared-material \
+  --work-dir .longcycle/run-work \
+  --output .longcycle/run-receipt.json
+```
+
+Longcycle 会验证 Evidence spec 声明的每份 material SHA-256，再执行 Grounded Evidence / optional Reality projection。transport restore 不进入 epistemic authority。
+
+历史 `research-orchestration/v1` + `--source-pack` 仍然支持，以保证旧 Release-based receipts 可重放；它是 **legacy compatibility**，不是新研究必须经过的入口。
+
+## 当前实现方向
+
+已经具备的核心能力包括：
+
+- PostgreSQL 四层 schema 与 migration runner；
+- immutable/archive abstraction；
+- Grounded Evidence 与 exact locator integrity；
+- Fact normalization / reconciliation / canonical Reality；
+- Judgment / Expectation / Outcome；
+- Model Memory campaign / seal / post-seal verification；
+- point-in-time no-lookahead replay；
+- PostgreSQL ↔ portable DuckDB replay materialization；
+- source locator/content/materialized lifecycle；
+- repository-backed session handoff、Capability Registry、Repair Memory；
+- transport-neutral research orchestration v2 与 legacy v1 replay。
+
+当前行业 benchmark 只是跨行业架构的 proving ground，不是 Longcycle 的终局。
+
+## Fresh session
+
+新的 Agent 不应从 README 猜 live task。按以下入口恢复：
+
+1. `FRESH_AGENT_BOOTSTRAP.md`
+2. `CONTINUE_HERE.md`
+3. `.longcycle/handoff/current.json`
+4. live PR HEAD / CI
+
+不要让用户重复已经持久化的背景。

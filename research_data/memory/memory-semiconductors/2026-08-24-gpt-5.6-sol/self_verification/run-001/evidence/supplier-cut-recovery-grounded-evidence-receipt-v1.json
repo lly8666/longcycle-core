@@ -1,0 +1,49 @@
+{
+  "schema_version": "longcycle-memory-semiconductor-grounding-receipt/v1",
+  "campaign_id": "MEMORY-SEMICONDUCTORS-001",
+  "self_verification_run_id": "MEMORY-SEMICONDUCTORS-SV-001",
+  "evidence_task_id": "EVT-MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-RECOVERY-001",
+  "orchestration_task_id": "ORCH-MEMORY-SEMICONDUCTORS-SUPPLIER-CUT-RECOVERY-001",
+  "subject_head": "bfc07692166c615302c818749c97c0777981e2ac",
+  "default_branch_broker_commit": "e8ba1576c1b398a277e5fed0e810ac2321b000cc",
+  "trigger_issue": 142,
+  "actions_run_id": 32703767137,
+  "orchestration_spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/orchestration/supplier-cut-recovery-orchestration-v2.json",
+  "orchestration_spec_version": "longcycle-research-orchestration/v2",
+  "execution_schema": "longcycle-research-orchestration-execution/v2",
+  "acceptance": {
+    "persisted_document_versions": 4,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "fragments": [
+    {
+      "fragment_key": "EVF-SAMSUNG-CUT",
+      "evidence_fragment_id": "cd6934e1-1909-51e2-b74b-9e83f88d079a",
+      "linked_memory_lead_ids": ["MS-0018", "MS-0050"]
+    },
+    {
+      "fragment_key": "EVF-SAMSUNG-RECOVERY",
+      "evidence_fragment_id": "34726a4d-55ad-5830-9245-36968d273525",
+      "linked_memory_lead_ids": ["MS-0024", "MS-0081", "MS-0099"]
+    },
+    {
+      "fragment_key": "EVF-MICRON-CUT",
+      "evidence_fragment_id": "b5343263-f30c-5609-8862-e80ccf9a8d0e",
+      "linked_memory_lead_ids": ["MS-0018", "MS-0050"]
+    },
+    {
+      "fragment_key": "EVF-SKHYNIX-CUT",
+      "evidence_fragment_id": "368939e1-627a-5bc4-99b2-15bb636fbd57",
+      "linked_memory_lead_ids": ["MS-0018", "MS-0050"]
+    }
+  ],
+  "authority": "This is a repository receipt for one successful ephemeral PostgreSQL execution. The fragment IDs prove that the claim-scoped source representations were persisted and grounded in that run; they do not by themselves create or authorize Fact/Judgment promotion, and the ephemeral database is not session authority.",
+  "comparability_guards": [
+    "Samsung April 2023 is a plan to cut certain products; it does not prove an executed percentage or product split.",
+    "Micron approximately 20% applies to Micron DRAM and NAND wafer starts versus fiscal Q4 2022.",
+    "SK hynix greater-than-50% applies to 2023 investment YoY, not wafer starts or bit supply.",
+    "Samsung April 27 recovery language is a contemporaneous forecast and must remain separate from later outcomes."
+  ]
+}

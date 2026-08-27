@@ -1,0 +1,50 @@
+{
+  "schema_version": "longcycle-grounded-evidence-receipt/v1",
+  "task_id": "EVT-MEMORY-SEMICONDUCTORS-MS0122-DRAM-NAND-CYCLE-LEAD-LAG-001",
+  "spec_path": "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/self_verification/run-001/evidence/ms0122-dram-nand-cycle-lead-lag-grounded-evidence-v1.json",
+  "execution": {
+    "workflow": ".github/workflows/memory-ms0122-dram-nand-cycle-grounded-evidence.yml",
+    "run_id": 32982784486,
+    "head_sha": "f23a406860e2a12a94f498f41f440cfe6efcc73c",
+    "conclusion": "success",
+    "artifact_id": 9612145273,
+    "artifact_name": "memory-ms0122-dram-nand-cycle-32982784486",
+    "artifact_digest": "sha256:43f70ece0e31dc5a01e6d2a85f1537466d835b67979495f371a373a98ce24b38"
+  },
+  "acceptance": {
+    "persisted_document_versions": 3,
+    "persisted_evidence_fragments": 3,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "exact_material_sha256_pins_verified": true,
+    "claim_scoped_authority_profiles_persisted": true,
+    "single_trendforce_source_identity_verified": true,
+    "turning_point_and_severity_roles_separated": true,
+    "known_time_order_passed": true,
+    "universal_phase_lock_not_created": true,
+    "correlation_scalar_not_created": true
+  },
+  "documents": [
+    {"document_key":"trendforce_dram_nand_downturn_lead_lag_2018_10_09","document_id":"e0b91f52-2366-524c-ac3a-84fcc94f7faf","source_id":"b40655e4-e2bf-5f2f-b5be-6eded6a71c9c","content_sha256":"fe2f1aae8ceca13e18a8ce4be3a6da7b2e779c5277460794dc0603f3db755ff3","canonical_artifact_id":"3cb9fa6c-c2a4-5a35-9e9c-839725eedc86","canonical_artifact_sha256":"7ec64340ff5e0e743e4372df6793191fb92453bce6d8eff7d61aa3ea25890fa4","first_known_at":"2018-10-10T00:00:00Z"},
+    {"document_key":"trendforce_nand_more_severe_than_dram_2022_10_03","document_id":"eb0faa98-89b0-5b03-8018-392ff3e1c361","source_id":"b40655e4-e2bf-5f2f-b5be-6eded6a71c9c","content_sha256":"3869d5454f52e3d32c2c12aa4110338b44678261858ea14c400c451040d9ffc0","canonical_artifact_id":"44d8c507-cda6-5aae-a23e-9e8676139777","canonical_artifact_sha256":"88172318624b6ef15af85b68c5bdd027d9dc3847610d777815c5a68e2cb6c352","first_known_at":"2022-10-04T00:00:00Z"},
+    {"document_key":"trendforce_dram_nand_recovery_lead_lag_2024_01_19","document_id":"6e62802b-c22f-50b3-a817-9dabe51d1e33","source_id":"b40655e4-e2bf-5f2f-b5be-6eded6a71c9c","content_sha256":"4b34f2ee41d71e3a3f70170fd8d2592b19823dd542195d8b996800d797015cb8","canonical_artifact_id":"967d5ee3-5542-59d0-bb81-039035961712","canonical_artifact_sha256":"3060c0495f2d1b1f8c1c9caa568ce4c4a79d6786c0ef25d7720c744cb8647979","first_known_at":"2024-01-20T00:00:00Z"}
+  ],
+  "fragments": [
+    {"fragment_key":"EVF-MS0122-2018Q3-DRAM-NAND-PRICE-DIRECTION-DIVERGENCE","evidence_fragment_id":"78113113-1dc8-57df-b778-995ec2334f4d","fragment_sha256":"73be108ae755c748f131a24a40f66906b476b739d095ab4961699e45adbebd54","claim_role":"dram_nand_2018q3_price_direction_divergence","epistemic_layer":"evidence_only_cross_product_turning_point"},
+    {"fragment_key":"EVF-MS0122-OCT22-NAND-MORE-SEVERE-THAN-DRAM","evidence_fragment_id":"e95d77f0-1191-5e43-bd42-6e1ffe3f8948","fragment_sha256":"fdfcdfeaadf6194d7e79870f0fa0974b79dd95f10b20c7236e4e33bda9910d2e","claim_role":"nand_2022_downturn_more_severe_than_dram","epistemic_layer":"evidence_only_cross_product_severity"},
+    {"fragment_key":"EVF-MS0122-2023Q3Q4-NAND-RECOVERY-LEADS-DRAM","evidence_fragment_id":"09cb470c-011b-57aa-9ab1-b7fc72389b8e","fragment_sha256":"3bfe34ef8f22b7fe33b9feaecd52f0988900ff3742bbea04e55b5c6337cbf14c","claim_role":"nand_2023_recovery_turn_precedes_dram_by_one_quarter","epistemic_layer":"evidence_only_cross_product_turning_point"}
+  ],
+  "reused_grounded_assets": [
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0118-2017-upcycle-competing-explanations-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0119-2022-inventory-amplification-v1.json",
+    "research_data/memory/memory-semiconductors/2026-08-24-gpt-5.6-sol/analysis/ms0120-2024-recovery-product-line-decomposition-v1.json"
+  ],
+  "semantic_guards": [
+    "Broad DRAM/NAND co-movement may justify a loose macro phase family, but it does not establish same-quarter turning points, equal severity or identical mechanisms.",
+    "At the 2018-10-09 source vintage, the directly comparable observed 3Q18 directions already diverged: NAND was negative while DRAM remained slightly positive. The embedded 4Q18 DRAM decline statement remains a forecast rather than a realized Outcome.",
+    "The October 2022 source provides a comparative statement that NAND conditions were more severe than DRAM; it does not create a common numerical severity scale.",
+    "The January 2024 source dates the NAND rebound to 3Q23 and DRAM contract-price reversal to 4Q23, establishing one episode of lead/lag but not a permanent NAND-leading rule.",
+    "The three documents resolve to one TrendForce source identity so the turning-point comparison does not rely on cross-provider methodology matching.",
+    "No correlation coefficient, universal phase-lock relation or claim of identical DRAM/NAND causal mechanisms is created."
+  ]
+}

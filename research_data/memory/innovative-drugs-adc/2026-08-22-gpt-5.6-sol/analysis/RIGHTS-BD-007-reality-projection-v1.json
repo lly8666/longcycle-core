@@ -1,0 +1,53 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v1",
+  "task_id": "RIGHTS-BD-007-REALITY-V1",
+  "source_evidence_task_id": "RIGHTS-BD-007-GROUNDED-EVIDENCE-V1",
+  "allowed_claim_roles": [
+    "historical_event"
+  ],
+  "subjects": [
+    {
+      "id": "b5c41865-3c23-537e-be7b-37e258d39c3d",
+      "entity_type": "event",
+      "canonical_name": "SystImmune / Bristol Myers Squibb BL-B01D1 collaboration"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "2023-12-11-collaboration-announced",
+      "evidence_fragment_key": "announcement-and-territory",
+      "subject_entity_id": "b5c41865-3c23-537e-be7b-37e258d39c3d",
+      "predicate_code": "agreement.collaboration_announcement_status",
+      "value_text": "exclusive license and collaboration agreement announced",
+      "valid_time_kind": "period",
+      "valid_from": "2023-12-11T00:00:00Z",
+      "valid_to": "2023-12-12T00:00:00Z",
+      "valid_time_precision": "day",
+      "valid_time_text": "December 11, 2023",
+      "statistical_scope": "BL-B01D1 collaboration announcement event",
+      "metadata": {
+        "role_semantics": "collaboration_announcement",
+        "source_statement_scope": "announcement of exclusive license and collaboration plus announced territory allocation",
+        "temporal_boundary": "announcement event is distinct from later transaction effectiveness"
+      }
+    },
+    {
+      "fact_key": "2024-02-transaction-effective",
+      "evidence_fragment_key": "transaction-effective-february-2024",
+      "subject_entity_id": "b5c41865-3c23-537e-be7b-37e258d39c3d",
+      "predicate_code": "agreement.transaction_effectiveness_status",
+      "value_text": "transaction became effective",
+      "valid_time_kind": "period",
+      "valid_from": "2024-02-01T00:00:00Z",
+      "valid_to": "2024-03-01T00:00:00Z",
+      "valid_time_precision": "month",
+      "valid_time_text": "February 2024",
+      "statistical_scope": "BL-B01D1 collaboration transaction-effectiveness event",
+      "metadata": {
+        "role_semantics": "transaction_effectiveness",
+        "precision_guard": "source proves February 2024 only; no exact effectiveness day is asserted",
+        "temporal_boundary": "effectiveness must not be collapsed into the December 11, 2023 announcement"
+      }
+    }
+  ]
+}

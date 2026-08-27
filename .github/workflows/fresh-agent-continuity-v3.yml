@@ -1,0 +1,71 @@
+name: Fresh-Agent Continuity v3
+
+on:
+  push:
+    paths:
+      - "docs/development/fresh-agent-continuity-drill.md"
+      - "docs/development/fresh-agent-continuity-drill-subject.md"
+      - "src/longcycle/application/fresh_agent_drill.py"
+      - "scripts/validate_fresh_agent_drill_report.py"
+      - "tests/test_fresh_agent_continuity_drill.py"
+      - "tests/test_fresh_agent_drill_protocol.py"
+      - "tests/test_capability_registry.py"
+      - "tests/test_session_handoff.py"
+      - ".longcycle/capabilities/current-admission.json"
+      - ".longcycle/handoff/current.json"
+      - ".longcycle/handoff/rehearsals/README.md"
+      - ".github/workflows/fresh-agent-continuity-v3.yml"
+  pull_request:
+    paths:
+      - "docs/development/fresh-agent-continuity-drill.md"
+      - "docs/development/fresh-agent-continuity-drill-subject.md"
+      - "src/longcycle/application/fresh_agent_drill.py"
+      - "scripts/validate_fresh_agent_drill_report.py"
+      - "tests/test_fresh_agent_continuity_drill.py"
+      - "tests/test_fresh_agent_drill_protocol.py"
+      - "tests/test_capability_registry.py"
+      - "tests/test_session_handoff.py"
+      - ".longcycle/capabilities/current-admission.json"
+      - ".longcycle/handoff/current.json"
+      - ".longcycle/handoff/rehearsals/README.md"
+      - ".github/workflows/fresh-agent-continuity-v3.yml"
+
+concurrency:
+  group: fresh-agent-continuity-v3-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+
+      - name: Compile v3 validator
+        run: python -m py_compile src/longcycle/application/fresh_agent_drill.py scripts/validate_fresh_agent_drill_report.py
+
+      - name: V3 cue and report protocol tests
+        run: python -m pytest -q tests/test_fresh_agent_drill_protocol.py
+
+      - name: V3 continuity document contract tests
+        run: python -m pytest -q tests/test_fresh_agent_continuity_drill.py
+
+      - name: Capability registry contract tests
+        run: python -m pytest -q tests/test_capability_registry.py
+
+      - name: Session handoff contract tests
+        run: python -m pytest -q tests/test_session_handoff.py
