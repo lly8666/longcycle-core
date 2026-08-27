@@ -37,7 +37,11 @@ def test_current_workstream_registry_is_self_consistent() -> None:
 def test_global_control_plane_paths_are_not_parallel_write_scopes() -> None:
     assert workstreams._is_global_control_prefix(".longcycle/handoff/current.json")
     assert workstreams._is_global_control_prefix(".longcycle/capabilities/cards/CAP-0005.json")
+    assert workstreams._is_global_control_prefix(".longcycle/workstreams/active-index.json")
     assert workstreams._is_global_control_prefix("ARCHITECTURE_BASELINE_V1.md")
+    assert workstreams._is_global_control_prefix("migrations/0040_example.sql")
+    assert workstreams._is_global_control_prefix(".github/workflows/ci.yml")
+    assert workstreams._is_global_control_prefix("pyproject.toml")
     assert not workstreams._is_global_control_prefix("research_data/memory/banking")
 
 
