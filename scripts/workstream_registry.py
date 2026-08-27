@@ -34,6 +34,10 @@ GLOBAL_CONTROL_PREFIXES = (
     ".longcycle/capabilities/cards",
     ".longcycle/capabilities/active-index.json",
     ".longcycle/change-contract/current.json",
+    ".longcycle/workstreams/active-index.json",
+    ".github/workflows",
+    "migrations",
+    "pyproject.toml",
     "ARCHITECTURE_BASELINE_V1.md",
     "STRATEGIC_COMPASS.md",
     "METHODOLOGY_CORE.md",
@@ -344,6 +348,14 @@ def build_index(workstreams: list[tuple[Path, dict[str, Any]]]) -> dict[str, Any
     }
 
 
+def validate() -> None:
+    loaded = load_workstreams()
+    print(
+        "WORKSTREAM_REGISTRY_VALIDATE_PASS "
+        f"declared={len(loaded)} active={sum(item['status'] in ACTIVE_STATUSES for _, item in loaded)}"
+    )
+
+
 def rebuild_index() -> None:
     index = build_index(load_workstreams())
     INDEX_PATH.write_text(_canonical_json(index), encoding="utf-8")
@@ -360,17 +372,19 @@ def audit() -> None:
     if actual != expected:
         raise WorkstreamRegistryError(
             "workstream active-index is stale; workstream manifests are canonical. "
-            "Run: python scripts/workstream_registry.py rebuild-index"
+            "The integration/coordinator lane must run: python scripts/workstream_registry.py rebuild-index"
         )
     print(f"WORKSTREAM_REGISTRY_AUDIT_PASS active={len(expected['active'])}")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate Longcycle parallel workstream registry")
-    parser.add_argument("command", choices=("audit", "rebuild-index"))
+    parser.add_argument("command", choices=("validate", "audit", "rebuild-index"))
     args = parser.parse_args()
     try:
-        if args.command == "audit":
+        if args.command == "validate":
+            validate()
+        elif args.command == "audit":
             audit()
         else:
             rebuild_index()
