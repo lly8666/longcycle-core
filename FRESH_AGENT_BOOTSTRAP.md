@@ -21,7 +21,7 @@ Architecture exploration is no longer the default development mode. Start from t
    Be able to explain how the atomic task advances every parent level.
 4. Read `.longcycle/baseline/current.json`, then its referenced manifest and `ARCHITECTURE_BASELINE_V1.md`. Treat the locked invariants as the default definition of semantic correctness; Baseline does not replace Strategy or Method Core.
 5. Read `.longcycle/handoff/current.json` for the current horizon/cursor and `.longcycle/capabilities/active-index.json` for stable semantic ownership. Reconcile `checkpoint_based_on_head_sha` with the live ref before acting.
-6. Before material development, write/update `.longcycle/change-contract/current.json` with `L1/L2/L3/L4`, then run the existing Capability Registry admission separately as `reuse / extend / replace / new`.
+6. **before material capability/product/architecture work, discover the existing semantic owner** through the Capability Registry; write/update `.longcycle/change-contract/current.json` with `L1/L2/L3/L4`, then run current admission separately as `reuse / extend / replace / new`.
 7. Default to L1/L2 + reuse/extend. A new industry is normally a Domain Pack/catalog/source/research extension, not a new Fact/Evidence/PIT architecture.
 8. If the proposed change touches a locked Baseline invariant or changes the semantic expectation of a Baseline-critical regression, stop ordinary implementation and enter the L3 architecture-change procedure. `Cleaner`, `more generic` and `future-proof` are not sufficient evidence.
 9. If a real source-grounded important case cannot be truthfully expressed through existing extension seams, preserve that counterexample and escalate it; Baseline v1 is stable by default, not dogmatically immune to evidence.
