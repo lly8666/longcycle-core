@@ -52,7 +52,7 @@ jobs:
         run: python scripts/workstream_registry.py audit
 
       - name: Baseline validator regressions
-        run: pytest -q tests/test_architecture_baseline.py tests/test_workstream_registry.py
+        run: pytest -q tests/test_architecture_baseline.py tests/test_workstream_registry.py tests/test_ci_status_target.py
 
       - name: Baseline-critical semantic regressions
         run: >-
@@ -72,8 +72,9 @@ jobs:
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
           -f state=success
           -f context=longcycle/architecture-baseline
           -f description='Architecture Baseline contract passed'
@@ -83,8 +84,9 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
           -f state=failure
           -f context=longcycle/architecture-baseline
           -f description='Architecture Baseline contract failed'
