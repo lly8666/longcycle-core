@@ -8,7 +8,7 @@ This file is a stable zero-context rendezvous pointer, not live project state.
 
 ## Post-Baseline cold start
 
-Do not assume the default `main` branch is the active development state. Resolve GitHub issue **#2** first as the stable rendezvous for the active PR / development branch and live handoff; when no temporary active branch is declared there, continue from live `main`.
+Rule: do not assume the default `main` branch is the active development state. Resolve GitHub issue **#2** first as the stable rendezvous for the active PR / development branch and live handoff; when no temporary active branch is declared there, continue from live `main`.
 
 Stable rendezvous remains GitHub issue #2, **Longcycle Live Handoff / Session Bootstrap**. From that rendezvous, follow `CONTINUE_HERE.md` and the handoff's **typed continuation cursor** rather than reconstructing current work from chat or historical reports.
 
