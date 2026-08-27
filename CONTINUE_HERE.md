@@ -6,23 +6,40 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 
 用户只需要说：
 
-> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
+> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、Architecture Baseline、宏大/长期/中期/短期/当前目标和 live 状态，从 continuation cursor 继续；先做战略层级和防钻牛角尖校准，不要让我重复背景。**
 
 这句话本身不携带当前任务事实；当前状态必须从仓库恢复。
 
 ## Fresh-session 正常流程
 
 1. 先读 GitHub issue #2，只把它当 rendezvous：找到 active PR / branch / handoff 路径，不从 issue 正文推断 live task。
-2. 刷新 active PR 的 live HEAD。
+2. 刷新 active PR / `main` 的 exact live HEAD 与 CI；checkpoint 内 CI 永远只是 snapshot。
 3. 读 `STRATEGIC_COMPASS.md` 和 `METHODOLOGY_CORE.md`，先用自己的话重建项目为什么存在、为什么要保存 Reality + contemporaneous Judgment + Outcome、为什么 point-in-time/no-lookahead 是第一性边界、Evidence 与模型记忆如何分工、为什么跨行业 benchmark 只是手段。
 4. 再读 `.longcycle/continuity/mission-fidelity.json` 校准。遗漏哪一项，只定向重读对应 Core；不要把 rubric 当答案模板。
-5. 读 `.longcycle/handoff/current.json`，获取当前中期目标、短期目标、continuation cursor、active context、ordered actions 与 `.longcycle/handoff/data-plane.json` 路径。
-6. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不相同，先检查 intervening commits；handoff-only commit 可以在确认无 substantive drift 后继续，不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
-7. 刷新 live CI。checkpoint 内 CI 永远只是 snapshot。
-8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项。不要默认读取旧 devlog、旧行业或全部 raw data。
-9. 开始 material capability / product-surface / architecture 开发前，先读 `current-admission.json`：`target_capability_ids` 是精确 owner 路由，必须直接加载对应 capability card、entrypoint/guard 和相关负例；`relevant` 模糊检索只能辅助发现，不能替代精确 ID。默认 reuse/extend，不能因为“更干净”新建第二个 semantic owner。**新 projection / composition 不能重新解释 owner 已经定义的语义**；要先列出它复用了哪些 owner 语义，并把 owner 的关键反例放进自己的 hard acceptance。
-10. 修改已知代码路径前，用 Repair Memory 做 path-scoped invariant lookup；如果是全新路径、lookup 没命中，也不能推断“没有历史约束”，仍要按 admission 的 owner card 做 semantic-owner/negative-case 检查。
-11. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
+5. 读 `.longcycle/baseline/current.json` → versioned manifest → `ARCHITECTURE_BASELINE_V1.md`。Baseline 冻结的是“什么算正确”，**不是**替代 Strategy / Method Core，也不是冻结实现、行业或产品扩展。
+6. 读 `.longcycle/handoff/current.json`，恢复五层目标：
+
+```text
+宏大/终局使命
+↓
+长期产品方向
+↓
+中期目标（strategic_horizon.medium_term_goal）
+↓
+短期里程碑（strategic_horizon.short_term_goal）
+↓
+当前原子任务（continuation_cursor.current_task / next_atomic_action）
+```
+
+   开工前必须能解释当前原子任务如何逐层服务每个父目标。
+7. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不同，先检查 intervening commits；不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
+8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项。不要默认读取旧 devlog、旧行业、旧 rehearsal report 或全部 raw data。
+9. material capability / product-surface / architecture 开发前，先写/更新 `.longcycle/change-contract/current.json` 的 `L1/L2/L3/L4`，再独立执行 Capability Registry admission：`reuse / extend / replace / new`。两个维度不可混用。
+10. `current-admission.json.target_capability_ids` 是精确 owner 路由；必须直接加载对应 capability card、entrypoint/guard 和相关负例。默认 L1/L2 + reuse/extend，不能因为“更干净”新建第二个 semantic owner。
+11. 修改已知代码路径前，用 Repair Memory 做 path-scoped invariant lookup；如果全新路径无命中，也不能推断“没有历史约束”。
+12. 如果出现“以前是不是讨论过/修过这个”的 fuzzy cue，走 `docs/development/on-demand-history-recall.md`：owner → Repair Memory → exact origin refs → bounded Git/Issue/receipt/devlog history → 回到 live authority。不要 bulk-load 历史。
+13. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
+14. 做 whole-project review / architecture review / deliberate L3 change 时，额外读 `docs/development/longcycle-development-operating-system.md`；普通 L1/L2 Agent 不需要默认加载这份完整 reviewer manual。
 
 ## Handoff 的两层权威
 
@@ -84,13 +101,11 @@ locator_verified
 
 对于主流的官方、监管机构、上市公司/issuer、研究机构等站点上的 PDF，只要 document identity + locator 已确认，就把它当作**真实存在的合法 source document**，不要再为了证明 GitHub runner 能不能下载而消耗研究时间。
 
-但要保留一条 epistemic boundary：**只确认链接存在、完全没读到 claim-relevant 内容，不能拿这个 locator 证明具体 claim。**
+但要保留 epistemic boundary：**只确认链接存在、完全没读到 claim-relevant 内容，不能拿这个 locator 证明具体 claim。**
 
 ### `content_verified`
 
 如果当前 Agent 已经通过可信交互界面实际读到 PDF 相关内容，并能保存 claim-scoped excerpt / page / section / readable representation，那么即使 raw PDF bytes 尚未归档，也可以进入正常 Grounded Evidence。
-
-这里要明确区分：
 
 ```text
 source 是否说了 X
@@ -100,7 +115,7 @@ source 是否说了 X
 
 前者决定 claim 能否 grounding；后者是完整性增强，不再阻塞开发。
 
-主流网站上的 PDF 是否“权威”仍按 claim scope 判断：监管机构对监管状态、issuer 对自身声明、registry 对登记字段等各自有权威范围。**不因为 `.pdf` 后缀或 transport 自动升级 authority。**
+主流网站上的 PDF 是否“权威”仍按 claim scope 判断。**不因为 `.pdf` 后缀或 transport 自动升级 authority。**
 
 ### `materialized`
 
@@ -113,7 +128,7 @@ source 是否说了 X
 → 更新 owning receipt/materialization metadata
 ```
 
-如果后来下载到的 bytes 与之前 `content_verified` 的内容/身份冲突，fail closed，建立 integrity repair；不能静默覆盖。
+later materialization 若与 earlier content/source identity 冲突，fail closed，建立 integrity repair；不能静默覆盖。
 
 已经存在的 GitHub Release PDF/source pack 属于**历史 materialized asset**，可以直接复用，但不再代表未来 PDF 的默认 acquisition 方式。
 
@@ -140,7 +155,7 @@ Longcycle-generated binary state 放 Google Drive，例如：
 
 注意：**Actions 仍然可以用于 PostgreSQL/runtime execution；禁止的是为了下载新 PDF 而制造 acquisition Actions。**
 
-## 5. Fail closed 的新边界
+## 5. Fail closed 的边界
 
 以下情况 fail closed：
 
@@ -172,7 +187,20 @@ Longcycle 的 benchmark 用来打脸架构，不是训练 Agent 应试。真正�
 5. 为什么当前行业只是 cross-industry proving ground？
 6. 为什么 researcher understanding 比 crawler/Agent/schema/benchmark 指标更接近产品终局？
 
-## Vertical Alignment Gate
+## Strategic Hierarchy Gate
+
+开工前必须回答：
+
+1. 宏大/终局使命是什么？
+2. 长期产品方向是什么？
+3. 当前中期目标是什么？
+4. 当前短期里程碑是什么？
+5. 当前原子任务、`done_when` 和 `next_atomic_action` 是什么？
+6. 当前原子任务怎样逐层推进上面五层？
+
+只能背 slogan、不能解释因果链 = bootstrap 未完成。
+
+## Vertical Alignment / 防钻牛角尖 Gate
 
 开始新的 substantive 子问题、完成 coherent 子任务、准备扩大范围或新结果改变假设时，向上检查：
 
@@ -180,42 +208,76 @@ Longcycle 的 benchmark 用来打脸架构，不是训练 Agent 应试。真正�
 当前原子任务
 ↑ 短期里程碑
 ↑ 中期能力证明
-↑ Longcycle 最终使命
+↑ 长期产品方向
+↑ Longcycle 终局使命
 ```
 
-如果当前任务已经达到 done/stop condition，或者继续投入只是让局部 benchmark 更好看，停止或重排。
+同时问：
+
+- done/stop condition 是否已经满足？
+- 继续做是否改变父目标，还是只让局部数字/代码更漂亮？
+- 新结果是否使当前任务失去优先级？
+- 是不是因为局部问题有趣/容易量化才越做越深？
+- 停下来会不会真的伤害父目标？
+
+父目标边际价值已经很低时，停止或重排；不能因为“这个局部问题确实存在”就无限深挖。
+
+## Independent Judgment Gate
+
+用户决定目标、约束、偏好和风险取舍；Agent 仍必须独立判断方法是否科学。用户建议的方法若与使命、Baseline、Evidence/PIT、live state、stop condition 或成本收益冲突，Agent 应说明关键原因并收窄/改写/拒绝，而不是为了服从继续错误路线。
+
+高能力任务如果当前 Agent 无法可靠综合判断，应停止并升级，而不是模仿高级语气给伪结论。
+
+## Change Contract + Capability Gate
+
+```text
+L1/L2/L3/L4
+= 变化离 Baseline 多近
+
+reuse/extend/replace/new
+= 哪个 semantic owner 负责
+```
+
+默认 L1/L2 + reuse/extend。改变 Baseline invariant 或 Baseline-critical test 的语义期望，必须先进入 L3；`更干净/更通用/future-proof` 不构成 L3 证据。真实重要 source-grounded counterexample 或 security/consistency defect 才有资格推进 L3。
 
 ## Handoff 更新纪律
 
 完成一个会改变“下一 Agent 应做什么”的 coherent session 后：
 
 ```text
-完成 substantive work 并 commit
-→ 如有新的 resume-relevant binary asset，按正确 transport 保存并验证
-→ PDF locator/content verification 即使尚未 materialize，也要写进 owning receipt/control plane
-→ 更新 data-plane.json
-→ 更新 durable receipt / active context
-→ 更新 current.json continuation cursor / workstreams / ordered actions
-→ checkpoint_based_on_head_sha 指向最后一个 substantive/control-plane commit
+完成 substantive work
+→ Vertical Alignment Loop
+→ 更新 Change Contract / capability admission（如分类变化）
+→ 必要时更新 capability card / Repair Memory
+→ focused validation + required CI
+→ commit substantive/control-plane work
+→ 更新 data-plane / receipts / active context（如需要）
+→ 更新 current.json strategic horizon / continuation cursor / workstreams / ordered actions
+→ checkpoint_based_on_head_sha 对齐真实 completed work
 → commit handoff sync
-→ 刷新 live CI（需要时）
-→ 用 bounded cold-start rehearsal 验证 fresh Agent 能恢复任务
+→ 刷新 exact live HEAD / PR / CI
+→ 从 live target ref 重新读取 final handoff / HEAD
+→ 再交还控制权
 ```
+
+不能拿 parent commit 的 green 当 exact-head green；不能让 next Agent 继续一个 intervening commit 已经完成的任务。
 
 ## Core 纪律
 
-- `STRATEGIC_COMPASS.md`：最终使命、真正成功标准、防偏航；
+- `STRATEGIC_COMPASS.md`：终局使命、长期方向、真正成功标准、防偏航；
 - `METHODOLOGY_CORE.md`：跨行业方法；
 - `.longcycle/continuity/mission-fidelity.json`：语义校准问题，不存答案；
-- `.longcycle/capabilities/active-index.json`：稳定 capability routing；
+- `.longcycle/baseline/*`：冻结 semantic correctness 与 change-level contract；
+- `.longcycle/capabilities/active-index.json` + cards：稳定 capability routing / owner；
+- `.longcycle/change-contract/current.json`：当前 L1-L4 风险分类；
+- `.longcycle/capabilities/current-admission.json`：当前 reuse/extend/replace/new owner disposition；
 - `.longcycle/handoff/current.json`：中短期 live cursor；
 - `.longcycle/handoff/data-plane.json`：resume-relevant source/data identity / transport / integrity / restore contract；
-- receipts：已完成 benchmark / source / replay / exit 等可审计结果；
 - `.longcycle/repair-memory/`：高复发风险 invariant；
 - active context：当前行业/任务；
-- devlog / old industry：按需追溯，不属于默认启动上下文。
+- devlog / old industry / old reports：按需追溯，不属于默认启动上下文。
 
-如果任务本身是在修改 handoff 机制，再定向读 `docs/development/session-handoff-protocol.md` 与 `docs/development/continuity-architecture.md`；不要因此预加载整个开发历史。
+whole-project / architecture review 额外读 `docs/development/longcycle-development-operating-system.md`。修改 handoff 机制再定向读 `docs/development/session-handoff-protocol.md` 与 `docs/development/continuity-architecture.md`。
 
 ## Handoff Semantic Reread Gate
 
@@ -242,13 +304,13 @@ Handoff 是每次 substantive session 末尾占比很小、但不能跳过的一
 → schema/static validation
 → 从头完整重读最终 draft
 → 检查字段粒度 / 重复 owner / stale live state
-→ 检查当前 material change 是否仍落在 current-admission 的 intent/owner scope
+→ 检查当前 material change 是否仍落在 current-admission / Change Contract scope
 → 必要时触发 bounded history recall
 → normalize 后再 commit
-→ 从 live target ref 重新读取最终 current.json / HEAD
+→ 从 live target ref 重新读取最终 current.json / HEAD / CI
 ```
 
-若重读后无法用 handoff 唯一回答“当前 task 是什么、next atomic action 是什么、next big step 为什么更高一层、哪个 workstream 拥有 cursor、哪些状态其实尚未观察”，handoff 还没写完。
+若重读后无法唯一回答“当前 task 是什么、next atomic action 是什么、next big step 为什么更高一层、哪个 workstream 拥有 cursor、哪些状态其实尚未观察”，handoff 还没写完。
 
 ## Fresh-Agent Drill Cadence
 
@@ -262,5 +324,5 @@ closing Agent 在写下一份 handoff 前先算 `next_sequence = current_sequenc
 - 任意 sequence 都可由用户或 Agent 手动触发；
 - material continuity change / 重复历史召回失败也可以提前触发；
 - 手动/提前 drill **不重置** 固定十次节拍；
-- same-Agent artificial-ignorance rehearsal 可以用于当前修复自检，但**不能替代**每十次一次的 genuine Fresh-Agent drill；
+- same-Agent artificial-ignorance rehearsal 可以用于当前修复自检，但**不能替代** genuine Fresh-Agent drill；
 - drill 的 report-only commit 不增加 `continuity_sequence`。
