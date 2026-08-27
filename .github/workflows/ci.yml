@@ -221,8 +221,9 @@ jobs:
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
           -f state=success
           -f context=longcycle/full-ci
           -f description='Full hard-gate CI passed'
@@ -232,8 +233,9 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
           -f state=failure
           -f context=longcycle/full-ci
           -f description='One or more full CI hard gates failed'

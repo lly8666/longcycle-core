@@ -5,10 +5,11 @@ on:
     branches:
       - main
       - baseline/v1-freeze
+      - post-baseline/governance-hardening
   pull_request:
 
 concurrency:
-  group: architecture-baseline-${{ github.ref }}
+  group: architecture-baseline-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -43,8 +44,15 @@ jobs:
       - name: Capability ownership remains canonical
         run: python scripts/capability_registry.py audit
 
+      - name: Parallel workstream manifests remain isolated
+        run: python scripts/workstream_registry.py validate
+
+      - name: Mainline workstream index is integration-owned and current
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: python scripts/workstream_registry.py audit
+
       - name: Baseline validator regressions
-        run: pytest -q tests/test_architecture_baseline.py
+        run: pytest -q tests/test_architecture_baseline.py tests/test_workstream_registry.py tests/test_ci_status_target.py
 
       - name: Baseline-critical semantic regressions
         run: >-
@@ -64,8 +72,9 @@ jobs:
         if: success()
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
           -f state=success
           -f context=longcycle/architecture-baseline
           -f description='Architecture Baseline contract passed'
@@ -75,8 +84,9 @@ jobs:
         if: failure()
         env:
           GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
         run: >-
-          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
           -f state=failure
           -f context=longcycle/architecture-baseline
           -f description='Architecture Baseline contract failed'

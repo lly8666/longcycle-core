@@ -1,30 +1,24 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "goal": "Freeze the already-validated Longcycle semantic foundation as Architecture Baseline v1 without adding new product or research semantics.",
+  "intent_id": "POST-BASELINE-GOVERNANCE-HARDENING-024",
+  "goal": "Harden post-Baseline governance and add a bounded parallel-workstream control plane without changing Architecture Baseline v1 semantics.",
   "baseline": "architecture-v1",
-  "change_level": "L3",
+  "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "explicit_initial_freeze",
-  "baseline_invariants": [
-    "BL-001",
-    "BL-002",
-    "BL-003",
-    "BL-004",
-    "BL-005",
-    "BL-006",
-    "BL-007",
-    "BL-008",
-    "BL-009",
-    "BL-010",
-    "BL-011",
-    "BL-012"
-  ],
-  "schema_impact": "none_after_prefreeze_0039",
-  "baseline_critical_tests_touched": true,
+  "baseline_impact": "none; guard implementation and post-Baseline development coordination only",
+  "baseline_invariants": [],
+  "schema_impact": "none",
+  "baseline_critical_tests_touched": false,
+  "architecture_change_ref": null,
+  "counterexample_refs": [],
+  "affected_invariants": [],
+  "compatibility_plan_ref": null,
+  "approval_ref": null,
   "acceptance": [
-    "Baseline manifest and pointer validate deterministically.",
-    "Existing capability ownership remains canonical; no parallel semantic owner is introduced.",
-    "L1/L2 future changes cannot alter Baseline documents or Baseline-critical regression expectations without the Architecture Baseline Gate rejecting the change.",
-    "Full CI and Architecture Baseline Gate pass on the final freeze commit."
+    "Baseline schema_through remains the immutable migration ceiling at the Baseline tag and later L1/L2 migrations do not invalidate v1.",
+    "Change Contract intent_id must equal the referenced live capability-admission intent_id so stale L3 authorization cannot carry across tasks.",
+    "L3 protected semantic changes require ADR/counterexample/affected-invariant/compatibility metadata and an approval reference before the gate permits protected changes.",
+    "Parallel industry/product Agents can use independent workstream cursors and write scopes without mutating one global current cursor, admission or Change Contract.",
+    "Capability Registry remains the sole stable semantic-owner registry and Architecture Baseline v1 invariants remain unchanged."
   ]
 }
