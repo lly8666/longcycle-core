@@ -73,6 +73,6 @@ Do not confuse Baseline freeze with frozen acquisition implementation. Preserve 
 
 ## Mutation rule
 
-When a task authorizes only a report or other bounded mutation, make only that mutation on the resolved target branch. Do not use an acceptance/audit task as permission to repair product code, Baseline files, handoff, capability cards or tests.
+When a task authorizes only one report or other bounded mutation, write it to the **resolved active development branch** unless the task explicitly names another target; make no other mutation. Do not use an acceptance/audit task as permission to repair product code, Baseline files, handoff, capability cards or tests.
 
 A Fresh Agent has not completed bootstrap if it can repeat the mission but cannot reconstruct the five-level goal hierarchy, cannot connect the current atomic task to its parents, cannot identify the current Baseline, cannot distinguish L1–L4 from capability disposition, cannot explain the Vertical Alignment Loop, treats source-pack convenience as permission to rewrite historical methodology, bulk-loads history instead of using on-demand recall, creates parallel semantic owners for a new industry, or changes Baseline-critical test meaning to make its implementation pass.
