@@ -2,98 +2,107 @@
 
 ## Fresh-session rule
 
-Resume Longcycle through `CONTINUE_HERE.md`. Do not ask the user to restate persisted context.
+Resume Longcycle through `FRESH_AGENT_BOOTSTRAP.md` / `CONTINUE_HERE.md`. Do not ask the user to restate persisted context.
 
 Read in this order:
 
-1. `STRATEGIC_COMPASS.md` — long-term mission;
+1. `STRATEGIC_COMPASS.md` — terminal mission;
 2. `METHODOLOGY_CORE.md` — cross-industry method;
-3. independently reconstruct the mission/method in your own words;
-4. `.longcycle/continuity/mission-fidelity.json` — semantic calibration questions and common misreadings;
-5. `.longcycle/handoff/current.json` — current medium/short horizon, continuation cursor and active context;
-6. live Git HEAD / CI;
-7. only the minimal task-specific `resume_read_set`.
+3. independently reconstruct mission/method in your own words;
+4. `.longcycle/continuity/mission-fidelity.json` — calibration only;
+5. `.longcycle/baseline/current.json` → referenced manifest + `ARCHITECTURE_BASELINE_V1.md` — frozen semantic contract;
+6. `.longcycle/handoff/current.json` — current horizon/cursor;
+7. `.longcycle/capabilities/active-index.json` and current admission — semantic-owner routing;
+8. live Git HEAD / CI;
+9. only the minimal task-specific resume set.
 
-Do **not** preload old industries, all devlogs or the full repository.
+Do **not** preload old industries, all devlogs, old rehearsal reports or the full repository.
+
+## Architecture Baseline gate — classify before coding
+
+Architecture exploration is closed by default. Before material product/capability/domain work, write or update `.longcycle/change-contract/current.json` and classify the change:
+
+```text
+L1 implementation
+L2 product/domain extension
+L3 Architecture Baseline change
+L4 terminal mission change
+```
+
+This is orthogonal to the existing Capability Registry disposition:
+
+```text
+reuse | extend | replace | new
+```
+
+Default to **L1/L2 + reuse/extend**. A new industry, source, metric, predicate, unit, API or Domain Pack does not by itself justify a new Fact/Evidence/PIT architecture.
+
+If a requested behavior changes a locked Baseline invariant or the semantic expectation of a Baseline-critical regression, ordinary implementation stops. L3 requires a real important source-grounded counterexample that the current Baseline cannot truthfully express through existing extension seams, or a demonstrated security/consistency defect, plus an ADR/Architecture Change Proposal covering compatibility, migration, PIT/no-lookahead, provenance and counterexample tests. `Cleaner`, `more generic`, `less code`, `future-proof` and framework preference are not L3 evidence.
+
+L4 requires an explicit user decision before implementation.
+
+Read `docs/development/post-baseline-development.md` for the complete post-freeze workflow. The focused Architecture Baseline Gate prevents L1/L2 changes from redefining protected semantics merely to make new code pass.
 
 ## Mission assimilation before execution
 
 Reading Core files is not enough. Before substantive work:
 
-1. form an independent internal explanation of why Longcycle exists and what terminal capability it must deliver;
-2. distinguish final facts from contemporaneous cognition, and explain why point-in-time/no-lookahead matters;
-3. explain why long comparable history can itself produce analysis;
-4. explain the model/search versus Evidence boundary;
-5. explain why the current industry/task is a proving ground or means rather than the mission;
-6. only then use `mission-fidelity.json` to challenge that interpretation.
+1. explain why Longcycle exists and what terminal capability it must deliver;
+2. distinguish Reality from contemporaneous Judgment and later Outcome;
+3. explain why point-in-time/no-lookahead matters;
+4. explain why long comparable history can itself produce analysis;
+5. explain model/search versus Evidence boundaries;
+6. explain why the current industry/task is a proving ground or means rather than the mission;
+7. only then use `mission-fidelity.json` to challenge omissions.
 
-If any required facet is missing or contradicted, reread only the relevant Core section and correct the interpretation before acting.
+Do not persist private chain-of-thought. Persist concise decisions, task hierarchy, reproducible constraints and auditable rationale when project state materially changes.
 
-Do not persist private chain-of-thought. Persist only concise decisions, alignment conclusions, task hierarchy and reproducible constraints when project state materially changes.
+## Independent judgment
 
-## Independent judgment — do not confuse user intent with method truth
+The user owns goals, preferences, constraints and risk tradeoffs. The Agent still owes independent technical/research judgment. Do not execute a suggested method merely because it was suggested; compare it with mission, Baseline, evidence boundaries, live state, stop conditions, cost/benefit and better alternatives.
 
-The user owns goals, preferences, constraints and risk tradeoffs. The Agent still owns the duty to make the strongest technical/research recommendation it can from available evidence and capability.
+Do not use model status as authority. If the continuation cursor requires `high_capability_reasoning` and the current Agent cannot reliably synthesize/adversarially check the work, stop and escalate rather than imitate confidence. `bounded_execution` is appropriate only under explicit inputs and stop conditions.
 
-Do not automatically execute a user-proposed method merely because the user proposed it. First compare it against the mission, evidence boundaries, live state, cost/benefit, stop conditions and better alternatives. If it is materially unsound or locally optimal but strategically weak, say so concisely, refuse/narrow/rewrite the method, and recommend a better path.
+## Repair Memory gate
 
-Do not use model status as authority. The standard is calibrated reasoning, evidence and task performance. If a task requires independent high-level synthesis and the current Agent cannot reliably provide it, stop and escalate rather than imitate confidence.
-
-Current task capability requirements come from the continuation cursor. `high_capability_reasoning` tasks require independent synthesis, adversarial checking and strategic judgment. `bounded_execution` tasks are suitable for lower-capability Agents operating under explicit inputs, source targets and stop conditions.
-
-## Repair Memory gate — do not rediscover old regressions blindly
-
-Before a substantive edit whose target paths are known, query the bounded Repair Memory for those paths:
+Before substantive edits to known paths:
 
 ```bash
 python scripts/repair_memory.py relevant <path> [<path> ...]
 ```
 
-If investigating a bug before its owning path is known, query a few symptom/root-cause terms:
+For an unresolved bug with unknown owner, use bounded symptom/root-cause queries. Read only matching cards. Repair Memory protects non-obvious high-recurrence invariants; Git owns chronology; the Baseline owns frozen semantic correctness.
+
+A missing path-scoped repair hit is not permission to invent new semantics. If a Repair Memory invariant itself must change because an approved L3 architecture change supersedes it, update/supersede the card and guards deliberately in the same coherent change.
+
+## Capability admission gate
+
+Before material capability/product/architecture work:
 
 ```bash
-python scripts/repair_memory.py query "evidence provenance"
+python scripts/capability_registry.py relevant "<researcher/system need>"
 ```
 
-Read only matching cards under `.longcycle/repair-memory/invariants/`. They explain non-obvious repairs that future cleanups must not accidentally reverse and point to the executable/schema/type guards that enforce them.
+Read exact matching owner cards and classify `.longcycle/capabilities/current-admission.json` as `reuse`, `extend`, `replace`, or `new`. Default to reuse/extend. `new` means genuinely new semantic ownership and requires a truthful unmet requirement that current extension seams cannot satisfy; a new file/UI/CLI/API/adapter does not imply new ownership.
 
-Do not preload every repair card. Do not create a card for every bug. Promotion, size limits, lifecycle and deduplication rules live in `docs/development/repair-memory.md`. A repeated repair updates the existing invariant when it has the same root cause; chronological history belongs to Git, not to growing card prose.
-
-If an invariant must change because the architecture genuinely changed, do so deliberately: satisfy its `revisit_when`, update/supersede the card and its guards in the same coherent change. Repair Memory is an anti-accident mechanism, not a ban on better architecture.
-
-## Capability admission gate — do not create parallel semantic owners blindly
-
-Before material capability, product-surface or architecture development, query the compact Capability Registry by the intended researcher/system need:
-
-```bash
-python scripts/capability_registry.py relevant "<intended capability or researcher need>"
-```
-
-Read the closest matching cards under `.longcycle/capabilities/cards/` and classify the intended change in `.longcycle/capabilities/current-admission.json` as exactly one of:
-
-```text
-reuse
-extend
-replace
-new
-```
-
-Default to **reuse or extend**. A new file, CLI/API/UI, adapter, output format or helper is not automatically a new capability. `new` means genuinely new semantic ownership. Under the current `converging` governance mode it requires the closest existing capability, a concrete truthful unmet requirement that its extension seams cannot satisfy, evidence references, planned ownership paths and a proposed capability id. "Cleaner", "more generic" and "future-proof" are not unmet requirements.
-
-The generated `.longcycle/capabilities/active-index.json` is intentionally part of every bounded handoff `resume_read_set`. It carries the current governance mode plus the capability system's short-, medium- and long-horizon evolution, so this constraint survives changing task horizons without copying policy prose into every checkpoint.
-
-After a material capability change, update the owning card only if stable responsibility, entrypoints, extension seams, guards or maturity changed, then run:
+After a material stable capability change, update the owning card only if its responsibility/entrypoints/extension seams/guards/maturity changed, then run:
 
 ```bash
 python scripts/capability_registry.py rebuild-index
 python scripts/capability_registry.py audit
 ```
 
-Internal refactors that preserve stable ownership should not churn capability cards. Capability Registry answers **what Longcycle already knows how to do and who owns the semantics**; Repair Memory answers **which non-obvious invariants must not be accidentally regressed**. Do not merge the two into a second architecture encyclopedia.
+Do not build a second semantic-owner registry inside Change Contract/Baseline governance.
 
-## Vertical alignment loop — anti-tunnel rule
+## Baseline-critical tests
 
-Before starting a new substantive subproblem and after completing every coherent subtask, internally restate this parent chain:
+L1/L2 may mechanically update protected tests when imports/fixtures/API shapes move, but may not change what they define as semantically correct. If an implementation only passes by changing the expected meaning of Evidence grounding, Reality/Judgment/Outcome separation, no-lookahead, temporal precision, provenance/revision, source authority/representation or semantic-owner uniqueness, classify as L3 before touching both implementation and expectation.
+
+Agents do not get to change both the question and the answer under an L1/L2 label.
+
+## Vertical alignment loop
+
+Before a substantive subproblem and after a coherent subtask, check:
 
 ```text
 atomic task
@@ -102,64 +111,55 @@ atomic task
 ↑ terminal mission
 ```
 
-Then check:
-
-- is the atomic task still the highest-value unresolved action on the main path?
-- has its `done_when` or stop condition already been met?
-- is scope expanding only because the local problem is interesting or easy to measure?
-- did a new result change the parent task or make the current task obsolete?
-- would stopping now materially harm parent-level progress?
-
-A local task that cannot be connected through those levels, or whose marginal value has collapsed, should be stopped/re-ranked instead of deepened automatically.
+Stop/re-rank when the task has met its done condition, no longer advances the parent goal, or scope expands only because it is interesting/easy to measure. Baseline freeze is specifically intended to stop repeated open-ended architecture optimization after the semantic foundation has already met its proof burden.
 
 ## Stable ownership of information
 
-- `STRATEGIC_COMPASS.md` owns mission and anti-drift direction.
-- `METHODOLOGY_CORE.md` owns distilled cross-industry methods.
-- `.longcycle/continuity/mission-fidelity.json` owns semantic calibration prompts, not answers.
-- `.longcycle/capabilities/active-index.json` owns compact stable capability routing, semantic ownership and capability-governance maturity/horizon; detailed cards/current admission live beside it.
-- `.longcycle/handoff/current.json` owns current horizon, continuation cursor, workstreams and snapshot state.
-- active context owns current industry / benchmark details.
-- live Git/CI owns implementation freshness.
-- devlogs own historical rationale only.
+- `STRATEGIC_COMPASS.md`: terminal mission / anti-drift direction.
+- `METHODOLOGY_CORE.md`: adopted cross-industry research method.
+- `.longcycle/continuity/mission-fidelity.json`: semantic calibration prompts, not answers.
+- `.longcycle/baseline/current.json` + versioned manifest/document: frozen semantic contract and L1–L4 change rules.
+- Capability Registry/cards: stable semantic owners and extension seams.
+- `.longcycle/change-contract/current.json`: current change-risk classification, not semantic ownership.
+- `.longcycle/handoff/current.json`: current horizon/cursor/workstreams/snapshot state.
+- Repair Memory: high-recurrence anti-regression invariants.
+- live migrations/code/tests/CI: actual implementation state.
+- active context: current industry/benchmark details.
+- old devlogs/research/rehearsals/PR discussions: immutable historical rationale/provenance, read on demand.
 
-Never copy fast-changing industry facts into a long-term core. Never copy stable mission/methodology into every checkpoint.
-
-## Core promotion rule
-
-A lesson begins in the current context or devlog. It enters `METHODOLOGY_CORE.md` only after explicit user adoption or enough benchmark evidence that it should survive industry changes.
-
-When adding to a Core, compress/replace existing wording rather than appending indefinitely.
+There is no single document ranking for every question; use the owner for the question.
 
 ## Epistemic boundaries
 
-Follow `METHODOLOGY_CORE.md`: model memory is not Evidence; historical `not_found != false`; no-lookahead replay; claim-scoped authority; original versions and revisions are not overwritten; comparability comes before corroboration.
+Follow `METHODOLOGY_CORE.md` and Architecture Baseline v1: historical recovery remains Memory-first/Evidence-final; model memory/search are not Evidence; `not_found != false`; no-lookahead; claim-scoped authority; temporal precision fidelity; original Judgments/versions are preserved; source representation/materialization states remain truthful.
 
-Current phase-specific guardrails come from the typed handoff and active context, not this file.
+Current source/data-plane mechanics may evolve under L1/L2 without changing these semantics.
 
-## Real-time continuity maintenance
+## Continuity maintenance
 
-`current.json.continuation_cursor` must tell a fresh Agent what just finished, what atomic task resumes now, why it is current, what `done_when` means, what capability class it requires, what to do if capability is insufficient, and what comes next.
+`current.json.continuation_cursor` must tell a Fresh Agent what just finished, what resumes now, why, what `done_when` means, required capability, insufficient-capability action and what follows.
 
-After a coherent work boundary that changes what the next Agent should do:
+After a coherent boundary that changes continuation:
 
-1. commit the substantive work;
-2. run the vertical alignment loop;
-3. update the continuation cursor and any materially changed dynamic handoff fields;
-4. set `checkpoint_based_on_head_sha` to the substantive-work commit;
-5. commit the handoff sync;
-6. refresh live CI when correctness state is material.
+1. commit substantive work;
+2. run vertical alignment;
+3. update current admission/change contract if classification/ownership changed;
+4. update the handoff cursor/dynamic fields;
+5. point `checkpoint_based_on_head_sha` to the final substantive/control-plane commit as defined by the handoff protocol;
+6. commit handoff sync;
+7. refresh live CI when correctness state is material;
+8. reread the final live ref before returning control.
 
-Do not create checkpoint churn for cosmetic edits that do not change continuation.
+Do not create checkpoint churn for cosmetic edits. If live HEAD differs from checkpoint base, reconcile intervening commits before acting.
 
-If a new user instruction changes mission or methodology, first record it as a pending directive, then update the appropriate Core with auditable rationale. Do not silently redefine strategy from a local implementation preference.
+## Core promotion / Baseline evolution
 
-If live HEAD differs from the checkpoint base, reconcile intervening commits before acting; do not assume the snapshot is current.
+A lesson begins in active context/devlog. It enters `METHODOLOGY_CORE.md` only after explicit adoption or enough cross-industry evidence. Once a method is covered by the current Architecture Baseline, changing its locked meaning is L3 rather than a silent Core edit.
+
+Approved L3 evolution creates an explicit ADR and a new versioned Baseline manifest/tag. Do not rewrite `v1.0.0` or move its tag to make history cleaner.
 
 ## Fixed transfer phrase
 
-A zero-context Agent should be able to resume from this single stable user phrase:
-
-> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
+> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、Architecture Baseline、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
 
 The phrase carries no current task facts. Repository state owns the task.
