@@ -6,17 +6,43 @@ Resume Longcycle through `FRESH_AGENT_BOOTSTRAP.md` / `CONTINUE_HERE.md`. Do not
 
 Read in this order:
 
-1. `STRATEGIC_COMPASS.md` — terminal mission;
+1. `STRATEGIC_COMPASS.md` — terminal mission and long-term product direction;
 2. `METHODOLOGY_CORE.md` — cross-industry method;
 3. independently reconstruct mission/method in your own words;
 4. `.longcycle/continuity/mission-fidelity.json` — calibration only;
 5. `.longcycle/baseline/current.json` → referenced manifest + `ARCHITECTURE_BASELINE_V1.md` — frozen semantic contract;
-6. `.longcycle/handoff/current.json` — current horizon/cursor;
+6. `.longcycle/handoff/current.json` — current medium/short horizon and atomic cursor;
 7. `.longcycle/capabilities/active-index.json` and current admission — semantic-owner routing;
 8. live Git HEAD / CI;
 9. only the minimal task-specific resume set.
 
 Do **not** preload old industries, all devlogs, old rehearsal reports or the full repository.
+
+For a whole-project audit, architecture review, or deliberate L3 change, additionally read `docs/development/longcycle-development-operating-system.md`. Normal L1/L2 agents should not preload that full reviewer manual.
+
+## Five-level strategic hierarchy — mandatory before execution
+
+A Fresh Agent must recover and be able to explain:
+
+```text
+macro / terminal mission
+↓
+long-term product direction
+↓
+medium-term goal
+↓
+short-term milestone
+↓
+atomic current task
+```
+
+Authority is split intentionally:
+
+- terminal mission + long-term direction: `STRATEGIC_COMPASS.md`;
+- medium + short horizon: `.longcycle/handoff/current.json -> strategic_horizon`;
+- atomic task / why-now / done-when / next action: `continuation_cursor`.
+
+Before substantive work, explain how the atomic task advances every parent level. If the Agent can repeat the slogan but cannot reconstruct this causal chain, bootstrap is incomplete.
 
 ## Architecture Baseline gate — classify before coding
 
@@ -41,7 +67,7 @@ If a requested behavior changes a locked Baseline invariant or the semantic expe
 
 L4 requires an explicit user decision before implementation.
 
-Read `docs/development/post-baseline-development.md` for the complete post-freeze workflow. The focused Architecture Baseline Gate prevents L1/L2 changes from redefining protected semantics merely to make new code pass.
+Read `docs/development/post-baseline-development.md` for the post-freeze workflow. The focused Architecture Baseline Gate prevents L1/L2 changes from redefining protected semantics merely to make new code pass.
 
 ## Mission assimilation before execution
 
@@ -53,7 +79,8 @@ Reading Core files is not enough. Before substantive work:
 4. explain why long comparable history can itself produce analysis;
 5. explain model/search versus Evidence boundaries;
 6. explain why the current industry/task is a proving ground or means rather than the mission;
-7. only then use `mission-fidelity.json` to challenge omissions.
+7. reconstruct the five-level strategic hierarchy above;
+8. only then use `mission-fidelity.json` to challenge omissions.
 
 Do not persist private chain-of-thought. Persist concise decisions, task hierarchy, reproducible constraints and auditable rationale when project state materially changes.
 
@@ -74,6 +101,20 @@ python scripts/repair_memory.py relevant <path> [<path> ...]
 For an unresolved bug with unknown owner, use bounded symptom/root-cause queries. Read only matching cards. Repair Memory protects non-obvious high-recurrence invariants; Git owns chronology; the Baseline owns frozen semantic correctness.
 
 A missing path-scoped repair hit is not permission to invent new semantics. If a Repair Memory invariant itself must change because an approved L3 architecture change supersedes it, update/supersede the card and guards deliberately in the same coherent change.
+
+## On-demand history recall
+
+If a cue suggests an old design decision matters, follow `docs/development/on-demand-history-recall.md` instead of bulk-loading project history:
+
+```text
+current semantic owner
+→ relevant Repair Memory
+→ exact origin refs
+→ bounded Git / Issue / receipt / devlog history
+→ return to live authority
+```
+
+Historical summaries route; original Git/receipts remain authority.
 
 ## Capability admission gate
 
@@ -100,28 +141,32 @@ L1/L2 may mechanically update protected tests when imports/fixtures/API shapes m
 
 Agents do not get to change both the question and the answer under an L1/L2 label.
 
-## Vertical alignment loop
+## Vertical Alignment Loop — permanent anti-tunnel rule
 
-Before a substantive subproblem and after a coherent subtask, check:
+Run it before a substantive subproblem, after every coherent subtask, before scope expansion, when a new result changes assumptions, or when a local problem becomes unusually absorbing.
 
 ```text
 atomic task
 ↑ short-term milestone
 ↑ medium-term capability proof
+↑ long-term product direction
 ↑ terminal mission
 ```
 
-Stop/re-rank when the task has met its done condition, no longer advances the parent goal, or scope expands only because it is interesting/easy to measure. Baseline freeze is specifically intended to stop repeated open-ended architecture optimization after the semantic foundation has already met its proof burden.
+Ask whether `done_when` is already met, whether additional work changes the parent result or only polishes a local metric, whether new evidence changed priorities, whether the work is deepening only because it is interesting/easy to measure, and whether stopping now would materially harm the parent goal.
+
+Stop/re-rank when parent-level marginal value has collapsed. A real local problem does not automatically deserve unlimited depth.
 
 ## Stable ownership of information
 
-- `STRATEGIC_COMPASS.md`: terminal mission / anti-drift direction.
-- `METHODOLOGY_CORE.md`: adopted cross-industry research method.
+- `STRATEGIC_COMPASS.md`: terminal mission / long-term direction / anti-drift.
+- `METHODOLOGY_CORE.md`: adopted cross-industry research/development method.
 - `.longcycle/continuity/mission-fidelity.json`: semantic calibration prompts, not answers.
 - `.longcycle/baseline/current.json` + versioned manifest/document: frozen semantic contract and L1–L4 change rules.
+- `docs/development/longcycle-development-operating-system.md`: integrated reviewer/architecture-change operating manual, not a replacement authority.
 - Capability Registry/cards: stable semantic owners and extension seams.
 - `.longcycle/change-contract/current.json`: current change-risk classification, not semantic ownership.
-- `.longcycle/handoff/current.json`: current horizon/cursor/workstreams/snapshot state.
+- `.longcycle/handoff/current.json`: current medium/short horizon, cursor, workstreams and snapshot state.
 - Repair Memory: high-recurrence anti-regression invariants.
 - live migrations/code/tests/CI: actual implementation state.
 - active context: current industry/benchmark details.
@@ -141,16 +186,18 @@ Current source/data-plane mechanics may evolve under L1/L2 without changing thes
 
 After a coherent boundary that changes continuation:
 
-1. commit substantive work;
-2. run vertical alignment;
+1. finish coherent substantive/control-plane work;
+2. run Vertical Alignment Loop;
 3. update current admission/change contract if classification/ownership changed;
-4. update the handoff cursor/dynamic fields;
-5. point `checkpoint_based_on_head_sha` to the final substantive/control-plane commit as defined by the handoff protocol;
-6. commit handoff sync;
-7. refresh live CI when correctness state is material;
-8. reread the final live ref before returning control.
+4. update capability/Repair Memory only when stable ownership/invariant changed;
+5. run focused validation and required CI;
+6. commit substantive work;
+7. update handoff cursor/dynamic fields against the actual completed work;
+8. commit handoff sync;
+9. refresh exact live HEAD / PR / CI;
+10. reread the final live ref and handoff before returning control.
 
-Do not create checkpoint churn for cosmetic edits. If live HEAD differs from checkpoint base, reconcile intervening commits before acting.
+Do not create checkpoint churn for cosmetic edits. If live HEAD differs from checkpoint base, reconcile intervening commits before acting. Parent green is not exact-head green.
 
 ## Core promotion / Baseline evolution
 
@@ -158,8 +205,14 @@ A lesson begins in active context/devlog. It enters `METHODOLOGY_CORE.md` only a
 
 Approved L3 evolution creates an explicit ADR and a new versioned Baseline manifest/tag. Do not rewrite `v1.0.0` or move its tag to make history cleaner.
 
-## Fixed transfer phrase
+## Fixed transfer phrases
 
-> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、Architecture Baseline、当前目标和 live 状态，然后从 continuation cursor 继续；不要让我重复背景。**
+Normal takeover:
 
-The phrase carries no current task facts. Repository state owns the task.
+> **接管 Longcycle（lly8666/longcycle-core）：按仓库实时 handoff 恢复使命、方法、Architecture Baseline、宏大/长期/中期/短期/当前目标和 live 状态，从 continuation cursor 继续；先做战略层级和防钻牛角尖校准，不要让我重复背景。**
+
+Whole-project / architecture review:
+
+> **审查 Longcycle（lly8666/longcycle-core）：按仓库 live state 完整恢复使命、方法、Architecture Baseline 和 Longcycle Development Operating System；从宏大目标→长期产品方向→中期目标→短期里程碑→当前实现逐层审查。区分 L1/L2、L3、L4、research/data、continuity/governance 与 production-readiness；只有真实重要反例证明 Baseline 无法诚实表达时才提出 L3。**
+
+The phrases carry no current task facts. Repository state owns the task.
