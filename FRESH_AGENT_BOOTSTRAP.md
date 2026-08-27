@@ -10,6 +10,8 @@ This file is a stable zero-context rendezvous pointer, not live project state.
 
 Architecture exploration is no longer the default development mode. Start from the repository's live `main` branch unless GitHub issue #2 explicitly points to a temporary active PR/branch for current work.
 
+Stable rendezvous remains GitHub issue #2, **Longcycle Live Handoff / Session Bootstrap**. From that rendezvous, follow `CONTINUE_HERE.md` and the handoff's **typed continuation cursor** rather than reconstructing current work from chat or historical reports.
+
 1. Refresh live `main`/active-PR HEAD and CI; snapshots in handoff are never live authority.
 2. Read `STRATEGIC_COMPASS.md` and `METHODOLOGY_CORE.md`, reconstruct mission/method in your own words, then use `.longcycle/continuity/mission-fidelity.json` only to challenge omissions/misreadings.
 3. Before interpreting the TODO, explicitly reconstruct the goal hierarchy:
