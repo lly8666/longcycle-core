@@ -116,7 +116,7 @@ current semantic owner
 
 Historical summaries route; original Git/receipts remain authority.
 
-## Capability admission gate
+## Capability admission gate — do not create parallel semantic owners blindly
 
 Before material capability/product/architecture work:
 
