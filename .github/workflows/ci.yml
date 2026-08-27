@@ -115,6 +115,10 @@ jobs:
         id: real_industry_orientation
         run: python scripts/smoke_postgres_real_orientation.py
 
+      - name: PostgreSQL membership provenance guards (hard gate)
+        id: membership_provenance_guards
+        run: python scripts/smoke_postgres_membership_provenance_guards.py
+
       - name: PostgreSQL researcher open states (hard gate)
         id: researcher_open_states
         run: python scripts/smoke_postgres_open_states_workspace.py
@@ -200,6 +204,7 @@ jobs:
           echo "epistemic_memory=${{ steps.epistemic_memory.outcome }} (hard gate)"
           echo "industry_orientation=${{ steps.industry_orientation.outcome }} (hard gate)"
           echo "real_industry_orientation=${{ steps.real_industry_orientation.outcome }} (hard gate)"
+          echo "membership_provenance_guards=${{ steps.membership_provenance_guards.outcome }} (hard gate)"
           echo "researcher_open_states=${{ steps.researcher_open_states.outcome }} (hard gate)"
           echo "evidence_drilldown=${{ steps.evidence_drilldown.outcome }} (hard gate)"
           echo "materialized_evidence=${{ steps.materialized_evidence.outcome }} (hard gate)"
