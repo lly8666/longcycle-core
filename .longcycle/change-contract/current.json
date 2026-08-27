@@ -1,0 +1,30 @@
+{
+  "schema_version": "longcycle-change-contract/v1",
+  "goal": "Freeze the already-validated Longcycle semantic foundation as Architecture Baseline v1 without adding new product or research semantics.",
+  "baseline": "architecture-v1",
+  "change_level": "L3",
+  "admission_ref": ".longcycle/capabilities/current-admission.json",
+  "baseline_impact": "explicit_initial_freeze",
+  "baseline_invariants": [
+    "BL-001",
+    "BL-002",
+    "BL-003",
+    "BL-004",
+    "BL-005",
+    "BL-006",
+    "BL-007",
+    "BL-008",
+    "BL-009",
+    "BL-010",
+    "BL-011",
+    "BL-012"
+  ],
+  "schema_impact": "none_after_prefreeze_0039",
+  "baseline_critical_tests_touched": true,
+  "acceptance": [
+    "Baseline manifest and pointer validate deterministically.",
+    "Existing capability ownership remains canonical; no parallel semantic owner is introduced.",
+    "L1/L2 future changes cannot alter Baseline documents or Baseline-critical regression expectations without the Architecture Baseline Gate rejecting the change.",
+    "Full CI and Architecture Baseline Gate pass on the final freeze commit."
+  ]
+}
