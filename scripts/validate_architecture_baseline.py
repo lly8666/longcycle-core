@@ -13,6 +13,7 @@ CHANGE_CONTRACT_PATH = ROOT / ".longcycle" / "change-contract" / "current.json"
 
 EXPECTED_INVARIANTS = {f"BL-{index:03d}" for index in range(1, 13)}
 CHANGE_LEVELS = {"L1", "L2", "L3", "L4"}
+REFERENCE_PREFIXES = ("issue:", "commit:", "ci:", "receipt:", "user-decision:")
 
 # These files define the Baseline contract or the semantic expectations that protect it.
 # Implementation files may move/refactor under L1/L2 as long as these expectations remain green.
@@ -44,7 +45,9 @@ def _load(path: Path) -> dict[str, Any]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        raise BaselineValidationError(f"cannot read valid JSON {path.relative_to(ROOT)}: {exc}") from exc
+        raise BaselineValidationError(
+            f"cannot read valid JSON {path.relative_to(ROOT)}: {exc}"
+        ) from exc
     if not isinstance(payload, dict):
         raise BaselineValidationError(f"{path.relative_to(ROOT)} must contain an object")
     return payload
@@ -59,13 +62,130 @@ def _require_file(raw: Any, *, label: str) -> str:
     return raw
 
 
-def _latest_migration_prefix() -> str:
-    prefixes = []
-    for path in (ROOT / "migrations").glob("[0-9][0-9][0-9][0-9]_*.sql"):
-        prefixes.append(path.name[:4])
+def _require_reference(raw: Any, *, label: str) -> str:
+    if not isinstance(raw, str) or not raw.strip():
+        raise BaselineValidationError(f"{label} must be a nonblank reference")
+    if raw.startswith(REFERENCE_PREFIXES):
+        return raw
+    return _require_file(raw, label=label)
+
+
+def _reference_list(raw: Any, *, label: str, allow_empty: bool) -> list[str]:
+    if not isinstance(raw, list) or (not raw and not allow_empty):
+        qualifier = "a list" if allow_empty else "a non-empty list"
+        raise BaselineValidationError(f"{label} must be {qualifier}")
+    result: list[str] = []
+    for item in raw:
+        result.append(_require_reference(item, label=label))
+    if len(result) != len(set(result)):
+        raise BaselineValidationError(f"{label} contains duplicates")
+    return result
+
+
+def _git_text(command: list[str], *, label: str) -> str:
+    try:
+        result = subprocess.run(
+            command,
+            cwd=ROOT,
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+    except subprocess.CalledProcessError as exc:
+        raise BaselineValidationError(f"{label}: {exc.stderr.strip()}") from exc
+    return result.stdout
+
+
+def _latest_migration_prefix_at_ref(ref: str) -> str:
+    output = _git_text(
+        ["git", "ls-tree", "-r", "--name-only", ref, "--", "migrations"],
+        label=f"cannot inspect migrations at {ref}",
+    )
+    prefixes: list[str] = []
+    for line in output.splitlines():
+        name = Path(line.strip()).name
+        if len(name) >= 5 and name[:4].isdigit() and name[4] == "_" and name.endswith(".sql"):
+            prefixes.append(name[:4])
     if not prefixes:
-        raise BaselineValidationError("no migrations found")
+        raise BaselineValidationError(f"no migrations found at baseline ref {ref}")
     return max(prefixes)
+
+
+def _validate_contract(
+    contract: dict[str, Any],
+    *,
+    manifest: dict[str, Any],
+) -> dict[str, Any]:
+    if contract.get("schema_version") != "longcycle-change-contract/v1":
+        raise BaselineValidationError("unsupported change contract schema")
+    if contract.get("baseline") != manifest.get("baseline_id"):
+        raise BaselineValidationError("change contract baseline does not match current manifest")
+
+    intent_id = contract.get("intent_id")
+    if not isinstance(intent_id, str) or not intent_id.strip():
+        raise BaselineValidationError("change contract requires intent_id")
+
+    admission_path = _require_file(contract.get("admission_ref"), label="change contract admission_ref")
+    admission = _load(ROOT / admission_path)
+    if admission.get("schema_version") != "longcycle-capability-admission/v2":
+        raise BaselineValidationError("change contract admission_ref has unsupported schema")
+    if admission.get("intent_id") != intent_id:
+        raise BaselineValidationError(
+            "change contract intent_id must match current capability admission intent_id; "
+            "stale change authorization cannot carry across tasks"
+        )
+
+    level = contract.get("change_level")
+    if level not in CHANGE_LEVELS:
+        raise BaselineValidationError(f"invalid change_level {level!r}")
+
+    acceptance = contract.get("acceptance")
+    if not isinstance(acceptance, list) or not acceptance or not all(
+        isinstance(item, str) and item.strip() for item in acceptance
+    ):
+        raise BaselineValidationError("change contract requires non-empty acceptance criteria")
+
+    affected = contract.get("affected_invariants", [])
+    if not isinstance(affected, list) or not all(isinstance(item, str) for item in affected):
+        raise BaselineValidationError("affected_invariants must be a list of Baseline ids")
+    if len(affected) != len(set(affected)) or set(affected) - EXPECTED_INVARIANTS:
+        raise BaselineValidationError("affected_invariants contains invalid/duplicate Baseline ids")
+
+    counterexamples = _reference_list(
+        contract.get("counterexample_refs", []),
+        label="counterexample_refs",
+        allow_empty=True,
+    )
+    architecture_ref = contract.get("architecture_change_ref")
+    compatibility_ref = contract.get("compatibility_plan_ref")
+    approval_ref = contract.get("approval_ref")
+
+    if level in {"L1", "L2"}:
+        if architecture_ref is not None or compatibility_ref is not None or approval_ref is not None:
+            raise BaselineValidationError(
+                "L1/L2 contracts must not retain architecture-change/approval references"
+            )
+        if counterexamples or affected:
+            raise BaselineValidationError(
+                "L1/L2 contracts must not retain L3 counterexamples or affected Baseline invariants"
+            )
+    elif level == "L3":
+        _require_reference(architecture_ref, label="architecture_change_ref")
+        _require_reference(compatibility_ref, label="compatibility_plan_ref")
+        if not counterexamples:
+            raise BaselineValidationError("L3 requires at least one concrete counterexample reference")
+        if not affected:
+            raise BaselineValidationError("L3 requires affected_invariants")
+        if approval_ref is not None:
+            _require_reference(approval_ref, label="approval_ref")
+    else:
+        # L4 changes the terminal mission and therefore requires an explicit user decision
+        # even before implementation touches protected Baseline/Strategy paths.
+        if not affected:
+            raise BaselineValidationError("L4 requires affected_invariants")
+        _require_reference(approval_ref, label="approval_ref")
+
+    return contract
 
 
 def validate_repository_contract() -> tuple[dict[str, Any], dict[str, Any]]:
@@ -84,9 +204,14 @@ def validate_repository_contract() -> tuple[dict[str, Any], dict[str, Any]]:
     if manifest.get("commit_resolution") != "git_tag_target":
         raise BaselineValidationError("baseline commit must resolve through the immutable Git tag")
 
-    if manifest.get("schema_through") != _latest_migration_prefix():
+    tag = manifest.get("tag")
+    if not isinstance(tag, str) or not tag.strip():
+        raise BaselineValidationError("baseline manifest requires immutable tag")
+    frozen_schema = _latest_migration_prefix_at_ref(tag)
+    if manifest.get("schema_through") != frozen_schema:
         raise BaselineValidationError(
-            f"baseline schema_through={manifest.get('schema_through')} does not match latest migration={_latest_migration_prefix()}"
+            f"baseline schema_through={manifest.get('schema_through')} does not match "
+            f"migration ceiling at frozen tag {tag}={frozen_schema}"
         )
 
     for field in (
@@ -123,22 +248,7 @@ def validate_repository_contract() -> tuple[dict[str, Any], dict[str, Any]]:
     } - set(contexts):
         raise BaselineValidationError("baseline required status contexts are incomplete")
 
-    contract = _load(CHANGE_CONTRACT_PATH)
-    if contract.get("schema_version") != "longcycle-change-contract/v1":
-        raise BaselineValidationError("unsupported change contract schema")
-    if contract.get("baseline") != manifest.get("baseline_id"):
-        raise BaselineValidationError("change contract baseline does not match current manifest")
-    level = contract.get("change_level")
-    if level not in CHANGE_LEVELS:
-        raise BaselineValidationError(f"invalid change_level {level!r}")
-    if contract.get("admission_ref") != ".longcycle/capabilities/current-admission.json":
-        raise BaselineValidationError("change contract must route semantic ownership through current admission")
-    _require_file(contract.get("admission_ref"), label="change contract admission_ref")
-    acceptance = contract.get("acceptance")
-    if not isinstance(acceptance, list) or not acceptance or not all(
-        isinstance(item, str) and item.strip() for item in acceptance
-    ):
-        raise BaselineValidationError("change contract requires non-empty acceptance criteria")
+    contract = _validate_contract(_load(CHANGE_CONTRACT_PATH), manifest=manifest)
     return manifest, contract
 
 
@@ -147,7 +257,9 @@ def _changed_paths(base_ref: str) -> set[str]:
     try:
         result = subprocess.run(command, cwd=ROOT, check=True, text=True, capture_output=True)
     except subprocess.CalledProcessError as exc:
-        raise BaselineValidationError(f"cannot diff baseline gate against {base_ref}: {exc.stderr}") from exc
+        raise BaselineValidationError(
+            f"cannot diff baseline gate against {base_ref}: {exc.stderr}"
+        ) from exc
     return {line.strip() for line in result.stdout.splitlines() if line.strip()}
 
 
@@ -175,6 +287,14 @@ def validate_change_level(*, base_ref: str | None, contract: dict[str, Any]) -> 
         )
     if not base_has_manifest and contract.get("change_level") != "L3":
         raise BaselineValidationError("initial Architecture Baseline freeze must be L3")
+
+    # Declaring L3/L4 is not itself permission to move the frozen contract. Once protected
+    # semantics are actually changed, an explicit approval/review reference must exist.
+    if base_has_manifest and contract.get("change_level") in {"L3", "L4"}:
+        if contract.get("approval_ref") is None:
+            raise BaselineValidationError(
+                "protected Baseline change requires approval_ref after ADR/counterexample review"
+            )
 
 
 def main() -> int:
