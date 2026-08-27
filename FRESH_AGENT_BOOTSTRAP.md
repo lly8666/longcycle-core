@@ -26,7 +26,7 @@ Architecture exploration is no longer the default development mode. Start from t
 8. If the proposed change touches a locked Baseline invariant or changes the semantic expectation of a Baseline-critical regression, stop ordinary implementation and enter the L3 architecture-change procedure. `Cleaner`, `more generic` and `future-proof` are not sufficient evidence.
 9. If a real source-grounded important case cannot be truthfully expressed through existing extension seams, preserve that counterexample and escalate it; Baseline v1 is stable by default, not dogmatically immune to evidence.
 10. Query path-scoped Repair Memory before editing known paths. Do not infer that a new path has no semantic constraints merely because no repair card matches it.
-11. If a fuzzy cue suggests “we discussed/designed this before”, do **not** preload project history. Use `docs/development/on-demand-history-recall.md`: semantic owner → relevant Repair Memory → exact origin refs → bounded Git/Issue/receipt/devlog history → return to live authority.
+11. If a fuzzy cue suggests “we discussed/designed this before”, do **not** preload project history. Do **not** preload old devlogs/issues/benchmarks. Use `docs/development/on-demand-history-recall.md`: semantic owner → relevant Repair Memory → exact origin refs → bounded Git/Issue/receipt/devlog history → return to live authority.
 12. Run the Vertical Alignment Loop before a substantive subproblem, after a coherent subtask, before scope expansion, or when new evidence changes an assumption:
 
 ```text
