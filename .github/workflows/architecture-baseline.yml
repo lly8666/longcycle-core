@@ -1,0 +1,76 @@
+name: Architecture Baseline
+
+on:
+  push:
+    branches:
+      - main
+      - baseline/v1-freeze
+  pull_request:
+
+concurrency:
+  group: architecture-baseline-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  statuses: write
+
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate repository Baseline contract
+        run: python scripts/validate_architecture_baseline.py
+
+      - name: Enforce change level against PR base
+        if: github.event_name == 'pull_request'
+        run: python scripts/validate_architecture_baseline.py --base-ref "origin/${{ github.base_ref }}"
+
+      - name: Capability ownership remains canonical
+        run: python scripts/capability_registry.py audit
+
+      - name: Baseline-critical semantic regressions
+        run: >-
+          pytest -q
+          tests/test_fact_temporal_precision.py
+          tests/test_historical_replay.py
+          tests/test_judgments.py
+          tests/test_judgment_replay.py
+          tests/test_outcome_evaluation.py
+          tests/test_source_authority.py
+          tests/test_source_locator_materialization.py
+          tests/test_fact_provenance.py
+          tests/test_capability_registry.py
+          tests/test_session_handoff.py
+
+      - name: Publish Architecture Baseline success status
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          -f state=success
+          -f context=longcycle/architecture-baseline
+          -f description='Architecture Baseline contract passed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      - name: Publish Architecture Baseline failure status
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$GITHUB_SHA"
+          -f state=failure
+          -f context=longcycle/architecture-baseline
+          -f description='Architecture Baseline contract failed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
