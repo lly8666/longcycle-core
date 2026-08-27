@@ -1,0 +1,86 @@
+name: One-shot capability/full CI validation
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  validate:
+    if: >-
+      github.event.issue.title == '[longcycle-capability-full-ci-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Resolve requested immutable head
+        id: resolve
+        shell: bash
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          head_sha="$(printf '%s\n' "$ISSUE_BODY" | sed -nE 's/^head=([0-9a-f]{40})$/\1/p' | head -n1)"
+          test -n "$head_sha" || { echo 'missing exact head=<40 lowercase hex> line' >&2; exit 2; }
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.head_sha }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Run repository hard gates
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${{ steps.resolve.outputs.head_sha }}"
+          python -m pip install -e '.[dev,postgres,s3,duckdb]'
+          python scripts/repair_memory.py audit
+          python scripts/capability_registry.py audit
+          longcycle --json db upgrade
+          python scripts/smoke_postgres_repository.py
+          python scripts/smoke_postgres_judgments.py
+          python scripts/smoke_postgres_reality.py
+          python scripts/smoke_postgres_epistemic.py
+          python scripts/smoke_materialized_grounded_evidence.py
+          python scripts/smoke_no_lookahead_replay.py
+          python scripts/smoke_no_lookahead_judgment_replay.py
+          mypy src
+          pytest -q
+          python scripts/build_memory_compact_indexes.py research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol .artifacts/memory-compact-indexes
+          python scripts/audit_memory_history.py research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol .artifacts/memory-history-audit.json
+          echo 'FULL_CI_VALIDATION_PASS'
+      - name: Report validation receipt
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          body=$(printf 'FULL_CI_VALIDATION head=%s outcome=%s run_id=%s\n\nThis owner-only one-shot checked out the exact requested SHA and ran Repair Memory audit, Capability Registry audit, PostgreSQL migrations/repository/Judgment/Reality/typed-memory/Evidence smokes, no-lookahead replays, mypy src, pytest, compact-index build and memory-history audit.' "$HEAD_SHA" "$GATE_OUTCOME" "$GITHUB_RUN_ID")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

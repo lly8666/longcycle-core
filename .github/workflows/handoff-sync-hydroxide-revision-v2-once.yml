@@ -1,0 +1,78 @@
+name: Sync hydroxide revision handoff v2 once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_SUBSTANTIVE_SHA: b6a964a43a2abee86d8c429a5763c153d0380f93
+
+jobs:
+  sync:
+    if: github.event.issue.title == '[longcycle-handoff-hydroxide-revision-v2]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Advance and validate typed handoff
+        id: sync
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/handoff-sync.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SUBSTANTIVE_SHA"
+          git show origin/main:.github/scripts/sync_hydroxide_revision_handoff.py > /tmp/sync_handoff.py
+          python /tmp/sync_handoff.py
+          python -m pip install -e '.[dev]'
+          python scripts/repair_memory.py audit
+          pytest -q tests/test_session_handoff.py tests/test_handoff_freshness.py tests/test_handoff_data_plane.py tests/test_handoff_drill.py
+          git diff --check
+          git diff --exit-code -- .longcycle/handoff/data-plane.json
+          changed="$(git diff --name-only)"
+          test "$changed" = '.longcycle/handoff/current.json'
+
+      - name: Commit and push handoff only
+        id: push
+        if: steps.sync.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name longcycle-handoff-sync
+          git config user.email actions@users.noreply.github.com
+          git add -f .longcycle/handoff/current.json
+          git commit -m 'chore: advance handoff to hydroxide revision trajectory'
+          git push origin HEAD:${ACTIVE_REF}
+          git rev-parse HEAD | tee /tmp/handoff-sync-sha.txt
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          SYNC_OUTCOME: ${{ steps.sync.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$SYNC_OUTCOME" == success && "$PUSH_OUTCOME" == success ]]; then
+            sha="$(cat /tmp/handoff-sync-sha.txt)"
+            body="HANDOFF_HYDROXIDE_REVISION_PASS pushed_sha=$sha checkpoint_base=$EXPECTED_SUBSTANTIVE_SHA run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/handoff-sync.log 2>/dev/null || true)"
+            body=$(printf 'HANDOFF_HYDROXIDE_REVISION_FAIL sync=%s push=%s run_id=%s\n\n```text\n%s\n```' "$SYNC_OUTCOME" "$PUSH_OUTCOME" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

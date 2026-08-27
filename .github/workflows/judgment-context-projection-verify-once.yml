@@ -1,0 +1,82 @@
+name: Verify grounded Judgment context projection once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 6faeb9298381399455c982173a947423985607b8
+
+jobs:
+  verify:
+    if: github.event.issue.title == '[longcycle-judgment-context-projection-verify-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Run hard gate
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/context-projection-verify.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          python -m compileall -q src scripts tests
+          python scripts/repair_memory.py audit
+          longcycle --json db upgrade
+          mypy src
+          pytest -q tests/test_judgment_context_projection.py tests/test_judgment_projection.py tests/test_epistemic_memory.py
+          python scripts/smoke_postgres_epistemic.py
+          pytest -q
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="JUDGMENT_CONTEXT_PROJECTION_VERIFY_PASS head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/context-projection-verify.log 2>/dev/null || true)"
+            body=$(printf 'JUDGMENT_CONTEXT_PROJECTION_VERIFY_FAIL head=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

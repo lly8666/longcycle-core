@@ -1,0 +1,256 @@
+name: Sync hydroxide source-transport handoff once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_SUBSTANTIVE_SHA: 8a0b886ebf94e2d07ef5017284a400f53900ab4c
+
+jobs:
+  sync:
+    if: github.event.issue.title == '[longcycle-handoff-hydroxide-transport-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Advance typed handoff
+        id: sync
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/handoff-sync.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SUBSTANTIVE_SHA"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('.longcycle/handoff/current.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          receipt = (
+              'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/'
+              'self_verification/UP-CHEMICALS/run-001/tasks/'
+              'EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json'
+          )
+          plan = (
+              'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/'
+              'self_verification/UP-CHEMICALS/run-001/tasks/'
+              'EVT-003-hydroxide-expectation-revision-plan-v1.json'
+          )
+          discovery = (
+              'research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/'
+              'self_verification/UP-CHEMICALS/run-001/discovery-v1.json'
+          )
+
+          data['continuity_sequence'] = 42
+          data['checkpoint_based_on_head_sha'] = '8a0b886ebf94e2d07ef5017284a400f53900ab4c'
+
+          horizon = data['strategic_horizon']
+          horizon['short_term_goal'] = (
+              'Complete the bounded hydroxide expectation-revision trajectory with exact archived '
+              'source bytes: recover Livent 2018 and 2019 Q1 filing vintages, ground the high-nickel '
+              'to hydroxide thesis and slower-than-anticipated pace revision, and replay rationale/'
+              'relation context without hindsight leakage or source-authority downgrade.'
+          )
+          horizon['next_big_step'] = (
+              'Resolve an authoritative or strongly verified same-content byte transport for the '
+              'Livent 2019 Q1 10-Q, then archive/hash the locked 2018 10-K and 2019 Q1 10-Q, execute '
+              'a grounded Evidence spec, and only then project Judgment vintages and any justified '
+              'REVISES relation.'
+          )
+          horizon['local_optimization_stop_rule'] = (
+              'Grounded Judgment rationale/relation projection is now verified reusable infrastructure. '
+              'Do not extend generic schema, temporal semantics or agent/handoff infrastructure for '
+              'EVT-003. Treat SEC cloud-runner blocking as a source-transport problem; never reduce '
+              'evidence authority merely to make retrieval easier. Remain inside sealed UP-CHEMICALS.'
+          )
+
+          cursor = data['continuation_cursor']
+          cursor['last_completed_action'] = (
+              'Implemented a generic grounded Judgment context projection and PostgreSQL executor '
+              'for source-backed rationales and revision relations. Fixed-head run 32562077475 on '
+              '6faeb929... passed PostgreSQL 17 migrations through 0024, Mypy on 75 source files, '
+              '15 focused tests, POSTGRES_EPISTEMIC_MEMORY_SMOKE_PASS and full Pytest 228 passed. '
+              'A bounded SEC byte probe then established that GitHub-hosted runners receive HTTP 403 '
+              'from direct SEC filing fetches; no bytes were accepted into the archive. The 2018 '
+              'Livent 10-K same-filing PDF transport candidate and the unresolved 2019 Q1 transport '
+              'are recorded in EVT-003-hydroxide-context-projection-and-source-transport-receipt-v1.json '
+              'at substantive checkpoint 8a0b886e....'
+          )
+          cursor['current_task'] = (
+              'Resolve source transport for the locked Livent 2019 Q1 10-Q without weakening source '
+              'authority. Once an authoritative or strongly verified same-content byte source exists, '
+              'hash/archive the 2018 10-K and 2019 Q1 10-Q, create and execute the bounded hydroxide '
+              'Evidence spec, and then ground the two Judgment vintages plus rationale/revision context.'
+          )
+          cursor['why_now'] = (
+              'The application/storage/replay path for Judgment rationales and relations is now proven. '
+              'The only gating defect exposed by EVT-003 is source-byte transport: SEC rejects direct '
+              'GitHub-hosted runner fetches. Solving or cleanly routing around that transport boundary '
+              'is required before Longcycle may claim archival Evidence or a formal revision edge.'
+          )
+          cursor['done_when'] = (
+              'Both locked Livent filing vintages are archived as exact content-addressed bytes from '
+              'authoritative or strongly verified same-content transports; conservative known-time '
+              'bounds are recorded; claim-scoped Evidence grounding passes; the 2018 thesis and 2019 '
+              'Q1 slower-pace Judgment replay without lookahead; REVISES is persisted only if the '
+              'grounded subject/topic identity supports it. No unsealed shard search or blind-memory '
+              'mutation occurs.'
+          )
+          cursor['required_capability'] = 'high_capability_reasoning'
+          cursor['insufficient_capability_action'] = 'stop_and_escalate'
+          cursor['next_atomic_action'] = (
+              'Use the locked Q1 SEC accession 0001742924-19-000025 to locate an authoritative or '
+              'strongly verifiable same-content byte transport (prefer Livent/company filing CDN or '
+              'another source whose filing identity/content can be cross-checked). Do not accept a '
+              'third-party mirror as canonical truth solely because SEC returns 403 to GitHub runners. '
+              'If no such transport is recoverable, persist the retrieval blocker and design the '
+              'smallest source-access lane rather than broadening research scope.'
+          )
+
+          ctx = data['active_context']
+          ctx['label'] = (
+              'Lithium-battery first benchmark / hydroxide expectation revision / source-byte transport'
+          )
+          ctx['deep_context_paths'] = [discovery, plan, receipt]
+
+          campaign = data['memory_campaign']
+          campaign['phase'] = (
+              'sealed_up_chemicals_hydroxide_cognition_context_projection_proven_source_transport_blocked'
+          )
+          campaign['seal_rule'] = (
+              'UP-CHEMICALS blind memory remains sealed/frozen. Fresh source work is allowed only '
+              'inside bounded verification/evidence/replay tasks for this sealed shard; all other '
+              'shards remain search-isolated until their own seal rule is satisfied. Search or '
+              'transport failure does not falsify a Memory Lead, and no source-authority downgrade is '
+              'allowed merely to bypass retrieval blocking.'
+          )
+          campaign['next_research_actions'] = [
+              'Resolve authoritative or strongly verified same-content transport for Livent 2019 Q1 10-Q.',
+              'Archive/hash the locked 2018 10-K and 2019 Q1 10-Q and execute claim-scoped Evidence grounding.',
+              'Project the 2018 thesis and 2019 Q1 slower-pace Judgment vintages with rationale context.',
+              'Persist REVISES only if grounded semantic identity supports it; otherwise preserve separate vintages.',
+              'Do not enter unsealed shards or mutate sealed blind-memory artifacts.'
+          ]
+
+          ci = data['ci']
+          ci['last_observed_run'] = 32562077475
+          ci['observed_head_sha'] = '6faeb9298381399455c982173a947423985607b8'
+          ci['conclusion'] = (
+              'Fixed-head Judgment-context projection gate run 32562077475 passed on 6faeb929...: '
+              'PostgreSQL 17 migrations through 0024, Repair Memory audit, Mypy with no issues in 75 '
+              'source files, 15 focused tests, POSTGRES_EPISTEMIC_MEMORY_SMOKE_PASS, full Pytest '
+              '228 passed, diff clean and blind-memory unchanged. Subsequent 8a0b886e... is the '
+              'research transport/context receipt; fresh sessions must still refresh live HEAD/CI.'
+          )
+          ci['mypy_summary'] = 'Run 32562077475: Mypy hard gate succeeded, 75 source files.'
+          ci['pytest_summary'] = 'Run 32562077475: full Pytest hard gate succeeded, 228 passed.'
+          ci['refresh_instruction'] = (
+              'Fetch PR #1 and live design/industry-memory HEAD. Compare checkpoint base '
+              '8a0b886ebf94e2d07ef5017284a400f53900ab4c to live HEAD. If every later path is '
+              'handoff-mutable only, continue from the Livent Q1 source-transport cursor; otherwise '
+              'inspect substantive intervening commits before execution.'
+          )
+
+          main = next(
+              item for item in data['workstreams']
+              if item['workstream_id'] == 'first-end-to-end-reality-judgment-outcome-replay'
+          )
+          main['status'] = 'hydroxide_cognition_projection_proven_q1_source_transport_next'
+          main['summary'] = (
+              'Project-level replay, state-as-of Reality and storage-neutral Judgment rationale/relation '
+              'replay are proven. EVT-003 also now has a generic grounded context write path. The main '
+              'path is no longer architecture work: it is recovering exact Livent filing bytes and '
+              'grounding the 2018-to-2019 hydroxide cognition trajectory without authority downgrade.'
+          )
+          main['next_actions'] = [
+              'Resolve Livent 2019 Q1 filing byte transport under accession 0001742924-19-000025.',
+              'Archive/hash 2018 and Q1 2019 filings and execute EVT-003 grounded Evidence spec.',
+              'Project source-backed Judgment vintages plus rationale/relation context.',
+              'Stop with truthful ambiguity if a formal REVISES relation or later Outcome is not supportable.'
+          ]
+          main['blockers'] = [
+              'Direct SEC fetch from GitHub-hosted runner returns HTTP 403; Q1 2019 equivalent same-content byte transport is not yet verified.'
+          ]
+
+          data['resume_read_set'] = [
+              'STRATEGIC_COMPASS.md',
+              'METHODOLOGY_CORE.md',
+              '.longcycle/continuity/mission-fidelity.json',
+              'CONTINUE_HERE.md',
+              '.longcycle/handoff/current.json',
+              '.longcycle/handoff/data-plane.json',
+              plan,
+              receipt
+          ]
+          data['deep_reference_paths'] = [
+              discovery,
+              'src/longcycle/application/judgment_context_projection.py',
+              'scripts/execute_grounded_judgment_context.py',
+              '.longcycle/repair-memory/invariants/RI-0002-typed-epistemic-gates.json',
+              '.longcycle/repair-memory/invariants/RI-0003-canonical-temporal-semantics.json',
+              'docs/development/storage-runtime-boundary.md'
+          ]
+          data['unresolved_questions'] = [
+              'Which authoritative or strongly verified same-content transport can supply exact Livent 2019 Q1 10-Q bytes when SEC blocks GitHub-hosted runners?',
+              'After both vintages are grounded, does the 2019 Q1 slower-than-anticipated statement formally revise the same 2018 thesis object or only one pace assumption within it?',
+              'What conservative filing-availability timestamp should bound the Q1 2019 Judgment if exact SEC acceptance metadata cannot be fetched by the execution runner?',
+              'Is a later comparable Reality/Outcome necessary for EVT-003, or is truthful cognition-history replay the correct stopping point?'
+          ]
+
+          path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print('HANDOFF_HYDROXIDE_TRANSPORT_SYNC_APPLIED')
+          PY
+          python -m pip install -e '.[dev]'
+          python scripts/repair_memory.py audit
+          pytest -q tests/test_session_handoff.py tests/test_handoff_freshness.py tests/test_handoff_data_plane.py tests/test_handoff_drill.py
+          git diff --check
+          git diff --exit-code -- .longcycle/handoff/data-plane.json
+
+      - name: Commit and push handoff only
+        id: push
+        if: steps.sync.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name longcycle-handoff-sync
+          git config user.email actions@users.noreply.github.com
+          changed="$(git diff --name-only)"
+          test "$changed" = '.longcycle/handoff/current.json'
+          git add -f .longcycle/handoff/current.json
+          git commit -m 'chore: advance handoff to hydroxide source transport'
+          git push origin HEAD:${ACTIVE_REF}
+          git rev-parse HEAD | tee /tmp/handoff-sync-sha.txt
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          SYNC_OUTCOME: ${{ steps.sync.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$SYNC_OUTCOME" == success && "$PUSH_OUTCOME" == success ]]; then
+            sha="$(cat /tmp/handoff-sync-sha.txt)"
+            body="HANDOFF_HYDROXIDE_TRANSPORT_PASS pushed_sha=$sha checkpoint_base=$EXPECTED_SUBSTANTIVE_SHA run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/handoff-sync.log 2>/dev/null || true)"
+            body=$(printf 'HANDOFF_HYDROXIDE_TRANSPORT_FAIL sync=%s push=%s run_id=%s\n\n```text\n%s\n```' "$SYNC_OUTCOME" "$PUSH_OUTCOME" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

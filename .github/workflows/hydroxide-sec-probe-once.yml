@@ -1,0 +1,151 @@
+name: Probe hydroxide SEC vintages once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+
+jobs:
+  probe:
+    if: github.event.issue.title == '[longcycle-hydroxide-sec-probe-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch exact SEC filing bytes and availability metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p probe
+          git rev-parse HEAD > probe/active-head.txt
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          import time
+          import urllib.request
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          USER_AGENT = 'LongcycleCollector/0.1 (contact: https://github.com/lly8666/longcycle-core)'
+          ITEMS = [
+              {
+                  'key': 'livent-2018-10k',
+                  'filing_url': 'https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/livent201810k.htm',
+                  'index_url': 'https://www.sec.gov/Archives/edgar/data/1742924/000174292419000013/0001742924-19-000013-index.htm',
+                  'accession': '0001742924-19-000013',
+              },
+              {
+                  'key': 'livent-2019q1-10q',
+                  'filing_url': 'https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/livent03311910q.htm',
+                  'index_url': 'https://www.sec.gov/Archives/edgar/data/1742924/000174292419000025/0001742924-19-000025-index.htm',
+                  'accession': '0001742924-19-000025',
+              },
+          ]
+
+          class VisibleText(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.parts = []
+                  self.hidden = 0
+              def handle_starttag(self, tag, attrs):
+                  del attrs
+                  if tag.lower() in {'script', 'style', 'noscript'}:
+                      self.hidden += 1
+              def handle_endtag(self, tag):
+                  if tag.lower() in {'script', 'style', 'noscript'} and self.hidden:
+                      self.hidden -= 1
+              def handle_data(self, data):
+                  if not self.hidden:
+                      self.parts.append(data)
+
+          def fetch(url):
+              req = urllib.request.Request(
+                  url,
+                  headers={'User-Agent': USER_AGENT, 'Accept': '*/*'},
+              )
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return response.read(), dict(response.headers.items()), response.status
+
+          def visible_text(raw):
+              parser = VisibleText()
+              parser.feed(raw.decode('utf-8', errors='replace'))
+              return ' '.join(' '.join(parser.parts).split())
+
+          rows = []
+          for index, item in enumerate(ITEMS):
+              if index:
+                  time.sleep(0.2)
+              filing, filing_headers, filing_status = fetch(item['filing_url'])
+              time.sleep(0.2)
+              index_bytes, index_headers, index_status = fetch(item['index_url'])
+              filing_text = visible_text(filing)
+              index_text = visible_text(index_bytes)
+              accepted_match = re.search(r'Accepted\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})', index_text)
+              filing_date_match = re.search(r'Filing Date\s+(\d{4}-\d{2}-\d{2})', index_text)
+              if not accepted_match or not filing_date_match:
+                  raise SystemExit(f"could not parse SEC filing metadata for {item['key']}: {index_text[:1200]}")
+              raw_sha = hashlib.sha256(filing).hexdigest()
+              visible_bytes = filing_text.encode('utf-8')
+              visible_sha = hashlib.sha256(visible_bytes).hexdigest()
+              Path(f"probe/{item['key']}.html").write_bytes(filing)
+              Path(f"probe/{item['key']}-index.html").write_bytes(index_bytes)
+              Path(f"probe/{item['key']}-visible.txt").write_bytes(visible_bytes)
+              rows.append({
+                  **item,
+                  'filing_status': filing_status,
+                  'index_status': index_status,
+                  'content_type': filing_headers.get('Content-Type') or filing_headers.get('content-type'),
+                  'raw_sha256': raw_sha,
+                  'raw_bytes': len(filing),
+                  'visible_text_sha256': visible_sha,
+                  'visible_text_bytes': len(visible_bytes),
+                  'filing_date': filing_date_match.group(1),
+                  'accepted_at_sec_et_text': accepted_match.group(1),
+                  'user_agent': USER_AGENT,
+              })
+          payload = {
+              'schema_version': 'longcycle-sec-filing-probe/v1',
+              'active_head_sha': Path('probe/active-head.txt').read_text().strip(),
+              'rows': rows,
+          }
+          Path('probe/sec-probe.json').write_text(json.dumps(payload, indent=2) + '\n')
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Upload exact source-byte probe
+        uses: actions/upload-artifact@v4
+        with:
+          name: hydroxide-sec-probe-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: probe/
+
+      - name: Report probe result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f probe/sec-probe.json ]]; then
+            body=$(printf 'HYDROXIDE_SEC_PROBE_PASS run_id=%s\n\n```json\n%s\n```' "$GITHUB_RUN_ID" "$(cat probe/sec-probe.json)")
+          else
+            body="HYDROXIDE_SEC_PROBE_FAIL run_id=$GITHUB_RUN_ID"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

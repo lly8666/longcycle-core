@@ -1,0 +1,126 @@
+name: Longcycle handoff runtime pack
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  duckdb-offline-runtime-py313-v2:
+    if: github.event.issue.title == '[longcycle-handoff-runtime-pack-py313-v2]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Download immutable offline replay runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p runtime/wheelhouse
+          python -m pip download --only-binary=:all: --no-deps \
+            'duckdb==1.5.5' \
+            'pytz==2025.2' \
+            -d runtime/wheelhouse
+          python - <<'PY'
+          import hashlib, json, platform, sys
+          from pathlib import Path
+
+          wheelhouse = Path('runtime/wheelhouse')
+          duckdb_wheels = sorted(wheelhouse.glob('duckdb-1.5.5-*.whl'))
+          pytz_wheels = sorted(wheelhouse.glob('pytz-2025.2-*.whl'))
+          if len(duckdb_wheels) != 1:
+              raise SystemExit(f'expected exactly one duckdb wheel, found {len(duckdb_wheels)}')
+          if len(pytz_wheels) != 1:
+              raise SystemExit(f'expected exactly one pytz wheel, found {len(pytz_wheels)}')
+          duckdb_wheel = duckdb_wheels[0]
+          pytz_wheel = pytz_wheels[0]
+          if 'cp313' not in duckdb_wheel.name:
+              raise SystemExit(f'expected a CPython 3.13 duckdb wheel, got {duckdb_wheel.name}')
+
+          def component(path: Path, role: str) -> dict[str, object]:
+              data = path.read_bytes()
+              return {
+                  'path': str(path.relative_to('runtime')),
+                  'role': role,
+                  'bytes': len(data),
+                  'sha256': hashlib.sha256(data).hexdigest(),
+              }
+
+          payload = {
+              'schema_version': 'longcycle-offline-runtime-pack/v2',
+              'runtime': 'duckdb-python-replay',
+              'duckdb_version': '1.5.5',
+              'pytz_version': '2025.2',
+              'python_major_minor': f'{sys.version_info.major}.{sys.version_info.minor}',
+              'architecture': platform.machine(),
+              'components': [
+                  component(duckdb_wheel, 'DuckDB CPython runtime'),
+                  component(pytz_wheel, 'TIMESTAMPTZ Python materialization dependency'),
+              ],
+              'install': 'python -m pip install --no-index --no-deps wheelhouse/*.whl',
+              'acceptance_smoke': [
+                  'duckdb.__version__ == 1.5.5',
+                  'pytz.__version__ == 2025.2',
+                  'TIMESTAMPTZ can be materialized as a timezone-aware Python datetime',
+              ],
+              'purpose': 'Open and query Longcycle portable DuckDB replay packs hermetically in the current CPython 3.13 x86_64 network-restricted sandbox class.',
+          }
+          Path('runtime/manifest.json').write_text(json.dumps(payload, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2))
+          PY
+
+      - name: Smoke-test complete runtime in isolated offline venv
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m venv runtime/smoke-venv
+          runtime/smoke-venv/bin/python -m pip install --no-index --no-deps runtime/wheelhouse/*.whl
+          runtime/smoke-venv/bin/python - <<'PY'
+          from datetime import datetime
+          import duckdb
+          import pytz
+
+          assert duckdb.__version__ == '1.5.5', duckdb.__version__
+          assert pytz.__version__ == '2025.2', pytz.__version__
+          con = duckdb.connect(':memory:')
+          value = con.execute("SELECT TIMESTAMPTZ '2022-08-03 16:27:49+00'").fetchone()[0]
+          assert isinstance(value, datetime), type(value)
+          assert value.tzinfo is not None, value
+          assert value.isoformat() == '2022-08-03T16:27:49+00:00', value.isoformat()
+          con.close()
+          print('duckdb', duckdb.__version__, 'pytz', pytz.__version__, 'timestamptz', value.isoformat())
+          PY
+          rm -rf runtime/smoke-venv
+
+      - name: Upload offline runtime pack
+        uses: actions/upload-artifact@v4
+        with:
+          name: longcycle-duckdb-offline-runtime-py313-v2
+          if-no-files-found: error
+          retention-days: 30
+          path: runtime/
+
+      - name: Comment runtime manifest
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          {
+            echo '# Longcycle DuckDB offline replay runtime py313 v2'
+            echo
+            echo "- workflow run: \`$RUN_ID\`"
+            echo
+            echo '```json'
+            cat runtime/manifest.json
+            echo '```'
+          } > runtime/report.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file runtime/report.md

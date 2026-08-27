@@ -1,0 +1,59 @@
+name: Tianqi archive probe observer
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+jobs:
+  observe:
+    if: github.event.issue.title == '[longcycle-tianqi-wayback-probe-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - name: Announce event receipt
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" \
+            --body "TIANQI_WAYBACK_EVENT_RECEIVED observer_run=${GITHUB_RUN_ID}"
+
+      - name: Find and follow archive probe run
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          run_id=''
+          for _ in $(seq 1 30); do
+            run_id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow tianqi-wayback-probe.yml --event issues --limit 10 --json databaseId,createdAt --jq 'sort_by(.createdAt) | reverse | .[0].databaseId // empty')"
+            [ -n "$run_id" ] && break
+            sleep 2
+          done
+          if [ -z "$run_id" ]; then
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body 'TIANQI_WAYBACK_RUN_NOT_FOUND'
+            exit 1
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "TIANQI_WAYBACK_RUN_FOUND run_id=${run_id}"
+          for _ in $(seq 1 180); do
+            status="$(gh run view "$run_id" --repo "$GITHUB_REPOSITORY" --json status --jq .status)"
+            [ "$status" = completed ] && break
+            sleep 3
+          done
+          conclusion="$(gh run view "$run_id" --repo "$GITHUB_REPOSITORY" --json conclusion --jq .conclusion)"
+          if [ "$conclusion" != success ]; then
+            gh run view "$run_id" --repo "$GITHUB_REPOSITORY" --log-failed > failed.log 2>&1 || true
+            tail -c 12000 failed.log > failed-tail.txt || true
+            { echo "TIANQI_WAYBACK_FAILED run_id=${run_id} conclusion=${conclusion}"; echo '```text'; cat failed-tail.txt; echo '```'; } > observer.md
+            gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file observer.md
+            exit 1
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "TIANQI_WAYBACK_SUCCESS run_id=${run_id}"

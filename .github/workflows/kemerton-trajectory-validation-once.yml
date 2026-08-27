@@ -1,0 +1,379 @@
+name: One-shot Kemerton researcher trajectory validation
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+jobs:
+  validate:
+    if: >-
+      github.event.issue.title == '[longcycle-kemerton-trajectory-validation-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SOURCE_RUN_ID: '32552206834'
+      SOURCE_ARTIFACT_ID: '9470379980'
+      SOURCE_OUTER_SHA256: 'f3a039bbe2a38df2e9fc2f6c4ea2a2d89447917f8e9d6f3f68242c4719617448'
+      LEGACY_DUCKDB_SHA256: 'f3d110b03a07c9ed0c57345a9051b59a9149ce6544ab347171e26999844b84e2'
+      KEMERTON_I_SUBJECT_ID: 'ba9bcc13-482f-548d-a450-9d9089012778'
+      JUDGMENT_ID: 'e80323e7-d19f-5d81-adab-4dea6ed6750f'
+      REALITY_ID: 'ad8f9725-6a36-5ae7-a4e1-4bbb0882c366'
+      OUTCOME_ID: '7cb59398-78cd-566f-918c-ecda17b1b2e6'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Resolve immutable implementation head
+        id: resolve
+        shell: bash
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          head_sha="$(printf '%s\n' "$ISSUE_BODY" | sed -nE 's/^head=([0-9a-f]{40})$/\1/p' | head -n1)"
+          test -n "$head_sha" || { echo 'missing exact head=<40 lowercase hex> line' >&2; exit 2; }
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.head_sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install current implementation
+        run: python -m pip install -e '.[duckdb]'
+
+      - name: Download historical integrated generation
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          artifact-ids: ${{ env.SOURCE_ARTIFACT_ID }}
+          path: /tmp/kemerton-source
+
+      - name: Verify historical prototype identity
+        id: restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$(find /tmp/kemerton-source -type f -name 'kemerton-integrated.duckdb' -printf '%h\n' -quit)"
+          test -n "$root"
+          legacy_db="$root/kemerton-integrated.duckdb"
+          actual="$(sha256sum "$legacy_db" | awk '{print $1}')"
+          echo "legacy_duckdb_sha256=$actual"
+          test "$actual" = "$LEGACY_DUCKDB_SHA256"
+          for name in judgment-persistence.json reality-execution.json outcome-execution.json integrated-export.json; do
+            test -f "$root/$name"
+          done
+          echo "root=$root" >> "$GITHUB_OUTPUT"
+
+      - name: Deterministically upgrade generated execution state to current typed seal
+        id: upgrade
+        shell: bash
+        env:
+          SOURCE_ROOT: ${{ steps.restore.outputs.root }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/kemerton-clean
+          python - <<'PY'
+          from __future__ import annotations
+
+          import json
+          import os
+          from datetime import datetime
+          from decimal import Decimal
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.duckdb_epistemic import seal_industrial_memory
+          from longcycle.domain.epistemic import (
+              CanonicalRealityRecord,
+              IndustrialMemoryTimeline,
+              JudgmentMemoryRecord,
+              MemorySubjectRef,
+              OutcomeMemoryRecord,
+              TemporalExtent,
+          )
+
+          def dt(value: str | None) -> datetime | None:
+              if value is None:
+                  return None
+              return datetime.fromisoformat(value.replace('Z', '+00:00'))
+
+          source = Path(os.environ['SOURCE_ROOT'])
+          clean = Path('/tmp/kemerton-clean')
+          judgments_payload = json.loads((source / 'judgment-persistence.json').read_text())
+          reality_payload = json.loads((source / 'reality-execution.json').read_text())
+          outcome_payload = json.loads((source / 'outcome-execution.json').read_text())
+          export_payload = json.loads((source / 'integrated-export.json').read_text())
+
+          judgment_row = next(
+              row for row in judgments_payload['judgments']
+              if row['id'] == os.environ['JUDGMENT_ID']
+          )
+          canonical = next(
+              row for row in reality_payload['canonical_reality']
+              if row['id'] == os.environ['REALITY_ID']
+          )
+          fact_bundle = next(
+              row for row in reality_payload['facts']
+              if row['fact']['entity_id'] == os.environ['KEMERTON_I_SUBJECT_ID']
+          )
+          fact = fact_bundle['fact']
+          outcome_row = outcome_payload['evaluation']
+          assert outcome_row['id'] == os.environ['OUTCOME_ID']
+          assert outcome_row['judgment_id'] == judgment_row['id']
+          assert outcome_row['canonical_fact_version_id'] == canonical['id']
+
+          subject = MemorySubjectRef(entity_id=UUID(os.environ['KEMERTON_I_SUBJECT_ID']))
+          judgment = JudgmentMemoryRecord(
+              judgment_id=UUID(judgment_row['id']),
+              judgment_key=judgment_row['metadata']['judgment_key'],
+              subject=subject,
+              speaker_name_text=judgment_row['speaker_name_text'],
+              topic_code=judgment_row['topic_code'],
+              judgment_kind=judgment_row['judgment_kind'],
+              target_time=TemporalExtent(
+                  kind=judgment_row['target_time_kind'],
+                  at=dt(judgment_row['target_at']),
+                  start=dt(judgment_row['target_from']),
+                  end=dt(judgment_row['target_to']),
+                  precision=judgment_row['target_precision'],
+                  source_text=judgment_row['target_text'],
+              ),
+              value_kind=judgment_row['value_kind'],
+              value_text=judgment_row['value_text'],
+              value_payload=(
+                  json.dumps(judgment_row['value_json'], sort_keys=True)
+                  if judgment_row.get('value_json') is not None
+                  else None
+              ),
+              summary=judgment_row['summary'],
+              known_at=dt(judgment_row['first_known_at']),
+              evidence_fragment_ids=tuple(
+                  UUID(item['evidence_fragment_id']) for item in judgment_row['evidence']
+              ),
+          )
+          reality = CanonicalRealityRecord(
+              canonical_fact_version_id=UUID(canonical['id']),
+              subject=subject,
+              predicate_code=canonical['predicate_code'],
+              value_kind=canonical['value_kind'],
+              value_text=canonical['value_text'],
+              value_payload=None,
+              unit_code=None,
+              valid_time=TemporalExtent(
+                  kind=fact['valid_time_kind'],
+                  start=dt(canonical['valid_from']),
+                  end=dt(canonical['valid_to']),
+                  precision=canonical['valid_time_precision'],
+                  source_text=canonical['valid_time_text'],
+              ),
+              observed_time=None,
+              known_at=dt(canonical['market_known_at']),
+              confidence=float(canonical['confidence']),
+              publication_status=canonical['publication_status'],
+              evidence_fragment_ids=(UUID(fact['evidence_fragment_id']),),
+          )
+          outcome = OutcomeMemoryRecord(
+              evaluation_id=UUID(outcome_row['id']),
+              judgment_id=UUID(outcome_row['judgment_id']),
+              subject=subject,
+              canonical_fact_version_id=UUID(outcome_row['canonical_fact_version_id']),
+              outcome_evidence_fragment_id=UUID(outcome_row['outcome_evidence_fragment_id']),
+              evaluation_status=outcome_row['evaluation_status'],
+              semantic_relation='direct_match',
+              occurrence_time=TemporalExtent(
+                  kind='period',
+                  start=dt(outcome_row['outcome_from']),
+                  end=dt(outcome_row['outcome_to']),
+                  precision=outcome_row['outcome_precision'],
+                  source_text=outcome_row['outcome_text'],
+              ),
+              known_at=dt(outcome_row['outcome_first_known_at']),
+              timing_relation=outcome_row['timing_relation'],
+              timing_delta_value=Decimal(str(outcome_row['timing_delta_value'])),
+              timing_delta_unit=outcome_row['timing_delta_unit'],
+              explanation=outcome_row['explanation'],
+              evaluator_name=outcome_row['evaluator_name'],
+              evaluator_version=outcome_row['evaluator_version'],
+          )
+          timeline = IndustrialMemoryTimeline(
+              reality=(reality,),
+              judgments=(judgment,),
+              outcomes=(outcome,),
+          )
+          sealed_path = clean / 'kemerton-sealed-memory.duckdb'
+          sealed_manifest = seal_industrial_memory(sealed_path, timeline)
+          upgrade_manifest = {
+              'schema_version': 'longcycle-kemerton-prototype-upgrade/v1',
+              'status': 'pass',
+              'legacy_prototype': {
+                  'schema_version': export_payload['schema_version'],
+                  'file_sha256': export_payload['file_sha256'],
+                  'file_bytes': export_payload['file_bytes'],
+                  'immutable': True,
+              },
+              'upgrade_inputs': {
+                  'judgment_execution': 'judgment-persistence.json',
+                  'reality_execution': 'reality-execution.json',
+                  'outcome_execution': 'outcome-execution.json',
+                  'external_source_bytes_copied': False,
+              },
+              'semantic_mappings': {
+                  'semantic_relation': {
+                      'value': 'direct_match',
+                      'basis': 'migration_0023_backfill_default_and_direct_realized_timing_contract',
+                  },
+                  'reality_observed_time': {
+                      'value': None,
+                      'basis': 'historical generated Reality execution carried no observed_at value',
+                  },
+              },
+              'sealed_generation': sealed_manifest,
+          }
+          (clean / 'upgrade-manifest.json').write_text(
+              json.dumps(upgrade_manifest, indent=2) + '\n', encoding='utf-8'
+          )
+          print(json.dumps(upgrade_manifest))
+          PY
+          sealed_sha="$(sha256sum /tmp/kemerton-clean/kemerton-sealed-memory.duckdb | awk '{print $1}')"
+          echo "sealed_sha=$sealed_sha" >> "$GITHUB_OUTPUT"
+
+      - name: Replay direct-match historical cutoffs through current CAP-0005
+        shell: bash
+        run: |
+          set -euo pipefail
+          db=/tmp/kemerton-clean/kemerton-sealed-memory.duckdb
+          longcycle --json research replay "$db" '2022-08-03T16:27:48Z' --subject-id "$KEMERTON_I_SUBJECT_ID" > /tmp/kemerton-clean/replay-before-outcome.json
+          longcycle --json research replay "$db" '2022-08-03T16:27:49Z' --subject-id "$KEMERTON_I_SUBJECT_ID" > /tmp/kemerton-clean/replay-at-outcome.json
+
+      - name: Assert direct Outcome chronology and build clean receipt
+        id: assert
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from decimal import Decimal
+          from pathlib import Path
+
+          root = Path('/tmp/kemerton-clean')
+          before = json.loads((root/'replay-before-outcome.json').read_text())['result']
+          at = json.loads((root/'replay-at-outcome.json').read_text())['result']
+          upgrade = json.loads((root/'upgrade-manifest.json').read_text())
+
+          assert before['counts']['judgments'] == 1, before['counts']
+          assert before['counts']['reality'] == 0, before['counts']
+          assert before['counts']['outcomes'] == 0, before['counts']
+          assert len(before['entries']) == 1
+          judgment = before['entries'][0]
+          assert judgment['layer'] == 'judgment'
+          assert judgment['historical_time_role'] == 'target_time'
+          assert judgment['historical_time']['source_text'] == 'May 2022'
+          assert judgment['known_at'] == '2022-05-04T16:48:41+00:00'
+          assert judgment['evidence_fragment_ids'] == ['bd4af911-afdd-5294-afc3-525ec35af189']
+
+          assert at['counts']['judgments'] == 1, at['counts']
+          assert at['counts']['reality'] == 1, at['counts']
+          assert at['counts']['outcomes'] == 1, at['counts']
+          judgments = [e for e in at['entries'] if e['layer'] == 'judgment']
+          realities = [e for e in at['entries'] if e['layer'] == 'reality']
+          outcomes = [e for e in at['entries'] if e['layer'] == 'outcome']
+          assert len(judgments) == len(realities) == len(outcomes) == 1
+          assert judgments[0]['entry_id'] == judgment['entry_id']
+          assert judgments[0]['headline'] == judgment['headline']
+          assert realities[0]['predicate_code'] == 'project.first_product_status'
+          assert realities[0]['historical_time']['source_text'] == 'July 2022'
+          assert realities[0]['known_at'] == '2022-08-03T16:27:49+00:00'
+          assert realities[0]['evidence_fragment_ids'] == ['9058328a-e321-5bd5-9cc6-38a4cba5b22b']
+          assert outcomes[0]['evaluation_status'] == 'realized'
+          assert outcomes[0]['semantic_relation'] == 'direct_match'
+          assert outcomes[0]['timing_relation'] == 'after_target_window'
+          assert Decimal(outcomes[0]['timing_delta_value']) == Decimal('2')
+          assert outcomes[0]['timing_delta_unit'] == 'calendar_months'
+          assert outcomes[0]['links']['judgment_entry_id'] == judgment['entry_id']
+          assert outcomes[0]['links']['reality_entry_id'] == realities[0]['entry_id']
+          assert outcomes[0]['outcome_evidence_fragment_id'] == '9058328a-e321-5bd5-9cc6-38a4cba5b22b'
+
+          for payload in (before, at):
+              assert payload['boundary']['ordered_by_knowledge_time'] is True
+              assert payload['boundary']['historical_time_kept_separate_from_known_at'] is True
+              assert payload['boundary']['source_temporal_precision_preserved'] is True
+              assert payload['boundary']['evidence_references_preserved'] is True
+              assert payload['boundary']['judgment_not_rewritten_by_outcome'] is True
+              assert payload['boundary']['no_new_epistemic_records_created'] is True
+
+          receipt = {
+              'schema_version': 'longcycle-kemerton-researcher-trajectory-validation/v1',
+              'status': 'pass',
+              'implementation_head_sha': '${{ steps.resolve.outputs.head_sha }}',
+              'source_generation': {
+                  'workflow_run_id': int('${{ env.SOURCE_RUN_ID }}'),
+                  'artifact_id': int('${{ env.SOURCE_ARTIFACT_ID }}'),
+                  'artifact_digest': 'sha256:${{ env.SOURCE_OUTER_SHA256 }}',
+                  'legacy_prototype_duckdb_sha256': '${{ env.LEGACY_DUCKDB_SHA256 }}',
+                  'source_artifact_contains_external_source_bytes': True,
+              },
+              'deterministic_upgrade': {
+                  'required': True,
+                  'reason': 'historical pre-sealed timeline prototype lacks current typed Reality grounding columns and is not promoted to a permanent reader format',
+                  'sealed_duckdb_sha256': '${{ steps.upgrade.outputs.sealed_sha }}',
+                  'legacy_bytes_mutated': False,
+                  'external_source_bytes_copied': False,
+                  'semantic_relation_backfill': upgrade['semantic_mappings']['semantic_relation'],
+              },
+              'subject_id': '${{ env.KEMERTON_I_SUBJECT_ID }}',
+              'cutoffs': [
+                  {'cutoff':'2022-08-03T16:27:48Z','counts':before['counts']},
+                  {'cutoff':'2022-08-03T16:27:49Z','counts':at['counts']},
+              ],
+              'direct_outcome': {
+                  'evaluation_status': outcomes[0]['evaluation_status'],
+                  'semantic_relation': outcomes[0]['semantic_relation'],
+                  'timing_relation': outcomes[0]['timing_relation'],
+                  'timing_delta_value': outcomes[0]['timing_delta_value'],
+                  'timing_delta_unit': outcomes[0]['timing_delta_unit'],
+              },
+              'assertions': {
+                  'outcome_absent_one_second_before_known_time': True,
+                  'original_judgment_entry_identity_preserved_after_outcome': True,
+                  'direct_reality_and_outcome_appear_when_known': True,
+                  'month_precision_preserved_without_fake_day_delay': True,
+                  'evidence_grounding_preserved_through_upgrade': True,
+                  'trajectory_is_read_only_presentation_over_cap_0005': True,
+                  'clean_capsule_excludes_external_source_bytes': True,
+              },
+          }
+          (root/'validation-receipt.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt))
+          PY
+
+      - name: Upload generated-only clean capsule
+        uses: actions/upload-artifact@v4
+        with:
+          name: kemerton-researcher-trajectory-${{ github.run_id }}
+          path: /tmp/kemerton-clean
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Report validation
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ASSERT_OUTCOME: ${{ steps.assert.outcome }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          body=$(printf 'KEMERTON_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nThe historical pre-sealed prototype is integrity-verified but not promoted as a current reader format because it lacks typed Reality grounding. Generated execution JSON is deterministically upgraded into a current sealed CAP-0005 generation; the clean uploaded capsule excludes archived source bytes.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

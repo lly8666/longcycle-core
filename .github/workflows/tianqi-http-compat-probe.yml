@@ -1,0 +1,61 @@
+name: Tianqi HTTP compatibility probe
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  probe:
+    if: github.event.issue.title == '[longcycle-tianqi-http-compat-v1]'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Probe exact first-party URLs with bounded client profiles
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://en.tianqilithium.com/content/details17_41.html'
+            'https://en.tianqilithium.com/content/details17_991.html'
+            'https://en.tianqilithium.com/content/details17_259.html'
+          )
+          uas=(
+            'LongcycleCollector/0.1'
+            'curl/8.5.0'
+            'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36 Longcycle/0.1'
+          )
+          : > report.md
+          echo '# Tianqi HTTP compatibility probe' >> report.md
+          echo >> report.md
+          for url in "${urls[@]}"; do
+            echo "## ${url}" >> report.md
+            echo >> report.md
+            for ua in "${uas[@]}"; do
+              body="$(mktemp)"; headers="$(mktemp)"
+              set +e
+              code="$(curl -sS -L --max-redirs 5 --connect-timeout 15 --max-time 30 -A "$ua" -D "$headers" -o "$body" -w '%{http_code}' "$url")"
+              rc=$?
+              set -e
+              bytes="$(wc -c < "$body")"
+              digest="$(sha256sum "$body" | awk '{print $1}')"
+              ctype="$(awk -F': ' 'tolower($1)=="content-type" {v=$2} END {gsub("\r", "", v); print v}' "$headers")"
+              title="$(python - "$body" <<'PY'
+          import re,sys
+          b=open(sys.argv[1],'rb').read().decode('utf-8','replace')
+          m=re.search(r'<title[^>]*>(.*?)</title>',b,re.I|re.S)
+          print(re.sub(r'\s+',' ',m.group(1)).strip()[:180] if m else '')
+          PY
+              )"
+              printf -- '- ua=`%s` rc=%s status=%s bytes=%s sha256=`%s` content-type=`%s` title=`%s`\n' "$ua" "$rc" "$code" "$bytes" "$digest" "$ctype" "$title" >> report.md
+              rm -f "$body" "$headers"
+            done
+            echo >> report.md
+          done
+          cat report.md
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file report.md

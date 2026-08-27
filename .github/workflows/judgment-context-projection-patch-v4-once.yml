@@ -1,0 +1,125 @@
+name: Patch grounded Judgment context projection v4 once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 762971853e44c375124bb616a33de3a2ac73f282
+
+jobs:
+  patch:
+    if: github.event.issue.title == '[longcycle-judgment-context-projection-v4]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Rehydrate bounded implementation without indentation assumptions
+        id: apply
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/context-projection.log) 2>&1
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          python - <<'PY'
+          import urllib.request
+          from pathlib import Path
+
+          url = 'https://raw.githubusercontent.com/lly8666/longcycle-core/main/.github/workflows/judgment-context-projection-patch-once.yml'
+          raw = urllib.request.urlopen(url, timeout=30).read().decode('utf-8')
+          workflow_lines = raw.splitlines()
+          targets = [
+              'src/longcycle/application/judgment_context_projection.py',
+              'scripts/execute_grounded_judgment_context.py',
+              'tests/test_judgment_context_projection.py',
+          ]
+          for target in targets:
+              marker = f"cat > {target} <<'PY'"
+              start = next(i for i, line in enumerate(workflow_lines) if line.strip() == marker) + 1
+              end = next(i for i in range(start, len(workflow_lines)) if workflow_lines[i].strip() == 'PY')
+              source_lines = [
+                  line[10:] if line.startswith('          ') else line
+                  for line in workflow_lines[start:end]
+              ]
+              if target.endswith('judgment_context_projection.py'):
+                  in_relation_block = False
+                  saw_relation_loop = False
+                  for index, line in enumerate(source_lines):
+                      stripped = line.strip()
+                      indent = line[: len(line) - len(line.lstrip())]
+                      if stripped == 'for item in spec.relations:':
+                          source_lines[index] = indent + 'for relation_item in spec.relations:'
+                          in_relation_block = True
+                          saw_relation_loop = True
+                          continue
+                      if in_relation_block and stripped == 'return tuple(rationales), tuple(relations)':
+                          in_relation_block = False
+                      if in_relation_block:
+                          source_lines[index] = line.replace('item.', 'relation_item.')
+                  if not saw_relation_loop:
+                      raise SystemExit('relation loop anchor not found after whitespace normalization')
+              path = Path(target)
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text('\n'.join(source_lines) + '\n', encoding='utf-8')
+          print('JUDGMENT_CONTEXT_PROJECTION_V4_REHYDRATED')
+          PY
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          python -m compileall -q src scripts tests
+          mypy src
+          pytest -q tests/test_judgment_context_projection.py tests/test_judgment_projection.py tests/test_epistemic_memory.py
+          pytest -q
+          git diff --check
+
+      - name: Commit and push only on green gate
+        id: push
+        if: steps.apply.outcome == 'success'
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name longcycle-judgment-context-projection
+          git config user.email actions@users.noreply.github.com
+          changed="$(git diff --name-only | sort)"
+          expected=$(printf '%s\n' \
+            scripts/execute_grounded_judgment_context.py \
+            src/longcycle/application/judgment_context_projection.py \
+            tests/test_judgment_context_projection.py | sort)
+          test "$changed" = "$expected"
+          git add src/longcycle/application/judgment_context_projection.py \
+            scripts/execute_grounded_judgment_context.py \
+            tests/test_judgment_context_projection.py
+          git commit -m 'feat: project grounded judgment context'
+          git push origin HEAD:${ACTIVE_REF}
+          git rev-parse HEAD | tee /tmp/context-projection-sha.txt
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          APPLY_OUTCOME: ${{ steps.apply.outcome }}
+          PUSH_OUTCOME: ${{ steps.push.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$APPLY_OUTCOME" == success && "$PUSH_OUTCOME" == success ]]; then
+            sha="$(cat /tmp/context-projection-sha.txt)"
+            body="JUDGMENT_CONTEXT_PROJECTION_PASS pushed_sha=$sha run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 260 /tmp/context-projection.log 2>/dev/null || true)"
+            body=$(printf 'JUDGMENT_CONTEXT_PROJECTION_FAIL apply=%s push=%s run_id=%s\n\n```text\n%s\n```' "$APPLY_OUTCOME" "$PUSH_OUTCOME" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

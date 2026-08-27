@@ -1,0 +1,214 @@
+name: Verify state-as-of Reality once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_SHA: a25120ab8706f5359b4da5e7ff89dea77d8942d4
+  LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+  LONGCYCLE_BLOB_BACKEND: filesystem
+  LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+  TASK_ROOT: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks
+  KWINANA_SUBJECT_ID: 02c2e600-9be2-5c09-95ab-b532249df05b
+
+jobs:
+  verify:
+    if: github.event.issue.title == '[longcycle-state-as-of-verify-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Verify fixed active SHA and run hard gates
+        id: verify
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/state-as-of-verify.log) 2>&1
+          actual_sha="$(git rev-parse HEAD)"
+          test "$actual_sha" = "$EXPECTED_SHA"
+          python -m pip install -e '.[dev,postgres,s3,duckdb]'
+          python scripts/repair_memory.py audit
+          longcycle --json db upgrade
+          longcycle --json doctor --check-database
+          python scripts/smoke_postgres_repository.py
+          python scripts/smoke_postgres_judgments.py
+          python scripts/smoke_postgres_reality.py
+          python scripts/smoke_postgres_epistemic.py
+          python scripts/smoke_no_lookahead_replay.py
+          python scripts/smoke_no_lookahead_judgment_replay.py
+          mypy src
+          pytest -q
+          python scripts/build_memory_compact_indexes.py \
+            research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol \
+            .artifacts/memory-compact-indexes
+          python scripts/audit_memory_history.py \
+            research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol \
+            .artifacts/memory-history-audit.json
+
+          mkdir -p probe
+          python scripts/execute_grounded_evidence_spec.py \
+            "$TASK_ROOT/EVT-001-kwinana-evidence-spec-v1.json" \
+            --output probe/kwinana-evidence-execution.json
+          python scripts/execute_grounded_judgment_persistence.py \
+            "$TASK_ROOT/EVT-001-kwinana-judgment-projection-v2.json" \
+            probe/kwinana-evidence-execution.json \
+            --output probe/kwinana-judgments.json
+          python scripts/execute_grounded_reality_projection.py \
+            "$TASK_ROOT/EVT-001-kwinana-reality-projection-v1.json" \
+            probe/kwinana-evidence-execution.json \
+            --output probe/kwinana-commercial-reality.json
+          python scripts/execute_grounded_reality_projection.py \
+            "$TASK_ROOT/EVT-001-kwinana-state-as-of-reality-v1.json" \
+            probe/kwinana-evidence-execution.json \
+            --output probe/kwinana-state-as-of-reality.json
+          python scripts/execute_grounded_outcome_evaluation.py \
+            probe/kwinana-judgments.json \
+            probe/kwinana-commercial-reality.json \
+            --judgment-key 2021-full-line-operation-by-year-end \
+            --reality-fact-key 2022-train1-commercial-production-capability \
+            --semantic-relation related_milestone \
+            --output probe/kwinana-related-outcome.json
+          python scripts/export_integrated_replay_duckdb.py \
+            probe/kwinana-state-as-of-memory.duckdb \
+            --subject-id "$KWINANA_SUBJECT_ID" \
+            --manifest-output probe/kwinana-state-as-of-memory-manifest.json
+
+          python - <<'PY'
+          import asyncio
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from uuid import UUID
+
+          from longcycle.adapters.storage.duckdb_epistemic import DuckDBEpistemicMemoryReader
+          from longcycle.domain.epistemic import MemorySubjectRef
+          from longcycle.domain.enums import OutcomeSemanticRelation, TemporalPrecision
+
+          subject = MemorySubjectRef(
+              entity_id=UUID('02c2e600-9be2-5c09-95ab-b532249df05b')
+          )
+          reader = DuckDBEpistemicMemoryReader(
+              Path('probe/kwinana-state-as-of-memory.duckdb')
+          )
+
+          def dt(value: str) -> datetime:
+              return datetime.fromisoformat(value.replace('Z', '+00:00'))
+
+          async def load(value: str):
+              return await reader.snapshot((subject,), knowledge_cutoff=dt(value))
+
+          before_2022 = asyncio.run(load('2021-12-31T23:59:59Z'))
+          pre_disclosure = asyncio.run(load('2022-12-02T23:59:59Z'))
+          disclosed = asyncio.run(load('2022-12-03T23:59:59Z'))
+
+          assert (len(before_2022.reality), len(before_2022.judgments), len(before_2022.outcomes)) == (0, 4, 0)
+          assert (len(pre_disclosure.reality), len(pre_disclosure.judgments), len(pre_disclosure.outcomes)) == (0, 4, 0)
+          assert (len(disclosed.reality), len(disclosed.judgments), len(disclosed.outcomes)) == (2, 5, 1)
+
+          reality = {item.predicate_code: item for item in disclosed.reality}
+          commercial = reality['project.commercial_production_capability']
+          state_as_of = reality['project.continuous_production_capability']
+
+          assert commercial.valid_time.kind == 'period'
+          assert commercial.valid_time.start == dt('2022-11-30T00:00:00Z')
+          assert commercial.known_at == dt('2022-12-03T23:59:59Z')
+
+          assert state_as_of.valid_time.kind == 'unknown'
+          assert state_as_of.valid_time.start is None
+          assert state_as_of.valid_time.end is None
+          assert state_as_of.valid_time.precision == TemporalPrecision.UNKNOWN
+          assert state_as_of.observed_time is not None
+          assert state_as_of.observed_time.kind == 'instant'
+          assert state_as_of.observed_time.at == dt('2022-12-03T00:00:00Z')
+          assert state_as_of.observed_time.precision == TemporalPrecision.DAY
+          assert state_as_of.observed_time.source_text == 'as of 2022-12-03'
+          assert state_as_of.known_at == dt('2022-12-03T23:59:59Z')
+
+          outcome = disclosed.outcomes[0]
+          assert outcome.semantic_relation == OutcomeSemanticRelation.RELATED_MILESTONE
+          assert outcome.evaluation_status == 'indeterminate'
+          assert outcome.timing_relation == 'not_comparable'
+          assert outcome.timing_delta_value is None
+          assert outcome.timing_delta_unit is None
+
+          proof = {
+              'schema_version': 'longcycle-kwinana-state-as-of-replay-proof/v1',
+              'active_sha': 'a25120ab8706f5359b4da5e7ff89dea77d8942d4',
+              'counts': {
+                  'before_2022': [len(before_2022.reality), len(before_2022.judgments), len(before_2022.outcomes)],
+                  'pre_disclosure': [len(pre_disclosure.reality), len(pre_disclosure.judgments), len(pre_disclosure.outcomes)],
+                  'disclosed': [len(disclosed.reality), len(disclosed.judgments), len(disclosed.outcomes)],
+              },
+              'verification': {
+                  'unknown_onset_has_no_valid_bounds': True,
+                  'observation_day_precision_preserved': True,
+                  'known_time_remains_separate': True,
+                  'no_lookahead_before_disclosure': True,
+                  'existing_commercial_reality_unchanged': True,
+                  'existing_related_outcome_unchanged': True,
+                  'typed_duckdb_round_trip': True,
+              },
+          }
+          Path('probe/kwinana-state-as-of-replay-proof.json').write_text(
+              json.dumps(proof, ensure_ascii=False, indent=2) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(proof, indent=2))
+          PY
+
+          git diff --exit-code -- \
+            research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind/UP-CHEMICALS
+          sha256sum \
+            probe/kwinana-evidence-execution.json \
+            probe/kwinana-commercial-reality.json \
+            probe/kwinana-state-as-of-reality.json \
+            probe/kwinana-related-outcome.json \
+            probe/kwinana-state-as-of-memory.duckdb \
+            probe/kwinana-state-as-of-replay-proof.json \
+            | tee probe/SHA256SUMS.txt
+
+      - name: Report actual result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$VERIFY_OUTCOME" == success ]]; then
+            body="STATE_AS_OF_VERIFY_PASS sha=$EXPECTED_SHA run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 240 /tmp/state-as-of-verify.log 2>/dev/null || true)"
+            body=$(printf 'STATE_AS_OF_VERIFY_FAIL sha=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_SHA" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

@@ -1,0 +1,158 @@
+name: Acquire ADC SV-002 Rova-T sources once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: a2716ae7e6ba4b94c0764227191cacaefa5ccb82
+  RELEASE_TAG: longcycle-dev-binary-cache
+  TRIGGER_TITLE: '[longcycle-adc-sv002-rova-t-acquire-v1]'
+
+jobs:
+  acquire:
+    if: github.event.issue.title == '[longcycle-adc-sv002-rova-t-acquire-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Ensure PDF text extraction support
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v pdftotext >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y poppler-utils
+          fi
+
+      - name: Acquire and semantically verify SV-002 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p acquired
+          python - <<'PY'
+          import hashlib, json, re, subprocess, urllib.parse, urllib.request
+          from html import unescape
+          from pathlib import Path
+
+          UA='Mozilla/5.0 (compatible; LongcycleCollector/0.2; +https://github.com/lly8666/longcycle-core)'
+          ITEMS=[
+            {
+              'key':'abbvie-stemcentrx-acquisition-2016-04-28','format':'html',
+              'url':'https://news.abbvie.com/2016-04-28-AbbVie-to-Expand-Oncology-Presence-Through-Acquisition-of-Stemcentrx-and-its-Novel-Late-Stage-Rova-T-Compound-for-Small-Cell-Lung-Cancer',
+              'retrieval_role':'primary_self_statement','upstream_system':'AbbVie issuer press release','upstream_external_id':'2016-04-28-stemcentrx-acquisition','upstream_published_date':'2016-04-28',
+              'required_phrases':['multi-billion dollar peak revenue opportunity','overall response rates of 44 percent','approximately $5.8 billion']
+            },
+            {
+              'key':'abbvie-tahoe-halt-2018-12-05','format':'html',
+              'url':'https://news.abbvie.com/2018-12-05-Phase-3-Trial-of-Rova-T-as-Second-line-Therapy-for-Advanced-Small-Cell-Lung-Cancer-TAHOE-STUDY-Halted',
+              'retrieval_role':'primary_self_statement','upstream_system':'AbbVie issuer press release','upstream_external_id':'2018-12-05-tahoe-halt','upstream_published_date':'2018-12-05',
+              'required_phrases':['decision to stop enrollment for the TAHOE trial','shorter overall survival in the Rova-T arm compared with the topotecan control arm']
+            },
+            {
+              'key':'abbvie-stemcentrx-impairment-8k-2019-01-04','format':'pdf',
+              'url':'https://investors.abbvie.com/static-files/2916bd57-fa61-4f34-804c-72e8313b8b29',
+              'retrieval_role':'authoritative_redistributor','upstream_system':'SEC EDGAR / AbbVie Form 8-K','upstream_external_id':'2019-01-04-item-2.06-stemcentrx-impairment','upstream_published_date':'2019-01-04',
+              'required_phrases':['Item 2.06. Material Impairments','estimated net impact of this impairment and the related adjustment to contingent consideration liabilities is approximately $4 billion','remaining $1 billion of intangible assets']
+            },
+            {
+              'key':'abbvie-rova-t-meru-termination-2019-08-29','format':'html',
+              'url':'https://news.abbvie.com/2019-08-29-AbbVie-Discontinues-Rovalpituzumab-Tesirine-Rova-T-Research-and-Development-Program',
+              'retrieval_role':'primary_self_statement','upstream_system':'AbbVie issuer press release','upstream_external_id':'2019-08-29-rova-t-termination','upstream_published_date':'2019-08-29',
+              'required_phrases':['demonstrated no survival benefit at a pre-planned interim analysis','Rova-T research and development program has been terminated']
+            },
+            {
+              'key':'abbvie-2019-10k-stemcentrx-impairments','format':'pdf',
+              'url':'https://investors.abbvie.com/static-files/71f9318f-9a32-42ee-92ee-a34975edcd19',
+              'retrieval_role':'authoritative_redistributor','upstream_system':'SEC EDGAR / AbbVie 2019 Form 10-K','upstream_external_id':'abbvie-2019-form-10-k','upstream_published_date':'2020-02-21',
+              'required_phrases':['recorded a $1.0 billion intangible asset impairment charge','recorded a $5.1 billion intangible asset impairment charge','decision to terminate the Rova-T R&D program']
+            }
+          ]
+
+          def fetch(url):
+            req=urllib.request.Request(url,headers={'User-Agent':UA,'Accept':'application/pdf,text/html,application/xhtml+xml,*/*;q=0.8','Accept-Language':'en-US,en;q=0.8'})
+            with urllib.request.urlopen(req,timeout=120) as r:
+              return r.read(),r.geturl(),r.status,dict(r.headers.items())
+          def html_text(raw):
+            s=raw.decode('utf-8',errors='replace'); s=re.sub(r'(?is)<(script|style|noscript).*?>.*?</\\1>',' ',s)
+            return ' '.join(unescape(re.sub(r'<[^>]+>',' ',s)).split())
+          def pdf_text(raw,key):
+            if not raw.startswith(b'%PDF-'): raise ValueError('payload does not start with PDF signature')
+            p=Path('acquired')/f'{key}.pdf'; t=Path('acquired')/f'{key}-visible.txt'; p.write_bytes(raw)
+            subprocess.run(['pdftotext','-layout',str(p),str(t)],check=True)
+            return ' '.join(t.read_text(encoding='utf-8',errors='replace').split()),p,t
+
+          rows=[]
+          for item in ITEMS:
+            base={k:item[k] for k in ('key','url','retrieval_role','upstream_system','upstream_external_id','upstream_published_date')}
+            try:
+              raw,final,status,headers=fetch(item['url'])
+              if status!=200: raise ValueError(f'unexpected HTTP {status}')
+              if item['format']=='pdf': text,raw_path,text_path=pdf_text(raw,item['key'])
+              else:
+                text=html_text(raw); raw_path=Path('acquired')/f"{item['key']}.html"; raw_path.write_bytes(raw)
+                text_path=Path('acquired')/f"{item['key']}-visible.txt"; text_path.write_text(text,encoding='utf-8')
+              norm=text.casefold(); missing=[p for p in item['required_phrases'] if p.casefold() not in norm]
+              if missing: raise ValueError(f'semantic identity/claim phrases missing: {missing}')
+              rows.append({**base,'ok':True,'final_url':final,'retrieval_host':urllib.parse.urlparse(final).netloc,'status':status,'content_type':headers.get('Content-Type') or headers.get('content-type'),'archived_file':raw_path.name,'raw_sha256':hashlib.sha256(raw).hexdigest(),'raw_bytes':len(raw),'visible_text_file':text_path.name,'visible_text_sha256_acquisition_only':hashlib.sha256(text.encode()).hexdigest(),'verified_phrases':item['required_phrases']})
+            except Exception as exc: rows.append({**base,'ok':False,'error':f'{type(exc).__name__}: {exc}'})
+          payload={'schema_version':'longcycle-approved-source-acquisition/v2','task_id':'ADC-SV-002-ROVA-T','active_head_sha': 'a2716ae7e6ba4b94c0764227191cacaefa5ccb82','source_role':'candidate primary/authoritative payload acquisition for later claim-scoped Evidence recording','success_count':sum(r['ok'] for r in rows),'item_count':len(ITEMS),'rows':rows}
+          Path('acquired/acquisition.json').write_text(json.dumps(payload,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          print(json.dumps(payload,indent=2,ensure_ascii=False))
+          if payload['success_count']!=len(ITEMS): raise SystemExit('not all SV-002 sources passed')
+          PY
+
+      - name: Build deterministic immutable acquisition pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib,json,os,zipfile
+          from pathlib import Path
+          out=Path(f"longcycle-adc-sv002-rova-t-acquisition-v1-run{os.environ['GITHUB_RUN_ID']}.zip")
+          with zipfile.ZipFile(out,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as zf:
+            for p in sorted(Path('acquired').rglob('*')):
+              if p.is_file():
+                info=zipfile.ZipInfo(str(p.relative_to('acquired')),date_time=(2026,8,22,0,0,0)); info.compress_type=zipfile.ZIP_DEFLATED; info.external_attr=0o644<<16; zf.writestr(info,p.read_bytes())
+          d=hashlib.sha256(out.read_bytes()).hexdigest(); Path('release-asset.json').write_text(json.dumps({'file_name':out.name,'size_bytes':out.stat().st_size,'sha256':d},indent=2)+'\n')
+          print(Path('release-asset.json').read_text())
+          PY
+
+      - name: Upload to shared development Release and download-back verify
+        shell: bash
+        env: {GH_TOKEN: '${{ github.token }}'}
+        run: |
+          set -euo pipefail
+          name="$(python -c 'import json; print(json.load(open("release-asset.json"))["file_name"])')"; expected="$(python -c 'import json; print(json.load(open("release-asset.json"))["sha256"])')"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | grep -Fxq "$name"; then echo "refusing overwrite: $name" >&2; exit 1; fi
+          gh release upload "$RELEASE_TAG" "$name" --repo "$GITHUB_REPOSITORY"; mkdir -p verify; gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir verify
+          test "$(sha256sum "verify/$name" | awk '{print $1}')" = "$expected"
+
+      - name: Report acquisition result
+        if: always()
+        shell: bash
+        env: {GH_TOKEN: '${{ github.token }}', ISSUE_NUMBER: '${{ github.event.issue.number }}'}
+        run: |
+          set -euo pipefail
+          status=FAIL
+          if [[ -f acquired/acquisition.json ]] && python - <<'PY'
+          import json
+          p=json.load(open('acquired/acquisition.json')); raise SystemExit(0 if p.get('success_count')==p.get('item_count') else 1)
+          PY
+          then if [[ -f release-asset.json ]]; then status=PASS; fi; fi
+          body=$(printf 'ADC_SV002_ACQUIRE_%s head=%s run_id=%s release=%s\n\n```json\n%s\n%s\n```' "$status" "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$RELEASE_TAG" "$(cat acquired/acquisition.json 2>/dev/null || printf '{}')" "$(cat release-asset.json 2>/dev/null || printf '{}')")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

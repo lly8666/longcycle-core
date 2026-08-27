@@ -1,0 +1,109 @@
+name: Execute ADC SV-004 RC48 Reality once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: bba0e1637103bca1b65a059de85b9232adb822d1
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv004-rc48-acquisition-v2-run32582552363.zip
+  RELEASE_ASSET_SHA256: 51aa2655fef5e59ac7e26176b423d2e3e0f5b482c2f488c5d4fbc70dbf7b198a
+  EVIDENCE_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-004-grounded-evidence-spec-v1.json
+  REALITY_SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/replay/SV-004-reality-projection-v1.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-adc-sv004-rc48-reality-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_USER: longcycle, POSTGRES_PASSWORD: longcycle, POSTGRES_DB: longcycle}
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/adc-sv004-reality-blobs
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: '${{ env.EXPECTED_HEAD }}', fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Restore immutable source pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+      - name: Execute grounded Evidence then Reality projection
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/adc-sv004-reality.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$EVIDENCE_SPEC" --material-root material --output adc-sv004-evidence-execution.json
+          python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" adc-sv004-evidence-execution.json --output adc-sv004-reality-execution.json
+          python - <<'PY'
+          import json
+          e=json.load(open('adc-sv004-evidence-execution.json')); assert e['ok'] is True,e
+          r=json.load(open('adc-sv004-reality-execution.json'))
+          assert r['verification']['fact_count']==8,r
+          assert r['verification']['canonical_reality_count']==8,r
+          assert r['verification']['all_reconciled_accept'] is True,r
+          assert r['verification']['all_known_times_derived_from_grounded_evidence'] is True,r
+          rows={x['predicate_code']:x for x in r['canonical_reality']}
+          assert rows['regulatory.china_urothelial_approval']['valid_from'].startswith('2021-12-31'),rows['regulatory.china_urothelial_approval']
+          assert rows['regulatory.china_urothelial_approval']['market_known_at'].startswith('2023-11-23'),rows['regulatory.china_urothelial_approval']
+          assert rows['trial.lead_sponsor']['value_text']=='Seagen, a wholly owned subsidiary of Pfizer',rows['trial.lead_sponsor']
+          assert rows['trial.collaborator']['value_text']=='RemeGen Co., Ltd.',rows['trial.collaborator']
+          assert rows['rights.remegen_retained_territory']['value_text']=='Asia excluding Japan and Singapore',rows['rights.remegen_retained_territory']
+          assert rows['development.announced_global_lead']['value_text']=='Seagen',rows['development.announced_global_lead']
+          assert rows['collaboration.pfizer_group_counterparty']['value_text']=='RemeGen Co., Ltd.',rows['collaboration.pfizer_group_counterparty']
+          assert rows['collaboration.current_global_counterparty']['value_text']=='Pfizer',rows['collaboration.current_global_counterparty']
+          print('ADC_SV004_REALITY_ROLE_AND_TEMPORAL_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/blind)"
+      - name: Upload generated Reality relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: adc-sv004-reality-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            adc-sv004-evidence-execution.json
+            adc-sv004-reality-execution.json
+            /tmp/adc-sv004-reality.log
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env: {ISSUE_NUMBER: '${{ github.event.issue.number }}', GATE_OUTCOME: '${{ steps.gate.outcome }}'}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="ADC_SV004_REALITY_PASS head=$EXPECTED_HEAD source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/adc-sv004-reality.log 2>/dev/null || true)"
+            body=$(printf 'ADC_SV004_REALITY_FAIL head=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

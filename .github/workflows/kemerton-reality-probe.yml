@@ -1,0 +1,187 @@
+name: Kemerton integrated epistemic probe
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EVIDENCE_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-evidence-spec-v2.json
+  JUDGMENT_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-judgment-projection-v1.json
+  REALITY_SPEC: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-002-kemerton-reality-projection-v1.json
+
+jobs:
+  integrated:
+    if: github.event.issue.title == '[longcycle-kemerton-integrated-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/action-blobs
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Run real Evidence -> Judgment -> Reality -> Outcome -> replay path
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p probe
+          git rev-parse HEAD > probe/active-head.txt
+          printf '%s\n' "$GITHUB_RUN_ID" > probe/run-id.txt
+          python -m pip install -e '.[postgres,duckdb]'
+          longcycle --json db upgrade > probe/migrations.json
+          python scripts/execute_grounded_evidence_spec.py "$EVIDENCE_SPEC" \
+            --output probe/grounded-evidence-execution.json \
+            > probe/evidence.stdout 2> probe/evidence.stderr
+          python scripts/execute_grounded_judgment_persistence.py "$JUDGMENT_SPEC" \
+            probe/grounded-evidence-execution.json \
+            --output probe/judgment-persistence.json \
+            > probe/judgment.stdout 2> probe/judgment.stderr
+          python scripts/execute_grounded_reality_projection.py "$REALITY_SPEC" \
+            probe/grounded-evidence-execution.json \
+            --output probe/reality-execution.json \
+            > probe/reality.stdout 2> probe/reality.stderr
+          python scripts/execute_grounded_outcome_evaluation.py \
+            probe/judgment-persistence.json probe/reality-execution.json \
+            --judgment-key 2022q1-kemerton1-first-product-may \
+            --output probe/outcome-execution.json \
+            > probe/outcome.stdout 2> probe/outcome.stderr
+          python scripts/export_integrated_replay_duckdb.py probe/kemerton-integrated.duckdb \
+            --subject-id 38b886e5-610a-552a-9a05-560274723fee \
+            --subject-id ba9bcc13-482f-548d-a450-9d9089012778 \
+            --subject-id e9e0c787-d7f5-5fc7-829b-a278c4ea1478 \
+            --manifest-output probe/integrated-export.json \
+            > probe/integrated-export.stdout 2> probe/integrated-export.stderr
+          python scripts/replay_integrated_history.py probe/kemerton-integrated.duckdb \
+            2022-08-03T16:27:48Z --output probe/replay-before-outcome.json
+          python scripts/replay_integrated_history.py probe/kemerton-integrated.duckdb \
+            2022-08-03T16:27:49Z --output probe/replay-at-outcome.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          before = json.loads(Path('probe/replay-before-outcome.json').read_text())
+          at = json.loads(Path('probe/replay-at-outcome.json').read_text())
+          assert len(before['judgments']) == 7, before
+          assert len(before['reality']) == 0, before
+          assert len(before['outcomes']) == 0, before
+          assert len(at['judgments']) == 7, at
+          assert len(at['reality']) == 1, at
+          assert len(at['outcomes']) == 1, at
+          reality = at['reality'][0]
+          outcome = at['outcomes'][0]
+          assert reality['valid_time_precision'] == 'month'
+          assert reality['valid_time_text'] == 'July 2022'
+          assert outcome['timing_relation'] == 'after_target_window'
+          assert str(outcome['timing_delta_value']).rstrip('0').rstrip('.') == '2'
+          assert outcome['timing_delta_unit'] == 'calendar_months'
+          Path('probe/integrated-acceptance.json').write_text(json.dumps({
+              'ok': True,
+              'before_counts': {k: len(before[k]) for k in ('reality','judgments','outcomes')},
+              'at_counts': {k: len(at[k]) for k in ('reality','judgments','outcomes')},
+              'future_rows_filtered_before_materialization': True,
+              'prior_judgments_preserved_after_outcome': True,
+              'month_precision_preserved': True,
+          }, indent=2) + '\n')
+          PY
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+      - name: Build report
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def read(path: str, default: str = 'unknown') -> str:
+              item = Path(path)
+              return item.read_text(encoding='utf-8', errors='replace').strip() if item.exists() else default
+
+          lines = [
+              '# Kemerton integrated epistemic probe', '',
+              f'- workflow run: `{read("probe/run-id.txt")}`',
+              f'- active branch HEAD: `{read("probe/active-head.txt")}`',
+          ]
+          jpath = Path('probe/judgment-persistence.json')
+          rpath = Path('probe/reality-execution.json')
+          opath = Path('probe/outcome-execution.json')
+          apath = Path('probe/integrated-acceptance.json')
+          epath = Path('probe/integrated-export.json')
+          if all(path.exists() for path in (jpath, rpath, opath, apath, epath)):
+              judgment = json.loads(jpath.read_text())
+              reality = json.loads(rpath.read_text())
+              outcome = json.loads(opath.read_text())
+              acceptance = json.loads(apath.read_text())
+              export = json.loads(epath.read_text())
+              lines += [
+                  f'- persisted Judgments: {judgment["verification"]["judgment_count"]}',
+                  f'- Judgment evidence links: {judgment["verification"]["evidence_link_count"]}',
+                  f'- canonical Reality rows: {reality["verification"]["canonical_reality_count"]}',
+                  f'- Outcome persisted: {outcome["verification"]["postgres_persistence_completed"]}',
+                  f'- integrated DuckDB sha256: `{export["file_sha256"]}`',
+                  f'- before outcome counts R/J/O: `{acceptance["before_counts"]}`',
+                  f'- at outcome counts R/J/O: `{acceptance["at_counts"]}`',
+                  '', '## Boundary result', ''
+              ]
+              canonical = reality['canonical_reality'][0]
+              evaluation = outcome['evaluation']
+              lines += [
+                  f'- Reality: `{canonical["predicate_code"]}` = `{canonical["value_text"]}`; '
+                  f'valid `{canonical["valid_time_text"]}` precision=`{canonical["valid_time_precision"]}`; '
+                  f'known `{canonical["market_known_at"]}`',
+                  f'- Outcome: `{evaluation["evaluation_status"]}`; relation=`{evaluation["timing_relation"]}`; '
+                  f'delta=`{evaluation["timing_delta_value"]} {evaluation["timing_delta_unit"]}`; '
+                  f'known=`{evaluation["outcome_first_known_at"]}`',
+                  '- one second before disclosure: 7 Judgments, 0 canonical Reality, 0 OutcomeEvaluation',
+                  '- at disclosure: 7 Judgments, 1 canonical Reality, 1 OutcomeEvaluation',
+                  '- original Judgment remains immutable; Outcome is separate; future rows are SQL-filtered',
+              ]
+          else:
+              lines += ['', '## Failure', '']
+              for path in ('probe/judgment.stderr', 'probe/reality.stderr', 'probe/outcome.stderr', 'probe/integrated-export.stderr', 'probe/evidence.stderr'):
+                  value = read(path, '')
+                  if value:
+                      lines += [f'### {path}', '```text', value[-8000:], '```']
+          Path('probe/report.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
+          PY
+          cat probe/report.md
+      - name: Upload probe
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kemerton-integrated-v1-${{ github.run_id }}
+          retention-days: 30
+          include-hidden-files: true
+          if-no-files-found: error
+          path: |
+            probe/
+            .longcycle/action-blobs/
+      - name: Comment report
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file probe/report.md

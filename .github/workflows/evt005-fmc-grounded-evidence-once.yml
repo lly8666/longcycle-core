@@ -1,0 +1,137 @@
+name: Execute EVT-005 FMC grounded evidence once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  EXPECTED_HEAD: a692c765060e12eece380fa0957a9d69dfc23f65
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-evt005-fmc-counterexample-acquisition-run32572209653.zip
+  RELEASE_ASSET_SHA256: 610e8ebd5d3bc1995fc748b1b9ab8809ac7be7674109a1b8a1477cbc71826cef
+  SPEC_PATH: research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/self_verification/UP-CHEMICALS/run-001/tasks/EVT-005-fmc-grounded-evidence-spec-v3.json
+
+jobs:
+  execute:
+    if: github.event.issue.title == '[longcycle-evt005-fmc-grounded-evidence-v2]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.longcycle/evt005-fmc-blobs
+      GH_TOKEN: ${{ github.token }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.EXPECTED_HEAD }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Restore source pack from development Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p source-pack material
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir source-pack
+          test "$(sha256sum "source-pack/$RELEASE_ASSET" | awk '{print $1}')" = "$RELEASE_ASSET_SHA256"
+          unzip -q "source-pack/$RELEASE_ASSET" -d material
+          test "$(sha256sum material/fmc-2017-annual-report.pdf | awk '{print $1}')" = '89048ed1dfd077464530eac10c74912da313d0fc35c6816dc6f4754f8bf68c7b'
+          test "$(sha256sum material/fmc-2018q1-results.html | awk '{print $1}')" = '7d976bdbf477d8e6cde5d5909a285b152d22020c726a30763158dc84f653688f'
+
+      - name: Execute normal Grounded Evidence v2 path
+        id: gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          exec > >(tee /tmp/evt005-fmc-evidence.log) 2>&1
+          python -m pip install -e '.[dev,postgres,duckdb,s3]'
+          longcycle --json db upgrade
+          python scripts/execute_grounded_evidence_spec.py "$SPEC_PATH" --material-root material --output evt005-fmc-evidence-execution.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path('evt005-fmc-evidence-execution.json').read_text())
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 2, result
+          assert len(result['fragments']) == 5, result
+          assert result['acceptance']['persisted_document_versions'] == 2, result
+          assert result['acceptance']['persisted_evidence_fragments'] == 5, result
+          assert result['acceptance']['fact_assertions_created'] == 0, result
+          assert result['acceptance']['judgment_assertions_created'] == 0, result
+
+          documents = {row['document_key']: row for row in result['documents']}
+          assert documents['fmc-2017-annual-report']['content_sha256'] == '89048ed1dfd077464530eac10c74912da313d0fc35c6816dc6f4754f8bf68c7b'
+          assert documents['fmc-2018q1-results']['content_sha256'] == '7d976bdbf477d8e6cde5d5909a285b152d22020c726a30763158dc84f653688f'
+          assert all(row['transport_plugin'] == 'materialized_file' for row in documents.values())
+          annual_profiles = documents['fmc-2017-annual-report']['source_authority_profiles']
+          q1_profiles = documents['fmc-2018q1-results']['source_authority_profiles']
+          assert any(p['authority_class'] == 'authoritative_redistributor' for p in annual_profiles), annual_profiles
+          assert any(p['authority_class'] == 'primary_self_statement' for p in q1_profiles), q1_profiles
+
+          keys = {row['fragment_key'] for row in result['fragments']}
+          assert keys == {
+              '2017-china-hydroxide-9kt-capacity',
+              '2017-china-hydroxide-ahead-and-qualified',
+              '2017-china-hydroxide-commercial-production',
+              '2018q1-china-hydroxide-ebitda-driver',
+              '2018q1-china-hydroxide-higher-volume',
+          }, keys
+          print('EVT005_FMC_GROUNDED_EVIDENCE_ASSERTIONS_PASS')
+          PY
+          python scripts/repair_memory.py audit
+          git diff --check
+          test -z "$(git status --porcelain -- research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/blind)"
+
+      - name: Upload generated execution relay artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evt005-fmc-grounded-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 7
+          compression-level: 0
+          path: |
+            evt005-fmc-evidence-execution.json
+            /tmp/evt005-fmc-evidence.log
+
+      - name: Report execution result
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GATE_OUTCOME: ${{ steps.gate.outcome }}
+        run: |
+          set -euo pipefail
+          if [[ "$GATE_OUTCOME" == success ]]; then
+            body="EVT005_FMC_GROUNDED_EVIDENCE_PASS head=$EXPECTED_HEAD source_release=$RELEASE_TAG source_asset=$RELEASE_ASSET run_id=$GITHUB_RUN_ID"
+          else
+            tail_text="$(tail -n 220 /tmp/evt005-fmc-evidence.log 2>/dev/null || true)"
+            body=$(printf 'EVT005_FMC_GROUNDED_EVIDENCE_FAIL head=%s source_release=%s source_asset=%s run_id=%s\n\n```text\n%s\n```' "$EXPECTED_HEAD" "$RELEASE_TAG" "$RELEASE_ASSET" "$GITHUB_RUN_ID" "$tail_text")
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

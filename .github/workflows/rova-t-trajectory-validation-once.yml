@@ -1,0 +1,174 @@
+name: One-shot Rova-T researcher trajectory validation
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+jobs:
+  validate:
+    if: >-
+      github.event.issue.title == '[longcycle-rova-trajectory-validation-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SOURCE_RUN_ID: '32581980862'
+      SOURCE_ARTIFACT_ID: '9478039751'
+      SOURCE_OUTER_SHA256: '28ef7d372909c76bc404365d115f92a4413b9f4bb21966af434304b9c831c602'
+      DUCKDB_SHA256: 'f07490c7b52c4c5ba02185fa748cf7236b8f376573939ea2322954873a722619'
+      ROVA_T_SUBJECT_ID: '7caaf8e0-efb4-5037-bebc-367f90054251'
+    steps:
+      - name: Resolve immutable implementation head
+        id: resolve
+        shell: bash
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          head_sha="$(printf '%s\n' "$ISSUE_BODY" | sed -nE 's/^head=([0-9a-f]{40})$/\1/p' | head -n1)"
+          test -n "$head_sha" || { echo 'missing exact head=<40 lowercase hex> line' >&2; exit 2; }
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.head_sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install current implementation
+        run: python -m pip install -e '.[duckdb]'
+
+      - name: Download sealed first-pair replay artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          artifact-ids: ${{ env.SOURCE_ARTIFACT_ID }}
+          path: /tmp/rova-replay/unpacked
+
+      - name: Verify internal DuckDB
+        id: restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          db="$(find /tmp/rova-replay/unpacked -type f -path '*/execution/adc-first-pair-memory.duckdb' -print -quit)"
+          test -n "$db"
+          actual="$(sha256sum "$db" | awk '{print $1}')"
+          echo "duckdb_sha256=$actual"
+          test "$actual" = "$DUCKDB_SHA256"
+          echo "db=$db" >> "$GITHUB_OUTPUT"
+
+      - name: Replay three historical knowledge cutoffs through CAP-0005
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rova-trajectory
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2019-08-29T23:59:59Z' --subject-id "$ROVA_T_SUBJECT_ID" > /tmp/rova-trajectory/pre-termination.json
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2019-08-30T00:00:00Z' --subject-id "$ROVA_T_SUBJECT_ID" > /tmp/rova-trajectory/at-termination-known.json
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2020-02-22T00:00:00Z' --subject-id "$ROVA_T_SUBJECT_ID" > /tmp/rova-trajectory/later-accounting-known.json
+
+      - name: Assert no-lookahead and researcher chronology
+        id: assert
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('/tmp/rova-trajectory')
+          pre = json.loads((root/'pre-termination.json').read_text())['result']
+          at = json.loads((root/'at-termination-known.json').read_text())['result']
+          later = json.loads((root/'later-accounting-known.json').read_text())['result']
+
+          assert pre['counts']['judgments'] == 1, pre['counts']
+          assert pre['counts']['outcomes'] == 0, pre['counts']
+          assert pre['counts']['reality'] == 2, pre['counts']
+          assert not any(e['layer'] == 'outcome' for e in pre['entries'])
+          assert not any(e.get('predicate_code') == 'program.rova_t.development_status' for e in pre['entries'])
+
+          assert at['counts']['judgments'] == 1, at['counts']
+          assert at['counts']['outcomes'] == 1, at['counts']
+          assert at['counts']['reality'] == 3, at['counts']
+          termination = [e for e in at['entries'] if e.get('predicate_code') == 'program.rova_t.development_status']
+          assert len(termination) == 1
+          outcomes = [e for e in at['entries'] if e['layer'] == 'outcome']
+          assert len(outcomes) == 1
+          assert outcomes[0]['evaluation_status'] == 'indeterminate'
+          assert outcomes[0]['semantic_relation'] == 'related_milestone'
+          assert outcomes[0]['links']['judgment_entry_id'] is not None
+          assert outcomes[0]['links']['reality_entry_id'] is not None
+
+          assert later['counts']['reality'] == 5, later['counts']
+          late_impairments = [
+              e for e in later['entries']
+              if e.get('predicate_code') == 'accounting.stemcentrx.intangible_impairment_charge'
+          ]
+          assert len(late_impairments) == 2
+          assert all(e['known_at'] == '2020-02-22T00:00:00+00:00' for e in late_impairments)
+          historical_text = {e['historical_time'].get('source_text') for e in late_impairments}
+          assert historical_text == {'2018', '2019'}, historical_text
+
+          for payload in (pre, at, later):
+              assert payload['boundary']['ordered_by_knowledge_time'] is True
+              assert payload['boundary']['historical_time_kept_separate_from_known_at'] is True
+              assert payload['boundary']['judgment_not_rewritten_by_outcome'] is True
+              assert payload['boundary']['no_new_epistemic_records_created'] is True
+
+          receipt = {
+              'schema_version': 'longcycle-rova-t-researcher-trajectory-validation/v1',
+              'status': 'pass',
+              'implementation_head_sha': '${{ steps.resolve.outputs.head_sha }}',
+              'source_artifact': {
+                  'workflow_run_id': int('${{ env.SOURCE_RUN_ID }}'),
+                  'artifact_id': int('${{ env.SOURCE_ARTIFACT_ID }}'),
+                  'artifact_digest_recorded_in_durable_receipt': 'sha256:${{ env.SOURCE_OUTER_SHA256 }}',
+                  'duckdb_sha256_verified_at_runtime': '${{ env.DUCKDB_SHA256 }}',
+              },
+              'subject_id': '${{ env.ROVA_T_SUBJECT_ID }}',
+              'cutoffs': [
+                  {'cutoff':'2019-08-29T23:59:59Z','counts':pre['counts']},
+                  {'cutoff':'2019-08-30T00:00:00Z','counts':at['counts']},
+                  {'cutoff':'2020-02-22T00:00:00Z','counts':later['counts']},
+              ],
+              'assertions': {
+                  'pre_termination_has_no_termination_reality_or_outcome': True,
+                  'termination_and_related_milestone_outcome_appear_when_known': True,
+                  '2018_2019_impairment_valid_times_do_not_leak_before_2020_known_time': True,
+                  'historical_time_and_known_time_remain_separate': True,
+                  'trajectory_is_read_only_presentation_over_cap_0005': True,
+              },
+          }
+          (root/'validation-receipt.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
+          print(json.dumps(receipt))
+          PY
+
+      - name: Upload replay outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: rova-t-researcher-trajectory-${{ github.run_id }}
+          path: /tmp/rova-trajectory
+          if-no-files-found: error
+
+      - name: Report validation
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ASSERT_OUTCOME: ${{ steps.assert.outcome }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          body=$(printf 'ROVA_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nThe exact historical run/artifact id is restored through the official artifact action; the internal DuckDB SHA is verified before current `longcycle research replay` runs at pre-termination, termination-known, and later-accounting-known cutoffs. The durable receipt and separately restored Drive capsule carry the recorded outer digest.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

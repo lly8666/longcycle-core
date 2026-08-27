@@ -1,0 +1,180 @@
+name: One-shot Kwinana researcher trajectory validation
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
+jobs:
+  validate:
+    if: >-
+      github.event.issue.title == '[longcycle-kwinana-trajectory-validation-v1]' &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      SOURCE_RUN_ID: '32557226950'
+      SOURCE_ARTIFACT_ID: '9471777542'
+      SOURCE_OUTER_SHA256: 'b5bccc36273660a38bd0fce32fbb97349cf26d78a4709d4bd176a52bca12ff7e'
+      DUCKDB_SHA256: 'b7d317285d74aa007010016c30846c62bc10e1bfabb8feb2641718349f9c71dd'
+      KWINANA_SUBJECT_ID: '02c2e600-9be2-5c09-95ab-b532249df05b'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Resolve immutable implementation head
+        id: resolve
+        shell: bash
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          head_sha="$(printf '%s\n' "$ISSUE_BODY" | sed -nE 's/^head=([0-9a-f]{40})$/\1/p' | head -n1)"
+          test -n "$head_sha" || { echo 'missing exact head=<40 lowercase hex> line' >&2; exit 2; }
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.head_sha }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install current implementation
+        run: python -m pip install -e '.[duckdb]'
+
+      - name: Download sealed Kwinana typed memory
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          artifact-ids: ${{ env.SOURCE_ARTIFACT_ID }}
+          path: /tmp/kwinana-replay/unpacked
+
+      - name: Verify internal DuckDB
+        id: restore
+        shell: bash
+        run: |
+          set -euo pipefail
+          db="$(find /tmp/kwinana-replay/unpacked -type f -name 'kwinana-memory.duckdb' -print -quit)"
+          test -n "$db"
+          actual="$(sha256sum "$db" | awk '{print $1}')"
+          echo "duckdb_sha256=$actual"
+          test "$actual" = "$DUCKDB_SHA256"
+          echo "db=$db" >> "$GITHUB_OUTPUT"
+
+      - name: Replay three historical knowledge cutoffs through CAP-0005
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/kwinana-trajectory
+          set +e
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2021-12-31T23:59:59Z' --subject-id "$KWINANA_SUBJECT_ID" > /tmp/kwinana-trajectory/before-2022.json
+          status=$?
+          set -e
+          if [ "$status" -ne 0 ]; then
+            echo '--- exact replay error payload ---'
+            cat /tmp/kwinana-trajectory/before-2022.json
+            exit "$status"
+          fi
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2022-12-02T23:59:59Z' --subject-id "$KWINANA_SUBJECT_ID" > /tmp/kwinana-trajectory/pre-disclosure.json
+          longcycle --json research replay "${{ steps.restore.outputs.db }}" '2022-12-03T23:59:59Z' --subject-id "$KWINANA_SUBJECT_ID" > /tmp/kwinana-trajectory/disclosed.json
+
+      - name: Assert no-lookahead and researcher chronology
+        id: assert
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path('/tmp/kwinana-trajectory')
+          before = json.loads((root/'before-2022.json').read_text())['result']
+          pre = json.loads((root/'pre-disclosure.json').read_text())['result']
+          disclosed = json.loads((root/'disclosed.json').read_text())['result']
+
+          assert before['counts']['reality'] == 0, before['counts']
+          assert before['counts']['judgments'] == 4, before['counts']
+          assert before['counts']['outcomes'] == 0, before['counts']
+
+          assert pre['counts']['reality'] == 0, pre['counts']
+          assert pre['counts']['judgments'] == 4, pre['counts']
+          assert pre['counts']['outcomes'] == 0, pre['counts']
+          assert not any(e['layer'] in {'reality', 'outcome'} for e in pre['entries'])
+
+          assert disclosed['counts']['reality'] == 1, disclosed['counts']
+          assert disclosed['counts']['judgments'] == 5, disclosed['counts']
+          assert disclosed['counts']['outcomes'] == 1, disclosed['counts']
+          realities = [e for e in disclosed['entries'] if e['layer'] == 'reality']
+          outcomes = [e for e in disclosed['entries'] if e['layer'] == 'outcome']
+          assert len(realities) == 1
+          assert len(outcomes) == 1
+          assert realities[0]['predicate_code'] == 'project.commercial_production_capability'
+          assert realities[0]['historical_time']['source_text'] == 'from 2022-11-30'
+          assert realities[0]['known_at'] == '2022-12-03T23:59:59+00:00'
+          assert outcomes[0]['evaluation_status'] == 'indeterminate'
+          assert outcomes[0]['semantic_relation'] == 'related_milestone'
+          assert outcomes[0]['timing_relation'] == 'not_comparable'
+          assert outcomes[0]['links']['judgment_entry_id'] is not None
+          assert outcomes[0]['links']['reality_entry_id'] is not None
+
+          for payload in (before, pre, disclosed):
+              assert payload['boundary']['ordered_by_knowledge_time'] is True
+              assert payload['boundary']['historical_time_kept_separate_from_known_at'] is True
+              assert payload['boundary']['source_temporal_precision_preserved'] is True
+              assert payload['boundary']['judgment_not_rewritten_by_outcome'] is True
+              assert payload['boundary']['no_new_epistemic_records_created'] is True
+
+          receipt = {
+              'schema_version': 'longcycle-kwinana-researcher-trajectory-validation/v1',
+              'status': 'pass',
+              'implementation_head_sha': '${{ steps.resolve.outputs.head_sha }}',
+              'source_artifact': {
+                  'workflow_run_id': int('${{ env.SOURCE_RUN_ID }}'),
+                  'artifact_id': int('${{ env.SOURCE_ARTIFACT_ID }}'),
+                  'artifact_digest_recorded_in_source_receipt': 'sha256:${{ env.SOURCE_OUTER_SHA256 }}',
+                  'duckdb_sha256_verified_at_runtime': '${{ env.DUCKDB_SHA256 }}',
+              },
+              'subject_id': '${{ env.KWINANA_SUBJECT_ID }}',
+              'cutoffs': [
+                  {'cutoff':'2021-12-31T23:59:59Z','counts':before['counts']},
+                  {'cutoff':'2022-12-02T23:59:59Z','counts':pre['counts']},
+                  {'cutoff':'2022-12-03T23:59:59Z','counts':disclosed['counts']},
+              ],
+              'assertions': {
+                  'later_reality_and_outcome_absent_before_known_time': True,
+                  'related_milestone_outcome_appears_only_when_grounded_reality_is_known': True,
+                  'valid_time_2022_11_30_does_not_leak_before_known_time_2022_12_03': True,
+                  'historical_time_and_known_time_remain_separate': True,
+                  'trajectory_is_read_only_presentation_over_cap_0005': True,
+              },
+          }
+          (root/'validation-receipt.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
+          print(json.dumps(receipt))
+          PY
+
+      - name: Upload replay outputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: kwinana-researcher-trajectory-${{ github.run_id }}
+          path: /tmp/kwinana-trajectory
+          if-no-files-found: error
+
+      - name: Report validation
+        if: always()
+        shell: bash
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ASSERT_OUTCOME: ${{ steps.assert.outcome }}
+          HEAD_SHA: ${{ steps.resolve.outputs.head_sha }}
+        run: |
+          set -euo pipefail
+          body=$(printf 'KWINANA_TRAJECTORY_VALIDATION head=%s outcome=%s run_id=%s\n\nExact historical run/artifact id and internal DuckDB SHA were used before current `longcycle research replay` at 2021 year-end, immediately pre-disclosure, and disclosure-known cutoffs.' "$HEAD_SHA" "$ASSERT_OUTCOME" "$GITHUB_RUN_ID")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

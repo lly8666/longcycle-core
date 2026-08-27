@@ -1,0 +1,277 @@
+name: Acquire ADC SV-001 mirvetuximab sources once v2
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: 1dd132f60b1148d54b6e24c4d866ebaab6ab619f
+  RELEASE_TAG: longcycle-dev-binary-cache
+  TRIGGER_TITLE: '[longcycle-adc-sv001-mirvetuximab-acquire-v2]'
+
+jobs:
+  acquire:
+    if: github.event.issue.title == '[longcycle-adc-sv001-mirvetuximab-acquire-v2]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Ensure PDF text extraction support
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v pdftotext >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y poppler-utils
+          fi
+
+      - name: Acquire and semantically verify SV-001 sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          mkdir -p acquired
+          python - <<'PY'
+          import hashlib
+          import json
+          import re
+          import subprocess
+          import urllib.parse
+          import urllib.request
+          from html import unescape
+          from pathlib import Path
+
+          USER_AGENT = 'Mozilla/5.0 (compatible; LongcycleCollector/0.2; +https://github.com/lly8666/longcycle-core)'
+          ITEMS = [
+              {
+                  'key': 'immunogen-forward1-2019-03-01',
+                  'url': 'https://news.abbvie.com/2019-03-01-ImmunoGen-Announces-Top-Line-Results-from-Phase-3-FORWARD-I-Study-of-Mirvetuximab-Soravtansine-in-Ovarian-Cancer',
+                  'format': 'html',
+                  'retrieval_role': 'primary_or_successor_archive',
+                  'upstream_system': 'ImmunoGen historical press release archived by AbbVie',
+                  'upstream_external_id': '2019-03-01-FORWARD-I-top-line',
+                  'upstream_title': 'ImmunoGen Announces Top-Line Results from Phase 3 FORWARD I Study of Mirvetuximab Soravtansine in Ovarian Cancer',
+                  'upstream_published_date': '2019-03-01',
+                  'required_phrases': [
+                      'Trial Did Not Meet Primary Endpoint of Progression-Free Survival',
+                      'FORWARD I',
+                      'did not meet its primary endpoint of progression-free survival',
+                  ],
+              },
+              {
+                  'key': 'esmo-forward1-scoring-2019-09-30',
+                  'url': 'https://www.adcreview.com/wp-content/uploads/2020/05/ESMO_2019_FORWARD-I-Oral_Final.pdf',
+                  'format': 'pdf',
+                  'retrieval_role': 'authoritative_redistributor',
+                  'upstream_system': 'ESMO 2019 / ImmunoGen-sponsored FORWARD I oral presentation',
+                  'upstream_external_id': 'NCT02631876-ESMO2019-FORWARD-I',
+                  'upstream_title': 'FORWARD I (GOG 3011): A Phase III study of mirvetuximab soravtansine, a folate receptor alpha (FRa)-targeting antibody-drug conjugate, versus chemotherapy in patients with platinum-resistant ovarian cancer',
+                  'upstream_published_date': '2019-09-30',
+                  'upstream_cross_reference_url': 'https://www.sec.gov/Archives/edgar/data/855654/000155837019008729/imgn-20190929ex993a7ed95.htm',
+                  'required_phrases': [
+                      'FORWARD I (GOG 3011)',
+                      'change in scoring method from PS2+ to 10X introduced',
+                      'Data support the design of MIRASOL',
+                  ],
+              },
+              {
+                  'key': 'fda-elahere-accelerated-2022-11-14',
+                  'url': 'https://www.fda.gov/drugs/resources-information-approved-drugs/fda-grants-accelerated-approval-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant',
+                  'format': 'html',
+                  'retrieval_role': 'primary_authority_server',
+                  'upstream_system': 'U.S. Food and Drug Administration',
+                  'upstream_external_id': '2022-11-14-elahere-accelerated',
+                  'upstream_title': 'FDA grants accelerated approval to mirvetuximab soravtansine-gynx',
+                  'upstream_published_date': '2022-11-14',
+                  'required_phrases': [
+                      'November 14, 2022',
+                      'granted accelerated approval to mirvetuximab soravtansine-gynx',
+                      'VENTANA FOLR1',
+                  ],
+              },
+              {
+                  'key': 'fda-elahere-regular-2024-03-22',
+                  'url': 'https://www.fda.gov/drugs/resources-information-approved-drugs/fda-approves-mirvetuximab-soravtansine-gynx-fra-positive-platinum-resistant-epithelial-ovarian',
+                  'format': 'html',
+                  'retrieval_role': 'primary_authority_server',
+                  'upstream_system': 'U.S. Food and Drug Administration',
+                  'upstream_external_id': '2024-03-22-elahere-regular',
+                  'upstream_title': 'FDA approves mirvetuximab soravtansine-gynx for FRalpha positive platinum-resistant epithelial ovarian cancer',
+                  'upstream_published_date': '2024-03-22',
+                  'required_phrases': [
+                      'March 22, 2024',
+                      'previously received accelerated approval',
+                      'MIRASOL, NCT04209855',
+                  ],
+              },
+          ]
+
+          def fetch(url):
+              request = urllib.request.Request(url, headers={
+                  'User-Agent': USER_AGENT,
+                  'Accept': 'application/pdf,text/html,application/xhtml+xml,*/*;q=0.8',
+                  'Accept-Language': 'en-US,en;q=0.8',
+              })
+              with urllib.request.urlopen(request, timeout=90) as response:
+                  return response.read(), response.geturl(), response.status, dict(response.headers.items())
+
+          def html_text(raw):
+              decoded = raw.decode('utf-8', errors='replace')
+              decoded = re.sub(r'(?is)<(script|style|noscript).*?>.*?</\\1>', ' ', decoded)
+              return ' '.join(unescape(re.sub(r'<[^>]+>', ' ', decoded)).split())
+
+          def pdf_text(raw, key):
+              if not raw.startswith(b'%PDF-'):
+                  raise ValueError('payload does not start with PDF signature')
+              pdf_path = Path('acquired') / f'{key}.pdf'
+              txt_path = Path('acquired') / f'{key}-visible.txt'
+              pdf_path.write_bytes(raw)
+              subprocess.run(['pdftotext', '-layout', str(pdf_path), str(txt_path)], check=True)
+              return ' '.join(txt_path.read_text(encoding='utf-8', errors='replace').split()), pdf_path, txt_path
+
+          rows = []
+          for item in ITEMS:
+              base = {
+                  'key': item['key'],
+                  'requested_url': item['url'],
+                  'retrieval_role': item['retrieval_role'],
+                  'upstream_document_identity': {
+                      'system': item['upstream_system'],
+                      'external_id': item['upstream_external_id'],
+                      'title': item['upstream_title'],
+                      'published_date': item['upstream_published_date'],
+                      'cross_reference_url': item.get('upstream_cross_reference_url'),
+                  },
+              }
+              try:
+                  raw, final_url, status, headers = fetch(item['url'])
+                  if status != 200:
+                      raise ValueError(f'unexpected HTTP {status}')
+                  if item['format'] == 'pdf':
+                      text, raw_path, text_path = pdf_text(raw, item['key'])
+                  else:
+                      text = html_text(raw)
+                      raw_path = Path('acquired') / f"{item['key']}.html"
+                      raw_path.write_bytes(raw)
+                      text_path = Path('acquired') / f"{item['key']}-visible.txt"
+                      text_path.write_text(text, encoding='utf-8')
+                  normalized = text.casefold()
+                  missing = [p for p in item['required_phrases'] if p.casefold() not in normalized]
+                  if missing:
+                      raise ValueError(f'semantic identity/claim phrases missing: {missing}')
+                  parsed = urllib.parse.urlparse(final_url)
+                  rows.append({
+                      **base,
+                      'ok': True,
+                      'final_url': final_url,
+                      'retrieval_host': parsed.netloc,
+                      'status': status,
+                      'content_type': headers.get('Content-Type') or headers.get('content-type') or ('application/pdf' if item['format'] == 'pdf' else 'text/html'),
+                      'archived_file': raw_path.name,
+                      'raw_sha256': hashlib.sha256(raw).hexdigest(),
+                      'raw_bytes': len(raw),
+                      'visible_text_file': text_path.name,
+                      'visible_text_sha256_acquisition_only': hashlib.sha256(text.encode('utf-8')).hexdigest(),
+                      'visible_text_bytes': len(text.encode('utf-8')),
+                      'verified_phrases': item['required_phrases'],
+                  })
+              except Exception as exc:
+                  rows.append({**base, 'ok': False, 'error': f'{type(exc).__name__}: {exc}'})
+
+          payload = {
+              'schema_version': 'longcycle-approved-source-acquisition/v2',
+              'task_id': 'ADC-SV-001-MIRVETUXIMAB-ELA-HERE',
+              'active_head_sha': '1dd132f60b1148d54b6e24c4d866ebaab6ab619f',
+              'source_role': 'candidate primary/authoritative payload acquisition for later claim-scoped Evidence recording',
+              'redistributor_policy': 'document identity controls authority; retrieval host is preserved separately from upstream identity',
+              'success_count': sum(1 for row in rows if row['ok']),
+              'item_count': len(ITEMS),
+              'rows': rows,
+          }
+          Path('acquired/acquisition.json').write_text(json.dumps(payload, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          print(json.dumps(payload, indent=2, ensure_ascii=False))
+          if payload['success_count'] != len(ITEMS):
+              raise SystemExit('not all SV-001 source payloads passed acquisition/semantic verification')
+          PY
+
+      - name: Build deterministic immutable acquisition pack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          import zipfile
+          from pathlib import Path
+
+          out = Path(f"longcycle-adc-sv001-mirvetuximab-acquisition-v2-run{os.environ['GITHUB_RUN_ID']}.zip")
+          epoch = (2026, 8, 22, 0, 0, 0)
+          with zipfile.ZipFile(out, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
+              for path in sorted(Path('acquired').rglob('*')):
+                  if not path.is_file():
+                      continue
+                  info = zipfile.ZipInfo(str(path.relative_to('acquired')), date_time=epoch)
+                  info.compress_type = zipfile.ZIP_DEFLATED
+                  info.external_attr = 0o644 << 16
+                  zf.writestr(info, path.read_bytes())
+          digest = hashlib.sha256(out.read_bytes()).hexdigest()
+          Path('release-asset.json').write_text(json.dumps({
+              'file_name': out.name,
+              'size_bytes': out.stat().st_size,
+              'sha256': digest,
+          }, indent=2) + '\n')
+          print(Path('release-asset.json').read_text())
+          PY
+
+      - name: Upload to shared development Release and download-back verify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -n "$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json tagName --jq '.tagName')"
+          name="$(python -c 'import json; print(json.load(open("release-asset.json"))["file_name"])')"
+          expected="$(python -c 'import json; print(json.load(open("release-asset.json"))["sha256"])')"
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' | grep -Fxq "$name"; then
+            echo "refusing to overwrite existing immutable Release asset: $name" >&2
+            exit 1
+          fi
+          gh release upload "$RELEASE_TAG" "$name" --repo "$GITHUB_REPOSITORY"
+          mkdir -p verify
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$name" --dir verify
+          actual="$(sha256sum "verify/$name" | awk '{print $1}')"
+          test "$actual" = "$expected"
+
+      - name: Report acquisition result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          status=FAIL
+          if [[ -f acquired/acquisition.json ]] && python - <<'PY'
+          import json
+          p=json.load(open('acquired/acquisition.json'))
+          raise SystemExit(0 if p.get('success_count') == p.get('item_count') else 1)
+          PY
+          then
+            if [[ -f release-asset.json ]]; then status=PASS; fi
+          fi
+          body=$(printf 'ADC_SV001_ACQUIRE_V2_%s head=%s run_id=%s release=%s\n\n```json\n%s\n%s\n```' "$status" "$EXPECTED_HEAD" "$GITHUB_RUN_ID" "$RELEASE_TAG" "$(cat acquired/acquisition.json 2>/dev/null || printf '{}')" "$(cat release-asset.json 2>/dev/null || printf '{}')")
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"

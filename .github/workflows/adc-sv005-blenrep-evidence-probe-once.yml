@@ -1,0 +1,253 @@
+name: Probe ADC SV-005 BLENREP Grounded Evidence once
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  ACTIVE_REF: design/industry-memory
+  EXPECTED_HEAD: bbccdbc56ad2950074a65e28612d78df80460c97
+  RELEASE_TAG: longcycle-dev-binary-cache
+  RELEASE_ASSET: longcycle-adc-sv005-blenrep-pdf-acquisition-v1-run32630536037.zip
+  RELEASE_SHA256: eb7d858415c0404064364f0fafbcbf4a7bdd7bbf2b4a820696330423c663b998
+  SPEC: research_data/memory/innovative-drugs-adc/2026-08-22-gpt-5.6-sol/self_verification/run-001/evidence/SV-005-grounded-evidence-spec-v1.json
+
+jobs:
+  evidence:
+    if: github.event.issue.title == '[longcycle-adc-sv005-blenrep-evidence-probe-v1]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: longcycle
+          POSTGRES_PASSWORD: longcycle
+          POSTGRES_DB: longcycle
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U longcycle -d longcycle"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    env:
+      LONGCYCLE_DATABASE_URL: postgresql://longcycle:longcycle@127.0.0.1:5432/longcycle
+      LONGCYCLE_BLOB_BACKEND: filesystem
+      LONGCYCLE_BLOB_ROOT: ${{ github.workspace }}/.artifacts/sv005-blobs
+      MATERIAL_ROOT: ${{ github.workspace }}/.artifacts/sv005-materials
+      OUTPUT: ${{ github.workspace }}/.artifacts/SV-005-grounded-evidence-execution.json
+
+    steps:
+      - name: Checkout exact active research head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.ACTIVE_REF }}
+          fetch-depth: 0
+
+      - name: Assert exact active head
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          echo "SV005_HEAD actual=$actual expected=$EXPECTED_HEAD"
+          test "$actual" = "$EXPECTED_HEAD"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install
+        run: |
+          python -m pip install -e '.[dev,postgres,s3,duckdb]'
+          python -m pip install 'pypdf==6.15.0'
+
+      - name: Migrate database
+        run: longcycle --json db upgrade
+
+      - name: Restore immutable PDF Release pack
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$MATERIAL_ROOT/pdf" "$MATERIAL_ROOT/web" .artifacts/release
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern "$RELEASE_ASSET" --dir .artifacts/release
+          actual="$(sha256sum ".artifacts/release/$RELEASE_ASSET" | awk '{print $1}')"
+          echo "SV005_RELEASE_SHA actual=$actual expected=$RELEASE_SHA256"
+          test "$actual" = "$RELEASE_SHA256"
+          unzip -q ".artifacts/release/$RELEASE_ASSET" -d .artifacts/release/unpacked
+          cp .artifacts/release/unpacked/federal-register-blenrep-revocation-2023.pdf "$MATERIAL_ROOT/pdf/"
+          cp .artifacts/release/unpacked/gsk-dreamm7-readout-2024-02-05.pdf "$MATERIAL_ROOT/pdf/"
+
+      - name: Reverify public webpage fragments and materialize only pinned excerpts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import json
+          import os
+          import re
+          import urllib.request
+          from collections import defaultdict
+          from html import unescape
+          from pathlib import Path
+
+          spec = json.loads(Path(os.environ['SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['MATERIAL_ROOT'])
+          docs = {row['key']: row for row in spec['documents']}
+          fragments_by_doc = defaultdict(list)
+          for fragment in spec['fragments']:
+              fragments_by_doc[fragment['document_key']].append(fragment)
+
+          web_keys = ['fda-initial-approval-2020', 'gsk-dreamm3-2022', 'gsk-withdrawal-judgment-2022']
+          ua = 'LongcycleEvidenceProbe/0.1 lly8666@users.noreply.github.com'
+          for key in web_keys:
+              doc = docs[key]
+              request = urllib.request.Request(doc['retrieval_url'], headers={
+                  'User-Agent': ua,
+                  'Accept': 'text/html,application/xhtml+xml,*/*;q=0.8',
+                  'Accept-Language': 'en-US,en;q=0.8',
+              })
+              with urllib.request.urlopen(request, timeout=120) as response:
+                  raw = response.read()
+                  assert response.status == 200, (key, response.status)
+              decoded = raw.decode('utf-8', errors='replace')
+              decoded = re.sub(r'(?is)<(script|style|noscript).*?>.*?</\\1>', ' ', decoded)
+              visible = ' '.join(unescape(re.sub(r'<[^>]+>', ' ', decoded)).split())
+              normalized_visible = visible.casefold()
+              excerpts = []
+              for fragment in fragments_by_doc[key]:
+                  excerpt = fragment['excerpt']
+                  assert ' '.join(excerpt.split()).casefold() in normalized_visible, (key, fragment['fragment_key'], excerpt)
+                  excerpts.append(excerpt)
+              material = '\n'.join(excerpts)
+              path = root / doc['material_path']
+              path.parent.mkdir(parents=True, exist_ok=True)
+              path.write_text(material, encoding='utf-8')
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == doc['expected_sha256'], (key, digest, doc['expected_sha256'])
+              print(f'SV005_WEB_REVERIFY_PASS key={key} sha={digest}')
+          PY
+
+      - name: Verify all material SHA pins and PDF page excerpts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import io
+          import json
+          import os
+          from pathlib import Path
+          from pypdf import PdfReader
+
+          spec = json.loads(Path(os.environ['SPEC']).read_text(encoding='utf-8'))
+          root = Path(os.environ['MATERIAL_ROOT'])
+          docs = {row['key']: row for row in spec['documents']}
+          for doc in docs.values():
+              path = root / doc['material_path']
+              assert path.is_file(), path
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              assert digest == doc['expected_sha256'], (path, digest, doc['expected_sha256'])
+
+          for fragment in spec['fragments']:
+              doc = docs[fragment['document_key']]
+              if doc['content_type'] != 'application/pdf':
+                  assert fragment['excerpt'] in (root / doc['material_path']).read_text(encoding='utf-8'), fragment['fragment_key']
+                  continue
+              reader = PdfReader(io.BytesIO((root / doc['material_path']).read_bytes()), strict=False)
+              page_number = fragment['page']
+              page_text = ' '.join((reader.pages[page_number - 1].extract_text() or '').split())
+              excerpt = ' '.join(fragment['excerpt'].split())
+              assert excerpt.casefold() in page_text.casefold(), (fragment['fragment_key'], page_number, excerpt)
+          print('SV005_MATERIAL_INTEGRITY_PASS')
+          PY
+
+      - name: Execute Grounded Evidence through normal archive path
+        run: >-
+          python scripts/execute_grounded_evidence_spec.py
+          "$SPEC"
+          --material-root "$MATERIAL_ROOT"
+          --output "$OUTPUT"
+
+      - name: Assert Evidence-only epistemic boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+
+          payload = json.load(open(os.environ['OUTPUT'], encoding='utf-8'))
+          assert payload['ok'] is True, payload
+          result = payload['result']
+          assert len(result['documents']) == 5, result
+          assert len(result['fragments']) == 9, result
+          assert result['acceptance'] == {
+              'persisted_document_versions': 5,
+              'persisted_evidence_fragments': 9,
+              'fact_assertions_created': 0,
+              'judgment_assertions_created': 0,
+          }, result['acceptance']
+          documents = {row['document_key']: row for row in result['documents']}
+          assert documents['fda-initial-approval-2020']['source_authority_profiles'][0]['authority_class'] == 'authoritative_primary'
+          assert documents['federal-register-revocation-2023']['source_authority_profiles'][0]['authority_class'] == 'authoritative_primary'
+          assert documents['gsk-dreamm3-2022']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          assert documents['gsk-withdrawal-judgment-2022']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          assert documents['gsk-dreamm7-2024']['source_authority_profiles'][0]['authority_class'] == 'primary_self_statement'
+          print('SV005_GROUNDED_EVIDENCE_PASS')
+          PY
+
+      - name: Build execution artifact and receipt
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .artifacts/out
+          cp "$SPEC" .artifacts/out/SV-005-grounded-evidence-spec-v1.json
+          if [[ -f "$OUTPUT" ]]; then cp "$OUTPUT" .artifacts/out/SV-005-grounded-evidence-execution.json; fi
+          python - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          out = Path('.artifacts/out')
+          manifest = {'schema_version': 'longcycle-sv005-evidence-probe-artifact/v1', 'head_sha': os.environ['EXPECTED_HEAD'], 'run_id': int(os.environ['GITHUB_RUN_ID']), 'files': []}
+          for path in sorted(out.glob('*.json')):
+              manifest['files'].append({'file_name': path.name, 'size_bytes': path.stat().st_size, 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(manifest, indent=2))
+          PY
+
+      - name: Upload execution artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sv005-blenrep-grounded-evidence-${{ github.run_id }}
+          path: .artifacts/out
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Report probe result
+        if: always()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          set -euo pipefail
+          if [[ -f "$OUTPUT" ]]; then
+            ok="$(python -c 'import json,os; p=json.load(open(os.environ["OUTPUT"])); print(str(bool(p.get("ok"))).lower())')"
+            body="ADC_SV005_EVIDENCE_PROBE_DONE head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID output_ok=$ok artifact=sv005-blenrep-grounded-evidence-$GITHUB_RUN_ID"
+          else
+            body="ADC_SV005_EVIDENCE_PROBE_FAIL head=$EXPECTED_HEAD run_id=$GITHUB_RUN_ID output_missing=true"
+          fi
+          gh issue comment "$ISSUE_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$body"
