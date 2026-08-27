@@ -200,7 +200,7 @@ Longcycle 的 benchmark 用来打脸架构，不是训练 Agent 应试。真正�
 
 只能背 slogan、不能解释因果链 = bootstrap 未完成。
 
-## Vertical Alignment / 防钻牛角尖 Gate
+## Vertical Alignment Gate / 防钻牛角尖
 
 开始新的 substantive 子问题、完成 coherent 子任务、准备扩大范围或新结果改变假设时，向上检查：
 
