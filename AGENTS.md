@@ -215,4 +215,8 @@ Whole-project / architecture review:
 
 > **审查 Longcycle（lly8666/longcycle-core）：按仓库 live state 完整恢复使命、方法、Architecture Baseline 和 Longcycle Development Operating System；从宏大目标→长期产品方向→中期目标→短期里程碑→当前实现逐层审查。区分 L1/L2、L3、L4、research/data、continuity/governance 与 production-readiness；只有真实重要反例证明 Baseline 无法诚实表达时才提出 L3。**
 
+Deliberate architecture change:
+
+> **准备修改 Longcycle 部分架构：先按仓库 live state 和 `docs/development/longcycle-development-operating-system.md` 完整恢复项目，不直接改代码。先证明这是 L3 而不是 L1/L2：给出真实 source-grounded counterexample 或 security/consistency defect、受影响 BL invariant、现有 owner extension seam 为什么不够，以及 old-data / migration / PIT-no-lookahead / provenance / regression consequences。证据不足就不要改 Baseline。**
+
 The phrases carry no current task facts. Repository state owns the task.
