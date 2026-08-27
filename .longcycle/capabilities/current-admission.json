@@ -1,27 +1,37 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "FRESH-AGENT-OPERATING-SYSTEM-ACCEPTANCE-023",
-  "intent": "Independently validate the frozen Longcycle Architecture Baseline v1.0.0 and the preserved Longcycle development operating system with a genuinely fresh Agent. This is a continuity/governance acceptance step only: do not open new research, product or architecture work; do not create or replace semantic owners; do not modify Baseline semantics. The subject must recover the terminal mission, long-term direction, medium-term goal, short-term milestone and current atomic task; preserve Memory-first/Evidence-final historical recovery, PIT/no-lookahead, Reality/Judgment/Outcome separation, Capability Registry ownership, Repair Memory, bounded on-demand history recall, Vertical Alignment and independent judgment; and demonstrate correct L1/L2/L3/L4 reasoning under external cues.",
+  "intent_id": "POST-BASELINE-GOVERNANCE-HARDENING-024",
+  "intent": "Harden the post-Baseline governance guardrails discovered by independent architecture audit and add a bounded multi-Agent workstream control plane without reopening Architecture Baseline v1 semantics. Fix frozen-tag migration validation, bind Change Contracts to their live capability-admission intent, require concrete L3 architecture evidence/approval before protected semantic changes, and provide per-workstream branch/cursor/path ownership so concurrent industry/product Agents can extend existing semantic owners without sharing one mutable global cursor.",
   "governance_mode": "converging",
-  "disposition": "reuse",
-  "target_capability_ids": ["CAP-0009", "CAP-0010"],
-  "closest_existing_capability_ids": ["CAP-0009", "CAP-0010"],
-  "rationale_summary": "Architecture Baseline v1.0.0 has been merged to main and the accepted main merge head passed both longcycle/full-ci and longcycle/architecture-baseline. The remaining acceptance risk is continuity drift: whether a zero-context Agent reconstructs the old Longcycle worldview, five-level strategic hierarchy, anti-tunnel discipline and architecture-change burden of proof without old chat context. This step therefore reuses the existing continuity and governance owners and permits only a report-only external drill plus maintainer review.",
-  "rationale_details_ref": "docs/development/fresh-agent-operating-system-drill-controller.md",
+  "disposition": "extend",
+  "target_capability_ids": [
+    "CAP-0009",
+    "CAP-0010"
+  ],
+  "closest_existing_capability_ids": [
+    "CAP-0009",
+    "CAP-0010"
+  ],
+  "rationale_summary": "Baseline v1 is healthy, but the guard implementation still has three control-plane gaps: schema_through is incorrectly tied to current HEAD migrations, stale L3 Change Contracts are not intent-bound, and protected changes do not machine-require reviewed L3 evidence. Concurrent Agents would also fight over global current.json/admission/contract files. Extend existing governance/continuity owners with narrow validators and per-workstream cursors rather than creating another semantic-owner system.",
+  "rationale_details_ref": "docs/development/post-baseline-development.md",
   "unmet_requirement": null,
   "evidence_refs": [
     "ARCHITECTURE_BASELINE_V1.md",
     ".longcycle/baseline/v1.0.0.json",
-    "STRATEGIC_COMPASS.md",
-    "METHODOLOGY_CORE.md",
-    "docs/development/longcycle-development-operating-system.md",
-    "docs/development/fresh-agent-operating-system-drill-subject.md",
-    "docs/development/fresh-agent-operating-system-drill-controller.md"
+    "scripts/validate_architecture_baseline.py",
+    "docs/development/longcycle-development-operating-system.md"
   ],
   "planned_paths": [
-    ".longcycle/capabilities/current-admission.json",
-    ".longcycle/handoff/current.json",
-    ".longcycle/handoff/rehearsals/"
+    "scripts/validate_architecture_baseline.py",
+    "tests/test_architecture_baseline.py",
+    "scripts/workstream_registry.py",
+    "tests/test_workstream_registry.py",
+    ".longcycle/workstreams/",
+    "docs/development/post-baseline-development.md",
+    "docs/development/parallel-agent-development.md",
+    ".github/workflows/architecture-baseline.yml",
+    ".longcycle/change-contract/current.json",
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
 }
