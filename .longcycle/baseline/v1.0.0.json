@@ -1,0 +1,37 @@
+{
+  "schema_version": "longcycle-architecture-baseline/v1",
+  "baseline_id": "architecture-v1",
+  "version": "1.0.0",
+  "tag": "architecture-baseline-v1.0.0",
+  "commit_resolution": "git_tag_target",
+  "schema_through": "0039",
+  "strategy_path": "STRATEGIC_COMPASS.md",
+  "methodology_path": "METHODOLOGY_CORE.md",
+  "mission_fidelity_path": ".longcycle/continuity/mission-fidelity.json",
+  "capability_index_path": ".longcycle/capabilities/active-index.json",
+  "baseline_document_path": "ARCHITECTURE_BASELINE_V1.md",
+  "locked_invariants": [
+    {"id": "BL-001", "semantic": "evidence_boundary"},
+    {"id": "BL-002", "semantic": "historical_memory_first_evidence_final"},
+    {"id": "BL-003", "semantic": "reality_judgment_outcome_separation"},
+    {"id": "BL-004", "semantic": "outcome_does_not_rewrite_judgment"},
+    {"id": "BL-005", "semantic": "valid_known_system_target_time_separation"},
+    {"id": "BL-006", "semantic": "point_in_time_no_lookahead"},
+    {"id": "BL-007", "semantic": "temporal_precision_fidelity"},
+    {"id": "BL-008", "semantic": "append_only_provenance"},
+    {"id": "BL-009", "semantic": "revision_by_new_version"},
+    {"id": "BL-010", "semantic": "claim_scoped_source_authority"},
+    {"id": "BL-011", "semantic": "source_representation_state_separation"},
+    {"id": "BL-012", "semantic": "one_semantic_owner_reuse_first"}
+  ],
+  "change_policy": {
+    "levels": ["L1", "L2", "L3", "L4"],
+    "default_change_levels": ["L1", "L2"],
+    "baseline_change_level": "L3",
+    "mission_change_level": "L4"
+  },
+  "required_status_contexts": [
+    "longcycle/full-ci",
+    "longcycle/architecture-baseline"
+  ]
+}
