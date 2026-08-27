@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
   "intent_id": "POST-BASELINE-GOVERNANCE-HARDENING-024",
-  "intent": "Harden the post-Baseline governance guardrails discovered by independent architecture audit and add a bounded multi-Agent workstream control plane without reopening Architecture Baseline v1 semantics. Fix frozen-tag migration validation, bind Change Contracts to their live capability-admission intent, require concrete L3 architecture evidence/approval before protected semantic changes, and provide per-workstream branch/cursor/path ownership so concurrent industry/product Agents can extend existing semantic owners without sharing one mutable global cursor.",
+  "intent": "Harden the post-Baseline governance guardrails discovered by independent architecture audit and add a bounded multi-Agent workstream control plane without reopening Architecture Baseline v1 semantics. Fix frozen-tag migration validation, bind Change Contracts to their live capability-admission intent, require concrete L3 architecture evidence/approval before protected semantic changes, make required CI statuses publish against the real PR head, and provide per-workstream branch/cursor/path ownership so concurrent industry/product Agents can extend existing semantic owners without sharing one mutable global cursor.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -12,7 +12,7 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "Baseline v1 is healthy, but the guard implementation still has three control-plane gaps: schema_through is incorrectly tied to current HEAD migrations, stale L3 Change Contracts are not intent-bound, and protected changes do not machine-require reviewed L3 evidence. Concurrent Agents would also fight over global current.json/admission/contract files. Extend existing governance/continuity owners with narrow validators and per-workstream cursors rather than creating another semantic-owner system.",
+  "rationale_summary": "Baseline v1 is healthy, but the guard implementation still has control-plane gaps: schema_through was tied to current HEAD migrations, stale L3 Change Contracts were not intent-bound, protected changes lacked machine-required reviewed L3 evidence, and required custom statuses used the synthetic PR merge SHA rather than the real head. Concurrent Agents would also fight over global current.json/admission/contract files. Extend existing governance/continuity owners with narrow validators and per-workstream cursors rather than creating another semantic-owner system.",
   "rationale_details_ref": "docs/development/post-baseline-development.md",
   "unmet_requirement": null,
   "evidence_refs": [
@@ -26,10 +26,12 @@
     "tests/test_architecture_baseline.py",
     "scripts/workstream_registry.py",
     "tests/test_workstream_registry.py",
+    "tests/test_ci_status_target.py",
     ".longcycle/workstreams/",
     "docs/development/post-baseline-development.md",
     "docs/development/parallel-agent-development.md",
     ".github/workflows/architecture-baseline.yml",
+    ".github/workflows/ci.yml",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
   ],
