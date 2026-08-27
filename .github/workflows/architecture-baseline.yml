@@ -9,7 +9,7 @@ on:
   pull_request:
 
 concurrency:
-  group: architecture-baseline-${{ github.ref }}
+  group: architecture-baseline-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
@@ -44,7 +44,11 @@ jobs:
       - name: Capability ownership remains canonical
         run: python scripts/capability_registry.py audit
 
-      - name: Parallel workstream registry remains isolated
+      - name: Parallel workstream manifests remain isolated
+        run: python scripts/workstream_registry.py validate
+
+      - name: Mainline workstream index is integration-owned and current
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: python scripts/workstream_registry.py audit
 
       - name: Baseline validator regressions
