@@ -35,7 +35,7 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
 7. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不同，先检查 intervening commits；不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
 8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项。不要默认读取旧 devlog、旧行业、旧 rehearsal report 或全部 raw data。
 9. **开始 material capability / product-surface / architecture 开发前**，先写/更新 `.longcycle/change-contract/current.json` 的 `L1/L2/L3/L4`，再独立执行 Capability Registry admission：`reuse / extend / replace / new`。两个维度不可混用。
-10. `current-admission.json.target_capability_ids` 是精确 owner 路由；必须直接加载对应 capability card、entrypoint/guard 和相关负例。默认 L1/L2 + reuse/extend，不能因为“更干净”新建第二个 semantic owner。
+10. `target_capability_ids` 是精确 owner 路由；必须直接加载对应 capability card、entrypoint/guard 和相关负例；`relevant` 模糊检索只能辅助发现，不能替代精确 ID authority。默认 L1/L2 + reuse/extend，不能因为“更干净”新建第二个 semantic owner。
 11. 修改已知代码路径前，用 Repair Memory 做 path-scoped invariant lookup；如果全新路径无命中，也不能推断“没有历史约束”。
 12. 如果出现“以前是不是讨论过/修过这个”的 fuzzy cue，走 `docs/development/on-demand-history-recall.md`：owner → Repair Memory → exact origin refs → bounded Git/Issue/receipt/devlog history → 回到 live authority。不要 bulk-load 历史。
 13. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
