@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 114,
+  "continuity_sequence": 115,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "post-baseline/governance-hardening",
   "active_pr": 162,
-  "checkpoint_based_on_head_sha": "080ae6e1d5630f2ab96ebface2e8c355c6699c21",
+  "checkpoint_based_on_head_sha": "81f49b3ba94436ddf2b0ced454aa8fe7f2e6b536",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR #162 / post-baseline/governance-hardening, refresh exact HEAD and CI first, then recover mission/method/Baseline and this seq114 cursor. Architecture Baseline v1.0.0 is already tagged and protected; this PR is L2 governance hardening only and must not reopen BL-001..BL-012. The current task is to close the guard-layer fixes and parallel-workstream operating model, merge normally after exact-head gates, then perform the one remaining maintainer hosting action: make main required status checks strict/up-to-date. Historical devlogs/rehearsals remain provenance and must not be bulk-loaded or rewritten.",
+  "bootstrap_instruction": "Resume from live PR #162 / post-baseline/governance-hardening, refresh exact HEAD and CI first, then recover mission/method/Baseline and this seq115 cursor. Architecture Baseline v1.0.0 is already tagged and protected; this PR is L2 governance hardening only and must not reopen BL-001..BL-012. The substantive PR head has already proved the guard changes, parallel-workstream model and PR-head required-status publishing. Only this final handoff-sync head must pass exact required gates before normal merge. Historical devlogs/rehearsals remain provenance and must not be bulk-loaded or rewritten.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,29 +17,29 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Run Longcycle as a post-Baseline product/domain development system on a stable point-in-time industrial-memory foundation, with many Agents able to extend industries and product surfaces in parallel while one global Baseline/semantic-owner/integration control plane preserves Evidence, PIT/no-lookahead, temporal precision, provenance and Reality/Judgment/Outcome correctness.",
-    "short_term_goal": "Close post-Baseline governance hardening: merge PR #162 after exact-head gates, eliminate stale Change-Contract authorization and frozen-schema false positives, establish branch-local parallel workstream cursors with disjoint write scopes and a serial integration lane, then enable strict/up-to-date required status checks on main through the maintainer GitHub UI because the connected integration exposes ruleset reads but no ruleset writes.",
+    "short_term_goal": "Close PR #162 governance hardening and restore ordinary post-Baseline development: merge after exact-head required gates, verify main exact-head CI, then enable strict/up-to-date required status checks through the maintainer GitHub UI. After the pending Fresh-Agent Operating-System acceptance, launch real L1/L2 parallel industry/product workstreams using branch-local cursors/contracts/admissions rather than the global current handoff as each Agent's mutable cursor.",
     "next_big_step": "After PR #162 is merged, strict main checks are enabled and the pending Fresh-Agent Operating-System acceptance is completed, resume ordinary product/industry development under Baseline v1. New industries/features default to L1/L2 reuse/extend workstreams; shared migrations/Capability cards/global control-plane edits are integrated serially; L3 begins only from a real source-grounded counterexample or demonstrated consistency/security defect.",
-    "local_optimization_stop_rule": "Do not turn multi-Agent coordination into a second architecture project. Stop once intent-bound Change Contracts, L3 evidence gates, per-workstream cursors/path isolation, integration-only shared state and strict main checks are working. Do not add distributed locks, schedulers, service discovery or another semantic-owner registry without a demonstrated concurrency failure that this simpler branch/workstream model cannot handle.",
+    "local_optimization_stop_rule": "Do not turn multi-Agent coordination into a second architecture project. Stop once intent-bound Change Contracts, L3 evidence gates, per-workstream cursors/path isolation, integration-only shared state, correct PR-head status publishing and strict main checks are working. Do not add distributed locks, schedulers, service discovery or another semantic-owner registry without a demonstrated concurrency failure that this simpler branch/workstream model cannot handle.",
     "parallel_permanent_tracks": [
       "Keep Capability Registry as the sole stable semantic-owner routing system; Change Contract L1/L2/L3/L4 risk levels remain orthogonal and one-task intent-bound.",
       "Parallelize industry/product/research implementation on disjoint workstream branches; serialize Baseline changes, semantic-owner replacement/new ownership, canonical migration numbering and global control-plane integration.",
-      "Keep Baseline-critical semantic regressions protected so L1/L2 work cannot change Evidence, PIT/no-lookahead, temporal precision, provenance or Reality/Judgment/Outcome expectations merely to make implementation pass."
+      "Required custom CI statuses must target the real PR head on pull_request events and the pushed commit on push events so branch protection evaluates the code actually proposed for integration."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "post-baseline-governance-hardening",
-    "last_completed_action": "Independent architecture audit findings were converted into PR #162. The Baseline validator now resolves schema_through against the immutable architecture-baseline-v1.0.0 tag rather than current HEAD migrations; Change Contracts are intent-bound to their referenced capability admission; L3 contracts require architecture/counterexample/affected-invariant/compatibility metadata and protected semantic changes additionally require approval_ref. A parallel workstream registry, tests, CI validation, generated integration index, operating guide and concrete manifest template now define branch-local L1/L2 reuse/extend work with disjoint write scopes and one global serial integration lane. On substantive head 080ae6e1d5630f2ab96ebface2e8c355c6699c21, full CI run 33090978950, Architecture Baseline run 33090978933 and Fresh-Agent Continuity v3 run 33090978897 all completed successfully.",
-    "current_task": "Finish only PR #162 closure. Refresh exact PR head after this seq114 handoff commit, require longcycle/full-ci and longcycle/architecture-baseline success, repair only demonstrated regression if any, merge normally into main, validate resulting main exact head, then have the maintainer enable strict/up-to-date required status checks in the existing Protect main ruleset. Do not add another governance abstraction during closure.",
-    "why_now": "Baseline v1 itself is healthy; the remaining risks were guard implementation and concurrent-Agent control-plane collisions. Those narrow defects are now implemented and green on the substantive head. Closing them before broad parallel industry/product work prevents the first normal post-Baseline migration or multiple concurrent Agents from exposing avoidable governance failures.",
-    "done_when": "PR #162 is merged normally after exact-head required gates pass; final main passes longcycle/full-ci and longcycle/architecture-baseline; the Protect main ruleset requires branches to be up to date before merging; mainline handoff no longer points to PR #162 as active; and future parallel workstreams use branch-local workstream/change-contract/admission files while global Baseline/Capability Registry/main handoff/migrations remain integration-owned.",
+    "last_completed_action": "PR #162 now closes all audited guard-layer defects in scope. Baseline schema_through resolves against the immutable architecture-baseline-v1.0.0 tag; Change Contracts are intent-bound; L3 requires architecture/counterexample/affected-invariant/compatibility metadata and approval before protected semantic changes; branch-local workstream manifests/contracts/admissions enforce parallel L1/L2 reuse/extend with disjoint write scopes and one global serial integration lane. During closure, GitHub exposed an additional merge-safety defect: pull_request workflows used synthetic merge GITHUB_SHA when publishing required custom statuses. Both full CI and Architecture Baseline workflows now publish to github.event.pull_request.head.sha on PRs and github.sha on pushes, with a regression test. Exact substantive head 81f49b3ba94436ddf2b0ced454aa8fe7f2e6b536 received longcycle/architecture-baseline=success from run 33091805938 and longcycle/full-ci=success from run 33091805739 on that same real PR head; Fresh-Agent Continuity v3 run 33091805861 also succeeded.",
+    "current_task": "Finish only PR #162 closure. Refresh exact PR head after this seq115 handoff commit, require longcycle/full-ci and longcycle/architecture-baseline success on the real PR head, merge normally into main, validate resulting main exact head, then have the maintainer enable strict/up-to-date required status checks in the existing Protect main ruleset. Do not add another governance abstraction during closure.",
+    "why_now": "Baseline v1 itself is healthy; the remaining risks were guard implementation, concurrent-Agent control-plane collisions and required-status targeting. All are now implemented and proven on the substantive PR head. Closing them before broad parallel industry/product work prevents normal post-Baseline migrations, concurrent Agents or GitHub's synthetic PR merge refs from creating avoidable governance failures.",
+    "done_when": "PR #162 is merged normally after exact-head required gates pass on the real PR head; final main passes longcycle/full-ci and longcycle/architecture-baseline; the Protect main ruleset requires branches to be up to date before merging; mainline handoff no longer points to PR #162 as active; and future parallel workstreams use branch-local workstream/change-contract/admission files while global Baseline/Capability Registry/main handoff/migrations remain integration-owned.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh PR #162 exact head and required checks after this handoff commit. If green, merge normally; then verify main exact-head CI and perform the documented GitHub UI strict-status-check setting because no connected write tool can modify repository rulesets."
+    "next_atomic_action": "Refresh PR #162 exact head and required statuses after this seq115 handoff commit. If both required contexts are success on the real head, merge normally; then verify main exact-head CI and perform the documented GitHub UI strict-status-check setting because no connected write tool can modify repository rulesets."
   },
   "active_context": {
-    "context_id": "post-baseline-governance-hardening-114",
+    "context_id": "post-baseline-governance-hardening-115",
     "context_kind": "architecture_governance",
-    "label": "Post-Baseline guard hardening and parallel Agent workstream control plane",
+    "label": "Post-Baseline guard hardening and parallel Agent workstream control plane closure",
     "root_path": "docs/development",
     "campaign_root": null,
     "coverage_path": null,
@@ -48,6 +48,7 @@
       "tests/test_architecture_baseline.py",
       "scripts/workstream_registry.py",
       "tests/test_workstream_registry.py",
+      "tests/test_ci_status_target.py",
       "docs/development/parallel-agent-development.md",
       "docs/development/post-baseline-development.md",
       ".longcycle/workstreams/README.md",
@@ -57,6 +58,7 @@
       "baseline-redesign-by-preference",
       "stale-l3-change-contract-as-standing-permission",
       "current-head-migration-count-as-baseline-freeze-identity",
+      "synthetic-pr-merge-sha-as-required-status-target",
       "parallel-agent-writing-global-current-handoff",
       "parallel-agent-allocating-canonical-migration-number",
       "parallel-agent-creating-replacement-semantic-owner",
@@ -76,24 +78,24 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33090978950,
-    "observed_head_sha": "080ae6e1d5630f2ab96ebface2e8c355c6699c21",
+    "last_observed_run": 33091805739,
+    "observed_head_sha": "81f49b3ba94436ddf2b0ced454aa8fe7f2e6b536",
     "conclusion": "success",
-    "mypy_summary": "PR #162 substantive head 080ae6e1d5630f2ab96ebface2e8c355c6699c21 passed full CI run 33090978950 including Mypy and the repository hard gates.",
-    "pytest_summary": "PR #162 substantive head passed full Pytest in run 33090978950. Architecture Baseline run 33090978933 separately passed frozen-tag schema validation, intent-bound Change Contract tests, L3 review gates, workstream registry validation and Baseline-critical semantic regressions. Fresh-Agent Continuity v3 run 33090978897 also succeeded.",
+    "mypy_summary": "PR #162 substantive head 81f49b3ba94436ddf2b0ced454aa8fe7f2e6b536 passed full CI run 33091805739 including Mypy and all repository hard gates.",
+    "pytest_summary": "PR #162 substantive head passed full Pytest in run 33091805739. Architecture Baseline run 33091805938 separately passed frozen-tag schema validation, intent-bound Change Contract tests, L3 review gates, workstream registry validation, PR-head status-target regression and Baseline-critical semantic regressions. Fresh-Agent Continuity v3 run 33091805861 also succeeded. Both required custom status contexts were observed as success on the exact real PR head rather than the synthetic pull-request merge SHA.",
     "ruff_summary": "Ruff remains diagnostic under the repository full-CI policy; no new Baseline semantic debt was introduced by the L2 governance hardening.",
-    "refresh_instruction": "This snapshot proves the substantive parent before seq114 handoff sync. Refresh PR #162 exact live head and rerun/inspect required statuses before merge; after merge refresh main exact head again."
+    "refresh_instruction": "This snapshot proves the substantive parent before seq115 handoff sync. Refresh PR #162 exact live head and require both required status contexts on that real head before merge; after merge refresh main exact head again."
   },
   "workstreams": [
     {
       "workstream_id": "post-baseline-governance-hardening",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "pr162_closure_pending",
-      "summary": "L2 guard hardening is implemented and substantive-head CI is green. Remaining work is only handoff-sync exact-head validation, normal merge, final main validation and the maintainer-only strict required-status-check hosting setting.",
+      "status": "pr162_final_handoff_gate_pending",
+      "summary": "All scoped guard hardening, parallel-workstream governance and PR-head status publishing are implemented and proven on the substantive head. Remaining work is only seq115 exact-head validation, normal merge, final main validation and the maintainer-only strict required-status-check hosting setting.",
       "next_actions": [
-        "Refresh exact PR #162 head and required checks after seq114 handoff sync.",
-        "Merge normally when required checks are green and verify final main exact head.",
+        "Refresh exact PR #162 head and required checks after seq115 handoff sync.",
+        "Merge normally when both required contexts are success on the real head and verify final main exact head.",
         "Enable strict/up-to-date required status checks in the Protect main GitHub ruleset; the connected tool can read but not write rulesets."
       ],
       "blockers": [
@@ -130,6 +132,7 @@
     "scripts/validate_architecture_baseline.py",
     "scripts/workstream_registry.py",
     ".github/workflows/architecture-baseline.yml",
+    ".github/workflows/ci.yml",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json"
   ],
@@ -137,13 +140,13 @@
     "docs/devlog/2026-08-26-digital-storage-unit-catalog.md"
   ],
   "unresolved_questions": [
-    "Will seq114 handoff-sync exact-head full CI and Architecture Baseline gates remain green before merge?",
+    "Will seq115 handoff-sync exact-head full CI and Architecture Baseline gates remain green before merge?",
     "After merge, will the maintainer enable strict/up-to-date required checks in the existing Protect main ruleset?",
     "When the first real concurrent industry/product workstreams launch, are the simple branch/path reservations sufficient, or does a demonstrated collision justify a later narrow coordination improvement?"
   ],
   "ordered_next_actions": [
     "Do not add more governance scope to PR #162.",
-    "Refresh PR #162 exact head and require longcycle/full-ci plus longcycle/architecture-baseline success after this seq114 handoff commit.",
+    "Refresh PR #162 exact head and require longcycle/full-ci plus longcycle/architecture-baseline success on the real PR head after this seq115 handoff commit.",
     "Merge PR #162 normally when green and refresh final main exact head/CI.",
     "Enable strict/up-to-date required status checks in the Protect main GitHub ruleset through maintainer UI.",
     "Sync the mainline handoff after merge, then complete the pending Fresh-Agent Operating-System acceptance before launching broad parallel industry/product work."
