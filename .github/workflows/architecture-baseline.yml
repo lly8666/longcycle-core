@@ -6,6 +6,7 @@ on:
       - main
       - baseline/v1-freeze
       - post-baseline/governance-hardening
+      - "workstream/**"
   pull_request:
 
 concurrency:
@@ -47,12 +48,36 @@ jobs:
       - name: Parallel workstream manifests remain isolated
         run: python scripts/workstream_registry.py validate
 
+      - name: Workstream dependency topology remains valid
+        run: python scripts/validate_workstream_boundaries.py
+
+      - name: Worker PR diff stays inside the base reservation
+        if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'workstream/')
+        run: >-
+          python scripts/validate_workstream_boundaries.py
+          --base-ref "origin/${{ github.base_ref }}"
+          --branch "${{ github.head_ref }}"
+          --base-branch "${{ github.base_ref }}"
+
+      - name: Worker push diff stays inside the main reservation
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/workstream/')
+        run: |
+          git fetch --no-tags origin main:refs/remotes/origin/main
+          python scripts/validate_workstream_boundaries.py \
+            --base-ref origin/main \
+            --branch "$GITHUB_REF_NAME"
+
       - name: Mainline workstream index is integration-owned and current
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: python scripts/workstream_registry.py audit
 
       - name: Baseline validator regressions
-        run: pytest -q tests/test_architecture_baseline.py tests/test_workstream_registry.py tests/test_ci_status_target.py
+        run: >-
+          pytest -q
+          tests/test_architecture_baseline.py
+          tests/test_workstream_registry.py
+          tests/test_workstream_boundaries.py
+          tests/test_ci_status_target.py
 
       - name: Baseline-critical semantic regressions
         run: >-

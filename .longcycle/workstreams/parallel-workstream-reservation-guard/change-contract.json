@@ -1,0 +1,24 @@
+{
+  "schema_version": "longcycle-change-contract/v1",
+  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
+  "goal": "Make parallel-workstream reservations authoritative from the integration base and machine-check actual worker diffs/dependencies without changing Architecture Baseline v1 semantics.",
+  "baseline": "architecture-v1",
+  "change_level": "L2",
+  "admission_ref": ".longcycle/workstreams/parallel-workstream-reservation-guard/capability-admission.json",
+  "baseline_impact": "none; post-Baseline concurrency/integration guard implementation only",
+  "baseline_invariants": [],
+  "schema_impact": "none",
+  "baseline_critical_tests_touched": false,
+  "architecture_change_ref": null,
+  "counterexample_refs": [],
+  "affected_invariants": [],
+  "compatibility_plan_ref": null,
+  "approval_ref": null,
+  "acceptance": [
+    "Worker identity and write scope are reserved on the integration base before parallel implementation starts.",
+    "Actual worker diffs remain inside reserved paths plus the workstream's own control directory.",
+    "Reservation-defining fields cannot be expanded in the same worker implementation change.",
+    "Workstream dependencies exist, are acyclic and are integration-ready before dependent workstreams integrate.",
+    "Architecture Baseline v1 semantics remain unchanged."
+  ]
+}

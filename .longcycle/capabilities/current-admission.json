@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "POST-BASELINE-GOVERNANCE-HARDENING-024",
-  "intent": "Harden the post-Baseline governance guardrails discovered by independent architecture audit and add a bounded multi-Agent workstream control plane without reopening Architecture Baseline v1 semantics. Fix frozen-tag migration validation, bind Change Contracts to their live capability-admission intent, require concrete L3 architecture evidence/approval before protected semantic changes, make required CI statuses publish against the real PR head, and provide per-workstream branch/cursor/path ownership so concurrent industry/product Agents can extend existing semantic owners without sharing one mutable global cursor.",
+  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
+  "intent": "Close the remaining post-Baseline multi-Agent concurrency gap by making workstream write-scope reservations authoritative from the integration base, machine-checking actual changed paths against those reservations, and validating dependency topology without changing Architecture Baseline v1 semantics.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -12,26 +12,24 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "Baseline v1 is healthy, but the guard implementation still has control-plane gaps: schema_through was tied to current HEAD migrations, stale L3 Change Contracts were not intent-bound, protected changes lacked machine-required reviewed L3 evidence, and required custom statuses used the synthetic PR merge SHA rather than the real head. Concurrent Agents would also fight over global current.json/admission/contract files. Extend existing governance/continuity owners with narrow validators and per-workstream cursors rather than creating another semantic-owner system.",
-  "rationale_details_ref": "docs/development/post-baseline-development.md",
+  "rationale_summary": "The first parallel-workstream guard correctly validates declared scopes, but declaration alone is insufficient: a worker could edit outside its declared scope or expand its own manifest in the same change. Reserve worker identity/scope on the integration base first, validate the actual diff against that base reservation, keep worker branches in a deterministic namespace, and reject missing/cyclic/unready dependencies. This extends the existing workstream control plane rather than adding a scheduler or lock service.",
+  "rationale_details_ref": "docs/development/workstream-reservation-integration.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "ARCHITECTURE_BASELINE_V1.md",
-    ".longcycle/baseline/v1.0.0.json",
-    "scripts/validate_architecture_baseline.py",
-    "docs/development/longcycle-development-operating-system.md"
+    "docs/development/parallel-agent-development.md",
+    ".longcycle/workstreams/README.md",
+    "scripts/workstream_registry.py",
+    ".longcycle/workstreams/active-index.json"
   ],
   "planned_paths": [
-    "scripts/validate_architecture_baseline.py",
-    "tests/test_architecture_baseline.py",
-    "scripts/workstream_registry.py",
-    "tests/test_workstream_registry.py",
-    "tests/test_ci_status_target.py",
-    ".longcycle/workstreams/",
-    "docs/development/post-baseline-development.md",
-    "docs/development/parallel-agent-development.md",
+    "scripts/validate_workstream_boundaries.py",
+    "tests/test_workstream_boundaries.py",
     ".github/workflows/architecture-baseline.yml",
-    ".github/workflows/ci.yml",
+    ".longcycle/workstreams/",
+    "docs/development/parallel-agent-development.md",
+    "docs/development/workstream-reservation-integration.md",
+    ".longcycle/workstreams/README.md",
+    ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
   ],

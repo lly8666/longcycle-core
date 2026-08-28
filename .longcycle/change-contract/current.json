@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "POST-BASELINE-GOVERNANCE-HARDENING-024",
-  "goal": "Harden post-Baseline governance and add a bounded parallel-workstream control plane without changing Architecture Baseline v1 semantics.",
+  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
+  "goal": "Make parallel-workstream reservations authoritative from the integration base and machine-check actual worker diffs/dependencies without changing Architecture Baseline v1 semantics.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; guard implementation and post-Baseline development coordination only",
+  "baseline_impact": "none; post-Baseline concurrency/integration guard implementation only",
   "baseline_invariants": [],
   "schema_impact": "none",
   "baseline_critical_tests_touched": false,
@@ -15,10 +15,11 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "Baseline schema_through remains the immutable migration ceiling at the Baseline tag and later L1/L2 migrations do not invalidate v1.",
-    "Change Contract intent_id must equal the referenced live capability-admission intent_id so stale L3 authorization cannot carry across tasks.",
-    "L3 protected semantic changes require ADR/counterexample/affected-invariant/compatibility metadata and an approval reference before the gate permits protected changes.",
-    "Parallel industry/product Agents can use independent workstream cursors and write scopes without mutating one global current cursor, admission or Change Contract.",
-    "Capability Registry remains the sole stable semantic-owner registry and Architecture Baseline v1 invariants remain unchanged."
+    "A parallel worker branch uses the deterministic workstream/<workstream-id> namespace and has exactly one matching active workstream manifest.",
+    "The workstream reservation must already exist on the PR/integration base; a worker cannot create or expand its own write authority in the same implementation change.",
+    "Actual changed paths on a worker branch are limited to the workstream's reserved exclusive_write_prefixes plus its own branch-local workstream control directory.",
+    "Active workstream dependencies must exist and be acyclic; ready_for_integration workstreams may depend only on integrated/closed prerequisites.",
+    "Worker branch pushes receive the Architecture Baseline/workstream boundary gate, while final shared/main integration remains serialized.",
+    "Architecture Baseline v1 invariants and Capability Registry semantic ownership remain unchanged."
   ]
 }

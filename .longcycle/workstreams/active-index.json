@@ -1,5 +1,24 @@
 {
-  "active": [],
+  "active": [
+    {
+      "base_main_sha": "b949cb2db7eeb00efed5d7722c621e866f7e188d",
+      "baseline": "architecture-v1",
+      "branch": "post-baseline/workstream-scope-guard",
+      "dependencies": [],
+      "exclusive_write_prefixes": [],
+      "integration_lane": "global_serial",
+      "integration_requests": [],
+      "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
+      "kind": "governance",
+      "manifest_path": ".longcycle/workstreams/parallel-workstream-reservation-guard/workstream.json",
+      "status": "ready_for_integration",
+      "target_capability_ids": [
+        "CAP-0009",
+        "CAP-0010"
+      ],
+      "workstream_id": "parallel-workstream-reservation-guard"
+    }
+  ],
   "policy": "Global mission/Baseline/semantic ownership remain single control planes. Parallel L1/L2 workstreams own disjoint branch/path scopes and carry local cursors/contracts; shared control-plane changes and L3/L4 work enter one global serial integration lane.",
   "schema_version": "longcycle-workstream-index/v1"
 }

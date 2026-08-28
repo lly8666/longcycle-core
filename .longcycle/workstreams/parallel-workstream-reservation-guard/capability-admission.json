@@ -1,0 +1,31 @@
+{
+  "schema_version": "longcycle-capability-admission/v2",
+  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
+  "intent": "Extend the existing post-Baseline governance/continuity owners with authoritative main-registered workstream reservations, actual diff scope validation and dependency graph guards.",
+  "governance_mode": "converging",
+  "disposition": "extend",
+  "target_capability_ids": [
+    "CAP-0009",
+    "CAP-0010"
+  ],
+  "closest_existing_capability_ids": [
+    "CAP-0009",
+    "CAP-0010"
+  ],
+  "rationale_summary": "Declared disjoint scopes are not sufficient unless CI verifies the actual branch diff against an authority the worker cannot rewrite in the same change. Use the integration-base reservation as authority and keep shared coordination serialized.",
+  "rationale_details_ref": "docs/development/workstream-reservation-integration.md",
+  "unmet_requirement": null,
+  "evidence_refs": [
+    "docs/development/parallel-agent-development.md",
+    "scripts/workstream_registry.py"
+  ],
+  "planned_paths": [
+    "scripts/validate_workstream_boundaries.py",
+    "tests/test_workstream_boundaries.py",
+    ".github/workflows/architecture-baseline.yml",
+    "docs/development/parallel-agent-development.md",
+    "docs/development/workstream-reservation-integration.md",
+    ".longcycle/workstreams/README.md"
+  ],
+  "proposed_capability_id": null
+}

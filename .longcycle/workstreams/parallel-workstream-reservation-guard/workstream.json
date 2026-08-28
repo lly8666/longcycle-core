@@ -1,0 +1,25 @@
+{
+  "schema_version": "longcycle-workstream/v1",
+  "workstream_id": "parallel-workstream-reservation-guard",
+  "kind": "governance",
+  "status": "ready_for_integration",
+  "integration_lane": "global_serial",
+  "branch": "post-baseline/workstream-scope-guard",
+  "base_main_sha": "b949cb2db7eeb00efed5d7722c621e866f7e188d",
+  "baseline": "architecture-v1",
+  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
+  "change_contract_path": ".longcycle/workstreams/parallel-workstream-reservation-guard/change-contract.json",
+  "capability_admission_path": ".longcycle/workstreams/parallel-workstream-reservation-guard/capability-admission.json",
+  "parent_goal_ref": "strategic_horizon.medium_term_goal",
+  "goal": "Make main-registered workstream reservations authoritative for worker identity, scope and dependencies, then validate actual worker diffs against those reservations.",
+  "done_when": "Worker scope expansion cannot happen inside the same implementation change; actual worker diffs are machine-bounded to reserved paths; dependency graph errors are rejected; worker pushes run the boundary gate; and exact-head CI remains green.",
+  "next_atomic_action": "Refresh the exact PR #163 head after closure sync; if required statuses remain green, merge normally and verify the resulting main exact head.",
+  "required_capability": "high_capability_reasoning",
+  "target_capability_ids": [
+    "CAP-0009",
+    "CAP-0010"
+  ],
+  "exclusive_write_prefixes": [],
+  "integration_requests": [],
+  "dependencies": []
+}
