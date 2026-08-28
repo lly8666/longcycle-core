@@ -46,6 +46,18 @@ def test_parallel_branch_name_is_deterministic() -> None:
         boundaries.validate_dependency_graph([manifest])
 
 
+def test_worker_branch_cannot_target_main_directly() -> None:
+    with pytest.raises(boundaries.WorkstreamBoundaryError, match="may not merge directly to main"):
+        boundaries.validate_worker_merge_target(
+            branch="workstream/banking-domain",
+            base_branch="main",
+        )
+    boundaries.validate_worker_merge_target(
+        branch="workstream/banking-domain",
+        base_branch="integration/batch-001",
+    )
+
+
 def test_active_dependency_must_be_registered() -> None:
     banking = _manifest("banking-domain", dependencies=["shared-scenario-engine"])
     with pytest.raises(boundaries.WorkstreamBoundaryError, match="no registered workstream"):
