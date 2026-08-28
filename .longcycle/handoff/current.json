@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 120,
+  "continuity_sequence": 121,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "main",
   "active_pr": null,
-  "checkpoint_based_on_head_sha": "a85e82ad88a5dea66d6c05d7f0fceb8863003cd8",
+  "checkpoint_based_on_head_sha": "95806ea26013120f5e880ccd174de6e35c1b9aac",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "This is the post-merge target handoff for PR #164. Refresh live main and PR #164 first. If PR #164 is still open, finish only its exact-head protected merge; if it is already merged, main is authoritative and no governance closure remains active. PR #163 already established the reservation-first multi-Agent model. Do not reopen Architecture Baseline v1 or add more coordination machinery before a real pilot demonstrates a concrete need.",
+  "bootstrap_instruction": "Refresh live main and PR #165 first. Seq120 genuine external Fresh-Agent Continuity Drill v3 tested main@29c506ad and is maintainer-accepted PASS; its report is immutable evidence on PR #165. If PR #165 is still open, finish only its exact-head protected merge. If already merged, do not reopen continuity/governance hardening: move directly to coordinator registration of the banking-domain-v1 and shipping-domain-v1 main-side reservations before either worker branch starts. Every Agent now inherits docs/development/l3-l4-user-escalation.md: potential L3/L4 implementation stops and the user receives a plain-language decision brief before architecture/mission change work proceeds.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,82 +17,81 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where multiple industry/product Agents develop concurrently inside pre-reserved scopes while one semantic-owner/Baseline/integration control plane preserves Evidence, PIT/no-lookahead, temporal precision, provenance and Reality/Judgment/Outcome correctness.",
-    "short_term_goal": "Finish PR #164 protected closure if it is still open; otherwise move directly to the first real reservation-first multi-Agent pilot: two semantically different industries with disjoint scopes and at most one genuinely shared product/platform dependency, integrated through one serial lane.",
-    "next_big_step": "Select two semantically different industries that stress different data shapes and research workflows, register both workstream manifests/contracts/admissions on main before workers start, create deterministic workstream/<id> branches from the registered base, and measure whether independent development plus serial integration works without scope leakage, duplicated semantics or handoff collision.",
-    "local_optimization_stop_rule": "The coordination architecture is sufficient. Do not add distributed locks, schedulers, service discovery, cross-Agent chat state, leases or another ownership registry unless the real pilot demonstrates a concrete failure that reservation + branch isolation + dependency DAG + one serial integration lane cannot express.",
+    "short_term_goal": "Close PR #165 if still open, then register the first two real parallel industry reservations — banking-domain-v1 and shipping-domain-v1 — on current main before launching either worker Agent.",
+    "next_big_step": "Run the first real reservation-first concurrency pilot with Banking and Shipping as semantically different domains, keep their writes disjoint, route shared needs through integration_requests, and integrate outputs through one serial coordinator/integration lane without reopening Architecture Baseline v1 by preference.",
+    "local_optimization_stop_rule": "Continuity/governance hardening is closed after seq120 acceptance. Do not add more coordination machinery before Banking + Shipping demonstrate a concrete failure that reservation authority, branch-local cursors, escalation pointers, dependency DAG and one serial integration lane cannot express.",
     "parallel_permanent_tracks": [
-      "Capability Registry remains the sole stable semantic-owner routing system; industry/product workers default to L1/L2 reuse/extend.",
-      "Main/integration-base workstream manifests reserve identity, write scope, semantic-owner routing and dependencies before a worker starts; branch-local manifests are continuation cursors, not self-issued authority.",
-      "Worker branches are producer branches and do not merge directly to main; shared migrations, generated indexes, global handoff/CI and semantic-owner changes enter main through one global_serial integration lane."
+      "Architecture Baseline v1 remains stable; normal industry/product work defaults to L1/L2 + reuse/extend.",
+      "Main-side workstream manifests are reservation authority; worker branches are live cursors/producers and never self-expand write authority.",
+      "Any potential/confirmed L3/L4 issue stops the affected implementation, is explained to the user in plain language, persists under the worker escalation path when applicable, and enters one serial decision/integration lane rather than an industry-specific semantic fork."
     ]
   },
   "continuation_cursor": {
     "parent_workstream_id": "parallel-industry-product-development",
-    "last_completed_action": "PR #163 merged to exact-green main at fdb452daf4de08c18d14e97cba8aff6a838a0a71, proving reservation-first worker authority and serial integration. PR #164 closure initially declared L1 and was rejected by the existing Architecture Baseline self-consistency regression; the test remained unchanged and closure was conservatively reclassified L2. Corrected head a85e82ad88a5dea66d6c05d7f0fceb8863003cd8 then passed Architecture Baseline run 33131007449, Fresh-Agent Continuity v3 run 33131007429 and full CI run 33131007474. The completed governance workstream is integrated and removed from the active index.",
-    "current_task": "Refresh live state. If PR #164 is still open, validate this seq120 exact head and merge it normally; if PR #164 is already merged and main exact head is green, select and reserve the first two real industry pilot workstreams. Do not add another governance abstraction before the pilot.",
-    "why_now": "Machine governance is implemented, exercised and has already caught a closure-classification mistake. The highest-value next evidence is now operational concurrency across real industries rather than more theoretical control-plane design.",
-    "done_when": "PR #164 is merged from an exact green head and resulting main is green; no completed governance workstream remains active; the first two pilot industries can be registered as disjoint main-reserved L1/L2 workstreams; and strict/up-to-date main checks are enabled or remain explicitly tracked as the only hosting-level follow-up.",
+    "last_completed_action": "Seq120 genuine external Fresh-Agent Continuity Drill v3 tested main@29c506ad3b2b3233e8609ecd78ce9569ec7a7ba2. Maintainer review confirmed canonical DUMB-02/DUMB-03 digests, correct stage order, bounded read discipline, live Git/CI refresh, correct fuzzy-time handling, Memory-first/Evidence-final historical methodology, stable subject HEAD and exactly one report-only commit on fresh-agent-drill-v3-report-120-29c506a. The report is accepted PASS. The user-requested universal L3/L4 plain-language escalation and durable worker handoff protocol is staged in PR #165 under existing CAP-0009/CAP-0010 ownership.",
+    "current_task": "Refresh PR #165/main. If PR #165 is open, merge only after exact-head Architecture Baseline/full CI gates pass. Once merged, act as coordinator: create the main-side banking-domain-v1 and shipping-domain-v1 reservations/contracts/admissions, rebuild the active workstream index, merge that serial registration, and only then create/synchronize workstream/banking-domain-v1 and workstream/shipping-domain-v1 worker branches.",
+    "why_now": "The continuity boundary and governance design are now proven enough. The highest-value evidence is real concurrent industry development, and launching workers before main-side reservations would violate the reservation-first model just accepted.",
+    "done_when": "PR #165 is merged from an exact green head; seq120 PASS report and universal L3/L4 escalation rule are on main; Banking and Shipping reservations are registered on one exact-green main state with disjoint scopes and existing semantic-owner routing; worker branches can then start without shared-handoff or permission ambiguity.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh live PR #164 and main. If closure remains open, finish exact-head gates and merge. Otherwise choose the first two semantically different pilot industries and create their main-side reservations before any worker branch starts."
+    "next_atomic_action": "Refresh PR #165 exact head and required checks; finish its protected merge if green, then prepare one serial coordinator registration change containing both Banking and Shipping reservations before starting either worker."
   },
   "active_context": {
-    "context_id": "parallel-agent-pilot-ready-120",
-    "context_kind": "architecture_governance",
-    "label": "Post-Baseline multi-Agent pilot-ready operating state",
-    "root_path": "docs/development",
+    "context_id": "banking-shipping-pilot-coordination-121",
+    "context_kind": "multi_agent_integration",
+    "label": "Seq120 accepted; Banking + Shipping reservation-first pilot next",
+    "root_path": ".longcycle/workstreams",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      "docs/development/workstream-reservation-integration.md",
       "docs/development/parallel-agent-development.md",
+      "docs/development/workstream-reservation-integration.md",
+      "docs/development/l3-l4-user-escalation.md",
       ".longcycle/workstreams/README.md",
       "scripts/workstream_registry.py",
-      "scripts/validate_workstream_boundaries.py",
-      ".longcycle/workstreams/active-index.json"
+      "scripts/validate_workstream_boundaries.py"
     ],
     "core_exclusion_terms": [
       "more-governance-before-real-pilot",
-      "weakening-baseline-tests-to-close-bookkeeping",
       "worker-self-issued-write-authority",
       "worker-direct-main-merge",
       "parallel-agent-global-handoff-write",
       "parallel-agent-canonical-migration-number",
-      "parallel-agent-replacement-semantic-owner",
-      "baseline-redesign-by-preference",
-      "distributed-coordination-framework-without-demonstrated-need"
+      "industry-specific-baseline-fork",
+      "silent-l3-l4-implementation",
+      "technical-jargon-only-user-escalation",
+      "baseline-redesign-by-preference"
     ]
   },
   "pending_user_directives": [
     "Continue autonomously from repository state and do not ask the user to repeat background.",
-    "Continue updating and implementing the multi-Agent/Baseline-derived-development logic rather than only describing it.",
-    "Keep Architecture Baseline v1 stable unless a real counterexample or consistency/security defect requires L3 escalation.",
-    "Design multiple Agents developing multiple industries so handoff does not become one shared mutable cursor.",
-    "Let other Agents derive new functionality from Baseline v1 primarily through L1/L2 reuse/extend workstreams while preserving one stable semantic-owner control plane.",
-    "Preserve historical devlogs, research reports, receipts and prior handoffs as provenance rather than rewriting historical evidence."
+    "Architecture Baseline v1 remains stable unless a real counterexample or security/consistency defect justifies L3.",
+    "The next real pilot industries are Banking and Shipping and must be registered on main before worker Agents begin.",
+    "Any Agent that encounters a potential/confirmed L3 or L4 issue must stop the affected implementation and first report it to the user in plain language: what happened, why it touches the foundation, consequences of not changing, risks of changing, recommendation, and the exact user decision required.",
+    "Worker L3/L4 events persist in a workstream-local escalation artifact referenced by integration_requests so future Agents inherit the unresolved decision without user restatement."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33131007474,
-    "observed_head_sha": "a85e82ad88a5dea66d6c05d7f0fceb8863003cd8",
+    "last_observed_run": 33131236177,
+    "observed_head_sha": "29c506ad3b2b3233e8609ecd78ce9569ec7a7ba2",
     "conclusion": "success",
-    "mypy_summary": "Corrected PR #164 closure head a85e82ad88a5dea66d6c05d7f0fceb8863003cd8 passed Mypy and all full-CI hard gates in run 33131007474.",
-    "pytest_summary": "Corrected closure head passed full Pytest in run 33131007474. Architecture Baseline run 33131007449 passed the previously failing current-contract self-consistency test, all workstream/boundary regressions and Baseline-critical semantic regressions without modifying the test. Fresh-Agent Continuity v3 run 33131007429 also passed.",
-    "ruff_summary": "Ruff passed on corrected PR #164 closure head in full CI run 33131007474.",
-    "refresh_instruction": "Seq120 is the final post-merge target handoff and therefore creates a new PR head. Refresh its exact gates before merge; after merge refresh main exact head once more."
+    "mypy_summary": "main@29c506ad passed full hard-gate CI including Mypy before the seq120 external drill; PR #165 exact-head CI must be refreshed independently.",
+    "pytest_summary": "main@29c506ad passed full Pytest/Architecture Baseline/Fresh-Agent contract checks. Seq120 external drill was separately maintainer-reviewed from its immutable report-only commit; automated continuity CI does not substitute for that acceptance.",
+    "ruff_summary": "main@29c506ad full CI passed Ruff; refresh PR #165 exact-head status before merge.",
+    "refresh_instruction": "This handoff intentionally targets post-merge main continuity while PR #165 may still be open. Refresh PR #165/main live state; do not trust this snapshot as exact-head CI authority."
   },
   "workstreams": [
     {
       "workstream_id": "parallel-industry-product-development",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "pilot_ready",
-      "summary": "Reservation-first concurrency is implemented and mainline-proven. The next useful work is a real two-industry pilot, not more control-plane design.",
+      "status": "pilot_registration_next",
+      "summary": "Seq120 continuity boundary is accepted. The next real work is serial registration of Banking and Shipping reservations, followed by parallel worker execution.",
       "next_actions": [
-        "If PR #164 is still open, merge it from an exact green seq120 head and verify main.",
-        "Select two semantically different industries that stress different data/research shapes.",
-        "Register their workstream reservations on main before creating worker branches, then integrate ready outputs through one serial lane."
+        "Finish PR #165 exact-head protected merge if still open.",
+        "Register banking-domain-v1 and shipping-domain-v1 manifests/contracts/admissions on current main in one serial coordinator change with disjoint scopes.",
+        "After registration merges, create/synchronize the two deterministic worker branches and give each fresh Agent its role prompt."
       ],
       "blockers": []
     },
@@ -101,7 +100,7 @@
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
       "status": "maintainer_follow_up",
-      "summary": "The repository ruleset requires both custom status contexts but still does not require branches to be up to date before merge. This is hosting configuration, not a reason to reopen application architecture.",
+      "summary": "The repository ruleset requires the custom Baseline/full-CI contexts but still should require branches to be up to date before merge. This is hosting configuration, not an architecture blocker.",
       "next_actions": [
         "Enable strict/up-to-date required status checks in the existing Protect main ruleset when maintainer access is available."
       ],
@@ -124,10 +123,9 @@
     "ARCHITECTURE_BASELINE_V1.md",
     "docs/development/parallel-agent-development.md",
     "docs/development/workstream-reservation-integration.md",
+    "docs/development/l3-l4-user-escalation.md",
     ".longcycle/workstreams/README.md",
-    "scripts/workstream_registry.py",
-    "scripts/validate_workstream_boundaries.py",
-    ".github/workflows/architecture-baseline.yml",
+    ".longcycle/handoff/rehearsals/fresh-agent-external-120-29c506a.json",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json"
   ],
@@ -135,15 +133,16 @@
     "docs/devlog/2026-08-26-digital-storage-unit-catalog.md"
   ],
   "unresolved_questions": [
-    "Will seq120 final-target handoff exact-head full CI, Architecture Baseline and Fresh-Agent gates remain green?",
+    "Will PR #165 exact-head Architecture Baseline and full CI remain green after the seq121 handoff sync?",
     "Will the maintainer enable strict/up-to-date required checks in Protect main?",
-    "Which two semantically different industries provide the highest-value first concurrency benchmark without duplicating the existing lithium-battery domain?"
+    "Will Banking and Shipping discover a genuinely shared product/platform dependency during the first concurrency pilot, or remain fully disjoint?"
   ],
   "ordered_next_actions": [
-    "Refresh PR #164 and main live state after seq120.",
-    "If PR #164 is open, merge normally only from exact green required checks and verify exact main head.",
-    "Do not add more governance layers before the real pilot.",
-    "Select and reserve two semantically different industry workstreams on main, then create their workstream/<id> producer branches.",
+    "Refresh PR #165 and main live state.",
+    "Merge PR #165 normally only from exact green required checks.",
+    "Do not add more governance layers after seq120 closure.",
+    "Create one serial coordinator registration change for banking-domain-v1 and shipping-domain-v1 on latest main.",
+    "Only after registration merges, launch the two deterministic worker branches/Agents.",
     "Enable strict/up-to-date Protect main checks when maintainer ruleset write access is available."
   ]
 }

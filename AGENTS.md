@@ -69,6 +69,27 @@ L4 requires an explicit user decision before implementation.
 
 Read `docs/development/post-baseline-development.md` for the post-freeze workflow. The focused Architecture Baseline Gate prevents L1/L2 changes from redefining protected semantics merely to make new code pass.
 
+## L3/L4 user decision boundary — mandatory for every Agent
+
+Every Longcycle Agent role inherits `docs/development/l3-l4-user-escalation.md`: worker, coordinator, integration Agent, reviewer, Fresh Agent and future roles.
+
+If credible evidence suggests the work is L3/L4, or there is material uncertainty between L2 and L3, stop the Baseline-changing portion **before implementation**. Do not silently reinterpret a Baseline invariant, semantic owner or Baseline-critical test and explain it afterward.
+
+The first escalation to the user must be in plain language and answer:
+
+1. **发生了什么？**
+2. **为什么这可能碰到地基？**
+3. **如果不改，会发生什么？**
+4. **如果改，主要风险是什么？**
+5. **我的建议是什么？**
+6. **现在需要你决定什么？**
+
+Technical evidence/ADR detail may follow, but it may not replace that plain-language decision brief. Agents must not require the user to understand framework/database terminology merely to decide architectural risk.
+
+Parallel workers persist the issue under `.longcycle/workstreams/<workstream-id>/escalations/<short-id>.md` and add that path to `integration_requests`; they do not write the global handoff or locally fork the semantics. The coordinator/integration lane deduplicates and classifies the request, challenges whether L2 is sufficient, and records only a bounded pointer/status in the global handoff when project-level continuation changes.
+
+An old approval, stale Change Contract, previous handoff or earlier Agent preference is not approval for a new L3/L4 case. L4 always requires explicit user approval; material L3 implementation waits for the required architecture approval path and the user's explicit risk decision when research truth, compatibility or project direction is affected.
+
 ## Mission assimilation before execution
 
 Reading Core files is not enough. Before substantive work:
@@ -164,6 +185,7 @@ Stop/re-rank when parent-level marginal value has collapsed. A real local proble
 - `.longcycle/continuity/mission-fidelity.json`: semantic calibration prompts, not answers.
 - `.longcycle/baseline/current.json` + versioned manifest/document: frozen semantic contract and L1–L4 change rules.
 - `docs/development/longcycle-development-operating-system.md`: integrated reviewer/architecture-change operating manual, not a replacement authority.
+- `docs/development/l3-l4-user-escalation.md`: universal user decision and durable handoff protocol for potential/confirmed L3/L4 issues.
 - Capability Registry/cards: stable semantic owners and extension seams.
 - `.longcycle/change-contract/current.json`: current change-risk classification, not semantic ownership.
 - `.longcycle/handoff/current.json`: current medium/short horizon, cursor, workstreams and snapshot state.
@@ -217,6 +239,6 @@ Whole-project / architecture review:
 
 Deliberate architecture change:
 
-> **准备修改 Longcycle 部分架构：先按仓库 live state 和 `docs/development/longcycle-development-operating-system.md` 完整恢复项目，不直接改代码。先证明这是 L3 而不是 L1/L2：给出真实 source-grounded counterexample 或 security/consistency defect、受影响 BL invariant、现有 owner extension seam 为什么不够，以及 old-data / migration / PIT-no-lookahead / provenance / regression consequences。证据不足就不要改 Baseline。**
+> **准备修改 Longcycle 部分架构：先按仓库 live state 和 `docs/development/longcycle-development-operating-system.md` 完整恢复项目，不直接改代码。先证明这是 L3 而不是 L1/L2：给出真实 source-grounded counterexample 或 security/consistency defect、受影响 BL invariant、现有 owner extension seam 为什么不够，以及 old-data / migration / PIT-no-lookahead / provenance / regression consequences。证据不足就不要改 Baseline。任何 L3/L4 进入实现前，先按 `docs/development/l3-l4-user-escalation.md` 用大白话向用户说明发生了什么、为什么碰地基、不改/改的后果风险、你的建议和需要用户决定什么。**
 
 The phrases carry no current task facts. Repository state owns the task.

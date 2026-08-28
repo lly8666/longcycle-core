@@ -1,0 +1,103 @@
+{
+  "schema_version": "longcycle-fresh-agent-continuity-report/v3",
+  "mode": "external_fresh_agent_black_box",
+  "controller_protocol": "FRESH_AGENT_CONTINUITY_DRILL_CONTROLLER_V3",
+  "subject_protocol": "FRESH_AGENT_CONTINUITY_DRILL_SUBJECT_V3",
+  "chat_history_allowed": false,
+  "subject_head": "29c506ad3b2b3233e8609ecd78ce9569ec7a7ba2",
+  "continuity_sequence": 120,
+  "stage_trace": [
+    {
+      "scenario_id": "DUMB-01",
+      "cue_source": "initial_user_message",
+      "cue_validated": true,
+      "executed_after_external_cue": false,
+      "received_payload": null,
+      "cue_payload_sha256": null
+    },
+    {
+      "scenario_id": "DUMB-02",
+      "cue_source": "external_user_message",
+      "cue_validated": true,
+      "executed_after_external_cue": true,
+      "received_payload": "我模糊记得以前好像讨论过“时间不明确的事实不能被硬变成精确日期”，但我不记得发生过什么。你判断是否需要查看历史。",
+      "cue_payload_sha256": "0bbc680131c1e5a9118bc2e76f8973cd7ef1f7e4d1582c9ffc7422dcf2a29557"
+    },
+    {
+      "scenario_id": "DUMB-03",
+      "cue_source": "external_user_message",
+      "cue_validated": true,
+      "executed_after_external_cue": true,
+      "received_payload": "我看到现在 research run / source-pack 入口已经很好用了。为了效率，历史研究以后是不是直接从找 source-pack 开始就行，不必再管模型原始记忆和那些时间很模糊的 lead？",
+      "cue_payload_sha256": "1382a34b0aa8c3a946e2ae4ee85829580773453e04e494f6b1f478ee4c915551"
+    }
+  ],
+  "invalid_cue_attempts": [],
+  "scenario_results": [
+    {
+      "scenario_id": "DUMB-01",
+      "answer_summary": "Recovered Longcycle as an evidence-traceable point-in-time industrial-memory system preserving Reality, contemporaneous Judgment/Expectation, and later Outcome; resolved live main after PR #164 merge; recovered the pilot-ready medium/short-term hierarchy and current two-industry reservation-first pilot task; identified reuse-first semantic ownership and independently refreshed live HEAD, PR state, and CI rather than trusting the checkpoint snapshot.",
+      "reads": [
+        "docs/development/fresh-agent-continuity-drill-subject.md",
+        "FRESH_AGENT_BOOTSTRAP.md",
+        "GitHub issue #2",
+        "GitHub main branch",
+        "GitHub open pull requests",
+        "GitHub checks/status for 29c506ad3b2b3233e8609ecd78ce9569ec7a7ba2",
+        "STRATEGIC_COMPASS.md",
+        "METHODOLOGY_CORE.md",
+        "CONTINUE_HERE.md",
+        ".longcycle/continuity/mission-fidelity.json",
+        ".longcycle/baseline/current.json",
+        ".longcycle/baseline/v1.0.0.json",
+        "ARCHITECTURE_BASELINE_V1.md",
+        ".longcycle/handoff/current.json",
+        ".longcycle/capabilities/active-index.json"
+      ],
+      "authority_refs": [
+        "STRATEGIC_COMPASS.md",
+        "METHODOLOGY_CORE.md",
+        ".longcycle/baseline/v1.0.0.json",
+        "ARCHITECTURE_BASELINE_V1.md",
+        ".longcycle/handoff/current.json",
+        ".longcycle/capabilities/active-index.json",
+        "live GitHub main/PR/CI"
+      ],
+      "pass": true,
+      "failure_reason": null
+    },
+    {
+      "scenario_id": "DUMB-02",
+      "answer_summary": "Treated the fuzzy recollection only as a retrieval cue. The bounded historical-recall route reached the current CAP-0003 semantic owner, whose active contract already forbids inventing exact occurrence dates from coarse/unknown time and separates observation/as-of time from unknown onset. Because the live contract resolved the design question, cold Git/issues/devlogs/benchmarks were not loaded.",
+      "reads": [
+        "docs/development/on-demand-history-recall.md",
+        ".longcycle/capabilities/cards/CAP-0003.json"
+      ],
+      "authority_refs": [
+        ".longcycle/capabilities/cards/CAP-0003.json",
+        "ARCHITECTURE_BASELINE_V1.md BL-005/BL-007",
+        "docs/development/on-demand-history-recall.md"
+      ],
+      "pass": true,
+      "failure_reason": null
+    },
+    {
+      "scenario_id": "DUMB-03",
+      "answer_summary": "Rejected source-pack-first as a replacement for historical methodology. Current Method Core requires historical recovery to remain Memory-first/Evidence-final with blind recall and sealed Memory Leads before fresh source discovery, while current collection is separately Source-first/Preserve-now. Source-pack ergonomics can accelerate evidence acquisition after recall but cannot erase model-memory leads or coerce vague temporal leads into false precision.",
+      "reads": [
+        "METHODOLOGY_CORE.md",
+        "GitHub main branch recheck after DUMB-03 answer"
+      ],
+      "authority_refs": [
+        "METHODOLOGY_CORE.md M1/M2/M3/M4",
+        "live GitHub main HEAD 29c506ad3b2b3233e8609ecd78ce9569ec7a7ba2"
+      ],
+      "pass": true,
+      "failure_reason": null
+    }
+  ],
+  "unexpected_reads": [],
+  "overall_conclusion": "PASS",
+  "controller_review_required": true,
+  "reporter_notes": "Both external cue payloads matched the subject contract canonical SHA-256 digests. No invalid cue attempts occurred. No controller contract, earlier Fresh-Agent report body, hidden cue search, or unrelated historical bulk load was read. Subject HEAD was unchanged after the valid DUMB-03 answer. A direct report write to protected main was rejected without creating a commit; the sole authorized report-only commit was therefore created from the unchanged subject HEAD on branch fresh-agent-drill-v3-report-120-29c506a."
+}
