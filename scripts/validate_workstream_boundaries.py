@@ -74,6 +74,14 @@ def validate_reservation_unchanged(
             )
 
 
+def validate_worker_merge_target(*, branch: str, base_branch: str | None) -> None:
+    if branch.startswith(WORKER_BRANCH_PREFIX) and base_branch == "main":
+        raise WorkstreamBoundaryError(
+            "worker branches are producer branches and may not merge directly to main; "
+            "route the ready work through the single global_serial integration lane"
+        )
+
+
 def validate_changed_paths(
     *,
     workstream_id: str,
@@ -191,11 +199,13 @@ def validate_worker_branch(
     *,
     base_ref: str,
     branch: str,
+    base_branch: str | None = None,
     head_ref: str = "HEAD",
 ) -> None:
     if not branch.startswith(WORKER_BRANCH_PREFIX):
         return
 
+    validate_worker_merge_target(branch=branch, base_branch=base_branch)
     matches = [
         (path, manifest)
         for path, manifest in loaded
@@ -228,6 +238,7 @@ def validate(
     *,
     base_ref: str | None = None,
     branch: str | None = None,
+    base_branch: str | None = None,
     head_ref: str = "HEAD",
 ) -> None:
     loaded = registry.load_workstreams()
@@ -238,7 +249,13 @@ def validate(
         return
     if not base_ref or not branch:
         raise WorkstreamBoundaryError("--base-ref and --branch must be supplied together")
-    validate_worker_branch(loaded, base_ref=base_ref, branch=branch, head_ref=head_ref)
+    validate_worker_branch(
+        loaded,
+        base_ref=base_ref,
+        branch=branch,
+        base_branch=base_branch,
+        head_ref=head_ref,
+    )
 
 
 def main() -> int:
@@ -247,11 +264,17 @@ def main() -> int:
     )
     parser.add_argument("--base-ref", help="Integration/base ref whose registered reservation is authoritative.")
     parser.add_argument("--branch", help="Actual worker branch name, for example workstream/banking-domain-v1.")
+    parser.add_argument("--base-branch", help="Logical PR base branch; worker branches may not target main directly.")
     parser.add_argument("--head-ref", default="HEAD", help="Head ref used to compute the actual changed paths.")
     args = parser.parse_args()
 
     try:
-        validate(base_ref=args.base_ref, branch=args.branch, head_ref=args.head_ref)
+        validate(
+            base_ref=args.base_ref,
+            branch=args.branch,
+            base_branch=args.base_branch,
+            head_ref=args.head_ref,
+        )
     except (WorkstreamBoundaryError, registry.WorkstreamRegistryError) as exc:
         print(f"WORKSTREAM_BOUNDARY_FAIL {exc}")
         return 1
