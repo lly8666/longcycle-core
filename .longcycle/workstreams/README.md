@@ -11,6 +11,7 @@ See `docs/development/parallel-agent-development.md` for the broader model and `
     workstream.json
     change-contract.json
     capability-admission.json
+    escalations/                  # only when an unresolved L3/L4 decision exists
 ```
 
 Example `workstream.json`:
@@ -73,8 +74,38 @@ The worker copy remains the live cursor for progress fields such as status, `don
 - Active dependencies must be registered and acyclic. A workstream cannot become `ready_for_integration` while a dependency is still planned/active/blocked/ready.
 - Worker branches are producer branches; they do not merge directly to `main`.
 
+## L3/L4 escalation handoff
+
+Every worker inherits `docs/development/l3-l4-user-escalation.md`.
+
+If the worker encounters a credible potential/confirmed L3 or L4 issue, the Baseline-changing portion stops before implementation. The worker must first explain the issue to the user in plain language using the six-question protocol in that document.
+
+The durable worker handoff is:
+
+```text
+.longcycle/workstreams/<workstream-id>/escalations/<short-id>.md
+```
+
+The escalation record contains the plain-language decision brief plus a concise technical appendix with source/counterexample refs and possible affected Baseline/semantic owners. Add that exact repository-relative path to `workstream.json.integration_requests` so the next fresh worker and the serial integration Agent inherit the unresolved decision without user restatement.
+
+Example:
+
+```json
+{
+  "integration_requests": [
+    ".longcycle/workstreams/banking-domain-v1/escalations/regulatory-known-time-gap.md"
+  ]
+}
+```
+
+Do not place the full escalation essay in the global handoff. The worker-local escalation file is the detailed durable artifact; the global handoff, when project-level continuation changes, carries only the pointer, affected workstream(s), decision status and next project-level action.
+
+A worker may continue unrelated L1/L2 work only when it is genuinely independent of the pending decision. It must not create a local industry-specific semantic fork as a workaround.
+
 ## Integration rule
 
 One `global_serial` integration workstream owns the main-bound integration step. It takes one or more ready worker outputs, refreshes latest `main`, resolves shared migrations/capability/global-control requests, rebuilds the workstream active index, runs full CI + Architecture Baseline gates on the exact integration head, and merges normally.
+
+For an L3/L4 request, the serial lane first challenges whether an L2 extension is sufficient, deduplicates related worker escalations, and routes any genuine architecture/mission decision through the user-facing escalation + Change Contract / ADR / approval process. It may not silently approve the new semantics itself.
 
 This keeps industry/product implementation parallel while keeping semantic ownership and shared repository state serial.
