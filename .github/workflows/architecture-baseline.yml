@@ -57,6 +57,7 @@ jobs:
           python scripts/validate_workstream_boundaries.py
           --base-ref "origin/${{ github.base_ref }}"
           --branch "${{ github.head_ref }}"
+          --base-branch "${{ github.base_ref }}"
 
       - name: Worker push diff stays inside the main reservation
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/workstream/')
