@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 116,
+  "continuity_sequence": 117,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "post-baseline/workstream-scope-guard",
   "active_pr": 163,
-  "checkpoint_based_on_head_sha": "5a428bc65c76dff84eac6675cefaf6601ece8a89",
+  "checkpoint_based_on_head_sha": "93f95e19683be4241cc277fff664d827429d4440",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR #163 / post-baseline/workstream-scope-guard. Refresh exact PR head, required statuses and main before trusting this snapshot. Architecture Baseline v1 remains frozen; this is L2 post-Baseline concurrency hardening only. The key refinement is reservation-first parallel development: main/integration-base manifests define worker authority, workstream/<id> branches are producer/live-cursor branches, and only the one global_serial integration lane writes shared state into main.",
+  "bootstrap_instruction": "Resume from live PR #163 / post-baseline/workstream-scope-guard and refresh exact HEAD/main/required statuses before acting. Architecture Baseline v1 remains frozen. The substantive reservation-first multi-Agent implementation is already green; this seq117 state is closure metadata only. Do not add governance scope during closure. Main/integration-base workstream manifests are reservation authority, workstream/<id> branches are bounded producer/live-cursor branches, and one global_serial lane owns main-bound shared integration.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,9 +16,9 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Run Longcycle as a stable post-Baseline industrial-memory platform where multiple industry/product Agents can develop concurrently inside pre-reserved scopes while one semantic-owner/Baseline/integration control plane preserves Evidence, PIT/no-lookahead, temporal precision, provenance and Reality/Judgment/Outcome correctness.",
-    "short_term_goal": "Validate and merge PR #163: make integration-base workstream reservations authoritative, machine-check actual worker diffs/dependencies, run boundary gates on workstream pushes, and prohibit worker branches from merging directly to main. Then close the global integration workstream and launch a small real multi-Agent pilot instead of adding more coordination abstractions.",
-    "next_big_step": "After PR #163 and strict/up-to-date main protection are closed, register two semantically different industry workstreams plus at most one genuinely shared product/platform dependency. Reserve their scopes on main first, create deterministic workstream/<id> producer branches, let them develop independently, and integrate through one serial lane as the first real concurrency benchmark.",
+    "medium_term_goal": "Run Longcycle as a stable post-Baseline industrial-memory platform where multiple industry/product Agents develop concurrently inside pre-reserved scopes while one semantic-owner/Baseline/integration control plane preserves Evidence, PIT/no-lookahead, temporal precision, provenance and Reality/Judgment/Outcome correctness.",
+    "short_term_goal": "Close PR #163 without adding scope: require exact closure-head gates, merge normally, verify the resulting main exact head, then close the reservation-guard workstream coherently. After that, validate the model with a small real multi-Agent pilot rather than more governance design.",
+    "next_big_step": "After PR #163 is green on main and the global reservation-guard workstream is closed, register two semantically different industry workstreams plus at most one genuinely shared product/platform dependency. Reserve their scopes on main first, create deterministic workstream/<id> producer branches, let them develop independently, and integrate through one serial lane as the first real concurrency benchmark.",
     "local_optimization_stop_rule": "Do not build distributed locks, task schedulers, service discovery, cross-Agent chat state or another ownership registry. The repository reservation + branch isolation + dependency DAG + one serial integration lane is sufficient until a real pilot demonstrates a failure it cannot express.",
     "parallel_permanent_tracks": [
       "Capability Registry remains the sole stable semantic-owner routing system; parallel work is L1/L2 reuse/extend by default.",
@@ -28,18 +28,18 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "parallel-workstream-reservation-guard",
-    "last_completed_action": "PR #162 merged to main at b949cb2db7eeb00efed5d7722c621e866f7e188d and exact main received longcycle/full-ci=success and longcycle/architecture-baseline=success. The remaining concurrency gap was then made explicit: declared branch-local scopes were not sufficient authority. PR #163 now adds an integration-base reservation authority, actual diff scope checking, deterministic workstream/<id> worker naming, dependency existence/cycle/readiness gates, worker push validation and an integration-only main merge rule. The task is registered as the sole active global_serial workstream rather than creating a second governance system.",
-    "current_task": "Finish PR #163 validation and integration. Inspect exact-head Architecture Baseline/full CI/Fresh-Agent results, repair only demonstrated regressions, then sync a final handoff, merge normally and verify the resulting main exact head. Do not start real industry workers until this reservation-first protocol is green on main.",
-    "why_now": "Multiple Agents can only develop safely if declared write scopes are enforced against an authority outside the worker's own diff. Closing this before launching the first real parallel industries prevents self-expanded permissions, cross-industry path edits and dependency-order ambiguity from becoming operational debt.",
-    "done_when": "PR #163 is merged normally after exact-head required gates succeed; main exact head is green; worker branches are machine-bounded to base-reserved paths, cannot target main directly, and dependency topology is validated; the global workstream/index/handoff are closed or advanced coherently; and the only remaining hosting action is strict/up-to-date required status checks if still false.",
+    "last_completed_action": "The substantive PR #163 head 93f95e19683be4241cc277fff664d827429d4440 passed Architecture Baseline run 33130514549, Fresh-Agent Continuity v3 run 33130514371 and full CI run 33130514383. Full CI passed PostgreSQL migrations/repository/Reality/Judgment/Evidence integration, real-source orientation, provenance guards, no-lookahead Reality/Judgment replay, Ruff, Mypy, full Pytest, compact-index/history audits and status publication. The new dependency topology and workstream-boundary regression suite also passed. The global_serial workstream and active index are now marked ready_for_integration.",
+    "current_task": "Perform closure only: refresh PR #163 exact head after seq117, require longcycle/full-ci and longcycle/architecture-baseline plus Fresh-Agent success on that exact head, confirm main has not advanced incompatibly, merge normally, then verify exact main head. No new concurrency abstraction belongs in this PR.",
+    "why_now": "The reservation-first model is substantively proven. Only exact-head closure discipline remains before it becomes the mainline operating rule for real parallel industry/product workers.",
+    "done_when": "PR #163 merges normally from an exact green head; resulting main exact head passes required CI; worker reservations/diff/dependency/integration-only rules are present on main; this global_serial workstream is then marked integrated/closed and removed from the active index in a coherent closure change; strict/up-to-date required checks are enabled or remain explicitly tracked as the one hosting follow-up.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh PR #163 exact head after this seq116 commit and inspect Architecture Baseline/full CI/Fresh-Agent results; fix only concrete failures before merge."
+    "next_atomic_action": "Refresh the exact PR #163 head and its three workflows after seq117; if green and main is compatible, merge normally with the expected head SHA."
   },
   "active_context": {
-    "context_id": "parallel-workstream-reservation-guard-116",
+    "context_id": "parallel-workstream-reservation-guard-117",
     "context_kind": "architecture_governance",
-    "label": "Reservation-first multi-Agent worker boundaries and serial integration",
+    "label": "Reservation-first multi-Agent worker boundaries final integration",
     "root_path": "docs/development",
     "campaign_root": null,
     "coverage_path": null,
@@ -65,7 +65,7 @@
   },
   "pending_user_directives": [
     "Continue autonomously from repository state and do not ask the user to repeat background.",
-    "Continue updating the multi-Agent/Baseline-derived-development logic and implement it, not merely describe it.",
+    "Continue updating and implementing the multi-Agent/Baseline-derived-development logic rather than only describing it.",
     "Keep Architecture Baseline v1 stable unless a real counterexample or consistency/security defect requires L3 escalation.",
     "Design multiple Agents developing multiple industries so handoff does not become one shared mutable cursor.",
     "Let other Agents derive new functionality from Baseline v1 primarily through L1/L2 reuse/extend workstreams while preserving one stable semantic-owner control plane.",
@@ -74,25 +74,25 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33130436151,
-    "observed_head_sha": "5a428bc65c76dff84eac6675cefaf6601ece8a89",
-    "conclusion": "pending",
-    "mypy_summary": "PR #163 full CI run 33130436151 was queued at the last observation; no exact-head Mypy conclusion is claimed yet.",
-    "pytest_summary": "PR #163 Architecture Baseline run 33130436125 and full CI run 33130436151 were queued at the last observation; new reservation/scope/dependency tests require exact-head confirmation after seq116.",
-    "ruff_summary": "Ruff remains diagnostic under repository policy; refresh the live run rather than inferring from the prior PR.",
-    "refresh_instruction": "This snapshot predates the seq116 handoff commit. Refresh PR #163 exact head and all required statuses; do not reuse 5a428bc65c76dff84eac6675cefaf6601ece8a89 results for a later head."
+    "last_observed_run": 33130514383,
+    "observed_head_sha": "93f95e19683be4241cc277fff664d827429d4440",
+    "conclusion": "success",
+    "mypy_summary": "PR #163 substantive head 93f95e19683be4241cc277fff664d827429d4440 passed Mypy and all full-CI hard gates in run 33130514383.",
+    "pytest_summary": "Full Pytest passed in run 33130514383. Architecture Baseline run 33130514549 separately passed repository Baseline/change-level checks, Capability ownership, workstream isolation, the new dependency topology gate, new boundary regressions and Baseline-critical semantic regressions. Fresh-Agent Continuity v3 run 33130514371 also passed.",
+    "ruff_summary": "Ruff passed on the substantive PR #163 head in full CI run 33130514383.",
+    "refresh_instruction": "This snapshot proves substantive head 93f95e19683be4241cc277fff664d827429d4440 only. Seq117 changes the head, so refresh exact workflows/statuses before merge and refresh main again after merge."
   },
   "workstreams": [
     {
       "workstream_id": "parallel-workstream-reservation-guard",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "pr163_exact_head_validation_pending",
-      "summary": "The reservation-first worker authority, actual diff scope guard, dependency DAG checks and integration-only main merge rule are implemented in PR #163. Exact-head CI after seq116 and normal integration remain.",
+      "status": "ready_for_integration_exact_head_gate_pending",
+      "summary": "Reservation-first worker authority, actual-diff scope enforcement, dependency DAG checks, workstream push validation and integration-only main merges are substantively green. Only exact closure-head validation and normal merge remain.",
       "next_actions": [
-        "Refresh exact PR #163 head and Architecture Baseline/full CI/Fresh-Agent results.",
-        "Repair only demonstrated failures, then final-sync handoff/workstream status and merge normally.",
-        "Verify exact main head after merge and close this global_serial workstream coherently."
+        "Refresh exact PR #163 head and all three workflow conclusions after seq117.",
+        "Merge normally only when required contexts are green and main remains compatible.",
+        "Verify resulting main exact head, then close this workstream/index/handoff coherently."
       ],
       "blockers": []
     },
@@ -100,13 +100,13 @@
       "workstream_id": "parallel-industry-product-development",
       "role": "supporting_quality_gate",
       "parent_goal_ref": "strategic_horizon.medium_term_goal",
-      "status": "pilot_waiting_for_pr163",
-      "summary": "The next validation is operational rather than architectural: register a small number of real disjoint workers on main, let them develop independently under reserved scopes, and integrate through one serial lane.",
+      "status": "pilot_waiting_for_mainline_guard",
+      "summary": "The next useful validation is operational: two real, semantically different industry workers should be registered on main, develop inside disjoint reservations, and integrate through one serial lane.",
       "next_actions": [
-        "After PR #163 is green on main, choose two semantically different industry workstreams and only the minimum shared platform workstream justified by both."
+        "After PR #163 and its closure are green on main, choose two semantically different industry workstreams and only the minimum shared platform dependency justified by both."
       ],
       "blockers": [
-        "Do not launch the pilot until the reservation-first guard is proven on main."
+        "Do not launch the real pilot until PR #163 is proven on main."
       ]
     }
   ],
@@ -136,15 +136,15 @@
     "docs/devlog/2026-08-26-digital-storage-unit-catalog.md"
   ],
   "unresolved_questions": [
-    "Will PR #163 exact-head full CI, Architecture Baseline and Fresh-Agent gates pass after seq116?",
-    "Will the maintainer enable strict/up-to-date required checks in Protect main if strict_required_status_checks_policy remains false after this integration?",
-    "Does the first real two-industry pilot reveal any reservation/integration collision that the current simple model cannot express?"
+    "Will seq117 closure-head full CI, Architecture Baseline and Fresh-Agent gates remain green?",
+    "Will the maintainer enable strict/up-to-date required checks in Protect main if strict_required_status_checks_policy remains false after integration?",
+    "Does the first real two-industry pilot reveal a reservation/integration collision that the current simple model cannot express?"
   ],
   "ordered_next_actions": [
-    "Refresh PR #163 exact live head and CI after seq116.",
-    "Fix only concrete test/gate failures; do not add new coordination scope during closure.",
-    "Final-sync workstream/handoff state, merge PR #163 normally and verify exact main head.",
-    "Enable strict/up-to-date Protect main checks if still false.",
-    "Launch a bounded real multi-Agent pilot with reservation-first worker creation and one serial integration lane."
+    "Refresh PR #163 exact live head and CI after seq117.",
+    "Do not add new governance scope during closure; fix only concrete regressions.",
+    "Merge PR #163 normally when exact required checks are green and verify exact main head.",
+    "Close the reservation-guard workstream/index/handoff coherently on main.",
+    "Enable strict/up-to-date Protect main checks if still false, then launch a bounded real multi-Agent pilot."
   ]
 }
