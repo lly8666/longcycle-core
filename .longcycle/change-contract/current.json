@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
-  "goal": "Make parallel-workstream reservations authoritative from the integration base and machine-check actual worker diffs/dependencies without changing Architecture Baseline v1 semantics.",
+  "intent_id": "PARALLEL-WORKSTREAM-GUARD-CLOSURE-026",
+  "goal": "Close the integrated reservation-first governance workstream and leave the repository pilot-ready without changing implementation or Architecture Baseline v1 semantics.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; post-Baseline concurrency/integration guard implementation only",
+  "baseline_impact": "none; global control-plane closure metadata only",
   "baseline_invariants": [],
   "schema_impact": "none",
   "baseline_critical_tests_touched": false,
@@ -15,11 +15,9 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "A parallel worker branch uses the deterministic workstream/<workstream-id> namespace and has exactly one matching active workstream manifest.",
-    "The workstream reservation must already exist on the PR/integration base; a worker cannot create or expand its own write authority in the same implementation change.",
-    "Actual changed paths on a worker branch are limited to the workstream's reserved exclusive_write_prefixes plus its own branch-local workstream control directory.",
-    "Active workstream dependencies must exist and be acyclic; ready_for_integration workstreams may depend only on integrated/closed prerequisites.",
-    "Worker branch pushes receive the Architecture Baseline/workstream boundary gate, while final shared/main integration remains serialized.",
-    "Architecture Baseline v1 invariants and Capability Registry semantic ownership remain unchanged."
+    "The reservation-first governance workstream is marked integrated because PR #163 is already merged and exact main CI is green.",
+    "The generated active workstream index no longer lists the completed governance workstream.",
+    "Global handoff no longer points to PR #163 and instead describes the repository as ready for a bounded real multi-Agent pilot.",
+    "No implementation, schema, Capability owner or Architecture Baseline semantic changes are made."
   ]
 }

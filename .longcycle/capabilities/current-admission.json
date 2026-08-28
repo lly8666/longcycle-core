@@ -1,9 +1,9 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "PARALLEL-WORKSTREAM-RESERVATION-GUARD-025",
-  "intent": "Close the remaining post-Baseline multi-Agent concurrency gap by making workstream write-scope reservations authoritative from the integration base, machine-checking actual changed paths against those reservations, and validating dependency topology without changing Architecture Baseline v1 semantics.",
+  "intent_id": "PARALLEL-WORKSTREAM-GUARD-CLOSURE-026",
+  "intent": "Close the already-integrated reservation-first multi-Agent governance workstream and return the global control plane to pilot-ready post-Baseline development without changing implementation or Architecture Baseline v1 semantics.",
   "governance_mode": "converging",
-  "disposition": "extend",
+  "disposition": "reuse",
   "target_capability_ids": [
     "CAP-0009",
     "CAP-0010"
@@ -12,23 +12,17 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "The first parallel-workstream guard correctly validates declared scopes, but declaration alone is insufficient: a worker could edit outside its declared scope or expand its own manifest in the same change. Reserve worker identity/scope on the integration base first, validate the actual diff against that base reservation, keep worker branches in a deterministic namespace, and reject missing/cyclic/unready dependencies. This extends the existing workstream control plane rather than adding a scheduler or lock service.",
+  "rationale_summary": "PR #163 is merged and exact main has passed Architecture Baseline, Fresh-Agent and full hard-gate CI. This is bookkeeping closure only: mark the governance workstream integrated, remove it from the active index and advance project-level handoff to the real multi-Agent pilot. No code, semantic owner or Baseline invariant changes are authorized.",
   "rationale_details_ref": "docs/development/workstream-reservation-integration.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/development/parallel-agent-development.md",
-    ".longcycle/workstreams/README.md",
-    "scripts/workstream_registry.py",
-    ".longcycle/workstreams/active-index.json"
+    ".longcycle/workstreams/parallel-workstream-reservation-guard/workstream.json",
+    ".longcycle/workstreams/active-index.json",
+    "docs/development/workstream-reservation-integration.md"
   ],
   "planned_paths": [
-    "scripts/validate_workstream_boundaries.py",
-    "tests/test_workstream_boundaries.py",
-    ".github/workflows/architecture-baseline.yml",
-    ".longcycle/workstreams/",
-    "docs/development/parallel-agent-development.md",
-    "docs/development/workstream-reservation-integration.md",
-    ".longcycle/workstreams/README.md",
+    ".longcycle/workstreams/parallel-workstream-reservation-guard/workstream.json",
+    ".longcycle/workstreams/active-index.json",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
