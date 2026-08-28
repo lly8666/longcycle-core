@@ -12,47 +12,33 @@ ONE global control plane
     main branch + required CI
     global handoff/current.json
 
-MANY branch-local workstream control planes
-    one branch per workstream
-    one workstream manifest/cursor
+MANY worker control planes
+    one reserved workstream id/scope on main
+    one deterministic workstream/<id> producer branch
+    one branch-local live cursor
     one local Change Contract
     one local capability admission
-    disjoint autonomous write scope
 
 ONE serial integration lane
+    worker reservation changes
     shared/global control-plane edits
     canonical migration numbering
     capability-card changes
     L3/L4 architecture or mission work
-    final mainline handoff sync
+    main-bound integration PRs
 ```
 
-This keeps Agent concurrency in product/domain construction while preserving one definition of correctness.
+The detailed reservation/integration mechanics are defined in `docs/development/workstream-reservation-integration.md`.
 
-## 1. Why the global handoff must stop being every Agent's cursor
+## 1. Global handoff vs workstream handoff
 
-A single mutable `.longcycle/handoff/current.json` works for one active Agent, but it becomes a write hotspot with concurrent development:
+A single mutable `.longcycle/handoff/current.json` works for one active Agent, but it becomes a write hotspot with concurrent development. The global handoff therefore remains only the **project-level horizon/integration cursor**. It summarizes project direction, active workstreams and the current integration lane.
 
-```text
-Banking Agent updates current task
-Shipping Agent updates current task
-Product Agent updates current task
-→ last writer wins
-→ unrelated Agents erase each other's continuation state
-```
+Ordinary worker Agents do not continuously rewrite the global handoff. Detailed continuation state belongs in `.longcycle/workstreams/<workstream-id>/workstream.json` on that worker's branch.
 
-Therefore the main handoff changes role after parallel development starts:
+## 2. Reservation authority and branch-local cursor
 
-- it remains the **project-level horizon/integration cursor**;
-- it summarizes active workstreams and priorities;
-- it is updated by the integration/mainline Agent when project-level direction changes or workstreams integrate;
-- ordinary parallel Agents do **not** continuously rewrite it.
-
-Detailed continuation state belongs in the workstream itself.
-
-## 2. Per-workstream files
-
-Each concurrent workstream uses a dedicated directory:
+Each workstream uses:
 
 ```text
 .longcycle/workstreams/<workstream-id>/
@@ -61,47 +47,44 @@ Each concurrent workstream uses a dedicated directory:
     capability-admission.json
 ```
 
-`workstream.json` is the branch-local handoff/cursor. It declares:
+There are two copies with different roles during parallel development:
 
-- workstream id/kind/status;
-- its branch and the `main` SHA it started from;
-- current Architecture Baseline id;
-- one `intent_id` shared by all three files;
-- parent goal, goal, `done_when`, next atomic action;
-- required Agent capability;
-- existing target Capability Registry owners;
-- autonomous `exclusive_write_prefixes`;
-- `integration_requests` for shared/global paths;
-- dependencies on other workstreams;
-- `parallel` or `global_serial` integration lane.
+```text
+integration-base/main copy  = reservation authority
+worker branch copy          = live continuation cursor
+```
 
-The workstream registry validates these manifests and generates `.longcycle/workstreams/active-index.json` as a compact project-wide view.
+Before implementation begins, the coordinator serially registers the workstream on `main` (or the current integration base), including its branch, Baseline, semantic-owner routing, dependencies and exclusive write prefixes. Then the worker branch `workstream/<workstream-id>` is created or synchronized from that registered base.
+
+The worker may update progress/cursor state inside its own workstream directory, but it may not expand reserved identity/scope/dependencies in the same implementation change. Scope or dependency changes are registered on the integration base first.
+
+This prevents a worker from editing its own permission manifest and using that edit as immediate authority.
 
 ## 3. Parallel lane rules
 
-A normal concurrent workstream must satisfy all of the following:
+A normal concurrent worker must satisfy all of the following:
 
 ```text
 change level = L1 or L2
 capability disposition = reuse or extend
 integration lane = parallel
-branch != main
+branch = workstream/<workstream-id>
+reservation already exists on integration base
+actual diff stays inside reserved write prefixes
 exclusive write scope does not overlap another active parallel workstream
 ```
 
-A parallel Agent may read the whole repository but should autonomously modify only its declared exclusive write prefixes.
+A parallel Agent may read the whole repository but may autonomously modify only:
 
-It may not own global control-plane paths such as:
+```text
+base-reserved exclusive_write_prefixes
++
+.longcycle/workstreams/<workstream-id>/
+```
 
-- Architecture Baseline manifests/documents;
-- Strategy / Method Core;
-- global `.longcycle/handoff/current.json`;
-- global current capability admission / Change Contract;
-- Capability Registry cards/index;
-- canonical `migrations/` numbering;
-- shared mainline CI workflows.
+It may not own global control-plane paths such as Architecture Baseline files, Strategy/Method Core, global handoff/admission/Change Contract, Capability Registry cards/index, canonical `migrations/`, shared CI workflows, `pyproject.toml`, or the generated workstream active index.
 
-When a workstream discovers that one of those must change, it records an `integration_request` instead of silently editing the shared control plane.
+When one of those must change, the worker records an `integration_request` instead of editing shared state.
 
 ## 4. Serial integration lane
 
@@ -109,95 +92,113 @@ Only one active `global_serial` workstream is allowed.
 
 The serial lane handles:
 
+- registering/changing worker reservations;
 - L3/L4 changes;
 - `replace` / `new` semantic-owner work;
 - shared Capability Registry card changes;
 - canonical migration numbering;
 - global CI/rules/governance changes;
-- resolving integration requests from multiple branches;
-- final main handoff/current-admission/current Change Contract sync.
+- resolving integration requests from multiple workers;
+- rebuilding global workstream indexes;
+- final main-bound integration and project-level handoff sync.
 
-This is intentionally a bottleneck for correctness-sensitive shared state. Product/domain research remains parallel; the definition of correctness remains serialized.
+This bottleneck is intentional. Product/domain construction stays parallel; shared definitions and mainline integration stay serialized.
 
-## 5. Migration rule for multiple Agents
+## 5. Dependency graph
+
+Dependencies are part of the reservation because they determine reusable capability ownership and integration order.
+
+Machine rules require:
+
+- every active dependency id to have a registered workstream manifest;
+- active dependency edges to be acyclic;
+- a workstream marked `ready_for_integration` to depend only on workstreams already `integrated` or `closed`.
+
+If Banking and Shipping both need the same reusable Scenario Engine, register one product/platform workstream and make both industry workstreams depend on it. Do not let both build local copies.
+
+## 6. Migration rule for multiple Agents
 
 Parallel Agents must not independently guess the next global migration number.
 
 Bad:
 
 ```text
-Banking branch  → migrations/0040_bank_schema.sql
-Shipping branch → migrations/0040_shipping_schema.sql
+Banking worker  → migrations/0040_bank_schema.sql
+Shipping worker → migrations/0040_shipping_schema.sql
 ```
 
 Instead:
 
-1. the workstream records `integration_requests: ["migrations"]`;
-2. it may keep a local schema/migration proposal under its own workstream/domain path;
-3. when ready for integration, the serial integration Agent rebases/merges latest `main` and assigns the next canonical migration number;
-4. PostgreSQL migration/integration tests run on the resulting exact branch head before merge.
+1. the worker records `integration_requests: ["migrations"]`;
+2. it may keep a schema/migration proposal inside its reserved domain/workstream path;
+3. the serial integration Agent refreshes latest `main` and allocates the next canonical migration number;
+4. PostgreSQL migration/integration tests run on the exact integration head before merge.
 
 Domain knowledge that does not require database capability change should prefer versioned Domain Pack/catalog releases rather than global schema migrations.
 
-## 6. Integration lifecycle
+## 7. Lifecycle
 
-### Start
+### Reserve
 
 Coordinator/integration Agent:
 
 1. refreshes live `main` and Baseline;
-2. creates a branch from exact `main`;
-3. creates the workstream directory + local Change Contract + local capability admission;
-4. declares disjoint write scopes and dependencies;
-5. rebuilds/audits workstream active index.
+2. chooses workstream id, deterministic `workstream/<id>` branch, existing semantic owners, dependencies and the smallest useful write scope;
+3. creates the workstream manifest + local Change Contract + local capability admission in a serial registration change;
+4. rebuilds/audits the active workstream index;
+5. merges the reservation normally to `main`;
+6. creates/synchronizes the worker branch from the registered main state.
 
 ### Develop
 
-Workstream Agent:
+Worker Agent:
 
-1. boots from global Strategy/Method/Baseline;
-2. reads only its workstream manifest + local contract/admission as dynamic task state;
-3. works inside declared write scope;
-4. runs focused tests;
-5. records shared-path needs as integration requests;
-6. updates only its own branch-local workstream cursor at coherent boundaries.
+1. boots from global Strategy/Method/Baseline plus its own workstream files;
+2. works only inside the reserved scope;
+3. runs focused tests and the worker boundary gate;
+4. records shared-path needs as integration requests;
+5. updates its own branch-local cursor at coherent boundaries;
+6. does not directly target `main` for merge.
 
 ### Ready for integration
 
-The workstream becomes `ready_for_integration` only when:
+A worker may become `ready_for_integration` only when:
 
 - `done_when` is met;
-- its local tests are green;
+- local/focused tests are green;
 - unresolved integration requests are explicit;
-- it has not silently modified Baseline semantics;
-- live main drift has been inspected.
+- actual diff still fits the base reservation;
+- all declared dependencies are integrated/closed;
+- Baseline semantics have not been silently reinterpreted.
 
 ### Integrate
 
-Integration Agent:
+The one active integration Agent:
 
-1. refreshes latest main;
-2. integrates/rebases the workstream against current main;
-3. resolves integration requests and canonical migration numbering;
-4. detects semantic/path conflicts with other workstreams;
-5. runs Architecture Baseline Gate + full CI on exact integration head;
-6. merges normally;
-7. marks the workstream integrated/closed and rebuilds active index;
-8. updates project-level handoff only when the integrated result changes what the next project-level Agent should do.
+1. refreshes latest `main`;
+2. verifies worker diffs against registered reservations;
+3. imports one or more ready worker outputs into the global-serial integration branch;
+4. resolves shared integration requests and canonical migration numbering;
+5. updates workstream status and generated active index in the same integration change;
+6. runs Architecture Baseline Gate + full CI on exact integration head;
+7. merges normally to `main`;
+8. updates project-level handoff only when integration changes the next project-level task or direction.
 
-## 7. How new industries should parallelize
+Worker branches are producer branches. The final main-bound PR belongs to the serial integration lane.
 
-Different industries are naturally parallel when their writes are mostly domain-local:
+## 8. New industries
+
+Different industries are naturally parallel when writes remain domain-local:
 
 ```text
-workstream/banking
-    domain/research/catalog assets for banking
+workstream/banking-domain-v1
+    research/domain assets for banking
 
-workstream/shipping
-    domain/research/catalog assets for shipping
+workstream/shipping-domain-v1
+    research/domain assets for shipping
 
-workstream/pharma
-    domain/research/catalog assets for pharma
+workstream/pharma-domain-v1
+    research/domain assets for pharma
 ```
 
 All import the same locked semantics:
@@ -212,9 +213,7 @@ provenance/versioning
 
 They must not fork those semantics into industry-specific copies.
 
-If two industries independently reveal the same missing reusable product capability, do not let both invent it. Open a separate product/platform workstream with one existing semantic owner and make the industry workstreams depend on it.
-
-## 8. How Agents derive new functionality from the Baseline
+## 9. New functionality derived from Baseline v1
 
 A new feature should normally be an L1/L2 **extension surface**, not a new architecture.
 
@@ -232,39 +231,29 @@ Every feature workstream must answer:
 
 1. Which existing Capability Registry owner supplies each stable semantic?
 2. What is genuinely new: UI, domain catalog, calculation, adapter, workflow or research surface?
-3. Which Baseline invariants must remain unchanged?
+3. Which Baseline invariants remain unchanged?
 4. What negative tests prove the feature did not reinterpret Evidence/PIT/provenance?
-5. What paths can this Agent own without colliding with other active workstreams?
+5. What paths can this Agent reserve without colliding with active workstreams?
 
-A feature Agent may compose existing semantics; it may not copy them into a second local truth system.
+A useful pattern remains domain-local first. Promote it into a reusable product/platform capability only when a second independent domain needs the same operation or there is clear product value. Promotion still routes through existing semantic ownership; it does not become Core merely because abstraction is possible.
 
-### Promotion rule
+## 10. Escalation to L3
 
-A useful pattern discovered inside one industry remains domain-local first.
-
-Promote it into a reusable product/platform capability only when there is concrete reuse pressure (for example a second independent domain needs the same semantic operation) or clear product value. Promotion still routes through the existing Capability Registry owner. Do not move concepts into Core merely because abstraction appears possible.
-
-## 9. Escalation to L3
-
-Parallel development stops if a feature or industry discovers that the Baseline cannot truthfully represent a real important case.
-
-Then:
+Parallel development stops only for the Baseline-changing portion when a real important case cannot be truthfully represented.
 
 ```text
 parallel workstream
-→ preserve counterexample/evidence
+→ preserve source-grounded counterexample/evidence
 → record integration request
 → stop Baseline-changing implementation
 → open one global_serial L3 workstream
 → ADR + compatibility/PIT/provenance analysis + independent review
 ```
 
-The original industry workstream may continue unrelated L1/L2 work, but it must not locally fork the Baseline to work around the unresolved case.
+The worker may continue unrelated L1/L2 work inside its reservation, but it must not create a local semantic fork.
 
-## 10. Operational principle
+## Operational principle
 
-The concurrency rule is:
+> Parallelize facts, industries, product surfaces and implementation. Reserve authority before work starts. Serialize semantic ownership, scope changes and mainline integration.
 
-> Parallelize facts, industries, product surfaces and implementation. Serialize semantic ownership, Architecture Baseline changes and shared integration state.
-
-This lets many Agents move quickly without turning Longcycle into many subtly different Longcycles.
+This allows many Agents to move quickly without turning Longcycle into many subtly different Longcycles.
