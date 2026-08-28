@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 118,
+  "continuity_sequence": 119,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "post-baseline/reservation-guard-close",
   "active_pr": 164,
-  "checkpoint_based_on_head_sha": "0331711a911fd9a8d8825bab64b0fc750da8c6ac",
+  "checkpoint_based_on_head_sha": "be5e7e1a74c85fbeae58218c0f3a344b39f71104",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Resume from live PR #164 / post-baseline/reservation-guard-close and refresh exact HEAD/main/required statuses first. PR #163 is already merged to main at fdb452daf4de08c18d14e97cba8aff6a838a0a71 and the reservation-first multi-Agent model is proven on exact main. PR #164 is L1 closure metadata only: mark the completed governance workstream integrated, clear it from the active index and leave the project ready for a real two-industry pilot. Do not add another coordination abstraction during closure.",
+  "bootstrap_instruction": "Resume from live PR #164 / post-baseline/reservation-guard-close and refresh exact HEAD/main/required statuses first. PR #163 is already merged to main at fdb452daf4de08c18d14e97cba8aff6a838a0a71 and the reservation-first multi-Agent model is proven on exact main. PR #164 is conservative L2 control-plane closure only: mark the completed governance workstream integrated, clear it from the active index and leave the project ready for a real two-industry pilot. Architecture Baseline regression explicitly expects the current global Change Contract to remain L2; the initial L1 closure classification was corrected without weakening or editing that test. Do not add another coordination abstraction during closure.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,7 +17,7 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where multiple industry/product Agents develop concurrently inside pre-reserved scopes while one semantic-owner/Baseline/integration control plane preserves Evidence, PIT/no-lookahead, temporal precision, provenance and Reality/Judgment/Outcome correctness.",
-    "short_term_goal": "Merge the L1 closure PR #164 after exact-head gates, verify main, then stop governance design and run the first real reservation-first multi-Agent pilot: two semantically different industries with disjoint scopes and at most one genuinely shared product/platform dependency, integrated through one serial lane.",
+    "short_term_goal": "Merge the conservative L2 closure PR #164 after exact-head gates, verify main, then stop governance design and run the first real reservation-first multi-Agent pilot: two semantically different industries with disjoint scopes and at most one genuinely shared product/platform dependency, integrated through one serial lane.",
     "next_big_step": "Select two semantically different industries that stress different data shapes and research workflows, register both workstream manifests/contracts/admissions on main before workers start, create deterministic workstream/<id> branches from the registered base, and measure whether independent development plus serial integration works without scope leakage, duplicated semantics or handoff collision.",
     "local_optimization_stop_rule": "The coordination architecture is now sufficient. Do not add distributed locks, schedulers, service discovery, cross-Agent chat state, leases or another ownership registry unless the real pilot demonstrates a concrete failure that reservation + branch isolation + dependency DAG + one serial integration lane cannot express.",
     "parallel_permanent_tracks": [
@@ -28,16 +28,16 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "parallel-industry-product-development",
-    "last_completed_action": "PR #163 merged normally to main at fdb452daf4de08c18d14e97cba8aff6a838a0a71. Exact main then passed Architecture Baseline run 33130762795, Fresh-Agent Continuity v3 run 33130762959 and full CI run 33130762808, including mainline workstream-index consistency, PostgreSQL/Reality/Judgment/Evidence integration, no-lookahead replay, Mypy, full Pytest and provenance audits. PR #164 now performs only coherent L1 closure: the governance workstream is marked integrated, the active index is empty, and the global admission/contract are rotated away from the completed implementation intent.",
-    "current_task": "Close PR #164 only. Refresh its exact head after seq118, require Architecture Baseline/full CI/Fresh-Agent success, merge normally and verify exact main. Once green, do not continue governance design; prepare the first real two-industry reservation-first pilot using the existing rules.",
-    "why_now": "The coordination mechanism is implemented and validated. Further theoretical governance work has declining value; the next source of truth must be operational evidence from real concurrent industry development.",
+    "last_completed_action": "PR #163 merged normally to main at fdb452daf4de08c18d14e97cba8aff6a838a0a71. Exact main passed Architecture Baseline run 33130762795, Fresh-Agent Continuity v3 run 33130762959 and full CI run 33130762808. PR #164 then attempted a metadata-only L1 closure; Architecture Baseline run 33130924110 correctly failed because the existing self-consistency regression requires the current global Change Contract to be L2. The regression test was not modified. The closure contract is now conservatively L2, while still authorizing only workstream/index/admission/contract/handoff closure metadata and no implementation or Baseline semantic change.",
+    "current_task": "Close PR #164 only. Refresh its exact head after seq119, require Architecture Baseline/full CI/Fresh-Agent success, merge normally and verify exact main. Once green, do not continue governance design; prepare the first real two-industry reservation-first pilot using the existing rules.",
+    "why_now": "The coordination mechanism is implemented and validated. The closure failure demonstrated that existing machine governance should constrain even bookkeeping classification. With L2 restored, further theoretical governance work has declining value; the next source of truth must be operational evidence from real concurrent industry development.",
     "done_when": "PR #164 is merged from an exact green head; main exact head is green; no completed governance workstream remains active; global handoff is pilot-ready; strict/up-to-date main checks are enabled or explicitly tracked as the only hosting-level follow-up; and the next Agent can choose/register the first two real industry workstreams without reopening Architecture Baseline v1.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh exact PR #164 head and its Architecture Baseline/full CI/Fresh-Agent runs after seq118; merge normally if green, then verify exact main and move to pilot selection/reservation."
+    "next_atomic_action": "Refresh exact PR #164 head and its Architecture Baseline/full CI/Fresh-Agent runs after seq119; merge normally if green, then verify exact main and move to pilot selection/reservation."
   },
   "active_context": {
-    "context_id": "parallel-agent-pilot-readiness-118",
+    "context_id": "parallel-agent-pilot-readiness-119",
     "context_kind": "architecture_governance",
     "label": "Post-Baseline multi-Agent pilot readiness",
     "root_path": "docs/development",
@@ -50,10 +50,12 @@
       "scripts/workstream_registry.py",
       "scripts/validate_workstream_boundaries.py",
       ".longcycle/workstreams/active-index.json",
-      ".longcycle/workstreams/parallel-workstream-reservation-guard/workstream.json"
+      ".longcycle/workstreams/parallel-workstream-reservation-guard/workstream.json",
+      "tests/test_architecture_baseline.py"
     ],
     "core_exclusion_terms": [
       "more-governance-before-real-pilot",
+      "weakening-baseline-tests-to-close-bookkeeping",
       "worker-self-issued-write-authority",
       "worker-direct-main-merge",
       "parallel-agent-global-handoff-write",
@@ -74,13 +76,13 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33130762808,
-    "observed_head_sha": "fdb452daf4de08c18d14e97cba8aff6a838a0a71",
-    "conclusion": "success",
-    "mypy_summary": "Exact main merge head fdb452daf4de08c18d14e97cba8aff6a838a0a71 passed Mypy and all full-CI hard gates in run 33130762808.",
-    "pytest_summary": "Exact main passed full Pytest/full CI in run 33130762808. Architecture Baseline run 33130762795 passed Baseline/Capability/workstream dependency guards, mainline active-index consistency, boundary regressions and Baseline-critical semantic regressions. Fresh-Agent Continuity v3 run 33130762959 also passed.",
-    "ruff_summary": "Ruff passed on exact main fdb452daf4de08c18d14e97cba8aff6a838a0a71 in full CI run 33130762808.",
-    "refresh_instruction": "This snapshot proves exact main fdb452daf4de08c18d14e97cba8aff6a838a0a71 only. Seq118 changes PR #164 head, so refresh exact PR gates before merge and refresh main again after merge."
+    "last_observed_run": 33130924110,
+    "observed_head_sha": "eac787524079c46727c1c4ab533f5e4b723e9e31",
+    "conclusion": "failure",
+    "mypy_summary": "No implementation/type regression was established by the failed closure-head Architecture Baseline run; the failure occurred before semantic regressions because the current Change Contract was classified L1 while an existing repository self-consistency test expects L2.",
+    "pytest_summary": "Architecture Baseline run 33130924110 failed exactly one baseline regression: tests/test_architecture_baseline.py::test_current_baseline_contract_is_self_consistent asserted current change_level L2 but closure declared L1. The test was preserved unchanged and the contract was corrected back to conservative L2. Exact main fdb452daf4de08c18d14e97cba8aff6a838a0a71 remains previously proven green by full CI run 33130762808 and Architecture Baseline run 33130762795.",
+    "ruff_summary": "No Ruff regression is claimed from the failed closure gate; refresh the new exact head after the L2 correction.",
+    "refresh_instruction": "This snapshot records the superseded L1 closure failure and the correction rationale. Seq119 creates a new head; refresh all exact PR #164 gates and do not reuse either the failure or earlier green statuses for merge."
   },
   "workstreams": [
     {
@@ -129,18 +131,19 @@
     "scripts/validate_workstream_boundaries.py",
     ".github/workflows/architecture-baseline.yml",
     ".longcycle/capabilities/current-admission.json",
-    ".longcycle/change-contract/current.json"
+    ".longcycle/change-contract/current.json",
+    "tests/test_architecture_baseline.py"
   ],
   "latest_devlogs": [
     "docs/devlog/2026-08-26-digital-storage-unit-catalog.md"
   ],
   "unresolved_questions": [
-    "Will PR #164 closure-head full CI, Architecture Baseline and Fresh-Agent gates remain green after seq118?",
+    "Will PR #164 corrected L2 closure-head full CI, Architecture Baseline and Fresh-Agent gates pass after seq119?",
     "Will the maintainer enable strict/up-to-date required checks in Protect main?",
     "Which two semantically different industries provide the highest-value first concurrency benchmark without duplicating the existing lithium-battery domain?"
   ],
   "ordered_next_actions": [
-    "Refresh PR #164 exact live head and all three gates after seq118.",
+    "Refresh PR #164 exact live head and all three gates after seq119.",
     "Merge PR #164 normally when exact required checks are green and verify exact main head.",
     "Do not add more governance layers before the real pilot.",
     "Select and reserve two semantically different industry workstreams on main, then create their workstream/<id> producer branches.",
