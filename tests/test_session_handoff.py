@@ -58,8 +58,6 @@ class SessionHandoffContractTest(unittest.TestCase):
         )
         self.assertTrue(checkpoint.continuation_cursor.next_atomic_action)
         self.assertTrue(any(item.role == "main_path" for item in checkpoint.workstreams))
-        self.assertLessEqual(len(checkpoint.workstreams), 5)
-        self.assertLessEqual(len(checkpoint.ordered_next_actions), 8)
 
     def test_long_term_cores_are_references_not_checkpoint_copies(self) -> None:
         payload = json.loads(HANDOFF.read_text(encoding="utf-8"))

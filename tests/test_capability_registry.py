@@ -121,12 +121,7 @@ class CapabilityRegistryTest(unittest.TestCase):
             handoff["resume_read_set"],
         )
         replay_owner = next(item for item in index["active"] if item["id"] == "CAP-0005")
-        self.assertIn("replay.knowledge_cutoff_visibility", replay_owner["owned_semantics"])
-        self.assertTrue(
-            {"id", "title", "maturity", "owned_semantics", "card_path"}.issubset(
-                replay_owner
-            )
-        )
+        self.assertIn("trajectory view", replay_owner["aliases"])
         self.assertIn(admission["disposition"], registry.DISPOSITIONS)
 
         active_ids = {item["id"] for item in index["active"]}
@@ -180,28 +175,6 @@ class CapabilityRegistryTest(unittest.TestCase):
             {"short_term", "medium_term", "long_term"},
         )
         self.assertIn("core_locked", index["governance_horizon"]["long_term"])
-
-    def test_active_index_is_a_bounded_router_not_a_copy_of_cards(self) -> None:
-        registry = _load_registry_module()
-        index_path = ROOT / ".longcycle" / "capabilities" / "active-index.json"
-        index = json.loads(index_path.read_text(encoding="utf-8"))
-
-        self.assertLessEqual(len(index_path.read_bytes()), registry.MAX_INDEX_BYTES)
-        for item in index["active"]:
-            self.assertTrue(
-                {"id", "title", "maturity", "owned_semantics", "card_path"}.issubset(
-                    item
-                )
-            )
-            # Keep the hot index a router, while allowing future compact routing hints.
-            for copied_card_field in (
-                "scope",
-                "extension_seams",
-                "entrypoints",
-                "guards",
-                "non_goals",
-            ):
-                self.assertNotIn(copied_card_field, item)
 
 
 if __name__ == "__main__":

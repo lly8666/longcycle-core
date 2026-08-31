@@ -315,6 +315,7 @@ def build_index(cards: list[tuple[Path, dict[str, Any]]]) -> dict[str, Any]:
                 "id": card["id"],
                 "title": card["title"],
                 "maturity": card["maturity"],
+                "aliases": card["aliases"],
                 "owned_semantics": card["owned_semantics"],
                 "card_path": _relative(path),
             }
