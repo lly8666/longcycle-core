@@ -51,6 +51,10 @@ jobs:
               "+refs/heads/$GITHUB_REF_NAME:refs/remotes/origin/$GITHUB_REF_NAME" \
               +refs/heads/main:refs/remotes/origin/main
           fi
+          BASELINE_TAG="$(python -c 'import json; print(json.load(open(".longcycle/baseline/current.json", encoding="utf-8"))["tag"])')"
+          git check-ref-format "refs/tags/$BASELINE_TAG"
+          git fetch --no-tags --depth=1 origin \
+            "+refs/tags/$BASELINE_TAG:refs/tags/$BASELINE_TAG"
 
       - name: Validate unchanged Baseline and owner routing
         run: |
