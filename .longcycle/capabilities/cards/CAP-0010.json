@@ -12,11 +12,18 @@
       "description": "Repository governance CLI validates cards/index/admission/handoff integration and supports bounded relevant lookup.",
       "kind": "script",
       "path": "scripts/capability_registry.py"
+    },
+    {
+      "contains": "def load_workstreams()",
+      "description": "Workstream registry keeps main-owned reservations separate from worker-owned cursors and builds the compact active router.",
+      "kind": "script",
+      "path": "scripts/workstream_registry.py"
     }
   ],
   "extension_seams": [
     "Improve deterministic discovery/routing without making opaque similarity a hard blocker.",
-    "Tighten admission requirements as governance_mode matures from converging toward core-locked architecture."
+    "Tighten admission requirements as governance_mode matures from converging toward core-locked architecture.",
+    "Route parallel development through bounded main-owned reservations and worker-owned cursors without copying workstream history into the global handoff or creating another semantic-owner registry."
   ],
   "guards": [
     {
@@ -48,6 +55,12 @@
       "description": "The zero-context rendezvous explicitly recovers stable capability ownership before material development while CAP-0009 remains the owner of the bootstrap surface itself.",
       "kind": "protocol",
       "path": "FRESH_AGENT_BOOTSTRAP.md"
+    },
+    {
+      "contains": "reservation_revision",
+      "description": "Registry tests enforce main-owned reservation intent, writer fencing, bounded routing and cursor/reference integrity.",
+      "kind": "test",
+      "path": "tests/test_workstream_registry.py"
     }
   ],
   "id": "CAP-0010",
@@ -60,7 +73,8 @@
   "owned_semantics": [
     "governance.capability_inventory",
     "governance.semantic_owner_uniqueness",
-    "governance.capability_admission"
+    "governance.capability_admission",
+    "governance.parallel_workstream_reservation_and_routing"
   ],
   "purpose": "Own the sparse machine-readable map of what Longcycle already knows how to do and force material development to classify as reuse/extend/replace/new before creating new semantic ownership.",
   "revisit_when": "Evolve when the architecture matures enough to raise governance_mode or when real development shows a false-positive/false-negative pattern that explicit ownership fields cannot express.",
@@ -68,7 +82,12 @@
   "scope": [
     ".longcycle/capabilities/**",
     "scripts/capability_registry.py",
+    "scripts/workstream_registry.py",
+    "scripts/validate_workstream_boundaries.py",
     "docs/development/capability-governance.md",
+    "docs/development/parallel-agent-development.md",
+    "docs/development/workstream-reservation-integration.md",
+    ".longcycle/workstreams/**",
     "AGENTS.md",
     "CONTINUE_HERE.md",
     "tests/test_capability_registry.py",

@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "SEQ120-ACCEPTANCE-L3-USER-ESCALATION-027",
-  "intent": "Accept the genuine external Fresh-Agent Continuity Drill v3 sequence-120 result and extend existing continuity/capability governance with a universal plain-language L3/L4 user-decision and durable worker-escalation handoff protocol, without changing Architecture Baseline v1 semantics.",
+  "intent_id": "REMOTE-WORKER-CONTINUITY-V1-028",
+  "intent": "Extend repository-backed continuity and capability governance with a bounded remote-only worker cursor, automatic next-invocation interruption recovery, turn-boundary S+H, typed cross-workstream delivery contracts, and conflict-free immutable Drive database generations.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
@@ -12,24 +12,33 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "Seq120 genuine external Fresh-Agent v3 tested main@29c506ad with canonical cue digests, bounded reads, stable subject HEAD and one report-only commit; maintainer review accepts it as PASS. The user additionally requires every Agent to stop potential L3/L4 implementation and explain the decision in plain language. Existing continuity and capability-governance owners are sufficient, so this extends them rather than creating a new governance owner.",
-  "rationale_details_ref": "docs/development/l3-l4-user-escalation.md",
+  "rationale_summary": "CAP-0009 already owns bounded fresh-Agent recovery, live-head reconciliation and data-plane handoff; CAP-0010 already owns sparse governance routing and semantic-owner uniqueness. Worker interruption, shared Drive database and ownership gaps fit their extension seams and do not require a new semantic owner.",
+  "rationale_details_ref": "docs/development/remote-worker-continuity.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    ".longcycle/handoff/rehearsals/fresh-agent-external-120-29c506a.json",
-    "docs/development/fresh-agent-continuity-drill.md",
-    "docs/development/l3-l4-user-escalation.md",
-    "AGENTS.md",
+    "docs/development/session-handoff-protocol.md",
+    "docs/development/parallel-agent-development.md",
+    "docs/development/post-baseline-development.md",
+    "docs/development/workstream-reservation-integration.md",
+    "docs/development/parallel-data-plane.md",
+    "docs/development/longcycle-development-operating-system.md",
     ".longcycle/workstreams/README.md"
   ],
   "planned_paths": [
-    ".longcycle/handoff/rehearsals/fresh-agent-external-120-29c506a.json",
-    "docs/development/l3-l4-user-escalation.md",
-    "AGENTS.md",
-    ".longcycle/workstreams/README.md",
-    ".longcycle/capabilities/current-admission.json",
+    "src/longcycle/application/**",
+    "scripts/**",
+    "docs/development/**",
+    ".longcycle/workstreams/**",
+    ".longcycle/capabilities/**",
     ".longcycle/change-contract/current.json",
-    ".longcycle/handoff/current.json"
+    ".longcycle/handoff/current.json",
+    ".longcycle/handoff/data-plane.json",
+    "AGENTS.md",
+    "FRESH_AGENT_BOOTSTRAP.md",
+    "CONTINUE_HERE.md",
+    "tests/**",
+    ".github/workflows/architecture-baseline.yml",
+    "docs/dev-binary-cache.md"
   ],
   "proposed_capability_id": null
 }

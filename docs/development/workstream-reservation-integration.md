@@ -14,15 +14,15 @@ The purpose is to make parallel Agent autonomy real while preventing an Agent fr
 
 ## 1. Why declaration alone is insufficient
 
-A branch-local manifest can say:
+A branch-local cursor cannot define its own construction zone. For example, an old combined manifest could say:
 
 ```text
 exclusive_write_prefixes = [domain_packs/banking]
 ```
 
-but unless CI compares the actual diff with an authority outside that worker's control, the worker could also change `domain_packs/shipping` or edit its own manifest to add a broader prefix in the same PR.
+but unless CI compares the actual diff with an authority outside that worker's control, the worker could also change `domain_packs/shipping` or expand its own scope in the same PR.
 
-Therefore the worker's current manifest is not the authority for identity/scope. The matching manifest already registered on the integration base is.
+Therefore v2 separates the files: refreshed-main `reservation.json` is identity/scope/goal authority, while exact-remote-worker `cursor.json` is bounded execution state.
 
 ## 2. Reservation lifecycle
 
@@ -32,40 +32,44 @@ Before a parallel worker starts:
 2. Choose a stable workstream id.
 3. Choose deterministic branch `workstream/<workstream-id>`.
 4. Define existing Capability Registry owners, dependencies and the smallest practical exclusive write prefixes.
-5. Add the workstream manifest + local Change Contract + local capability admission through the serial coordinator/integration lane.
+5. Add main-owned `reservation.json`, an initial worker `cursor.json`, the local Change Contract and local capability admission through the serial coordinator/integration lane.
 6. Rebuild `.longcycle/workstreams/active-index.json` and merge that reservation normally to `main`.
 7. Create or synchronize the worker branch from the main state containing the reservation.
 
 This tiny reservation step is intentionally serial. It is the equivalent of assigning construction zones before multiple crews begin work.
 
-## 3. Fields reserved on the integration base
+## 3. Reservation and cursor ownership
 
-A worker cannot change these and use the change as authority in the same implementation diff:
+`reservation.json` on refreshed `main` is entirely coordinator-owned. A worker cannot change these facts and use the change as authority in the same implementation diff:
 
 - `workstream_id`;
 - `kind`;
+- `lifecycle_state`;
 - `branch`;
+- `base_main_sha`;
 - `baseline`;
+- `intent_id` and contract/admission paths;
 - `integration_lane`;
+- `parent_goal_ref`, `goal` and `done_when`;
 - `exclusive_write_prefixes`;
 - `target_capability_ids`;
-- `dependencies`.
+- `dependencies`;
+- `reservation_revision`, `assignment_epoch` and `cursor_path`.
 
 If one of these genuinely needs to change, the coordinator changes the reservation first and the worker synchronizes that new base.
 
 This is especially important for scope expansion. A worker may discover that it needs a shared module, migration or Capability card, but it must record that as an integration request rather than silently extending its own write zone.
 
-## 4. Fields that remain branch-local cursor state
+## 4. Branch-local cursor state
 
-The worker may update ordinary progress state inside its own `.longcycle/workstreams/<id>/` directory, including:
+The worker updates `cursor.json` on the exact remote producer branch. It may acknowledge the reservation identity/fence and update only bounded progress state, including:
 
-- implementation status/progress;
-- `done_when` refinement that does not redefine Baseline correctness;
-- next atomic action;
-- integration requests;
-- bounded evidence/receipts needed by the integration lane.
+- `cursor_sequence` and the acknowledged substantive/WIP checkpoint SHA;
+- last completed action, current task, why-now, task-level `task_done_when` and next atomic action;
+- progress/partial summary and exact-head verification state;
+- typed integration-request, receipt and artifact pointers.
 
-The local Change Contract and capability admission remain intent-bound and still must obey the L1/L2 + reuse/extend policy for parallel work.
+Task-level `task_done_when` may narrow one atomic action but cannot replace the reservation's workstream acceptance. The local Change Contract and capability admission remain intent-bound and still must obey the L1/L2 + reuse/extend policy for parallel work. Startup and interrupted-work repair follow `docs/development/remote-worker-continuity.md`.
 
 ## 5. Actual diff gate
 
@@ -97,7 +101,7 @@ Dependencies are part of the reservation because they influence merge order and 
 
 Machine rules:
 
-- every active dependency id must have a registered workstream manifest;
+- every active dependency id must have a registered main-side reservation;
 - active dependency edges must be acyclic;
 - a workstream cannot be `ready_for_integration` while any dependency is not `integrated` or `closed`.
 
@@ -126,7 +130,7 @@ When one or more workers are ready:
 2. It verifies that worker diffs still fit the registered reservations and that dependencies are satisfied.
 3. It creates/uses the one active global-serial integration branch.
 4. It imports the ready worker changes.
-5. It resolves shared `integration_requests`.
+5. It resolves typed request files referenced by worker `integration_request_refs`.
 6. It allocates canonical migration numbers only now.
 7. It updates global Capability cards/control-plane files only when required by the admitted integration task.
 8. It updates workstream status and rebuilds `active-index.json` in the same integration change.

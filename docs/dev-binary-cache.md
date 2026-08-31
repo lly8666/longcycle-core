@@ -93,6 +93,20 @@ Historical Release packs may also contain HTML/web/JSON or mixed source payloads
 - A webpage capture capsule is source-derived capture material, not a model-generated research conclusion.
 - Deferred PDF materialization may use whatever durable development file/object transport its owning receipt specifies; no single transport is required merely to let Evidence work proceed.
 
+### Parallel database generations
+
+Drive database objects are immutable. Refreshed Git main owns the bounded current-generation
+pointer; Drive file names, listing order and local downloads do not. A worker restores an exact
+file/revision/digest into private storage and writes only to a copy or isolated PostgreSQL
+database/schema. It publishes a new candidate with an upload intent followed by a verified outcome,
+never by replacing the base object.
+
+The single serial integration lane checks the candidate's pinned base against the current head,
+replays candidates in a declared order, resolves schema/semantic conflicts, uploads and verifies a
+new integrated object, then advances the Git pointer only if its expected predecessor is still
+current. See `docs/development/parallel-data-plane.md` for interruption recovery and bounded-history
+rules.
+
 ## Git control plane
 
 Git contains task specs, source locators, document identities, claim-scoped authority/provenance, readable Evidence captures, optional raw-byte hashes/materialization metadata, Evidence/Reality/Judgment/Outcome receipts, replay metadata and handoff/data-plane manifests.

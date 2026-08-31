@@ -34,12 +34,19 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
    开工前必须能解释当前原子任务如何逐层服务每个父目标。
 7. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不同，先检查 intervening commits；不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
 8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项。不要默认读取旧 devlog、旧行业、旧 rehearsal report 或全部 raw data。
+   如果当前角色是 parallel worker，再读取 main 上的 reservation 与准确的远端 worker cursor，并先执行 `docs/development/remote-worker-continuity.md` 的 remote-only preflight。返回 `RECOVERY_REQUIRED` 时先补完上一轮远端 handoff；返回 `BLOCKED` 时停止并交给 Coordinator。相同 Agent 再次启动也不能跳过这一闸门。
 9. **开始 material capability / product-surface / architecture 开发前**，先写/更新 `.longcycle/change-contract/current.json` 的 `L1/L2/L3/L4`，再独立执行 Capability Registry admission：`reuse / extend / replace / new`。两个维度不可混用。
 10. `target_capability_ids` 是精确 owner 路由；必须直接加载对应 capability card、entrypoint/guard 和相关负例；`relevant` 模糊检索只能辅助发现，不能替代精确 ID authority。**新 projection / composition 不能重新解释 owner 已经定义的语义**；必须列出复用的 owner 语义，并把 owner-derived negative case 放进 hard acceptance。默认 L1/L2 + reuse/extend，不能因为“更干净”新建第二个 semantic owner。
 11. 修改已知代码路径前，用 Repair Memory 做 path-scoped invariant lookup；如果全新路径无命中，也不能推断“没有历史约束”。
 12. 如果出现“以前是不是讨论过/修过这个”的 fuzzy cue，走 `docs/development/on-demand-history-recall.md`：owner → Repair Memory → exact origin refs → bounded Git/Issue/receipt/devlog history → 回到 live authority。不要 bulk-load 历史。
 13. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
 14. 做 whole-project review / architecture review / deliberate L3 change 时，额外读 `docs/development/longcycle-development-operating-system.md`；普通 L1/L2 Agent 不需要默认加载这份完整 reviewer manual。
+
+## 轮次边界 S+H
+
+正常一次开发轮次以 `AGENTS.md` 和 `docs/development/remote-worker-continuity.md` 为规范，但没有强制分钟数、对话次数或固定 push 频率。先做远端 preflight 与五层目标校准，再完成一个有界原子目标，并在安全边界做相称验证与 cursor sync。
+
+每个 coherent task 完成后都先 push substantive/WIP checkpoint，再单独 push cursor acknowledgement，然后才开始下一任务。若当前轮次在 S 后、H 前被中断，下一轮次启动必须自动先返回 `RECOVERY_REQUIRED`，根据真实远端增量补完 H 并复读为 `CLEAN`，随后才处理新任务。未 push 的内容不属于可恢复状态；中断后的 Agent 从上一远端 cursor 重做该小原子动作。Handoff 只保存增量和精确指针，不复制宏大框架、完整历史或历任 Agent 叙事。
 
 ## Handoff 的两层权威
 
@@ -149,9 +156,20 @@ Longcycle-generated binary state 放 Google Drive，例如：
 - 网页 capture capsule 虽然走 Drive，但里面的可见文本是 source-derived capture；
 - Drive 是 portable relay，不是 live PostgreSQL authority，也不是终局 archive。
 
+### 多 Agent 并行时的数据库规则
+
+- Git 主分支的 `database_generation_heads` 才定义当前数据库代际；Drive 文件名和目录顺序不算 authority；
+- Worker 必须按 exact file id / revision（若可用）/ SHA-256 / size / schema revision 下载并校验；
+- 下载后的基线放入自己的 workstream 私有目录，默认只读；需要修改时先复制，PostgreSQL 则使用隔离 database/schema；
+- Worker 只能上传新的 immutable candidate 或 deterministic change bundle，不能覆盖原 Drive 对象，也不能自行改全局 generation head；
+- 上传前先 push intent receipt，上传并回读校验后再 push outcome receipt；若中断后只有 intent，下一轮先查 Drive 再决定补 outcome 或重试，不能盲目重复上传；
+- 只有 `global_serial` 集成 Agent 能按最新基线串行 replay/resolve candidate、分配 canonical migration、验证并推进 current generation；旧基线 candidate 必须 replay/rebase 或拒绝，禁止 last-writer-wins。
+
+详细契约见 `docs/development/parallel-data-plane.md`。
+
 ## 4. PostgreSQL 不做 session 搬运
 
-不要把 live PostgreSQL cluster 放 Release 或 Drive 当 session state。需要 transaction / lease / outbox / write semantics 时，在 GitHub Actions 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
+不要把 live PostgreSQL cluster 放 Release 或 Drive 当 session state。需要 transaction / lease / outbox / write semantics 时，在 GitHub Actions 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。并行 Worker 不共享一个可写 schema；各自使用 workstream/assignment-fenced 隔离 database/schema，canonical migration 由串行集成 lane 分配。
 
 注意：**Actions 仍然可以用于 PostgreSQL/runtime execution；禁止的是为了下载新 PDF 而制造 acquisition Actions。**
 

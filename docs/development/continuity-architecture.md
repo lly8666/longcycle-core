@@ -84,6 +84,14 @@ Do not transport a live PostgreSQL cluster between sessions. If a generated DB s
 
 DuckDB remains a read/replay materialization, not a substitute for raw Evidence.
 
+### Parallel database generations
+
+Multiple workers may consume the same promoted generation, but they never share a writable database
+or overwrite its Drive object. Each base is restored by exact identity/digest into private storage;
+worker outputs are immutable candidates; and the one serial integration lane alone replays changes
+and advances the Git-owned generation head. Intent/outcome receipts make an interrupted upload
+observable before retry. The detailed contract is `docs/development/parallel-data-plane.md`.
+
 ## 5. State layers and ownership
 
 ```text

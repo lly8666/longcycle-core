@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - baseline/v1-freeze
-      - post-baseline/governance-hardening
+      - "post-baseline/**"
       - "workstream/**"
   pull_request:
 
@@ -18,7 +18,86 @@ permissions:
   statuses: write
 
 jobs:
+  worker-fast:
+    if: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/heads/workstream/') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout bounded worker history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 128
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install
+        run: python -m pip install -e ".[dev]"
+
+      - name: Refresh bounded main authority
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=128 origin \
+            +refs/heads/main:refs/remotes/origin/main
+          if ! git merge-base origin/main HEAD >/dev/null 2>&1; then
+            git fetch --no-tags --deepen=512 origin \
+              "+refs/heads/$GITHUB_REF_NAME:refs/remotes/origin/$GITHUB_REF_NAME" \
+              +refs/heads/main:refs/remotes/origin/main
+          fi
+          if ! git merge-base origin/main HEAD >/dev/null 2>&1; then
+            git fetch --no-tags --unshallow origin \
+              "+refs/heads/$GITHUB_REF_NAME:refs/remotes/origin/$GITHUB_REF_NAME" \
+              +refs/heads/main:refs/remotes/origin/main
+          fi
+
+      - name: Validate unchanged Baseline and owner routing
+        run: |
+          python scripts/validate_architecture_baseline.py
+          python scripts/capability_registry.py audit
+          python scripts/workstream_registry.py validate
+
+      - name: Worker diff stays inside the main reservation
+        run: >-
+          python scripts/validate_workstream_boundaries.py
+          --base-ref origin/main
+          --branch "$GITHUB_REF_NAME"
+
+      - name: Focused worker continuity and boundary regressions
+        run: >-
+          pytest -q
+          tests/test_workstream_registry.py
+          tests/test_workstream_boundaries.py
+          tests/test_workstream_continuity.py
+          tests/test_ci_status_target.py
+
+      - name: Publish Architecture Baseline success status
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
+          -f state=success
+          -f context=longcycle/architecture-baseline
+          -f description='Focused worker boundary checks passed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
+      - name: Publish Architecture Baseline failure status
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: >-
+          gh api --method POST "repos/$GITHUB_REPOSITORY/statuses/$STATUS_SHA"
+          -f state=failure
+          -f context=longcycle/architecture-baseline
+          -f description='Focused worker boundary checks failed'
+          -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+
   baseline:
+    if: ${{ github.event_name != 'push' || !startsWith(github.ref, 'refs/heads/workstream/') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -59,14 +138,6 @@ jobs:
           --branch "${{ github.head_ref }}"
           --base-branch "${{ github.base_ref }}"
 
-      - name: Worker push diff stays inside the main reservation
-        if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/workstream/')
-        run: |
-          git fetch --no-tags origin main:refs/remotes/origin/main
-          python scripts/validate_workstream_boundaries.py \
-            --base-ref origin/main \
-            --branch "$GITHUB_REF_NAME"
-
       - name: Mainline workstream index is integration-owned and current
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: python scripts/workstream_registry.py audit
@@ -77,6 +148,7 @@ jobs:
           tests/test_architecture_baseline.py
           tests/test_workstream_registry.py
           tests/test_workstream_boundaries.py
+          tests/test_workstream_continuity.py
           tests/test_ci_status_target.py
 
       - name: Baseline-critical semantic regressions
@@ -91,7 +163,10 @@ jobs:
           tests/test_source_locator_materialization.py
           tests/test_fact_provenance.py
           tests/test_capability_registry.py
+          tests/test_handoff_freshness.py
+          tests/test_handoff_git_freshness.py
           tests/test_session_handoff.py
+          tests/test_handoff_data_plane.py
 
       - name: Publish Architecture Baseline success status
         if: success()

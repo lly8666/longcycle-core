@@ -13,12 +13,20 @@
       "description": "Typed handoff checkpoint owns bounded current horizon/cursor reconstruction.",
       "kind": "application",
       "path": "src/longcycle/application/session_handoff.py"
+    },
+    {
+      "contains": "class WorkstreamCursor",
+      "description": "Typed remote-only worker cursor and derived startup preflight own interrupted worker recovery without chat or local-cache authority.",
+      "kind": "application",
+      "path": "src/longcycle/application/workstream_continuity.py"
     }
   ],
   "extension_seams": [
     "Add compact required bootstrap references when a new permanent governance mechanism must survive every handoff.",
     "Add resume-relevant asset transport metadata without turning the handoff into a historical asset ledger.",
-    "Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff."
+    "Improve on-demand routing into cold Git/Issue/receipt history without preloading or duplicating that history into the handoff.",
+    "Add bounded remote-only workstream cursors and derived recovery preflights that acknowledge pushed substantive checkpoints without treating local cache, chat, or a mutable pending flag as authority.",
+    "Add bounded main-promoted database generation heads and recoverable immutable Drive candidate uploads without making Drive or a shared database the current-version authority."
   ],
   "guards": [
     {
@@ -38,6 +46,18 @@
       "description": "Every fresh Agent receives the bounded historical-recall trigger without preloading old history.",
       "kind": "protocol",
       "path": "FRESH_AGENT_BOOTSTRAP.md"
+    },
+    {
+      "contains": "RECOVERY_REQUIRED",
+      "description": "Worker continuity tests prove that pushed substantive work is reconciled before a successor accepts new work.",
+      "kind": "test",
+      "path": "tests/test_workstream_continuity.py"
+    },
+    {
+      "contains": "test_parallel_database_handoff_declares_bounded_immutable_generation_heads",
+      "description": "Data-plane tests keep active database generations bounded and explicitly governed for parallel workers.",
+      "kind": "test",
+      "path": "tests/test_handoff_data_plane.py"
     }
   ],
   "id": "CAP-0009",
@@ -52,7 +72,9 @@
     "continuity.resume_cursor",
     "continuity.live_head_reconciliation",
     "continuity.resume_asset_identity",
-    "continuity.on_demand_history_recall"
+    "continuity.on_demand_history_recall",
+    "continuity.remote_workstream_interruption_recovery",
+    "continuity.parallel_database_generation_handoff"
   ],
   "purpose": "Own bounded fresh-agent recovery of mission/current horizon/live cursor plus resume-relevant binary identity, and route into cold project history only when a relevant cue appears; live Git/CI and original repository history remain authority.",
   "revisit_when": "Only replace if a stronger continuity authority preserves bounded cold-start recovery, live-ref freshness, explicit asset integrity and selective historical recall without requiring user restatement or preloading project history.",
@@ -62,12 +84,17 @@
     "src/longcycle/application/handoff_data_plane.py",
     "src/longcycle/application/handoff_freshness.py",
     "src/longcycle/application/handoff_drill.py",
+    "src/longcycle/application/workstream_continuity.py",
     ".longcycle/handoff/**",
     "CONTINUE_HERE.md",
     "FRESH_AGENT_BOOTSTRAP.md",
     "docs/development/session-handoff-protocol.md",
     "docs/development/continuity-architecture.md",
-    "docs/development/on-demand-history-recall.md"
+    "docs/development/on-demand-history-recall.md",
+    "docs/development/remote-worker-continuity.md",
+    "docs/development/parallel-data-plane.md",
+    "scripts/audit_workstream_continuity.py",
+    "tests/test_workstream_continuity.py"
   ],
   "status": "active",
   "supersedes": [],

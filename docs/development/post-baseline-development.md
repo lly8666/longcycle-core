@@ -18,12 +18,13 @@ Do **not** let every concurrent Agent rewrite the global current handoff/admissi
 
 ```text
 .longcycle/workstreams/<workstream-id>/
-    workstream.json
+    reservation.json
+    cursor.json
     change-contract.json
     capability-admission.json
 ```
 
-The workstream manifest is that Agent's local cursor and declares its branch, starting `main` SHA, parent goal, `done_when`, existing semantic owners, disjoint autonomous write prefixes and any shared `integration_requests`.
+The refreshed `main` copy of `reservation.json` owns branch, starting `main` SHA, parent goal, `done_when`, existing semantic owners, dependencies, assignment fence and disjoint autonomous write prefixes. The exact remote worker copy of `cursor.json` owns only bounded execution progress and typed request/receipt pointers. This separation prevents a worker from redefining its goal or authority while updating its handoff.
 
 Run:
 
@@ -31,7 +32,7 @@ Run:
 python scripts/workstream_registry.py audit
 ```
 
-The generated `.longcycle/workstreams/active-index.json` is the compact global view. See `docs/development/parallel-agent-development.md` for the concurrency/integration protocol.
+The generated `.longcycle/workstreams/active-index.json` is a routing-only global view. See `docs/development/parallel-agent-development.md` for concurrency/integration and `docs/development/remote-worker-continuity.md` for the remote-only startup/recovery/turn-boundary loop. Historical v1 `workstream.json` files are accepted only as already-integrated/closed cold provenance.
 
 Change level and capability disposition answer different questions:
 
@@ -125,7 +126,8 @@ The focused `.github/workflows/architecture-baseline.yml` gate validates the Bas
 - `.longcycle/change-contract/current.json`: current **integration-lane** change risk classification only.
 - `.longcycle/capabilities/current-admission.json`: current **integration-lane** semantic routing only.
 - `.longcycle/handoff/current.json`: project-level horizon/integration cursor, not every parallel Agent's cursor.
-- `.longcycle/workstreams/*`: branch-local parallel Agent cursors/contracts/admissions.
+- `.longcycle/workstreams/*/reservation.json`: main-owned parallel intent, scope, dependencies, acceptance and writer fencing.
+- `.longcycle/workstreams/*/cursor.json`: exact remote worker progress, checkpoint, verification and typed request/receipt pointers.
 - `.longcycle/workstreams/active-index.json`: generated compact view of active parallel workstreams.
 - code/migrations/tests/live CI: actual implementation state.
 - old devlogs, research reports, rehearsal reports and PR discussions: historical provenance; do not rewrite them to match current doctrine.

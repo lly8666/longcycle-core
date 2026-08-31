@@ -1,13 +1,13 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "SEQ120-ACCEPTANCE-L3-USER-ESCALATION-027",
-  "goal": "Integrate the accepted seq120 Fresh-Agent report and make plain-language L3/L4 user escalation plus durable worker handoff a permanent Agent-wide operating rule before the first real multi-industry pilot.",
+  "intent_id": "REMOTE-WORKER-CONTINUITY-V1-028",
+  "goal": "Add a bounded remote-only worker continuity contract so disposable Agents automatically recover an interrupted pushed handoff at the next invocation before accepting a new task, preserve the five-level goal hierarchy, and develop in parallel without creating a second semantic control plane.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this strengthens the decision/escalation process without changing any locked Architecture Baseline v1 semantic",
+  "baseline_impact": "none; this extends repository-backed continuity and parallel workstream governance without changing Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, source authority, or semantic-owner invariants",
   "baseline_invariants": [],
-  "schema_impact": "none",
+  "schema_impact": "control-plane JSON and validation only; no product database migration",
   "baseline_critical_tests_touched": false,
   "architecture_change_ref": null,
   "counterexample_refs": [],
@@ -15,10 +15,14 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "The seq120 genuine external Fresh-Agent v3 report is preserved unchanged and maintainer-accepted only if its subject HEAD, cue digests, stage ordering, read boundaries and report-only mutation provenance remain valid.",
-    "Every Agent role inherits a permanent rule to stop the Baseline-changing portion of potential L3/L4 work and first give the user a six-question plain-language decision brief.",
-    "Parallel workers persist potential/confirmed L3/L4 decisions in a workstream-local escalation file and route its repository path through integration_requests rather than rewriting global handoff or creating a local semantic fork.",
-    "Global handoff advances from seq120 continuity closure to seq121 pilot coordination and records the accepted drill plus the bounded escalation protocol without reopening Architecture Baseline v1.",
-    "No product implementation, schema, Baseline invariant or semantic-owner definition changes are made."
+    "Every worker can recover terminal/long/medium/short/current goals while reading only bounded role and workstream state, and the immediate cursor remains distinct from strategic horizons.",
+    "A worker startup preflight derives CLEAN, RECOVERY_REQUIRED, or BLOCKED exclusively from refreshed remote reservation, worker ref, cursor checkpoint, bounded commit delta, and durable receipts; it does not rely on local cache or chat history.",
+    "A pushed substantive or WIP checkpoint that lacks its cursor acknowledgment is detected before new work and can be acknowledged honestly as partial or unverified; work never pushed to the remote is explicitly retried from the last declared atomic action rather than claimed as recovered.",
+    "Main-owned reservation intent, goal, acceptance, scope, capability owners, dependencies, and assignment fencing cannot be redefined by the worker cursor.",
+    "No timer, dialogue count or fixed push cadence is a correctness gate; coherent tasks use remote S checkpoints and cursor-only H acknowledgements, and the next invocation automatically repairs any pushed S that was interrupted before H.",
+    "Parallel workers communicate through bounded durable request and completion-receipt pointers, remain within disjoint reservations, and integrate through one serial lane; v1 does not mistake blob existence for semantic request satisfaction.",
+    "Parallel database workers pin and verify an immutable Drive base generation, write only isolated local databases, upload uniquely identified candidates through recoverable intent/outcome receipts, and allow only the serial integration lane to promote the bounded main generation head.",
+    "Hot handoff, router, request, dependency, and cursor state receive explicit size/count bounds so default recovery cost depends on active workstreams rather than project age.",
+    "Focused tests cover normal handoff, interrupted-after-push recovery, stale or non-ancestor checkpoints, reservation mismatch, dependency gating, and bounded-growth behavior without weakening Architecture Baseline v1 semantics."
   ]
 }

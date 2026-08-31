@@ -38,6 +38,17 @@ class HandoffFreshnessContractTest(unittest.TestCase):
                 }
             )
 
+    def test_historical_devlog_is_not_permanently_handoff_only(self) -> None:
+        classification = classify_handoff_delta(
+            {"docs/devlog/2026-08-21-memory-campaign-part3.md"}
+        )
+
+        self.assertFalse(classification.is_handoff_only)
+        self.assertEqual(
+            classification.substantive_paths,
+            ("docs/devlog/2026-08-21-memory-campaign-part3.md",),
+        )
+
     def test_duplicate_paths_are_normalized_deterministically(self) -> None:
         classification = classify_handoff_delta(
             [
