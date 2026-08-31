@@ -119,7 +119,10 @@ class HandoffWorkstream(BaseModel):
             raise ValueError("active handoff workstreams require at least one next action")
         if self.role == "main_path" and self.parent_goal_ref == "strategic_horizon.parallel_permanent_tracks":
             raise ValueError("main-path workstream cannot attach only to a parallel permanent track")
-        if self.role == "parallel_track" and self.parent_goal_ref != "strategic_horizon.parallel_permanent_tracks":
+        if (
+            self.role == "parallel_track"
+            and self.parent_goal_ref != "strategic_horizon.parallel_permanent_tracks"
+        ):
             raise ValueError("parallel-track workstream must attach to parallel permanent tracks")
         return self
 
@@ -164,6 +167,11 @@ class SessionHandoffCheckpoint(BaseModel):
             raise ValueError("handoff must provide ordered next actions")
 
         workstream_ids = [item.workstream_id for item in self.workstreams]
+        if len(self.workstreams) > 5:
+            raise ValueError(
+                "global handoff may route at most five project/integration lanes; "
+                "worker detail belongs in branch-local cursors"
+            )
         if len(workstream_ids) != len(set(workstream_ids)):
             raise ValueError("handoff workstream ids must be unique")
         if not any(item.role == "main_path" for item in self.workstreams):
@@ -194,6 +202,9 @@ class SessionHandoffCheckpoint(BaseModel):
             raise ValueError(
                 "pre-campaign handoff must not retain active-context campaign_root or coverage_path"
             )
+
+        if len(self.ordered_next_actions) > 8:
+            raise ValueError("global ordered_next_actions must remain bounded at eight items")
 
         return self
 

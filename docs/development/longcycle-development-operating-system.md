@@ -405,6 +405,8 @@ After a coherent boundary that changes what the next Agent should do:
 
 Do not claim green based on the parent commit. Do not point the next Agent at a task already completed by intervening commits. Do not ask the user to reconstruct state already persisted in the repository.
 
+For a parallel worker, the durable role is split between refreshed-main `reservation.json` and the exact remote worker `cursor.json`. Before accepting any new task, a returning or Fresh Agent runs the derived `CLEAN / RECOVERY_REQUIRED / BLOCKED` preflight in `docs/development/remote-worker-continuity.md`; pushed substantive work missing its cursor acknowledgement is automatically repaired first, while unpushed work is explicitly retried from the last remote atomic action. No mandatory timer controls this transaction; the bounded cursor and delta keep continuity a small operation rather than the main development activity.
+
 ### Control plane vs data plane
 
 Git/handoff/receipts record identity, provenance, locator, hashes and restore rules. Google Drive/historical Releases/raw files carry bytes. Transport never upgrades Evidence authority.

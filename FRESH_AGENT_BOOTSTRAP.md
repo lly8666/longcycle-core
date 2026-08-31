@@ -23,6 +23,7 @@ Stable rendezvous remains GitHub issue #2, **Longcycle Live Handoff / Session Bo
    Be able to explain how the atomic task advances every parent level.
 4. Read `.longcycle/baseline/current.json`, then its referenced manifest and `ARCHITECTURE_BASELINE_V1.md`. Treat the locked invariants as the default definition of semantic correctness; Baseline does not replace Strategy or Method Core.
 5. Read `.longcycle/handoff/current.json` for the current horizon/cursor and `.longcycle/capabilities/active-index.json` for stable semantic ownership. Reconcile `checkpoint_based_on_head_sha` with the live ref before acting.
+   For a parallel worker, resolve its workstream id from the assigned `workstream/<id>` branch or the refreshed main-side `.longcycle/workstreams/active-index.json`; never guess it from chat. Then load the **main-owned reservation** and the **exact remote worker cursor** and run the remote-only preflight in `docs/development/remote-worker-continuity.md`. A returning Agent receives no continuity shortcut: `RECOVERY_REQUIRED` must be repaired before new work, and `BLOCKED` must fail closed. Only pushed remote state is recoverable.
 6. **before material capability/product/architecture work, discover the existing semantic owner** through the Capability Registry; write/update `.longcycle/change-contract/current.json` with `L1/L2/L3/L4`, then run current admission separately as `reuse / extend / replace / new`. Exact admission target IDs are authority; fuzzy capability search is discovery help only. Load every exact target card and its entrypoints/guards before implementation.
 7. Default to L1/L2 + reuse/extend. A new industry is normally a Domain Pack/catalog/source/research extension, not a new Fact/Evidence/PIT architecture.
 8. If the proposed change touches a locked Baseline invariant or changes the semantic expectation of a Baseline-critical regression, stop ordinary implementation and enter the L3 architecture-change procedure. `Cleaner`, `more generic` and `future-proof` are not sufficient evidence.
@@ -41,6 +42,8 @@ atomic task
 
 Stop/re-rank if `done_when` is already met, parent-level value has collapsed, the work is only polishing an easy metric, or architecture is expanding because it is interesting rather than falsified by reality.
 13. Read only the minimal task-specific resume set. Do not preload old industries, old devlogs, old rehearsal reports or the full repository.
+
+For every worker invocation, follow the turn-boundary S+H loop in `AGENTS.md`: run remote recovery/alignment first, do one bounded objective, then verify proportionately, push the cursor acknowledgement at a safe closing boundary and reread the authoritative remote ref. There is no mandatory time quota. If the prior invocation stopped after S but before H, the startup preflight repairs that missing handoff before any newly requested work.
 
 Detailed operational/source acquisition rules remain in `CONTINUE_HERE.md`; post-Baseline development rules live in `docs/development/post-baseline-development.md`.
 

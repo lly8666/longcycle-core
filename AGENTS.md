@@ -44,6 +44,36 @@ Authority is split intentionally:
 
 Before substantive work, explain how the atomic task advances every parent level. If the Agent can repeat the slogan but cannot reconstruct this causal chain, bootstrap is incomplete.
 
+## Disposable Agent / durable workstream rule
+
+Agent instances are short-lived executors. The durable unit is the repository-backed role/workstream, not the chat, model instance, or list of previous Agents. A returning Agent and a genuinely Fresh Agent follow the same startup procedure and must be able to continue without private conversation history.
+
+Longcycle currently uses a **remote-only continuity model**. Refresh the authoritative remote `main` reservation and exact remote worker ref before trusting a local checkout or cached tracking ref. Only pushed commits, cursor acknowledgements, receipts and external object identities are durable. Unpushed edits, local-only commits and reasoning that exists only in chat are not recoverable; resume from the last remote cursor and redo its bounded atomic action honestly.
+
+For any active worker, run the remote workstream preflight before accepting new work:
+
+```text
+refresh remote main reservation + exact worker ref
+→ validate branch / reservation revision / assignment epoch
+→ validate cursor checkpoint ancestry and bounded remote delta
+→ validate required receipts / verification refs
+→ derive CLEAN | RECOVERY_REQUIRED | BLOCKED
+```
+
+- `CLEAN`: the cursor truthfully acknowledges the remote work; continue its current/next atomic action.
+- `RECOVERY_REQUIRED`: durable substantive/WIP commits exist after the acknowledged checkpoint. Do not start the new task. Inspect the bounded delta, verify or mark it partial/unverified, push a repaired cursor acknowledgement, reread the remote ref, then continue.
+- `BLOCKED`: reservation identity, ancestry, writer fencing or required durable state is ambiguous/invalid. Stop and route the exact blocker to the coordinator/integration lane.
+
+These are derived preflight results, never a hand-maintained `handoff_pending` flag. Active worker branches are single-writer, never force-pushed, and every push must be based on the refreshed remote tip and current assignment epoch.
+
+## Turn-boundary S+H loop
+
+Treat one Agent invocation as a bounded execution slice, not as the lifetime of a feature. There is no mandatory minute count, dialogue count or fixed S-push cadence. Keep each unpushed mutation batch small enough to redo; after a coherent substantive or explicitly partial/WIP commit, push it, then push a separate cursor-only acknowledgement when the invocation reaches a safe closing boundary.
+
+Every completed atomic task closes its handoff before another task begins, even if the same Agent continues. If execution is interrupted, the next invocation—same Agent or Fresh Agent—runs recovery before interpreting a newly supplied task. When a new user task supersedes unfinished work, first preserve/reconcile the old remote state and mark it paused/superseded; do not silently abandon or pretend to have completed it.
+
+For non-idempotent external effects, push an intent receipt with a stable idempotency key before the effect and a result receipt afterwards. Without that remote write-ahead fact, a successor cannot safely distinguish “not executed” from “executed but not acknowledged.”
+
 ## Architecture Baseline gate — classify before coding
 
 Architecture exploration is closed by default. Before material product/capability/domain work, write or update `.longcycle/change-contract/current.json` and classify the change:
@@ -86,7 +116,7 @@ The first escalation to the user must be in plain language and answer:
 
 Technical evidence/ADR detail may follow, but it may not replace that plain-language decision brief. Agents must not require the user to understand framework/database terminology merely to decide architectural risk.
 
-Parallel workers persist the issue under `.longcycle/workstreams/<workstream-id>/escalations/<short-id>.md` and add that path to `integration_requests`; they do not write the global handoff or locally fork the semantics. The coordinator/integration lane deduplicates and classifies the request, challenges whether L2 is sufficient, and records only a bounded pointer/status in the global handoff when project-level continuation changes.
+Parallel workers persist the issue under `.longcycle/workstreams/<workstream-id>/escalations/<short-id>.md` and add that path to `integration_request_refs`; they do not write the global handoff or locally fork the semantics. The coordinator/integration lane deduplicates and classifies the request, challenges whether L2 is sufficient, and records only a bounded pointer/status in the global handoff when project-level continuation changes.
 
 An old approval, stale Change Contract, previous handoff or earlier Agent preference is not approval for a new L3/L4 case. L4 always requires explicit user approval; material L3 implementation waits for the required architecture approval path and the user's explicit risk decision when research truth, compatibility or project direction is affected.
 

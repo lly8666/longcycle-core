@@ -34,12 +34,19 @@ Fresh session 不需要重读项目历史，也不要让用户重新解释。
    开工前必须能解释当前原子任务如何逐层服务每个父目标。
 7. 比较 live HEAD 与 `checkpoint_based_on_head_sha`。若不同，先检查 intervening commits；不能因为 checkpoint 落后一两个控制面 commit 就要求用户重述背景。
 8. 只读 `resume_read_set` 中当前任务需要的文件；`.longcycle/capabilities/active-index.json` 是永久 compact bootstrap 项。不要默认读取旧 devlog、旧行业、旧 rehearsal report 或全部 raw data。
+   如果当前角色是 parallel worker，再读取 main 上的 reservation 与准确的远端 worker cursor，并先执行 `docs/development/remote-worker-continuity.md` 的 remote-only preflight。返回 `RECOVERY_REQUIRED` 时先补完上一轮远端 handoff；返回 `BLOCKED` 时停止并交给 Coordinator。相同 Agent 再次启动也不能跳过这一闸门。
 9. **开始 material capability / product-surface / architecture 开发前**，先写/更新 `.longcycle/change-contract/current.json` 的 `L1/L2/L3/L4`，再独立执行 Capability Registry admission：`reuse / extend / replace / new`。两个维度不可混用。
 10. `target_capability_ids` 是精确 owner 路由；必须直接加载对应 capability card、entrypoint/guard 和相关负例；`relevant` 模糊检索只能辅助发现，不能替代精确 ID authority。**新 projection / composition 不能重新解释 owner 已经定义的语义**；必须列出复用的 owner 语义，并把 owner-derived negative case 放进 hard acceptance。默认 L1/L2 + reuse/extend，不能因为“更干净”新建第二个 semantic owner。
 11. 修改已知代码路径前，用 Repair Memory 做 path-scoped invariant lookup；如果全新路径无命中，也不能推断“没有历史约束”。
 12. 如果出现“以前是不是讨论过/修过这个”的 fuzzy cue，走 `docs/development/on-demand-history-recall.md`：owner → Repair Memory → exact origin refs → bounded Git/Issue/receipt/devlog history → 回到 live authority。不要 bulk-load 历史。
 13. 只有 cursor 明确需要二进制状态时，才恢复 data-plane 中 `required_for_current_task=true` 的对象。
 14. 做 whole-project review / architecture review / deliberate L3 change 时，额外读 `docs/development/longcycle-development-operating-system.md`；普通 L1/L2 Agent 不需要默认加载这份完整 reviewer manual。
+
+## 轮次边界 S+H
+
+正常一次开发轮次以 `AGENTS.md` 和 `docs/development/remote-worker-continuity.md` 为规范，但没有强制分钟数、对话次数或固定 push 频率。先做远端 preflight 与五层目标校准，再完成一个有界原子目标，并在安全边界做相称验证与 cursor sync。
+
+每个 coherent task 完成后都先 push substantive/WIP checkpoint，再单独 push cursor acknowledgement，然后才开始下一任务。若当前轮次在 S 后、H 前被中断，下一轮次启动必须自动先返回 `RECOVERY_REQUIRED`，根据真实远端增量补完 H 并复读为 `CLEAN`，随后才处理新任务。未 push 的内容不属于可恢复状态；中断后的 Agent 从上一远端 cursor 重做该小原子动作。Handoff 只保存增量和精确指针，不复制宏大框架、完整历史或历任 Agent 叙事。
 
 ## Handoff 的两层权威
 

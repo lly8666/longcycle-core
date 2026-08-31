@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import difflib
-import fnmatch
 import json
 import re
 import sys
@@ -19,6 +18,7 @@ HANDOFF_PATH = ROOT / ".longcycle" / "handoff" / "current.json"
 CARD_SCHEMA = "longcycle-capability/v1"
 INDEX_SCHEMA = "longcycle-capability-index/v1"
 ADMISSION_SCHEMA = "longcycle-capability-admission/v2"
+MAX_INDEX_BYTES = 64 * 1024
 ID_PATTERN = re.compile(r"^CAP-[0-9]{4}$")
 SEMANTIC_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_.-]*$")
 STATUS_VALUES = {"active", "superseded", "retired"}
@@ -31,7 +31,8 @@ GOVERNANCE_MODE = "converging"
 GOVERNANCE_HORIZON = {
     "short_term": (
         "Every material capability change discovers existing owners first, records a "
-        "reuse/extend/replace/new disposition, and keeps the compact registry in the default handoff read set."
+        "reuse/extend/replace/new disposition, and keeps the compact registry in the "
+        "default handoff read set."
     ),
     "medium_term": (
         "Keep one semantic owner per stable capability, grow cards only when stable responsibilities change, "
@@ -303,6 +304,8 @@ def load_cards() -> list[tuple[Path, dict[str, Any]]]:
 
 
 def build_index(cards: list[tuple[Path, dict[str, Any]]]) -> dict[str, Any]:
+    """Build a hot routing index; full capability contracts stay in exact cards."""
+
     active: list[dict[str, Any]] = []
     for path, card in cards:
         if card["status"] != "active":
@@ -312,26 +315,29 @@ def build_index(cards: list[tuple[Path, dict[str, Any]]]) -> dict[str, Any]:
                 "id": card["id"],
                 "title": card["title"],
                 "maturity": card["maturity"],
-                "purpose": card["purpose"],
-                "aliases": card["aliases"],
-                "tags": card["tags"],
                 "owned_semantics": card["owned_semantics"],
-                "extension_seams": card["extension_seams"],
-                "scope": card["scope"],
                 "card_path": _relative(path),
             }
         )
     active.sort(key=lambda item: item["id"])
-    return {
+    index = {
         "schema_version": INDEX_SCHEMA,
         "governance_mode": GOVERNANCE_MODE,
         "policy": (
             "Discover existing owners before material capability work. Prefer reuse/extend; "
-            "new semantic ownership needs a demonstrated unmet requirement. Exact semantic ownership is unique."
+            "new semantic ownership needs a demonstrated unmet requirement. Exact semantic "
+            "ownership is unique."
         ),
         "governance_horizon": GOVERNANCE_HORIZON,
         "active": active,
     }
+    size = len(_canonical_json(index).encode("utf-8"))
+    if size > MAX_INDEX_BYTES:
+        raise CapabilityRegistryError(
+            f"capability active-index is {size} bytes; hot router limit is {MAX_INDEX_BYTES}; "
+            "keep detail in exact capability cards"
+        )
+    return index
 
 
 def rebuild_index() -> None:
@@ -466,7 +472,8 @@ def validate_handoff() -> None:
     required = ".longcycle/capabilities/active-index.json"
     if required not in read_set:
         raise CapabilityRegistryError(
-            "handoff must keep the compact capability index in resume_read_set so fresh Agents recover ownership"
+            "handoff must keep the compact capability index in resume_read_set so fresh "
+            "Agents recover ownership"
         )
 
 

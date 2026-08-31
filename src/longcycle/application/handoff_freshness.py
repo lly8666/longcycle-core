@@ -3,12 +3,10 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass
 
-
 HANDOFF_MUTABLE_PATHS = frozenset(
     {
         ".longcycle/handoff/current.json",
         ".longcycle/handoff/data-plane.json",
-        "docs/devlog/2026-08-21-memory-campaign-part3.md",
     }
 )
 

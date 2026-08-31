@@ -54,11 +54,11 @@ Parallel workers do not write the global handoff. When a worker encounters a pot
    `.longcycle/workstreams/<workstream-id>/escalations/<short-id>.md`
 
 2. the record must contain the six plain-language questions above plus a short technical appendix with source refs and affected owner/Baseline candidates;
-3. add that repository-relative escalation path to the workstream's `integration_requests`;
+3. add that repository-relative escalation path to the workstream's `integration_request_refs`;
 4. set the branch-local `next_atomic_action` so a fresh worker knows whether unrelated L1/L2 work may continue or the workstream is blocked on user/integration decision;
 5. do **not** expand main-reserved scope, owner routing or dependencies from the worker branch to solve the issue locally.
 
-Because `integration_requests` is part of the workstream cursor, the next fresh worker and the serial integration Agent inherit the unresolved escalation without the user restating it.
+Because `integration_request_refs` is part of the workstream cursor, the next fresh worker and the serial integration Agent inherit the unresolved escalation without the user restating it.
 
 ## Coordinator / integration behavior
 

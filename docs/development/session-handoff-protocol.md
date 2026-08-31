@@ -17,7 +17,7 @@ terminal mission
 + how to restore or defer materialization safely
 ```
 
-The handoff is deliberately split into a small Git control plane and a bounded external data plane.
+The handoff is deliberately split into a small Git control plane and a bounded external data plane. Parallel workers additionally use the remote-only reservation/cursor protocol in `docs/development/remote-worker-continuity.md`; this document does not duplicate that operating loop.
 
 ## 2. Cold-start route
 
@@ -47,6 +47,8 @@ The fixed transfer phrase remains task-free:
 | cross-industry method | `METHODOLOGY_CORE.md` | reusable research method |
 | mission calibration | `.longcycle/continuity/mission-fidelity.json` | semantic challenge |
 | dynamic control plane | `.longcycle/handoff/current.json` | goals, workstreams, cursor, live snapshot |
+| parallel reservation | refreshed `main:.longcycle/workstreams/<id>/reservation.json` | main-owned role, goal, acceptance, scope, dependencies, lifecycle and assignment fence |
+| parallel execution cursor | refreshed remote worker `.longcycle/workstreams/<id>/cursor.json` | branch-local task, truthful progress, checkpoint, exact-head verification and next action |
 | data plane manifest | `.longcycle/handoff/data-plane.json` | source/data identity, transport, materialization status, hashes where available |
 | readable webpage capture | bounded local DB -> Google Drive | faithful visible-text/provenance handoff |
 | PDF source locator/content | Git control plane + claim-scoped readable representation | Evidence can proceed before raw bytes |
@@ -87,6 +89,10 @@ A locator can establish source identity but **not an unread claim**. A raw-file 
 `current.json` uses `longcycle-session-handoff/v5` and contains active repo/PR/branch, checkpoint base SHA, strategic horizon, continuation cursor, workstreams, capability requirement, active context, bounded resume set, data-plane path and CI snapshot.
 
 The cursor answers what just finished, what resumes now, why, what ends it and what immediately follows. It is not a devlog.
+
+The global cursor owns only the project/integration lane. A parallel worker recovers the terminal/long-term direction from Strategy, both global medium- and short-term horizons, its main-side reserved workstream milestone and its remote branch-local current task. The reservation is an execution-ownership link below the global short-term goal, not a replacement for that goal. The worker then states how the atomic task advances every parent level before execution. A returning Agent and a zero-context replacement both run the same remote preflight before new work. `CLEAN`, `RECOVERY_REQUIRED` and `BLOCKED` are derived decisions, never hand-written cursor authority.
+
+The v2 worker cursor names `checkpoint_based_on_head_sha`, `task_done_when`, one enumerated `progress_state`, and the explicit verification triple `unverified` + nullable `verification_head_sha` + bounded `verification_refs`. When verification refs exist, their SHA equals the checkpoint; when refs are empty the verification SHA is null. Main-side `reservation.lifecycle_state` is independently one of `active`, `integrated` or `closed`.
 
 ## 6. Data plane contract
 
@@ -174,6 +180,8 @@ A source-derived readable PDF capture is not the same thing as raw PDF bytes, bu
 - Do not create downloader workflows merely because one Agent/network cannot fetch a PDF file.
 - Preserve verified PDF locators so a later normal-network Agent can materialize them in batch.
 - The Git manifest remains resume-relevant, not a permanent inventory of every cold historical asset.
+- Keep `current.json` at or below 64 KiB, `resume_read_set` at eight files or fewer, project/integration `workstreams` at five or fewer and `ordered_next_actions` at eight or fewer. Detailed worker state belongs behind exact reservation/cursor pointers.
+- Apply the worker cursor/request/receipt bounds and hot/warm/cold lifecycle in `docs/development/remote-worker-continuity.md`; do not copy completed worker histories into this global handoff.
 
 ## 9. Capability and vertical alignment
 
@@ -207,6 +215,8 @@ After a coherent task boundary:
 7. run bounded artificial-ignorance rehearsal for material continuity changes
 ```
 
+For a parallel worker, this becomes a remote S+H transaction: push a coherent substantive/WIP commit, then push a cursor-only acknowledgement and re-read the exact remote ref. Every completed atomic task receives H. There is no mandatory time or dialogue budget. If interruption occurs after S but before H, the next startup automatically finishes recovery and reaches `CLEAN` before accepting new work. Side-effect intent receipts and precise recovery rules are owned by `docs/development/remote-worker-continuity.md`.
+
 ## 11. Artificial-ignorance test
 
 A fresh Agent must be able to reconstruct this rule without chat history:
@@ -239,7 +249,8 @@ Fail closed if:
 - a source-derived text capture is falsely described as raw PDF bytes;
 - generated/runtime state is corrupted or ABI-incompatible;
 - reconstructed state contradicts canonical receipts/live Git;
-- a fresh Agent needs old chat to know what to do.
+- a fresh Agent needs old chat to know what to do;
+- a worker checkpoint is non-ancestor, its main reservation/assignment fence conflicts, or an unclassified remote delta cannot be reconciled safely.
 
 Do **not** fail merely because raw PDF bytes are pending after content verification, a host rejects one downloader, or the current Agent cannot upload Release assets.
 

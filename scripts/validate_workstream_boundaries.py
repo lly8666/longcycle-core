@@ -8,20 +8,12 @@ from typing import Any
 
 import workstream_registry as registry
 
-
 ROOT = Path(__file__).resolve().parents[1]
 WORKER_BRANCH_PREFIX = "workstream/"
 INTEGRATED_STATUSES = {"integrated", "closed"}
-RESERVATION_FIELDS = (
-    "workstream_id",
-    "kind",
-    "branch",
-    "baseline",
-    "integration_lane",
-    "exclusive_write_prefixes",
-    "target_capability_ids",
-    "dependencies",
-)
+# Keep worker fencing on the registry-owned full reservation schema. The worker may
+# advance cursor.json, but every reservation fact remains integration/main-owned.
+RESERVATION_FIELDS = registry.RESERVATION_FIELDS
 SET_LIKE_RESERVATION_FIELDS = {
     "exclusive_write_prefixes",
     "target_capability_ids",
@@ -96,6 +88,22 @@ def validate_changed_paths(
         )
 
     workstream_control_root = Path(manifest_path).parent.as_posix()
+    main_owned_control_paths = {
+        path
+        for path in (
+            manifest_path,
+            reserved.get("change_contract_path"),
+            reserved.get("capability_admission_path"),
+        )
+        if isinstance(path, str)
+    }
+    authority_changes = sorted(set(changed_paths).intersection(main_owned_control_paths))
+    if authority_changes:
+        raise WorkstreamBoundaryError(
+            f"{workstream_id}: worker diff changes main-owned control files {authority_changes}; "
+            "the serial integration lane must revise reservation authority first"
+        )
+
     allowed_prefixes = [*prefixes, workstream_control_root]
     violations = [
         path
@@ -105,7 +113,7 @@ def validate_changed_paths(
     if violations:
         raise WorkstreamBoundaryError(
             f"{workstream_id}: actual branch diff escapes reserved write scope: {sorted(violations)}; "
-            "record shared needs as integration_requests or update the reservation on main first"
+            "record shared needs through integration_request_refs or update the reservation on main first"
         )
 
 
@@ -150,7 +158,7 @@ def validate_dependency_graph(workstreams: list[dict[str, Any]]) -> None:
     def visit(workstream_id: str, trail: list[str]) -> None:
         if workstream_id in visiting:
             cycle_start = trail.index(workstream_id) if workstream_id in trail else 0
-            cycle = trail[cycle_start:] + [workstream_id]
+            cycle = [*trail[cycle_start:], workstream_id]
             raise WorkstreamBoundaryError(
                 "active workstream dependency cycle: " + " -> ".join(cycle)
             )
@@ -213,7 +221,8 @@ def validate_worker_branch(
     ]
     if len(matches) != 1:
         raise WorkstreamBoundaryError(
-            f"worker branch {branch!r} must match exactly one active registered workstream; found {len(matches)}"
+            f"worker branch {branch!r} must match exactly one active registered workstream; "
+            f"found {len(matches)}"
         )
 
     path, current = matches[0]
@@ -221,9 +230,15 @@ def validate_worker_branch(
     reserved = _reserved_manifest(base_ref, manifest_path)
     validate_reservation_unchanged(current=current, reserved=reserved)
 
+    diff_output = _git(
+        "diff",
+        "--name-only",
+        "--diff-filter=ACDMRTUXB",
+        f"{base_ref}...{head_ref}",
+    )
     changed_paths = [
         line.strip()
-        for line in _git("diff", "--name-only", "--diff-filter=ACDMRTUXB", f"{base_ref}...{head_ref}").splitlines()
+        for line in diff_output.splitlines()
         if line.strip()
     ]
     validate_changed_paths(
@@ -262,10 +277,23 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Validate workstream dependency topology and reserved worker write boundaries."
     )
-    parser.add_argument("--base-ref", help="Integration/base ref whose registered reservation is authoritative.")
-    parser.add_argument("--branch", help="Actual worker branch name, for example workstream/banking-domain-v1.")
-    parser.add_argument("--base-branch", help="Logical PR base branch; worker branches may not target main directly.")
-    parser.add_argument("--head-ref", default="HEAD", help="Head ref used to compute the actual changed paths.")
+    parser.add_argument(
+        "--base-ref",
+        help="Integration/base ref whose registered reservation is authoritative.",
+    )
+    parser.add_argument(
+        "--branch",
+        help="Actual worker branch name, for example workstream/banking-domain-v1.",
+    )
+    parser.add_argument(
+        "--base-branch",
+        help="Logical PR base branch; worker branches may not target main directly.",
+    )
+    parser.add_argument(
+        "--head-ref",
+        default="HEAD",
+        help="Head ref used to compute the actual changed paths.",
+    )
     args = parser.parse_args()
 
     try:
