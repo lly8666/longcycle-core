@@ -76,6 +76,13 @@ jobs:
           tests/test_workstream_continuity.py
           tests/test_ci_status_target.py
 
+      - name: Remote worker continuity is CLEAN
+        shell: bash
+        run: |
+          WORKSTREAM_ID="${GITHUB_REF_NAME#workstream/}"
+          printf 'python scripts/audit_workstream_continuity.py %s --remote origin --main-branch main\n' "$WORKSTREAM_ID"
+          python scripts/audit_workstream_continuity.py "$WORKSTREAM_ID" --remote origin --main-branch main
+
       - name: Publish Architecture Baseline success status
         if: success()
         env:

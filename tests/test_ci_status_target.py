@@ -25,3 +25,17 @@ def test_worker_fast_fetches_only_the_active_baseline_tag() -> None:
     assert 'BASELINE_TAG="$(python -c' in text
     assert 'git check-ref-format "refs/tags/$BASELINE_TAG"' in text
     assert '"+refs/tags/$BASELINE_TAG:refs/tags/$BASELINE_TAG"' in text
+
+
+def test_worker_fast_runs_generic_remote_continuity_audit() -> None:
+    text = (ROOT / ".github" / "workflows" / "architecture-baseline.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "- name: Remote worker continuity is CLEAN" in text
+    assert 'WORKSTREAM_ID="${GITHUB_REF_NAME#workstream/}"' in text
+    assert (
+        'python scripts/audit_workstream_continuity.py "$WORKSTREAM_ID" '
+        '--remote origin --main-branch main'
+    ) in text
+    assert "banking-domain-v1" not in text
+    assert "shipping-domain-v1" not in text
