@@ -1,0 +1,69 @@
+{
+  "schema_version": "longcycle-banking-stage-verification/v1",
+  "stage": "china_banking_orientation_and_first_judgment_v1",
+  "workstream_id": "banking-domain-v1",
+  "active_scope": "PRC_DOMESTIC_BANKING_ONLY",
+  "result": "pass_with_bounded_source_status",
+  "prior_remote_worker_head": "2d7aadac0c3dc908a15691e70046ee0da3906266",
+  "artifacts": [
+    {
+      "path": "research_data/memory/banking/cmb-deposit-termization-nim-compression-cycle-memory-v1.md",
+      "commit_sha": "e65b4fb9a46cd610ea98de4a246d2ccdf1eb5636",
+      "blob_sha": "f920092b9c08ba2c713de2eae010189c2b48ced7",
+      "status": "SEALED_MEMORY_ONLY",
+      "evidence_authority": "NONE"
+    },
+    {
+      "path": "research_data/memory/banking/cmb-2023-08-28-nim-deposit-cost-judgment-v1.md",
+      "commit_sha": "1f61a2560368052905b2698af9332d32a253af05",
+      "blob_sha": "8a410c51075fe21972712e14fc28df491bcf101a",
+      "status": "CONTENT_VERIFIED_SOURCE_IDENTIFIABLE",
+      "evidence_class": "MANAGEMENT_RECORD_JUDGMENT_CANDIDATE"
+    }
+  ],
+  "checks": {
+    "domestic_only_active_scope": true,
+    "svb_line_not_extended": true,
+    "china_memory_packet_sealed_before_domestic_evidence_search": true,
+    "memory_packet_not_promoted_as_evidence": true,
+    "first_management_judgment_is_dated": true,
+    "first_management_judgment_content_verified": true,
+    "source_identity_preserved": true,
+    "conservative_known_time_preserved": true,
+    "attendee_known_time_not_silently_promoted_to_universal_public_known_time": true,
+    "later_outcome_not_backdated": true,
+    "exact_official_hosted_transcript_url_resolved": false,
+    "official_event_family_confirmed": true,
+    "transcript_internal_source_identity_confirmed": true,
+    "changed_paths_under_authorized_banking_prefixes_only": true,
+    "shared_semantics_or_global_controls_modified": false,
+    "l3_l4_change_detected": false
+  },
+  "source_boundary": {
+    "official_event_index": "https://english.cmbchina.com/cmbir/ProductInfo.aspx?id=event",
+    "source_identifiable_transcript_mirror": "https://pdf.dfcfw.com/pdf/H2_AN202311161611024954_1.pdf",
+    "official_hosted_transcript_url": "UNRESOLVED",
+    "claim_use": "allowed_as_bounded_source_identifiable_management_record",
+    "primary_host_status": "not_yet_verified"
+  },
+  "pit_boundary": {
+    "event_time": "2023-08-28T09:30:00+08:00/2023-08-28T11:45:00+08:00",
+    "conservative_attendee_known_time": "2023-08-28T11:45:00+08:00",
+    "exact_public_web_known_time": "UNRESOLVED",
+    "outcome_attached": false
+  },
+  "compare_prior_head_to_judgment_commit": {
+    "base": "2d7aadac0c3dc908a15691e70046ee0da3906266",
+    "head": "1f61a2560368052905b2698af9332d32a253af05",
+    "ahead_by": 2,
+    "paths": [
+      "research_data/memory/banking/cmb-deposit-termization-nim-compression-cycle-memory-v1.md",
+      "research_data/memory/banking/cmb-2023-08-28-nim-deposit-cost-judgment-v1.md"
+    ]
+  },
+  "vertical_alignment": {
+    "decision": "stop_current_stage_after_first_judgment",
+    "reason": "The sealed domestic orientation plus one contemporaneous management Judgment now establishes the minimum PIT-comparable research unit. Further same-source detail adds less parent-goal value than verifying a later official Outcome separately."
+  },
+  "next_high_information_gain": "Verify a later official CMB/SSE NIM and deposit-cost Outcome, keeping it separate from the 2023-08-28 Judgment."
+}
