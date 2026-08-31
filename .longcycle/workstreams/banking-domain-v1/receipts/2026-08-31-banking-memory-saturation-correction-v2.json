@@ -1,0 +1,46 @@
+{
+  "schema_version": "longcycle-workstream-stage-receipt/v1",
+  "record_type": "workstream_stage_receipt",
+  "workstream_id": "banking-domain-v1",
+  "stage": "china_banking_memory_campaign_v2_saturation_correction",
+  "active_scope": "PRC_DOMESTIC_BANKING_ONLY",
+  "stage_status": "process_corrected_blind_exhaustion_resumed",
+  "prior_handoff": "49942a2b6ba22539d9d3dd8d3e8b21fea57c3ab9",
+  "artifacts": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2-saturation-correction.md",
+      "commit_sha": "4d6ab58eee29c0ea0146330922e1680a27d6f2a0",
+      "role": "process correction"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "commit_sha": "3972aec3a93a7421c3dec613e7a7394599f2ceb0",
+      "role": "new exhaustive blind-memory campaign manifest"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-memory-campaign-v2-correction.verification.json",
+      "commit_sha": "65cdbb6d0b2e34071623239365770861fa1701b6",
+      "role": "stage verification"
+    }
+  ],
+  "done_condition": {
+    "lithium_historical_memory_method_reviewed": true,
+    "premature_banking_saturation_error_identified": true,
+    "old_blind_outputs_preserved_immutable": true,
+    "old_saturation_interpretation_superseded_append_only": true,
+    "banking_exhaustion_manifest_created": true,
+    "three_low_novelty_rule_adopted": true,
+    "coverage_and_negative_space_review_required": true,
+    "evidence_search_for_unsealed_shards_disabled": true,
+    "shared_or_global_paths_modified": false
+  },
+  "research_history_basis": {
+    "lithium_first_pass_complete_unsealed_at_raw_leads": 290,
+    "lithium_observed_under_extracted_at_raw_leads": 552,
+    "whole_industry_exhaustion_claim_observed": false
+  },
+  "database_write": false,
+  "integration_request_refs": [],
+  "l3_l4_escalation": null,
+  "next_phase": "continue_long_running_banking_blind_memory_exhaustion_by_atomic_shard_time_slice_and_bridge_theme_before_evidence"
+}
