@@ -1,0 +1,46 @@
+{
+  "schema_version": "longcycle-workstream-stage-receipt/v1",
+  "record_type": "workstream_stage_receipt",
+  "workstream_id": "banking-domain-v1",
+  "stage": "china_banking_orientation_and_first_judgment_v1",
+  "active_scope": "PRC_DOMESTIC_BANKING_ONLY",
+  "scope_change": {
+    "instruction": "Banking research is now domestic China only.",
+    "svb_status": "retained_as_historical_sealed_artifact_not_extended"
+  },
+  "artifacts": [
+    {
+      "path": "research_data/memory/banking/cmb-deposit-termization-nim-compression-cycle-memory-v1.md",
+      "commit_sha": "e65b4fb9a46cd610ea98de4a246d2ccdf1eb5636",
+      "blob_sha": "f920092b9c08ba2c713de2eae010189c2b48ced7",
+      "role": "sealed_memory_first_domestic_orientation"
+    },
+    {
+      "path": "research_data/memory/banking/cmb-2023-08-28-nim-deposit-cost-judgment-v1.md",
+      "commit_sha": "1f61a2560368052905b2698af9332d32a253af05",
+      "blob_sha": "8a410c51075fe21972712e14fc28df491bcf101a",
+      "role": "first_content_verified_source_identifiable_management_judgment"
+    },
+    {
+      "path": "research_data/memory/banking/cmb-china-orientation-stage-v1.verification.json",
+      "commit_sha": "3dee7e7025ca69b4240c8f770c67208719fe35ac",
+      "blob_sha": "14cd001f8374bf509e1835a1c7952e67f2a87e2f",
+      "role": "stage_verification"
+    }
+  ],
+  "done_condition": {
+    "domestic_representative_subject_named": true,
+    "memory_first_packet_sealed_before_domestic_evidence_search": true,
+    "actors_metrics_judgment_leads_unknowns_evidence_and_pit_boundaries_present": true,
+    "one_dated_management_judgment_content_verified": true,
+    "source_identity_and_conservative_known_time_preserved": true,
+    "later_outcome_not_backdated": true,
+    "exact_official_hosted_transcript_url": "UNRESOLVED",
+    "bounded_source_identifiable_status_explicit": true
+  },
+  "vertical_alignment": "stop_after_domestic_orientation_plus_first_judgment_then_move_to_separate_outcome_verification",
+  "integration_request_refs": [],
+  "l3_l4_escalation": null,
+  "database_write": false,
+  "next_phase": "verify_later_official_cmb_sse_nim_and_deposit_cost_outcome_without_rewriting_2023_judgment"
+}
