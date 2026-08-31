@@ -1,0 +1,18 @@
+{
+  "record_type": "bounded_workstream_verification",
+  "workstream_id": "banking-domain-v1",
+  "artifact_path": "research_data/memory/banking/svb-regional-bank-duration-liquidity-cycle-memory-v1.md",
+  "artifact_blob_sha": "eff48cfaa60bc4d3235704f460f811c3d17e17f6",
+  "artifact_first_commit_sha": "34cbd33a83a41eec616c56dee7f9f983a24f2807",
+  "receipt_path": ".longcycle/workstreams/banking-domain-v1/receipts/2026-08-31-memory-orientation-v1.json",
+  "checks": [
+    "GitHub exact compare from prior remote worker head showed the substantive commit added only the reserved Banking memory artifact path.",
+    "The artifact was fetched back by exact commit and its blob resolved to eff48cfaa60bc4d3235704f460f811c3d17e17f6.",
+    "The packet is explicitly SEALED_MEMORY_ONLY with evidence authority NONE.",
+    "The packet records actors, metric families, contemporaneous Judgment leads, explicit unknowns, Evidence boundary and PIT/no-lookahead boundary.",
+    "No new Banking evidence/source search was used before the blind-memory seal.",
+    "No Baseline, reservation, contract, admission, global handoff, registry, migration, shared CI or other global control path was modified."
+  ],
+  "result": "pass",
+  "scope": "bounded orientation-packet completion; historical claims remain unverified until post-seal Evidence work"
+}
