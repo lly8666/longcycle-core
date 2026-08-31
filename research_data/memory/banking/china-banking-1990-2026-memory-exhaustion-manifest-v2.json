@@ -1,0 +1,140 @@
+{
+  "schema_version": "longcycle-banking-memory-exhaustion/v2",
+  "industry": "中国银行业",
+  "industry_slug": "china-banking",
+  "workstream_id": "banking-domain-v1",
+  "active_scope": "PRC_DOMESTIC_BANKING_ONLY",
+  "primary_period": ["1990-01-01", "2026-08-31"],
+  "selective_antecedent_rule": "Before 1990, backfill only material antecedents needed to explain an institution, policy regime, balance-sheet structure, product, crisis, actor or vocabulary inside the primary horizon.",
+  "batch0_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass01.md",
+    "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass02-history-institutions.md",
+    "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass03-semantics-business-models.md",
+    "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass04-negative-space.md"
+  ],
+  "batch0_status": "orientation_scaffold_not_saturation",
+  "blind_stage": {
+    "fresh_banking_search_forbidden": true,
+    "banking_source_results_forbidden": true,
+    "other_shard_raw_outputs_forbidden_for_atomic_recall": true,
+    "existing_batch0_index_allowed_for_planning_only": true,
+    "raw_leads_append_only": true,
+    "required_output_classes": [
+      "obvious_landmarks",
+      "long_tail_leads",
+      "forgotten_actors",
+      "failed_or_restructured_institutions",
+      "mechanism_leads",
+      "old_vocabulary_and_search_keys",
+      "contemporaneous_judgment_leads",
+      "metric_semantics",
+      "uncertain_fragments",
+      "counterexamples"
+    ],
+    "long_tail_token_share_min": 0.5
+  },
+  "time_slice_passes": [
+    {"pass_id":"TIME-1990-1994","focus":"professional-bank legacy, policy/commercial function separation, early marketization and macro-credit regime"},
+    {"pass_id":"TIME-1995-1999","focus":"commercial-bank legal framework, Asian-crisis context, capital/NPL cleanup, AMCs and financial-system restructuring"},
+    {"pass_id":"TIME-2000-2004","focus":"WTO-era reform, governance changes, recapitalization preparation, rural and city-bank restructuring"},
+    {"pass_id":"TIME-2005-2008","focus":"large-bank listings, credit expansion, mortgage/retail growth, pre-global-crisis banking model"},
+    {"pass_id":"TIME-2009-2012","focus":"stimulus credit boom, local-government financing, property, wealth-management and off-balance-sheet expansion"},
+    {"pass_id":"TIME-2013-2016","focus":"interest-rate liberalization, interbank/shadow-bank structures, asset expansion, deposit insurance and macroprudential transition"},
+    {"pass_id":"TIME-2017-2019","focus":"financial deleveraging, asset-management rules, shadow-bank contraction, small-bank stress and credit reallocation"},
+    {"pass_id":"TIME-2020-2022","focus":"pandemic policy response, property downturn, mortgage/retail changes, village/small-bank risks, margin pressure and wealth-management transition"},
+    {"pass_id":"TIME-2023-2026","focus":"low-rate/NIM compression, deposit termization, property/LGFV resolution, small-bank consolidation, capital and business-model adaptation"}
+  ],
+  "atomic_shards": [
+    {"shard_id":"SYS-MONETARY-CREDIT","scope":"PBOC operating framework, reserve/interest-rate/credit tools, LPR and monetary-credit transmission"},
+    {"shard_id":"SYS-REGULATION-RESOLUTION","scope":"banking laws, supervisory institutions, prudential rules, deposit insurance, resolution and consolidation"},
+    {"shard_id":"BANK-STATE-OWNED","scope":"large state-owned commercial banks, reform, governance, recapitalization, listings and business-model evolution"},
+    {"shard_id":"BANK-JOINT-STOCK","scope":"national joint-stock banks, differentiated franchises, funding models, growth strategies and risk episodes"},
+    {"shard_id":"BANK-CITY","scope":"city commercial banks, local-government links, regional growth, cross-region expansion, governance and consolidation"},
+    {"shard_id":"BANK-RURAL","scope":"RCCs, rural commercial banks, rural cooperative banks, village banks and provincial reform structures"},
+    {"shard_id":"BANK-POLICY-DEVELOPMENT","scope":"policy/development banks and the policy-versus-commercial credit boundary"},
+    {"shard_id":"ALM-DEPOSITS","scope":"deposit structure, pricing, competition, termization, customer migration, certificates and liability behavior"},
+    {"shard_id":"ALM-NIM-PRICING","scope":"loan/deposit pricing, benchmark/LPR transition, asset-liability repricing, NIM cycles and transfer pricing"},
+    {"shard_id":"ALM-LIQUIDITY-INTERBANK","scope":"interbank funding, repo, negotiable instruments, liquidity stress, wholesale funding and market plumbing"},
+    {"shard_id":"ASSET-CORPORATE-SME","scope":"corporate, SOE, private-enterprise, SME/micro credit, pricing, collateral and credit allocation"},
+    {"shard_id":"ASSET-MORTGAGE-RETAIL","scope":"mortgage, consumer, card and other retail lending, borrower behavior and retail credit cycles"},
+    {"shard_id":"ASSET-PROPERTY","scope":"developer credit, mortgages, project financing, presales, property-chain exposures and resolution mechanisms"},
+    {"shard_id":"ASSET-LGFV-LOCAL-GOV","scope":"local-government financing vehicles, land finance, implicit debt, refinancing and debt-resolution cycles"},
+    {"shard_id":"MARKETS-BONDS-INVESTMENTS","scope":"bond/investment books, trading, duration, credit investment, FX and treasury businesses"},
+    {"shard_id":"SHADOW-WMP-NONSTANDARD","scope":"wealth-management products, trusts, channel business, non-standard assets, interbank nesting and regulatory arbitrage"},
+    {"shard_id":"CAPITAL-ASSET-QUALITY","scope":"NPL recognition, provisioning, write-offs, AMCs, capital rules, RWA, recapitalization and credit cost"},
+    {"shard_id":"WEALTH-FEE-AUM","scope":"wealth management, custody, funds/insurance distribution, AUM economics, fee income and customer-asset migration"},
+    {"shard_id":"GOVERNANCE-RISK-CULTURE","scope":"ownership, boards, local influence, incentive systems, related-party lending, fraud, cases and risk culture"},
+    {"shard_id":"TECH-PAYMENTS-DIGITAL","scope":"core banking, cards/payments, mobile banking, fintech platforms, data/risk technology and digital customer acquisition"},
+    {"shard_id":"CROSSBORDER-FX-OFFSHORE","scope":"FX, trade finance, overseas branches/subsidiaries, cross-border RMB and external-cycle exposure"}
+  ],
+  "bridge_theme_passes": [
+    "credit-cycle-and-countercyclical-policy",
+    "interest-rate-reform-and-pricing-transmission",
+    "deposit-migration-and-bank-funding-competition",
+    "capital-npl-provisioning-and-resolution",
+    "property-land-finance-lgfv-feedback-loop",
+    "shadow-banking-and-regulatory-arbitrage",
+    "interbank-liquidity-and-wholesale-funding",
+    "local-government-bank-governance-linkage",
+    "retail-wealth-deposit-fund-migration",
+    "accounting-regulatory-metric-semantic-changes",
+    "bank-type-heterogeneity-and-business-model-selection",
+    "macro-demography-fiscal-and-regional-economy",
+    "technology-payments-and-channel-disruption",
+    "expectation-vintages-and-management-narratives",
+    "failures-mergers-recapitalizations-and-counterexamples"
+  ],
+  "per_shard_pass_order": [
+    "timeline",
+    "actors-institutions-products",
+    "metrics-and-semantic-changes",
+    "mechanisms",
+    "contemporaneous-expectations",
+    "failures-restructurings-dead-ends",
+    "terminology-old-names-search-keys",
+    "counterexamples",
+    "self-gap-batch1",
+    "self-gap-batch2-if-novelty-material",
+    "self-gap-batch3-plus-if-needed",
+    "saturation-review"
+  ],
+  "recursive_questions_for_high_importance_lead": [
+    "Who else or which institution was connected?",
+    "What preceded this and what balance-sheet or policy condition made it possible?",
+    "What followed, and through which bank type or business line did it transmit?",
+    "What was it called then, including old institution names, policy phrases, products and accounting terms?",
+    "What failed, was merged, recapitalized, hidden off balance sheet or later reclassified?",
+    "What would a veteran China-bank analyst say is missing from this story?"
+  ],
+  "novelty_classification": ["new_category", "useful_refinement", "duplicate"],
+  "saturation_rule": {
+    "consecutive_low_novelty_passes": 3,
+    "must_review_time_x_shard_coverage_matrix": true,
+    "must_review_negative_space_matrix": true,
+    "must_include_long_tail_categories": [
+      "forgotten_actors",
+      "failed_or_restructured_institutions",
+      "old_vocabulary",
+      "mechanisms",
+      "metric_semantics",
+      "counterexamples",
+      "contemporaneous_expectations",
+      "negative_space"
+    ],
+    "material_missing_antecedent_reopens_or_extends_horizon": true,
+    "top_level_ontology_stability_is_not_saturation": true
+  },
+  "stitch_policy": {
+    "start_only_after_relevant_atomic_shards_have_sufficient_blind_depth": true,
+    "use_compact_indexes_not_full_raw_outputs": true,
+    "may_generate_cross_shard_links_and_gap_leads": true,
+    "may_not_rewrite_raw_blind_leads": true,
+    "links_remain_research_only_until_evidence_verified": true
+  },
+  "evidence_transition_policy": "No new Banking evidence search for an unsealed shard. Once a shard is genuinely sealed, post-seal self-verification may begin claim by claim while other unsealed shards continue blind recall in isolated contexts.",
+  "preexposure_carveout": {
+    "subject":"China Merchants Bank 2023-08-28 interim-results management discussion",
+    "status":"PREEXPOSED_NOT_BLIND",
+    "rule":"Do not count directly overlapping recollection as clean blind evidence of model memory; retain it only as provenance/context and re-run equivalent industry questions through other institutions/time slices where possible."
+  }
+}
