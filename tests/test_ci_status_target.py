@@ -16,3 +16,12 @@ def test_required_custom_statuses_target_real_pr_head() -> None:
         assert "STATUS_SHA: ${{ github.event.pull_request.head.sha || github.sha }}" in text
         assert 'statuses/$STATUS_SHA' in text
         assert 'statuses/$GITHUB_SHA' not in text
+
+
+def test_worker_fast_fetches_only_the_active_baseline_tag() -> None:
+    text = (ROOT / ".github" / "workflows" / "architecture-baseline.yml").read_text(
+        encoding="utf-8"
+    )
+    assert 'BASELINE_TAG="$(python -c' in text
+    assert 'git check-ref-format "refs/tags/$BASELINE_TAG"' in text
+    assert '"+refs/tags/$BASELINE_TAG:refs/tags/$BASELINE_TAG"' in text
