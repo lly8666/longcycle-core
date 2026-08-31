@@ -1,0 +1,34 @@
+{
+  "assignment_epoch": 1,
+  "base_main_sha": "9f325a21727aa75afa88e574447b1f06dc2e8b30",
+  "baseline": "architecture-v1",
+  "branch": "workstream/shipping-domain-v1",
+  "capability_admission_path": ".longcycle/workstreams/shipping-domain-v1/capability-admission.json",
+  "change_contract_path": ".longcycle/workstreams/shipping-domain-v1/change-contract.json",
+  "cursor_path": ".longcycle/workstreams/shipping-domain-v1/cursor.json",
+  "dependencies": [],
+  "done_when": "A representative shipping trajectory is captured through the reserved domain paths with claim-scoped provenance, contemporaneous Judgment kept separate from later Outcome, and point-in-time replay tests showing no lookahead; shared functionality is requested rather than duplicated.",
+  "exclusive_write_prefixes": [
+    "research_data/memory/shipping",
+    "domain_packs/shipping",
+    "tests/shipping"
+  ],
+  "goal": "Build the first Shipping Domain Pack and industrial-memory research slice by reusing Longcycle's existing Evidence, Reality/Judgment/Outcome and point-in-time semantics.",
+  "integration_lane": "parallel",
+  "intent_id": "SHIPPING-DOMAIN-V1-001",
+  "kind": "industry",
+  "lifecycle_state": "active",
+  "parent_goal_ref": ".longcycle/handoff/current.json#strategic_horizon.short_term_goal",
+  "reservation_revision": 1,
+  "schema_version": "longcycle-workstream-reservation/v2",
+  "target_capability_ids": [
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0003",
+    "CAP-0004",
+    "CAP-0005",
+    "CAP-0006",
+    "CAP-0007"
+  ],
+  "workstream_id": "shipping-domain-v1"
+}

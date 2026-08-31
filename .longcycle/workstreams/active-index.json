@@ -1,5 +1,28 @@
 {
-  "active": [],
+  "active": [
+    {
+      "assignment_epoch": 1,
+      "branch": "workstream/banking-domain-v1",
+      "cursor_path": ".longcycle/workstreams/banking-domain-v1/cursor.json",
+      "dependencies": [],
+      "integration_lane": "parallel",
+      "kind": "industry",
+      "reservation_path": ".longcycle/workstreams/banking-domain-v1/reservation.json",
+      "reservation_revision": 1,
+      "workstream_id": "banking-domain-v1"
+    },
+    {
+      "assignment_epoch": 1,
+      "branch": "workstream/shipping-domain-v1",
+      "cursor_path": ".longcycle/workstreams/shipping-domain-v1/cursor.json",
+      "dependencies": [],
+      "integration_lane": "parallel",
+      "kind": "industry",
+      "reservation_path": ".longcycle/workstreams/shipping-domain-v1/reservation.json",
+      "reservation_revision": 1,
+      "workstream_id": "shipping-domain-v1"
+    }
+  ],
   "policy": "Global mission/Baseline/semantic ownership remain single control planes. Parallel L1/L2 workstreams own disjoint branch/path scopes and carry local cursors/contracts; shared control-plane changes and L3/L4 work enter one global serial integration lane.",
   "schema_version": "longcycle-workstream-index/v1"
 }
