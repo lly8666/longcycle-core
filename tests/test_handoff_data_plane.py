@@ -27,10 +27,10 @@ class HandoffDataPlaneTest(unittest.TestCase):
         self.assertEqual(checkpoint.schema_version, "longcycle-session-handoff/v5")
         self.assertEqual(checkpoint.data_plane_manifest_path, ".longcycle/handoff/data-plane.json")
         self.assertIn(checkpoint.data_plane_manifest_path, checkpoint.resume_read_set)
-        self.assertEqual(manifest.schema_version, "longcycle-handoff-data-plane/v4")
+        self.assertEqual(manifest.schema_version, "longcycle-handoff-data-plane/v5")
         self.assertEqual(
             manifest.transport_mode,
-            "google_drive_webcapsules_generated_pdf_locator_deferred_materialization",
+            "google_drive_immutable_generations_pdf_locator_deferred_materialization",
         )
         self.assertIsNotNone(manifest.pdf_source_policy)
         assert manifest.pdf_source_policy is not None
@@ -72,6 +72,14 @@ class HandoffDataPlaneTest(unittest.TestCase):
         self.assertIn("Do not transport a live PostgreSQL cluster", manifest.postgres_policy)
         self.assertIn("SQLite", manifest.duckdb_policy)
         self.assertIn("Google Drive", manifest.google_drive_policy)
+
+    def test_parallel_database_handoff_declares_bounded_immutable_generation_heads(self) -> None:
+        manifest = self._manifest()
+
+        self.assertTrue(manifest.parallel_database_policy)
+        self.assertTrue(manifest.drive_generation_policy)
+        self.assertTrue(manifest.drive_upload_recovery_policy)
+        self.assertLessEqual(len(manifest.database_generation_heads), 8)
 
     def test_locator_only_is_not_claim_evidence(self) -> None:
         manifest = self._manifest()

@@ -4,7 +4,6 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-
 AssetRole = Literal[
     "raw_source_acquisition_cache",
     "legacy_materialized_pdf_source_cache",
@@ -22,6 +21,25 @@ AssetTransport = Literal[
     "github_release_legacy_materialization",
     "google_drive",
 ]
+
+
+class HandoffDatabaseGenerationHead(BaseModel):
+    """One main-promoted immutable database generation used by active work."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+
+    lane_id: str = Field(pattern=r"^[a-z0-9][a-z0-9-]{0,62}$")
+    generation_id: str = Field(min_length=1, max_length=128)
+    asset_id: str = Field(min_length=1, max_length=128)
+    google_drive_file_id: str = Field(min_length=1)
+    drive_revision_id: str | None = None
+    size_bytes: int = Field(gt=0)
+    sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    schema_revision: str = Field(min_length=1, max_length=128)
+    integrated_main_sha: str = Field(pattern=r"^[0-9a-f]{40}$")
+    predecessor_generation_id: str | None = Field(default=None, max_length=128)
+    integration_receipt_ref: str = Field(min_length=1)
+    restore_instruction: str = Field(min_length=1)
 
 
 class HandoffAssetComponent(BaseModel):
@@ -89,8 +107,9 @@ class HandoffDataPlaneManifest(BaseModel):
     """Resume-relevant source/data state that is too large or unsuitable for Git.
 
     v4 deliberately separates PDF source identity/content verification from optional raw-byte
-    materialization. Older v2/v3 manifests remain readable so durable historical receipts do not
-    require migration churn.
+    materialization. v5 adds bounded, main-promoted immutable database generation heads so
+    parallel workers never treat a shared Drive file as a writable database. Older manifests
+    remain readable so durable historical receipts do not require migration churn.
     """
 
     model_config = ConfigDict(extra="forbid", frozen=True)
@@ -99,11 +118,13 @@ class HandoffDataPlaneManifest(BaseModel):
         "longcycle-handoff-data-plane/v2",
         "longcycle-handoff-data-plane/v3",
         "longcycle-handoff-data-plane/v4",
+        "longcycle-handoff-data-plane/v5",
     ]
     transport_mode: Literal[
         "github_release_sources_google_drive_generated",
         "github_release_pdf_sources_google_drive_webcapsules_generated",
         "google_drive_webcapsules_generated_pdf_locator_deferred_materialization",
+        "google_drive_immutable_generations_pdf_locator_deferred_materialization",
     ]
     webpage_capture_policy: str | None = None
     pdf_source_policy: dict[str, Any] | None = None
@@ -113,6 +134,12 @@ class HandoffDataPlaneManifest(BaseModel):
     google_drive_policy: str = Field(min_length=1)
     postgres_policy: str = Field(min_length=1)
     duckdb_policy: str = Field(min_length=1)
+    parallel_database_policy: str | None = None
+    drive_generation_policy: str | None = None
+    drive_upload_recovery_policy: str | None = None
+    database_generation_heads: tuple[HandoffDatabaseGenerationHead, ...] = Field(
+        default=(), max_length=8
+    )
     legacy_release_web_policy: str | None = None
     historical_asset_index_policy: str | None = None
     missing_required_asset_action: str = Field(min_length=1)
@@ -139,4 +166,31 @@ class HandoffDataPlaneManifest(BaseModel):
             states = self.pdf_source_policy.get("states")
             if states != ["locator_verified", "content_verified", "materialized"]:
                 raise ValueError("data-plane v4 PDF state machine must preserve all three states")
+        if self.schema_version == "longcycle-handoff-data-plane/v5":
+            if self.transport_mode != (
+                "google_drive_immutable_generations_pdf_locator_deferred_materialization"
+            ):
+                raise ValueError("data-plane v5 requires immutable Drive generation mode")
+            if not self.webpage_capture_policy or not self.pdf_source_policy:
+                raise ValueError("data-plane v5 requires webpage and PDF source policies")
+            if not self.github_actions_pdf_policy:
+                raise ValueError("data-plane v5 requires github_actions_pdf_policy")
+            states = self.pdf_source_policy.get("states")
+            if states != ["locator_verified", "content_verified", "materialized"]:
+                raise ValueError("data-plane v5 PDF state machine must preserve all three states")
+            if not all(
+                (
+                    self.parallel_database_policy,
+                    self.drive_generation_policy,
+                    self.drive_upload_recovery_policy,
+                )
+            ):
+                raise ValueError("data-plane v5 requires parallel database and Drive policies")
+
+        lane_ids = [head.lane_id for head in self.database_generation_heads]
+        if len(lane_ids) != len(set(lane_ids)):
+            raise ValueError("database generation lanes must be unique")
+        generation_ids = [head.generation_id for head in self.database_generation_heads]
+        if len(generation_ids) != len(set(generation_ids)):
+            raise ValueError("database generation ids must be unique")
         return self

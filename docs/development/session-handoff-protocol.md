@@ -96,7 +96,7 @@ The v2 worker cursor names `checkpoint_based_on_head_sha`, `task_done_when`, one
 
 ## 6. Data plane contract
 
-`data-plane.json` uses `longcycle-handoff-data-plane/v4` and transport mode `google_drive_webcapsules_generated_pdf_locator_deferred_materialization`.
+`data-plane.json` uses `longcycle-handoff-data-plane/v5` and transport mode `google_drive_immutable_generations_pdf_locator_deferred_materialization`.
 
 ### 6.1 Readable webpage lane
 
@@ -147,7 +147,16 @@ Use Drive for bounded webpage capture DBs and Longcycle-generated replay/executi
 
 Deferred PDF raw materialization has no mandatory transport in this protocol; its owning receipt records whatever durable storage identity is chosen later.
 
-### 6.5 Restore algorithm
+### 6.5 Parallel database lane
+
+The manifest carries at most eight active, main-promoted database generation heads. Each pins an
+exact Drive file/revision identity, digest, size, schema revision, integrated main SHA and receipt.
+Workers restore a base into private storage, keep it read-only and upload only new immutable
+candidates through intent/outcome receipts. Only the serial integration lane may replay candidates
+and advance a head after predecessor comparison and round-trip verification. See
+`docs/development/parallel-data-plane.md`.
+
+### 6.6 Restore algorithm
 
 ```text
 1. recover Git control plane first

@@ -232,6 +232,18 @@ Follow `METHODOLOGY_CORE.md` and Architecture Baseline v1: historical recovery r
 
 Current source/data-plane mechanics may evolve under L1/L2 without changing these semantics.
 
+## Parallel database / Drive boundary
+
+Google Drive is immutable byte transport, not a shared writable database and not the authority for
+which database generation is current. A parallel worker restores only an exact main-promoted file
+id/revision/digest into private storage, opens the base read-only, and writes through an isolated
+PostgreSQL database/schema or copied DuckDB/SQLite file. It uploads only a new immutable candidate
+through pushed intent/outcome receipts. Only the single serial integration lane may compare the
+candidate base, replay/resolve changes, verify the integrated bytes and advance the bounded Git
+generation head. Missing upload outcome means inspect Drive before retrying, never assume absence.
+
+The complete transaction is `docs/development/parallel-data-plane.md`.
+
 ## Continuity maintenance
 
 `current.json.continuation_cursor` must tell a Fresh Agent what just finished, what resumes now, why, what `done_when` means, required capability, insufficient-capability action and what follows.

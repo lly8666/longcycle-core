@@ -74,6 +74,7 @@ Do not confuse Baseline freeze with frozen acquisition implementation. Preserve 
 - historical recovery remains Memory-first / Evidence-final;
 - current collection remains source-first / preserve-now;
 - readable webpage capture, PDF `locator_verified → content_verified → materialized`, Drive/Release transport and runtime data-plane decisions do not change claim-scoped authority;
+- parallel database work follows `docs/development/parallel-data-plane.md`: exact main-promoted Drive generation in, private/read-only base, new immutable candidate out, serial integration promotion only;
 - current Agent tool friction is not itself a reason to redesign Longcycle semantics.
 
 ## Mutation rule

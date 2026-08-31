@@ -431,6 +431,7 @@ def test_unverified_false_requires_exact_verification_pointers(
 
 def test_global_control_plane_paths_are_not_parallel_write_scopes() -> None:
     assert workstreams._is_global_control_prefix(".longcycle/handoff/current.json")
+    assert workstreams._is_global_control_prefix(".longcycle/handoff/data-plane.json")
     assert workstreams._is_global_control_prefix(".longcycle/capabilities/cards/CAP-0005.json")
     assert workstreams._is_global_control_prefix(".longcycle/workstreams/active-index.json")
     assert workstreams._is_global_control_prefix("ARCHITECTURE_BASELINE_V1.md")

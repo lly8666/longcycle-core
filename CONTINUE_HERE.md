@@ -156,9 +156,20 @@ Longcycle-generated binary state 放 Google Drive，例如：
 - 网页 capture capsule 虽然走 Drive，但里面的可见文本是 source-derived capture；
 - Drive 是 portable relay，不是 live PostgreSQL authority，也不是终局 archive。
 
+### 多 Agent 并行时的数据库规则
+
+- Git 主分支的 `database_generation_heads` 才定义当前数据库代际；Drive 文件名和目录顺序不算 authority；
+- Worker 必须按 exact file id / revision（若可用）/ SHA-256 / size / schema revision 下载并校验；
+- 下载后的基线放入自己的 workstream 私有目录，默认只读；需要修改时先复制，PostgreSQL 则使用隔离 database/schema；
+- Worker 只能上传新的 immutable candidate 或 deterministic change bundle，不能覆盖原 Drive 对象，也不能自行改全局 generation head；
+- 上传前先 push intent receipt，上传并回读校验后再 push outcome receipt；若中断后只有 intent，下一轮先查 Drive 再决定补 outcome 或重试，不能盲目重复上传；
+- 只有 `global_serial` 集成 Agent 能按最新基线串行 replay/resolve candidate、分配 canonical migration、验证并推进 current generation；旧基线 candidate 必须 replay/rebase 或拒绝，禁止 last-writer-wins。
+
+详细契约见 `docs/development/parallel-data-plane.md`。
+
 ## 4. PostgreSQL 不做 session 搬运
 
-不要把 live PostgreSQL cluster 放 Release 或 Drive 当 session state。需要 transaction / lease / outbox / write semantics 时，在 GitHub Actions 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。
+不要把 live PostgreSQL cluster 放 Release 或 Drive 当 session state。需要 transaction / lease / outbox / write semantics 时，在 GitHub Actions 或其他 service-capable runtime 重新建立 PostgreSQL，并走正常写入路径。并行 Worker 不共享一个可写 schema；各自使用 workstream/assignment-fenced 隔离 database/schema，canonical migration 由串行集成 lane 分配。
 
 注意：**Actions 仍然可以用于 PostgreSQL/runtime execution；禁止的是为了下载新 PDF 而制造 acquisition Actions。**
 

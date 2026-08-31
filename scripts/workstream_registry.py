@@ -114,7 +114,7 @@ CURSOR_FORBIDDEN_RESERVATION_FIELDS = {
 # lane performs the shared-control-plane update after parallel work converges.
 GLOBAL_CONTROL_PREFIXES = (
     ".longcycle/baseline",
-    ".longcycle/handoff/current.json",
+    ".longcycle/handoff",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/capabilities/cards",
     ".longcycle/capabilities/active-index.json",

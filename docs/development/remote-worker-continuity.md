@@ -171,6 +171,20 @@ Git commits are replayable; uploads, deployments, payments and third-party mutat
 
 After interruption between intent and outcome, the successor checks the external system using the recorded key before retrying. It must never infer "not done" merely because the outcome receipt is absent.
 
+### 7.1 Drive database candidates
+
+A Drive-hosted database is never a concurrently writable handoff object. The worker first pins the
+main-promoted generation's exact file/revision identity, digest, size and schema revision, verifies
+it into private storage and treats the base as read-only. It uploads a new immutable candidate only
+after the intent receipt is remote; the outcome is complete only after the new identity and
+round-trip digest are observed.
+
+If interruption leaves intent without outcome, startup recovery inspects Drive using recorded
+identity or operation metadata/digest before retry. Ambiguity is `BLOCKED`, not permission to upload
+again. Candidate upload never advances current state: only the serial integration lane may compare
+the base against refreshed main, replay/resolve changes and promote a new generation head. See
+`docs/development/parallel-data-plane.md`.
+
 ## 8. Vertical Alignment Loop: anti-tunnel control
 
 Run the loop after startup, before a substantive subproblem, after a coherent subtask, before scope expansion and whenever new evidence changes an assumption:

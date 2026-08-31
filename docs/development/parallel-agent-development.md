@@ -147,7 +147,21 @@ Instead:
 
 Domain knowledge that does not require database capability change should prefer versioned Domain Pack/catalog releases rather than global schema migrations.
 
-## 7. Lifecycle
+## 7. Parallel database and Drive rule
+
+Workers never download a Drive database into a shared writable location and never upload over an
+existing object. Each worker pins the exact main-promoted generation (file/revision identity,
+digest, size and schema), verifies it into private storage, keeps the base read-only, and develops in
+an isolated PostgreSQL database/schema or copied DuckDB/SQLite file.
+
+Worker outputs are immutable candidates or deterministic change bundles with pushed upload
+intent/outcome receipts. The one serial integration lane compares each candidate's base with the
+refreshed current generation, replays or rejects stale work, resolves schema/semantic conflicts,
+round-trip verifies a new integrated object, and alone advances the bounded Git generation head.
+Drive names or "last uploaded" never choose the winner. The full interruption-safe transaction is
+`docs/development/parallel-data-plane.md`.
+
+## 8. Lifecycle
 
 ### Reserve
 
@@ -203,7 +217,7 @@ The one active integration Agent:
 
 Worker branches are producer branches. The final main-bound PR belongs to the serial integration lane. Consumers depend on the merged completion receipt, never another Agent's chat statement or unintegrated worker branch.
 
-## 8. New industries
+## 9. New industries
 
 Different industries are naturally parallel when writes remain domain-local:
 
@@ -230,7 +244,7 @@ provenance/versioning
 
 They must not fork those semantics into industry-specific copies.
 
-## 9. New functionality derived from Baseline v1
+## 10. New functionality derived from Baseline v1
 
 A new feature should normally be an L1/L2 **extension surface**, not a new architecture.
 
@@ -254,7 +268,7 @@ Every feature workstream must answer:
 
 A useful pattern remains domain-local first. Promote it into a reusable product/platform capability only when a second independent domain needs the same operation or there is clear product value. Promotion still routes through existing semantic ownership; it does not become Core merely because abstraction is possible.
 
-## 10. Escalation to L3
+## 11. Escalation to L3
 
 Parallel development stops only for the Baseline-changing portion when a real important case cannot be truthfully represented.
 

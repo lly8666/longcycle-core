@@ -162,6 +162,25 @@ A typed request states stable id/requester, requested result and parent value, i
 
 The v1 machine gate bounds these records and proves that their pointers resolve to blobs on the exact remote head; semantic body validation remains an integration-lane review until the first real Banking/Shipping pilot supplies stable request/receipt shapes. A present blob is not, by itself, a satisfied dependency.
 
+## Parallel database data plane
+
+Drive-hosted database capsules are never shared writable workspaces. A worker pins an exact
+main-promoted generation by Drive file/revision identity, digest, size and schema revision; restores
+it into workstream-private storage; verifies it; and opens the base read-only. Any DuckDB/SQLite
+transformation starts from a private copy, and PostgreSQL work uses an isolated database/schema
+derived from workstream identity plus assignment epoch.
+
+The worker may push a deterministic change bundle or new immutable candidate. Before upload it
+pushes an intent receipt with a stable operation key and expected digest; after upload and byte
+verification it pushes an outcome receipt with the new Drive identity. Intent without outcome is
+recovered by inspecting Drive before retry. The worker never overwrites an existing object or edits
+the global generation head.
+
+Only the `global_serial` integration lane may compare a candidate base with refreshed main, replay
+or reject stale candidates, order schema/semantic changes, upload the verified integrated
+generation and advance `.longcycle/handoff/data-plane.json`. See
+`docs/development/parallel-data-plane.md`.
+
 ## L3/L4 escalation handoff
 
 Every worker inherits `docs/development/l3-l4-user-escalation.md`. A credible potential/confirmed L3 or L4 issue stops the Baseline-changing portion before implementation. Explain it to the user through that document's six-question plain-language protocol, then persist:

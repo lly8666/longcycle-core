@@ -21,6 +21,7 @@
     "Main-owned reservation intent, goal, acceptance, scope, capability owners, dependencies, and assignment fencing cannot be redefined by the worker cursor.",
     "No timer, dialogue count or fixed push cadence is a correctness gate; coherent tasks use remote S checkpoints and cursor-only H acknowledgements, and the next invocation automatically repairs any pushed S that was interrupted before H.",
     "Parallel workers communicate through bounded durable request and completion-receipt pointers, remain within disjoint reservations, and integrate through one serial lane; v1 does not mistake blob existence for semantic request satisfaction.",
+    "Parallel database workers pin and verify an immutable Drive base generation, write only isolated local databases, upload uniquely identified candidates through recoverable intent/outcome receipts, and allow only the serial integration lane to promote the bounded main generation head.",
     "Hot handoff, router, request, dependency, and cursor state receive explicit size/count bounds so default recovery cost depends on active workstreams rather than project age.",
     "Focused tests cover normal handoff, interrupted-after-push recovery, stale or non-ancestor checkpoints, reservation mismatch, dependency gating, and bounded-growth behavior without weakening Architecture Baseline v1 semantics."
   ]
