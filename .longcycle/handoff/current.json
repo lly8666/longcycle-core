@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 123,
+  "continuity_sequence": 124,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
-  "active_branch": "post-baseline/banking-shipping-registration-v1",
+  "active_branch": "post-baseline/worker-baseline-tag-fetch-v1",
   "active_pr": null,
-  "checkpoint_based_on_head_sha": "50ce84e95bf4611ca7403019d3ca727c4acb23e9",
+  "checkpoint_based_on_head_sha": "5f83e423be244b035295a9dff5618892b1c4d017",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh remote main and the registration branch first. PR #166 is merged on main@9f325a21727aa75afa88e574447b1f06dc2e8b30. S=50ce84e95bf4611ca7403019d3ca727c4acb23e9 registers banking-domain-v1 and shipping-domain-v1 together as disjoint reservation/cursor v2 L2+reuse industry lanes with empty dependencies; Architecture Baseline run 33376589672 passed on S. This H must be the only delta after S. Next: remote freshness audit, one normal PR, exact-head Architecture Baseline + full CI, normal merge, then create both worker branches from registered main and repair cursors until both continuity audits are CLEAN. Do not launch domain work before those gates.",
+  "bootstrap_instruction": "Refresh remote main and this fix branch first. PR #167 merged Banking/Shipping registration to main@8233d5467f83ad4f7fdc2579a0ab4c41ca41f8f9. Initial cursor-only worker acknowledgements exposed a real shared worker-fast CI defect: bounded checkout omitted the frozen Architecture Baseline tag, so validate_architecture_baseline.py failed before boundary checks. S=5f83e423be244b035295a9dff5618892b1c4d017 fixes only the shared Architecture Baseline workflow plus a regression test by fetching the exact tag named by .longcycle/baseline/current.json; Architecture Baseline push run 33377685028 passed on S. Merge this fix exact-green, then replay each cursor-only acknowledgement onto the new main and require worker-fast plus remote workstream continuity CLEAN before launch.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,9 +17,9 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where multiple industry/product Agents develop concurrently inside pre-reserved scopes while one semantic-owner/Baseline/integration control plane preserves Evidence, PIT/no-lookahead, temporal precision, provenance and Reality/Judgment/Outcome correctness.",
-    "short_term_goal": "Merge the exact-green Banking/Shipping registration PR, then create workstream/banking-domain-v1 and workstream/shipping-domain-v1 from that registered main and reach CLEAN continuity on both before either worker starts domain implementation.",
+    "short_term_goal": "Repair the worker-fast frozen-tag fetch defect through the serial lane, merge it exact-green, then replay Banking/Shipping cursors onto the resulting latest main and reach CLEAN continuity on both before either worker starts domain implementation.",
     "next_big_step": "Run the first real Banking/Shipping reservation-first pilot in parallel, let each industry produce only bounded candidates inside its own scope, route any shared need through one coordinator-registered product/platform workstream, and integrate shared code/migrations/database generations through one serial lane.",
-    "local_optimization_stop_rule": "Do not add more governance, schemas or coordination layers before the real Banking/Shipping pilot exposes a concrete failure. Treat registration, exact-head CI and clean worker launch as the only current coordination work.",
+    "local_optimization_stop_rule": "The real pilot exposed one concrete CI continuity defect, so fix exactly that defect and its regression coverage. Do not add a new governance layer or broaden worker authority.",
     "parallel_permanent_tracks": [
       "Architecture Baseline v1 remains stable; normal industry/product work defaults to L1/L2 + reuse/extend.",
       "Main-side reservation.json is write/goal/dependency authority; worker cursor.json is execution authority and never self-expands scope.",
@@ -28,39 +28,37 @@
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "banking-shipping-registration-v1",
-    "last_completed_action": "PR #166 is merged. From main@9f325a21727aa75afa88e574447b1f06dc2e8b30, created the serial registration branch and pushed S=50ce84e95bf4611ca7403019d3ca727c4acb23e9. S registers both active v2 industry reservations with mutually exclusive Banking/Shipping scopes, revision/epoch 1/1, L2 reuse of CAP-0001..CAP-0007, empty dependencies, requests/receipts/escalations directories and rebuilt active-index. Architecture Baseline run 33376589672 passed on S.",
-    "current_task": "Push this handoff-only H, prove remote freshness from S, open the registration PR, require exact-head Architecture Baseline and full CI, merge normally, then create both worker branches from latest main and repair their cursors until both audits are CLEAN.",
-    "why_now": "Main must own reservation authority before either disposable worker starts, and each worker cursor must acknowledge the merged registration base.",
-    "done_when": "The registration PR is merged exact-green; latest main contains both reservations and canonical active-index; both deterministic worker branches exist from that main; each branch has a cursor-only acknowledgement and remote continuity audit CLEAN.",
+    "parent_workstream_id": "worker-baseline-tag-fetch-v1",
+    "last_completed_action": "PR #167 merged both v2 industry reservations to main@8233d5467f83ad4f7fdc2579a0ab4c41ca41f8f9 and main-side Workstream Registry audit passed. Banking and Shipping branches were created and received cursor-only acknowledgements, but their worker-fast Architecture Baseline runs failed before boundary tests because the bounded checkout did not contain tag architecture-baseline-v1.0.0. The shared fix S=5f83e423be244b035295a9dff5618892b1c4d017 now fetches only the active Baseline tag and adds regression coverage; push Architecture Baseline run 33377685028 passed.",
+    "current_task": "Push this handoff-only H, prove S-to-H freshness, open one normal main-bound CI-fix PR, require exact-head Architecture Baseline and full CI, merge normally, then replay both cursor acknowledgements from the new main and require worker-fast and remote continuity CLEAN.",
+    "why_now": "Neither industry may launch while the required worker boundary gate is red, and the defect is shared CI authority rather than industry code.",
+    "done_when": "The bounded worker-fast tag fetch fix is merged exact-green; latest main is refreshed; both worker branches are rebased/replayed from that main with only their own cursor acknowledgement delta; both worker-fast checks pass and both audit_workstream_continuity.py results are CLEAN.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Push the seq123 handoff-only commit based on S and run the remote handoff freshness audit against post-baseline/banking-shipping-registration-v1."
+    "next_atomic_action": "Run remote handoff freshness from S=5f83e423be244b035295a9dff5618892b1c4d017 to this seq124 H and then open the CI-fix PR."
   },
   "active_context": {
-    "context_id": "banking-shipping-registration-123",
+    "context_id": "worker-baseline-tag-fetch-124",
     "context_kind": "multi_agent_integration",
-    "label": "Banking + Shipping v2 reservation registration and clean worker launch",
-    "root_path": ".longcycle/workstreams",
+    "label": "Worker-fast Baseline tag fetch repair before Banking/Shipping launch",
+    "root_path": ".github/workflows",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      "docs/development/parallel-agent-development.md",
+      ".github/workflows/architecture-baseline.yml",
+      "scripts/validate_architecture_baseline.py",
+      "scripts/audit_workstream_continuity.py",
       "docs/development/remote-worker-continuity.md",
-      "docs/development/parallel-data-plane.md",
       "docs/development/workstream-reservation-integration.md",
-      "docs/development/l3-l4-user-escalation.md",
-      ".longcycle/workstreams/README.md",
-      "scripts/workstream_registry.py",
-      "scripts/validate_workstream_boundaries.py"
+      ".longcycle/workstreams/README.md"
     ],
     "core_exclusion_terms": [
-      "more-governance-before-real-pilot",
-      "mandatory-time-or-turn-handoff-gate",
-      "worker-self-issued-write-authority",
-      "worker-direct-main-merge",
+      "full-history-worker-checkout",
+      "all-tags-worker-fetch",
+      "worker-shared-ci-write-authority",
       "industry-specific-baseline-fork",
       "duplicate-core-semantic-owner",
+      "worker-direct-main-merge",
       "shared-writable-drive-database",
       "drive-last-writer-wins-promotion"
     ]
@@ -68,8 +66,8 @@
   "pending_user_directives": [
     "Continue autonomously from remote repository authority; do not ask the user to repeat background.",
     "Only one Agent may write global_serial; stop and report if another active global_serial writer appears.",
-    "Banking and Shipping must be main-registered as reservation/cursor v2 industry workstreams before workers start; their given scopes stay disjoint and no global paths are delegated.",
-    "Industry work is normally L1/L2 + reuse/extend. Do not duplicate Evidence, Reality, Judgment, Outcome, PIT or replay semantics; real shared needs become one coordinator-registered product/platform workstream.",
+    "Banking and Shipping are reservation/cursor v2 industry workstreams with disjoint paths, revision/epoch 1/1, L1/L2 and reuse/extend only; no global path is delegated to either worker.",
+    "Do not duplicate Evidence, Reality, Judgment, Outcome, PIT or replay semantics; a real shared functional need becomes one coordinator-registered product/platform workstream.",
     "Workers repair pushed S-without-H from remote facts before new work; no timer or turn-count handoff gate.",
     "Drive database bytes remain immutable private transport: close/hash, upload a new object, record exact ID/name/MIME/size/SHA, download by ID and verify/open; only serial integration promotes the Git generation head, and stale candidates are replayed/rebased or rejected rather than last-writer-wins.",
     "Potential/confirmed L3/L4 stops the affected implementation and goes to the user in plain language before foundation-changing work."
@@ -77,25 +75,25 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33376589672,
-    "observed_head_sha": "50ce84e95bf4611ca7403019d3ca727c4acb23e9",
-    "conclusion": "architecture_baseline_success_on_registration_S; exact_handoff_head_and_pr_full_ci_not_yet_authoritative",
-    "mypy_summary": "No independent Mypy result is claimed from the registration push; full CI must be refreshed on the exact PR head before merge.",
-    "pytest_summary": "Architecture Baseline run 33376589672 passed its Baseline validator regressions and Baseline-critical semantic regression suites on substantive registration S.",
-    "ruff_summary": "No independent Ruff result is claimed from the registration push; full CI must be refreshed on the exact PR head before merge.",
-    "refresh_instruction": "After this handoff-only commit, refresh the exact registration branch/PR head and require both longcycle/architecture-baseline and longcycle/full-ci on that exact SHA before merge. This snapshot is not merge authority."
+    "last_observed_run": 33377685028,
+    "observed_head_sha": "5f83e423be244b035295a9dff5618892b1c4d017",
+    "conclusion": "architecture_baseline_success_on_worker_tag_fetch_S; exact_handoff_head_and_pr_full_ci_not_yet_authoritative",
+    "mypy_summary": "No independent Mypy result is claimed from the fix push; full CI must be refreshed on the exact PR head before merge.",
+    "pytest_summary": "Architecture Baseline run 33377685028 passed Baseline validation, capability/workstream/dependency checks, the new worker tag-fetch regression assertion and Baseline-critical semantic regressions on S.",
+    "ruff_summary": "No independent Ruff result is claimed from the fix push; full CI must be refreshed on the exact PR head before merge.",
+    "refresh_instruction": "After this handoff-only commit, refresh the exact fix PR head and require both longcycle/architecture-baseline and longcycle/full-ci on that exact SHA before merge. This snapshot is not merge authority."
   },
   "workstreams": [
     {
-      "workstream_id": "banking-shipping-registration-v1",
+      "workstream_id": "worker-baseline-tag-fetch-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
       "status": "handoff_then_pr_validation",
-      "summary": "Serial lane owns registration, exact-head PR validation, normal merge and deterministic worker launch.",
+      "summary": "Serial lane fixes the concrete shared worker-fast frozen-tag fetch defect without changing Baseline semantics or worker authority.",
       "next_actions": [
-        "Push H as handoff-only and prove remote freshness from S.",
-        "Open one main-bound registration PR and require exact-head Architecture Baseline plus full CI.",
-        "Merge normally, refresh main, create both worker branches, then repair cursor-only handoffs until both remote continuity audits are CLEAN."
+        "Prove H is the only delta after S.",
+        "Open one main-bound fix PR and require exact-head Architecture Baseline plus full CI.",
+        "Merge normally, refresh main, then replay both worker cursor acknowledgements from the new main."
       ],
       "blockers": []
     },
@@ -103,27 +101,31 @@
       "workstream_id": "banking-domain-v1",
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "registered_in_S_not_yet_main_or_launched",
-      "summary": "Banking is reserved as a disjoint L2 reuse industry lane; worker implementation has not begun.",
+      "status": "registered_waiting_for_shared_ci_fix",
+      "summary": "Banking registration is merged; initial cursor-only acknowledgement is held because worker-fast failed on missing Baseline tag before boundary checks.",
       "next_actions": [
-        "Wait for registration to merge to main.",
-        "Create workstream/banking-domain-v1 from the registered main and acknowledge that exact base in cursor.json.",
-        "Begin only after audit_workstream_continuity.py reports CLEAN."
+        "After the shared fix merges, replay the cursor acknowledgement from latest main.",
+        "Require worker-fast success and audit_workstream_continuity.py CLEAN.",
+        "Only then begin the declared Banking atomic task."
       ],
-      "blockers": []
+      "blockers": [
+        "Shared worker-fast CI must fetch the frozen Baseline tag before validation."
+      ]
     },
     {
       "workstream_id": "shipping-domain-v1",
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "registered_in_S_not_yet_main_or_launched",
-      "summary": "Shipping is reserved as a disjoint L2 reuse industry lane; worker implementation has not begun.",
+      "status": "registered_waiting_for_shared_ci_fix",
+      "summary": "Shipping registration is merged; initial cursor-only acknowledgement is held because worker-fast failed on the same missing Baseline tag before boundary checks.",
       "next_actions": [
-        "Wait for registration to merge to main.",
-        "Create workstream/shipping-domain-v1 from the registered main and acknowledge that exact base in cursor.json.",
-        "Begin only after audit_workstream_continuity.py reports CLEAN."
+        "After the shared fix merges, replay the cursor acknowledgement from latest main.",
+        "Require worker-fast success and audit_workstream_continuity.py CLEAN.",
+        "Only then begin the declared Shipping atomic task."
       ],
-      "blockers": []
+      "blockers": [
+        "Shared worker-fast CI must fetch the frozen Baseline tag before validation."
+      ]
     }
   ],
   "resume_read_set": [
@@ -138,25 +140,25 @@
   ],
   "deep_reference_paths": [
     "ARCHITECTURE_BASELINE_V1.md",
+    ".github/workflows/architecture-baseline.yml",
+    "scripts/audit_workstream_continuity.py",
     "docs/development/parallel-agent-development.md",
     "docs/development/remote-worker-continuity.md",
     "docs/development/parallel-data-plane.md",
     "docs/development/workstream-reservation-integration.md",
-    ".longcycle/workstreams/README.md",
     ".longcycle/workstreams/banking-domain-v1/reservation.json",
     ".longcycle/workstreams/shipping-domain-v1/reservation.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Will the exact handoff/PR head remain green under Architecture Baseline and full CI?",
-    "Will Banking and Shipping later demonstrate a genuinely shared product/platform dependency?"
+    "Will the exact CI-fix PR head remain green under Architecture Baseline and full CI?",
+    "After replaying from the fixed main, will both worker-fast runs and remote continuity audits be CLEAN?"
   ],
   "ordered_next_actions": [
-    "Push seq123 handoff-only H based on S=50ce84e95bf4611ca7403019d3ca727c4acb23e9.",
-    "Run remote handoff freshness and require handoff-only delta after S.",
-    "Open the registration PR to main and require exact-head longcycle/architecture-baseline plus longcycle/full-ci.",
-    "Merge normally, refresh main and confirm both reservations plus active-index.",
-    "Create both deterministic worker branches from that main.",
-    "Repair each worker cursor to acknowledge the exact base and rerun continuity until both are CLEAN."
+    "Run remote handoff freshness from S=5f83e423be244b035295a9dff5618892b1c4d017.",
+    "Open the shared worker-fast CI-fix PR to main and require exact-head longcycle/architecture-baseline plus longcycle/full-ci.",
+    "Merge normally and refresh main.",
+    "Replay Banking cursor acknowledgement from latest main and require worker-fast plus remote continuity CLEAN.",
+    "Replay Shipping cursor acknowledgement from latest main and require worker-fast plus remote continuity CLEAN."
   ]
 }
