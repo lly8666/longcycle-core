@@ -1,0 +1,78 @@
+{
+  "schema_version": "longcycle-banking-stage-verification/v1",
+  "stage": "china_banking_1990_2026_blind_memory_atlas_v1",
+  "workstream_id": "banking-domain-v1",
+  "active_scope": "PRC_DOMESTIC_BANKING_ONLY",
+  "result": "pass_with_explicit_preexposure_carveout",
+  "prior_remote_worker_head": "14043aa44bf61369b7a757784db0f75515c7ea20",
+  "seal_commit": "7665c58cf61652deb04f6941113cfb92ecc23996",
+  "seal_blob_sha": "c764617863265b555a9ef0fb305a3c5d76f3813e",
+  "memory_vintage": "banking-china-1990-2026-v1",
+  "approximate_time_range": "1990-01-01/2026-08-31",
+  "artifacts": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass01.md",
+      "introducing_commit": "e9e466d84c62a870bb6f3371288ef799147d66c9",
+      "blob_sha": "1d37b3108bcd403d4c799ffa9d5bd46a058fad32"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass02-history-institutions.md",
+      "introducing_commit": "4b8d470f12132f80b494aa96db428bca06fa65bd",
+      "blob_sha": "96a42774f034eb82b369896654012bb6c390a15c"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass03-semantics-business-models.md",
+      "introducing_commit": "4f15efd78fa703f09b9d35a2c006e656c71486a2",
+      "blob_sha": "dd4a06a3b1cdc0f68b4c39754b9eb8403d47016a"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass04-negative-space.md",
+      "introducing_commit": "be680ded958123ece14affbdf692e77982faa83a",
+      "blob_sha": "2afd31a8b0d10b127606ac391323d2b9657a4eef"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-seal.md",
+      "introducing_commit": "7665c58cf61652deb04f6941113cfb92ecc23996",
+      "blob_sha": "c764617863265b555a9ef0fb305a3c5d76f3813e"
+    }
+  ],
+  "checks": {
+    "domestic_china_only_scope": true,
+    "approximate_1990_to_2026_range_present": true,
+    "four_distinct_blind_recall_passes_present": true,
+    "structural_saturation_declared_only_after_negative_space_pass": true,
+    "memory_leads_not_promoted_as_evidence": true,
+    "specific_dates_and_numbers_remain_verification_leads": true,
+    "no_new_domestic_banking_evidence_search_after_campaign_restart": true,
+    "preexisting_cmb_2023_08_28_exposure_disclosed": true,
+    "preexisting_cmb_exposure_excluded_from_blind_authority": true,
+    "seal_is_append_only_manifest_not_rewrite_of_prior_passes": true,
+    "prior_worker_to_seal_compare_authorized_banking_memory_paths_only": true,
+    "shared_semantics_or_global_controls_modified": false,
+    "l3_l4_change_detected": false,
+    "database_write": false
+  },
+  "compare_prior_head_to_seal": {
+    "base": "14043aa44bf61369b7a757784db0f75515c7ea20",
+    "head": "7665c58cf61652deb04f6941113cfb92ecc23996",
+    "ahead_by": 5,
+    "paths": [
+      "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass01.md",
+      "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass02-history-institutions.md",
+      "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass03-semantics-business-models.md",
+      "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-pass04-negative-space.md",
+      "research_data/memory/banking/china-banking-1990-2026-blind-memory-atlas-v1-seal.md"
+    ]
+  },
+  "authority_boundary": {
+    "atlas": "MEMORY_LEADS_ONLY",
+    "evidence_authority": "NONE",
+    "preexposed_cmb_cell": "PREEXPOSED_NOT_BLIND",
+    "not_found_rule": "not_found != false"
+  },
+  "vertical_alignment": {
+    "decision": "stop_blind_recall_after_structural_saturation",
+    "reason": "The fourth orthogonal recall pass added only subtopics under existing top-level domains. Continuing free recall would mainly add detail rather than improve the parent industry map; the next higher-information-gain action is post-seal claim-scoped verification of the long-run institutional backbone."
+  },
+  "next_high_information_gain": "Post-seal, verify the 1990s institutional backbone from authoritative PRC sources before building long-run numeric series or returning to individual-bank Outcome checks."
+}
