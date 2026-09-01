@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 127,
+  "continuity_sequence": 128,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "main",
   "active_pr": null,
-  "checkpoint_based_on_head_sha": "07f941c5232e2eee1b11011084c9fb90c17954e3",
+  "checkpoint_based_on_head_sha": "2fbb5fae2295edfad8edb7046a5c1239ca06926a",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh origin/main plus the exact Banking and Shipping worker refs before acting; local cache is never authority. main@07f941c5232e2eee1b11011084c9fb90c17954e3 contains merged CAP-0006 sparse exploration, fail-closed seal readiness and exact-artifact seal auditing. Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 is continuity CLEAN with one hot exploration-map pointer and next probe TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001. Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 is continuity CLEAN; both premature seals are exact-superseded and its only next probe is SHIP-MEM-V2-P001. If refreshed heads differ, derive CLEAN, RECOVERY_REQUIRED or BLOCKED first. Otherwise let each worker execute only its mapped blind probe and finish S(raw plus receipt plus rebuilt map) followed by cursor-only H; the coordinator compares bounded method observations but does not cross-write worker files or promote Evidence.",
+  "bootstrap_instruction": "Refresh origin/main plus the exact Banking and Shipping worker refs before acting; local cache is never authority. main@2fbb5fae2295edfad8edb7046a5c1239ca06926a contains merged CAP-0006 sparse exploration, fail-closed seal readiness and exact-artifact seal auditing, plus the repaired legacy one-shot workflow YAML. Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 is continuity CLEAN with one hot exploration-map pointer and next probe TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001. Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 is continuity CLEAN; both premature seals are exact-superseded and its only next probe is SHIP-MEM-V2-P001. If refreshed heads differ, derive CLEAN, RECOVERY_REQUIRED or BLOCKED first. Otherwise let each worker execute only its mapped blind probe and finish S(raw plus receipt plus rebuilt map) followed by cursor-only H; the coordinator compares bounded method observations but does not cross-write worker files or promote Evidence.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -29,7 +29,7 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "adaptive-memory-campaign-v1",
-    "last_completed_action": "Merged PR #170 as main@07f941c5232e2eee1b11011084c9fb90c17954e3 after exact-head full CI, Architecture Baseline and Fresh-Agent Continuity passed. Then ran a real interrupted-startup drill on both worker branches: main sync without H produced RECOVERY_REQUIRED; recovery H restored CLEAN; adoption/correction S again produced RECOVERY_REQUIRED; final cursor-only H restored CLEAN. Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 now has one fixed map and an exact legacy-prose correction. Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 now has two valid exact supersessions and one fixed map. Both final worker-fast checks passed remotely.",
+    "last_completed_action": "Merged PR #170 for CAP-0006, completed a real interrupted-startup/adoption drill on both workers, and restored Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 plus Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 to continuity CLEAN with one fixed map each. Banking carries an exact legacy-prose correction; Shipping carries two valid exact supersessions; both final worker-fast checks passed. Then diagnosed the pre-existing zero-job failure on every push as four unindented embedded-Python triple-quote terminators, repaired only those four YAML lines through PR #172, observed exact-head Architecture Baseline/full CI success and no legacy parse-failure run, and merged S=2fbb5fae2295edfad8edb7046a5c1239ca06926a.",
     "current_task": "Let Banking and Shipping independently execute exactly one mapped blind probe, then verify each produces a bounded S plus cursor-only H without cross-writing, Evidence promotion or shared writable database activity.",
     "why_now": "Governance and recovery behavior are now proven on real branches. The smallest useful next test is actual research progress through the two fixed maps; more framework work before those receipts would be tunnel optimization.",
     "done_when": "Each worker has pushed one append-only blind output, one bounded pass receipt and a rebuilt current map as S; each has followed with a cursor-only H and refreshed continuity CLEAN; exact model/input state and novelty classification are recorded; neither worker enters Evidence or mutates a shared database; the coordinator records only whether a repeated method defect exists.",
@@ -38,7 +38,7 @@
     "next_atomic_action": "Refresh origin/main, origin/workstream/banking-domain-v1 and origin/workstream/shipping-domain-v1; require Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 and Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 to audit CLEAN, then start the two already-declared next_probe tasks independently without changing their scope."
   },
   "active_context": {
-    "context_id": "adaptive-memory-campaign-127",
+    "context_id": "adaptive-memory-campaign-128",
     "context_kind": "multi_agent_research_governance",
     "label": "First parallel probes under sparse industry exploration governance",
     "root_path": "docs/research",
@@ -75,9 +75,9 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33455592102,
-    "observed_head_sha": "b749110d8465bd67165833124c3050e2bcfd73ee",
-    "conclusion": "PR170 exact-head full CI, Architecture Baseline and Fresh-Agent Continuity passed; main merged at 07f941c5232e2eee1b11011084c9fb90c17954e3; final Banking and Shipping H heads each passed remote worker-fast and continuity CLEAN",
+    "last_observed_run": 33457571284,
+    "observed_head_sha": "8dda4e72091e45abcdca38686cc229d7d53b4f24",
+    "conclusion": "PR172 exact-head full CI and Architecture Baseline passed; its repaired head produced no legacy zero-job parse-failure run; main merged at 2fbb5fae2295edfad8edb7046a5c1239ca06926a; final Banking and Shipping H heads each passed remote worker-fast and continuity CLEAN",
     "mypy_summary": "Targeted Mypy passed for src/longcycle/application/memory_campaign.py. Full local Mypy was not claimed because optional postgres/s3/duckdb/pypdf dependencies are absent from this host environment.",
     "pytest_summary": "49 focused tests passed. Broad local suite passed 466 with two skips and two environment-only deselections: one missing optional DuckDB runtime and one bundled pypdf 6.10.0 versus the project-pinned 6.15.0 producer-version assertion.",
     "ruff_summary": "Ruff passed on all changed Python files. Whole-repository Ruff remains diagnostic and reports pre-existing unrelated debt.",
