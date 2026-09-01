@@ -1,17 +1,16 @@
 {
   "artifact_refs": [
-    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2-saturation-correction.md",
-    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
   ],
   "assignment_epoch": 1,
   "branch": "workstream/banking-domain-v1",
-  "checkpoint_based_on_head_sha": "d50d233fb0e53839fb9f81fca85af1bb784c6210",
-  "current_task": "Adopt the merged CAP-0006 sparse exploration-map and fail-closed seal contract before resuming Banking blind recall. Preserve the prior four-pass Atlas as immutable Batch0 orientation provenance, add a machine-readable correction for its legacy prose saturation interpretation without inventing a structured seal, expose one fixed exploration-map entrypoint, and keep Evidence disabled.",
-  "cursor_sequence": 7,
+  "checkpoint_based_on_head_sha": "5f62007eb5edb68bd0403f0c04dd1cd414b05bcb",
+  "current_task": "Execute exactly the one blind next_probe selected by the fixed Banking exploration map. Keep the campaign and shard unsealed, perform no Banking Evidence/source search, and write one append-only Memory output plus one bounded pass receipt before rebuilding the same hot map entrypoint.",
+  "cursor_sequence": 8,
   "insufficient_capability_action": "stop_and_escalate",
   "integration_request_refs": [],
-  "last_completed_action": "Startup recovery refreshed authoritative origin/main and origin/workstream/banking-domain-v1, detected the pushed main-sync delta after the prior cursor checkpoint, and acknowledged merge S=d50d233fb0e53839fb9f81fca85af1bb784c6210 before any new Banking work. That merge brings CAP-0006 sparse exploration/seal governance onto the worker branch without changing Banking Memory content. No model-memory recall, Evidence search, database transfer or domain artifact mutation occurred in this recovery step.",
-  "next_atomic_action": "Create the fixed Banking campaign exploration-map.json and one bounded machine-readable correction that binds the legacy prose seal artifact digest while keeping the campaign at orientation_only; select only the already-planned TIME-1990-1994 x SYS-REGULATION-RESOLUTION blind unit as next_probe. Do not execute that probe yet and do not create a longcycle-memory-seal-supersession/v1 record unless its target is an actual structured JSON seal claim.",
+  "last_completed_action": "Adopted CAP-0006 at S=5f62007eb5edb68bd0403f0c04dd1cd414b05bcb with one fixed sparse exploration-map entrypoint, one exact-byte correction for the legacy Markdown saturation interpretation, and one verification record. The map remains orientation_only with one open frontier and exactly one selected TIME-1990-1994 x SYS-REGULATION-RESOLUTION next_probe. No blind recall, Evidence search, database transfer or shared-governance modification occurred.",
+  "next_atomic_action": "From the fixed exploration-map.json only, execute probe TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001 as one fresh isolated blind recall unit. Save append-only MEMORY_LEADS_ONLY output and a bounded pass receipt, classify novelty honestly, keep the shard unsealed, then update the same map entrypoint; do not load Batch0 raw outputs, other shard outputs, Banking Evidence or fresh search results.",
   "parent_refs": [
     "terminal_mission=STRATEGIC_COMPASS.md#2-一句话使命",
     "long_term_direction=STRATEGIC_COMPASS.md#5-项目终局与非终局",
@@ -22,7 +21,7 @@
     "baseline=.longcycle/baseline/current.json",
     "capability_admission=.longcycle/workstreams/banking-domain-v1/capability-admission.json"
   ],
-  "partial_summary": "The shared CAP-0006 gate is present on the worker branch and the previous cursor has been recovered, but exact worker-head adoption artifacts and verification have not yet been produced. The next step is governance adoption only, not Banking research.",
+  "partial_summary": null,
   "progress_state": "planned",
   "receipt_refs": [
     ".longcycle/workstreams/banking-domain-v1/receipts/2026-08-31-banking-memory-saturation-correction-v2.json"
@@ -30,10 +29,12 @@
   "required_capability": "high_capability_reasoning",
   "reservation_revision": 1,
   "schema_version": "longcycle-workstream-cursor/v2",
-  "task_done_when": "One fixed Banking exploration-map entrypoint and one honest machine-readable legacy-prose correction are saved inside the reserved Banking prefix; the map is sparse and bounded, declares orientation_only, contains exactly one next_probe, points to only current hot state, and the cursor later retains only that map artifact pointer. No new recall, Evidence search or database mutation occurs in this adoption step.",
-  "unverified": true,
-  "verification_head_sha": null,
-  "verification_refs": [],
-  "why_now": "A fresh invocation correctly classified the main-sync commit as S-without-H. Recovery must acknowledge that remote fact before the worker adopts the shared gate or resumes the previously planned blind unit; otherwise the new continuity rule would be bypassed during its own first real use.",
+  "task_done_when": "One append-only raw blind unit and its bounded receipt exist for the selected probe; the allowed-input digest and source_visibility are explicit; novelty is classified; any new frontier is bounded; the same exploration-map entrypoint is updated with one deterministic next_probe; and the shard remains unsealed. No Evidence search, truth promotion or database mutation occurs.",
+  "unverified": false,
+  "verification_head_sha": "5f62007eb5edb68bd0403f0c04dd1cd414b05bcb",
+  "verification_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map-adoption-v1.verification.json"
+  ],
+  "why_now": "The fixed map and legacy-state correction are now verified and durably pushed. The highest-information unresolved frontier is already selected, so further control-plane refinement would be tunnel work; the next parent-goal improvement is one bounded blind recall unit under the shared gate.",
   "workstream_id": "banking-domain-v1"
 }
