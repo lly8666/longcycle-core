@@ -91,7 +91,7 @@ jobs:
                     relation_params,
                 ).fetchall()
                 relation_columns = [column[0] for column in connection.description]
-'''
+          '''
           new_context = '''            judgment_id_index = judgment_columns.index("judgment_id")
             judgment_ids = [row[judgment_id_index] for row in judgment_rows]
             table_names = {row[0] for row in connection.execute("SHOW TABLES").fetchall()}
@@ -134,7 +134,7 @@ jobs:
                     relation_params,
                 ).fetchall()
                 relation_columns = [column[0] for column in connection.description]
-'''
+          '''
           if text.count(old_context) != 1:
               raise SystemExit('expected exactly one judgment-context read block')
           text = text.replace(old_context, new_context)
@@ -149,7 +149,7 @@ jobs:
                 if row["observed_at"] is not None
                 else None
             ),
-'''
+          '''
           new_observed = '''            observed_time=(
                 TemporalExtent(
                     kind="instant",
@@ -162,7 +162,7 @@ jobs:
                 if row.get("observed_at") is not None
                 else None
             ),
-'''
+          '''
           if text.count(old_observed) != 1:
               raise SystemExit('expected exactly one observed-time read block')
           text = text.replace(old_observed, new_observed)
