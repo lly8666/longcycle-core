@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 1,
+  "map_revision": 2,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
@@ -9,17 +9,17 @@
     "2026-08-31"
   ],
   "authority_class": "research_control_only",
-  "campaign_stage": "orientation_only",
+  "campaign_stage": "active_recall",
   "source_visibility": "none_for_selected_next_probe",
   "source_visibility_scope": "selected_next_probe_only",
   "preexposure_carveout_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json#/preexposure_carveout",
-  "model_vintage": null,
-  "model_vintage_status": "must_be_pinned_by_the_first_v2_blind_pass_receipt",
+  "model_vintage": "GPT-5.6 Sol",
+  "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "learning_state_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/legacy-prose-state-correction-v1.json",
-  "latest_pass_receipt_ref": null,
-  "latest_pass_receipt_status": "no_v2_blind_pass_has_run",
+  "learning_state_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-01-TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001.json#/method_observation",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-01-TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001.json",
+  "latest_pass_receipt_status": "first_v2_blind_pass_completed_memory_only",
   "batch0_orientation": {
     "status": "orientation_scaffold_not_saturation",
     "memory_vintage": "banking-china-1990-2026-v1",
@@ -31,8 +31,18 @@
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
       "selected_time_slice_id": "TIME-1990-1994",
-      "stage": "orientation_only",
-      "recent_outcomes": [],
+      "stage": "active_recall",
+      "recent_outcomes": [
+        {
+          "pass_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001",
+          "family": "time_x_shard_blind_recall",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-01-TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001.json",
+          "novel_lead_count": 34,
+          "duplicate_lead_count": 2,
+          "high_importance_novel_count": 8,
+          "outcome": "material_novelty"
+        }
+      ],
       "negative_space_review_complete": false,
       "independent_challenger_complete": false,
       "fresh_search_used": false
@@ -44,51 +54,64 @@
         "region_id": "batch0-whole-industry-orientation",
         "state": "orientation_only",
         "note": "Four immutable blind outputs provide planning scaffolding only; they do not prove shard or campaign saturation."
+      },
+      {
+        "region_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001",
+        "state": "active_recall_material_novelty",
+        "note": "First v2 isolated blind pass completed with 34 novel/refining Memory Leads and 2 duplicates. Recall was landmark-heavy; institution-level intervention/resolution procedure and period-native terminology remain the highest-value negative space."
       }
     ],
     "known_major_gaps": [
-      "No v2 atomic shard has completed a blind recall pass.",
-      "No shard has three orthogonal low-novelty outcomes, a completed negative-space review, or an independent challenger review."
+      "No confident institution-specific commercial-bank failure or closure from 1990-1994 has been recalled in v2.",
+      "Exact PBOC takeover, license-revocation, liquidation and depositor-priority procedures remain unclear.",
+      "Exact early-1990s cleanup cases among trust/investment companies, urban credit cooperatives and other local financial institutions remain unclear.",
+      "The shard has only one v2 pass and has not met low-novelty, negative-space or independent-challenger requirements."
     ],
     "deferred_regions": [
       {
         "region_id": "remaining-v2-manifest-frontier",
         "state": "deferred",
-        "reason": "Re-rank sparsely after the selected probe is durably receipted; do not materialize the time-by-shard Cartesian grid."
+        "reason": "Do not materialize the time-by-shard Cartesian grid. Finish the selected orthogonal negative-space challenge first, then re-rank sparsely."
+      },
+      {
+        "region_id": "TIME-1990-1994__CROSSBORDER-FX-OFFSHORE",
+        "state": "deferred",
+        "reason": "1994 FX reform surfaced as a bridge lead but belongs to a different shard; do not scope-drift from regulation/resolution."
       }
     ]
   },
   "open_frontiers": [
     {
-      "frontier_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION",
+      "frontier_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__FAILURE-TERMINOLOGY-CHALLENGE",
       "priority_rank": 1,
       "state": "open",
-      "selected_probe_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001"
+      "selected_probe_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-002"
     }
   ],
   "next_probe": {
-    "probe_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001",
-    "family": "time_x_shard_blind_recall",
+    "probe_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-002",
+    "family": "failure_resolution_and_terminology_blind_challenge",
     "time_slice_id": "TIME-1990-1994",
     "shard_id": "SYS-REGULATION-RESOLUTION",
     "period": [
       "1990-01-01",
       "1994-12-31"
     ],
-    "instruction": "Run one fresh isolated blind recall unit for TIME-1990-1994 x SYS-REGULATION-RESOLUTION. Preserve approximate, append-only Memory Leads across timeline, actors and institutions, products, mechanisms, old terminology, failures and restructurings, contemporaneous expectations, uncertainties and counterexamples; then classify novelty honestly.",
+    "instruction": "Run one fresh isolated blind challenge focused on obscure institution-level intervention, closure/merger/restructuring, PBOC takeover/revocation/liquidation powers, depositor-treatment memory, and period-native regulatory terminology. Deliberately avoid re-expanding the already activated 1993 macro-control and 1994 policy-bank landmarks unless needed as a minimal anchor. Preserve uncertainty and counterexamples; do not read the prior raw pass.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
+      "prior v2 raw blind-pass outputs including blind-001",
       "other shard raw outputs",
       "Banking source or Evidence material",
       "fresh Banking search results"
     ],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One append-only raw blind unit and its bounded receipt exist, novelty is classified, and the shard remains unsealed."
+    "done_when": "One orthogonal append-only raw blind challenge and bounded receipt exist; it either recovers specific intervention/procedure/terminology novelty or honestly records reviewed-no-specific-memory; the shard remains unsealed."
   },
   "seal_readiness": {
     "eligible": false,
@@ -97,16 +120,26 @@
       "insufficient_recent_passes",
       "major_coverage_gaps_remain",
       "negative_space_review_incomplete",
-      "independent_challenger_incomplete"
+      "independent_challenger_incomplete",
+      "material_novelty_in_latest_pass"
     ],
-    "recent_outcomes": [],
+    "recent_outcomes": [
+      {
+        "pass_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001",
+        "family": "time_x_shard_blind_recall",
+        "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-01-TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001.json",
+        "novel_lead_count": 34,
+        "duplicate_lead_count": 2,
+        "high_importance_novel_count": 8
+      }
+    ],
     "historical_correction_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/legacy-prose-state-correction-v1.json"
   },
   "bounds": {
     "maximum_open_frontiers": 64,
     "current_open_frontiers": 1,
     "maximum_recent_seal_outcomes": 8,
-    "current_recent_seal_outcomes": 0,
+    "current_recent_seal_outcomes": 1,
     "selected_next_probe_count": 1
   }
 }
