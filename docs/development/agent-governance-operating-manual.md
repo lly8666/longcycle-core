@@ -14,6 +14,7 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 - 每条工作分支同一时刻只能有一个写入者。不同工作分支可以真正并行。
 - 聊天被截断没有关系。已经推送工作但没写交接，就在下次启动时先自动补交接；没有推送的工作不能假装恢复，只能从远端记录的上一步重做。
 - 每次工作完成都采用 `S -> H`：先推送实质工作 `S`，再单独推送只包含游标的交接确认 `H`。
+- 所有长期 Agent 都按 ChatGPT 聊天模式运行：GitHub Connect 管仓库和交接，ChatGPT 私有沙箱处理当前文件/哈希，Drive 运送大数据库，远端 CI 执行测试；不假定通用外网或本地 git/终端存在。
 - 行业知识不是按目录标题“填满”。每个行业维护一张稀疏探索地图，每次只做一个信息价值最高的探针，用新颖度、负空间和独立挑战者判断何时停。
 - 旧研究错误不删除、不改写原字节；用精确更正或 supersession 把它移出当前状态和 Evidence 入口。当前地图和游标是唯一热入口。
 - 热交接只保留当前目标、一个下一步和少量指针。多年历史留在 Git、不可变收据和 Drive 对象里，按需查，不塞进每次启动上下文。
@@ -46,6 +47,17 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 - 冷状态：Git 历史、旧地图、旧原始输出、已完成收据、Drive 不可变对象。只按明确线索查找。
 
 接班 Agent 不需要“读懂项目所有历史”。它需要从热状态恢复宏大框架和一个正确下一步，再按问题路由到温/冷证据。
+
+### 2.3 统一聊天运行栈
+
+| 组件 | 唯一用途 | 不能替代 |
+| --- | --- | --- |
+| GitHub Connect | 查询精确 ref、读写分支文件、比较提交、PR、CI、S/H | 不能装大数据库，也不能变成行业 Evidence 搜索器 |
+| ChatGPT 私有沙箱 | 当前会话内生成文件、算 SHA/size、打开私有数据库副本（能力可用时） | 不是持久权威，沙箱丢失后只能从 Git/Drive 恢复 |
+| Google Drive | 沿用初代 Agent 跑通的不可变大文件上下载与 round-trip 验证 | 不是当前版本权威，也不是共享可写数据库 |
+| GitHub Actions / 远端 CI | 执行代码、规范 audit 和测试，结果绑定精确提交 | 不能为聊天 Agent伪造通用外网，也不用于无休止下载 PDF |
+
+统一聊天操作协议见 `docs/development/prompts/github-connect-chat-adapter.md`。某个聊天窗口没有 Drive 连接时，只在当前 cursor 真正需要二进制对象时才构成能力阻塞；当前纯 Memory 探针不受影响。
 
 ## 3. 治理拓扑
 
@@ -182,6 +194,7 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 
 ```text
 角色身份：<长期 role / workstream_id>；本窗口只是可替换实例。
+执行环境：ChatGPT 聊天模式；GitHub Connect 为仓库入口；列明当前 Drive/外网能力是否影响本任务。
 远端权威：<main ref> + <worker ref>；本地缓存和旧聊天不具权威。
 唯一写入权：<branch>；允许前缀 <...>；明确禁止 <...>；一分支一写入者。
 固定启动集：Strategy / Method / mission fidelity / Baseline / global handoff /
@@ -206,11 +219,11 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 - 说明自己是协调员、银行负责人或航运负责人中的哪一个。
 - 说明自己的远端分支和允许写入范围。
 - 确认前一个实例已经停止写入；不能确认时只读审计，不推送。
-- 真正写入前使用只服务于该角色的干净隔离 worktree，并从精确远端 ref 快进/建立；不要复用另一个 Agent 正在使用的 checkout。
+- 没有本地 worktree 假设。通过 GitHub Connect 确认旧实例已经停止，精确 worker head 未被其他写入者移动；不能确认时只读审计，不提交。
 
 ### 第二步：刷新远端，不信本地缓存
 
-刷新 `origin/main` 和自己的精确 worker ref。协调员刷新所有活动 worker refs。Drive、本地数据库、旧聊天和附件都不是当前代码/游标权威。
+通过 GitHub Connect 查询 `main` 和自己的精确 worker head；协调员查询全部活动 worker refs。Drive、沙箱数据库、旧聊天和附件都不是当前代码/游标权威。
 
 ### 第三步：有界读取宏大框架
 
@@ -242,11 +255,7 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 
 ### 第五步：运行启动审计
 
-行业工作流运行：
-
-```text
-python scripts/audit_workstream_continuity.py <workstream-id> --remote origin --main-branch main
-```
+聊天 Agent 用 GitHub Connect 比较 cursor checkpoint 到精确 worker head，核对完整 changed paths、reservation/cursor/pointer facts，并查看该 head 的 worker-fast/CI。远端 CI 运行规范 continuity/seal 脚本；聊天 Agent 不伪装在本地执行 Python。
 
 只接受三种结果：
 
@@ -254,7 +263,7 @@ python scripts/audit_workstream_continuity.py <workstream-id> --remote origin --
 - `RECOVERY_REQUIRED`：远端已有 `S`，但缺 `H`；先检查 `S`，补写 cursor-only `H`，重新审计到 `CLEAN`，才接新任务。
 - `BLOCKED`：分支、reservation、提交图或写入边界冲突；停止写入，交给协调员处理。
 
-协调员还要检查全局 handoff 相对当前 main 的新鲜度，并对全部活动行业执行相同审计。
+协调员还要以同样方式检查全局 handoff 相对 main 的新鲜度和全部活动行业。comparison 截断、祖先关系、热指针或精确 CI 无法证明时，结果是 `AUDIT_ASSISTANCE_REQUIRED`，不能假报 `CLEAN`；必要时通过正常提交/PR 让远端 CI 重算，而不是发明本地结果。
 
 ### 第六步：只执行一个有界原子任务
 
@@ -293,6 +302,12 @@ python scripts/audit_workstream_continuity.py <workstream-id> --remote origin --
 
 上传 Drive、发布对象、数据库候选等不能只靠 `S -> H`。动作前先写 intent receipt，动作后写 outcome receipt；重试前先查询是否已经完成，使用稳定 idempotency key，避免重复上传或重复提升。
 
+### 7.4 聊天 Agent 的远端 S 与 H
+
+聊天 Agent 每次 GitHub 写入都显式指定自己的 worker branch，并在写前后重新读取精确 branch head。新 raw/receipt 只用唯一 append-only 路径；更新地图/cursor 先取当前 blob SHA，同一路径顺序更新。
+
+如果 connector 只能逐文件提交，多个顺序 WIP 提交可以共同构成实质阶段，最后一个实质提交为 `S`；中途截断自然得到 `RECOVERY_REQUIRED`。随后一次只修改 cursor 的远端更新为 `H`，再比较 `S..H` 只能出现 cursor，并观察 `H` 精确 CI。禁止省略 branch、写默认 main、并行更新同一路径或 force-update。
+
 ## 8. 并行开发如何不冲突
 
 ### 8.1 三条硬边界
@@ -325,7 +340,7 @@ python scripts/audit_workstream_continuity.py <workstream-id> --remote origin --
 
 ## 9. Drive 与数据库大文件协议
 
-ChatGPT 对话不能把大数据库直接交给 Git 时，Drive 只是字节运输层，不是版本权威。
+ChatGPT 对话不能把大数据库直接交给 Git 时，Drive 只是字节运输层，不是版本权威。继续使用初代 Agent 已验证的 ChatGPT 私有沙箱 + 授权 Drive 路径；不再为它另设一层治理角色。当前窗口没有 Drive 连接而 cursor 又确实需要对象时，保持同一角色并在有 Drive 连接的新聊天窗口接班。
 
 ### 9.1 下载
 
@@ -335,9 +350,11 @@ ChatGPT 对话不能把大数据库直接交给 Git 时，Drive 只是字节运�
 
 ### 9.2 上传候选
 
-- worker 先写上传 intent receipt。
+- worker 先关闭/checkpoint 私有数据库并计算 SHA、大小和 schema/content count。
+- 先在 GitHub worker 分支写 upload intent receipt 并完成它的 H，再产生外部上传副作用。
 - 产生唯一、不可变的 candidate 名称；禁止覆盖现有对象。
-- 上传后记录 Drive file id、大小、SHA-256、base generation、producer workstream 和 outcome receipt。
+- 上传后按返回的精确 Drive file id 下载回来，重新核对大小/SHA 并实际打开数据库。
+- 再记录 file id/revision、大小、SHA-256、base generation、producer workstream、`download_back_verified` 和 outcome receipt，并完成 H。
 - 失败重试前先按 intent/outcome 和对象身份检查，不能盲目再传一份。
 
 ### 9.3 提升当前代际
@@ -446,6 +463,8 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 6. 精确提交对应的远端 CI；
 7. 至少一次 Fresh-Agent 从提示词 + 远端状态恢复六层目标和下一步，不给旧聊天。
 
+聊天 Agent 的验证以精确远端 commit status/workflow 为准。它可以做 connector-native continuity 预检，但不能把未运行的本地测试写成 PASS；规范 audit 由精确 worker-fast/PR CI 执行，无法证明时显式标记等待或需要重算。
+
 审阅重点是四个问题：新 Agent 会不会越权写入、会不会漏补 `H`、会不会把 Memory 当 Evidence、会不会因为历史变长而加载越来越多内容。
 
 ## 14. 当前三个角色的替换方式
@@ -455,6 +474,8 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 - `docs/development/prompts/coordinator-fresh-agent.md`
 - `docs/development/prompts/banking-fresh-agent.md`
 - `docs/development/prompts/shipping-fresh-agent.md`
+
+三份角色提示词都会先读取共同的 `docs/development/prompts/github-connect-chat-adapter.md`。它已经同时包含 GitHub Connect 交接和初代 Drive 上下载逻辑，不再维护本地版/聊天版两套提示词。
 
 建议启动顺序：协调员先只读刷新并确认两条 worker 都可接班；银行和航运随后并行启动。若三者几乎同时启动也安全，因为两个行业各写自己的分支，协调员不跨写行业分支。
 
@@ -484,3 +505,4 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 - 行业探索地图：`docs/research/industry-memory-exploration-map.md`
 - L3/L4：`docs/development/l3-l4-user-escalation.md`
 - Fresh-Agent 最小入口：`FRESH_AGENT_BOOTSTRAP.md`
+- ChatGPT 聊天 Agent 远端操作：`docs/development/prompts/github-connect-chat-adapter.md`

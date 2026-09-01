@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "AGENT-GOVERNANCE-MANUAL-V1-032",
-  "intent": "Publish one bounded Chinese governance router and three Fresh-Agent role prompts for the existing coordinator, Banking, and Shipping workstreams without creating a second control plane.",
+  "intent_id": "CHAT-AGENT-REMOTE-OPS-V1-033",
+  "intent": "Make the coordinator, Banking, and Shipping prompts natively executable by ChatGPT chat Agents using GitHub Connect for repository control and the already-proven authorized Google Drive path for large binary handoff.",
   "governance_mode": "converging",
   "disposition": "reuse",
   "target_capability_ids": [
@@ -14,17 +14,18 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "CAP-0006 already owns sparse industry-memory exploration and seal safety, CAP-0009 owns bounded remote handoff and database-generation continuity, and CAP-0010 owns workstream reservation and semantic-owner admission. This change only makes their existing contracts easier for disposable role instances to execute.",
-  "rationale_details_ref": "docs/development/agent-governance-operating-manual.md",
+  "rationale_summary": "CAP-0009 already owns remote Git/CI continuity and the proven ChatGPT/Drive data plane, CAP-0010 owns isolated reservation/cursor routing, and CAP-0006 owns blind model-memory work without Evidence search. This change removes local-Agent assumptions and reuses those owners directly instead of introducing a second execution hierarchy.",
+  "rationale_details_ref": "docs/development/prompts/github-connect-chat-adapter.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/development/longcycle-development-operating-system.md",
+    "docs/development/parallel-data-plane.md",
+    ".longcycle/handoff/data-plane.json",
     "docs/development/remote-worker-continuity.md",
     "docs/development/parallel-agent-development.md",
-    "docs/development/parallel-data-plane.md",
     "docs/research/industry-memory-exploration-map.md"
   ],
   "planned_paths": [
+    "docs/development/prompts/github-connect-chat-adapter.md",
     "docs/development/agent-governance-operating-manual.md",
     "docs/development/prompts/coordinator-fresh-agent.md",
     "docs/development/prompts/banking-fresh-agent.md",
