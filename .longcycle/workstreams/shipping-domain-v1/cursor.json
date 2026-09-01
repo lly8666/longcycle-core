@@ -1,22 +1,16 @@
 {
   "artifact_refs": [
-    "research_data/memory/shipping/atlas-1970-present/atlas.json",
-    "research_data/memory/shipping/atlas-1970-present/1970-1979.json",
-    "research_data/memory/shipping/atlas-1970-present/1980-1989.json",
-    "research_data/memory/shipping/atlas-1970-present/1990-1999.json",
-    "research_data/memory/shipping/atlas-1970-present/2000-2009.json",
-    "research_data/memory/shipping/atlas-1970-present/2010-2019.json",
-    "research_data/memory/shipping/atlas-1970-present/2020-2026-08-31.json"
+    "research_data/memory/shipping/exploration-map.json"
   ],
   "assignment_epoch": 1,
   "branch": "workstream/shipping-domain-v1",
-  "checkpoint_based_on_head_sha": "2f83f8d9ab2df1a5f6b6f39be9df6ca1a1d939ac",
-  "current_task": "Adopt the merged CAP-0006 sparse exploration-map and fail-closed seal contract before any Shipping Evidence work. Preserve the two historical structured seal artifacts byte-for-byte, append exact supersessions for both, reopen the campaign at orientation_only, expose one fixed exploration-map entrypoint, and keep Evidence disabled.",
-  "cursor_sequence": 5,
+  "checkpoint_based_on_head_sha": "868223fdf2fce6088067c5f8d949d199af74f16b",
+  "current_task": "Execute exactly the one atlas_only blind next_probe selected by the fixed Shipping exploration map. Keep both reopened shards and the campaign unsealed, perform no fresh search or Evidence work, and write one append-only Memory output plus one bounded pass receipt before rebuilding the same hot map entrypoint.",
+  "cursor_sequence": 6,
   "insufficient_capability_action": "stop_and_escalate",
   "integration_request_refs": [],
-  "last_completed_action": "Startup recovery refreshed authoritative origin/main and origin/workstream/shipping-domain-v1, detected the pushed main-sync delta after the prior cursor checkpoint, and acknowledged merge S=2f83f8d9ab2df1a5f6b6f39be9df6ca1a1d939ac before any new Shipping work. That merge brings CAP-0006 sparse exploration/seal governance onto the worker branch without changing Shipping Memory content. No model-memory recall, Evidence search, database transfer or domain artifact mutation occurred in this recovery step.",
-  "next_atomic_action": "Append exact longcycle-memory-seal-supersession/v1 records for atlas-1970-present/atlas.json and container-pandemic-cycle-2020-2023/blind-orientation.json, add their bounded correction context, and create the fixed Shipping exploration-map.json at orientation_only with exactly one highest-information blind next_probe. Do not execute the probe and do not resume Evidence.",
+  "last_completed_action": "Corrected the two premature Shipping structured seals at S=868223fdf2fce6088067c5f8d949d199af74f16b without modifying either old artifact. Two exact append-only supersessions bind their original SHA-256 digests, one correction record reopens the campaign at orientation_only, and one fixed sparse exploration map selects exactly one institutional-topology next_probe. The shared seal audit recomputed claims=2/errors=0. No new recall, Evidence search, database transfer or shared-governance modification occurred.",
+  "next_atomic_action": "From research_data/memory/shipping/exploration-map.json execute only SHIP-MEM-V2-P001 as one atlas_only cross-cycle long-tail institutional-topology blind pass. Pin the exact model/instrument vintage and allowed-input digest in the immutable receipt, save append-only MEMORY output, classify novelty, keep both shards unsealed, then update the same map entrypoint. Fresh search and Evidence remain forbidden.",
   "parent_refs": [
     "terminal_mission=STRATEGIC_COMPASS.md#2-一句话使命",
     "long_term_direction=STRATEGIC_COMPASS.md#5-项目终局与非终局",
@@ -27,18 +21,18 @@
     "baseline=.longcycle/baseline/current.json",
     "capability_admission=.longcycle/workstreams/shipping-domain-v1/capability-admission.json"
   ],
-  "partial_summary": "The shared CAP-0006 gate is present on the worker branch and the previous cursor has been recovered, but the two unauthorized structured seals remain active until exact supersessions and the fixed map are pushed and verified. Evidence is paused.",
+  "partial_summary": null,
   "progress_state": "planned",
-  "receipt_refs": [
-    ".longcycle/workstreams/shipping-domain-v1/receipts/shipping-1970-present-blind-v1.json"
-  ],
+  "receipt_refs": [],
   "required_capability": "high_capability_reasoning",
   "reservation_revision": 1,
   "schema_version": "longcycle-workstream-cursor/v2",
-  "task_done_when": "Both historical structured seal artifacts are exactly superseded without modification; one fixed sparse Shipping exploration-map entrypoint declares orientation_only, contains exactly one next_probe and only bounded hot pointers; the cursor later retains only that map artifact pointer; and no new recall, Evidence search or database mutation occurs in this correction step.",
-  "unverified": true,
-  "verification_head_sha": null,
-  "verification_refs": [],
-  "why_now": "A fresh invocation correctly classified the main-sync commit as S-without-H. Recovery must acknowledge that remote fact and replace the stale post-seal Evidence cursor before Shipping can adopt the shared gate; otherwise a successor could continue an invalid task from two premature seals.",
+  "task_done_when": "One append-only raw Memory pass and its bounded receipt exist for SHIP-MEM-V2-P001; exact model/instrument vintage, allowed-input digest and atlas_only visibility are pinned; novelty is classified; the same exploration-map entrypoint is updated with one deterministic next_probe; both shards remain unsealed; and no Evidence search, truth promotion or database mutation occurs.",
+  "unverified": false,
+  "verification_head_sha": "868223fdf2fce6088067c5f8d949d199af74f16b",
+  "verification_refs": [
+    "research_data/memory/shipping/exploration-map.verification.json"
+  ],
+  "why_now": "The old seal bytes are preserved, both exact supersessions validate, and the fixed map is verified and durably pushed. The highest-information gap is the under-recalled institutional topology, so another governance pass or Evidence work would be tunnel drift; the next parent-goal improvement is one bounded blind probe.",
   "workstream_id": "shipping-domain-v1"
 }
