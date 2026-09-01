@@ -17,9 +17,15 @@
   "entrypoints": [
     {
       "contains": "def build_recall_pass_prompt(",
-      "description": "Memory campaign application primitives own blind/search separation and bounded saturation/depth rules.",
+      "description": "Memory campaign application primitives own blind/search separation, sparse exploration-frontier routing and fail-closed saturation/depth rules.",
       "kind": "application",
       "path": "src/longcycle/application/memory_campaign.py"
+    },
+    {
+      "contains": "def audit_git_range(",
+      "description": "Worker seal audit recomputes exact-artifact decisions and accepts premature legacy seals only through an exact append-only supersession.",
+      "kind": "script",
+      "path": "scripts/audit_memory_seals.py"
     },
     {
       "contains": "class CurrentResearchOpenStateReader(Protocol):",
@@ -36,6 +42,7 @@
   ],
   "extension_seams": [
     "Add orthogonal recall/search families without weakening the sealed blind/search boundary or forcing uncertain memory into false precision.",
+    "Add campaign-local prompt-learning overlays and sparse exploration frontiers without turning coverage into truth or creating a dense completion quota.",
     "Add cross-model refresh/backfill evaluation as a new instrument vintage, not overwrite.",
     "Expose current research-only disagreement/hypothesis/coverage through typed readers while preserving its non-Evidence authority class.",
     "Use research-only hypotheses for explicitly labelled analytical judgments such as causality, participant importance or ambiguous value-chain role when reasoning/context/confidence remain visible and the result is not promoted to canonical truth.",
@@ -85,6 +92,24 @@
       "path": "tests/test_memory_campaign.py"
     },
     {
+      "contains": "test_orientation_coverage_cannot_be_mistaken_for_saturation",
+      "description": "Orientation headings cannot bypass the explicit seal-candidate, orthogonality, negative-space and independent-challenger gates.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_sparse_frontier_selects_one_next_probe_without_dense_grid",
+      "description": "A bounded sparse frontier produces one deterministic next probe while allowing low-value regions to remain explicitly deferred.",
+      "kind": "test",
+      "path": "tests/test_memory_campaign.py"
+    },
+    {
+      "contains": "test_shipping_orientation_shape_is_rejected_without_a_decision",
+      "description": "A structured worker seal claim cannot bypass the recomputed exact-artifact gate, while prose and downstream checks remain outside its narrow scope.",
+      "kind": "test",
+      "path": "tests/test_memory_seal_audit.py"
+    },
+    {
       "contains": "test_model_analysis_policy_allows_analysis_but_never_truth_promotion",
       "description": "Researcher interpretation allows useful MODEL/JUDGMENT analysis while forbidding canonical truth, membership or historical-time promotion.",
       "kind": "test",
@@ -121,6 +146,7 @@
     "memory.blind_recall_isolation",
     "memory.fragmentary_temporal_recall",
     "memory.campaign_saturation_and_seal",
+    "memory.industry_exploration_frontier",
     "memory.post_seal_verification_depth",
     "memory.current_disagreement_hypothesis_coverage_state",
     "memory.research_only_model_judgment_analysis",
@@ -130,10 +156,7 @@
   "revisit_when": "Only replace if blind recall, approximate lead preservation, immutable seal, calibrated unresolved-exhaustion depth, current research uncertainty, useful labelled model analysis, current-workspace visibility and Evidence-final authority remain auditable and append-only.",
   "schema_version": "longcycle-capability/v1",
   "scope": [
-    "src/longcycle/application/memory_campaign.py",
-    "src/longcycle/application/memory_ingest.py",
-    "src/longcycle/application/memory_audit.py",
-    "src/longcycle/application/memory_history.py",
+    "src/longcycle/application/memory_*.py",
     "src/longcycle/application/researcher_interpretation.py",
     "src/longcycle/domain/open_states.py",
     "src/longcycle/ports/open_states.py",
@@ -141,7 +164,9 @@
     "migrations/0014_memory_leads_and_authority.sql",
     "migrations/0015_memory_campaigns_and_model_refresh.sql",
     "migrations/0017_memory_hypothesis_assessments.sql",
+    "scripts/audit_memory_seals.py",
     "tests/test_memory_campaign.py",
+    "tests/test_memory_seal_audit.py",
     "tests/test_memory_ingest.py",
     "tests/test_researcher_interpretation.py",
     "tests/test_open_state_view.py",

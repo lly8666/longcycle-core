@@ -1,44 +1,37 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "REMOTE-WORKER-CONTINUITY-V1-028",
-  "intent": "Extend repository-backed continuity and capability governance with a bounded remote-only worker cursor, automatic next-invocation interruption recovery, turn-boundary S+H, typed cross-workstream delivery contracts, and conflict-free immutable Drive database generations.",
+  "intent_id": "ADAPTIVE-MEMORY-CAMPAIGN-V1-031",
+  "intent": "Extend CAP-0006 with a fail-closed seal-readiness gate and bounded sparse exploration frontier for disposable industry Campaign Leads.",
   "governance_mode": "converging",
   "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0009",
-    "CAP-0010"
+    "CAP-0006"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0009",
-    "CAP-0010"
+    "CAP-0006"
   ],
-  "rationale_summary": "CAP-0009 already owns bounded fresh-Agent recovery, live-head reconciliation and data-plane handoff; CAP-0010 already owns sparse governance routing and semantic-owner uniqueness. Worker interruption, shared Drive database and ownership gaps fit their extension seams and do not require a new semantic owner.",
-  "rationale_details_ref": "docs/development/remote-worker-continuity.md",
+  "rationale_summary": "CAP-0006 already owns blind recall isolation, campaign saturation/seal and model-memory coverage state. The observed Banking correction and Shipping premature seal are missing guards inside that existing owner, not evidence for a new semantic capability.",
+  "rationale_details_ref": "docs/research/industry-memory-exploration-map.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/development/session-handoff-protocol.md",
-    "docs/development/parallel-agent-development.md",
-    "docs/development/post-baseline-development.md",
-    "docs/development/workstream-reservation-integration.md",
-    "docs/development/parallel-data-plane.md",
-    "docs/development/longcycle-development-operating-system.md",
-    ".longcycle/workstreams/README.md"
+    "docs/research/model-memory-exhaustion-protocol.md",
+    "docs/research/lithium-battery-memory-sharding.md",
+    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/up-chemicals-seal-review-v1.json",
+    "commit:1cc75e17a3ddc262e666b8b7f6c4091b18b5d44b",
+    "commit:405ea27086fd3a029c35552ea0bc492427a6a9c6"
   ],
   "planned_paths": [
-    "src/longcycle/application/**",
-    "scripts/**",
-    "docs/development/**",
-    ".longcycle/workstreams/**",
-    ".longcycle/capabilities/**",
-    ".longcycle/change-contract/current.json",
-    ".longcycle/handoff/current.json",
-    ".longcycle/handoff/data-plane.json",
-    "AGENTS.md",
-    "FRESH_AGENT_BOOTSTRAP.md",
-    "CONTINUE_HERE.md",
-    "tests/**",
+    "src/longcycle/application/memory_campaign.py",
+    "tests/test_memory_campaign.py",
+    "scripts/audit_memory_seals.py",
+    "tests/test_memory_seal_audit.py",
     ".github/workflows/architecture-baseline.yml",
-    "docs/dev-binary-cache.md"
+    "docs/research/industry-memory-exploration-map.md",
+    ".longcycle/capabilities/cards/CAP-0006.json",
+    ".longcycle/capabilities/active-index.json",
+    ".longcycle/capabilities/current-admission.json",
+    ".longcycle/change-contract/current.json",
+    ".longcycle/handoff/current.json"
   ],
   "proposed_capability_id": null
 }

@@ -4,12 +4,15 @@ import unittest
 from datetime import date
 
 from longcycle.application.memory_campaign import (
+    ExplorationFrontier,
     RecallPassOutcome,
     RecallPassSpec,
     SaturationPolicy,
+    SealReviewState,
     VerificationSearchProgress,
     build_recall_pass_prompt,
     build_self_verification_prompt,
+    choose_next_exploration_frontier,
     evaluate_campaign_saturation,
     verification_depth_satisfied,
     verification_stop_decision,
@@ -36,6 +39,8 @@ class MemoryCampaignTest(unittest.TestCase):
         self.assertIn("Do not invent citations, URLs, exact report titles, exact dates", prompt)
         self.assertIn("Do not discard a useful lead", prompt)
         self.assertIn("fake search plan", prompt)
+        self.assertIn("This pass cannot seal its own shard or campaign", prompt)
+        self.assertIn("new_category, useful_refinement, or duplicate", prompt)
 
     def test_atlas_only_pass_requires_atlas(self) -> None:
         spec = RecallPassSpec(
@@ -73,6 +78,11 @@ class MemoryCampaignTest(unittest.TestCase):
             outcomes=outcomes,
             has_major_coverage_gaps=False,
             required_long_tail_families_missing=(),
+            review=SealReviewState(
+                campaign_stage="seal_candidate",
+                negative_space_review_complete=True,
+                independent_challenger_complete=True,
+            ),
             policy=SaturationPolicy(consecutive_low_novelty_passes=3),
         )
         self.assertTrue(result.saturated)
@@ -81,9 +91,108 @@ class MemoryCampaignTest(unittest.TestCase):
             outcomes=outcomes,
             has_major_coverage_gaps=True,
             required_long_tail_families_missing=(),
+            review=SealReviewState(
+                campaign_stage="seal_candidate",
+                negative_space_review_complete=True,
+                independent_challenger_complete=True,
+            ),
         )
         self.assertFalse(blocked.saturated)
         self.assertIn("major_coverage_gaps_remain", blocked.reason_codes)
+
+    def test_orientation_coverage_cannot_be_mistaken_for_saturation(self) -> None:
+        low_novelty = [
+            RecallPassOutcome("time", "time_slice", 1, 5, 0),
+            RecallPassOutcome("actors", "actor_gap", 1, 5, 0),
+            RecallPassOutcome("terms", "terminology_gap", 1, 5, 0),
+        ]
+        result = evaluate_campaign_saturation(
+            outcomes=low_novelty,
+            has_major_coverage_gaps=False,
+            required_long_tail_families_missing=(),
+            review=SealReviewState(
+                campaign_stage="orientation_only",
+                negative_space_review_complete=True,
+                independent_challenger_complete=True,
+            ),
+        )
+        self.assertFalse(result.saturated)
+        self.assertIn("not_in_seal_candidate_stage", result.reason_codes)
+
+    def test_three_repetitions_of_one_lens_are_not_orthogonal(self) -> None:
+        repeated_lens = [
+            RecallPassOutcome("a", "same_lens", 0, 4, 0),
+            RecallPassOutcome("b", "same_lens", 0, 4, 0),
+            RecallPassOutcome("c", "same_lens", 0, 4, 0),
+        ]
+        result = evaluate_campaign_saturation(
+            outcomes=repeated_lens,
+            has_major_coverage_gaps=False,
+            required_long_tail_families_missing=(),
+            review=SealReviewState(
+                campaign_stage="seal_candidate",
+                negative_space_review_complete=True,
+                independent_challenger_complete=True,
+            ),
+        )
+        self.assertFalse(result.saturated)
+        self.assertIn("recent_passes_not_orthogonal", result.reason_codes)
+
+    def test_caller_cannot_weaken_the_three_pass_safety_floor(self) -> None:
+        with self.assertRaises(ValueError):
+            SaturationPolicy(
+                consecutive_low_novelty_passes=1,
+                minimum_distinct_recent_families=1,
+            )
+        with self.assertRaises(ValueError):
+            SaturationPolicy(max_high_importance_novel_per_low_pass=2)
+
+    def test_structural_coverage_without_explicit_reviews_fails_closed(self) -> None:
+        result = evaluate_campaign_saturation(
+            outcomes=(),
+            has_major_coverage_gaps=False,
+            required_long_tail_families_missing=(),
+            review=SealReviewState(
+                campaign_stage="seal_candidate",
+                negative_space_review_complete=False,
+                independent_challenger_complete=False,
+            ),
+        )
+        self.assertFalse(result.saturated)
+        self.assertIn("negative_space_review_incomplete", result.reason_codes)
+        self.assertIn("independent_challenger_incomplete", result.reason_codes)
+
+    def test_sparse_frontier_selects_one_next_probe_without_dense_grid(self) -> None:
+        frontiers = (
+            ExplorationFrontier(
+                frontier_id="low-value-history",
+                priority_rank=1,
+                next_probe="deferred descriptive history",
+                state="deferred",
+            ),
+            ExplorationFrontier(
+                frontier_id="first-order-cycle-gap",
+                priority_rank=2,
+                next_probe="one bounded causal blind probe",
+            ),
+            ExplorationFrontier(
+                frontier_id="secondary-gap",
+                priority_rank=3,
+                next_probe="one bounded secondary probe",
+            ),
+        )
+        selected = choose_next_exploration_frontier(frontiers)
+        self.assertIsNotNone(selected)
+        self.assertEqual("first-order-cycle-gap", selected.frontier_id)
+
+    def test_sparse_frontier_rejects_ambiguous_active_priority(self) -> None:
+        with self.assertRaises(ValueError):
+            choose_next_exploration_frontier(
+                (
+                    ExplorationFrontier("a", 1, "probe a"),
+                    ExplorationFrontier("b", 1, "probe b"),
+                )
+            )
 
     def test_unresolved_search_cannot_claim_exhaustion_before_minimum_depth(self) -> None:
         shallow = VerificationSearchProgress(
