@@ -1,0 +1,83 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002",
+  "family": "commercial_bank_exit_vs_nonbank_resolution_blind_challenge",
+  "time_slice_id": "TIME-1995-1999",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": [
+    "1995-01-01",
+    "1999-12-31"
+  ],
+  "prompt_version": "exploration-map-revision-4",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@dc642fcfffa44721973fe807488b39c5ad9e272c;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002-memory-leads.md",
+    "commit_sha": "c534b6973074f62ad27cdc5d51c2a5245142d45a",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 24,
+    "useful_refinement_count": 32,
+    "duplicate_count": 2,
+    "novel_lead_count": 56,
+    "high_importance_novel_count": 31,
+    "total_lead_count": 58,
+    "classification": "material_novelty_with_resolution_perimeter_discrimination"
+  },
+  "negative_space": [
+    "Exact statutory article numbers and sequencing for commercial-bank takeover, revocation, dissolution, liquidation and court bankruptcy remain unverified.",
+    "Hainan Development Bank closure instrument, individual-deposit transfer mechanics, corporate-depositor treatment, receiving-bank role and any PBOC refinancing remain unresolved.",
+    "GITIC closure-to-bankruptcy chronology, creditor classes, foreign-creditor distinctions and recovery waterfall remain unresolved.",
+    "The exact legal name, institution type, closure date and claimant treatment of the institution remembered as Zhongnongxin remain uncertain.",
+    "China Investment Bank's exact transfer/absorption legal form and predecessor status remain uncertain.",
+    "No licensed domestic commercial-bank judicial-bankruptcy completion is confidently recalled for 1995-1999."
+  ],
+  "frontier_updates": {
+    "closed_frontiers": [
+      "TIME-1995-1999__SYS-REGULATION-RESOLUTION__BANK-VS-NONBANK-EXIT-CHALLENGE"
+    ],
+    "opened_frontiers": [
+      "TIME-2000-2004__SYS-REGULATION-RESOLUTION"
+    ],
+    "reason": "The orthogonal 1995-1999 challenge materially improved discrimination among commercial-bank administrative closure, non-bank judicial bankruptcy and administrative consolidation, but the remaining uncertainties are increasingly exact-source legal and claimant-treatment questions. A sparse move to the next time slice has higher expected blind information value than a third 1995-1999 variant."
+  },
+  "method_observation": {
+    "count": 1,
+    "classification": "action_label_and_claimant_class_collapse",
+    "observation": "Institution-specific recall becomes materially cleaner when institution perimeter, regulatory action, judicial action, claimant class and continuity mechanism are kept separate. Generic failure/bankruptcy prompts otherwise conflate Hainan Development Bank-style commercial-bank administrative closure, GITIC-like non-bank bankruptcy and China Investment Bank-style consolidation.",
+    "proposed_validation_probe": "TIME-2000-2004__SYS-REGULATION-RESOLUTION__blind-001",
+    "proposed_family": "time_x_shard_blind_recall",
+    "shared_change_requested": false
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "single_bounded_pass_complete_with_material_novelty_and_source_like_remaining_gaps",
+  "validation_refs": [],
+  "unverified": true
+}
