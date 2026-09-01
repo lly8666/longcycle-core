@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date
-from typing import Literal, Sequence
+from typing import Literal
 
 
 @dataclass(frozen=True, slots=True)
@@ -37,18 +38,107 @@ class RecallPassOutcome:
 class SaturationPolicy:
     consecutive_low_novelty_passes: int = 3
     max_high_importance_novel_per_low_pass: int = 1
+    minimum_distinct_recent_families: int = 3
 
     def __post_init__(self) -> None:
-        if self.consecutive_low_novelty_passes < 1:
-            raise ValueError("consecutive_low_novelty_passes must be positive")
+        if self.consecutive_low_novelty_passes < 3:
+            raise ValueError("consecutive_low_novelty_passes cannot weaken the three-pass floor")
         if self.max_high_importance_novel_per_low_pass < 0:
             raise ValueError("max_high_importance_novel_per_low_pass must be non-negative")
+        if self.max_high_importance_novel_per_low_pass > 1:
+            raise ValueError(
+                "max_high_importance_novel_per_low_pass cannot weaken the safety ceiling"
+            )
+        if self.minimum_distinct_recent_families < 3:
+            raise ValueError(
+                "minimum_distinct_recent_families cannot weaken the three-family floor"
+            )
+        if self.minimum_distinct_recent_families > self.consecutive_low_novelty_passes:
+            raise ValueError(
+                "minimum_distinct_recent_families cannot exceed consecutive_low_novelty_passes"
+            )
+
+
+DEFAULT_SATURATION_POLICY = SaturationPolicy()
 
 
 @dataclass(frozen=True, slots=True)
 class SaturationResult:
     saturated: bool
     reason_codes: tuple[str, ...]
+
+
+CampaignStage = Literal[
+    "orientation_only",
+    "active_recall",
+    "low_novelty_confirmation",
+    "seal_candidate",
+    "sealed",
+    "evidence",
+]
+
+FrontierState = Literal["open", "deferred", "closed", "outside_scope"]
+
+_CAMPAIGN_STAGES = {
+    "orientation_only",
+    "active_recall",
+    "low_novelty_confirmation",
+    "seal_candidate",
+    "sealed",
+    "evidence",
+}
+_FRONTIER_STATES = {"open", "deferred", "closed", "outside_scope"}
+MAX_OPEN_EXPLORATION_FRONTIERS = 64
+
+
+@dataclass(frozen=True, slots=True)
+class SealReviewState:
+    """Explicit audit state required before a blind-memory shard may seal."""
+
+    campaign_stage: CampaignStage
+    negative_space_review_complete: bool
+    independent_challenger_complete: bool
+    fresh_search_used: bool = False
+
+    def __post_init__(self) -> None:
+        if self.campaign_stage not in _CAMPAIGN_STAGES:
+            raise ValueError(f"unsupported campaign_stage: {self.campaign_stage}")
+
+
+@dataclass(frozen=True, slots=True)
+class ExplorationFrontier:
+    """One sparse candidate for the next bounded recall probe."""
+
+    frontier_id: str
+    priority_rank: int
+    next_probe: str
+    state: FrontierState = "open"
+
+    def __post_init__(self) -> None:
+        if not self.frontier_id.strip():
+            raise ValueError("frontier_id must not be blank")
+        if self.priority_rank < 1:
+            raise ValueError("priority_rank must be positive")
+        if not self.next_probe.strip():
+            raise ValueError("next_probe must not be blank")
+        if self.state not in _FRONTIER_STATES:
+            raise ValueError(f"unsupported frontier state: {self.state}")
+
+
+def choose_next_exploration_frontier(
+    frontiers: Sequence[ExplorationFrontier],
+) -> ExplorationFrontier | None:
+    """Choose one deterministic open frontier without constructing a dense coverage grid."""
+
+    open_frontiers = [item for item in frontiers if item.state == "open"]
+    if len(open_frontiers) > MAX_OPEN_EXPLORATION_FRONTIERS:
+        raise ValueError("too many open exploration frontiers; archive or cohort them first")
+
+    priority_ranks = [item.priority_rank for item in open_frontiers]
+    if len(priority_ranks) != len(set(priority_ranks)):
+        raise ValueError("open exploration frontiers must have unique priority ranks")
+
+    return min(open_frontiers, key=lambda item: item.priority_rank, default=None)
 
 
 def build_recall_pass_prompt(
@@ -93,6 +183,8 @@ Pass period: {period_start.isoformat()} to {period_end.isoformat()}
 
 This is UNSOURCED MODEL MEMORY, not evidence.
 Fresh web search results are forbidden in this pass.
+This is one bounded campaign observation. This pass cannot seal its own shard or campaign.
+Only a separate compact-index novelty review and seal gate may authorize that transition.
 Do not invent citations, URLs, exact report titles, exact dates, or precise numbers when uncertain.
 Do not optimize for famous events. Spend at least half of the useful output on long-tail leads,
 forgotten actors, mechanisms, historical vocabulary/search keys, failures, or uncertain fragments.
@@ -121,6 +213,10 @@ For each high-importance lead also answer when memory permits:
 2. What may have preceded it?
 3. What may have followed it?
 4. What was it likely called at the time?
+
+At the end, classify candidates as new_category, useful_refinement, or duplicate when a same-shard
+compact index was supplied, and report the three counts truthfully. A duplicate is a valid
+low-novelty observation; do not rewrite it until it appears novel.
 
 If memory is fragmentary, preserve the fragment instead of fabricating precision or a fake search plan.
 """
@@ -188,26 +284,44 @@ def evaluate_campaign_saturation(
     outcomes: Sequence[RecallPassOutcome],
     has_major_coverage_gaps: bool,
     required_long_tail_families_missing: Sequence[str],
-    policy: SaturationPolicy = SaturationPolicy(),
+    review: SealReviewState | None = None,
+    policy: SaturationPolicy = DEFAULT_SATURATION_POLICY,
 ) -> SaturationResult:
-    """Approximate saturation; never accepts the model merely saying it has no more memory."""
+    """Approximate saturation through explicit stage, orthogonality and review gates."""
 
     reasons: list[str] = []
+    if review is None:
+        reasons.append("explicit_seal_review_required")
+    else:
+        if review.campaign_stage != "seal_candidate":
+            reasons.append("not_in_seal_candidate_stage")
+        if review.fresh_search_used:
+            reasons.append("blind_recall_contaminated_by_fresh_search")
+        if not review.negative_space_review_complete:
+            reasons.append("negative_space_review_incomplete")
+        if not review.independent_challenger_complete:
+            reasons.append("independent_challenger_incomplete")
+
     if has_major_coverage_gaps:
         reasons.append("major_coverage_gaps_remain")
     if required_long_tail_families_missing:
         reasons.append("required_long_tail_families_missing")
+
+    low_novelty = False
     if len(outcomes) < policy.consecutive_low_novelty_passes:
         reasons.append("insufficient_recent_passes")
-        return SaturationResult(False, tuple(reasons))
-
-    recent = outcomes[-policy.consecutive_low_novelty_passes :]
-    low_novelty = all(
-        item.high_importance_novel_count <= policy.max_high_importance_novel_per_low_pass
-        for item in recent
-    )
-    if not low_novelty:
-        reasons.append("high_importance_leads_still_arriving")
+    else:
+        recent = outcomes[-policy.consecutive_low_novelty_passes :]
+        distinct_families = {item.family for item in recent}
+        if len(distinct_families) < policy.minimum_distinct_recent_families:
+            reasons.append("recent_passes_not_orthogonal")
+        low_novelty = all(
+            item.high_importance_novel_count
+            <= policy.max_high_importance_novel_per_low_pass
+            for item in recent
+        )
+        if not low_novelty:
+            reasons.append("high_importance_leads_still_arriving")
 
     saturated = not reasons and low_novelty
     if saturated:
@@ -238,6 +352,9 @@ class VerificationDepth:
             raise ValueError("minimum_source_types must be positive")
 
 
+DEFAULT_VERIFICATION_DEPTH = VerificationDepth()
+
+
 @dataclass(frozen=True, slots=True)
 class VerificationSearchProgress:
     query_family_count: int
@@ -263,7 +380,7 @@ class VerificationStopDecision:
 
 def verification_depth_satisfied(
     progress: VerificationSearchProgress,
-    depth: VerificationDepth = VerificationDepth(),
+    depth: VerificationDepth = DEFAULT_VERIFICATION_DEPTH,
 ) -> bool:
     """Return whether unresolved-exhaustion minimum search depth has been satisfied."""
 
@@ -289,7 +406,7 @@ def verification_stop_decision(
     resolution: VerificationResolution,
     progress: VerificationSearchProgress,
     high_impact: bool = False,
-    depth: VerificationDepth = VerificationDepth(),
+    depth: VerificationDepth = DEFAULT_VERIFICATION_DEPTH,
 ) -> VerificationStopDecision:
     """Decide whether a verification task may stop without turning search depth into a quota.
 
