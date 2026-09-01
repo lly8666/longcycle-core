@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 130,
+  "continuity_sequence": 131,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "main",
   "active_pr": null,
-  "checkpoint_based_on_head_sha": "daf32110831f0b53f9f70d3ec019ef1cf911b7a9",
+  "checkpoint_based_on_head_sha": "5e2f684a76d1ccad05257d7d8cdc44d665fbb7c1",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "All durable roles run in ChatGPT chat. Refresh origin/main and the exact owned worker ref through GitHub Connect; local cache, old chat and unpushed work are never authority. PR #175 established the single chat/GitHub-Connect/Drive runtime and PR #176 separated global v3 from worker-level continuity evidence. Checkpoint daf32110831f0b53f9f70d3ec019ef1cf911b7a9 adds one reusable lifecycle: all-agent-takeover, all-agent-handoff and future-role-creation, while the coordinator, Banking and Shipping prompts retain only their role-specific authority and research boundaries. A CLEAN role reports startup and automatically executes one atomic task; S-without-H is repaired first by the next invocation. Keep the genuine sequence-130 global v3 due as an independent common-bootstrap test; it neither certifies nor blocks a worker whose own exact startup audit is safe.",
+  "bootstrap_instruction": "All durable roles run in ChatGPT chat. Refresh main and each exact owned worker ref through GitHub Connect; old chat, local cache and unpushed work are never authority. PR #177 merged the reusable takeover/handoff/future-role prompt lifecycle to main at 5e2f684a76d1ccad05257d7d8cdc44d665fbb7c1 after exact-head full CI and Architecture Baseline passed. A fresh coordinator instance has now independently re-audited main plus both active worker refs: Banking remains at d38b80b380967dfef0b0db761fad2227a1c6e664 and Shipping at bba4866e0d7dd1f8db5204526250a06b0ea842b0, each with checkpoint-to-head cursor-only delta, matching reservation revision/assignment epoch, resolvable hot map/verification pointers and no new worker write. The genuine sequence-130 global v3 remains a separate common-bootstrap test and is not worker-continuity evidence.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,9 +17,9 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents recursively recover broad model-memory frontiers, multiple workstreams develop concurrently, and bounded remote handoff preserves Evidence, PIT/no-lookahead, provenance and Reality/Judgment/Outcome correctness over years.",
-    "short_term_goal": "Land the reusable chat-Agent prompt lifecycle, then replace the coordinator, Banking lead and Shipping lead with three independent fresh chat instances that each pass their own exact remote startup audit and automatically execute one bounded atomic task.",
-    "next_big_step": "Complete one genuine three-role adoption cycle: the fresh coordinator reconstructs the global horizon and audits both workers; the fresh Banking and Shipping leads independently recover their exact cursors and execute exactly one mapped blind probe each; the coordinator promotes nothing unless the same material defect repeats across industries.",
-    "local_optimization_stop_rule": "The role topology, interruption recovery, sparse exploration and legacy-state shielding are documented and independently drill-tested. Do not add another permanent role, prompt framework, dense ontology, scheduler, dialogue quota or governance gate before the three fresh instances execute the two real probes; reopen shared development only if a repeated material failure or invariant bypass appears.",
+    "short_term_goal": "Complete the genuine three-role fresh-chat adoption cycle: the coordinator has independently passed its live global-plus-worker audit; fresh Banking and Shipping leads must now each independently pass their own exact remote startup audit and execute exactly one bounded blind probe.",
+    "next_big_step": "Let the two industry workstreams produce their first fresh-instance S/H probe receipts, then have the coordinator compare at most one bounded method observation from each. Promote nothing shared unless the same material defect independently repeats; run the still-due sequence-130 global v3 separately.",
+    "local_optimization_stop_rule": "The role topology, interruption recovery, sparse exploration and legacy-state shielding are documented and independently drill-tested. Do not add another permanent role, prompt framework, dense ontology, scheduler, dialogue quota or governance gate before the two fresh worker instances execute their real probes; reopen shared development only if a repeated material failure or invariant bypass appears.",
     "parallel_permanent_tracks": [
       "Architecture Baseline v1 remains stable; normal industry/product work defaults to L1/L2 plus reuse/extend.",
       "Coordinator owns shared CAP-0006 policy and serial integration; each Industry Campaign Lead owns only its reserved current map and blind outputs.",
@@ -29,18 +29,18 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "adaptive-memory-campaign-v1",
-    "last_completed_action": "PR #176 merged the corrected test scopes to main at 787740185ff2b1f335a8d1cc09f3aaa5a44aec1d after exact PR-head Architecture Baseline, Fresh-Agent workflow and full CI passed. At S=daf32110831f0b53f9f70d3ec019ef1cf911b7a9, added shared takeover/handoff/future-role prompts, shortened and strengthened the coordinator/Banking/Shipping prompts, made CLEAN startup continue automatically, kept Drive on demand, and preserved distinct global-v3/role-adoption/live-startup evidence scopes. Capability, Baseline and workstream audits plus 65 focused tests passed locally.",
-    "current_task": "Land checkpoint daf32110831f0b53f9f70d3ec019ef1cf911b7a9 as the final sequence-130 prompt-pack repair, then give the user the three copy-ready role prompts plus generic creation, takeover and handoff templates. Each user-started role must derive its own live continuity state before writing. Complete the still-due global v3 separately when a genuinely fresh execution slot is available.",
-    "why_now": "The user needs disposable chat Agents to inherit consistent behavior without copying an ever-growing governance prompt. One shared lifecycle plus a small role card keeps startup cost close to constant and makes future role creation repeatable.",
-    "done_when": "The prompt pack is merged from exact green CI; the three current prompts and three generic templates are available on main and directly copyable; each actual role startup is governed by its own exact remote audit; and the scheduled sequence-130 v3 remains visibly due until a genuine fresh subject produces an independently accepted report.",
+    "last_completed_action": "PR #177 merged the reusable ChatGPT Agent prompt lifecycle to main at 5e2f684a76d1ccad05257d7d8cdc44d665fbb7c1; exact main contexts longcycle/full-ci and longcycle/architecture-baseline are success. This fresh coordinator then re-read the live authority set, verified main continuity from checkpoint daf32110831f0b53f9f70d3ec019ef1cf911b7a9 through handoff-only changes, and independently audited both active workers. Banking checkpoint 5f62007eb5edb68bd0403f0c04dd1cd414b05bcb to head d38b80b380967dfef0b0db761fad2227a1c6e664 is one cursor-only commit; Shipping checkpoint 868223fdf2fce6088067c5f8d949d199af74f16b to head bba4866e0d7dd1f8db5204526250a06b0ea842b0 is one cursor-only commit. Both reservations, epochs, maps and verification pointers remain aligned. No worker research content was written or modified.",
+    "current_task": "Complete the remaining two fresh-role adoption probes without coordinator cross-write: Banking executes only TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001 and Shipping executes only SHIP-MEM-V2-P001 from their live maps. The coordinator observes their eventual exact S/H receipts and compares only bounded method observations; the scheduled sequence-130 global v3 stays separate.",
+    "why_now": "The reusable prompt pack is already merged and the fresh coordinator admission is now independently demonstrated against live remote state. The highest-value next proof is real worker execution under those prompts, not more governance refinement.",
+    "done_when": "A fresh Banking instance and a fresh Shipping instance each independently derive CLEAN from exact remote facts, execute exactly one map-selected blind probe, push bounded S followed by cursor-only H, and return to CLEAN; the coordinator then compares at most one method observation from each without shared promotion unless the same material defect repeats. The sequence-130 global v3 remains separately due until independently accepted.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Push this cursor-only sequence-130 repair, require exact-head CI and merge it; then provide the copy-ready coordinator, Banking, Shipping, future-role creation, universal takeover and universal handoff prompts."
+    "next_atomic_action": "Observe the next exact Banking and Shipping worker heads and receipts after their fresh-instance probes. If both are safely handed off, compare at most one bounded method observation from each and make no shared change unless the same material defect independently repeats; do not write either worker's map, raw output, receipt or cursor."
   },
   "active_context": {
-    "context_id": "chat-agent-governance-130",
+    "context_id": "chat-agent-governance-131",
     "context_kind": "multi_agent_research_governance",
-    "label": "Reusable ChatGPT Agent prompt lifecycle and three-role launch",
+    "label": "Fresh three-role adoption execution after prompt-pack merge",
     "root_path": "docs/development",
     "campaign_root": null,
     "coverage_path": null,
@@ -83,27 +83,27 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33501237398,
-    "observed_head_sha": "2ed5244b7241a380006c7321a77c930cd11155b5",
-    "conclusion": "PR #176 exact head 2ed5244b7241a380006c7321a77c930cd11155b5 passed Architecture Baseline run 33501237337, Fresh-Agent workflow run 33501237350 and full CI run 33501237398, then merged to main at 787740185ff2b1f335a8d1cc09f3aaa5a44aec1d. Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 and Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 remain the last independently audited CLEAN worker heads. Prompt-pack S=daf32110831f0b53f9f70d3ec019ef1cf911b7a9 passed local capability/Baseline/workstream audits and 65 focused tests; exact PR-head CI is still required. The genuine scheduled sequence-130 v3 remains outstanding and is not worker-continuity evidence.",
-    "mypy_summary": "No Python code changed in the governance manual/prompt S, so no new Mypy claim is needed.",
-    "pytest_summary": "The merged runtime and scope corrections passed exact full CI. The prompt pack passed 65 focused handoff, continuity, registry and data-plane tests plus capability/Baseline/workstream audits. The earlier context-free role-adoption drill remains bounded role evidence and does not substitute for the scheduled sequence-130 global v3 or a live worker startup audit.",
-    "ruff_summary": "No Python files changed; staged diff check passed. Whole-repository unrelated Ruff debt was not used as a docs-only gate.",
-    "refresh_instruction": "This snapshot is not authority. Before merging the scope repair observe its exact PR-head CI. On every role startup use GitHub Connect to refresh main and the owned worker ref, run the applicable continuity audit, and trust the live cursor when it differs from prompt examples. Run the scheduled global v3 separately against a stable main when a genuine fresh slot is available."
+    "last_observed_run": 33503540915,
+    "observed_head_sha": "5e2f684a76d1ccad05257d7d8cdc44d665fbb7c1",
+    "conclusion": "Main at 5e2f684a76d1ccad05257d7d8cdc44d665fbb7c1 has success for longcycle/full-ci run 33503540915 and longcycle/architecture-baseline run 33503540950. Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 and Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 each expose successful longcycle/architecture-baseline status; their live checkpoint-to-head deltas are cursor-only and hot pointers resolve. No new worker probe has executed. The scheduled sequence-130 global v3 remains outstanding and is not worker-continuity evidence.",
+    "mypy_summary": "No Python code changed in this coordinator adoption audit/handoff sync.",
+    "pytest_summary": "No new executable code was changed. Main exact-head full CI and Architecture Baseline are green; worker continuity was established from exact refs, cursor-only deltas and live hot pointers rather than by rerunning local scripts.",
+    "ruff_summary": "No Python files changed in this coordinator adoption audit/handoff sync.",
+    "refresh_instruction": "This snapshot is not authority. Before any next integration action refresh main and both active worker refs. Each fresh worker must independently audit its own exact reservation, cursor, pointers, delta and required checks before writing. Run the scheduled global v3 separately against a stable main."
   },
   "workstreams": [
     {
       "workstream_id": "adaptive-memory-campaign-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "reusable_prompt_pack_ready_for_merge",
-      "summary": "The sparse exploration/seal gate remains integrated; S=daf32110831f0b53f9f70d3ec019ef1cf911b7a9 provides three concise current-role prompts plus shared takeover, handoff and future-role creation templates without adding a semantic owner or handoff system.",
+      "status": "prompt_pack_merged_fresh_coordinator_audited",
+      "summary": "PR #177 is merged and the new coordinator instance has independently reconstructed the live horizon and re-audited both active workers without cross-writing them. The remaining adoption proof is exactly one fresh-instance blind probe on each worker.",
       "next_actions": [
-        "Land the reusable prompt pack with exact CI.",
-        "Start one fresh coordinator chat from the repository prompt and require live global plus two-worker audits before releasing research.",
-        "Run the still-due sequence-130 global v3 independently; do not use it to infer worker CLEAN.",
-        "Observe the two first-pass receipts without editing either worker's map or research files.",
-        "Promote at most one repeated cross-industry method lesson through normal CAP-0006 governance; otherwise make no shared change."
+        "Start a fresh Banking chat and require exact live startup audit before its one selected blind probe.",
+        "Start a fresh Shipping chat and require exact live startup audit before its one selected blind probe.",
+        "Observe the two first-pass S/H receipts without editing either worker's map or research files.",
+        "Compare at most one bounded method observation per industry and promote no shared change unless the same material defect repeats independently.",
+        "Run the still-due sequence-130 global v3 independently; do not use it to infer worker CLEAN."
       ],
       "blockers": []
     },
@@ -112,7 +112,7 @@
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
       "status": "fixed_map_ready_for_first_blind_probe",
-      "summary": "Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 is CLEAN. Its legacy Markdown seal is exactly corrected without inventing a structured seal, its cursor holds one map pointer, and the map selects one 1990-1994 regulation/resolution probe.",
+      "summary": "Banking@d38b80b380967dfef0b0db761fad2227a1c6e664 is CLEAN by refreshed coordinator audit. Its checkpoint-to-head delta is cursor-only, reservation revision and assignment epoch match main, verification pointer resolves, and the map still selects one 1990-1994 regulation/resolution probe.",
       "next_actions": [
         "Execute only TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001 from the current map.",
         "Push append-only raw Memory plus receipt and rebuilt map as S, then push cursor-only H and require CLEAN."
@@ -124,7 +124,7 @@
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
       "status": "exact_supersessions_applied_fixed_map_ready",
-      "summary": "Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 is CLEAN. The atlas and pandemic orientation remain byte-immutable but have exact valid supersessions, Evidence is disabled, and the one map selects SHIP-MEM-V2-P001.",
+      "summary": "Shipping@bba4866e0d7dd1f8db5204526250a06b0ea842b0 is CLEAN by refreshed coordinator audit. Its checkpoint-to-head delta is cursor-only, reservation revision and assignment epoch match main, verification pointer resolves, Evidence remains disabled, and the map still selects SHIP-MEM-V2-P001.",
       "next_actions": [
         "Execute only SHIP-MEM-V2-P001 as the map-declared atlas_only institutional-topology pass.",
         "Pin exact model/input state, push raw Memory plus receipt and rebuilt map as S, then push cursor-only H and require CLEAN."
@@ -159,13 +159,11 @@
   "latest_devlogs": [],
   "unresolved_questions": [
     "When a genuine fresh execution slot becomes available, will the scheduled sequence-130 global v3 accept the common bootstrap without being mistaken for worker evidence?",
-    "Will all three user-started Fresh Agents reproduce the bounded adoption result against the live remote heads?",
+    "Will the fresh Banking and Shipping instances reproduce CLEAN startup against their live refs and complete exactly one mapped probe each?",
     "What genuinely new categories or useful refinements will each first mapped probe recover?",
     "Will both independent receipts expose the same activation failure strongly enough to justify one shared CAP-0006 method change?"
   ],
   "ordered_next_actions": [
-    "Push this final sequence-130 prompt-pack acknowledgement and merge only after exact-head CI is green.",
-    "Start the fresh coordinator from docs/development/prompts/coordinator-fresh-agent.md and require global plus two-worker audits; this is role-level admission.",
     "Start a new Banking window from banking-fresh-agent.md; if its refreshed cursor is unchanged and CLEAN, execute only the declared TIME-1990-1994 regulation/resolution blind probe.",
     "Start a new Shipping window from shipping-fresh-agent.md; if its refreshed cursor is unchanged and CLEAN, execute only the declared SHIP-MEM-V2-P001 institutional-topology blind probe.",
     "For each worker, require S(raw plus receipt plus rebuilt current map) followed by cursor-only H and refreshed CLEAN.",
