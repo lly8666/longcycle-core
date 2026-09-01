@@ -1,0 +1,39 @@
+{
+  "schema_version": "longcycle-banking-stage-verification/v1",
+  "stage": "china_banking_memory_campaign_v2_cap0006_adoption",
+  "workstream_id": "banking-domain-v1",
+  "base_head_sha": "74035721a0609432ba37ff122636e63fc9c66b79",
+  "result": "pass",
+  "artifacts": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "role": "fixed sparse hot entrypoint"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/legacy-prose-state-correction-v1.json",
+      "role": "exact-byte legacy prose process-state correction"
+    }
+  ],
+  "checks": {
+    "legacy_prose_git_blob_sha256_matches": true,
+    "legacy_prose_artifact_preserved_immutable": true,
+    "legacy_artifact_is_not_a_structured_json_seal_claim": true,
+    "structured_seal_supersession_was_not_invented": true,
+    "replacement_stage_is_orientation_only": true,
+    "fixed_exploration_map_entrypoint_present": true,
+    "open_frontier_count": 1,
+    "selected_next_probe_count": 1,
+    "selected_time_slice_id": "TIME-1990-1994",
+    "selected_shard_id": "SYS-REGULATION-RESOLUTION",
+    "recent_seal_outcome_count": 0,
+    "new_blind_recall_executed": false,
+    "banking_evidence_search_executed": false,
+    "database_read_or_write": false,
+    "shared_governance_modified": false,
+    "l3_l4_change_detected": false
+  },
+  "vertical_alignment": {
+    "decision": "stop_after_control_plane_adoption",
+    "reason": "The fixed map, exact legacy-prose correction and one selected probe satisfy this bounded adoption task. Executing the probe would begin the next atomic research unit and is intentionally deferred."
+  }
+}
