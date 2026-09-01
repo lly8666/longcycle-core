@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
   "workstream_id": "shipping-domain-v1",
-  "revision": 2,
+  "revision": 3,
   "authority_class": "research_control_only",
   "campaign": {
     "campaign_id": "shipping-adaptive-memory-v2",
@@ -15,9 +15,9 @@
     "fresh_search_used": false
   },
   "campaign_ref": "research_data/memory/shipping/exploration-map.json#/campaign",
-  "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json#/method_observation",
+  "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json#/method_observation",
   "current_prompt_ref": "research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
   "latest_pass_receipt_status": "completed_memory_pass_unverified_until_exact_head_ci",
   "legacy_inputs": [
     {
@@ -45,6 +45,14 @@
           "novel_lead_count": 18,
           "duplicate_lead_count": 2,
           "high_importance_novel_count": 9
+        },
+        {
+          "pass_id": "SHIP-MEM-V2-P002",
+          "family": "regional_private_cabotage_small_port_aliases",
+          "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
+          "novel_lead_count": 16,
+          "duplicate_lead_count": 2,
+          "high_importance_novel_count": 8
         }
       ],
       "has_major_coverage_gaps": true
@@ -73,24 +81,28 @@
       "region_id": "cross-cycle-long-tail-institutional-topology",
       "status": "high_novelty_active_recall",
       "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
-      "interpretation": "P001 surfaced substantial non-operating institutional topology—liability mutuals, class, flags/inspection, vetting, labor/crewing, managers, contracts, creditor rights, brokers and port labor—while leaving regional/private/cabotage/non-English space open."
+      "interpretation": "P001 surfaced substantial non-operating institutional topology—liability mutuals, class, flags/inspection, vetting, labor/crewing, managers, contracts, creditor rights, brokers and port labor."
+    },
+    {
+      "region_id": "regional-private-cabotage-small-port-aliases",
+      "status": "high_novelty_active_recall",
+      "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
+      "interpretation": "P002 added family/private ownership clusters, regional tonnage-provider and feeder layers, domestic cabotage finance/entry regimes, lighterage/small-port topology and local-language search vocabulary. It also recorded four low-confidence regions as reviewed_no_specific_memory instead of manufacturing actor lineages."
     }
   ],
   "known_major_gaps": [
-    "private_and_family_controlled_regional_shipping",
-    "country_specific_cabotage_and_domestic_trade_institutions",
-    "smaller_ports_feeder_networks_and_regional_transshipment_actors",
-    "non_english_historical_vocabulary_legal_vehicles_and_actor_aliases",
-    "marine_insurance_beyond_p_and_i_and_war_risk",
-    "exact_class_labor_and_port_state_control_chronology"
+    "marine_insurance_hull_machinery_cargo_reinsurance_and_average_adjusting_beyond_p_and_i_or_war_risk",
+    "exact_class_labor_port_state_control_and_cabotage_chronology",
+    "private_regional_actor_lineages_in_low_recall_geographies",
+    "historical_non_english_predecessor_names_requiring_source_archaeology"
   ],
   "open_frontiers": [
     {
-      "frontier_id": "shipping-regional-private-cabotage-aliases-v1",
+      "frontier_id": "shipping-marine-insurance-beyond-p-and-i-v1",
       "priority_rank": 1,
       "state": "open",
-      "next_probe": "SHIP-MEM-V2-P002",
-      "why_high_information": "P001 closed the broad institutional-topology question with high novelty but explicitly left private/regional fleets, cabotage, smaller ports and non-English terms as the strongest first-order negative space. A regional/private lens is orthogonal to both the legacy time grid and P001's system-role lens."
+      "next_probe": "SHIP-MEM-V2-P003",
+      "why_high_information": "P001 and P002 both produced high novelty and closed their selected topology/frontier questions without approaching seal readiness. The clearest remaining first-order blind-memory gap that is still answerable without Evidence is marine insurance beyond P&I and war risk: hull/machinery, cargo, reinsurance, average adjusting, market placement and policy mechanisms."
     }
   ],
   "deferred_regions": [
@@ -100,18 +112,23 @@
       "reason": "Exact values and dates require later claim-scoped Evidence and are not a blind-memory completion quota."
     },
     {
+      "region_id": "country_by_country_private_actor_grid",
+      "state": "deferred",
+      "reason": "P002 showed that blind recall quality drops quickly when regional probing becomes exhaustive geographic enumeration. Low-confidence actor lineages remain explicit negative space rather than a quota-filling grid."
+    },
+    {
       "region_id": "current_2025_2026_market_snapshot",
       "state": "outside_scope",
       "reason": "Current-state claims require source-first collection; stale blind memory is not current authority."
     }
   ],
   "next_probe": {
-    "probe_id": "SHIP-MEM-V2-P002",
-    "frontier_id": "shipping-regional-private-cabotage-aliases-v1",
+    "probe_id": "SHIP-MEM-V2-P003",
+    "frontier_id": "shipping-marine-insurance-beyond-p-and-i-v1",
     "status": "planned_not_executed",
     "required_capability": "high_capability_reasoning",
     "task_packet": {
-      "family": "regional_private_cabotage_small_port_aliases",
+      "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
       "period_start": "1970-01-01",
       "period_end": "2026-08-31",
       "source_visibility": "atlas_only",
@@ -122,10 +139,10 @@
       ],
       "fresh_search_forbidden": true,
       "questions": [
-        "Which private, family-controlled, regional or domestic-trade shipping actors and organizational forms are under-recalled relative to the compact atlas, without turning this into a country-by-country exhaustive grid?",
-        "Which cabotage regimes, feeder/transshipment arrangements, smaller-port institutions, regional finance/crewing practices or local legal vehicles are specifically remembered but absent from the atlas?",
-        "Which non-English historical terms, aliases, predecessor names or local shipping vocabulary would materially improve later source discovery?",
-        "Which recalled items are genuinely new categories, useful refinements or duplicates, and which regions remain too vague to retain a specific lead?"
+        "Which hull-and-machinery, cargo, reinsurance, average-adjusting, marine-brokerage and underwriting institutions or market centers are under-recalled relative to the compact atlas, excluding P&I and generic war-risk repetition?",
+        "Which policy mechanisms, clauses, warranties, deductibles, total-loss concepts, insured-value practices or claims institutions could alter vessel operating, financing or casualty economics without inventing exact legal wording?",
+        "Which regional or historical marine-insurance terms and actor classes would materially improve later source discovery?",
+        "Which recalled items are genuinely new categories, useful refinements or duplicates, and where does model recall become too legally or chronologically uncertain to retain?"
       ],
       "output_contract": {
         "industry_memory_output_required": true,
@@ -154,6 +171,14 @@
         "novel_lead_count": 18,
         "duplicate_lead_count": 2,
         "high_importance_novel_count": 9
+      },
+      {
+        "pass_id": "SHIP-MEM-V2-P002",
+        "family": "regional_private_cabotage_small_port_aliases",
+        "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
+        "novel_lead_count": 16,
+        "duplicate_lead_count": 2,
+        "high_importance_novel_count": 8
       }
     ],
     "eligible": false,
@@ -168,13 +193,13 @@
   },
   "evidence_transition": {
     "allowed": false,
-    "reason": "Both reopened Shipping shards remain unsealed. P001 produced high-importance novel Memory, so post-seal Evidence work remains disabled until a future exact shard-local seal decision independently recomputes green."
+    "reason": "Both reopened Shipping shards remain unsealed. P001 and P002 both produced high-importance novel Memory, so post-seal Evidence work remains disabled until a future exact shard-local seal decision independently recomputes green."
   },
   "bounds": {
     "maximum_open_frontiers": 64,
     "maximum_recent_seal_outcomes": 8,
     "current_open_frontier_count": 1,
-    "current_recent_seal_outcome_count": 1,
+    "current_recent_seal_outcome_count": 2,
     "selected_next_probe_count": 1
   }
 }
