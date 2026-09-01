@@ -1,34 +1,34 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "ADAPTIVE-MEMORY-CAMPAIGN-V1-031",
-  "intent": "Extend CAP-0006 with a fail-closed seal-readiness gate and bounded sparse exploration frontier for disposable industry Campaign Leads.",
+  "intent_id": "AGENT-GOVERNANCE-MANUAL-V1-032",
+  "intent": "Publish one bounded Chinese governance router and three Fresh-Agent role prompts for the existing coordinator, Banking, and Shipping workstreams without creating a second control plane.",
   "governance_mode": "converging",
-  "disposition": "extend",
+  "disposition": "reuse",
   "target_capability_ids": [
-    "CAP-0006"
+    "CAP-0006",
+    "CAP-0009",
+    "CAP-0010"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0006"
+    "CAP-0006",
+    "CAP-0009",
+    "CAP-0010"
   ],
-  "rationale_summary": "CAP-0006 already owns blind recall isolation, campaign saturation/seal and model-memory coverage state. The observed Banking correction and Shipping premature seal are missing guards inside that existing owner, not evidence for a new semantic capability.",
-  "rationale_details_ref": "docs/research/industry-memory-exploration-map.md",
+  "rationale_summary": "CAP-0006 already owns sparse industry-memory exploration and seal safety, CAP-0009 owns bounded remote handoff and database-generation continuity, and CAP-0010 owns workstream reservation and semantic-owner admission. This change only makes their existing contracts easier for disposable role instances to execute.",
+  "rationale_details_ref": "docs/development/agent-governance-operating-manual.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/research/model-memory-exhaustion-protocol.md",
-    "docs/research/lithium-battery-memory-sharding.md",
-    "research_data/memory/lithium-battery/2026-08-21-gpt-5.6-sol/analysis/up-chemicals-seal-review-v1.json",
-    "commit:1cc75e17a3ddc262e666b8b7f6c4091b18b5d44b",
-    "commit:405ea27086fd3a029c35552ea0bc492427a6a9c6"
+    "docs/development/longcycle-development-operating-system.md",
+    "docs/development/remote-worker-continuity.md",
+    "docs/development/parallel-agent-development.md",
+    "docs/development/parallel-data-plane.md",
+    "docs/research/industry-memory-exploration-map.md"
   ],
   "planned_paths": [
-    "src/longcycle/application/memory_campaign.py",
-    "tests/test_memory_campaign.py",
-    "scripts/audit_memory_seals.py",
-    "tests/test_memory_seal_audit.py",
-    ".github/workflows/architecture-baseline.yml",
-    "docs/research/industry-memory-exploration-map.md",
-    ".longcycle/capabilities/cards/CAP-0006.json",
-    ".longcycle/capabilities/active-index.json",
+    "docs/development/agent-governance-operating-manual.md",
+    "docs/development/prompts/coordinator-fresh-agent.md",
+    "docs/development/prompts/banking-fresh-agent.md",
+    "docs/development/prompts/shipping-fresh-agent.md",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
