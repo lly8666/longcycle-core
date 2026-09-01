@@ -1,13 +1,13 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "AGENT-GOVERNANCE-MANUAL-V1-032",
-  "goal": "Make the existing Longcycle governance executable by three independent Fresh Agents: one global coordinator and isolated Banking and Shipping leads, with automatic S-without-H recovery, bounded goal reconstruction, sparse industry exploration, safe Drive/database coordination, and explicit shielding of already-corrected legacy research state.",
+  "intent_id": "CHAT-AGENT-REMOTE-OPS-V1-033",
+  "goal": "Give all Longcycle role instances one simple ChatGPT-chat operating path: GitHub Connect for exact remote state and S-to-H writes, remote CI for executable validation, model memory for isolated blind probes, and the proven private ChatGPT/Google Drive round-trip for cursor-required database artifacts.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this is a routing/manual and role-prompt consolidation of existing CAP-0006, CAP-0009, and CAP-0010 contracts and does not change Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, source authority, seal immutability, or database-generation authority",
+  "baseline_impact": "none; this removes an invalid local-Agent assumption and projects existing CAP-0006/CAP-0009/CAP-0010 rules into the actual chat runtime without changing Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, seal immutability, reservation ownership, or database-generation authority",
   "baseline_invariants": [],
-  "schema_impact": "documentation and current governance metadata only; no product schema, migration, capability owner, worker reservation, cursor, research artifact, or database generation changes",
+  "schema_impact": "documentation and current governance metadata only; no product schema, migration, capability card, worker reservation/cursor, research artifact, Drive object, or database generation change",
   "baseline_critical_tests_touched": false,
   "architecture_change_ref": null,
   "counterexample_refs": [],
@@ -15,13 +15,15 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "The manual explains the single global control plane, isolated worker control planes, one serial integration lane, durable roles, disposable Agent instances, and bounded hot-state growth in plain language.",
-    "Each of the coordinator, Banking, and Shipping prompts can independently recover terminal, long, medium, short, workstream, and atomic goals from refreshed remote state without old chat history.",
-    "Each worker prompt derives CLEAN, RECOVERY_REQUIRED, or BLOCKED before work and requires an S substantive push followed by a cursor-only H acknowledgement, with S-without-H repaired before any new task.",
-    "The prompts preserve one-writer-per-worker isolation and route shared functionality plus database-generation promotion through global_serial rather than cross-writing.",
-    "Banking's legacy prose seal and Shipping's two premature structured seals remain immutable cold provenance, are excluded from current seal/Evidence state by their existing exact corrections or supersessions, and are never physically deleted by this change.",
-    "Industry recursion uses one bounded sparse map and one next probe, permits campaign-local learning, and stops by measured novelty, negative space, and independent challenge rather than heading completion or fixed quotas.",
-    "L3/L4 work is stopped and explained to the user in six plain-language fields; this change itself remains L2 and introduces no Baseline decision.",
-    "Focused validation checks structure, continuity, capability admission, exact seal shielding, and remote CI without brittle wording, lead-count, ontology-size, dialogue-count, or time quotas."
+    "The manual and all three prompts assume one runtime only: ChatGPT chat, GitHub Connect for every repository operation, exact remote CI for executable checks, and no local git/worktree requirement.",
+    "Startup reads exact main/worker heads, reservation, cursor and hot pointers through GitHub Connect, compares checkpoint-to-head paths, and conservatively derives CLEAN, RECOVERY_REQUIRED, BLOCKED or AUDIT_ASSISTANCE_REQUIRED.",
+    "GitHub writes always name the owned branch, run sequentially, preserve append-only raw/receipt paths, never force-update, treat the final substantive commit as S, and follow with a cursor-only H verified by exact remote comparison and CI.",
+    "The current Banking and Shipping blind Memory probes remain executable without general web or Drive and cannot promote model recall into Evidence, Reality, Outcome or seal.",
+    "Database restore occurs only when required_for_current_task is true and follows the proven exact Drive file-id/revision/size/SHA path into a private read-only ChatGPT sandbox copy.",
+    "Upload follows the initial-Agent transaction unchanged: close/hash, push and acknowledge intent, upload a new immutable private Drive object, capture identity, download back by id, verify hash/size/openability, push outcome with download_back_verified, then H.",
+    "Intent-without-outcome recovery inspects Drive before retry; Drive filenames/list order never define identity, objects are never overwritten, workers never share a writable database, and only global_serial promotes the Git generation head.",
+    "A chat session missing Drive reports CAPABILITY_BLOCKED_DRIVE only when its current cursor actually requires a binary object; it does not create a new governance role or move large bytes into GitHub.",
+    "The sequence-130 genuine Fresh-Agent drill uses only chat-available GitHub repository facts, checks the inherited Drive transaction from the canonical manifest/receipts, and tests goal recovery, interruption classification and legacy-seal shielding without brittle wording or timing quotas.",
+    "No L3/L4 decision is introduced; runtime/tool availability remains an L2 routing fact."
   ]
 }
