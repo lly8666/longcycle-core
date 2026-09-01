@@ -1,13 +1,13 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "REMOTE-WORKER-CONTINUITY-V1-028",
-  "goal": "Add a bounded remote-only worker continuity contract so disposable Agents automatically recover an interrupted pushed handoff at the next invocation before accepting a new task, preserve the five-level goal hierarchy, and develop in parallel without creating a second semantic control plane.",
+  "intent_id": "ADAPTIVE-MEMORY-CAMPAIGN-V1-031",
+  "goal": "Prevent industry orientation coverage from being mistaken for blind-memory saturation, connect seal readiness to the worker path through an exact-artifact audit, add a bounded sparse exploration frontier, and make the next recall step recoverable without loading campaign history.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this extends repository-backed continuity and parallel workstream governance without changing Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, source authority, or semantic-owner invariants",
+  "baseline_impact": "none; this tightens CAP-0006 campaign control without changing Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, source authority, or sealed-artifact immutability",
   "baseline_invariants": [],
-  "schema_impact": "control-plane JSON and validation only; no product database migration",
+  "schema_impact": "application/domain control objects plus versioned Git seal-decision and supersession control records; no product database migration",
   "baseline_critical_tests_touched": false,
   "architecture_change_ref": null,
   "counterexample_refs": [],
@@ -15,14 +15,12 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "Every worker can recover terminal/long/medium/short/current goals while reading only bounded role and workstream state, and the immediate cursor remains distinct from strategic horizons.",
-    "A worker startup preflight derives CLEAN, RECOVERY_REQUIRED, or BLOCKED exclusively from refreshed remote reservation, worker ref, cursor checkpoint, bounded commit delta, and durable receipts; it does not rely on local cache or chat history.",
-    "A pushed substantive or WIP checkpoint that lacks its cursor acknowledgment is detected before new work and can be acknowledged honestly as partial or unverified; work never pushed to the remote is explicitly retried from the last declared atomic action rather than claimed as recovered.",
-    "Main-owned reservation intent, goal, acceptance, scope, capability owners, dependencies, and assignment fencing cannot be redefined by the worker cursor.",
-    "No timer, dialogue count or fixed push cadence is a correctness gate; coherent tasks use remote S checkpoints and cursor-only H acknowledgements, and the next invocation automatically repairs any pushed S that was interrupted before H.",
-    "Parallel workers communicate through bounded durable request and completion-receipt pointers, remain within disjoint reservations, and integrate through one serial lane; v1 does not mistake blob existence for semantic request satisfaction.",
-    "Parallel database workers pin and verify an immutable Drive base generation, write only isolated local databases, upload uniquely identified candidates through recoverable intent/outcome receipts, and allow only the serial integration lane to promote the bounded main generation head.",
-    "Hot handoff, router, request, dependency, and cursor state receive explicit size/count bounds so default recovery cost depends on active workstreams rather than project age.",
-    "Focused tests cover normal handoff, interrupted-after-push recovery, stale or non-ancestor checkpoints, reservation mismatch, dependency gating, and bounded-growth behavior without weakening Architecture Baseline v1 semantics."
+    "An orientation-only campaign or shard cannot pass the seal gate.",
+    "Seal eligibility requires three recent low-novelty outcomes from distinct pass families, explicit negative-space review, and an independent challenger review.",
+    "Any high-novelty recent pass resets eligibility even when top-level headings are complete.",
+    "A sparse bounded frontier chooses one deterministic next probe without materializing a time-by-shard Cartesian product.",
+    "reviewed-no-specific-memory remains a research coverage state and is never interpreted as real-world absence or contradiction.",
+    "Focused regression tests use the current Banking/Shipping failure shapes without fixing lead counts, ontology size, or prompt wording.",
+    "A changed structured seal claim is rejected by worker CI unless one exact-artifact decision recomputes green or one exact append-only supersession reopens it."
   ]
 }
