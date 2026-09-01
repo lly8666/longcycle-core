@@ -461,11 +461,19 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 4. memory campaign 与 exact-artifact seal audit（涉及研究状态时）；
 5. data-plane 测试（涉及数据库/Drive 时）；
 6. 精确提交对应的远端 CI；
-7. 至少一次 Fresh-Agent 从提示词 + 远端状态恢复六层目标和下一步，不给旧聊天。
+7. 新角色或共同 worker 接班协议发生实质变化时，至少一次无旧聊天的角色接班演练：从该角色提示词 + 精确远端状态恢复六层目标、自己的 cursor 和唯一下一步。
 
 聊天 Agent 的验证以精确远端 commit status/workflow 为准。它可以做 connector-native continuity 预检，但不能把未运行的本地测试写成 PASS；规范 audit 由精确 worker-fast/PR CI 执行，无法证明时显式标记等待或需要重算。
 
 审阅重点是四个问题：新 Agent 会不会越权写入、会不会漏补 `H`、会不会把 Memory 当 Evidence、会不会因为历史变长而加载越来越多内容。
+
+### 13.1 三种检查不能互相冒充
+
+- **全局 Fresh-Agent Continuity Drill v3**：按 `continuity_sequence` 每十次运行，抽检一个空白 Agent 能否恢复共同使命、方法、Baseline、全局路由和按需历史召回。它不读取每个行业的全部 cursor，因此不能证明某个 worker 已经安全接班。
+- **worker 启动审计**：每个新实例或返回实例都必须对自己那一条远端分支运行 continuity audit，得到 `CLEAN / RECOVERY_REQUIRED / BLOCKED / AUDIT_ASSISTANCE_REQUIRED`。这是每次接班的真正准入，不需要为每次启动生成永久 drill 报告。
+- **角色接班演练**：只在新增一种角色，或共同 worker cursor/启动协议发生实质变化时运行。它验证该类角色能否找到自己的 reservation、cursor、地图和下一步；同一协议下的每个临时 Agent 不重复建设一套大测试。
+
+全局 v3 PASS 不能代替 worker 启动审计；角色接班演练也不能冒充每十次一次的全局 v3。当前协调员、银行、航运提示词已做过一次无旧聊天的角色接班演练；之后每次新窗口仍以自身精确远端审计结果为准。
 
 ## 14. 当前三个角色的替换方式
 
@@ -479,7 +487,7 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 
 建议启动顺序：协调员先只读刷新并确认两条 worker 都可接班；银行和航运随后并行启动。若三者几乎同时启动也安全，因为两个行业各写自己的分支，协调员不跨写行业分支。
 
-当新 Agent 报告 `CLEAN` 和恢复出的六层目标后，才算接班成功。旧 Agent 不再继续写入。
+当新 Agent 报告自己那一条远端状态为 `CLEAN` 并恢复出六层目标后，才算该角色接班成功。全局 v3 是否到期单独记录，不能替代或伪造这个角色级判断。旧 Agent 不再继续写入。
 
 ## 15. 防止治理随开发年限爆炸
 
