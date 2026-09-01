@@ -483,7 +483,7 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 - `docs/development/prompts/banking-fresh-agent.md`
 - `docs/development/prompts/shipping-fresh-agent.md`
 
-三份角色提示词都会先读取共同的 `docs/development/prompts/github-connect-chat-adapter.md`。它已经同时包含 GitHub Connect 交接和初代 Drive 上下载逻辑，不再维护本地版/聊天版两套提示词。
+三份角色提示词都会先读取共同的 `all-agent-takeover.md` 和 `github-connect-chat-adapter.md`，结束时执行 `all-agent-handoff.md`。共同模板负责接班/交接，专用提示词只负责身份、权限和行业边界；不再维护本地版/聊天版或为每个临时 Agent 复制一套 handoff。
 
 建议启动顺序：协调员先只读刷新并确认两条 worker 都可接班；银行和航运随后并行启动。若三者几乎同时启动也安全，因为两个行业各写自己的分支，协调员不跨写行业分支。
 
@@ -509,6 +509,10 @@ Drive 的“最新修改时间”、共享文件覆盖和 last-upload-wins 都�
 - 远端 worker 中断恢复：`docs/development/remote-worker-continuity.md`
 - reservation / integration：`docs/development/workstream-reservation-integration.md`
 - Drive 与数据库：`docs/development/parallel-data-plane.md`
+- 所有角色通用接班：`docs/development/prompts/all-agent-takeover.md`
+- 所有角色通用交接：`docs/development/prompts/all-agent-handoff.md`
+- 未来角色创建：`docs/development/prompts/new-role-creation.md`
+- 聊天/GitHub Connect/Drive 操作边界：`docs/development/prompts/github-connect-chat-adapter.md`
 - 全局会话交接：`docs/development/session-handoff-protocol.md`
 - 行业探索地图：`docs/research/industry-memory-exploration-map.md`
 - L3/L4：`docs/development/l3-l4-user-escalation.md`

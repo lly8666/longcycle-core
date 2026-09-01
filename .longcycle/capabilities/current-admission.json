@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "CHAT-AGENT-REMOTE-OPS-V1-033",
-  "intent": "Make the coordinator, Banking, and Shipping prompts natively executable by ChatGPT chat Agents using GitHub Connect for repository control and the already-proven authorized Google Drive path for large binary handoff.",
+  "intent_id": "CHAT-AGENT-PROMPT-PACK-V1-034",
+  "intent": "Provide one reusable ChatGPT-chat prompt pack for current and future Longcycle roles: role creation, exact-remote takeover, automatic recovery, bounded execution and S-to-H handoff.",
   "governance_mode": "converging",
   "disposition": "reuse",
   "target_capability_ids": [
@@ -14,22 +14,24 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "CAP-0009 already owns remote Git/CI continuity and the proven ChatGPT/Drive data plane, CAP-0010 owns isolated reservation/cursor routing, and CAP-0006 owns blind model-memory work without Evidence search. This change removes local-Agent assumptions and reuses those owners directly instead of introducing a second execution hierarchy.",
-  "rationale_details_ref": "docs/development/prompts/github-connect-chat-adapter.md",
+  "rationale_summary": "CAP-0009 already owns bounded fresh-Agent and remote interruption recovery, CAP-0010 owns reservation/cursor isolation and role routing, and CAP-0006 owns map-driven blind Memory work. The prompt pack exposes those existing owners without adding a second handoff system or permanent role layer.",
+  "rationale_details_ref": "docs/development/agent-governance-operating-manual.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/development/parallel-data-plane.md",
-    ".longcycle/handoff/data-plane.json",
     "docs/development/remote-worker-continuity.md",
-    "docs/development/parallel-agent-development.md",
+    "docs/development/workstream-reservation-integration.md",
+    "docs/development/parallel-data-plane.md",
     "docs/research/industry-memory-exploration-map.md"
   ],
   "planned_paths": [
+    "docs/development/prompts/all-agent-takeover.md",
+    "docs/development/prompts/all-agent-handoff.md",
+    "docs/development/prompts/new-role-creation.md",
     "docs/development/prompts/github-connect-chat-adapter.md",
-    "docs/development/agent-governance-operating-manual.md",
     "docs/development/prompts/coordinator-fresh-agent.md",
     "docs/development/prompts/banking-fresh-agent.md",
     "docs/development/prompts/shipping-fresh-agent.md",
+    "docs/development/agent-governance-operating-manual.md",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
