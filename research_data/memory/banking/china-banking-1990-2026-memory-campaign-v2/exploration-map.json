@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 4,
+  "map_revision": 5,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
@@ -17,9 +17,9 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "learning_state_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-001.json#/method_observation",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-001.json",
-  "latest_pass_receipt_status": "third_v2_blind_pass_completed_memory_only",
+  "learning_state_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002.json#/method_observation",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002.json",
+  "latest_pass_receipt_status": "fourth_v2_blind_pass_completed_memory_only",
   "batch0_orientation": {
     "status": "orientation_scaffold_not_saturation",
     "memory_vintage": "banking-china-1990-2026-v1",
@@ -30,7 +30,7 @@
   "active_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
-      "selected_time_slice_id": "TIME-1995-1999",
+      "selected_time_slice_id": "TIME-2000-2004",
       "stage": "active_recall",
       "recent_outcomes": [
         {
@@ -59,6 +59,15 @@
           "duplicate_lead_count": 3,
           "high_importance_novel_count": 10,
           "outcome": "material_novelty"
+        },
+        {
+          "pass_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002",
+          "family": "commercial_bank_exit_vs_nonbank_resolution_blind_challenge",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002.json",
+          "novel_lead_count": 56,
+          "duplicate_lead_count": 2,
+          "high_importance_novel_count": 31,
+          "outcome": "material_novelty_with_resolution_perimeter_discrimination"
         }
       ],
       "negative_space_review_complete": false,
@@ -81,15 +90,21 @@
       {
         "region_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-001",
         "state": "active_recall_material_novelty",
-        "note": "The first 1995-1999 pass recovered 47 novel/refining leads, including Hainan Development Bank administrative closure, GITIC non-bank bankruptcy/creditor treatment, statutory takeover/termination distinctions, PBOC regionalization and system recapitalization/AMC cleanup. The strongest remaining uncertainty is resolution-perimeter discrimination rather than generic failure discovery."
+        "note": "The first 1995-1999 pass recovered substantial legal, supervisory and institution-specific novelty, including commercial-bank administrative closure and non-bank bankruptcy examples."
+      },
+      {
+        "region_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002",
+        "state": "active_recall_material_perimeter_discrimination",
+        "note": "The orthogonal challenge recovered 56 novel/refining leads by separating institution perimeter, regulatory action, judicial action, claimant class and continuity mechanism. Remaining 1995-1999 gaps are now dominated by exact-source legal sequencing and claimant-treatment questions rather than another broad blind-memory category gap."
       }
     ],
     "known_major_gaps": [
-      "Exact legal sequencing and authority allocation among takeover, suspension-for-rectification, revocation, closure, liquidation and bankruptcy remain unclear for 1995-1999.",
-      "Hainan Development Bank depositor/creditor treatment and receiving-bank mechanics remain approximate memory only.",
-      "GITIC and the institution remembered as Zhongnongxin are non-bank or uncertain-perimeter cases and must not be conflated with commercial-bank resolution.",
+      "Exact statutory article numbers and sequencing for commercial-bank takeover, revocation, dissolution, liquidation and court bankruptcy remain unverified.",
+      "Hainan Development Bank closure instrument, individual-deposit transfer mechanics, corporate-depositor treatment, receiving-bank role and any central-bank support remain unresolved.",
+      "GITIC closure-to-bankruptcy chronology, creditor classes and recovery waterfall remain unresolved and must remain separate from commercial-bank depositor treatment.",
+      "The exact legal identity and claimant treatment of the institution remembered as Zhongnongxin remain uncertain.",
       "No confident licensed domestic commercial-bank judicial-bankruptcy completion was recalled for 1995-1999.",
-      "The shard has material novelty in its most recent pass and has not met low-novelty, negative-space or independent-challenger requirements."
+      "No v2 blind pass has yet covered the 2000-2004 transition to separate banking supervision, WTO-era restructuring and pre-listing reform architecture."
     ],
     "deferred_regions": [
       {
@@ -98,44 +113,49 @@
         "reason": "Two orthogonal blind passes failed to recover a confident institution-specific licensed-bank closure. Retain for later claim-scoped source archaeology only after blind-stage rules permit Evidence work."
       },
       {
+        "region_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__EXACT-LEGAL-CLAIMANT-DETAIL",
+        "state": "deferred",
+        "reason": "Two 1995-1999 passes materially expanded memory and resolved the main bank-versus-nonbank category confusion. Remaining questions are increasingly exact legal-instrument and claimant-waterfall details that should not be hallucinated through repeated blind prompting."
+      },
+      {
         "region_id": "remaining-v2-manifest-frontier",
         "state": "deferred",
-        "reason": "Do not materialize the time-by-shard Cartesian grid. Run only the selected 1995-1999 bank-versus-nonbank exit challenge, then re-rank sparsely."
+        "reason": "Do not materialize the time-by-shard Cartesian grid. Run only the selected 2000-2004 regulation/resolution probe, then re-rank sparsely."
       }
     ]
   },
   "open_frontiers": [
     {
-      "frontier_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__BANK-VS-NONBANK-EXIT-CHALLENGE",
+      "frontier_id": "TIME-2000-2004__SYS-REGULATION-RESOLUTION",
       "priority_rank": 1,
       "state": "open",
-      "selected_probe_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002"
+      "selected_probe_id": "TIME-2000-2004__SYS-REGULATION-RESOLUTION__blind-001"
     }
   ],
   "next_probe": {
-    "probe_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002",
-    "family": "commercial_bank_exit_vs_nonbank_resolution_blind_challenge",
-    "time_slice_id": "TIME-1995-1999",
+    "probe_id": "TIME-2000-2004__SYS-REGULATION-RESOLUTION__blind-001",
+    "family": "time_x_shard_blind_recall",
+    "time_slice_id": "TIME-2000-2004",
     "shard_id": "SYS-REGULATION-RESOLUTION",
     "period": [
-      "1995-01-01",
-      "1999-12-31"
+      "2000-01-01",
+      "2004-12-31"
     ],
-    "instruction": "Run one fresh isolated blind challenge that discriminates commercial-bank exit from non-bank financial-institution resolution in 1995-1999. Focus on Hainan Development Bank, GITIC, the uncertain Zhongnongxin lead, China Investment Bank or other remembered institution-specific cases; distinguish takeover, suspension-for-rectification, revocation, administrative closure, liquidation and judicial bankruptcy; recover depositor versus other-creditor treatment and receiving-institution mechanics where memory permits. Avoid re-expanding the broad 1995 laws, 1998 state-bank recapitalization and 1999 AMC landmarks except as minimal legal/system anchors. Preserve uncertainty and counterexamples and do not read any prior v2 raw pass.",
+    "instruction": "Run one fresh isolated blind recall unit for TIME-2000-2004 x SYS-REGULATION-RESOLUTION. Focus on the transition from PBOC-centered banking supervision to the separate banking regulator, WTO-era legal/supervisory adaptation, large-bank and local-bank restructuring architecture, post-1990s financial-institution cleanup, prudential and asset-quality supervision, recapitalization/governance preparation, and any institution-specific intervention or consolidation episodes. Preserve approximate timing, institution-perimeter distinctions, claimant classes and period-native terminology. Do not read any prior v2 raw pass; use only the current map, manifest and model internal memory.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
-      "all prior v2 raw blind-pass outputs including both 1990-1994 passes and TIME-1995-1999 blind-001",
+      "all prior v2 raw blind-pass outputs including both 1990-1994 and both 1995-1999 passes",
       "other shard raw outputs",
       "Banking source or Evidence material",
       "fresh Banking search results"
     ],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One orthogonal append-only raw blind challenge and bounded receipt exist; the pass either recovers institution-specific legal-path/creditor-treatment distinctions or honestly records reviewed-no-specific-memory; novelty and negative space are classified; the same sparse map is rebuilt with exactly one deterministic next_probe; and the shard remains unsealed."
+    "done_when": "One append-only raw blind unit and bounded receipt exist for TIME-2000-2004 x SYS-REGULATION-RESOLUTION; novelty and negative space are classified; the same sparse map is rebuilt with exactly one deterministic next_probe; and the shard remains unsealed."
   },
   "seal_readiness": {
     "eligible": false,
@@ -171,6 +191,14 @@
         "novel_lead_count": 47,
         "duplicate_lead_count": 3,
         "high_importance_novel_count": 10
+      },
+      {
+        "pass_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002",
+        "family": "commercial_bank_exit_vs_nonbank_resolution_blind_challenge",
+        "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002.json",
+        "novel_lead_count": 56,
+        "duplicate_lead_count": 2,
+        "high_importance_novel_count": 31
       }
     ],
     "historical_correction_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/legacy-prose-state-correction-v1.json"
@@ -179,7 +207,7 @@
     "maximum_open_frontiers": 64,
     "current_open_frontiers": 1,
     "maximum_recent_seal_outcomes": 8,
-    "current_recent_seal_outcomes": 3,
+    "current_recent_seal_outcomes": 4,
     "selected_next_probe_count": 1
   }
 }
