@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
   "workstream_id": "shipping-domain-v1",
-  "revision": 3,
+  "revision": 4,
   "authority_class": "research_control_only",
   "campaign": {
     "campaign_id": "shipping-adaptive-memory-v2",
@@ -15,9 +15,9 @@
     "fresh_search_used": false
   },
   "campaign_ref": "research_data/memory/shipping/exploration-map.json#/campaign",
-  "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json#/method_observation",
+  "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json#/method_observation",
   "current_prompt_ref": "research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
   "latest_pass_receipt_status": "completed_memory_pass_unverified_until_exact_head_ci",
   "legacy_inputs": [
     {
@@ -53,6 +53,14 @@
           "novel_lead_count": 16,
           "duplicate_lead_count": 2,
           "high_importance_novel_count": 8
+        },
+        {
+          "pass_id": "SHIP-MEM-V2-P003",
+          "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
+          "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
+          "novel_lead_count": 17,
+          "duplicate_lead_count": 2,
+          "high_importance_novel_count": 9
         }
       ],
       "has_major_coverage_gaps": true
@@ -88,21 +96,28 @@
       "status": "high_novelty_active_recall",
       "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
       "interpretation": "P002 added family/private ownership clusters, regional tonnage-provider and feeder layers, domestic cabotage finance/entry regimes, lighterage/small-port topology and local-language search vocabulary. It also recorded four low-confidence regions as reviewed_no_specific_memory instead of manufacturing actor lineages."
+    },
+    {
+      "region_id": "marine-insurance-beyond-p-and-i",
+      "status": "high_novelty_active_recall",
+      "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
+      "interpretation": "P003 added hull/machinery, loss-of-hire, ancillary insured interests, cargo/open-cover, general-average security and adjusting, total-loss decision concepts, reinsurance accumulation, lender interests, builders risk and claims-professional topology while refusing exact clause/version/legal-threshold claims."
     }
   ],
   "known_major_gaps": [
-    "marine_insurance_hull_machinery_cargo_reinsurance_and_average_adjusting_beyond_p_and_i_or_war_risk",
-    "exact_class_labor_port_state_control_and_cabotage_chronology",
+    "ship_design_naval_architecture_marine_machinery_and_equipment_supplier_ecosystem",
+    "repair_conversion_and_specialist_shipyard_service_networks",
+    "exact_class_labor_port_state_control_cabotage_and_insurance_chronology",
     "private_regional_actor_lineages_in_low_recall_geographies",
     "historical_non_english_predecessor_names_requiring_source_archaeology"
   ],
   "open_frontiers": [
     {
-      "frontier_id": "shipping-marine-insurance-beyond-p-and-i-v1",
+      "frontier_id": "shipping-technical-supply-design-machinery-repair-v1",
       "priority_rank": 1,
       "state": "open",
-      "next_probe": "SHIP-MEM-V2-P003",
-      "why_high_information": "P001 and P002 both produced high novelty and closed their selected topology/frontier questions without approaching seal readiness. The clearest remaining first-order blind-memory gap that is still answerable without Evidence is marine insurance beyond P&I and war risk: hull/machinery, cargo, reinsurance, average adjusting, market placement and policy mechanisms."
+      "next_probe": "SHIP-MEM-V2-P004",
+      "why_high_information": "The legacy atlas verification explicitly identified naval-architecture suppliers as under-recalled. After P001-P003 closed institutional, regional/cabotage and insurance frontiers with high novelty, the clearest remaining first-order blind-memory gap is the technical supply and service layer connecting vessel design, machinery/equipment, yards, repair/conversion and fleet operating economics."
     }
   ],
   "deferred_regions": [
@@ -110,6 +125,11 @@
       "region_id": "exact_historical_numbers_and_chronology",
       "state": "deferred",
       "reason": "Exact values and dates require later claim-scoped Evidence and are not a blind-memory completion quota."
+    },
+    {
+      "region_id": "exact_marine_insurance_clause_versions_thresholds_and_legal_effects",
+      "state": "deferred",
+      "reason": "P003 showed that mechanism-level recall is useful but exact policy wording, legal thresholds and version chronology are precision-fragile and must be Evidence-first."
     },
     {
       "region_id": "country_by_country_private_actor_grid",
@@ -123,12 +143,12 @@
     }
   ],
   "next_probe": {
-    "probe_id": "SHIP-MEM-V2-P003",
-    "frontier_id": "shipping-marine-insurance-beyond-p-and-i-v1",
+    "probe_id": "SHIP-MEM-V2-P004",
+    "frontier_id": "shipping-technical-supply-design-machinery-repair-v1",
     "status": "planned_not_executed",
     "required_capability": "high_capability_reasoning",
     "task_packet": {
-      "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
+      "family": "ship_design_machinery_equipment_repair_conversion_ecosystem",
       "period_start": "1970-01-01",
       "period_end": "2026-08-31",
       "source_visibility": "atlas_only",
@@ -139,10 +159,10 @@
       ],
       "fresh_search_forbidden": true,
       "questions": [
-        "Which hull-and-machinery, cargo, reinsurance, average-adjusting, marine-brokerage and underwriting institutions or market centers are under-recalled relative to the compact atlas, excluding P&I and generic war-risk repetition?",
-        "Which policy mechanisms, clauses, warranties, deductibles, total-loss concepts, insured-value practices or claims institutions could alter vessel operating, financing or casualty economics without inventing exact legal wording?",
-        "Which regional or historical marine-insurance terms and actor classes would materially improve later source discovery?",
-        "Which recalled items are genuinely new categories, useful refinements or duplicates, and where does model recall become too legally or chronologically uncertain to retain?"
+        "Which naval-architecture, ship-design, main-propulsion, auxiliary-machinery, cargo-handling, navigation/automation or specialist equipment actor classes are under-recalled relative to the compact atlas without becoming a product catalog?",
+        "Which licensing, OEM/service-network, spare-parts, type-approval/class, yard-integration or retrofit mechanisms materially connect equipment suppliers to vessel capex, downtime, efficiency and residual value?",
+        "Which repair, drydock, conversion, lifecycle-service and specialist-yard institutions or regional clusters could change effective fleet supply without changing nominal fleet size?",
+        "Which remembered historical names, predecessor brands or local technical terms are useful source-discovery leads, and where is recall too company-specific or chronologically unstable to retain?"
       ],
       "output_contract": {
         "industry_memory_output_required": true,
@@ -179,6 +199,14 @@
         "novel_lead_count": 16,
         "duplicate_lead_count": 2,
         "high_importance_novel_count": 8
+      },
+      {
+        "pass_id": "SHIP-MEM-V2-P003",
+        "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
+        "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
+        "novel_lead_count": 17,
+        "duplicate_lead_count": 2,
+        "high_importance_novel_count": 9
       }
     ],
     "eligible": false,
@@ -193,13 +221,13 @@
   },
   "evidence_transition": {
     "allowed": false,
-    "reason": "Both reopened Shipping shards remain unsealed. P001 and P002 both produced high-importance novel Memory, so post-seal Evidence work remains disabled until a future exact shard-local seal decision independently recomputes green."
+    "reason": "Both reopened Shipping shards remain unsealed. P001, P002 and P003 all produced high-importance novel Memory, so post-seal Evidence work remains disabled until a future exact shard-local seal decision independently recomputes green."
   },
   "bounds": {
     "maximum_open_frontiers": 64,
     "maximum_recent_seal_outcomes": 8,
     "current_open_frontier_count": 1,
-    "current_recent_seal_outcome_count": 2,
+    "current_recent_seal_outcome_count": 3,
     "selected_next_probe_count": 1
   }
 }
