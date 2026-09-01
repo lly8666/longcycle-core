@@ -1,0 +1,248 @@
+{
+  "schema_version": "shipping-blind-memory-pass/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "probe_id": "SHIP-MEM-V2-P003",
+  "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
+  "authority_class": "research_only_model_memory",
+  "model_instrument_vintage": {
+    "model": "GPT-5.6 Sol",
+    "surface": "ChatGPT chat",
+    "run_date": "2026-09-02",
+    "vintage_note": "Exact model label available to this chat instance; no claim of external historical verification."
+  },
+  "source_visibility": "atlas_only",
+  "allowed_input_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "UTF-8 of ordered newline-separated path@github_blob_sha entries",
+    "value": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+    "entries": [
+      "research_data/memory/shipping/atlas-1970-present/atlas.json@13f7229105cf0d1296e65c8eb3a54044aace7a87",
+      "research_data/memory/shipping/atlas-1970-present/atlas.verification.json@a41bd0bbecd711c7669b59424a369b259eda0b3c",
+      "research_data/memory/shipping/seal-correction-v1.json@49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"
+    ]
+  },
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "evidence_promotion_performed": false,
+  "period": {
+    "start": "1970-01-01",
+    "end": "2026-08-31",
+    "precision": "bounded_campaign_not_claim_exact"
+  },
+  "novelty_reference": "supplied compact atlas plus the active map exclusion against repeating P&I and generic war-risk material",
+  "memory_leads": [
+    {
+      "lead_id": "P003-L001",
+      "novelty_class": "new_category",
+      "topic": "hull_and_machinery_core_risk_transfer",
+      "memory": "Commercial vessels are remembered as carrying hull-and-machinery insurance as a distinct first-party layer for physical damage to the ship and machinery, separate from P&I liability. The placement can be split among multiple insurers and markets rather than resting with one carrier.",
+      "cycle_connection": "Premium, deductible and insured-value conditions can affect operating cost, lender comfort and the economics of keeping older or casualty-prone tonnage in service.",
+      "confidence": "high",
+      "precision_note": "Exact covered perils and exclusions differ by policy form and vintage and require Evidence."
+    },
+    {
+      "lead_id": "P003-L002",
+      "novelty_class": "new_category",
+      "topic": "marine_insurance_market_placement_and_brokerage",
+      "memory": "Marine risk is remembered as historically concentrated in specialist underwriting markets, especially London-market/Lloyd's-type syndicate structures, with marine brokers assembling placements across underwriters. Institute-market bodies and predecessor associations also recur in memory as wording and market-coordination institutions.",
+      "cycle_connection": "Capacity withdrawal, claims experience and broker access can change the price and availability of cover even when a ship's physical operating profile is unchanged.",
+      "confidence": "medium_high",
+      "precision_note": "Institution names, merger chronology and market shares are intentionally not asserted."
+    },
+    {
+      "lead_id": "P003-L003",
+      "novelty_class": "new_category",
+      "topic": "loss_of_hire_business_interruption_layer",
+      "memory": "Loss-of-hire insurance is remembered as a separate marine cover that can compensate for income interruption after an insured casualty, subject to waiting periods, time limits and policy conditions rather than simply paying for hull repair.",
+      "cycle_connection": "For highly leveraged owners, casualty economics depend not only on repair cost but also on charter revenue lost during off-hire, so insurance design can materially change liquidity stress.",
+      "confidence": "medium_high",
+      "precision_note": "Trigger wording and indemnity periods vary and require policy-specific Evidence."
+    },
+    {
+      "lead_id": "P003-L004",
+      "novelty_class": "new_category",
+      "topic": "increased_value_and_ancillary_hull_interests",
+      "memory": "Owners are remembered as sometimes insuring interests beyond the base hull value through increased-value, disbursements or related ancillary covers, especially where a total-loss event could expose financing, earning-capacity or replacement-value gaps.",
+      "cycle_connection": "The gap between insured hull value, debt, market value and replacement cost can matter most near asset-price peaks or troughs, linking insurance structure to the capital cycle.",
+      "confidence": "medium",
+      "precision_note": "Terminology and permitted limits differ across markets; exact legal treatment is deferred."
+    },
+    {
+      "lead_id": "P003-L005",
+      "novelty_class": "new_category",
+      "topic": "cargo_open_cover_and_shipment_level_insurance",
+      "memory": "Cargo insurance is remembered as having shipment-specific and open-cover/open-policy forms used by traders, manufacturers and logistics intermediaries, with Institute Cargo Clauses-type wording families commonly serving as reference points in international trade.",
+      "cycle_connection": "Cargo damage, theft, delay-adjacent exclusions and accumulation at ports can shift risk between seller, buyer, carrier and insurer and can influence trade finance or routing decisions during disruption.",
+      "confidence": "medium_high",
+      "precision_note": "Incoterms allocation, clause versions and delay exclusions must be verified claim by claim."
+    },
+    {
+      "lead_id": "P003-L006",
+      "novelty_class": "new_category",
+      "topic": "general_average_security_and_adjusting",
+      "memory": "General average is remembered as a maritime loss-sharing mechanism distinct from ordinary casualty claims. Average adjusters calculate contributions, while cargo interests may provide general-average guarantees or bonds before cargo release; cargo insurers often become operationally involved in that process.",
+      "cycle_connection": "A casualty can create working-capital and cargo-release friction across many parties even when the vessel survives, so claims administration itself can become part of supply-chain disruption.",
+      "confidence": "medium_high",
+      "precision_note": "The legal basis, adjustment rules and document forms vary by jurisdiction/contract and need Evidence."
+    },
+    {
+      "lead_id": "P003-L007",
+      "novelty_class": "new_category",
+      "topic": "actual_and_constructive_total_loss_decision_boundary",
+      "memory": "Marine insurance is remembered as distinguishing actual total loss from constructive total loss, with the latter involving a threshold where recovery or repair is economically disproportionate and historically interacting with abandonment concepts.",
+      "cycle_connection": "Whether a damaged vessel is repaired, declared a total loss or sold for salvage can alter fleet supply, lender recovery and replacement demand after major casualties.",
+      "confidence": "medium",
+      "precision_note": "Threshold tests, notice requirements and legal wording are especially precision-sensitive and are not asserted here."
+    },
+    {
+      "lead_id": "P003-L008",
+      "novelty_class": "new_category",
+      "topic": "marine_reinsurance_and_accumulation_risk",
+      "memory": "Marine insurers are remembered as using facultative and treaty reinsurance, with retrocession at a further layer, to manage severe or accumulated exposures. Port catastrophes, fleets, large vessels or many cargo interests can create concentration risk that is not visible when policies are viewed one by one.",
+      "cycle_connection": "A major loss can therefore tighten insurance capacity through the reinsurance chain, raising premiums or deductibles across many owners after the original casualty.",
+      "confidence": "medium_high",
+      "precision_note": "Program structures and market shares vary by year and insurer."
+    },
+    {
+      "lead_id": "P003-L009",
+      "novelty_class": "new_category",
+      "topic": "mortgagee_and_financing_insurance_interests",
+      "memory": "Ship finance is remembered as interacting with insurance through assignments of insurance proceeds, lender loss-payee or mortgagee protections, and specialist mortgagee-interest-type covers intended to protect lenders against gaps in the owner's insurance response.",
+      "cycle_connection": "Insurance covenants can become a financing constraint: weak or unavailable cover may affect drawdown, refinancing or enforcement even before a casualty occurs.",
+      "confidence": "medium",
+      "precision_note": "Exact lender rights and specialist product names are jurisdiction- and contract-specific."
+    },
+    {
+      "lead_id": "P003-L010",
+      "novelty_class": "new_category",
+      "topic": "builders_risk_and_conversion_repair_insurance",
+      "memory": "Newbuildings, major conversions and repair periods are remembered as using builders-risk or construction/repair marine covers distinct from an in-service vessel's ordinary hull placement, with risk shifting among yard, owner, subcontractors and insurers during construction or major work.",
+      "cycle_connection": "A casualty at a yard can affect delivery timing, refund/finance exposure and scarce yard capacity, linking insurance to the vessel-supply pipeline rather than only operating fleets.",
+      "confidence": "medium",
+      "precision_note": "Policy names and risk-transfer points depend on contract form and market practice."
+    },
+    {
+      "lead_id": "P003-L011",
+      "novelty_class": "new_category",
+      "topic": "regional_hull_wording_families_and_nordic_plan",
+      "memory": "Beyond London wording, the Nordic Marine Insurance Plan and earlier Norwegian-plan traditions are remembered as important hull-insurance frameworks for Nordic shipping, while American Institute Hull Clauses-type forms also recur in memory as a separate wording family.",
+      "cycle_connection": "Different wording traditions can change claims handling, deductibles, casualty treatment and comparability across owner fleets even when vessels face similar physical risks.",
+      "confidence": "medium",
+      "precision_note": "Version chronology and substantive clause differences require primary insurance sources."
+    },
+    {
+      "lead_id": "P003-L012",
+      "novelty_class": "new_category",
+      "topic": "marine_claims_surveyors_and_adjusting_ecosystem",
+      "memory": "Marine casualty response is remembered as relying on surveyors, loss adjusters, average adjusters and technical experts who document damage, causation, repair scope and claims quantum. This professional-services layer sits between vessel operation, class/repair work and the insurer's coverage decision.",
+      "cycle_connection": "Claims settlement speed and technical disagreement can affect off-hire duration, repair-yard choice and cash recovery after casualties.",
+      "confidence": "medium_high",
+      "precision_note": "Roles overlap differently by market and claim type."
+    },
+    {
+      "lead_id": "P003-L013",
+      "novelty_class": "useful_refinement",
+      "topic": "collision_liability_inside_hull_market",
+      "memory": "Part of collision liability is remembered as historically allocated through hull-policy mechanisms such as running-down-collision wording, while other third-party liabilities sit with P&I or other covers. The boundary is therefore layered rather than 'all liability equals P&I'.",
+      "cycle_connection": "Casualty cost can be split across insurance towers, making deductible, limit and allocation disputes economically relevant to owner liquidity.",
+      "confidence": "medium",
+      "precision_note": "Exact fractions, clause names and jurisdictional treatment are deliberately not asserted."
+    },
+    {
+      "lead_id": "P003-L014",
+      "novelty_class": "useful_refinement",
+      "topic": "trading_limits_class_and_underwriting_conditions",
+      "memory": "Hull underwriters are remembered as conditioning cover or pricing on trading area, vessel class, age, management quality and survey status, with navigation limits or warranties historically serving as important control concepts.",
+      "cycle_connection": "Insurance can therefore amplify the effective-supply impact of sanctions, ice routes, older tonnage or class changes by making some voyages or ships more expensive to cover.",
+      "confidence": "medium",
+      "precision_note": "The legal effect of a warranty breach has changed across regimes and must not be generalized from memory."
+    },
+    {
+      "lead_id": "P003-L015",
+      "novelty_class": "useful_refinement",
+      "topic": "deductibles_claims_inflation_and_owner_retention",
+      "memory": "Marine insurance economics are remembered as depending not just on headline premium but also on deductibles, self-retained losses, repair-cost inflation and claims frequency. Owners can respond to hard markets by retaining more risk rather than simply buying the same cover at a higher price.",
+      "cycle_connection": "A hard insurance market can raise effective opex and casualty volatility, particularly for older fleets or operators with weaker balance sheets.",
+      "confidence": "high",
+      "precision_note": "No exact historical pricing cycle is asserted."
+    },
+    {
+      "lead_id": "P003-L016",
+      "novelty_class": "useful_refinement",
+      "topic": "cargo_accumulation_at_ports_and_transshipment_nodes",
+      "memory": "Cargo-insurance accumulation can become concentrated at ports, warehouses or transshipment hubs, so one catastrophe or prolonged disruption may affect many separately insured shipments at once.",
+      "cycle_connection": "This creates an insurance-capacity feedback from port concentration to trade flows and can change underwriting appetite for particular routes or storage patterns.",
+      "confidence": "medium_high",
+      "precision_note": "Aggregation methods and policy attachment points require Evidence."
+    },
+    {
+      "lead_id": "P003-L017",
+      "novelty_class": "useful_refinement",
+      "topic": "marine_insurance_search_vocabulary",
+      "memory": "Useful later source-discovery vocabulary remembered across markets includes 'hull and machinery', 'H&M', 'loss of hire', 'increased value', 'general average', 'average adjuster', 'constructive total loss', 'open cover', 'facultative reinsurance', 'casco/kasko' and French 'assurance corps' for hull-related contexts.",
+      "cycle_connection": "Historical insurance archives often organize material by policy vocabulary rather than shipping-sector labels, so exact search terms can reveal otherwise invisible claims and market institutions.",
+      "confidence": "medium",
+      "precision_note": "Cross-language terms are search leads, not assertions of legal equivalence."
+    },
+    {
+      "lead_id": "P003-L018",
+      "novelty_class": "duplicate",
+      "topic": "generic_war_risk_insurance",
+      "memory": "War-risk cover repeatedly surfaced while recalling marine insurance, but the active map explicitly excludes generic war-risk repetition because that category was already surfaced in prior Shipping memory work.",
+      "cycle_connection": "Retained only as a duplicate boundary signal; no new war-risk category is claimed.",
+      "confidence": "high",
+      "precision_note": "No new category claimed."
+    },
+    {
+      "lead_id": "P003-L019",
+      "novelty_class": "duplicate",
+      "topic": "p_and_i_mutual_liability_layer",
+      "memory": "P&I mutual liability institutions resurfaced as a natural comparison point, but that institutional layer was already identified in the prior topology pass and is intentionally not reopened here.",
+      "cycle_connection": "Retained only to show the probe respected its exclusion boundary between first-party/property/cargo insurance and already-recalled P&I liability structures.",
+      "confidence": "high",
+      "precision_note": "No new category claimed."
+    }
+  ],
+  "reviewed_no_specific_memory": [
+    {
+      "region": "exact_institute_time_clauses_hulls_version_chronology",
+      "assessment": "The model recalls multiple Institute hull wording generations but not enough reliable version-by-version chronology to retain specific dates or clause changes."
+    },
+    {
+      "region": "exact_constructive_total_loss_thresholds_by_jurisdiction",
+      "assessment": "The concept is remembered clearly, but numerical/legal tests differ and are too precision-sensitive for blind recall."
+    },
+    {
+      "region": "regional_asian_marine_insurance_market_center_rankings",
+      "assessment": "Tokyo, Singapore, Hong Kong and other Asian centers recur in memory, but historical ranking and specialty-market roles are too unstable to retain without Evidence."
+    },
+    {
+      "region": "historical_reinsurance_company_lineages_and_market_shares",
+      "assessment": "Large global reinsurers are remembered, but marine-specific portfolio lineage and market-share claims would become company-history guesswork."
+    }
+  ],
+  "negative_space_after_pass": [
+    "ship_design_naval_architecture_marine_machinery_and_equipment_supplier_ecosystem",
+    "repair_conversion_and_specialist_shipyard_service_networks",
+    "exact_class_labor_port_state_control_cabotage_and_insurance_chronology",
+    "private_regional_actor_lineages_in_low_recall_geographies",
+    "historical_non_english_predecessor_names_requiring_source_archaeology"
+  ],
+  "novelty_summary": {
+    "new_category": 12,
+    "useful_refinement": 5,
+    "duplicate": 2,
+    "novel_lead_count": 17,
+    "high_importance_novel_count": 9,
+    "reviewed_no_specific_memory_count": 4
+  },
+  "method_observation": {
+    "class": "legal_clause_precision_fragility",
+    "observation": "Marine-insurance probing produced many high-value institution and mechanism categories, but recall quality degraded sharply when moving from actor/mechanism names into exact policy wording, thresholds or version chronology. For this campaign, insurance vocabulary is therefore most useful as source-discovery scaffolding while exact clause semantics should remain Evidence-first later.",
+    "status": "campaign_local_observation_only"
+  },
+  "stop_reason": "The preset mechanism and institution questions were answered and marginal novelty fell into exact clause wording, version chronology, market-share ranking and jurisdiction-specific legal tests that require Evidence. One blind pass cannot self-seal, so the probe stopped rather than converting legal familiarity into false precision.",
+  "seal_claimed": false,
+  "evidence_transition_requested": false
+}
