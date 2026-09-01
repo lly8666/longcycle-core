@@ -1,0 +1,68 @@
+{
+  "schema_version": "shipping-memory-pass-verification/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "probe_id": "SHIP-MEM-V2-P001",
+  "verification_method": "bounded_static_memory_control_and_exact_remote_checkpoint_checks",
+  "result": "pass",
+  "authority_limitation": "This verifies the P001 Memory-only control plane, input isolation, novelty accounting, map transition and worker-boundary observations. It does not verify any remembered historical shipping claim against external Evidence.",
+  "verified_artifacts": [
+    {
+      "path": "research_data/memory/shipping/passes/SHIP-MEM-V2-P001.json",
+      "producer_commit_sha": "5306eeb1501e22b8d840c186f9655efca21c5650"
+    },
+    {
+      "path": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
+      "git_blob_oid": "15ab6a9a64ce136a3c0b4c59471ab1644420b429"
+    },
+    {
+      "path": "research_data/memory/shipping/exploration-map.json",
+      "git_blob_oid": "a91bd722a8d74dcdc19fa9ba47c1f22f33070690",
+      "map_revision": 2
+    }
+  ],
+  "substantive_checkpoint_observed": "7f4359d882f8ec3de1614dbca578f69947254bf6",
+  "substantive_checkpoint_changed_paths": [
+    ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
+    "research_data/memory/shipping/exploration-map.json",
+    "research_data/memory/shipping/passes/SHIP-MEM-V2-P001.json"
+  ],
+  "checks": {
+    "probe_id_matches_map_selected_probe": true,
+    "source_visibility_is_atlas_only": true,
+    "allowed_input_digest_pinned": true,
+    "allowed_input_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+    "model_instrument_vintage_pinned": true,
+    "model": "GPT-5.6 Sol",
+    "fresh_search_used": false,
+    "repository_evidence_search_used": false,
+    "evidence_promotion_performed": false,
+    "novelty_counts_match_receipt": true,
+    "new_category_count": 13,
+    "useful_refinement_count": 5,
+    "duplicate_count": 2,
+    "high_importance_novel_count": 9,
+    "one_method_observation_only": true,
+    "one_pass_did_not_self_seal": true,
+    "both_reopened_shards_remain_unsealed": true,
+    "evidence_transition_disabled": true,
+    "map_has_exactly_one_open_frontier": true,
+    "map_has_exactly_one_selected_next_probe": true,
+    "next_probe_is_SHIP_MEM_V2_P002": true,
+    "substantive_diff_within_reservation": true
+  },
+  "remote_ci_observation": {
+    "run_id": 33524215363,
+    "head_sha": "7f4359d882f8ec3de1614dbca578f69947254bf6",
+    "baseline_and_owner_routing": "success",
+    "reservation_boundary": "success",
+    "memory_seal_decision_or_supersession": "success",
+    "focused_worker_regressions": "success",
+    "continuity_clean_at_substantive_checkpoint": "failure_expected_before_cursor_handoff"
+  },
+  "limitations": [
+    "Historical claim truth remains unverified model Memory until future claim-scoped Evidence work is separately authorized.",
+    "The P001 receipt remains immutable and records that final remote handoff verification occurs after the substantive checkpoint.",
+    "This verification does not authorize a seal or Evidence transition."
+  ]
+}
