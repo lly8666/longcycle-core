@@ -1,0 +1,152 @@
+{
+  "schema_version": "longcycle-industry-memory-exploration-map/v1",
+  "workstream_id": "shipping-domain-v1",
+  "revision": 1,
+  "authority_class": "research_control_only",
+  "campaign": {
+    "campaign_id": "shipping-adaptive-memory-v2",
+    "industry": "shipping",
+    "period_start": "1970-01-01",
+    "period_end": "2026-08-31",
+    "period_precision": "bounded_campaign_not_claim_exact",
+    "stage": "orientation_only",
+    "model_vintage_status": "pin_exact_in_next_pass_receipt",
+    "source_visibility": "atlas_only",
+    "fresh_search_used": false
+  },
+  "campaign_ref": "research_data/memory/shipping/exploration-map.json#/campaign",
+  "learning_state_ref": "research_data/memory/shipping/seal-correction-v1.json#/learning_state",
+  "current_prompt_ref": "research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/shipping-1970-present-blind-v1.json",
+  "latest_pass_receipt_status": "legacy_orientation_provenance_only",
+  "legacy_inputs": [
+    {
+      "artifact_ref": "research_data/memory/shipping/atlas-1970-present/atlas.json",
+      "artifact_sha256": "a4207eafa27622e14314058e5391aa3cbc4bf16f2cae6756c3f989ed1e9f95fa",
+      "active_stage": "orientation_only",
+      "supersession_ref": "research_data/memory/shipping/atlas-1970-present/seal-supersession-v1.json"
+    },
+    {
+      "artifact_ref": "research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.json",
+      "artifact_sha256": "0b2a43dc3db82f0b1d5cb06abe6c680f5729e23f08671ed86e9219551c8f46eb",
+      "active_stage": "orientation_only",
+      "supersession_ref": "research_data/memory/shipping/container-pandemic-cycle-2020-2023/seal-supersession-v1.json"
+    }
+  ],
+  "shards": [
+    {
+      "shard_id": "shipping-1970-present-whole-industry",
+      "stage": "orientation_only",
+      "recent_outcomes": [],
+      "has_major_coverage_gaps": true
+    },
+    {
+      "shard_id": "container-pandemic-cycle-2020-2023",
+      "stage": "orientation_only",
+      "recent_outcomes": [],
+      "has_major_coverage_gaps": true
+    }
+  ],
+  "reviewed_orientation_regions": [
+    {
+      "region_id": "legacy-period-and-sector-sweep",
+      "status": "orientation_only",
+      "basis_ref": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json",
+      "interpretation": "Broad headings and remembered leads establish a starting index, not saturation."
+    },
+    {
+      "region_id": "legacy-container-pandemic-cycle",
+      "status": "orientation_only",
+      "basis_ref": "research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.verification.json",
+      "interpretation": "One representative cycle packet is an orientation sample, not an orthogonal confirmation pass."
+    }
+  ],
+  "known_major_gaps": [
+    "private_and_regional_shipping_including_cabotage_and_smaller_ports",
+    "insurance_p_and_i_classification_labor_and_crewing_institutions",
+    "contractual_risk_allocation_ship_management_brokerage_and_financing_topology",
+    "non_english_historical_vocabulary_and_actor_aliases"
+  ],
+  "open_frontiers": [
+    {
+      "frontier_id": "shipping-long-tail-institutional-topology-v1",
+      "priority_rank": 1,
+      "state": "open",
+      "next_probe": "SHIP-MEM-V2-P001",
+      "why_high_information": "It directly tests explicit legacy-verification gaps and uses a system-topology lens orthogonal to the previous period-by-sector sweep."
+    }
+  ],
+  "deferred_regions": [
+    {
+      "region_id": "exact_historical_numbers_and_chronology",
+      "state": "deferred",
+      "reason": "Exact values and dates require later claim-scoped Evidence and are not a blind-memory completion quota."
+    },
+    {
+      "region_id": "current_2025_2026_market_snapshot",
+      "state": "outside_scope",
+      "reason": "Current-state claims require source-first collection; stale blind memory is not current authority."
+    }
+  ],
+  "next_probe": {
+    "probe_id": "SHIP-MEM-V2-P001",
+    "frontier_id": "shipping-long-tail-institutional-topology-v1",
+    "status": "planned_not_executed",
+    "required_capability": "high_capability_reasoning",
+    "task_packet": {
+      "family": "cross_cycle_long_tail_institutional_topology",
+      "period_start": "1970-01-01",
+      "period_end": "2026-08-31",
+      "source_visibility": "atlas_only",
+      "allowed_input_refs": [
+        "research_data/memory/shipping/atlas-1970-present/atlas.json",
+        "research_data/memory/shipping/atlas-1970-present/atlas.verification.json",
+        "research_data/memory/shipping/seal-correction-v1.json"
+      ],
+      "fresh_search_forbidden": true,
+      "questions": [
+        "Which under-recalled institutions and actors allocated vessel ownership, operating control, credit, insurance, classification, labor, crewing, flag, and charter risk across the period?",
+        "Which contractual mechanisms, historical terms, aliases, failures, restructurings, or regional practices are missing from the compact atlas?",
+        "Which fragments connect these institutions to capacity ordering, distress, scrapping, routing, or expectation revisions without inventing exact dates or numbers?",
+        "Which candidate leads are genuinely new categories, useful refinements, or duplicates of the supplied atlas?"
+      ],
+      "output_contract": {
+        "industry_memory_output_required": true,
+        "method_observation_limit": 1,
+        "novelty_classes": [
+          "new_category",
+          "useful_refinement",
+          "duplicate"
+        ],
+        "one_pass_cannot_self_seal": true
+      }
+    }
+  },
+  "seal_readiness": {
+    "campaign_stage": "orientation_only",
+    "fresh_search_used": false,
+    "negative_space_review_complete": false,
+    "independent_challenger_complete": false,
+    "has_major_coverage_gaps": true,
+    "recent_outcomes": [],
+    "eligible": false,
+    "reason_codes": [
+      "campaign_stage_not_seal_candidate",
+      "major_coverage_gap_open",
+      "insufficient_orthogonal_low_novelty_passes",
+      "negative_space_review_incomplete",
+      "independent_challenger_incomplete"
+    ]
+  },
+  "evidence_transition": {
+    "allowed": false,
+    "reason": "No Shipping shard may resume post-seal Evidence work until a future exact decision recomputes green under the shared CAP-0006 gate."
+  },
+  "bounds": {
+    "maximum_open_frontiers": 64,
+    "maximum_recent_seal_outcomes": 8,
+    "current_open_frontier_count": 1,
+    "current_recent_seal_outcome_count": 0,
+    "selected_next_probe_count": 1
+  }
+}

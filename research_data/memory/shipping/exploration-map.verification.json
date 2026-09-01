@@ -1,0 +1,47 @@
+{
+  "schema_version": "shipping-exploration-map-verification/v1",
+  "workstream_id": "shipping-domain-v1",
+  "verification_method": "bounded_static_control_plane_checks",
+  "result": "pass",
+  "map_path": "research_data/memory/shipping/exploration-map.json",
+  "map_sha256": "5ebe8dbf91d1459adf32e37c5e4c072efaaa7d93a82c1e54f241339e04510f3f",
+  "correction_ref": "research_data/memory/shipping/seal-correction-v1.json",
+  "supersession_refs": [
+    "research_data/memory/shipping/atlas-1970-present/seal-supersession-v1.json",
+    "research_data/memory/shipping/container-pandemic-cycle-2020-2023/seal-supersession-v1.json"
+  ],
+  "preserved_artifacts": [
+    {
+      "artifact_path": "research_data/memory/shipping/atlas-1970-present/atlas.json",
+      "observed_sha256": "a4207eafa27622e14314058e5391aa3cbc4bf16f2cae6756c3f989ed1e9f95fa"
+    },
+    {
+      "artifact_path": "research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.json",
+      "observed_sha256": "0b2a43dc3db82f0b1d5cb06abe6c680f5729e23f08671ed86e9219551c8f46eb"
+    }
+  ],
+  "checks": {
+    "both_historical_artifacts_byte_preserved": true,
+    "both_exact_supersessions_validate": true,
+    "campaign_stage_is_orientation_only": true,
+    "exactly_one_open_frontier": true,
+    "open_frontier_priority_is_unique": true,
+    "exactly_one_selected_next_probe": true,
+    "next_probe_not_executed": true,
+    "bounded_hot_pointers_resolve": true,
+    "recent_outcomes_within_bound": true,
+    "evidence_transition_disabled": true,
+    "no_fresh_search_or_database_mutation": true
+  },
+  "machine_audit": {
+    "entrypoint": "scripts/audit_memory_seals.py",
+    "base_ref": "37ffaf5cc81d9c86b964208325b48491c397c67d",
+    "expected_supersession_status": "SUPERSESSION_VALID",
+    "expected_error_count": 0
+  },
+  "limitations": [
+    "This verifies the correction control plane, exact old-artifact binding, bounded map shape, and disabled Evidence transition only.",
+    "It does not execute SHIP-MEM-V2-P001, assess industry-memory novelty, or authorize any future seal.",
+    "The next executing Agent must pin its exact model/instrument vintage in the immutable pass receipt."
+  ]
+}
