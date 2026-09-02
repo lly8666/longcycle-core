@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P051",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"bulk_tanker_chartering_voyage_time_bareboat_contract_of_affreightment_fixture_subjects_charterparty_laycan_nor_laytime_demurrage_despatch_offhire_broker_commission_payment_claims",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P051-L01","novelty":"new_category","importance":"high","lead":"Registered owner, disponent owner, vessel operator, head charterer, subcharterer, cargo interest/trader and chartering broker are distinct commercial roles. The party controlling vessel employment can differ from the registered asset owner, so fixture and earnings replay should not collapse all roles into one owner/charterer pair."},
+    {"id":"P051-L02","novelty":"new_category","importance":"high","lead":"Tramp chartering commonly moves through inquiry/order or tonnage-position exchange, indication, offer/counteroffer and negotiation before a fixture. Market communication before agreement should remain separate from a binding or otherwise concluded fixture state."},
+    {"id":"P051-L03","novelty":"new_category","importance":"high","lead":"A fixture can remain subject to stated approvals or conditions before becoming fully unconditional. Subjects lifted, failed or extended are therefore distinct transaction states rather than mere wording around the final rate."},
+    {"id":"P051-L04","novelty":"new_category","importance":"high","lead":"A recap or fixture summary can memorialize the commercially agreed terms before or while a fuller charterparty document is prepared. The commercial fixture state and later documentary state should be replayed separately when known-time differs."},
+    {"id":"P051-L05","novelty":"new_category","importance":"high","lead":"Voyage chartering primarily allocates a defined voyage or cargo movement for freight while the owner/operator retains vessel operating exposure; exact cost allocations vary by charterparty, but voyage earnings depend on freight, voyage duration and voyage costs rather than a daily hire stream."},
+    {"id":"P051-L06","novelty":"new_category","importance":"high","lead":"Time chartering transfers commercial employment of the vessel for a period while technical/crewing responsibility generally remains with the owner side. Hire accrues over time, making utilization, off-hire and redelivery timing central economic states distinct from voyage-charter freight."},
+    {"id":"P051-L07","novelty":"new_category","importance":"high","lead":"Bareboat or demise-type chartering transfers possession and operational control more deeply than an ordinary time charter, often leaving the charterer responsible for crewing/operation during the term. This commercial-control state should remain separate from registered ownership and exact legal title."},
+    {"id":"P051-L08","novelty":"new_category","importance":"high","lead":"A contract-of-affreightment-type arrangement can commit cargo volume or a series of liftings over time without tying the entire obligation to one named vessel. Cargo-service commitment and individual vessel nomination/fixture are therefore different layers."},
+    {"id":"P051-L09","novelty":"new_category","importance":"high","lead":"Laycan is a contractual arrival/readiness window whose commercial consequence can include acceptance, extension or cancellation rights depending on exact terms. It is structurally different from the vessel's estimated arrival time or physical berth availability."},
+    {"id":"P051-L10","novelty":"new_category","importance":"high","lead":"Notice of Readiness is a documentary/operational state used to assert readiness for cargo operations, but whether it validly starts laytime depends on contract and facts. PIT replay should separate physical arrival/readiness, NOR tender/acceptance and laytime commencement rather than infer one from another."},
+    {"id":"P051-L11","novelty":"new_category","importance":"high","lead":"Laytime measures contractually allowed cargo-operation time under agreed counting rules. Demurrage can arise when chargeable time exceeds allowance, while despatch may reward time saved where agreed; waiting time therefore can transform directly into commercial earnings or claims rather than only reducing physical utilization."},
+    {"id":"P051-L12","novelty":"new_category","importance":"high","lead":"Off-hire under time-charter-type employment is a payment/use state tied to specified interruptions or inability to provide contracted service. It should not be equated automatically with unseaworthiness, arrest or total physical unavailability because the triggering contract allocation can differ."},
+    {"id":"P051-L13","novelty":"new_category","importance":"high","lead":"Freight, hire, deadfreight-type exposure, demurrage/despatch, broker commission and other post-fixture amounts can have different accrual, invoice, deduction, withholding, dispute and settlement states. Commercial cash realization therefore can lag or diverge from the voyage/charter performance itself."},
+    {"id":"P051-L14","novelty":"useful_refinement","importance":"high","lead":"P050 basis-risk memory is refined because a derivative reference may not match the actual charter structure, route, vessel class, laytime exposure or employment duration. The physical hedge basis is a bundle of contract states, not simply a freight index label."},
+    {"id":"P051-L15","novelty":"useful_refinement","importance":"high","lead":"Atlas asset-operating-leverage memory is refined by separating voyage-charter freight economics from time-charter hire economics and by treating waiting/cargo-handling time as both utilization loss and possible demurrage/despatch exposure."},
+    {"id":"P051-L16","novelty":"useful_refinement","importance":"high","lead":"P046 ownership/control memory is refined because disponent ownership and charter chains can create commercial control without changing registered ownership; claims and operating instructions should attach to the role actually relevant to the charter state."},
+    {"id":"P051-L17","novelty":"useful_refinement","importance":"medium","lead":"Atlas counterparty-risk memory is refined because payment delay, deductions, disputed laytime/off-hire or charterer performance can become visible stress states before insolvency or formal restructuring."},
+    {"id":"P051-L18","novelty":"duplicate","importance":"low","lead":"The atlas already recalls specialized long-term contracting in LNG and other shipping and distinguishes spot versus longer arrangements broadly; P051 adds the tramp chartering state machine rather than repeating that structural observation."},
+    {"id":"P051-L19","novelty":"duplicate","importance":"low","lead":"P046 already maps bareboat charterer versus registered owner and manager/operator roles; P051 uses those identity distinctions inside employment contracting without redefining them."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_charterparty_forms_clauses_riders_subject_wording_laytime_rules_and_offhire_events","reason":"Form wording, clause interpretation and event-specific contractual effect require exact charterparty and factual Evidence."},
+    {"region":"specific_fixture_rates_hire_freight_commissions_demurrage_despatch_deadfreight_and_payment_amounts","reason":"Rates, commissions, calculations and settlement amounts are transaction-specific commercial facts requiring authoritative Evidence."},
+    {"region":"specific_owners_disponent_owners_operators_charterers_subcharterers_brokers_traders_and_fixture_chains","reason":"Party identity and charter-chain relationships require claim-scoped contractual, company or market Evidence."},
+    {"region":"current_fixture_lists_freight_assessments_charterer_rankings_and_open_tonnage_positions","reason":"Current chartering-market conditions and rankings are time-sensitive source-first claims outside blind Memory."}
+  ],
+  "stop_reason":"The tramp/bulk/tanker chartering lifecycle is populated from role separation and market inquiry through offers/subjects, fixture/recap/documentation, voyage/time/bareboat/COA structures, laycan/NOR/laytime, demurrage/despatch, off-hire, payment and post-fixture claims. Further recall becomes form-, clause-, rate-, commission-, fixture-, participant-, claim- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not legal or financial advice; no fixture, charterparty clause, rate, hire/freight amount, laytime calculation, NOR validity, demurrage/despatch/off-hire entitlement, commission, claim, party relationship or current chartering condition is verified."
+}
