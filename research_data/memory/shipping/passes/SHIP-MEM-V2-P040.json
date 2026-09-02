@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P040",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"maritime_security_ship_security_plan_access_control_security_levels_piracy_armed_robbery_stowaways_guards_citadel_watch_reporting_coordination",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P040-L01","novelty":"new_category","importance":"high","lead":"Maritime security is a protective operating state distinct from conventional safety. It addresses intentional unauthorized access, theft/robbery, piracy-type threats, stowaways and other hostile or deceptive activity, while safety systems mainly address accidental or technical hazards."},
+    {"id":"P040-L02","novelty":"new_category","importance":"high","lead":"Security posture begins with threat and exposure assessment. Route, anchorage/port context, recent information, vessel characteristics, cargo and crew circumstances can change the level of vigilance and coordination without implying that any specific threat is present."},
+    {"id":"P040-L03","novelty":"new_category","importance":"high","lead":"A ship-security framework allocates responsibilities between master, designated shipboard security roles, crew and shore management. The important Memory state is who is responsible for assessment, access control, watch, drills/communication and escalation, not the exact contents of any protected plan."},
+    {"id":"P040-L04","novelty":"new_category","importance":"high","lead":"Access control is a chain from identity/authorization through controlled entry, visitor/contractor handling, restricted-area protection and departure/accountability. A person may be immigration-cleared yet still not be authorized for a particular vessel or facility space."},
+    {"id":"P040-L05","novelty":"new_category","importance":"high","lead":"Heightened security posture consumes crew attention and time. Additional watch, patrol, access-control or coordination duties can add workload and reduce rest opportunity, so security risk can indirectly become a fatigue and manning problem."},
+    {"id":"P040-L06","novelty":"new_category","importance":"high","lead":"Piracy/armed-robbery exposure is an operational risk state that can influence route choice, speed/economy tradeoffs, watch burden, communications, insurance/commercial decisions and crew welfare. Exact threat levels, geographies and incidents require contemporaneous Evidence."},
+    {"id":"P040-L07","novelty":"new_category","importance":"high","lead":"Protective hardening and protected-area concepts are layers of delay, detection and personnel protection rather than guarantees. Their structural value is to increase resilience and create time/options for coordinated response; exact arrangements and procedures should remain outside blind Memory."},
+    {"id":"P040-L08","novelty":"new_category","importance":"high","lead":"Private or state security support introduces an interface-management layer. Embark/disembark authorization, command relationships, communication, liability and port/jurisdiction constraints can matter as much as the mere presence of external personnel; exact weapons and engagement rules require Evidence and are not retained here."},
+    {"id":"P040-L09","novelty":"new_category","importance":"high","lead":"Stowaway risk is both an access-control and post-discovery custody/welfare problem. Prevention, detection, identity uncertainty, safe containment, documentation, authority coordination and eventual disembarkation/repatriation form a chain whose exact legal handling is jurisdiction-specific."},
+    {"id":"P040-L10","novelty":"new_category","importance":"high","lead":"Security incidents require information discipline. Initial reports may be incomplete or ambiguous; the vessel, company and relevant authorities may update threat understanding as identities, location, injuries/losses and event sequence become clearer, making known-time important for replay."},
+    {"id":"P040-L11","novelty":"new_category","importance":"high","lead":"Port-facility and ship security are coupled but separately controlled systems. A vessel can face different access restrictions, escort expectations or protective postures across facilities, and coordination failures at the interface can delay crew, stores, contractors or cargo operations."},
+    {"id":"P040-L12","novelty":"new_category","importance":"high","lead":"Security drills and preparedness are readiness inputs rather than proof of response quality. Familiarity, alertness, communications, crew turnover and actual threat ambiguity affect whether procedures remain usable under pressure."},
+    {"id":"P040-L13","novelty":"new_category","importance":"high","lead":"Post-event recovery can extend beyond immediate physical safety. Crew welfare, investigation, insurance/commercial decisions, repair or port-clearance needs and route-policy changes can keep a vessel or organization in an elevated security-management state after the direct threat has ended."},
+    {"id":"P040-L14","novelty":"useful_refinement","importance":"high","lead":"P039 port/terminal access is refined by separating immigration/travel admissibility from protective-security authorization. Successful border clearance does not itself grant access to a controlled ship or facility area."},
+    {"id":"P040-L15","novelty":"useful_refinement","importance":"high","lead":"P032 human factors is refined because heightened security adds vigilance and monitoring workload that can compete with navigation, maintenance and rest even before an incident occurs."},
+    {"id":"P040-L16","novelty":"useful_refinement","importance":"high","lead":"P030 casualty/external response is refined by distinguishing intentional-security events from accidental casualty stabilization while preserving a shared need for ship-shore-authority coordination after an event."},
+    {"id":"P040-L17","novelty":"useful_refinement","importance":"medium","lead":"Atlas chokepoint/geopolitical risk is refined because the effect on a vessel can be mediated through security posture, route policy, insurance/commercial restrictions and crew burden rather than only extra voyage distance."},
+    {"id":"P040-L18","novelty":"duplicate","importance":"low","lead":"The atlas already captures chokepoints, geopolitics and operational disruption broadly; P040 adds the protective-security state machine rather than repeating the existence of geopolitical risk."},
+    {"id":"P040-L19","novelty":"duplicate","importance":"low","lead":"Generic known-time, source authority and Memory-not-Evidence rules are already Baseline semantics; P040 applies them to threat reports, access states and incident understanding without asserting current security intelligence."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_security_codes_ship_security_plans_security_levels_and_port_facility_requirements","reason":"Protected plans, exact requirements and implementation details vary by vessel/facility/jurisdiction and require authoritative dated Evidence; sensitive operational details are intentionally not retained."},
+    {"region":"specific_piracy_armed_robbery_hijacking_kidnap_or_stowaway_incidents","reason":"Event chronology, threat attribution, outcomes and legal findings require claim-scoped Evidence; blind Memory retains only structural response states."},
+    {"region":"weapons_guard_rules_engagement_tactics_protective_vulnerabilities_and_countermeasure_details","reason":"Exact weapons, tactics, vulnerabilities and engagement procedures are sensitive, operationally specific and outside this Memory pass."},
+    {"region":"named_security_companies_intelligence_services_navies_port_security_units_and_current_threat_rankings","reason":"Provider capability and current threat intelligence are time-sensitive directory/current-state claims requiring source-first Evidence."}
+  ],
+  "stop_reason":"The protective-security chain is populated from threat/posture assessment through responsibility, access control, heightened watch, piracy/robbery/stowaway states, external-security interfaces, incident reporting and post-event recovery. Further recall becomes code-, protected-plan-, threat-intelligence-, incident-, guard-, weapon-, tactic-, port-, company- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no current threat intelligence, security-plan content, access vulnerability, weapon/guard rule, piracy/stowaway event, legal duty, provider capability or port/vessel security condition is verified."
+}
