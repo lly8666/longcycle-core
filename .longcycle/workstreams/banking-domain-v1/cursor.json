@@ -4,22 +4,22 @@
   "branch": "workstream/banking-domain-v1",
   "reservation_revision": 1,
   "assignment_epoch": 1,
-  "cursor_sequence": 44,
+  "cursor_sequence": 45,
   "progress_state": "planned",
   "required_capability": "high_capability_reasoning",
   "insufficient_capability_action": "stop_and_escalate",
-  "checkpoint_based_on_head_sha": "f89d69918dc17fe1d6231ef6888a9230a4d071ee",
-  "current_task": "Continue canonical seal qualification from Banking exploration map revision 35. Execute only confirmation C after this exact handoff is CLEAN; keep the shard unsealed and use no Banking Evidence/search or prior raw outputs.",
-  "last_completed_action": "Completed canonical confirmation B at S=f89d69918dc17fe1d6231ef6888a9230a4d071ee using only rev34 map, manifest and internal memory. The pass recorded 16 observations: 0 new categories, 1 refinement, 15 duplicates; high_importance_novel_count=1. No material category or antecedent emerged, so it qualifies as canonical 2/3 and adds the distinct family funding_recoverability_loss_bearer_low_novelty_confirmation. Revision 35 selects a third distinct family. No Evidence/search/prior raw, database/Drive, truth promotion or seal occurred. Exact S CI run 33611726661 passed all substantive checks and failed only pre-H continuity because this cursor H was pending.",
-  "next_atomic_action": "If exact H continuity remains CLEAN and revision 35 is unchanged, run CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001 from rev35 map and manifest only. Use family preparedness_activation_outcome_state_low_novelty_confirmation. A qualifying pass must recover no material category and have high_importance_novel_count <= 1. If it qualifies, advance canonical progress to 3/3 and move to one explicit seal-decision boundary without self-sealing or starting Evidence; if material novelty appears, reopen one substantive frontier instead.",
-  "partial_summary": "SYS-REGULATION-RESOLUTION remains substantively saturated but unsealed. Canonical seal qualification is now 2/3: A and B both meet the <=1 high-importance ceiling, contain no material novelty, and use distinct families. One third distinct qualifying family remains before another seal decision can be considered.",
-  "why_now": "The canonical gate requires three consecutive low-novelty outcomes from at least three distinct families. Two valid families now exist; confirmation C is the only remaining qualification action selected by the sparse map.",
-  "task_done_when": "One confirmation C raw unit and receipt exist; its material novelty and <=1 qualification are explicit; the map is rebuilt with exactly one deterministic next step; and the probe is closed with substantive S, cursor-only H and exact-H Architecture Baseline CLEAN.",
+  "checkpoint_based_on_head_sha": "4c5c6b9a57f43dbcbc8a6f1eebedfa3d7d4fcf86",
+  "current_task": "In the next eligible fresh-agent loop, execute only the explicit canonical shard seal-decision retry selected by Banking exploration map revision 36. Do not perform Banking Evidence/search in the same atomic action.",
+  "last_completed_action": "Completed canonical confirmation C at S=4c5c6b9a57f43dbcbc8a6f1eebedfa3d7d4fcf86 using only rev35 map, manifest and internal memory. The pass recorded 16 observations: 0 new categories, 1 refinement, 15 duplicates; high_importance_novel_count=1. No material category or antecedent emerged. Confirmations A/B/C now form three consecutive qualifying low-novelty outcomes, each at the canonical <=1 ceiling and each from a distinct family. Revision 36 therefore returns to seal_candidate and exposes one explicit seal-decision retry, but shard_sealed=false and evidence_transition_allowed=false. No Evidence/search/prior raw, database/Drive, truth promotion or seal occurred. Exact S CI run 33612114632 passed every substantive check and failed only pre-H continuity because this cursor H was pending.",
+  "next_atomic_action": "In the next fresh-agent loop, if continuity remains CLEAN and revision 36 is unchanged, run CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002 using only rev36 map, manifest and current control metadata. Recompute the canonical gate from A/B/C and revalidate branch/reservation/map/manifest. If all prerequisites pass, create one exact longcycle-memory-seal-decision/v1 tied to the sealed artifact bytes and rebuild the map as sealed; do not begin Evidence in the same atomic action. If any prerequisite or continuity check fails, do not seal and reopen exactly one corrective frontier.",
+  "partial_summary": "SYS-REGULATION-RESOLUTION remains substantively saturated and now also satisfies the repository canonical low-novelty gate: A/B/C are three consecutive qualifying outcomes from three distinct families, each with high_importance_novel_count=1 and no material category. The shard is still unsealed because a separate explicit structured seal decision is required.",
+  "why_now": "The canonical qualification gap exposed by the first seal attempt is now closed. The next correct action is a separate exact-artifact seal decision after this CLEAN handoff, not more blind recall and not immediate Evidence archaeology.",
+  "task_done_when": "One structured longcycle-memory-seal-decision/v1 exists and exactly matches the sealed artifact bytes under the canonical validator; the map truthfully records either sealed SYS-REGULATION-RESOLUTION with Evidence deferred to a later CLEAN handoff or one reopened corrective frontier; and no Evidence/search occurs inside the decision action.",
   "artifact_refs": [
     "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
   ],
   "receipt_refs": [
-    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-b__blind-001.json"
+    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001.json"
   ],
   "integration_request_refs": [],
   "parent_refs": [
