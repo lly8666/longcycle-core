@@ -1,0 +1,60 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P064",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "port_state_control_inspection_targeting_boarding_scope_deficiency_action_detention_rectification_reinspection_release_mou_flag_class_company_performance",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-02",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"PSC-01","novelty_class":"new_category","importance":"high","memory":"Port-state control is a separate external enforcement layer from flag-state administration and classification/statutory assurance. Structurally distinct roles include the port-state authority and inspector, flag administration, classification or other delegated organization, owner/manager, master/crew, port agent and the port-call interface."},
+    {"id":"PSC-02","novelty_class":"new_category","importance":"high","memory":"Inspection targeting or selection is its own state before physical boarding. A vessel can be selected, prioritized or otherwise made inspection-relevant without that state itself proving any deficiency."},
+    {"id":"PSC-03","novelty_class":"new_category","importance":"high","memory":"Port-call arrival and inspection availability form a timing state: inspection may intersect berth, cargo, pilotage or departure timing, so the control event can constrain a voyage even before a final finding exists."},
+    {"id":"PSC-04","novelty_class":"new_category","importance":"high","memory":"Boarding and inspection scope are states rather than a single binary event. The actual scope can include different documentary, physical and operational areas, while exact procedures and jurisdiction-specific mandates remain Evidence work."},
+    {"id":"PSC-05","novelty_class":"new_category","importance":"high","memory":"Document or certificate checking is a distinct observation channel. Presence, absence or apparent validity of documents should not be collapsed into physical condition, crew performance or ultimate legal compliance."},
+    {"id":"PSC-06","novelty_class":"new_category","importance":"high","memory":"Physical-condition and equipment-readiness observations are distinct from paperwork checks. An inspection record can identify an observed issue without becoming a complete survey of the vessel's underlying condition."},
+    {"id":"PSC-07","novelty_class":"new_category","importance":"high","memory":"Crew operational readiness, familiarization or safety-management execution can become an inspection concern separate from certificates and hardware. The state is an observed external-control interaction, not proof of broad competence or causation."},
+    {"id":"PSC-08","novelty_class":"new_category","importance":"high","memory":"A finding or deficiency is a recorded inspection state with scope and timing. Deficiency existence, category, severity and legal consequence must remain separable rather than inferred from one another."},
+    {"id":"PSC-09","novelty_class":"new_category","importance":"high","memory":"Corrective-action requirements have timing states: some observed issues may require immediate attention while others may carry later follow-up. Exact action codes, deadlines and criteria are jurisdiction-specific Evidence work."},
+    {"id":"PSC-10","novelty_class":"new_category","importance":"high","memory":"Detention, restriction or another control action is a separate state from the underlying deficiency. The operational constraint can exist while factual, technical or legal questions about root cause remain unresolved."},
+    {"id":"PSC-11","novelty_class":"new_category","importance":"high","memory":"Inspection findings can trigger a coordination chain among vessel/company, flag administration, class or delegated organization and port-state authority. Notification, attendance, repair planning and documentary response may progress on different clocks."},
+    {"id":"PSC-12","novelty_class":"new_category","importance":"high","memory":"Rectification, reinspection or other verification and acceptance are distinct closure states. Repair completion does not automatically equal authority verification, and authority verification does not erase the prior inspection history."},
+    {"id":"PSC-13","novelty_class":"new_category","importance":"medium","memory":"Release or lifting of a restriction is a final control-state transition for the port call, while the historical inspection/deficiency record can remain relevant to later commercial or regulatory screening. Exact future-targeting algorithms remain deferred."},
+    {"id":"PSC-R01","novelty_class":"useful_refinement","importance":"high","memory":"Class or statutory certificates do not structurally immunize a vessel from an independent port-state inspection; continuous/ delegated assurance and port-state enforcement must remain separate layers."},
+    {"id":"PSC-R02","novelty_class":"useful_refinement","importance":"high","memory":"A PSC inspection record is evidence of what an inspection authority recorded within its scope and time, not automatic proof of every underlying physical fact, legal seaworthiness conclusion or causal explanation."},
+    {"id":"PSC-R03","novelty_class":"useful_refinement","importance":"high","memory":"Detention or restriction time belongs in effective vessel availability: it can disrupt berth/departure timing, charter commitments and downstream schedule even though nominal fleet capacity is unchanged."},
+    {"id":"PSC-R04","novelty_class":"useful_refinement","importance":"medium","memory":"Point-in-time replay should distinguish inspection start, finding/notification, corrective action, verification and release known-times; later rectification must not leak backward into the earlier inspection state."},
+    {"id":"PSC-D01","novelty_class":"duplicate","importance":"medium","memory":"Independent inspection/survey as an external assurance mechanism overlaps the broader commercial and condition-survey structure already represented by earlier Shipping memory."},
+    {"id":"PSC-D02","novelty_class":"duplicate","importance":"medium","memory":"Class/statutory certificates, delegated organizations and open-item follow-up overlap the classification/statutory assurance layer recovered immediately before this pass."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact deficiency codes, action codes, detention criteria, release conditions and inspection procedures are too rule- and jurisdiction-specific for blind retention.",
+    "Exact regional MOU membership, targeting formulas, flag performance lists or ranking methodology require dated authoritative Evidence.",
+    "Named-vessel inspection histories, detention events and current inspection records are deferred to claim-scoped Evidence.",
+    "Private regional PSC-support, compliance-consulting, training and inspection-service provider lineages are not recalled with enough confidence for structured retention."
+  ],
+  "negative_space": [
+    "Exact port-state inspection selection and risk-scoring mechanics by period and jurisdiction.",
+    "Exact deficiency/action taxonomies and legal consequences attached to individual findings.",
+    "Historical non-English predecessor terminology and regional enforcement practices requiring source archaeology.",
+    "Named authority, vessel, flag, company or port performance histories and current-state rankings."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only orientation/source-discovery output. It is not regulatory, safety, port-state, class, statutory, operational or legal advice and does not establish any named vessel, authority, flag, company, inspection, deficiency, detention or compliance fact.",
+  "stop_reason": "The structural PSC lifecycle is recalled at useful category resolution. Further depth would become deficiency-code-, detention-criterion-, MOU-, flag-, vessel-, inspection-record-, provider- or jurisdiction-specific and therefore requires Evidence rather than more blind recall."
+}
