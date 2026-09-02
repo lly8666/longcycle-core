@@ -1,0 +1,84 @@
+{
+  "schema_version": "longcycle-memory-seal-decision/v1",
+  "record_type": "industry_memory_shard_seal_decision",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "action_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "model_vintage": "GPT-5.6 Sol",
+  "period": [
+    "1990-01-01",
+    "2026-08-31"
+  ],
+  "sealed_artifact_path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-REGULATION-RESOLUTION-seal-state-v1.json",
+  "sealed_artifact_sha256": "2c44f0125b2b3a8c06bb7a20b34b6119d0f4e05dca33c68d4d92ebeaf74c9784",
+  "source_visibility": "none",
+  "review": {
+    "campaign_stage": "seal_candidate",
+    "negative_space_review_complete": true,
+    "negative_space_review_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001.json",
+    "independent_challenger_complete": true,
+    "independent_challenger_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001.json",
+    "fresh_search_used": false
+  },
+  "has_major_coverage_gaps": false,
+  "required_long_tail_families_missing": [],
+  "recent_outcomes": [
+    {
+      "pass_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-a__blind-001",
+      "family": "terminal_exit_claimant_state_low_novelty_confirmation",
+      "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-a__blind-001.json",
+      "novel_lead_count": 2,
+      "duplicate_lead_count": 14,
+      "high_importance_novel_count": 1
+    },
+    {
+      "pass_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-b__blind-001",
+      "family": "funding_recoverability_loss_bearer_low_novelty_confirmation",
+      "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-b__blind-001.json",
+      "novel_lead_count": 1,
+      "duplicate_lead_count": 15,
+      "high_importance_novel_count": 1
+    },
+    {
+      "pass_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001",
+      "family": "preparedness_activation_outcome_state_low_novelty_confirmation",
+      "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001.json",
+      "novel_lead_count": 1,
+      "duplicate_lead_count": 15,
+      "high_importance_novel_count": 1
+    }
+  ],
+  "policy": {
+    "consecutive_low_novelty_passes": 3,
+    "max_high_importance_novel_per_low_pass": 1,
+    "minimum_distinct_recent_families": 3
+  },
+  "declared_result": {
+    "saturated": true,
+    "reason_codes": [
+      "orthogonal_passes_reached_low_marginal_novelty"
+    ]
+  },
+  "control_revalidation": {
+    "main_head_sha": "d2ce81e04301a4c2249b9c69bca58b405937b827",
+    "worker_start_head_sha": "68396155cd1b95972067c650cb98aafa441006ba",
+    "map_revision": 36,
+    "map_blob_sha1": "aa7942a5c5443b922c1e746db5782f357cd3b2e8",
+    "manifest_blob_sha1": "f1614308cb83f2426bef4a55c35b7cc85c432c92",
+    "prior_h_architecture_baseline_run": 33612204190,
+    "prior_h_continuity_clean": true,
+    "branch_or_reservation_drift": false
+  },
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "truth_promotion_performed": false,
+  "evidence_started_in_same_action": false,
+  "campaign_sealed": false,
+  "decision": "seal_shard",
+  "decision_reason": "Canonical saturation recomputation passes with three consecutive orthogonal low-novelty outcomes, no major coverage gap, complete negative-space and independent challenge, and no fresh-search contamination."
+}
