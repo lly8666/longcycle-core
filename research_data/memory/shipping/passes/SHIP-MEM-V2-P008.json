@@ -1,0 +1,244 @@
+{
+  "schema_version": "shipping-memory-pass/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "shard_id": "shipping-1970-present-whole-industry",
+  "pass_id": "SHIP-MEM-V2-P008",
+  "family": "ship_agency_husbandry_port_call_clearance_customs_immigration_documentation_disbursement",
+  "authority_class": "research_only_model_memory",
+  "branch": "workstream/shipping-domain-v1",
+  "probe_started_from_head_sha": "ae985a0190f7c6532a8aba8bad6565b8704d59f7",
+  "model_instrument_vintage": {
+    "model": "GPT-5.6 Sol",
+    "surface": "ChatGPT chat",
+    "run_date": "2026-09-02"
+  },
+  "source_visibility": "atlas_only",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_index_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "UTF-8 of ordered newline-separated path@github_blob_sha entries",
+    "value": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf"
+  },
+  "external_search_used": false,
+  "repository_evidence_search_used": false,
+  "evidence_promotion_performed": false,
+  "memory_leads": [
+    {
+      "lead_id": "SHIP-P008-L001",
+      "novelty_class": "new_category",
+      "theme": "local_ship_agent_as_port_call_coordinator",
+      "memory": "A local ship or port agent is remembered as the owner's, operator's or charterer's local coordination layer for a port call, relaying ETA and operational information, arranging local services, interacting with authorities and terminals, and routing documents and payments. The local agent is not necessarily the same actor as the cargo agent, customs broker or commercial broker.",
+      "confidence": "high_for_actor_class",
+      "why_useful": "Adds a local administrative operating layer between the vessel and the port ecosystem.",
+      "precision_caveat": "The agent's authority to bind a principal and the exact nominating party depend on appointment and contract and require Evidence."
+    },
+    {
+      "lead_id": "SHIP-P008-L002",
+      "novelty_class": "new_category",
+      "theme": "owners_charterers_and_protective_agency",
+      "memory": "Port calls can involve different agency interests when an agent is nominated by one commercial party while another principal wants independent local visibility; 'protective agent' or analogous arrangements are remembered as a discovery concept for protecting a separate principal's interests.",
+      "confidence": "medium_high_for_structure",
+      "why_useful": "Surfaces principal-agent conflicts hidden by treating 'the agent' as a single neutral representative.",
+      "precision_caveat": "Do not infer conflicts, duties or fee allocation in a specific fixture without source-grounded appointment terms."
+    },
+    {
+      "lead_id": "SHIP-P008-L003",
+      "novelty_class": "new_category",
+      "theme": "pre_arrival_notice_and_service_sequence",
+      "memory": "Before arrival, a useful research sequence is ETA updates, berth or terminal nomination/line-up information, pilot and tug coordination, cargo and authority notices, pre-arrival declarations, service orders and readiness checks. Late or inconsistent updates can waste scarce berth, pilot, tug or labor slots even when the ship itself is physically ready.",
+      "confidence": "high_for_process_shape",
+      "why_useful": "Turns port-call administration into a time-stamped operational chain rather than a paperwork appendix.",
+      "precision_caveat": "Notice periods, message formats and mandatory recipients vary by port and contract."
+    },
+    {
+      "lead_id": "SHIP-P008-L004",
+      "novelty_class": "useful_refinement",
+      "theme": "statement_of_facts_and_delay_chronology",
+      "memory": "Statement-of-facts style records are remembered as a chronological ledger of arrival, anchoring, pilotage, all-fast, cargo operations, interruptions and departure. These records can later feed laytime, demurrage or other delay analysis, so the quality and provenance of timestamps matter.",
+      "confidence": "high_for_document_function",
+      "why_useful": "Refines existing claims/documentation themes into a concrete port-call chronology artifact.",
+      "precision_caveat": "Exact evidentiary weight, contractual effect and required events are claim- and contract-specific."
+    },
+    {
+      "lead_id": "SHIP-P008-L005",
+      "novelty_class": "new_category",
+      "theme": "customs_immigration_health_security_clearance_stack",
+      "memory": "A vessel can face multiple administrative gates around arrival and departure, including customs, immigration, port or harbor authority, health/quarantine, security and cargo-related formalities. These gates can operate in parallel or sequence and can delay movement or cargo work without a physical berth failure.",
+      "confidence": "high_for_structure",
+      "why_useful": "Adds administrative readiness as a distinct state in effective port capacity.",
+      "precision_caveat": "Exact agencies, forms, advance-notice windows and inspection powers are jurisdiction-specific."
+    },
+    {
+      "lead_id": "SHIP-P008-L006",
+      "novelty_class": "new_category",
+      "theme": "free_pratique_inward_outward_clearance_vocabulary",
+      "memory": "Remembered port-call vocabulary includes free pratique or pratique for health-related clearance, inward/outward clearance and port-clearance documentation. IMO FAL-style facilitation forms and related harmonization are useful discovery anchors for documentary formalities.",
+      "confidence": "medium_high_for_vocabulary",
+      "why_useful": "Provides search terms for reconstructing historical clearance processes without claiming a current form set.",
+      "precision_caveat": "Definitions, form editions, legal scope and electronic replacements require authoritative Evidence."
+    },
+    {
+      "lead_id": "SHIP-P008-L007",
+      "novelty_class": "new_category",
+      "theme": "husbandry_service_bundle",
+      "memory": "Ship husbandry is remembered as a broad local service bundle that can include crew logistics, medical assistance, provisions and stores, freshwater, waste/sludge arrangements, launches, surveyors, technicians and other vessel-support tasks coordinated during a port stay.",
+      "confidence": "high_for_actor_service_class",
+      "why_useful": "Adds a service layer whose failure can extend turnaround time even when cargo operations are otherwise ready.",
+      "precision_caveat": "The exact service bundle and which party orders or pays for it vary by vessel, port and contract."
+    },
+    {
+      "lead_id": "SHIP-P008-L008",
+      "novelty_class": "new_category",
+      "theme": "crew_change_and_person_mobility_chain",
+      "memory": "Crew change can require immigration or visa coordination, airport/ground transport, hotels, launch transfers, medical or testing arrangements and timing against vessel schedule. A crew-change problem can therefore be a port-call constraint even when cargo and nautical services are available.",
+      "confidence": "high_for_process_shape",
+      "why_useful": "Connects crewing institutions to port-call execution rather than treating crew as a static onboard input.",
+      "precision_caveat": "Current visa, health and border requirements are source-first and should not be inferred from Memory."
+    },
+    {
+      "lead_id": "SHIP-P008-L009",
+      "novelty_class": "new_category",
+      "theme": "spares_technicians_and_ship_supply_last_mile",
+      "memory": "Urgent spares, couriered parts, riding squads or technicians, chandlery and survey attendance often require local customs release, transport and vessel access coordination. The last mile from airport/warehouse/quay to ship can become a separate reliability bottleneck.",
+      "confidence": "high_for_structure",
+      "why_useful": "Links P004 technical-service topology to the local port-call logistics that make a repair or part actually usable.",
+      "precision_caveat": "Do not infer customs treatment, bonded-store rules or vendor capability for a particular port."
+    },
+    {
+      "lead_id": "SHIP-P008-L010",
+      "novelty_class": "new_category",
+      "theme": "pro_forma_and_final_disbursement_accounts",
+      "memory": "A pro forma disbursement account, or PDA, is remembered as an advance estimate of local port-call costs used to request funding before or during the call, while a final disbursement account, or FDA, reconciles actual invoices and charges afterward. Port dues, pilotage, towage, agency and other local costs may flow through this account structure.",
+      "confidence": "high_for_accounting_structure",
+      "why_useful": "Adds a concrete cash-flow and reconciliation mechanism to port operations.",
+      "precision_caveat": "Exact cost categories, prefunding practice, account names and settlement terms vary by principal and port."
+    },
+    {
+      "lead_id": "SHIP-P008-L011",
+      "novelty_class": "new_category",
+      "theme": "agency_disbursement_audit_and_vendor_selection_risk",
+      "memory": "Because an agent can select or coordinate local vendors and route numerous third-party charges, principals may face risks around markups, rebates, duplicate or inflated invoices, unsupported cash expenses or weak vendor competition. Disbursement review and supporting documents therefore matter beyond accounting hygiene.",
+      "confidence": "medium_high_for_principal_agent_mechanism",
+      "why_useful": "Makes local agency an auditable procurement and control problem rather than an invisible overhead line.",
+      "precision_caveat": "No allegation is made about any agent, port or common fee practice; specific irregularities require Evidence."
+    },
+    {
+      "lead_id": "SHIP-P008-L012",
+      "novelty_class": "new_category",
+      "theme": "cash_to_master_and_local_payment_logistics",
+      "memory": "Cash-to-master or analogous delivery of shipboard cash is a remembered husbandry service that can involve banking, currency, physical security and compliance constraints. It illustrates that some port-call needs historically depended on moving value as well as documents and people.",
+      "confidence": "medium_high_for_service_class",
+      "why_useful": "Adds a concrete working-capital and operational-control edge case to local agency research.",
+      "precision_caveat": "Current banking, AML, currency and cash-handling rules require source-first verification."
+    },
+    {
+      "lead_id": "SHIP-P008-L013",
+      "novelty_class": "new_category",
+      "theme": "agent_credit_prefunding_and_local_working_capital",
+      "memory": "Local vendors and authorities may require prepayment or prompt settlement while the distant principal funds the call through the agent. Credit terms, prefunding, currency conversion and payment timing can therefore determine whether services are released on schedule.",
+      "confidence": "medium_high_for_mechanism",
+      "why_useful": "Connects administrative execution to working capital and counterparty credit.",
+      "precision_caveat": "Exact credit exposure and whether an agent extends its own funds are firm- and appointment-specific."
+    },
+    {
+      "lead_id": "SHIP-P008-L014",
+      "novelty_class": "useful_refinement",
+      "theme": "local_information_asymmetry_and_translation",
+      "memory": "The local agent often sits at an information boundary between vessel/principal and port, translating local procedures, holidays, language, berth prospects and service availability into operational decisions. Poor information quality or incentives can therefore create delay even without formal non-compliance.",
+      "confidence": "high_for_mechanism",
+      "why_useful": "Refines regional/private-actor topology into a causal information-asymmetry channel.",
+      "precision_caveat": "Do not infer systematic opacity or corruption in a geography from the existence of local information advantages."
+    },
+    {
+      "lead_id": "SHIP-P008-L015",
+      "novelty_class": "new_category",
+      "theme": "port_single_window_and_digital_port_call_layer",
+      "memory": "Port community systems, electronic data interchange and maritime or national single-window concepts are remembered as attempts to submit or reuse vessel and cargo information across multiple authorities and port actors. Digitalization can remove repeated manual steps but also creates interface, data-quality and outage dependencies.",
+      "confidence": "high_for_structural_direction",
+      "why_useful": "Adds an information-infrastructure layer to administrative port capacity.",
+      "precision_caveat": "Current mandates, implementation dates, message standards and vendor platforms require authoritative current Evidence."
+    },
+    {
+      "lead_id": "SHIP-P008-L016",
+      "novelty_class": "useful_refinement",
+      "theme": "sanctions_anti_bribery_and_local_payment_compliance",
+      "memory": "Agency and husbandry payments can intersect with sanctions screening, anti-bribery controls, gifts or facilitation-payment risk, vendor due diligence and restricted-party checks. Compliance can therefore affect which local provider can be paid or used and how an unusual charge is documented.",
+      "confidence": "medium_high_for_risk_class",
+      "why_useful": "Refines counterparty risk into a port-call execution constraint rather than a purely legal afterthought.",
+      "precision_caveat": "Specific sanctions lists, laws, enforcement cases and geographic corruption claims require Evidence."
+    },
+    {
+      "lead_id": "SHIP-P008-L017",
+      "novelty_class": "useful_refinement",
+      "theme": "multi_party_timestamp_provenance",
+      "memory": "The ship, terminal, agent, pilots/tugs and authorities can each record slightly different event times or labels. Reconstructing a delay or port-call trajectory therefore benefits from preserving who recorded each timestamp, its timezone and whether it reflects notice, physical event, acknowledgement or later transcription.",
+      "confidence": "high_for_provenance_mechanism",
+      "why_useful": "Directly strengthens Longcycle-style provenance for operational delay and laytime research.",
+      "precision_caveat": "No hierarchy of which party's timestamp legally controls is asserted."
+    },
+    {
+      "lead_id": "SHIP-P008-L018",
+      "novelty_class": "duplicate",
+      "theme": "port_bottleneck_and_turnaround_time",
+      "memory": "Port turnaround and service availability affect effective fleet capacity and schedule reliability.",
+      "confidence": "high",
+      "why_useful": "Confirms the atlas port-bottleneck mechanism but adds little novelty by itself.",
+      "precision_caveat": "Already represented in the compact atlas."
+    },
+    {
+      "lead_id": "SHIP-P008-L019",
+      "novelty_class": "duplicate",
+      "theme": "documentation_and_claims_tail",
+      "memory": "Operational documents and delay records can later matter to charterparty, cargo or insurance claims.",
+      "confidence": "high_for_broad_theme",
+      "why_useful": "Connects P008 to existing P003 and atlas documentation/claims themes.",
+      "precision_caveat": "Broadly represented already; specific legal effect remains Evidence-first."
+    }
+  ],
+  "novelty": {
+    "new_category_count": 13,
+    "useful_refinement_count": 4,
+    "duplicate_count": 2,
+    "reviewed_no_specific_memory_count": 4,
+    "high_importance_novel_count": 9
+  },
+  "high_importance_novel_lead_ids": [
+    "SHIP-P008-L001",
+    "SHIP-P008-L003",
+    "SHIP-P008-L005",
+    "SHIP-P008-L007",
+    "SHIP-P008-L010",
+    "SHIP-P008-L011",
+    "SHIP-P008-L014",
+    "SHIP-P008-L015",
+    "SHIP-P008-L017"
+  ],
+  "reviewed_no_specific_memory": [
+    "exact_port_and_country_specific_forms_advance_notice_windows_and_clearance_sequences",
+    "exact_ship_agent_authority_protective_agency_and_charterparty_appointment_terms",
+    "current_2025_2026_port_single_window_implementation_vendor_and_message_standard_status",
+    "exact_local_tariffs_disbursement_markups_sanctions_or_anti_corruption_case_chronology"
+  ],
+  "negative_space": [
+    "hydrography_charts_notices_weather_routing_and_navigation_information_infrastructure",
+    "private_regional_ship_agent_husbandry_chandler_and_port_service_lineages",
+    "exact_port_clearance_customs_health_security_and_payment_rule_chronology",
+    "historical_non_english_port_call_document_service_and_clearance_terms_requiring_source_archaeology"
+  ],
+  "method_observation": {
+    "class": "administrative_time_is_operational_capacity",
+    "observation": "Port-call recall stays high-yield when documentary permissions, service orders, money and local information are modeled as operational states with timestamps. A physically open berth and seaworthy ship can still be unavailable to trade because clearance, coordination or funding is not ready; future port research should preserve administrative readiness alongside physical capacity.",
+    "status": "campaign_local_hypothesis_supported_by_this_pass",
+    "shared_method_promotion": false
+  },
+  "stop_reason": "The preset questions were answered with a coherent agency, clearance, husbandry, disbursement and digital-information topology. Marginal recall then shifted toward exact local forms and notice windows, agent authority clauses, current single-window implementations, tariffs and specific compliance cases; those require claim-scoped Evidence or would become a port/vendor directory.",
+  "one_pass_cannot_self_seal": true,
+  "campaign_remains_unsealed": true,
+  "both_reopened_shards_remain_unsealed": true,
+  "evidence_transition_allowed": false
+}
