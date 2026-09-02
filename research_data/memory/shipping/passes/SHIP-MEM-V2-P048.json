@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P048",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"ship_finance_senior_debt_leasing_sale_leaseback_ltv_cashflow_covenants_amortization_balloon_refinancing_credit_committee_distress_restructuring",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P048-L01","novelty":"new_category","importance":"high","lead":"Ship finance underwriting combines borrower/sponsor quality, vessel or fleet collateral, expected freight cash flow, employment/charter profile, asset age/condition and market cyclicality. Credit capacity therefore depends on both enterprise cash flow and asset value rather than one leverage ratio."},
+    {"id":"P048-L02","novelty":"new_category","importance":"high","lead":"A shipowning SPV can be the direct borrower while a parent, sponsor or related entity supplies equity, guarantees or management support. Legal borrower identity and economic support should remain separate roles unless exact documents establish otherwise."},
+    {"id":"P048-L03","novelty":"new_category","importance":"high","lead":"Senior vessel debt often relies on asset security such as a ship mortgage plus other contractual or account security, but the structural Memory state is secured-credit dependence on vessel value and cash generation; exact security packages are transaction-specific."},
+    {"id":"P048-L04","novelty":"new_category","importance":"high","lead":"Bank syndication or multiple-lender structures create coordination and agency layers. Credit approval, allocation, monitoring, waiver and enforcement decisions can therefore be collective rather than a simple bilateral owner-bank relationship."},
+    {"id":"P048-L05","novelty":"new_category","importance":"high","lead":"Leasing and sale-leaseback structures can separate legal asset ownership from operational use and residual-value exposure. They can provide acquisition or refinancing liquidity without looking identical to a conventional mortgage loan."},
+    {"id":"P048-L06","novelty":"new_category","importance":"high","lead":"Loan-to-value-type constraints and cash-flow/debt-service constraints are different risk channels. A borrower can face asset-value pressure despite acceptable current cash flow, or cash-flow pressure despite collateral value remaining relatively strong."},
+    {"id":"P048-L07","novelty":"new_category","importance":"high","lead":"Scheduled amortization and balloon maturity create different liquidity demands. A loan may service regularly for years yet still require a large refinancing, asset sale or accumulated cash source at maturity."},
+    {"id":"P048-L08","novelty":"new_category","importance":"high","lead":"Interest-cost exposure can change debt-service capacity independently of freight rates or vessel values. Floating-rate or refinancing-sensitive debt therefore adds a financing transmission channel from broader credit conditions into shipping operating decisions."},
+    {"id":"P048-L09","novelty":"new_category","importance":"high","lead":"Covenant deterioration, covenant breach, payment default and insolvency are distinct states. A covenant problem can lead to information requests, waiver, amendment, extra equity, asset sale or other cure while debt service continues."},
+    {"id":"P048-L10","novelty":"new_category","importance":"high","lead":"Refinancing is a window-dependent state: lender appetite, vessel age/value, earnings outlook, sponsor equity and market liquidity at the maturity date can matter as much as the original underwriting assumptions."},
+    {"id":"P048-L11","novelty":"new_category","importance":"high","lead":"Workout and restructuring can include maturity extension, amortization change, covenant reset, additional security/equity, asset disposals, debt transfer or broader recapitalization. Exact remedies and economics require Evidence, but the state transition is structurally important."},
+    {"id":"P048-L12","novelty":"new_category","importance":"high","lead":"Enforcement is one end of a credit-state spectrum, not the immediate consequence of every covenant or payment problem. Lenders may prefer a consensual workout when continuing enterprise or vessel value exceeds distressed-enforcement recovery expectations."},
+    {"id":"P048-L13","novelty":"new_category","importance":"high","lead":"Credit risk appetite is procyclical enough to influence shipping capacity decisions: easier leverage can support newbuildings and secondhand purchases, while tightening credit can force equity injections, asset sales, deferred investment or scrapping even before physical fleet supply changes."},
+    {"id":"P048-L14","novelty":"useful_refinement","importance":"high","lead":"P047 transaction memory is refined because secondhand deal completion depends not just on buyer willingness but on approved credit, equity contribution, drawdown readiness and old-security discharge at closing."},
+    {"id":"P048-L15","novelty":"useful_refinement","importance":"high","lead":"P045 arrest/enforcement memory is refined because creditor enforcement sits after a sequence of monitoring, breach/default assessment, waiver/workout choices and security-value judgments rather than following mechanically from financial stress."},
+    {"id":"P048-L16","novelty":"useful_refinement","importance":"high","lead":"Atlas capital-cycle memory is refined by separating freight-cycle cash flow, vessel-asset values and credit availability as three coupled but non-identical drivers of ordering, acquisition and distressed-sale behavior."},
+    {"id":"P048-L17","novelty":"useful_refinement","importance":"high","lead":"Atlas counterparty-risk memory is refined because refinancing and covenant headroom can deteriorate before an owner becomes insolvent; PIT replay should preserve the intermediate credit states visible to participants at the time."},
+    {"id":"P048-L18","novelty":"duplicate","importance":"low","lead":"The atlas already recalls cheap credit near order booms, deleveraging in downturns, bank exits and transfer of vessels to stronger capital; P048 adds the credit-state mechanics rather than repeating those cycle outcomes."},
+    {"id":"P048-L19","novelty":"duplicate","importance":"low","lead":"P045/P046 already map mortgages, SPVs and ownership roles; P048 uses those roles inside the financing lifecycle without changing their identity semantics."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_loan_lease_margin_interest_ltv_dscr_covenant_amortization_balloon_and_fee_terms","reason":"Pricing, ratios, formulas and schedules are transaction-specific financial facts requiring authoritative Evidence."},
+    {"region":"specific_borrowers_lenders_leasing_houses_syndicates_credit_funds_and_financing_transactions","reason":"Counterparty identity, exposure, terms and solvency require claim-scoped financial, registry, company or contractual Evidence."},
+    {"region":"exact_security_guarantee_waiver_amendment_default_workout_restructuring_and_enforcement_documents","reason":"Legal and contractual rights vary by transaction and jurisdiction; blind Memory retains only structural states."},
+    {"region":"current_lender_risk_appetite_credit_spreads_ship_finance_capacity_and_borrower_rankings","reason":"Current finance-market conditions and rankings are time-sensitive source-first claims outside blind Memory."}
+  ],
+  "stop_reason":"The ship-finance lifecycle is populated from underwriting/credit approval and equity/leverage through drawdown/security, amortization/balloon and covenant monitoring to waiver/refinancing, default/workout, restructuring and possible enforcement, plus feedback into asset and capacity cycles. Further recall becomes loan-, lease-, pricing-, covenant-, security-, transaction-, borrower-, lender- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not financial advice; no borrower solvency, lender exposure, loan/lease pricing, leverage ratio, covenant, security, guarantee, refinancing, waiver, restructuring, enforcement or current credit-market condition is verified."
+}
