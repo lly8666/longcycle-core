@@ -1,0 +1,60 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P069",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_general_connectivity_satcom_vsat_lband_cellular_port_wifi_terminal_antenna_service_contract_bandwidth_latency_coverage_redundancy_failover_outage_business_crew_traffic_data_transfer",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CN-01","novelty_class":"new_category","importance":"high","memory":"Ordinary ship-shore connectivity has distinct owner/manager, vessel crew, shore IT/operations, terminal or antenna supplier, connectivity service provider or reseller, and port/shore-access roles. Equipment ownership, service entitlement, traffic policy and outage support can sit with different actors and should not be collapsed into one provider relationship."},
+    {"id":"CN-02","novelty_class":"new_category","importance":"high","memory":"Terminal or antenna readiness and communications-service readiness are separate lifecycle states. Hardware may be installed and powered while service is not activated or usable; conversely an active service contract does not prove that the onboard terminal path is operational."},
+    {"id":"CN-03","novelty_class":"new_category","importance":"high","memory":"Connectivity service itself has activation, suspension, renewal, entitlement and support states. A historical replay should distinguish contractual availability from observed session availability without retaining plan names, account details or provider-specific terms."},
+    {"id":"CN-04","novelty_class":"new_category","importance":"high","memory":"Coverage is time- and position-dependent availability rather than a timeless vessel attribute. Structural memory should preserve whether a path was expected, unavailable, intermittent or restored while exact footprints, beams, frequencies and coverage maps remain deferred to Evidence."},
+    {"id":"CN-05","novelty_class":"new_category","importance":"high","memory":"Nominal bandwidth or capacity and usable application throughput are different states. Shared-link contention, service policy, environmental path quality and competing operational or crew traffic can affect observed transfer performance without proving a fault in any application."},
+    {"id":"CN-06","novelty_class":"new_category","importance":"high","memory":"Latency, stability and continuity are distinct from simple connected/not-connected status. A link may remain technically available while becoming unsuitable for interactive remote support, large transfers or time-sensitive business processes."},
+    {"id":"CN-07","novelty_class":"new_category","importance":"high","memory":"Traffic purpose is a useful non-technical state boundary: safety/operational, business/administrative, maintenance/support and crew-welfare use can compete for constrained connectivity, but exact prioritization rules and configuration are not retained in blind Memory."},
+    {"id":"CN-08","novelty_class":"new_category","importance":"high","memory":"Redundancy should represent path independence and failover readiness rather than a count of radios or terminals. Multiple nominal paths may share equipment, power, shore infrastructure, service relationships or environmental exposure, so observed backup availability and tested switchover remain separate states."},
+    {"id":"CN-09","novelty_class":"new_category","importance":"high","memory":"Connectivity outage has a lifecycle: local observation, scope uncertainty, provider or shore acknowledgement, workaround or alternate-path use, restoration indication and vessel-side verification. Restoration announcements do not by themselves establish that all dependent transfers or applications recovered."},
+    {"id":"CN-10","novelty_class":"new_category","importance":"high","memory":"Port, coastal cellular or local wireless access can act as temporary supplemental connectivity with acquisition, authentication/authorization, handover and departure-loss states. This is structurally different from continuous ocean-going service and exact network details are deferred."},
+    {"id":"CN-11","novelty_class":"new_category","importance":"high","memory":"Data transfer has queue, partial-transfer, retry/resume, backlog and completion/acknowledgement states. A period of weak connectivity can create delayed shore visibility even after the underlying vessel observation or document existed, which matters for point-in-time known-time."},
+    {"id":"CN-12","novelty_class":"new_category","importance":"high","memory":"Remote maintenance/support, reporting, voyage/business workflows and digital recovery can depend on connectivity without connectivity being the root cause of the underlying equipment or software condition. Dependency failure and application/system failure should remain separately clocked."},
+    {"id":"CN-13","novelty_class":"new_category","importance":"medium","memory":"Crew-welfare connectivity is operationally and economically distinct from distress/SAR communications and from business data use. Historical service availability or restrictions may affect welfare and retention experience, but this pass does not retain provider, price, usage-policy or vessel-specific claims."},
+    {"id":"CN-R01","novelty_class":"useful_refinement","importance":"high","memory":"P068 remote-vendor-connectivity state should separate authorization/session governance from the underlying communications path: approved remote support can still be impossible because connectivity is unavailable or too degraded, while an available link does not imply vendor access is authorized."},
+    {"id":"CN-R02","novelty_class":"useful_refinement","importance":"high","memory":"P062 distress/SAR communication readiness should not be used as evidence of ordinary broadband or business-connectivity readiness. Safety communications and general data services can have different equipment, service, coverage and operating assumptions."},
+    {"id":"CN-R03","novelty_class":"useful_refinement","importance":"high","memory":"P038 crew-welfare communication should distinguish service entitlement and traffic availability from the broader welfare outcome. A vessel can have connectivity capability while crew access is limited, degraded or unavailable for reasons not established in blind Memory."},
+    {"id":"CN-R04","novelty_class":"useful_refinement","importance":"medium","memory":"P067 equipment lifecycle should treat communication terminals and antennas like other supported equipment while keeping service-contract, coverage and network-availability states outside the hardware condition record."},
+    {"id":"CN-D01","novelty_class":"duplicate","importance":"medium","memory":"Remote-support dependency and alternate-path readiness partially overlap P068 defensive IT/OT recovery and vendor-support states."},
+    {"id":"CN-D02","novelty_class":"duplicate","importance":"medium","memory":"Crew communications and safety-communications role separation overlaps prior welfare and distress/SAR passes; P069 adds the ordinary infrastructure/service layer rather than reclassifying those use cases."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact frequencies, beams, satellite constellations, coverage maps, service plans, bandwidth commitments, latency figures and terminal configurations are intentionally not retained.",
+    "Named connectivity providers, resellers, antenna vendors, port Wi-Fi operators and vessel-by-vessel service histories require claim-scoped Evidence.",
+    "Exact outage incidents, restoration times, contractual SLA performance and current network availability require source-first Evidence and are not established here.",
+    "Private/regional provider lineages and historical non-English telecommunications terminology remain weak blind-recall areas and are deferred for later source archaeology."
+  ],
+  "negative_space": [
+    "Exact radio/satellite/network engineering details, frequencies, credentials, configurations and coverage footprints.",
+    "Named service plans, pricing, quotas, SLA terms, providers, resellers and vessel installations.",
+    "Historical outage chronologies, provider-performance rankings and current connectivity posture.",
+    "Private/regional maritime telecom and managed-connectivity lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only connectivity lifecycle/orientation output. It is not navigation, communications, network, cyber, engineering or operational advice and does not establish any exact frequency, coverage, configuration, provider, service-plan, performance, outage, vessel-installation or current-readiness fact.",
+  "stop_reason": "The ordinary ship-shore connectivity lifecycle is recalled at useful structural resolution and cleanly separated from distress/SAR, cyber access governance and crew-welfare outcomes. Further detail would become frequency-, coverage-map-, plan-, configuration-, provider-, vessel-, outage- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
