@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P072",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_hvac_ventilation_air_conditioning_heating_cooling_thermal_management_airflow_temperature_humidity_zone_service_chilled_water_refrigeration_equipment_degradation_outage_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_hvac_thermal_service_state_model_only_no_refrigerant_pressure_setpoint_control_or_troubleshooting_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"HV-01","novelty_class":"new_category","importance":"high","memory":"Shipboard HVAC and thermal service spans owner/manager, master, engineering/electro-technical crew, hotel/accommodation users, shore technical support, HVAC/refrigeration equipment or controls actors, yard and assurance roles. Equipment ownership, operating observation, comfort/service demand, support and modification history should remain distinct."},
+    {"id":"HV-02","novelty_class":"new_category","importance":"high","memory":"HVAC equipment readiness and delivered zone service are separate states. Installed or running equipment does not prove that every intended space receives adequate ventilation, heating or cooling, while a locally acceptable zone condition does not prove all central equipment is healthy."},
+    {"id":"HV-03","novelty_class":"new_category","importance":"high","memory":"Thermal and ventilation availability should preserve zone or service scope rather than collapsing to a vessel-wide binary. Accommodation, control/electronics spaces, machinery-related spaces and other intended services can have different availability at the same time."},
+    {"id":"HV-04","novelty_class":"new_category","importance":"high","memory":"Ventilation/airflow availability and heating/cooling availability are structurally different services. A space may retain air movement while thermal conditioning is degraded, or thermal equipment may be available while distribution or airflow to an affected zone is impaired."},
+    {"id":"HV-05","novelty_class":"new_category","importance":"high","memory":"Environmental-condition confidence is separate from HVAC command or equipment state. Historical memory can preserve whether a space condition was normal, degraded, uncertain or restored without retaining exact temperature, humidity, pressure or sensor thresholds."},
+    {"id":"HV-06","novelty_class":"new_category","importance":"high","memory":"Thermal demand/load and available heating/cooling capacity are separate clocks. Changing ambient conditions, occupancy or equipment heat load can alter service margin without proving a new equipment defect; exact loads, capacities and setpoints are deferred."},
+    {"id":"HV-07","novelty_class":"new_category","importance":"high","memory":"Thermal source or plant availability and distribution availability are distinct. Cooling/heating production may be available while an affected distribution path or zone service is unavailable, and downstream degradation should not automatically be attributed to the central plant."},
+    {"id":"HV-08","novelty_class":"new_category","importance":"high","memory":"HVAC degradation has a defensive lifecycle: observation, uncertain scope, affected-zone/service identification, degraded or unavailable state, temporary/local support state, restoration indication and post-restoration verification. No refrigerant, pressure, setpoint, control or troubleshooting procedure is retained."},
+    {"id":"HV-09","novelty_class":"new_category","importance":"high","memory":"Isolation or local-service state should remain bounded. One component, loop, distribution section or zone may be treated as unavailable while other HVAC service continues; exact ducts, piping, dampers, valves, controls and isolation actions are deferred."},
+    {"id":"HV-10","novelty_class":"new_category","importance":"high","memory":"HVAC redundancy should describe independent service paths or recoverability rather than simply counting units. Nominally multiple units can share electrical, distribution, control, cooling-medium, space or maintenance dependencies, so observed failover readiness and actual service continuity remain separate."},
+    {"id":"HV-11","novelty_class":"new_category","importance":"high","memory":"Thermal-management degradation can affect electronics/control spaces, machinery auxiliaries and other temperature-sensitive services, but downstream alarms or equipment problems are dependency observations rather than proof that HVAC was the root cause."},
+    {"id":"HV-12","novelty_class":"new_category","importance":"high","memory":"Accommodation ventilation/heating/cooling is a service-availability dimension that can affect habitability experience, but this blind pass does not convert environmental observations into medical, occupational-health or regulatory conclusions."},
+    {"id":"HV-13","novelty_class":"new_category","importance":"medium","memory":"Restoration should preserve equipment return, distribution/airflow return, affected-zone condition confidence and downstream-service verification as potentially different timestamps. A restarted plant or cleared alarm does not by itself establish complete thermal-service recovery."},
+    {"id":"HV-R01","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical availability is an upstream dependency for many HVAC functions, but electrical service being present does not prove HVAC equipment readiness, distribution availability, zone service or environmental condition."},
+    {"id":"HV-R02","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep fan, compressor, pump, heat-exchange or controls equipment condition separate from delivered HVAC service; a sound component can coexist with a distribution/service problem, and acceptable zone conditions do not prove component condition."},
+    {"id":"HV-R03","novelty_class":"useful_refinement","importance":"high","memory":"P071 accommodation-service dependencies should keep freshwater and HVAC as independent utility dimensions. A habitability or hotel-service observation should not silently attribute cause to either utility without separate evidence."},
+    {"id":"HV-R04","novelty_class":"useful_refinement","importance":"medium","memory":"P068 digital/control availability should separate HVAC control or sensor visibility from the physical thermal-service condition. Loss of monitoring/control visibility does not prove loss of heating/cooling, and a thermal problem does not establish a digital or cyber cause."},
+    {"id":"HV-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, support, maintenance, commissioning and modification mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"HV-D02","novelty_class":"duplicate","importance":"medium","memory":"Zone-scoped degradation, common-mode dependency, isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P071; P072 applies them specifically to HVAC and thermal service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact vessel HVAC/refrigeration ducting, piping, zoning, equipment capacities, setpoints, refrigerants, pressures, temperatures, humidity limits, air-change rates and control logic are intentionally not retained.",
+    "Exact refrigerant handling, charging, pressure/temperature adjustment, controls tuning, isolation, troubleshooting, emergency or maintenance procedures are outside this blind pass.",
+    "Named HVAC/refrigeration OEMs, controls vendors, service firms, vessel installations, incidents, deficiencies and rule-specific findings require claim-scoped Evidence.",
+    "Private/regional marine HVAC/refrigeration integrator, controls, service and spares lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact HVAC/refrigeration topology, capacities, setpoints, refrigerants, pressures, temperatures, humidity limits, air-change values and controls configuration.",
+    "Refrigerant handling, adjustment, isolation, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel incidents, deficiencies, assurance findings and current readiness.",
+    "Private/regional HVAC/refrigeration support lineages and non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive HVAC/ventilation/thermal-service orientation/source-discovery output. It is not HVAC, refrigeration, engineering, refrigerant-handling, controls, troubleshooting, health or vessel-operating advice and does not establish any exact topology, capacity, setpoint, refrigerant, pressure, temperature, humidity limit, procedure, equipment, provider, incident, compliance finding or current-readiness fact.",
+  "stop_reason": "The shipboard HVAC/thermal lifecycle is recalled at useful structural resolution: equipment, zone scope, airflow/ventilation, heating/cooling, environmental confidence, demand, distribution, degradation, local support and verified restoration are separable states. Further detail would become vessel-, zone-, refrigerant-, pressure-, setpoint-, controls-, procedure-, incident-, provider- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
