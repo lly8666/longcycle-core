@@ -1,0 +1,82 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001",
+  "family": "bounded_shard_saturation_review",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-21",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@5c89c41468b8fb46a510d94f7943ec4dbfae8249;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001-memory-leads.md",
+    "commit_sha": "518e716f17d8043f29b7bb249e214b62cf27708d",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 10,
+    "useful_refinement_count": 14,
+    "duplicate_count": 6,
+    "novel_lead_count": 24,
+    "high_importance_novel_count": 16,
+    "total_lead_count": 30,
+    "classification": "material_gap_found_in_resolution_funding_and_loss_allocation_architecture"
+  },
+  "saturation_assessment": {
+    "time_x_shard_coverage_reviewed": true,
+    "negative_space_reviewed": true,
+    "required_long_tail_categories_reviewed": true,
+    "independent_challenger_complete": true,
+    "three_consecutive_low_novelty_passes_observed": false,
+    "material_missing_antecedent_or_category": true,
+    "material_gap": "resolution_funding_backstop_and_loss_allocation_architecture",
+    "seal_eligible": false
+  },
+  "negative_space": [
+    "Stable resolution-state labels do not prove that funding, backstop and final loss-allocation mechanisms are saturated.",
+    "Deposit-insurance fund participation, statutory insured-depositor payout, PBOC liquidity support, public/shareholder recapitalization and a financial-stability backstop must not be treated as synonyms.",
+    "Local-government special-bond capital injection, AMC/bad-asset transfer funding and successor-bank capitalization can occur without establishing a specific stronger resolution label.",
+    "Exact legal powers, case-specific fund flows and claimant waterfalls remain Evidence work and must not be guessed blind."
+  ],
+  "method_observation": {
+    "id": "saturation_requires_mechanism_coverage_not_just_state_classifier_stability",
+    "observation": "A resolution shard should not be treated as saturated merely because legal and operating state labels have stabilized; financing, backstop and loss allocation are an independent mechanism dimension that can remain materially incomplete."
+  },
+  "frontier_updates": {
+    "closed_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__SATURATION-REVIEW"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-FUNDING-LOSS-ALLOCATION"],
+    "reason": "The bounded saturation review confirms compact time-slice, negative-space and independent-challenge coverage but finds one material mechanism gap: the cross-time funding/backstop/loss-allocation stack. Because this pass itself has material novelty and three consecutive low-novelty passes are not observed, the shard remains unsealed and exactly one sparse mechanism follow-up is required."
+  },
+  "stage_after_pass": "targeted_gap_followup",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "bounded_saturation_review_found_one_material_resolution_funding_loss_allocation_gap",
+  "validation_refs": [],
+  "unverified": true
+}
