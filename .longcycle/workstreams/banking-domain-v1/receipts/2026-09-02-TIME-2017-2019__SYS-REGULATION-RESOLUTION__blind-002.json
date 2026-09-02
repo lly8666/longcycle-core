@@ -1,0 +1,75 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-002",
+  "family": "small_bank_intervention_claimant_state_blind_challenge",
+  "time_slice_id": "TIME-2017-2019",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["2017-01-01", "2019-12-31"],
+  "prompt_version": "exploration-map-revision-14",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@2ad76d0e53d0d1242eb425fa52a30225378f1024;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-002-memory-leads.md",
+    "commit_sha": "33c045012656e78101606b93f5632e71bb4b20da",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 27,
+    "useful_refinement_count": 21,
+    "duplicate_count": 4,
+    "novel_lead_count": 48,
+    "high_importance_novel_count": 33,
+    "total_lead_count": 52,
+    "classification": "material_but_narrowing_novelty_with_target_bank_vs_system_contagion_state_separation"
+  },
+  "negative_space": [
+    "Only Baoshang is high-confidence blind memory for a formal 2019 bank takeover; Jinzhou and Hengfeng remain distinct recapitalization/governance-restructuring patterns rather than remembered license exits.",
+    "Exact Baoshang claimant classes, protection thresholds, haircut ratios, deposit-insurance fund powers and cash-flow paths remain source-dependent.",
+    "Exact Jinzhou and Hengfeng investor identities, transaction stages, asset-cleanup mechanics and legal-entity/license consequences remain unverified.",
+    "Exact NCD/interbank repricing channels and PBOC market-stabilization instruments remain source-dependent.",
+    "Further 2017-2019 blind repetition would mostly guess legal, transaction and claimant details rather than recover a new top-level state mechanism."
+  ],
+  "frontier_updates": {
+    "closed_frontiers": ["TIME-2017-2019__SYS-REGULATION-RESOLUTION__SMALL-BANK-STATE-CHALLENGE"],
+    "opened_frontiers": ["TIME-2020-2022__SYS-REGULATION-RESOLUTION"],
+    "reason": "The orthogonal challenge confirms substantial heterogeneity inside the 2019 small-bank stress cluster and separates target-bank intervention state from third-party/system contagion state. Remaining same-slice gaps are predominantly exact legal, transaction and claimant evidence. The pandemic/property-downturn and village/small-bank risk period has higher blind information value."
+  },
+  "method_observation": {
+    "count": 1,
+    "classification": "target_bank_vs_system_contagion_state_split",
+    "observation": "For institution-specific stress or resolution probes, the campaign should keep target-bank state separate from third-party/system contagion state. Market-wide liquidity support, NCD repricing, counterparty limits or other stabilization responses may be caused by one intervention without being actions on the target bank or resolution states of other banks.",
+    "proposed_validation_probe": "TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-001",
+    "proposed_family": "time_x_shard_blind_recall",
+    "shared_change_requested": false
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "2017_2019_state_challenge_complete_with_same_slice_returns_now_source_like",
+  "validation_refs": [],
+  "unverified": true
+}
