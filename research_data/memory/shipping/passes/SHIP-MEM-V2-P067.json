@@ -1,0 +1,60 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P067",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "marine_equipment_oem_system_integrator_specification_vendor_selection_approval_factory_acceptance_delivery_installation_commissioning_warranty_spares_service_network_obsolescence_replacement_lifecycle_support",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-02",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"EQ-01","novelty_class":"new_category","importance":"high","memory":"Marine equipment has a supplier lifecycle distinct from both vessel-level design and onboard maintenance. Structurally separate roles include owner/manager, shipyard, designer, equipment OEM, system integrator, distributor or service agent, class/approval function and vessel crew/end user."},
+    {"id":"EQ-02","novelty_class":"new_category","importance":"high","memory":"Equipment specification and vendor selection are separate states. Functional requirement, interface requirement, commercial selection and approved maker/model status can diverge in time; a purchase decision does not by itself prove final technical compatibility."},
+    {"id":"EQ-03","novelty_class":"new_category","importance":"high","memory":"Vendor-data and design-interface approval form a coordination state across drawings, loads, foundations, power, piping, controls, cooling, communications and space. Late or revised vendor data can propagate into yard design and construction even if the equipment itself is unchanged."},
+    {"id":"EQ-04","novelty_class":"new_category","importance":"high","memory":"Factory acceptance or pre-delivery testing is a scoped verification state rather than proof of in-service reliability. Test configuration, acceptance status, open items and later installation/commissioning remain separately clocked."},
+    {"id":"EQ-05","novelty_class":"new_category","importance":"high","memory":"Manufacture completion, shipment, customs/logistics where relevant, yard receipt and storage/preservation are distinct delivery states. A completed unit can still constrain schedule if transport, storage condition or release to installation is delayed."},
+    {"id":"EQ-06","novelty_class":"new_category","importance":"high","memory":"Installation completion is separate from mechanical/electrical completion and from commissioning readiness. Foundations, connections, alignment, cabling, piping, configuration and interface checks can progress on different clocks."},
+    {"id":"EQ-07","novelty_class":"new_category","importance":"high","memory":"Commissioning is a staged transition from installed equipment to integrated operational use. Local function tests, cross-system integration, alarm/control behavior, load or performance checks and crew handover/training should not be collapsed into a single commissioned flag."},
+    {"id":"EQ-08","novelty_class":"new_category","importance":"high","memory":"Warranty is a time-bounded commercial/support state distinct from defect existence and technical causation. Notification, vendor response, attendance, parts supply, repair/replace decision and claim closure can proceed independently of vessel operational availability."},
+    {"id":"EQ-09","novelty_class":"new_category","importance":"high","memory":"Spare-parts support has catalog/compatibility, stock, location, lead-time and logistics states. An identified spare is not equivalent to a physically available, correct-revision part at the vessel when needed."},
+    {"id":"EQ-10","novelty_class":"new_category","importance":"high","memory":"OEM or authorized service availability is an independent maintenance constraint. Technician skill, travel/access, diagnostic tooling, software keys or proprietary documentation can make an otherwise repairable failure operationally persistent."},
+    {"id":"EQ-11","novelty_class":"new_category","importance":"high","memory":"Equipment software or firmware, where present, introduces configuration/version and compatibility states separate from hardware condition. Update availability, approved configuration, installation status and operational behavior should remain distinct rather than inferred from product identity."},
+    {"id":"EQ-12","novelty_class":"new_category","importance":"high","memory":"Obsolescence is a lifecycle state that can emerge before physical failure. Discontinued parts, unsupported software, disappearing service capability or superseded interfaces can change spares strategy, cannibalization, retrofit planning and replacement economics."},
+    {"id":"EQ-13","novelty_class":"new_category","importance":"medium","memory":"Replacement or major upgrade closes one equipment lifecycle but opens an interface-transition state: new equipment may alter foundations, power, controls, training, spares, documentation and class/approval dependencies before stable service resumes."},
+    {"id":"EQ-R01","novelty_class":"useful_refinement","importance":"high","memory":"P057 technical availability should distinguish a physical defect from supplier-support availability: an equipment item may be diagnosable and repairable in principle while parts, service, proprietary tooling or configuration support are unavailable."},
+    {"id":"EQ-R02","novelty_class":"useful_refinement","importance":"high","memory":"P066 design maturity and supplier-data maturity should be separately clocked. A stable vessel design can still be disrupted by late vendor data, substitution or changed interface requirements."},
+    {"id":"EQ-R03","novelty_class":"useful_refinement","importance":"high","memory":"Acceptance tests and commissioning records are scoped observations at known times, not guarantees of future reliability; later failure analysis must preserve the distinction between accepted-at-test and later in-service condition."},
+    {"id":"EQ-R04","novelty_class":"useful_refinement","importance":"medium","memory":"Lifecycle cost and availability depend on supportability as well as purchase price and nominal specification: spare lead time, service footprint, obsolescence and upgrade path can shape later repair/retrofit choices."},
+    {"id":"EQ-D01","novelty_class":"duplicate","importance":"medium","memory":"Spare-parts procurement and service-attendance constraints overlap the technical-management backlog recovered in P057."},
+    {"id":"EQ-D02","novelty_class":"duplicate","importance":"medium","memory":"Equipment-interface changes and commissioning/testing partly overlap the design-engineering and repair/retrofit layers recovered in P066 and P056."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact equipment specifications, test/acceptance criteria, warranty terms, spare-part identifiers and service intervals are too product-specific for blind retention.",
+    "Named OEMs, distributors, service agents, system integrators and regional aftermarket networks are deferred rather than turned into a provider directory.",
+    "Exact software/firmware versions, proprietary diagnostic methods and product vulnerabilities require authoritative Evidence and security-safe handling.",
+    "Named-vessel equipment failures, warranty disputes, retrofit decisions and current support/obsolescence status require claim-scoped Evidence."
+  ],
+  "negative_space": [
+    "Exact product and maker/model histories, specifications and acceptance records.",
+    "Private/regional marine-equipment distribution, service and aftermarket lineages.",
+    "Historical non-English supplier, commissioning, warranty and obsolescence terminology requiring source archaeology.",
+    "Current product support, vulnerability, software-version and spare-availability facts."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only orientation/source-discovery output. It is not engineering, maintenance, procurement, warranty, software, cybersecurity, reliability or operational advice and does not establish any named product, provider, test, warranty, spare, service, version, vulnerability or vessel fact.",
+  "stop_reason": "The marine-equipment supplier and lifecycle-support chain is recalled at useful structural resolution. Further depth would become product-, acceptance-criterion-, warranty-, software-version-, provider-, service-interval- or jurisdiction-specific and therefore requires Evidence rather than more blind equipment detail."
+}
