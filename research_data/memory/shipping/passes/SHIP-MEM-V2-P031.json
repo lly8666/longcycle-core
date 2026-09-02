@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P031",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"marine_casualty_investigation_vdr_records_evidence_flag_coastal_state_class_insurer_root_cause_safety_recommendations",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P031-L01","novelty":"new_category","importance":"high","lead":"Marine casualty investigation has multiple purpose-and-authority layers. A public safety investigation, an owner's internal technical review, class involvement, insurer/P&I investigation and litigation-oriented inquiry can examine overlapping facts while answering different questions; their outputs should not be treated as interchangeable."},
+    {"id":"P031-L02","novelty":"new_category","importance":"high","lead":"Evidence preservation begins before a formal investigation team arrives. Logs, electronic records, photographs, damaged parts, samples, alarm histories and the casualty scene can be lost or altered by response, salvage, weather or repair, making preservation state part of the investigation timeline."},
+    {"id":"P031-L03","novelty":"new_category","importance":"high","lead":"VDR-type and other electronic data retrieval has availability, integrity and interpretation states. A recorder or sensor may be physically damaged, overwritten, incomplete, synchronized poorly or dependent on upstream sensors, so presence of digital data does not imply a complete objective reconstruction."},
+    {"id":"P031-L04","novelty":"new_category","importance":"high","lead":"Casualty reconstruction often requires aligning heterogeneous clocks and records—bridge/engine logs, alarms, navigation data, communications, shore traffic records and witness recollections. Time alignment and clock uncertainty are therefore explicit investigation states rather than clerical details."},
+    {"id":"P031-L05","novelty":"new_category","importance":"high","lead":"Crew and other witness interviews preserve contemporaneous perception and action but can differ because of position, workload, memory, language and later exposure to emerging explanations. Individual testimony and reconstructed event sequence should remain separate layers."},
+    {"id":"P031-L06","novelty":"new_category","importance":"high","lead":"Physical examination of hull, machinery, electrical, navigation, cargo or safety systems can create new information after the casualty. Condition observed during teardown or inspection is later-known evidence and must not be projected backward into what operators could know before or during the event."},
+    {"id":"P031-L07","novelty":"new_category","importance":"medium","lead":"Laboratory, materials, fuel, lubricant, electrical or other specialist testing can resolve competing technical hypotheses, but test results have their own sampling, custody, method and known-time states. Exact forensic methods and findings require Evidence."},
+    {"id":"P031-L08","novelty":"new_category","importance":"high","lead":"Investigations commonly evolve through working hypotheses or preliminary explanations before final causal findings. A hypothesis can be reasonable and later rejected; Longcycle should preserve that epistemic trajectory rather than retain only the final explanation."},
+    {"id":"P031-L09","novelty":"new_category","importance":"high","lead":"Causal analysis should distinguish the triggering event from contributing technical, operational, environmental and organizational conditions. A single proximate failure can coexist with deeper vulnerabilities without every contributing factor being a necessary or legally dispositive cause."},
+    {"id":"P031-L10","novelty":"new_category","importance":"high","lead":"Human-action findings require context around information available, workload, procedures, equipment state and organizational conditions. Labeling a final action as error without reconstructing those contemporaneous constraints loses the decision environment that PIT replay needs."},
+    {"id":"P031-L11","novelty":"new_category","importance":"high","lead":"Safety investigation findings and recommendations are conceptually distinct from legal fault, civil liability, insurance coverage or criminal responsibility. A recommendation can target risk reduction even where legal causation or responsibility is contested or outside the investigator's purpose."},
+    {"id":"P031-L12","novelty":"new_category","importance":"high","lead":"Safety recommendations create a later action chain: issued, accepted/rejected, planned, implemented, verified or superseded. Publishing a recommendation does not itself prove that the recommended control was adopted or effective."},
+    {"id":"P031-L13","novelty":"new_category","importance":"high","lead":"Investigation latency is itself material to historical knowledge. Participants, markets and operators may act for months under incomplete or provisional explanations before technical reports become available, so report publication time can be as important as casualty time for replay."},
+    {"id":"P031-L14","novelty":"useful_refinement","importance":"high","lead":"P013 claims-evidence preservation is refined by purpose: material useful for insurance or liability claims may overlap with safety-investigation evidence but authority, admissibility, scope and analytical purpose remain distinct."},
+    {"id":"P031-L15","novelty":"useful_refinement","importance":"high","lead":"P026-P028 electronic-navigation, automation and electrical records can become investigation inputs, but apparently agreeing digital records may share sensors, clocks or software dependencies; common-mode data provenance must be considered before treating them as independent corroboration."},
+    {"id":"P031-L16","novelty":"useful_refinement","importance":"high","lead":"P029 emergency decisions must be replayed against contemporaneous alarms, observations and communications rather than later causal findings. A later-discovered technical defect cannot silently change whether an earlier decision was reasonable under then-known information."},
+    {"id":"P031-L17","novelty":"useful_refinement","importance":"medium","lead":"P030 salvage and wreck work can both preserve and destroy evidence. Stabilization, removal, cutting, pumping or repair may be necessary for safety while changing the physical scene, so investigation and casualty-response objectives can conflict operationally."},
+    {"id":"P031-L18","novelty":"duplicate","importance":"low","lead":"General provenance and known-time separation are already Longcycle Baseline semantics; P031 adds the casualty-investigation mechanisms that make those semantics operationally important in Shipping."},
+    {"id":"P031-L19","novelty":"duplicate","importance":"low","lead":"Broad safety regulation and learning from casualties are already represented in the atlas; P031 retains the staged information-production and causal-analysis process rather than repeating regulatory history."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_investigation_jurisdiction_participation_and_procedural_rules","reason":"Blind memory supports multiple investigation roles and scopes but cannot establish jurisdiction, statutory authority, confidentiality, disclosure or participation rules for a specific casualty."},
+    {"region":"specific_vdr_equipment_data_retention_recovery_and_forensic_methods","reason":"Exact recorder generations, retention windows, data fields, recovery procedures and technical limitations require system- and date-specific Evidence."},
+    {"region":"named_casualty_reports_findings_causes_and_recommendations","reason":"Exact findings, wording, publication dates, recommendation recipients and follow-up status require claim-scoped primary reports and later records."},
+    {"region":"current_open_investigations_and_preliminary_findings","reason":"Current investigation status is outside blind historical-memory scope and requires live source-first collection."}
+  ],
+  "stop_reason":"The casualty-investigation information chain is populated from preservation and data/witness acquisition through time alignment, technical examination, working hypotheses, causal analysis, final reporting and recommendation follow-up. Further recall becomes jurisdiction-, report-, recorder-, expert-, finding-, recommendation-, enforcement- or casualty-specific.",
+  "truth_boundary":"Memory-only orientation; no investigation jurisdiction, VDR capability, casualty chronology, causal finding, report conclusion, recommendation, implementation status or legal responsibility is verified."
+}
