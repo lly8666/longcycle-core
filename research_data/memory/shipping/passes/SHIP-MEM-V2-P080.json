@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P080",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_machinery_lubricating_oil_storage_supply_circulation_pump_filter_purifier_condition_cooling_consumption_inventory_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_lubricating_oil_service_state_model_only_no_grade_viscosity_pressure_temperature_flow_filter_purifier_sampling_valve_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"LO-01","novelty_class":"new_category","importance":"high","memory":"Lubricating-oil service spans owner/manager, master, engineering crew, shore technical/procurement support, lubricating-oil supplier or testing actors, filter/purifier equipment or service actors and relevant port/yard support. Product supply, onboard service state, assurance and equipment support should remain distinct roles rather than one vendor directory."},
+    {"id":"LO-02","novelty_class":"new_category","importance":"high","memory":"Product or grade identity confidence and oil-condition/quality confidence are distinct states. Knowing the intended lubricant does not prove its measured condition, fitness, compatibility, contamination state or machinery outcome; exact grades, viscosities and specifications remain deferred."},
+    {"id":"LO-03","novelty_class":"new_category","importance":"high","memory":"Storage inventory/capacity confidence is separate from active supply or circulation readiness. Lubricating oil can be onboard while usable replenishment margin, service-tank availability or intended consumer supply remains constrained or uncertain; exact quantities and tank arrangements are deferred."},
+    {"id":"LO-04","novelty_class":"new_category","importance":"high","memory":"Supply/circulation-pump readiness and distribution/path availability are separate states. A pump can be available while one branch or consumer path is restricted, or a path can be intact while circulation capacity or redundancy confidence is degraded; exact pressures, flows, piping and valve lineups are deferred."},
+    {"id":"LO-05","novelty_class":"new_category","importance":"high","memory":"Filtering or purification equipment readiness is distinct from achieved oil-condition confidence. Equipment being online does not itself establish acceptable cleanliness, water content, contamination state, viscosity or machinery protection; exact filter/purifier parameters and results remain deferred."},
+    {"id":"LO-06","novelty_class":"new_category","importance":"high","memory":"Sampling, testing or trend-confidence should remain separate from physical oil condition and circulation availability. Missing, delayed, conflicting or scoped assurance can leave condition uncertain without proving degraded oil, while a machinery symptom does not by itself prove an oil-condition cause."},
+    {"id":"LO-07","novelty_class":"new_category","importance":"high","memory":"Lubricating-oil cooling support is a dependency state distinct from circulation and oil condition. Adequate circulation does not prove acceptable thermal condition, and a temperature concern does not establish an oil-cooler or machinery-cooling root cause; exact temperatures and exchanger details are deferred."},
+    {"id":"LO-08","novelty_class":"new_category","importance":"high","memory":"Consumption, leakage or replenishment-margin confidence is distinct from exact consumption rate and from waste-oil generation. Declining usable inventory can constrain service margin without proving leakage, abnormal consumption, contamination, transfer error or machinery defect; exact rates and quantities remain deferred."},
+    {"id":"LO-09","novelty_class":"new_category","importance":"high","memory":"Lubricating-oil degradation has a defensive lifecycle: observation, uncertain product/inventory/pump/filter/purifier/path/consumer scope, affected service dimension, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No transfer, purification, sampling or machinery troubleshooting procedure is retained."},
+    {"id":"LO-10","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected oil grade/product, storage/service scope, pump/filter/purifier path or machinery consumer group. Partial lubricating-oil service may remain available while one branch or consumer is constrained; exact tank, piping, valve and changeover arrangements remain deferred."},
+    {"id":"LO-11","novelty_class":"new_category","importance":"high","memory":"Lubricating-oil service depends on electrical power, circulation equipment, cooling, controls/monitoring and sometimes treatment equipment, but dependency observations are not root-cause proof. A support-service loss can degrade oil service, while an oil-service constraint does not establish an electrical, cooling, digital or mechanical cause."},
+    {"id":"LO-12","novelty_class":"new_category","importance":"high","memory":"Lubricating-oil-service degradation can propagate into machinery availability, load restriction or condition concern, but downstream vibration, temperature, wear or availability effects do not themselves prove a lubricant product, contamination, inventory, pump, filter, purifier or cooling root cause."},
+    {"id":"LO-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: product/inventory confidence returns, circulation and distribution return, filtering/purification service returns, oil-condition confidence becomes acceptable, replenishment margin is restored and affected machinery is re-verified. A restarted pump or purifier alone does not prove full lubricating-oil-service recovery."},
+    {"id":"LO-R01","novelty_class":"useful_refinement","importance":"high","memory":"P075 machinery oily-waste service and P080 lubricating-oil service are independent chains. Waste-oil/sludge holding or reception does not prove lubricating-oil inventory, circulation or condition, and lubricating-oil availability does not establish waste-handling capacity."},
+    {"id":"LO-R02","novelty_class":"useful_refinement","importance":"high","memory":"P077 bunker fuel and P080 lubricating oil share petroleum-product supply, storage and assurance vocabulary but have different service purposes, consumer scopes, condition states and downstream effects. Fuel availability or quality confidence cannot proxy lubricating-oil service and vice versa."},
+    {"id":"LO-R03","novelty_class":"useful_refinement","importance":"high","memory":"P079 machinery-cooling service can support lubricating-oil thermal condition, but acceptable cooling does not prove lubrication circulation or oil condition, and an oil-temperature concern does not establish a cooling-water root cause."},
+    {"id":"LO-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep pumps, filters, purifiers, coolers, sensors and test equipment separate from delivered lubricating-oil service. Sound equipment can coexist with product, inventory, assurance or distribution constraints, and acceptable service does not prove every component condition."},
+    {"id":"LO-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"LO-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation, redundancy and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P079; P080 applies them specifically to lubricating-oil service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact lubricating-oil grades/specifications/viscosities, tank arrangements/capacities/quantities, pressures, temperatures, flow rates, filter/purifier settings, sample methods/results, piping, valves and instrumentation are intentionally not retained.",
+    "Exact lubricant receiving/transfer, circulation alignment, filter or purifier operation/changeover, sampling, replenishment, cooling, isolation, flushing, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named lubricant suppliers, laboratories, filter/purifier vendors, service firms, vessel installations, oil-condition disputes, failures, incidents, deficiencies and current-readiness facts require claim-scoped Evidence.",
+    "Private/regional lubricant supply/testing and filtration/purification service lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact lubricant grades/viscosities, tank topology/quantities, pressures, temperatures, flow rates, filter/purifier parameters, samples, piping/valves, instrumentation and current configuration.",
+    "Receiving/transfer, circulation alignment, filtration/purification, sampling, replenishment, isolation, flushing, troubleshooting, maintenance or emergency procedures.",
+    "Named suppliers/labs/equipment/service providers, vessel failures/incidents/deficiencies and current readiness.",
+    "Private/regional lubricant supply/testing/service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive lubricating-oil service orientation/source-discovery output. It is not lubricant selection, transfer, filtration/purification, sampling, machinery, maintenance, safety or vessel-operating advice and does not establish any exact grade, viscosity, quantity, arrangement, pressure, temperature, flow rate, filter/purifier parameter, sample result, piping/valve lineup, instrumentation, procedure, provider, incident, deficiency or current-readiness fact.",
+  "stop_reason": "The lubricating-oil service chain is recalled at useful structural resolution: product/grade confidence, inventory/capacity confidence, supply/circulation and distribution readiness, filtering/purification readiness, condition/assurance confidence, cooling dependency, consumption/replenishment margin, restriction/isolation, dependencies, downstream effects and verified restoration are separable states. Further detail would become vessel-, grade-, tank-, pump-, filter-, purifier-, sample-, parameter-, piping-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
