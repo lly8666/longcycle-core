@@ -1,0 +1,27 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-verification/v1",
+  "pass_id": "SHIP-MEM-V2-P009",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_control_only",
+  "verified_map_checkpoint_sha": "54d5f8dbb02cdeda4384e6d0b705961a732e8d8a",
+  "architecture_baseline_run_id": 33595848622,
+  "observed_checks": {
+    "baseline_and_owner_routing": "success",
+    "reservation_boundary": "success",
+    "memory_seal_decision_or_supersession": "success",
+    "focused_worker_regressions": "success",
+    "remote_worker_continuity": "expected_failure_before_cursor_acknowledgement"
+  },
+  "substantive_diff_from_previous_clean_h": {
+    "base_sha": "4e9cf0aa94069a8cd55cd7836f9b069ba53c8e12",
+    "head_sha": "54d5f8dbb02cdeda4384e6d0b705961a732e8d8a",
+    "changed_paths": [
+      ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P009.json",
+      "research_data/memory/shipping/exploration-map.json",
+      "research_data/memory/shipping/passes/SHIP-MEM-V2-P009.json"
+    ],
+    "inside_reservation": true
+  },
+  "memory_boundary": "Verification confirms bounded worker structure and observed CI behavior only. P009 remains Memory-only and does not establish hydrographic, chart, weather-routeing, navigation, legal, technical or historical truth.",
+  "handoff_ready": true
+}
