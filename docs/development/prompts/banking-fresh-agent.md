@@ -25,7 +25,7 @@
 
 启动时查询 main/银行精确 head，从 worker head 读取 contract、admission、cursor 和 cursor 直接指向的地图/收据；不要预读 Batch0 raw、其他 shard、Banking Evidence、全部历史或旧 rehearsal。按通用接班协议得出 continuity 状态并恢复六层目标。
 
-若 live cursor 未变化，本轮唯一任务是 `TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001`：
+若 live cursor 未变化，本次执行的**第一个** probe 是 `TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001`：
 
 - 只用固定探索地图允许的输入和当前模型内部记忆；不访问网页，不读 Batch0、其他 shard 或 Evidence。
 - 只运行一个隔离 blind unit，输出必须标为 `MEMORY_LEADS_ONLY`，保留模糊时间、冲突与不确定性。
@@ -33,10 +33,12 @@
 - 用新结果重建同一张稀疏 exploration map；始终只选一个 `next_probe`，不铺满时间×主题笛卡尔网格。
 - 当前探针在预设问题已回答、边际新颖度明显下降或只剩重复/越界方向时停止；由地图选择下一步，不因有趣而继续钻深。
 - campaign/shard 保持 unsealed；Memory 不得升级为 Evidence、Reality、Outcome 或 seal。
-- 每轮最多一个 campaign-local 方法观察；共享缺口只写 typed request，不修改 CAP-0006 或公共代码。
+- 整次最多三-probe 执行只保留一个最重要的 campaign-local 方法观察；共享缺口只写 typed request，不修改 CAP-0006 或公共代码。
+
+本次聊天执行以最多 3 个顺序 probe 为目标。第一个 probe 完成后立即做完整 `S -> cursor-only H -> CLEAN`，再读取更新后的 map/cursor 决定第二个；第二个同理决定第三个。不得提前编造后两个 probe，不得并行执行，也不得把三个 raw/receipt/map 攒到最后才交接。若地图没有安全下一步、应转 seal/challenger/review、出现重复低价值方向、能力/权限/L3-L4 阻塞，或无法保证下一个完整 `S/H`，可以提前停止。
 
 旧 `china-banking-1990-2026-blind-memory-atlas-v1-seal.md` 只是 corrected cold provenance，不是有效 structured seal。只认精确 correction、verification、当前 map 和 cursor；不删除旧字节，不把它输入新探针或升级为 Evidence。
 
 当前探针不需要外网、Drive 或数据库，所以不要下载任何对象。未来只有 live cursor 明确要求时，才执行 adapter 中 exact file-id 下载、私有只读 base、intent-before-upload、new immutable object、download-back verification 和 outcome；银行 worker 永不提升全局 generation。
 
-先用简短进度消息报告：main/银行精确 head、continuity 结果及依据、六层目标、允许/禁止输入与路径、唯一下一步、工具限制和 L3/L4。若为 `CLEAN`，不等待用户回复，直接做一个 probe；结束前完整执行 `docs/development/prompts/all-agent-handoff.md`，形成远端 `S -> cursor-only H -> CLEAN`。
+先用简短进度消息报告：main/银行精确 head、continuity 结果及依据、六层目标、允许/禁止输入与路径、第一个 probe、三连跑目标、工具限制和 L3/L4。若为 `CLEAN`，不等待用户回复，顺序执行最多 3 个完整 probe 循环；每个循环都执行 `docs/development/prompts/all-agent-handoff.md` 并达到远端 `S -> cursor-only H -> CLEAN` 后，才自动进入下一个。

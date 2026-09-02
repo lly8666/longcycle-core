@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "CHAT-AGENT-PROMPT-PACK-V1-034",
-  "goal": "Make every existing or future Longcycle role start, recover, execute and hand off correctly in a fresh ChatGPT chat using one shared prompt lifecycle and a small role-specific card.",
+  "intent_id": "THREE-PROBE-SLICE-V1-035",
+  "goal": "Increase each industry Agent invocation from roughly one probe to as many as three adaptive probes without weakening interruption recovery, map feedback or anti-tunnel stop rules.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this packages existing CAP-0006/CAP-0009/CAP-0010 operating rules and does not change Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, seal, reservation or database-generation semantics",
+  "baseline_impact": "none; this changes prompt-level execution slicing only and preserves Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, seal, reservation, cursor and database-generation semantics",
   "baseline_invariants": [],
   "schema_impact": "documentation and current governance metadata only; no product schema, migration, capability card, worker reservation/cursor, research artifact, Drive object or database generation change",
   "baseline_critical_tests_touched": false,
@@ -15,15 +15,14 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "The three current role prompts are directly copyable into fresh ChatGPT chats and use only GitHub Connect for repository control, exact remote CI for executable truth and Drive only for cursor-required large binary transport.",
-    "One generic takeover prompt recovers six-level goals, exact role authority, live cursor state and CLEAN/RECOVERY_REQUIRED/BLOCKED/AUDIT_ASSISTANCE_REQUIRED before new work.",
-    "A CLEAN role reports its startup audit and continues the one live atomic action automatically instead of requiring a routine user confirmation turn.",
-    "One generic handoff prompt performs role-aware S-to-H closure: workers update only their cursor, coordinator updates only the bounded global handoff, and reviewers without reservation remain read-only.",
-    "A pushed S without H is automatically repaired by the next invocation before any new task; unpushed chat work is never claimed as recovered.",
-    "The future-role creation prompt distinguishes disposable Agent replacement, one-shot tasks, parallel durable workstreams and global_serial shared work before creating governance state.",
-    "New durable workers are registered on main before branch launch, have one bounded cursor and one next action, and reuse existing capability owners by default.",
-    "Role-specific prompts contain only identity, branch/write scope, special semantic boundaries and a live-cursor-over-example rule; shared startup, Drive and handoff logic is not copied into every future role.",
-    "Global scheduled v3, new-role adoption drills and per-instance startup audits retain separate evidence scopes and cannot substitute for one another.",
+    "A Banking or Shipping invocation targets up to three sequential probe cycles without requiring the user to send continue between cycles.",
+    "Every probe separately completes append-only raw/receipt/map work as S, a cursor-only H and an exact remote CLEAN audit before the next probe begins.",
+    "Only the first probe comes from the startup cursor; the second and third are selected only after rereading the map/cursor produced by the preceding completed cycle.",
+    "Probes are never preselected or run in parallel and three probes are never collapsed into one large uncheckpointed task.",
+    "The slice stops early when there is no safe next probe, the map routes to seal/challenger/review, continuity or permission is unsafe, required capability is unavailable, L3/L4 appears or the next full S/H cannot be completed safely.",
+    "Three is a soft per-invocation upper target, not a duration, quota, ontology-completion rule or permission to invent low-value probes.",
+    "If interruption occurs after any S, the next invocation still derives RECOVERY_REQUIRED and repairs the latest missing H before new work.",
+    "Coordinator and future-role prompts understand the three-cycle slice but do not preassign later probes or cross-write worker state.",
     "No L3/L4 decision is introduced."
   ]
 }
