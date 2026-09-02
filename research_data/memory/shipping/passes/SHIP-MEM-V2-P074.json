@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P074",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_solid_waste_garbage_collection_segregation_storage_processing_compaction_incineration_transfer_port_reception_service_capacity_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_solid_waste_garbage_service_state_model_only_no_waste_category_disposal_incinerator_recordkeeping_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"SW-01","novelty_class":"new_category","importance":"high","memory":"Shipboard solid-waste service spans owner/manager, master, engineering crew, hotel/catering or accommodation users, deck or housekeeping interfaces, shore technical/marine support, waste-processing equipment/service actors and port or shore reception actors. Operational observation, accommodation generation, equipment support and shore reception should remain separate roles rather than one contractor/compliance directory."},
+    {"id":"SW-02","novelty_class":"new_category","importance":"high","memory":"Collection availability, stream/segregation scope, storage availability and processing-equipment readiness are distinct service states. Waste can still be collected while processing is unavailable, or processing equipment may be ready while collection, storage or transfer is constrained."},
+    {"id":"SW-03","novelty_class":"new_category","importance":"high","memory":"Waste-stream or segregation-scope confidence should be preserved without asserting exact regulated categories. Different onboard waste streams can have different collection, storage, processing or reception states, while exact classification rules and vessel practices are deferred to Evidence."},
+    {"id":"SW-04","novelty_class":"new_category","importance":"high","memory":"Storage inventory and capacity confidence are separate from nominal container, locker, room or tank existence. Historical memory should preserve whether usable storage margin was normal, constrained, uncertain or restored without retaining exact capacities, quantities, container arrangements or limits."},
+    {"id":"SW-05","novelty_class":"new_category","importance":"high","memory":"Waste generation/service demand and collection-storage-processing capacity follow different clocks. Occupancy, catering, housekeeping, maintenance or voyage circumstances can change service margin without proving equipment failure; exact waste-generation rates and thresholds are deferred."},
+    {"id":"SW-06","novelty_class":"new_category","importance":"high","memory":"Processing-equipment readiness and processing-result confidence are different states. A compactor, comminution-type device, incineration-related equipment or other processor being nominally available does not by itself establish acceptable processing outcome, disposal eligibility or compliance."},
+    {"id":"SW-07","novelty_class":"new_category","importance":"high","memory":"Compaction, volume reduction, incineration-related processing and simple storage/landing are distinct service paths rather than interchangeable proof of waste disposal. Exact temperatures, feed limits, waste acceptance, emissions, residues, prohibited materials and operating parameters are intentionally deferred."},
+    {"id":"SW-08","novelty_class":"new_category","importance":"high","memory":"Onboard collection/storage/processing capability and landing, transfer or port-reception opportunity are distinct. Limited onboard margin may coexist with a reception opportunity, or adequate storage may coexist with unavailable shore reception; neither state proves legal permission, acceptance terms or disposal entitlement."},
+    {"id":"SW-09","novelty_class":"new_category","importance":"high","memory":"Solid-waste degradation has a defensive service lifecycle: observation, uncertain scope, affected collection/storage/processing/transfer identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No disposal, incineration, transfer or troubleshooting procedure is retained."},
+    {"id":"SW-10","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected stream, location or interface scope. One collection point, storage area, processor or transfer interface may be constrained while other solid-waste service continues; exact layouts, containers, routing and operating actions remain deferred."},
+    {"id":"SW-11","novelty_class":"new_category","importance":"high","memory":"Solid-waste service can depend on electrical power, controls/monitoring, physical access, handling equipment or available storage space, but dependency observations are not root-cause proof. Loss of support can degrade service, while a waste-service problem does not establish which upstream dependency failed."},
+    {"id":"SW-12","novelty_class":"new_category","importance":"high","memory":"Solid-waste constraints can propagate into accommodation, galley/catering, housekeeping, maintenance or deck-logistics service, but downstream accumulation, odor, housekeeping difficulty or deck-handling pressure is not by itself proof of a storage, processor or reception root cause."},
+    {"id":"SW-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: collection resumes, usable storage margin returns, processing readiness returns, landing/reception becomes available and downstream accommodation or logistics service is verified. Restarting one processor or clearing one local restriction does not prove full solid-waste-service recovery."},
+    {"id":"SW-R01","novelty_class":"useful_refinement","importance":"high","memory":"P073 liquid wastewater and P074 solid waste are independent environmental-service dimensions. A wastewater constraint does not prove a garbage-service constraint, and available garbage storage or reception does not establish sewage/greywater holding, treatment or transfer readiness."},
+    {"id":"SW-R02","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep processor, handling-equipment or transfer-interface condition separate from delivered solid-waste service. Sound equipment can coexist with collection, storage or shore-reception constraints, and acceptable service does not prove every component condition."},
+    {"id":"SW-R03","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical availability can support compactors, incineration-related equipment, controls or handling devices, but power presence does not prove solid-waste-service readiness and a waste-service problem does not establish an electrical cause."},
+    {"id":"SW-R04","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control availability should remain separate from physical solid-waste state. Loss of monitoring or control visibility can make equipment readiness uncertain without proving collection/storage loss, while a physical waste constraint does not establish a digital or cyber cause."},
+    {"id":"SW-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"SW-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P073; P074 applies them specifically to solid-waste/garbage service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact vessel waste categories, segregation rules, storage quantities/capacities, container or room arrangements, processor/incinerator parameters, landing limits and record entries are intentionally not retained.",
+    "Exact sorting, compaction, comminution, incineration, disposal, landing, transfer, isolation, troubleshooting, cleaning, maintenance or emergency procedures are outside this blind pass.",
+    "Named waste processors, equipment vendors, reception contractors, vessel installations, disposal events, deficiencies, incidents and rule-specific findings require claim-scoped Evidence.",
+    "Private/regional marine garbage collection, processor/incinerator service and port-reception lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact waste classifications, segregation rules, storage arrangements/capacities, quantities, processor/incinerator parameters, disposal or landing limits, records and current configuration.",
+    "Sorting, compaction, comminution, incineration, disposal, transfer, isolation, troubleshooting, cleaning, maintenance or emergency procedures.",
+    "Named equipment/providers/reception contractors, vessel incidents, disposal events, deficiencies, findings and current readiness.",
+    "Private/regional solid-waste and reception-service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive solid-waste/garbage service orientation/source-discovery output. It is not waste-management, incineration, environmental-compliance, engineering, health or vessel-operating advice and does not establish any exact waste category, segregation rule, storage capacity/quantity, processor parameter, disposal or landing limit, record entry, procedure, equipment, provider, incident, compliance finding or current-readiness fact.",
+  "stop_reason": "The solid-waste/garbage service chain is recalled at useful structural resolution: collection, stream/segregation scope, storage margin, demand, processing readiness/result confidence, landing/reception opportunity, restriction/isolation, dependencies, downstream service effects and verified restoration are separable states. Further detail would become vessel-, waste-stream-, storage-, processor/incinerator-, disposal-, record-, procedure-, incident-, contractor- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
