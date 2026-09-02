@@ -1,0 +1,78 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-004",
+  "family": "bounded_low_novelty_confirmation",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-29",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@ae042d78b154ece489e56379563e0a672fc10f3d;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-004-memory-leads.md",
+    "commit_sha": "90b1fd04d8ef34a6955af060026209990f9403e5",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 0,
+    "useful_refinement_count": 4,
+    "duplicate_count": 14,
+    "novel_lead_count": 4,
+    "high_importance_novel_count": 2,
+    "total_lead_count": 18,
+    "classification": "low_novelty_confirmation_restart_2_with_no_material_new_category"
+  },
+  "saturation_assessment": {
+    "material_missing_antecedent_or_category": false,
+    "duplicate_dominant": true,
+    "qualifies_as_low_novelty_confirmation": true,
+    "low_novelty_confirmation_restart_index": 2,
+    "prior_consecutive_low_novelty_passes_observed": 1,
+    "consecutive_low_novelty_passes_after_pass": 2,
+    "consecutive_low_novelty_passes_required": 3,
+    "seal_eligible": false
+  },
+  "negative_space": [
+    "No new institution class, actor class, terminal-exit state, claimant class, funding/backstop channel, loss-allocation class, preparedness class or material antecedent was recovered.",
+    "Supervisory escalation, valuation timing, ex-ante protection-fund state and customer operational access are useful representation refinements inside already-covered categories.",
+    "Comparative vocabulary and exact domestic legal, ratio, trigger, hierarchy and named-bank details remain Evidence/source-detail work rather than blind novelty."
+  ],
+  "method_observation": null,
+  "frontier_updates": {
+    "closed_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__LOW-NOVELTY-CONFIRMATION-RESTART-2"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__LOW-NOVELTY-CONFIRMATION-RESTART-3"],
+    "reason": "The second fresh confirmation after the preparedness reset is duplicate-dominant and recovers no material category. The formal streak advances to 2/3, so exactly one third restart confirmation remains before seal readiness can even be reconsidered."
+  },
+  "stage_after_pass": "low_novelty_confirmation",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "low_novelty_confirmation_restart_two_complete_one_more_required",
+  "validation_refs": [],
+  "unverified": true
+}
