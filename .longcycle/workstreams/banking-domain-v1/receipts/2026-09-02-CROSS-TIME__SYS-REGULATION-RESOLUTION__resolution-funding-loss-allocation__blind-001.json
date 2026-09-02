@@ -1,0 +1,71 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-funding-loss-allocation__blind-001",
+  "family": "cross_time_resolution_funding_loss_allocation_blind_challenge",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-22",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@12f7f7e98fe2870ffb0c45d149ab7a38767692d5;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-funding-loss-allocation__blind-001-memory-leads.md",
+    "commit_sha": "02afcea03ee026ada2ec871d56ed2e77420afe41",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 18,
+    "useful_refinement_count": 22,
+    "duplicate_count": 6,
+    "novel_lead_count": 40,
+    "high_importance_novel_count": 29,
+    "total_lead_count": 46,
+    "classification": "material_novelty_with_resolution_funding_actor_channel_and_loss_bearer_separation"
+  },
+  "negative_space": [
+    "Liquidity support, capital support, asset-transfer financing and ultimate loss absorption are separate fields even when the same public actor appears in more than one.",
+    "Deposit-insurance membership or fund participation does not establish statutory depositor payout in a specific case.",
+    "Local-government special-bond capital, shareholder rescue and AMC asset purchase can support weak banks without proving a stronger resolution state.",
+    "Gross intervention funding can be recoverable and must not be equated with final public-sector loss.",
+    "Exact named-case fund flows, legal powers, creditor thresholds and claimant waterfalls remain Evidence work."
+  ],
+  "method_observation": null,
+  "invocation_method_observation_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001.json#/method_observation",
+  "frontier_updates": {
+    "closed_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-FUNDING-LOSS-ALLOCATION"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__LOSS-BEARER-VS-FUNDING-ROLE"],
+    "reason": "The broad funding/backstop mechanism gap is confirmed and substantially filled, but the pass remains materially novel. The highest remaining blind ambiguity is orthogonal: distinguish who merely advances liquidity/capital/transfer consideration from who ultimately bears economic loss, and distinguish claimant classes without guessing thresholds."
+  },
+  "stage_after_pass": "orthogonal_gap_challenge",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "funding_stack_materially_expanded_and_loss_bearer_role_challenge_is_next",
+  "validation_refs": [],
+  "unverified": true
+}
