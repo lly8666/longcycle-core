@@ -1,88 +1,69 @@
 {
-  "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "workstream_id":"shipping-domain-v1","revision":11,"authority_class":"research_control_only",
+  "schema_version":"longcycle-industry-memory-exploration-map/v1","workstream_id":"shipping-domain-v1","revision":12,"authority_class":"research_control_only",
   "campaign":{"campaign_id":"shipping-adaptive-memory-v2","industry":"shipping","period_start":"1970-01-01","period_end":"2026-08-31","period_precision":"bounded_campaign_not_claim_exact","stage":"active_recall","model_vintage_status":"pinned_in_latest_pass_receipt","source_visibility":"atlas_only","fresh_search_used":false},
-  "campaign_ref":"research_data/memory/shipping/exploration-map.json#/campaign",
-  "learning_state_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json#/method_observation",
-  "current_prompt_ref":"research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
-  "latest_pass_receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json",
-  "latest_pass_receipt_status":"completed_memory_pass_unverified_until_exact_head_ci",
-  "legacy_inputs":[
-    {"artifact_ref":"research_data/memory/shipping/atlas-1970-present/atlas.json","artifact_sha256":"a4207eafa27622e14314058e5391aa3cbc4bf16f2cae6756c3f989ed1e9f95fa","active_stage":"orientation_only","supersession_ref":"research_data/memory/shipping/atlas-1970-present/seal-supersession-v1.json"},
-    {"artifact_ref":"research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.json","artifact_sha256":"0b2a43dc3db82f0b1d5cb06abe6c680f5729e23f08671ed86e9219551c8f46eb","active_stage":"orientation_only","supersession_ref":"research_data/memory/shipping/container-pandemic-cycle-2020-2023/seal-supersession-v1.json"}
-  ],
-  "shards":[
-    {"shard_id":"shipping-1970-present-whole-industry","stage":"active_recall","recent_outcomes":[
-      {"pass_id":"SHIP-MEM-V2-P003","family":"marine_insurance_hull_cargo_reinsurance_average_adjusting","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
-      {"pass_id":"SHIP-MEM-V2-P004","family":"ship_design_machinery_equipment_repair_conversion_ecosystem","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json","novel_lead_count":18,"duplicate_lead_count":2,"high_importance_novel_count":10},
-      {"pass_id":"SHIP-MEM-V2-P005","family":"marine_fuel_bunkering_quality_credit_testing_infrastructure","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json","novel_lead_count":18,"duplicate_lead_count":2,"high_importance_novel_count":10},
-      {"pass_id":"SHIP-MEM-V2-P006","family":"ship_recycling_demolition_cash_buyer_scrap_finance_end_of_life","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P006.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
-      {"pass_id":"SHIP-MEM-V2-P007","family":"pilotage_towage_salvage_wreck_removal_emergency_response","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P007.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
-      {"pass_id":"SHIP-MEM-V2-P008","family":"ship_agency_husbandry_port_call_clearance_customs_immigration_documentation_disbursement","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P008.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
-      {"pass_id":"SHIP-MEM-V2-P009","family":"hydrography_charts_notices_weather_routing_navigation_information","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P009.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
-      {"pass_id":"SHIP-MEM-V2-P010","family":"crewing_manning_training_recruitment_welfare_labor_supply","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":10}
-    ],"has_major_coverage_gaps":true},
-    {"shard_id":"container-pandemic-cycle-2020-2023","stage":"orientation_only","recent_outcomes":[],"has_major_coverage_gaps":true}
-  ],
-  "reviewed_orientation_regions":[
-    {"region_id":"legacy-period-and-sector-sweep","status":"orientation_only","basis_ref":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","interpretation":"Broad headings and remembered leads establish a starting index, not saturation."},
-    {"region_id":"legacy-container-pandemic-cycle","status":"orientation_only","basis_ref":"research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.verification.json","interpretation":"One representative cycle packet is an orientation sample, not an orthogonal confirmation pass."},
-    {"region_id":"cross-cycle-long-tail-institutional-topology","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json","interpretation":"P001 surfaced substantial non-operating institutional topology."},
-    {"region_id":"regional-private-cabotage-small-port-aliases","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json","interpretation":"P002 added private/regional topology while refusing exhaustive geography."},
-    {"region_id":"marine-insurance-beyond-p-and-i","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json","interpretation":"P003 added marine-insurance and claims topology."},
-    {"region_id":"technical-supply-design-machinery-repair-conversion","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json","interpretation":"P004 added design, equipment, service and repair/conversion structures."},
-    {"region_id":"marine-fuel-bunkering-quality-credit-infrastructure","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json","interpretation":"P005 added the bunker transaction chain and infrastructure constraints."},
-    {"region_id":"ship-recycling-demolition-end-of-life","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P006.json","interpretation":"P006 decomposed the end-of-life chain."},
-    {"region_id":"pilotage-towage-salvage-wreck-emergency-response","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P007.json","interpretation":"P007 added local maneuvering and casualty-response capacity."},
-    {"region_id":"ship-agency-husbandry-port-call-clearance-disbursement","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P008.json","interpretation":"P008 added port-call administrative and husbandry execution."},
-    {"region_id":"hydrography-weather-routing-navigation-information","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P009.json","interpretation":"P009 added versioned navigation-information infrastructure."},
-    {"region_id":"crewing-manning-training-welfare-labor","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json","interpretation":"P010 added crew-management and recruitment intermediaries, qualification/sea-time pipelines, deployment and relief gates, labor contracts, fatigue/welfare, retention and labor-side effective-capacity constraints while deferring current rankings and exact rules."}
-  ],
-  "known_major_gaps":[
-    "classification_societies_statutory_surveys_flag_delegation_certification_and_port_state_control_chain",
-    "exact_class_labor_port_state_control_cabotage_insurance_bunker_equipment_recycling_casualty_clearance_navigation_and_crewing_chronology",
-    "private_regional_repair_service_operator_bunker_recycling_towage_salvage_ship_agency_navigation_crewing_and_class_service_lineages_in_low_recall_geographies",
-    "historical_non_english_predecessor_technical_bunker_recycling_casualty_clearance_navigation_labor_and_class_terms_requiring_source_archaeology"
-  ],
-  "open_frontiers":[
-    {"frontier_id":"shipping-classification-statutory-survey-flag-psc-v1","priority_rank":1,"state":"open","next_probe":"SHIP-MEM-V2-P011","why_high_information":"P010 closes the labor/crewing frontier with high novelty. The legacy atlas also explicitly under-recalled classification societies. Class, statutory delegation, survey/certification, conditions of class, flag administration and port-state inspection can determine whether a vessel is commercially and legally deployable even when it is physically operable, without requiring exact rulebooks or society rankings."}
-  ],
-  "deferred_regions":[
-    {"region_id":"exact_historical_numbers_and_chronology","state":"deferred","reason":"Exact values and dates require later claim-scoped Evidence."},
-    {"region_id":"exact_marine_insurance_clause_versions_thresholds_and_legal_effects","state":"deferred","reason":"Exact insurance wording requires Evidence."},
-    {"region_id":"exhaustive_equipment_vendor_and_repair_yard_catalog","state":"deferred","reason":"Exhaustive vendor enumeration is low-value catalog work."},
-    {"region_id":"exact_bunker_supplier_lineages_port_rules_standard_thresholds_and_legal_outcomes","state":"deferred","reason":"Exact bunker chronology requires Evidence."},
-    {"region_id":"exact_recycling_buyers_yards_regime_applicability_and_sale_liability","state":"deferred","reason":"Exact recycling company/legal chronology requires Evidence."},
-    {"region_id":"exact_pilot_tug_salvage_wreck_contract_and_authority_rules","state":"deferred","reason":"Exact casualty-response rules require Evidence."},
-    {"region_id":"exact_ship_agent_clearance_disbursement_and_single_window_rules","state":"deferred","reason":"Exact local port-call rules require Evidence."},
-    {"region_id":"exact_navigation_chart_notice_weather_product_standards_and_incident_causation","state":"deferred","reason":"Exact navigation-information standards and incident findings require Evidence."},
-    {"region_id":"exact_crewing_wage_certificate_collective_agreement_and_flag_rules","state":"deferred","reason":"P010 showed high-yield labor topology but exact wage, certificate, agreement and flag rules require Evidence."},
-    {"region_id":"country_by_country_private_actor_grid","state":"deferred","reason":"Blind recall degrades under exhaustive geographic enumeration."},
-    {"region_id":"current_2025_2026_market_snapshot","state":"outside_scope","reason":"Current-state claims require source-first collection."}
-  ],
-  "next_probe":{"probe_id":"SHIP-MEM-V2-P011","frontier_id":"shipping-classification-statutory-survey-flag-psc-v1","status":"planned_not_executed","required_capability":"high_capability_reasoning","task_packet":{
-    "family":"classification_societies_statutory_surveys_flag_delegation_certification_port_state_control",
-    "period_start":"1970-01-01","period_end":"2026-08-31","source_visibility":"atlas_only",
-    "allowed_input_refs":["research_data/memory/shipping/atlas-1970-present/atlas.json","research_data/memory/shipping/atlas-1970-present/atlas.verification.json","research_data/memory/shipping/seal-correction-v1.json"],
-    "fresh_search_forbidden":true,
-    "questions":[
-      "Which institutional roles distinguish classification from flag-state statutory certification, and how do recognized/delegated survey functions connect owners, class societies and administrations without becoming a society ranking?",
-      "Which newbuilding, annual/intermediate/special, drydock, machinery or damage-survey transitions are remembered strongly enough to explain class status and vessel availability while exact rule intervals remain deferred?",
-      "How do recommendations/conditions, overdue surveys, class suspension/withdrawal, flag transfer, class transfer, statutory certificates and port-state inspections propagate into insurance, chartering, finance, port access or effective capacity?",
-      "Which approval, survey, certification and inspection vocabulary is genuinely new or a useful refinement, and where does recall become too society-, flag-, memorandum-, detention- or rule-version-specific to retain?"
-    ],
-    "output_contract":{"industry_memory_output_required":true,"method_observation_limit":1,"novelty_classes":["new_category","useful_refinement","duplicate"],"reviewed_no_specific_memory_allowed":true,"one_pass_cannot_self_seal":true}
-  }},
-  "seal_readiness":{"campaign_stage":"active_recall","fresh_search_used":false,"negative_space_review_complete":false,"independent_challenger_complete":false,"has_major_coverage_gaps":true,"recent_outcomes":[
-    {"pass_id":"SHIP-MEM-V2-P003","family":"marine_insurance_hull_cargo_reinsurance_average_adjusting","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
+  "campaign_ref":"research_data/memory/shipping/exploration-map.json#/campaign","learning_state_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P011.json#/method_observation","current_prompt_ref":"research_data/memory/shipping/exploration-map.json#/next_probe/task_packet","latest_pass_receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P011.json","latest_pass_receipt_status":"completed_memory_pass_unverified_until_exact_head_ci",
+  "legacy_inputs":[{"artifact_ref":"research_data/memory/shipping/atlas-1970-present/atlas.json","artifact_sha256":"a4207eafa27622e14314058e5391aa3cbc4bf16f2cae6756c3f989ed1e9f95fa","active_stage":"orientation_only","supersession_ref":"research_data/memory/shipping/atlas-1970-present/seal-supersession-v1.json"},{"artifact_ref":"research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.json","artifact_sha256":"0b2a43dc3db82f0b1d5cb06abe6c680f5729e23f08671ed86e9219551c8f46eb","active_stage":"orientation_only","supersession_ref":"research_data/memory/shipping/container-pandemic-cycle-2020-2023/seal-supersession-v1.json"}],
+  "shards":[{"shard_id":"shipping-1970-present-whole-industry","stage":"active_recall","recent_outcomes":[
     {"pass_id":"SHIP-MEM-V2-P004","family":"ship_design_machinery_equipment_repair_conversion_ecosystem","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json","novel_lead_count":18,"duplicate_lead_count":2,"high_importance_novel_count":10},
     {"pass_id":"SHIP-MEM-V2-P005","family":"marine_fuel_bunkering_quality_credit_testing_infrastructure","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json","novel_lead_count":18,"duplicate_lead_count":2,"high_importance_novel_count":10},
     {"pass_id":"SHIP-MEM-V2-P006","family":"ship_recycling_demolition_cash_buyer_scrap_finance_end_of_life","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P006.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
     {"pass_id":"SHIP-MEM-V2-P007","family":"pilotage_towage_salvage_wreck_removal_emergency_response","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P007.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
     {"pass_id":"SHIP-MEM-V2-P008","family":"ship_agency_husbandry_port_call_clearance_customs_immigration_documentation_disbursement","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P008.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
     {"pass_id":"SHIP-MEM-V2-P009","family":"hydrography_charts_notices_weather_routing_navigation_information","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P009.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
-    {"pass_id":"SHIP-MEM-V2-P010","family":"crewing_manning_training_recruitment_welfare_labor_supply","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":10}
+    {"pass_id":"SHIP-MEM-V2-P010","family":"crewing_manning_training_recruitment_welfare_labor_supply","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":10},
+    {"pass_id":"SHIP-MEM-V2-P011","family":"classification_societies_statutory_surveys_flag_delegation_certification_port_state_control","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P011.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":10}
+  ],"has_major_coverage_gaps":true},{"shard_id":"container-pandemic-cycle-2020-2023","stage":"orientation_only","recent_outcomes":[],"has_major_coverage_gaps":true}],
+  "reviewed_orientation_regions":[
+    {"region_id":"legacy-period-and-sector-sweep","status":"orientation_only","basis_ref":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","interpretation":"Broad headings establish orientation, not saturation."},
+    {"region_id":"legacy-container-pandemic-cycle","status":"orientation_only","basis_ref":"research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.verification.json","interpretation":"Representative cycle orientation, not orthogonal confirmation."},
+    {"region_id":"cross-cycle-long-tail-institutional-topology","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json","interpretation":"P001 surfaced non-operating institutional topology."},
+    {"region_id":"regional-private-cabotage-small-port-aliases","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json","interpretation":"P002 added private/regional topology."},
+    {"region_id":"marine-insurance-beyond-p-and-i","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json","interpretation":"P003 added marine-insurance and claims topology."},
+    {"region_id":"technical-supply-design-machinery-repair-conversion","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json","interpretation":"P004 added technical supply/service structure."},
+    {"region_id":"marine-fuel-bunkering-quality-credit-infrastructure","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json","interpretation":"P005 added the bunker transaction chain."},
+    {"region_id":"ship-recycling-demolition-end-of-life","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P006.json","interpretation":"P006 decomposed end-of-life transactions."},
+    {"region_id":"pilotage-towage-salvage-wreck-emergency-response","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P007.json","interpretation":"P007 added maneuvering/casualty response."},
+    {"region_id":"ship-agency-husbandry-port-call-clearance-disbursement","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P008.json","interpretation":"P008 added port-call administration."},
+    {"region_id":"hydrography-weather-routing-navigation-information","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P009.json","interpretation":"P009 added versioned navigation information."},
+    {"region_id":"crewing-manning-training-welfare-labor","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json","interpretation":"P010 added qualified-labor pipeline and crew-side capacity constraints."},
+    {"region_id":"classification-statutory-survey-flag-psc","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P011.json","interpretation":"P011 distinguished class from statutory authority and added survey/status, delegation, transfer, certificate and port-state inspection chains while deferring exact rules and rankings."}
+  ],
+  "known_major_gaps":["chartering_brokerage_fixture_laytime_demurrage_offhire_and_contract_administration_chain","exact_class_labor_port_state_control_charterparty_insurance_bunker_equipment_recycling_casualty_clearance_navigation_and_crewing_chronology","private_regional_brokerage_chartering_service_and_operating_lineages_in_low_recall_geographies","historical_non_english_predecessor_contract_brokerage_technical_labor_and_regulatory_terms_requiring_source_archaeology"],
+  "open_frontiers":[{"frontier_id":"shipping-chartering-brokerage-fixture-contract-admin-v1","priority_rank":1,"state":"open","next_probe":"SHIP-MEM-V2-P012","why_high_information":"P011 closes the class/compliance frontier with high novelty. The compact atlas discusses freight rates and specialized contracting but under-maps how a voyage or time charter is actually negotiated and administered through brokers, recap/fixture, charter-party terms, laytime/demurrage, off-hire, notices, claims and operational instructions. This can explain realized economics without requiring exact clause text or broker rankings."}],
+  "deferred_regions":[
+    {"region_id":"exact_historical_numbers_and_chronology","state":"deferred","reason":"Exact values/dates require Evidence."},
+    {"region_id":"exact_marine_insurance_clause_versions_thresholds_and_legal_effects","state":"deferred","reason":"Exact insurance wording requires Evidence."},
+    {"region_id":"exhaustive_equipment_vendor_and_repair_yard_catalog","state":"deferred","reason":"Exhaustive vendor cataloguing is low-value."},
+    {"region_id":"exact_bunker_supplier_lineages_port_rules_standard_thresholds_and_legal_outcomes","state":"deferred","reason":"Exact bunker chronology requires Evidence."},
+    {"region_id":"exact_recycling_buyers_yards_regime_applicability_and_sale_liability","state":"deferred","reason":"Exact recycling chronology requires Evidence."},
+    {"region_id":"exact_pilot_tug_salvage_wreck_contract_and_authority_rules","state":"deferred","reason":"Exact casualty-response rules require Evidence."},
+    {"region_id":"exact_ship_agent_clearance_disbursement_and_single_window_rules","state":"deferred","reason":"Exact port-call rules require Evidence."},
+    {"region_id":"exact_navigation_chart_notice_weather_product_standards_and_incident_causation","state":"deferred","reason":"Exact navigation standards/incidents require Evidence."},
+    {"region_id":"exact_crewing_wage_certificate_collective_agreement_and_flag_rules","state":"deferred","reason":"Exact crewing terms/rules require Evidence."},
+    {"region_id":"exact_class_survey_notation_flag_delegation_and_port_state_rules","state":"deferred","reason":"P011 showed high-yield compliance topology but exact rulebooks, delegation, rankings and detention cases require Evidence."},
+    {"region_id":"country_by_country_private_actor_grid","state":"deferred","reason":"Blind recall degrades under exhaustive geography."},
+    {"region_id":"current_2025_2026_market_snapshot","state":"outside_scope","reason":"Current-state claims require source-first collection."}
+  ],
+  "next_probe":{"probe_id":"SHIP-MEM-V2-P012","frontier_id":"shipping-chartering-brokerage-fixture-contract-admin-v1","status":"planned_not_executed","required_capability":"high_capability_reasoning","task_packet":{
+    "family":"chartering_brokerage_fixture_laytime_demurrage_offhire_contract_administration",
+    "period_start":"1970-01-01","period_end":"2026-08-31","source_visibility":"atlas_only","allowed_input_refs":["research_data/memory/shipping/atlas-1970-present/atlas.json","research_data/memory/shipping/atlas-1970-present/atlas.verification.json","research_data/memory/shipping/seal-correction-v1.json"],"fresh_search_forbidden":true,
+    "questions":[
+      "Which roles connect owner, charterer, shipbroker and operator from inquiry/order through negotiation, subjects, fixture/recap and final charter-party without becoming a broker directory?",
+      "How do voyage-charter laytime, notices, loading/discharge records, demurrage/despatch and time-charter hire/off-hire/bunkers/operational instructions shape realized economics at a structural level while exact clauses remain deferred?",
+      "Which contract-administration records, claims handoffs and owner-charterer-agent/captain interfaces are remembered strongly enough to explain why quoted freight or hire differs from realized voyage economics?",
+      "Which contract forms, market practices or source-discovery terms are genuinely new/refinements, and where does recall become too clause-, arbitration-, company- or jurisdiction-specific to retain?"
+    ],"output_contract":{"industry_memory_output_required":true,"method_observation_limit":1,"novelty_classes":["new_category","useful_refinement","duplicate"],"reviewed_no_specific_memory_allowed":true,"one_pass_cannot_self_seal":true}
+  }},
+  "seal_readiness":{"campaign_stage":"active_recall","fresh_search_used":false,"negative_space_review_complete":false,"independent_challenger_complete":false,"has_major_coverage_gaps":true,"recent_outcomes":[
+    {"pass_id":"SHIP-MEM-V2-P004","family":"ship_design_machinery_equipment_repair_conversion_ecosystem","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json","novel_lead_count":18,"duplicate_lead_count":2,"high_importance_novel_count":10},
+    {"pass_id":"SHIP-MEM-V2-P005","family":"marine_fuel_bunkering_quality_credit_testing_infrastructure","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json","novel_lead_count":18,"duplicate_lead_count":2,"high_importance_novel_count":10},
+    {"pass_id":"SHIP-MEM-V2-P006","family":"ship_recycling_demolition_cash_buyer_scrap_finance_end_of_life","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P006.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
+    {"pass_id":"SHIP-MEM-V2-P007","family":"pilotage_towage_salvage_wreck_removal_emergency_response","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P007.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
+    {"pass_id":"SHIP-MEM-V2-P008","family":"ship_agency_husbandry_port_call_clearance_customs_immigration_documentation_disbursement","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P008.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
+    {"pass_id":"SHIP-MEM-V2-P009","family":"hydrography_charts_notices_weather_routing_navigation_information","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P009.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":9},
+    {"pass_id":"SHIP-MEM-V2-P010","family":"crewing_manning_training_recruitment_welfare_labor_supply","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P010.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":10},
+    {"pass_id":"SHIP-MEM-V2-P011","family":"classification_societies_statutory_surveys_flag_delegation_certification_port_state_control","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P011.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":10}
   ],"eligible":false,"reason_codes":["campaign_stage_not_seal_candidate","major_coverage_gap_open","high_importance_novelty_present","insufficient_orthogonal_low_novelty_passes","negative_space_review_incomplete","independent_challenger_incomplete"]},
-  "evidence_transition":{"allowed":false,"reason":"Both reopened Shipping shards remain unsealed; the bounded recent window through P010 still contains high-importance novel Memory."},
+  "evidence_transition":{"allowed":false,"reason":"Both reopened Shipping shards remain unsealed; recent P004-P011 still contain high-importance novel Memory."},
   "bounds":{"maximum_open_frontiers":64,"maximum_recent_seal_outcomes":8,"current_open_frontier_count":1,"current_recent_seal_outcome_count":8,"selected_next_probe_count":1}
 }
