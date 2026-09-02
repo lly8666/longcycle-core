@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P053",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"marine_survey_inspection_vetting_condition_onhire_offhire_draft_bunker_cargo_quantity_quality_damage_preload_discharge_surveyor_report_reservation",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P053-L01","novelty":"new_category","importance":"high","lead":"Marine survey work has at least two role layers: an appointing interest such as owner, charterer, cargo interest or insurer, and a surveyor or inspector who records observations within an agreed scope. Appointment identity does not by itself determine whether a later finding is accepted by every interested party."},
+    {"id":"P053-L02","novelty":"new_category","importance":"high","lead":"Survey scope is a state variable. A condition survey, quantity survey, damage survey, on-hire/off-hire survey or other attendance asks different questions, so a report should not be replayed as a general certificate of all vessel or cargo facts beyond its scope."},
+    {"id":"P053-L03","novelty":"new_category","importance":"high","lead":"Attendance time, observation time and report issue/distribution time can differ. Point-in-time replay should preserve when an inspection occurred separately from when a written finding became available to owners, charterers, insurers or other decision makers."},
+    {"id":"P053-L04","novelty":"new_category","importance":"high","lead":"Condition surveys create a timestamped observed-condition baseline rather than a timeless vessel-quality label. Observed wear, damage, cleanliness or apparent readiness can later support maintenance, charter, sale or claim decisions without automatically establishing cause or liability."},
+    {"id":"P053-L05","novelty":"new_category","importance":"high","lead":"On-hire and off-hire survey states can establish comparative baselines around a change in charter employment, including vessel condition or consumable quantities. Their commercial value comes from comparing defined states at transfer points rather than from a generic inspection score."},
+    {"id":"P053-L06","novelty":"new_category","importance":"high","lead":"Draft-survey-type quantity work estimates cargo quantity through vessel displacement and related measurements rather than direct unit counting. The structural memory is measurement-to-estimate-to-report, while formulas, corrections, tolerances and accuracy are method-specific Evidence questions."},
+    {"id":"P053-L07","novelty":"new_category","importance":"high","lead":"Bunker quantity surveys create measured or calculated fuel-on-board states around delivery, redelivery or bunker transfer. Quantity observation, bunker delivery documentation, consumption accounting and contractual settlement are related but not identical states."},
+    {"id":"P053-L08","novelty":"new_category","importance":"high","lead":"Cargo quantity assurance may use pre-loading, loading, discharge or outturn observations to compare what was presented, handled and delivered. Differences can trigger investigation or reservation without proving shortage cause, carrier responsibility or fraud."},
+    {"id":"P053-L09","novelty":"new_category","importance":"high","lead":"Cargo quality inspection often adds sampling, sample identification, custody and laboratory/testing layers. A sample result describes the sampled material under a method and chain of custody; it should not silently become a universal statement about the entire cargo."},
+    {"id":"P053-L10","novelty":"new_category","importance":"high","lead":"Damage surveys separate observed damage condition, apparent extent, possible causation indicators and estimated repair/loss consequences. These layers may feed claims handling, but observation of damage is not the same as final causation, quantum or legal responsibility."},
+    {"id":"P053-L11","novelty":"new_category","importance":"high","lead":"Reservations, protests or qualifications can be recorded when parties disagree with condition, quantity, timing or responsibility. Such reservations preserve disagreement at the event boundary and are distinct from later acceptance, settlement or adjudication."},
+    {"id":"P053-L12","novelty":"new_category","importance":"high","lead":"Joint attendance or participation by multiple interests can reduce later disputes about what was observable, but it does not force agreement on interpretation. Party presence, signed records and substantive acceptance should remain separate states."},
+    {"id":"P053-L13","novelty":"new_category","importance":"high","lead":"Survey reports propagate operationally through notification and downstream decision states: charter settlement, bunker reconciliation, cargo claims, insurance handling, repair planning, vetting or counterparty review may each consume the same observation differently."},
+    {"id":"P053-L14","novelty":"useful_refinement","importance":"high","lead":"P051 chartering memory is refined because NOR, laytime, demurrage, off-hire, redelivery and bunker settlement disputes can consume survey observations, yet the survey report is an input to the contractual analysis rather than an automatic determination of the charter result."},
+    {"id":"P053-L15","novelty":"useful_refinement","importance":"high","lead":"P044 marine-insurance memory is refined because a surveyor's damage or condition report can support claim investigation while coverage, causation, adjustment and liability remain distinct insurer/claims decisions."},
+    {"id":"P053-L16","novelty":"useful_refinement","importance":"high","lead":"P052 port-agency memory is refined by separating attendance coordination from finding authority: an agent may arrange access, service timing or communications, but the appointed surveyor or expert remains the source of the observation within its stated scope."},
+    {"id":"P053-L17","novelty":"useful_refinement","importance":"medium","lead":"Secondhand-vessel inspection and operational surveys share condition-observation mechanics, but transaction due diligence, charter transfer surveys and casualty/cargo surveys have different scopes and downstream decisions and should not be collapsed into one inspection state."},
+    {"id":"P053-L18","novelty":"duplicate","importance":"low","lead":"The atlas already flags classification, insurance and technical-condition topics as under-recalled areas; P053 adds the survey/inspection state machine without treating those institutions as new discoveries."},
+    {"id":"P053-L19","novelty":"duplicate","importance":"low","lead":"Earlier Shipping passes already map cargo handling, charter claims and port-call events. P053 does not duplicate those physical events; it adds an independent observation/assurance layer around them."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_survey_sampling_measurement_calibration_formula_correction_tolerance_and_accuracy_methods","reason":"Survey methods and measurement uncertainty vary by cargo, vessel, instrument and procedure and require authoritative technical Evidence."},
+    {"region":"specific_condition_damage_quantity_quality_reports_findings_photographs_samples_and_loss_quantum","reason":"Individual findings, measurements, damage causation and monetary consequences are event-specific source facts outside blind Memory."},
+    {"region":"exact_vetting_program_questionnaires_scores_acceptance_thresholds_and_current_operator_requirements","reason":"Vetting systems and acceptance criteria are program- and time-specific and require source-first current or historical Evidence."},
+    {"region":"named_surveyors_inspection_firms_laboratories_loss_adjusters_clients_and_jurisdiction_specific_authority","reason":"Provider identity, mandate, competence, liability and legal effect require claim-scoped Evidence rather than model recall."}
+  ],
+  "stop_reason":"The assurance layer is populated from appointment/scope and attendance through condition, hire-transfer, draft/bunker quantity and cargo quantity/quality/damage observations to reports, reservations, notification and downstream acceptance/dispute states. Further recall becomes method-, measurement-, tolerance-, report-, damage-, vetting-, provider-, cargo- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not legal, technical, insurance or cargo advice; no survey method, measurement, sample, report, damage finding, causation, quantity/quality determination, vetting result, contractual effect, insurance effect, provider competence or jurisdiction-specific rule is verified."
+}
