@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P065",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "marine_insurance_pandi_hull_machinery_war_risk_cover_placement_renewal_calls_premium_claim_notification_reserve_security_settlement_reinsurance_loss_prevention",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-02",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"INS-01","novelty_class":"new_category","importance":"high","memory":"Marine cover has a placement/entry/renewal lifecycle rather than a timeless insured/not-insured flag. Structurally distinct states include risk presentation, broker placement or renewal work, acceptance/entry, cover continuity and renewal or non-renewal, while exact terms and counterparties remain Evidence work."},
+    {"id":"INS-02","novelty_class":"new_category","importance":"high","memory":"Mutual P&I-type funding can have call or contribution states that are conceptually distinct from fixed commercial premium. Payment obligation, cover status and eventual claim outcome should not be collapsed into one financial state."},
+    {"id":"INS-03","novelty_class":"new_category","importance":"high","memory":"Deductible, retention or self-insured participation is a separate risk-bearing layer. The existence of cover does not imply that every loss transfers fully or immediately to an insurer or mutual."},
+    {"id":"INS-04","novelty_class":"new_category","importance":"high","memory":"War-risk or other specially exposed cover can be represented as a separate availability/terms state from ordinary hull or liability cover. Exact geographic limits, additional premiums, exclusions and current-market conditions require Evidence."},
+    {"id":"INS-05","novelty_class":"new_category","importance":"medium","memory":"Subrogation or other recovery-after-payment is a later claim state distinct from initial loss notification and settlement. A paid or funded claim can still have downstream recovery activity without rewriting the earlier liability or causation record."},
+    {"id":"INS-06","novelty_class":"new_category","importance":"high","memory":"Financier or mortgagee acceptance of insurance arrangements can be an independent financing condition. Insurance availability, lender acceptance and vessel physical condition are coupled but not equivalent states."},
+    {"id":"INS-07","novelty_class":"new_category","importance":"high","memory":"Cover continuity can become an operating constraint: failure, uncertainty or delayed renewal of required risk-transfer arrangements can affect finance, charter or port/counterparty acceptance even before any insured casualty occurs."},
+    {"id":"INS-R01","novelty_class":"useful_refinement","importance":"high","memory":"Loss/claim notification, investigation or adjustment, reserve formation and final disposition belong to different known-times. A reserve is an internal or claims-handling state, not an accepted-liability or settlement fact."},
+    {"id":"INS-R02","novelty_class":"useful_refinement","importance":"high","memory":"Claims security or guarantee can be operationally decisive before final liability is resolved. Providing accepted security may release an arrest, detention-like constraint or cargo/vessel hold while fault and quantum remain open."},
+    {"id":"INS-R03","novelty_class":"useful_refinement","importance":"high","memory":"Insurance or P&I cover is not self-executing proof of causation, liability, recoverability or payment. Coverage assessment and underlying factual/legal responsibility must remain separate layers."},
+    {"id":"INS-R04","novelty_class":"useful_refinement","importance":"medium","memory":"Point-in-time replay should preserve notice, reserve, security, settlement, payment and recovery timestamps separately; later settlement or recovery must not leak backward into what parties knew when the loss was first reported."},
+    {"id":"INS-D01","novelty_class":"duplicate","importance":"medium","memory":"Role separation among owner/assured, broker, hull insurer or underwriter, P&I mutual/club management, reinsurer, claimant/counterparty and financier materially overlaps the earlier marine-insurance/P&I campaign pass."},
+    {"id":"INS-D02","novelty_class":"duplicate","importance":"medium","memory":"Hull-and-machinery versus liability/P&I-type risk-transfer functions were already recovered structurally in earlier Shipping memory."},
+    {"id":"INS-D03","novelty_class":"duplicate","importance":"medium","memory":"Casualty notification and insurer/P&I coordination during external casualty response were already represented in earlier casualty and insurance passes."},
+    {"id":"INS-D04","novelty_class":"duplicate","importance":"medium","memory":"Claim reserve, demand, accepted liability, settlement, payment and recovery were already separated as distinct states in the earlier marine-insurance pass."},
+    {"id":"INS-D05","novelty_class":"duplicate","importance":"medium","memory":"Claims security as an operational release mechanism before final liability was already recovered in the prior marine-insurance and vessel-arrest layers."},
+    {"id":"INS-D06","novelty_class":"duplicate","importance":"medium","memory":"Pooling and reinsurance as layers behind primary/mutual risk transfer were already captured in the earlier insurance pass."},
+    {"id":"INS-D07","novelty_class":"duplicate","importance":"medium","memory":"Loss-prevention or risk-improvement activity linked to insurance/P&I was already captured as a structural category."},
+    {"id":"INS-D08","novelty_class":"duplicate","importance":"medium","memory":"Settlement/payment/recovery as a post-loss progression substantially duplicates earlier claims-lifecycle memory."},
+    {"id":"INS-D09","novelty_class":"duplicate","importance":"medium","memory":"Insurance availability as an interface to finance and commercial acceptance overlaps earlier finance, arrest/security and marine-insurance passes."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact policy wordings, limits, deductibles/retentions, exclusions, premiums, mutual calls and additional premiums are too contract- and period-specific for blind retention.",
+    "Exact club, insurer, broker, correspondent, adjuster or reinsurer structures and historical lineages require claim-scoped Evidence.",
+    "Named claims, reserves, security amounts, settlements, recoveries and current insurer/club financial-strength facts are deferred to Evidence.",
+    "Exact jurisdictional rules governing compulsory insurance, direct action, guarantees, subrogation or recovery rights are legal/Evidence work."
+  ],
+  "negative_space": [
+    "Exact policy and club-rule mechanics by period, vessel, trade and jurisdiction.",
+    "Exact war-risk geographic terms, additional-premium mechanics and current market conditions.",
+    "Historical non-English mutual-insurance, correspondent, claims and reinsurance terminology requiring source archaeology.",
+    "Named insurer/club/broker/provider market shares, memberships, claims records and current coverage decisions."
+  ],
+  "counts": {"new_category":7,"useful_refinement":4,"duplicate":9,"novel":11,"high_importance_novel":9,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only orientation/source-discovery output. It is not insurance, coverage, claims, finance, legal, operational or risk-management advice and does not establish any policy, premium, call, deductible, insurer/club, claim, reserve, security, settlement, recovery or named-vessel fact.",
+  "stop_reason": "The bounded incremental insurance/P&I layer is recalled, but material overlap with earlier Shipping marine-insurance memory is now evident. Further depth would either repeat already recovered claims/risk-transfer structure or become policy-wording-, rate-, provider-, claim- or jurisdiction-specific and therefore requires a different frontier or later Evidence rather than more blind insurance recall."
+}
