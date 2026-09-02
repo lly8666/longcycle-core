@@ -1,0 +1,113 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-readiness-review__blind-001",
+  "family": "bounded_shard_seal_readiness_review",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-31",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@156cbebca20ebfcc774ec41c3a766c76e24a79ea;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "review_kind": "control_metadata_only_no_new_recall",
+  "review_prerequisites": [
+    {
+      "id": "all_primary_time_slices_broad_plus_orthogonal",
+      "status": "pass",
+      "basis": "revision-31 coverage_snapshot marks TIME-1990-2026__SYS-REGULATION-RESOLUTION all_primary_time_slices_broad_plus_orthogonal_complete"
+    },
+    {
+      "id": "negative_space_review_complete",
+      "status": "pass",
+      "basis": "revision-31 active shard negative_space_review_complete=true"
+    },
+    {
+      "id": "independent_challenger_complete",
+      "status": "pass",
+      "basis": "revision-31 active shard independent_challenger_complete=true"
+    },
+    {
+      "id": "prior_saturation_material_gaps_followed_through",
+      "status": "pass",
+      "basis": "revision-31 coverage records both resolution-funding/loss-allocation and recovery/resolution-planning/loss-absorbency broad-plus-orthogonal regions complete"
+    },
+    {
+      "id": "resolution_funding_loss_allocation_covered",
+      "status": "pass",
+      "basis": "revision-31 reviewed_high_value_regions marks RESOLUTION-FUNDING-LOSS-ALLOCATION broad_plus_orthogonal_complete"
+    },
+    {
+      "id": "recovery_resolution_preparedness_covered",
+      "status": "pass",
+      "basis": "revision-31 reviewed_high_value_regions marks RECOVERY-RESOLUTION-PLANNING-LOSS-ABSORBENCY broad_plus_orthogonal_complete"
+    },
+    {
+      "id": "three_consecutive_low_novelty_after_latest_reset",
+      "status": "pass",
+      "basis": "revision-31 consecutive_low_novelty_passes_observed=3 and candidate_conditions_met=true"
+    },
+    {
+      "id": "preexposure_and_no_search_no_evidence_boundaries_intact",
+      "status": "pass",
+      "basis": "revision-31 source_visibility is none_for_selected_next_probe, fresh_search_used=false, and manifest retains PREEXPOSED_NOT_BLIND carveout; this review used only the allowed map and manifest"
+    },
+    {
+      "id": "no_material_blind_frontier_remains",
+      "status": "pass",
+      "basis": "revision-31 known_major_gaps says no unresolved map-changing blind category is selected and the only open frontier is this review-only gate"
+    }
+  ],
+  "review_result": {
+    "prerequisite_pass_count": 9,
+    "prerequisite_fail_count": 0,
+    "all_formal_prerequisites_passed": true,
+    "material_blind_frontier_reopened": false,
+    "seal_candidate_ready": true,
+    "seal_decision_required": true
+  },
+  "novelty": {
+    "new_category_count": 0,
+    "useful_refinement_count": 0,
+    "duplicate_count": 0,
+    "novel_lead_count": 0,
+    "high_importance_novel_count": 0,
+    "total_lead_count": 0,
+    "classification": "not_a_recall_pass_control_metadata_review_only"
+  },
+  "method_observation": null,
+  "frontier_updates": {
+    "closed_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__SEAL-READINESS-REVIEW"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__EXPLICIT-SEAL-DECISION"],
+    "reason": "All formal seal-readiness prerequisites pass from compact control metadata. This review cannot self-seal, so exactly one explicit seal-decision step is opened and Evidence remains disabled."
+  },
+  "stage_after_pass": "seal_decision_pending",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "seal_readiness_review_passed_explicit_seal_decision_required",
+  "validation_refs": [],
+  "unverified": true
+}
