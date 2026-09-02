@@ -1,0 +1,85 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2000-2004__SYS-REGULATION-RESOLUTION__blind-001",
+  "family": "time_x_shard_blind_recall",
+  "time_slice_id": "TIME-2000-2004",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": [
+    "2000-01-01",
+    "2004-12-31"
+  ],
+  "prompt_version": "exploration-map-revision-5",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@275400b455b24584956cb58645e829695591bf5f;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2000-2004__SYS-REGULATION-RESOLUTION__blind-001-memory-leads.md",
+    "commit_sha": "1952965ae21849adf7c694cbbf0f21606eef4198",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 18,
+    "useful_refinement_count": 24,
+    "duplicate_count": 2,
+    "novel_lead_count": 42,
+    "high_importance_novel_count": 23,
+    "total_lead_count": 44,
+    "classification": "material_novelty_with_supervision_recapitalization_resolution_boundary_risk"
+  },
+  "negative_space": [
+    "Exact statutory relationship among takeover, revocation, dissolution, liquidation and judicial bankruptcy after the early-2000s legal changes remains unresolved.",
+    "The claimant hierarchy under the remembered 金融机构撤销条例, including individual deposits versus corporate creditors and commercial-bank scope, remains unresolved.",
+    "The exact PBOC-to-CBRC transfer of supervisory responsibilities and residual financial-stability powers remains unresolved.",
+    "Exact dates, legal vehicles and asset-transfer steps for BOC/CCB recapitalization and joint-stock conversion remain unresolved.",
+    "The exact action label and claimant treatment for the remembered Shantou City Commercial Bank distress episode remain unresolved.",
+    "The exact RCC pilot geography, central support instrument conditions and center-local loss-sharing remain unresolved.",
+    "No routine completed judicial bankruptcy of a licensed domestic commercial bank is confidently recalled for 2000-2004.",
+    "Exact numerical NPL/capital targets and reported improvements remain intentionally unclaimed."
+  ],
+  "frontier_updates": {
+    "closed_frontiers": [
+      "TIME-2000-2004__SYS-REGULATION-RESOLUTION"
+    ],
+    "opened_frontiers": [
+      "TIME-2000-2004__SYS-REGULATION-RESOLUTION__MECHANISM-BOUNDARY-CHALLENGE"
+    ],
+    "reason": "The broad 2000-2004 pass produced material novelty but also exposed a high-value category risk: supervisory separation, prudential tightening, state-owner recapitalization, legal corporatization and actual institution resolution/market exit can collapse into one generic reform narrative. One orthogonal blind challenge has higher expected information value than another broad recall or source-like legal-detail drill."
+  },
+  "method_observation": {
+    "count": 0,
+    "classification": "none_retained_this_pass",
+    "observation": null,
+    "proposed_validation_probe": null,
+    "proposed_family": null,
+    "shared_change_requested": false
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "single_bounded_pass_complete_with_material_novelty_and_mechanism_boundary_need",
+  "validation_refs": [],
+  "unverified": true
+}
