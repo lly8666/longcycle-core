@@ -1,0 +1,254 @@
+{
+  "schema_version": "shipping-memory-pass/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "shard_id": "shipping-1970-present-whole-industry",
+  "pass_id": "SHIP-MEM-V2-P005",
+  "family": "marine_fuel_bunkering_quality_credit_testing_infrastructure",
+  "authority_class": "research_only_model_memory",
+  "branch": "workstream/shipping-domain-v1",
+  "probe_started_from_head_sha": "77f923312eb5b24f40f39a0cc418c366bc1eb41a",
+  "model_instrument_vintage": {
+    "model": "GPT-5.6 Sol",
+    "surface": "ChatGPT chat",
+    "run_date": "2026-09-02"
+  },
+  "source_visibility": "atlas_only",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_index_digest": {
+    "algorithm": "sha256",
+    "canonicalization": "UTF-8 of ordered newline-separated path@github_blob_sha entries",
+    "value": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf"
+  },
+  "external_search_used": false,
+  "repository_evidence_search_used": false,
+  "evidence_promotion_performed": false,
+  "memory_leads": [
+    {
+      "lead_id": "SHIP-P005-L001",
+      "novelty_class": "new_category",
+      "theme": "physical_supplier_trader_broker_chain",
+      "memory": "Marine fuel procurement often separates refinery or terminal inventory, a physical bunker supplier, traders/resellers or brokers, and the vessel-side buyer. The contracting counterparty may therefore differ from the party physically delivering the fuel.",
+      "confidence": "high_for_structure_low_for_specific_lineage",
+      "why_useful": "Explains why bunker economics and disputes cannot be reduced to a posted fuel price or one supplier list.",
+      "precision_caveat": "Do not infer current market shares, exact ownership chains or jurisdiction-specific liability from this Memory lead."
+    },
+    {
+      "lead_id": "SHIP-P005-L002",
+      "novelty_class": "new_category",
+      "theme": "bunker_stem_transaction_workflow",
+      "memory": "A useful historical research unit is the bunker stem itself: quantity and grade request, quotation/confirmation, nominated delivery window and location, supplier/barge coordination, delivery documentation, sampling, quantity acceptance and later invoice or claim handling.",
+      "confidence": "high_for_process_shape",
+      "why_useful": "Turns a vague fuel-cost topic into a replayable transaction chain with multiple failure points.",
+      "precision_caveat": "Exact contractual wording and documentary requirements vary by period, port and contract and require Evidence."
+    },
+    {
+      "lead_id": "SHIP-P005-L003",
+      "novelty_class": "new_category",
+      "theme": "storage_blending_terminal_network",
+      "memory": "Bunker supply depends on tank storage, refinery or import availability, blending components, segregation capability and terminal transfer arrangements before fuel reaches a bunker barge or other delivery mode.",
+      "confidence": "high_for_structure",
+      "why_useful": "Connects refinery/product-market conditions to local vessel fueling availability and quality risk.",
+      "precision_caveat": "Do not infer exact port inventories, blend recipes or current terminal capability."
+    },
+    {
+      "lead_id": "SHIP-P005-L004",
+      "novelty_class": "new_category",
+      "theme": "delivery_mode_and_barge_capacity",
+      "memory": "Fuel may be delivered by dedicated bunker barge, ex-pipe at a terminal, truck in smaller ports or other local arrangements. Barge availability, berth/anchorage rules, weather and vessel schedule can make delivery capacity a separate operational constraint from fuel availability.",
+      "confidence": "high_for_structure",
+      "why_useful": "Adds a physical last-mile layer to port-bottleneck and effective-capacity analysis.",
+      "precision_caveat": "Port-specific modes and restrictions are source-dependent."
+    },
+    {
+      "lead_id": "SHIP-P005-L005",
+      "novelty_class": "new_category",
+      "theme": "working_capital_and_credit",
+      "memory": "Bunker trading is working-capital intensive because suppliers commonly finance fuel between upstream purchase and shipowner/charterer payment. Credit limits, payment terms, trade-credit insurance or bank facilities can therefore constrain who can supply whom even when physical fuel is available.",
+      "confidence": "medium_high_for_mechanism",
+      "why_useful": "Makes counterparty credit part of operating continuity rather than a finance footnote.",
+      "precision_caveat": "Exact tenor, security and financing structures vary and must not be invented."
+    },
+    {
+      "lead_id": "SHIP-P005-L006",
+      "novelty_class": "useful_refinement",
+      "theme": "bunker_counterparty_failure",
+      "memory": "A trader or reseller failure can propagate beyond the failed company through unpaid upstream suppliers, disputed payment chains and vessels that already consumed fuel. OW-Bunker-type episodes are remembered as especially useful source-discovery anchors for this mechanism.",
+      "confidence": "medium_high_for_anchor_low_for_legal_effect",
+      "why_useful": "Refines the atlas counterparty-risk theme into a bunker-specific transaction-chain failure mode.",
+      "precision_caveat": "Do not state lien, title or payment outcomes without jurisdiction- and case-specific Evidence."
+    },
+    {
+      "lead_id": "SHIP-P005-L007",
+      "novelty_class": "new_category",
+      "theme": "fuel_specification_and_blend_compatibility",
+      "memory": "Marine fuels are governed by specification families such as ISO 8217, but operational risk also depends on stability and compatibility between blend components or between old and newly loaded fuel. Post-2020 low-sulfur blending made compatibility and variability particularly salient in industry discussion.",
+      "confidence": "high_for_general_mechanism",
+      "why_useful": "Separates nominal grade compliance from whether fuel can be safely stored, mixed and burned onboard.",
+      "precision_caveat": "Exact standard editions, test limits and any incident chronology require Evidence."
+    },
+    {
+      "lead_id": "SHIP-P005-L008",
+      "novelty_class": "new_category",
+      "theme": "contaminants_and_engine_risk",
+      "memory": "Remembered bunker-quality concerns include water and sediment, catalytic fines, flash-point problems, sulfur or viscosity mismatch, instability and unusual contamination. The causal chain runs from delivered fuel through settling/purification and injection/combustion equipment to reliability or damage risk.",
+      "confidence": "high_for_category_low_for_thresholds",
+      "why_useful": "Links fuel procurement quality to machinery reliability and unscheduled operational loss.",
+      "precision_caveat": "Thresholds and causation in a specific casualty need lab and technical Evidence."
+    },
+    {
+      "lead_id": "SHIP-P005-L009",
+      "novelty_class": "new_category",
+      "theme": "sampling_chain_of_custody",
+      "memory": "Continuous or representative sampling at the delivery manifold, retained samples and the distinction among supplier, vessel and statutory samples are remembered as central to bunker-quality disputes. Chain of custody matters because later lab results can depend on which sample is accepted as representative.",
+      "confidence": "medium_high_for_mechanism",
+      "why_useful": "Creates a concrete provenance problem analogous to Longcycle's own source-representation discipline.",
+      "precision_caveat": "Exact mandated sampling method and legal priority of samples are Evidence-first."
+    },
+    {
+      "lead_id": "SHIP-P005-L010",
+      "novelty_class": "new_category",
+      "theme": "independent_fuel_testing",
+      "memory": "Independent marine-fuel testing services and laboratories, including remembered programs such as FOBAS- or VPS-type services, form an institutional layer between delivery and onboard fuel use. Owners may test samples before fully consuming a stem where timing permits.",
+      "confidence": "medium_high_for_actor_class",
+      "why_useful": "Adds a non-supplier verification layer and source-discovery vocabulary.",
+      "precision_caveat": "Exact provider histories, ownership and service coverage should be source-verified."
+    },
+    {
+      "lead_id": "SHIP-P005-L011",
+      "novelty_class": "new_category",
+      "theme": "quantity_measurement_and_survey",
+      "memory": "Quantity disputes historically rely on tank soundings, density/temperature corrections, barge and vessel measurements and bunker surveyors; some major hubs later moved toward mass-flow-meter regimes. Measurement method can therefore change both fraud opportunity and evidentiary quality.",
+      "confidence": "high_for_mechanism_medium_for_transition",
+      "why_useful": "Shows that delivered quantity is a measurement system, not a single trusted number.",
+      "precision_caveat": "Exact port mandates and implementation dates require Evidence."
+    },
+    {
+      "lead_id": "SHIP-P005-L012",
+      "novelty_class": "new_category",
+      "theme": "short_delivery_and_air_entrainment_risk",
+      "memory": "Industry memory includes short-delivery disputes and so-called cappuccino-bunker or air-entrainment concerns in volume-based measurement. These are useful hypotheses for researching why meter choice, sounding practice and survey independence matter.",
+      "confidence": "medium_for_historical_term",
+      "why_useful": "Supplies concrete search vocabulary for quantity-integrity failures without asserting a specific event.",
+      "precision_caveat": "Treat the term as a Memory lead, not proof that a particular delivery was fraudulent."
+    },
+    {
+      "lead_id": "SHIP-P005-L013",
+      "novelty_class": "new_category",
+      "theme": "off_spec_claim_and_debunkering_path",
+      "memory": "When fuel is suspected off-spec or incompatible, practical responses can include segregation, extra treatment/testing, operational restrictions, negotiated use, removal or de-bunkering, and claims for delay or machinery consequences. The cost often depends on discovering the problem before incompatible fuel is mixed or widely consumed.",
+      "confidence": "medium_high_for_response_set",
+      "why_useful": "Preserves the trajectory from questionable delivery to mitigation and later Outcome rather than only a binary pass/fail label.",
+      "precision_caveat": "Contractual entitlement and causation are claim-specific."
+    },
+    {
+      "lead_id": "SHIP-P005-L014",
+      "novelty_class": "new_category",
+      "theme": "owner_charterer_operator_allocation",
+      "memory": "Who buys bunkers can differ from who owns and technically operates the ship. Time-charter structures are remembered as especially relevant because charterers may procure fuel while owners bear machinery-operability concerns; delivery/redelivery bunker quantities and prices also become commercial terms.",
+      "confidence": "medium_high_for_structure",
+      "why_useful": "Explains recurring principal-agent and documentation problems around fuel quality, cost and credit.",
+      "precision_caveat": "Do not generalize contractual allocation across charterparty forms without Evidence."
+    },
+    {
+      "lead_id": "SHIP-P005-L015",
+      "novelty_class": "useful_refinement",
+      "theme": "port_licensing_and_quality_governance",
+      "memory": "Major bunkering hubs often use supplier licensing, barge/measurement requirements, codes of practice or approved-provider regimes. Singapore is a strong remembered discovery anchor, while other hubs use different institutional designs.",
+      "confidence": "high_for_structure_low_for_exact_rules",
+      "why_useful": "Refines the atlas port-authority theme into bunker-market governance and integrity controls.",
+      "precision_caveat": "No current supplier list, exact rule text or effective date is claimed."
+    },
+    {
+      "lead_id": "SHIP-P005-L016",
+      "novelty_class": "useful_refinement",
+      "theme": "port_bunker_hubs_and_route_economics",
+      "memory": "Bunkering concentrates in hubs such as Singapore, ARA/Rotterdam-area ports, Fujairah and other route-adjacent locations because storage scale, competition, refinery/import access and minimal voyage deviation matter. The best fueling location is therefore a route, schedule, price, credit and quality decision rather than simply the nearest port.",
+      "confidence": "medium_high_for_structure",
+      "why_useful": "Extends the chokepoint/port-bottleneck atlas into fuel-network geography without creating a hub ranking.",
+      "precision_caveat": "Hub shares and current competitiveness require source-first research."
+    },
+    {
+      "lead_id": "SHIP-P005-L017",
+      "novelty_class": "useful_refinement",
+      "theme": "alternative_fuel_network_chicken_and_egg",
+      "memory": "Alternative marine fuels create a coordination problem between vessel investment and port fuel availability. Owners are reluctant to commit to a fuel without credible supply at expected routes, while infrastructure investors need confidence in future vessel demand and offtake.",
+      "confidence": "high_for_structural_mechanism",
+      "why_useful": "Refines the atlas alternative-fuel uncertainty into a network-adoption and capital-cycle mechanism.",
+      "precision_caveat": "No claim is made about which fuel is currently winning or which ports are ready."
+    },
+    {
+      "lead_id": "SHIP-P005-L018",
+      "novelty_class": "new_category",
+      "theme": "fuel_specific_infrastructure_constraints",
+      "memory": "At a structural level, LNG requires cryogenic storage/transfer and gas-safety procedures; methanol changes tank/material, fire and toxicity handling requirements; ammonia raises major toxicity and storage/transfer safety constraints. New fuels therefore require more than a new commodity contract: storage, segregation, bunkering equipment, emergency procedures and crew/shore competence also change.",
+      "confidence": "high_for_direction_low_for_design_detail",
+      "why_useful": "Connects decarbonization choice to port and vessel infrastructure rather than treating fuel as fungible.",
+      "precision_caveat": "Engineering design, regulatory compliance and current readiness are source- and project-specific."
+    },
+    {
+      "lead_id": "SHIP-P005-L019",
+      "novelty_class": "duplicate",
+      "theme": "fuel_speed_tradeoff",
+      "memory": "Fuel prices influence optimal speed and slow steaming can absorb effective fleet capacity.",
+      "confidence": "high",
+      "why_useful": "Confirms that the P005 chain still connects to a major atlas mechanism but adds little novelty by itself.",
+      "precision_caveat": "Already represented in the compact atlas."
+    },
+    {
+      "lead_id": "SHIP-P005-L020",
+      "novelty_class": "duplicate",
+      "theme": "imo_2020_fuel_spread_and_scrubber_uncertainty",
+      "memory": "The IMO 2020 transition created uncertainty around compliant-fuel availability, fuel spreads and scrubber economics.",
+      "confidence": "high_for_broad_theme",
+      "why_useful": "Useful orientation anchor but already explicit in the atlas Judgment families.",
+      "precision_caveat": "Exact spreads, dates and outcomes are Evidence-first."
+    }
+  ],
+  "novelty": {
+    "new_category_count": 14,
+    "useful_refinement_count": 4,
+    "duplicate_count": 2,
+    "reviewed_no_specific_memory_count": 4,
+    "high_importance_novel_count": 10
+  },
+  "high_importance_novel_lead_ids": [
+    "SHIP-P005-L001",
+    "SHIP-P005-L002",
+    "SHIP-P005-L003",
+    "SHIP-P005-L005",
+    "SHIP-P005-L007",
+    "SHIP-P005-L009",
+    "SHIP-P005-L011",
+    "SHIP-P005-L013",
+    "SHIP-P005-L014",
+    "SHIP-P005-L018"
+  ],
+  "reviewed_no_specific_memory": [
+    "exact_historical_supplier_and_trader_market_share_or_ownership_lineages",
+    "exact_port_by_port_bunker_licensing_mass_flow_meter_and_sampling_rule_chronology",
+    "exact_iso_8217_or_other_fuel_standard_version_threshold_history",
+    "current_2025_2026_lng_methanol_ammonia_bunkering_readiness_by_port_or_vendor"
+  ],
+  "negative_space": [
+    "ship_recycling_demolition_cash_buyer_scrap_finance_and_end_of_life_regulatory_ecosystem",
+    "exact_bunker_credit_insolvency_lien_title_and_payment_case_law_by_jurisdiction",
+    "private_regional_bunker_supplier_barge_operator_and_testing_service_lineages",
+    "historical_non_english_bunker_terms_port_rules_and_supplier_predecessor_names_requiring_source_archaeology"
+  ],
+  "method_observation": {
+    "class": "transaction_chain_failure_point_lens",
+    "observation": "Bunker-fuel recall stays high-yield when the probe follows one transaction from storage and credit through physical delivery, measurement, sampling, onboard handling and dispute resolution. It degrades quickly when it becomes a port-by-port supplier list or a current alternative-fuel readiness ranking. Future institutional probes should prefer transaction-chain failure points over actor enumeration.",
+    "status": "campaign_local_hypothesis_supported_by_this_pass",
+    "shared_method_promotion": false
+  },
+  "stop_reason": "The preset questions were answered with a coherent bunker transaction and infrastructure topology. Marginal recall then shifted toward exact supplier lineages, port licensing dates, standard thresholds, current hub rankings and legal outcomes; those require claim-scoped Evidence or would violate the sparse-map anti-tunnel rule.",
+  "one_pass_cannot_self_seal": true,
+  "campaign_remains_unsealed": true,
+  "both_reopened_shards_remain_unsealed": true,
+  "evidence_transition_allowed": false
+}
