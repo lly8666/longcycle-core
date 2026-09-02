@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P034",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"seafarer_labor_relations_unions_collective_bargaining_grievance_discipline_industrial_action_social_dialogue_work_rules",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P034-L01","novelty":"new_category","importance":"high","lead":"Maritime labor relations add a collective representation layer between individual seafarers and employers: shipboard representatives, unions/federations, shipowners or employer associations, shipmanagers/crewing intermediaries and public labor/flag/port institutions may all affect how employment terms are negotiated or contested."},
+    {"id":"P034-L02","novelty":"new_category","importance":"high","lead":"Representation and recognition are distinct states. A workforce may have individual contracts while questions remain about which organization represents which workers, the scope of bargaining coverage and whether an agreement applies to a vessel, employer or group of seafarers; exact jurisdictional rules require Evidence."},
+    {"id":"P034-L03","novelty":"new_category","importance":"high","lead":"Collective bargaining is a cycle rather than a single signed agreement: preparation and demands, negotiation, tentative settlement, ratification/acceptance, implementation, expiry and renewal uncertainty can each change expected labor cost or operating risk before final terms are known."},
+    {"id":"P034-L04","novelty":"new_category","importance":"high","lead":"A collective agreement can be represented as a bundle of employment and work-rule states—pay components, leave/tour patterns, benefits, overtime or work practices—without assuming any exact term. Individual employment conditions may inherit, exceed or sit outside the collective baseline depending on coverage."},
+    {"id":"P034-L05","novelty":"new_category","importance":"high","lead":"Labor-cost transmission is broader than base wage. Allowances, overtime, leave, travel, pension/benefit obligations, manning or work-rule effects can alter the effective cost of a crewing model even when the nominal wage rate is unchanged; exact cost stacks require Evidence."},
+    {"id":"P034-L06","novelty":"new_category","importance":"high","lead":"Grievance handling is an information-and-resolution process: complaint or alleged breach, representation, investigation or response, local resolution, escalation and closure can affect trust and retention before any industrial action occurs."},
+    {"id":"P034-L07","novelty":"new_category","importance":"high","lead":"Discipline is a separate employment state from safety investigation. Alleged misconduct, employer action, representation or appeal and final disposition can intersect with crew availability and morale, but casualty causation or legal correctness cannot be inferred from a disciplinary outcome."},
+    {"id":"P034-L08","novelty":"new_category","importance":"medium","lead":"Mediation, conciliation, arbitration or other third-party dispute-resolution mechanisms can interrupt escalation between bargaining failure and industrial action. The structural point is the existence of intermediate resolution states; forum, legal effect and historical procedure require Evidence."},
+    {"id":"P034-L09","novelty":"new_category","importance":"high","lead":"Industrial action can affect vessel operations through refusal to work, strike-type action, delayed crewing, port-side solidarity or other collective pressure. Operational impact depends on timing, location, affected roles and substitute capacity rather than the mere announcement of a dispute."},
+    {"id":"P034-L10","novelty":"new_category","importance":"high","lead":"Port and vessel labor systems can interact. A seafarer-employment dispute may remain onboard-specific, while port-side labor action can constrain cargo handling, berthing or access across many vessels; replay should preserve which workforce and operation were actually affected."},
+    {"id":"P034-L11","novelty":"new_category","importance":"high","lead":"Employer strategy can adapt to labor institutions through crewing models, shipmanagement arrangements, employment entities, flag or registry choices, contracting and automation or work redesign. These are possible structural responses, not proof that any specific choice was made to avoid labor obligations."},
+    {"id":"P034-L12","novelty":"new_category","importance":"high","lead":"Labor relations can influence retention and crew continuity by changing perceived fairness, predictability of terms and confidence in grievance resolution. This is distinct from P033's individual payment or relief state even though the two layers interact."},
+    {"id":"P034-L13","novelty":"new_category","importance":"high","lead":"Agreement expiry, bargaining deadlines, strike notices and settlement announcements create a known-time sequence. A later settlement must not erase the operational uncertainty that existed while participants were deciding whether to reroute, delay, hire, extend crews or change schedules."},
+    {"id":"P034-L14","novelty":"useful_refinement","importance":"high","lead":"P033 employment contracts are refined by collective coverage: the operative employment condition may depend on both an individual agreement and a collective or industry-level rule bundle, so replay should avoid treating the individual contract as the entire labor regime."},
+    {"id":"P034-L15","novelty":"useful_refinement","importance":"high","lead":"P032 safety culture and challenge behavior can be influenced by formal representation and grievance channels. A worker's practical willingness to raise an issue may depend on perceived protection and resolution pathways as well as shipboard hierarchy."},
+    {"id":"P034-L16","novelty":"useful_refinement","importance":"high","lead":"Effective shipping capacity can be reduced by labor-state constraints without any vessel casualty or fleet change: unavailable crews, port labor action or work-rule disputes can idle assets or slow operations, linking labor institutions to the atlas effective-versus-nominal-capacity theme."},
+    {"id":"P034-L17","novelty":"useful_refinement","importance":"high","lead":"Counterparty and continuity risk should preserve employer/worker expectations during unresolved negotiations. An announced demand, strike authorization, tentative agreement and ratified settlement are different information states and should not be collapsed into the final outcome."},
+    {"id":"P034-L18","novelty":"duplicate","importance":"low","lead":"The atlas already identifies labor/crewing as under-recalled and ports as potential bottlenecks; P034 adds collective labor-state mechanisms rather than repeating those broad gaps."},
+    {"id":"P034-L19","novelty":"duplicate","importance":"low","lead":"Generic contract, known-time and revision semantics already exist in the Baseline; P034 applies them to bargaining, agreements and disputes without changing those semantics."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_collective_agreements_wage_scales_allowances_work_rules_and_benefits","reason":"Exact negotiated terms, coverage, effective dates and cost implications require dated agreement or employer/union Evidence."},
+    {"region":"specific_unions_federations_employer_associations_and_recognition_disputes","reason":"Organization histories and representation scope vary by geography, flag and era and would become a salience-biased directory without source-first research."},
+    {"region":"specific_strikes_boycotts_grievances_disciplinary_cases_and_legal_outcomes","reason":"Event chronology, affected operations, legality and responsibility require claim-scoped participant, authority, court or archival Evidence."},
+    {"region":"current_2025_2026_bargaining_rounds_labor_costs_and_industrial_action_risk","reason":"Current negotiations and operational exposure are source-first current-state claims, not blind-memory authority."}
+  ],
+  "stop_reason":"The collective labor-relations chain is populated from representation/recognition through bargaining, agreement/work-rule implementation, grievance/discipline, dispute resolution and industrial action. Further recall becomes agreement-, wage-scale-, union-, law-, strike-, grievance-, employer- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no collective agreement term, wage scale, representation status, grievance outcome, disciplinary correctness, strike legality, employer motive or current labor-dispute exposure is verified."
+}
