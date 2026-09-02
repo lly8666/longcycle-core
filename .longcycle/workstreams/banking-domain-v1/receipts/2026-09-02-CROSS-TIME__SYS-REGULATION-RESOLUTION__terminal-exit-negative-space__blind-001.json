@@ -1,0 +1,75 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001",
+  "family": "cross_time_terminal_bank_exit_negative_space_blind_challenge",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-19",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@4df7bc5c96ec68aea8f8c09027a9126ebb2354e6;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001-memory-leads.md",
+    "commit_sha": "c2af23cf56238dbf6dc63fdbd67544845ff54b6b",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 28,
+    "useful_refinement_count": 21,
+    "duplicate_count": 5,
+    "novel_lead_count": 49,
+    "high_importance_novel_count": 34,
+    "total_lead_count": 54,
+    "classification": "material_negative_space_novelty_with_sparse_true_terminal_bank_exit_set"
+  },
+  "raw_footer_tally_correction": {
+    "status": "receipt_recount_is_canonical",
+    "reason": "The append-only raw footer contains a manual tally slip. A mechanical recount of the explicit per-lead labels yields 28 new categories, 21 useful refinements, 5 duplicates and 34 high-importance novel/refining leads. The raw file is not rewritten because blind raw is append-only."
+  },
+  "negative_space": [
+    "Hainan Development Bank is the strongest blind-memory late-1990s commercial-bank closure anchor, but exact successor and claimant mechanics remain uncertain.",
+    "Shantou Commercial Bank is a high-value suspension/reorganization anchor rather than a confidently terminal bankruptcy; later Guangdong Huaxing continuity requires Evidence.",
+    "Baoshang Bank is the clearest modern sequence spanning formal takeover, distress transfer/successor formation and later terminal entity process; exact creditor thresholds and deposit-insurance mechanics remain source-dependent.",
+    "GITIC/trust companies, securities firms, P2P/platforms, borrower bankruptcies, policy mergers, recapitalizations, delistings and village-bank branch conversions are explicit false positives for the licensed-bank terminal set.",
+    "Blind recall did not reveal a broad hidden population of ordinary commercial-bank court bankruptcies with transparent depositor waterfalls."
+  ],
+  "method_observation": null,
+  "invocation_method_observation_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002.json#/method_observation",
+  "frontier_updates": {
+    "closed_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__TERMINAL-EXIT-NEGATIVE-SPACE"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-STATE-RED-TEAM"],
+    "reason": "The negative-space pass recovers a sparse true/near-terminal set and a useful period-native vocabulary while explicitly rejecting major non-bank and policy-consolidation false positives. The negative-space review is now sufficient for this blind stage. Before any saturation review, an independent red-team should attack the classifier with ambiguous state pairs: closure versus suspension, takeover versus support, merger versus failure, license exit versus legal dissolution, customer transfer versus deposit-insurance payout, and bank versus non-bank perimeter."
+  },
+  "stage_after_pass": "independent_challenge",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "cross_time_terminal_exit_negative_space_complete_with_sparse_true_exit_set_and_red_team_needed",
+  "validation_refs": [],
+  "unverified": true
+}
