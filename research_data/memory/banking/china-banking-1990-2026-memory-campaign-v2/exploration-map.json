@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 56,
+  "map_revision": 57,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
@@ -15,8 +15,8 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001.json",
-  "latest_pass_receipt_status": "negative_space_review_reopened_monetary_aggregate_metric_semantics",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-001.json",
+  "latest_pass_receipt_status": "high_novelty_cross_time_money_aggregate_definition_statistical_break_and_signal_semantics_memory_only",
   "sealed_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
@@ -39,15 +39,6 @@
       "fresh_search_used": false,
       "recent_outcomes": [
         {
-          "pass_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002",
-          "family": "time_slice_orthogonal_blind_recall",
-          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002.json",
-          "novel_lead_count": 26,
-          "duplicate_lead_count": 1,
-          "high_importance_novel_count": 25,
-          "outcome": "all_nine_primary_time_slices_broad_plus_orthogonal_complete"
-        },
-        {
           "pass_id": "CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001",
           "family": "bounded_negative_space_review",
           "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001.json",
@@ -55,6 +46,15 @@
           "duplicate_lead_count": 0,
           "high_importance_novel_count": 0,
           "outcome": "material_monetary_aggregate_metric_semantic_gap_reopened"
+        },
+        {
+          "pass_id": "CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-001",
+          "family": "cross_time_metric_semantics_blind_recall",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-001.json",
+          "novel_lead_count": 26,
+          "duplicate_lead_count": 1,
+          "high_importance_novel_count": 21,
+          "outcome": "high_novelty_money_aggregate_definition_statistical_break_and_signal_semantics"
         }
       ],
       "negative_space_review_complete": false,
@@ -72,36 +72,37 @@
       {"region_id": "TIME-2013-2016__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Interbank stress, facility architecture, first-generation LPR, funding competition, targeted/broad easing, FX offsets, corridor candidates, NCD funding and MPA boundaries covered."},
       {"region_id": "TIME-2017-2019__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Deleveraging/stance separation, MPA/TSF perimeter, funding segmentation, structural support and 2019 LPR transition covered."},
       {"region_id": "TIME-2020-2022__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Pandemic liquidity/credit layering, direct-tool intermediary risk, legacy LPR conversion, structural tools, deposit transmission, mortgage/property boundaries and fiscal/PBOC balance-sheet semantics covered."},
-      {"region_id": "TIME-2023-2026__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Low-inflation/real-rate transmission, policy-rate/MLF/LPR/DR007 layers, two-sided bond operations, buyout reverse repo and corridor candidates, fiscal-deposit/RRR liquidity, deposit self-discipline/term/NCD repricing, mortgage adjustment objects, property/affordable-housing/PSL boundaries, local-debt loan-to-bond substitution, government-bond TSF, anti-idling cleanup, structural and capital-market support facilities, long-bond risk and FX constraints are covered at blind-memory level. CMB 2023-08-28 direct overlap was excluded from novelty."},
-      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__NEGATIVE-SPACE-REVIEW", "state": "material_gap_reopened", "note": "The bounded rev55 negative-space review found one material comparability gap: dedicated cross-time monetary-aggregate metric semantics and statistical breakpoints. Negative-space review remains incomplete until that frontier is resolved and the review is rerun."},
+      {"region_id": "TIME-2023-2026__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Low-inflation/real-rate transmission, policy-rate/MLF/LPR/DR007 layers, two-sided bond operations, fiscal-deposit/RRR liquidity, deposit/NCD repricing, mortgage/property/local-debt and structural-tool boundaries are covered at blind-memory level."},
+      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__MONETARY-AGGREGATE-METRIC-SEMANTICS", "state": "broad_blind_recall_complete_high_novelty", "note": "Broad metric-semantic coverage now includes M0/M1/M2 definition vintages, quasi-money/base-money vocabulary, household/unit/non-bank/fiscal/interbank deposit boundaries, M1-M2 signal interpretation, digital-payments and termization effects, M2/GDP and money-multiplier traps, money-target versus observed-series separation, NCD/MMF/WMP perimeter questions and PIT backcast provenance. Exact historical component revisions remain uncertain and require an orthogonal blind challenge."},
+      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__NEGATIVE-SPACE-REVIEW", "state": "material_gap_under_follow_through", "note": "Rev55 negative-space review remains incomplete while the reopened monetary-aggregate frontier is being resolved."},
       {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION", "state": "canonically_sealed_for_model_vintage", "note": "The sealed regulation/resolution shard remains isolated from monetary-credit recall and review."}
     ],
     "known_major_gaps": [
-      "A material cross-time metric-semantic frontier remains open for M0/M1/M2 and related money-supply vocabulary: component definitions, deposit/institutional classification boundaries, statistical breaks and changing signal content have not yet received dedicated blind depth. This must be distinguished from already-covered TSF stock/flow/perimeter semantics.",
-      "After the monetary-aggregate frontier reaches sufficient blind depth, rerun the bounded negative-space review. Only a clean negative-space review may select the independent challenger; saturation review and measured low-novelty confirmations remain later prerequisites before any seal decision.",
-      "Exact aggregate-definition revision dates, official component rules, historical series-break specifications, rates/ratios, policy-document wording and source-specific facts remain deferred Evidence work after a future valid shard seal."
+      "The broad monetary-aggregate pass recovered substantial category-level semantics, but an independent orthogonal challenge is still needed for M1/M2 definition vintage, household/unit/non-bank/fiscal/interbank boundaries, securities-margin/payment-institution/MMF/NCD treatment, reserve-money versus M0, bank deposits versus M2, old-release versus backcast series and signal-versus-reclassification interpretation.",
+      "After sufficient broad plus orthogonal depth on this reopened frontier, rerun the bounded negative-space review. Only a clean negative-space review may select the independent challenger; saturation and measured low-novelty controls remain later prerequisites before seal.",
+      "Exact aggregate-definition revision dates, official component rules, historical series-break specifications and source wording remain deferred Evidence work after a future valid shard seal."
     ],
     "deferred_regions": [
       {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL", "state": "post_seal_evidence_eligible_but_deferred", "reason": "Not selected by the sparse map; keep separate from active unsealed-shard recall."}
     ]
   },
   "open_frontiers": [
-    {"frontier_id": "CROSS-TIME__SYS-MONETARY-CREDIT__MONETARY-AGGREGATE-METRIC-SEMANTICS", "priority_rank": 1, "state": "open", "selected_probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-001"}
+    {"frontier_id": "CROSS-TIME__SYS-MONETARY-CREDIT__MONETARY-AGGREGATE-METRIC-SEMANTICS__ORTHOGONAL", "priority_rank": 1, "state": "open", "selected_probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-002"}
   ],
   "next_probe": {
-    "probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-001",
-    "family": "cross_time_metric_semantics_blind_recall",
+    "probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-002",
+    "family": "cross_time_metric_semantics_orthogonal_blind_recall",
     "time_slice_id": "CROSS-TIME",
     "shard_id": "SYS-MONETARY-CREDIT",
     "period": ["1990-01-01", "2026-08-31"],
-    "instruction": "In the next eligible loop, run one isolated cross-time MEMORY_LEADS_ONLY blind pass over the reopened monetary-aggregate metric-semantic frontier using only this compact map, the manifest and model internal memory. Recover period-native research leads for M0/M1/M2 and related money-supply vocabulary, component and institutional-sector boundaries, commercial/non-bank/fiscal deposit distinctions, reserve/base money versus broad money, statistical reclassifications and series-break risks, and how payment technology, deposit termization or financial deepening may change the signal content of narrow versus broad money. Explicitly distinguish this frontier from already-covered TSF stock/flow/perimeter semantics and from ordinary policy-tool chronology. Do not read Batch0 raw, any prior v2 raw, sealed SYS-REGULATION-RESOLUTION raw, other-shard raw, Banking Evidence/source material or fresh Banking search results. Honor the CMB 2023-08-28 preexposure carveout. Preserve uncertainty and do not invent exact revision dates, official formulas, component rules, rates, thresholds or document wording. Append one raw unit and bounded receipt, classify novelty honestly, rebuild the sparse map with exactly one next probe, and close substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN. One pass cannot self-seal.",
+    "instruction": "Run one isolated orthogonal MEMORY_LEADS_ONLY challenge over the reopened monetary-aggregate metric-semantic frontier using only this compact map, the manifest and model internal memory. Do not read blind-001 or any prior raw. Attack the broad coverage from independent angles: old versus revised M1 holder/product perimeter; household versus unit demand deposits; fiscal/general-government, interbank and non-bank-financial deposits; securities-customer-margin, payment-institution, money-market-fund and NCD treatment; M0 versus reserve/base money; bank deposit totals versus M2; M2 versus TSF and credit; money-multiplier and M2/GDP interpretation; statistical series breaks/backcasts versus what an observer actually saw; and changes in signal content caused by payments technology, termization and financial deepening. Preserve uncertainty, distinguish definitional breaks from economic behavior, and do not invent exact dates, formulas, classifications or official wording. Do not read Batch0 raw, any prior v2 raw, sealed SYS-REGULATION-RESOLUTION raw, other-shard raw, Banking Evidence/source material or fresh Banking search results. Honor the CMB 2023-08-28 preexposure carveout. Append one raw unit and bounded receipt, classify novelty honestly, rebuild the sparse map with exactly one next probe, and close substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN. One pass cannot self-seal.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
-      "all prior v2 raw blind-pass outputs",
+      "all prior v2 raw blind-pass outputs including monetary-aggregate blind-001",
       "sealed SYS-REGULATION-RESOLUTION raw outputs",
       "other shard raw outputs",
       "Banking source or Evidence material",
@@ -109,6 +110,6 @@
     ],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One append-only cross-time monetary-aggregate metric-semantics raw unit and receipt exist; period-native metric/vocabulary distinctions, uncertainty and comparison traps are explicit; the sparse map selects exactly one deterministic next step; and the probe closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
+    "done_when": "One orthogonal monetary-aggregate metric-semantics raw unit and receipt exist; independent omissions/refinements/duplicates and uncertainty are explicit; the sparse map selects exactly one deterministic next step; and the probe closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
   }
 }
