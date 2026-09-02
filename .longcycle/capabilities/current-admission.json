@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "CHAT-AGENT-PROMPT-PACK-V1-034",
-  "intent": "Provide one reusable ChatGPT-chat prompt pack for current and future Longcycle roles: role creation, exact-remote takeover, automatic recovery, bounded execution and S-to-H handoff.",
+  "intent_id": "FOUR-PROBE-SLICE-V1-035",
+  "intent": "Let industry Memory Campaign Leads use one ChatGPT invocation for up to four sequential map-driven probe cycles while preserving a complete S-to-H handoff after every probe and recovering unfinished work first on the next invocation.",
   "governance_mode": "converging",
   "disposition": "reuse",
   "target_capability_ids": [
@@ -14,13 +14,13 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "CAP-0009 already owns bounded fresh-Agent and remote interruption recovery, CAP-0010 owns reservation/cursor isolation and role routing, and CAP-0006 owns map-driven blind Memory work. The prompt pack exposes those existing owners without adding a second handoff system or permanent role layer.",
+  "rationale_summary": "CAP-0006 already owns map-driven blind Memory probing and novelty/negative-space stop logic, CAP-0009 owns S-to-H interruption recovery, and CAP-0010 owns isolated workstream routing. Four serial completed cycles extend invocation throughput without adding parallel probes, a new cursor schema or another coordination layer; interruption recovery remains prior to any new task.",
   "rationale_details_ref": "docs/development/agent-governance-operating-manual.md",
   "unmet_requirement": null,
   "evidence_refs": [
+    "docs/development/prompts/all-agent-takeover.md",
+    "docs/development/prompts/all-agent-handoff.md",
     "docs/development/remote-worker-continuity.md",
-    "docs/development/workstream-reservation-integration.md",
-    "docs/development/parallel-data-plane.md",
     "docs/research/industry-memory-exploration-map.md"
   ],
   "planned_paths": [

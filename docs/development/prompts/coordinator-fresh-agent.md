@@ -37,6 +37,7 @@
 - 行业提出 typed request；只有合并到 main 的 completion receipt 才算共享能力可用。
 - 每个行业每轮最多带来一个方法观察。只有至少两个独立行业重复出现同一实质缺口，才考虑共享功能；否则不新增永久角色或治理层。
 - 全局 handoff 只保留中短期目标、少量活动 workstream 路由和集成状态，不复制行业历史。
+- 行业 worker 的一次聊天执行可连续完成最多 4 个 probe，但必须是四个顺序的 `probe -> S -> H -> CLEAN` 循环。你只放行第一个 live probe；后续三个由各自更新后的地图动态选择，不预排、不跨写，也不要求用户在 probe 之间重复说“继续”。被截断的 worker 下次启动必须先恢复旧 probe/缺失的 `H`，再接任何新任务。
 
 当前 worker cursor 若未变化：银行唯一下一步应为 `TIME-1990-1994__SYS-REGULATION-RESOLUTION__blind-001`；航运唯一下一步应为 `SHIP-MEM-V2-P001`。它们的 live cursor 一旦不同，立即以 live 为准。你不替它们生成研究内容。
 
@@ -46,4 +47,4 @@
 
 发现真实 L3/L4 才停止受影响地基工作，并用大白话说明发生什么、为何碰地基、不改怎样、改的风险、建议和需要用户决定什么。工具不可用本身不是 L3/L4。
 
-先用简短进度消息报告：main/worker 精确 head、各 continuity 结果及依据、六层目标、各 worker 唯一下一步、工具限制和 L3/L4。若安全，不等待用户回复，直接执行全局 cursor 的一个原子任务；结束前完整执行 `docs/development/prompts/all-agent-handoff.md`。
+先用简短进度消息报告：main/worker 精确 head、各 continuity 结果及依据、六层目标、各 worker 唯一下一步、工具限制和 L3/L4。若安全，不等待用户回复，直接执行全局 cursor 的一个原子任务；观察行业执行时允许其最多四连跑，但不要把这变成硬配额。结束前完整执行 `docs/development/prompts/all-agent-handoff.md`。
