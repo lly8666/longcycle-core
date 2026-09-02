@@ -1,0 +1,34 @@
+{
+  "schema_version": "longcycle-industry-memory-shard-seal-state/v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "workstream_id": "banking-domain-v1",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "model_vintage": "GPT-5.6 Sol",
+  "industry": "China Banking",
+  "period": [
+    "1990-01-01",
+    "2026-08-31"
+  ],
+  "authority_class": "research_control_only",
+  "source_visibility": "none",
+  "seal_decision_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002.json",
+  "saturation": {
+    "state": "sealed_for_this_model_vintage"
+  },
+  "blind_memory_status": "immutable_after_seal_except_exact_supersession",
+  "evidence_status": "not_started_deferred_to_later_clean_handoff",
+  "campaign_sealed": false,
+  "manifest_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+  "exploration_map_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+  "seal_basis": {
+    "negative_space_review_complete": true,
+    "independent_challenger_complete": true,
+    "saturation_review_complete": true,
+    "seal_readiness_review_complete": true,
+    "canonical_consecutive_low_novelty_passes": 3,
+    "canonical_distinct_recent_families": 3,
+    "max_high_importance_novel_per_low_pass": 1,
+    "fresh_search_used": false,
+    "major_coverage_gaps": false
+  }
+}
