@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P039",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"seafarer_travel_documents_visas_immigration_port_entry_crew_change_transit_border_health_restrictions_shore_leave_access",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P039-L01","novelty":"new_category","importance":"high","lead":"Crew mobility is a multi-gate logistics chain rather than a ticket purchase. A seafarer must be document-ready, legally admissible through each relevant transit/entry step, physically transported to the port, locally cleared to enter the terminal/vessel interface and synchronized with the ship's actual call window."},
+    {"id":"P039-L02","novelty":"new_category","importance":"high","lead":"Identity and travel-document readiness is an upstream state separate from professional certification. Passport-type documents, seafarer identity/discharge-type records and other required travel credentials can have validity, expiry, name/data consistency or possession issues that block travel even when occupational certificates are valid."},
+    {"id":"P039-L03","novelty":"new_category","importance":"high","lead":"Visa, permit, transit and entry eligibility form route-dependent constraints. A crew-change itinerary can cross several jurisdictions with different requirements, so admissibility must be evaluated for the full path rather than only the embarkation port."},
+    {"id":"P039-L04","novelty":"new_category","importance":"high","lead":"Airline and ground-carrier acceptance is a practical gate distinct from formal immigration permission. Carrier document checks, missed connections, baggage or equipment issues, cancellations and schedule disruption can strand a joining or repatriating seafarer before a border authority ever makes a decision."},
+    {"id":"P039-L05","novelty":"new_category","importance":"high","lead":"Port and terminal access is a local interface state. Security gates, escort/transport arrangements, launch or berth access, terminal operating windows and ship-agent coordination can determine whether an otherwise cleared person reaches or leaves the vessel."},
+    {"id":"P039-L06","novelty":"new_category","importance":"high","lead":"Crew change is a synchronization problem between two personnel states and one vessel state: the off-signer must remain operational until relief is accepted, the on-signer must arrive and clear, and the ship must remain reachable long enough to transfer responsibility without creating a manning gap."},
+    {"id":"P039-L07","novelty":"new_category","importance":"high","lead":"Embarkation and disembarkation are distinct checkpoints. A joining seafarer's failed arrival may extend another person's tour, while an off-signer who has left the vessel can still face onward-travel, transit or border problems before repatriation is complete."},
+    {"id":"P039-L08","novelty":"new_category","importance":"high","lead":"Health or public-health clearance can become an independent mobility gate during outbreaks or other restrictions. Testing, vaccination/documentation, quarantine or entry-health processes can change quickly and propagate into crew-change feasibility; exact requirements and dates require Evidence."},
+    {"id":"P039-L09","novelty":"new_category","importance":"high","lead":"Disruption recovery is part of the crew-mobility state machine. Flight cancellation, vessel delay, port omission, missed connection, visa timing or local-access failure can require rerouting, rebooking, temporary accommodation and renewed coordination rather than a simple retry of the original itinerary."},
+    {"id":"P039-L10","novelty":"new_category","importance":"high","lead":"The vessel's schedule creates a moving target for crew logistics. ETA changes, congestion, berth shifts, anchorage stays or port omission can invalidate previously valid travel plans and force the shore team to continuously reconcile human itineraries with operational reality."},
+    {"id":"P039-L11","novelty":"new_category","importance":"high","lead":"Crew-change failure can become an onboard workload and fatigue problem. Extended tours, uncertain relief, extra handovers or temporary understaffing can reduce recovery and morale even before formal minimum-manning compliance is threatened."},
+    {"id":"P039-L12","novelty":"new_category","importance":"high","lead":"Repatriation completion should be modeled beyond disembarkation. Local clearance, transport to airport or border, transit eligibility, onward connections and final return can all fail independently; stranded status is therefore a travel-chain condition rather than only an employer-contract condition."},
+    {"id":"P039-L13","novelty":"new_category","importance":"high","lead":"Crew mobility has cost optionality and resilience tradeoffs. Flexible tickets, alternate hubs, spare time, local accommodation, backup personnel and agent support can reduce disruption risk but raise cost; brittle low-buffer plans can work in stable periods and fail sharply under disruption."},
+    {"id":"P039-L14","novelty":"useful_refinement","importance":"high","lead":"P033 joining/relief/repatriation is refined by separating employment authorization from physical mobility execution. A signed contract and assigned vessel do not imply that the worker can actually join, and leaving the gangway does not by itself complete repatriation."},
+    {"id":"P039-L15","novelty":"useful_refinement","importance":"high","lead":"P038 shore access is refined because practical shore leave depends on the same local access, transport, documentation and time-window gates that govern crew change, while the legal entitlement question remains deferred to Evidence."},
+    {"id":"P039-L16","novelty":"useful_refinement","importance":"high","lead":"P032 fatigue and P037 recovery are refined because failed crew changes can convert a shore-side documentation or transport problem into longer tours and reduced recovery aboard the vessel."},
+    {"id":"P039-L17","novelty":"useful_refinement","importance":"medium","lead":"P019 schedule reliability is refined because vessel schedule changes also propagate into personnel logistics. Port omission or ETA drift can destroy a crew-change plan even when cargo operations remain commercially recoverable."},
+    {"id":"P039-L18","novelty":"duplicate","importance":"low","lead":"The atlas already identifies ports, disruptions and crewing as structural themes; P039 adds the cross-border personnel-mobility state machine rather than repeating those broad categories."},
+    {"id":"P039-L19","novelty":"duplicate","importance":"low","lead":"Generic known-time and temporal-precision rules are already Baseline semantics; P039 applies them to fast-changing itineraries, entry conditions and vessel-call timing without asserting exact rules."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_passport_seafarer_identity_discharge_book_visa_permit_and_transit_requirements","reason":"Document and visa requirements vary by nationality, flag, route, jurisdiction and period; exact requirements require dated official Evidence."},
+    {"region":"exact_border_public_health_quarantine_vaccination_testing_and_entry_rule_chronology","reason":"Health and border rules are highly time-sensitive and jurisdiction-specific and cannot be established from blind recall."},
+    {"region":"named_airlines_travel_agents_port_agents_ground_transport_and_crew_change_service_performance","reason":"Provider identities, routes, prices and service quality are directory-like and current-state sensitive and require source-first research."},
+    {"region":"specific_stranded_seafarer_repatriation_shore_leave_or_denied_entry_cases","reason":"Individual cases and legal/operational findings require claim-scoped Evidence and should not be inferred from structural Memory."}
+  ],
+  "stop_reason":"The crew-mobility chain is populated from document readiness and admissibility through transit, local port access, synchronized embark/disembark, disruption recovery and completed repatriation. Further recall becomes passport-, document-, visa-, permit-, border-, port-, health-, airline-, transit-, agent- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no passport/document requirement, visa or entry eligibility, border or health rule, airline acceptance rule, shore-leave entitlement, agent capability or individual crew-change/repatriation outcome is verified."
+}
