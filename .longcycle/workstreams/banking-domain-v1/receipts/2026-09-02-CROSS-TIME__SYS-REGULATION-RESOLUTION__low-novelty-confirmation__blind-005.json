@@ -1,0 +1,79 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005",
+  "family": "bounded_low_novelty_confirmation",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-30",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@c62e416c89bbd2d191df8778db5a0b26b13663a3;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005-memory-leads.md",
+    "commit_sha": "eabb79b6078fcb6a122bdd554b26227d12020c5a",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 0,
+    "useful_refinement_count": 3,
+    "duplicate_count": 14,
+    "novel_lead_count": 3,
+    "high_importance_novel_count": 2,
+    "total_lead_count": 17,
+    "classification": "low_novelty_confirmation_restart_3_with_no_material_new_category"
+  },
+  "saturation_assessment": {
+    "material_missing_antecedent_or_category": false,
+    "duplicate_dominant": true,
+    "qualifies_as_low_novelty_confirmation": true,
+    "low_novelty_confirmation_restart_index": 3,
+    "prior_consecutive_low_novelty_passes_observed": 2,
+    "consecutive_low_novelty_passes_after_pass": 3,
+    "consecutive_low_novelty_passes_required": 3,
+    "seal_eligible": false,
+    "seal_candidate_review_required": true
+  },
+  "negative_space": [
+    "No new institution class, actor class, terminal-exit state, claimant class, funding/backstop channel, loss-allocation class, preparedness class or material antecedent was recovered.",
+    "Decision/execution timing, claimant reference time and selective transfer perimeter are representation refinements inside already-covered dimensions.",
+    "Exact domestic legal powers, rules, dates, ratios, valuation methods, creditor ordering, instrument triggers and named-bank implementation remain Evidence/source-detail work."
+  ],
+  "method_observation": null,
+  "frontier_updates": {
+    "closed_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__LOW-NOVELTY-CONFIRMATION-RESTART-3"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__SEAL-READINESS-REVIEW"],
+    "reason": "The third fresh confirmation after the latest material-category reset is duplicate-dominant and recovers no material category, completing the required 3/3 streak. A blind pass cannot self-seal; exactly one dedicated seal-readiness review is opened before any seal decision or Evidence transition."
+  },
+  "stage_after_pass": "seal_candidate_review",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "three_of_three_low_novelty_complete_transition_to_seal_readiness_review",
+  "validation_refs": [],
+  "unverified": true
+}
