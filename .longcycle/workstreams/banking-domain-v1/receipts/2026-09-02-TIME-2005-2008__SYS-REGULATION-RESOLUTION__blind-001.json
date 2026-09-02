@@ -1,0 +1,85 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-001",
+  "family": "time_x_shard_blind_recall",
+  "time_slice_id": "TIME-2005-2008",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": [
+    "2005-01-01",
+    "2008-12-31"
+  ],
+  "prompt_version": "exploration-map-revision-7",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@e016ffc57eff7a2ba1b5ac6b8904793ac1560bda;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-001-memory-leads.md",
+    "commit_sha": "e590e634d5a35fcec39d1f471dd4f29f71f7c3df",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 23,
+    "useful_refinement_count": 26,
+    "duplicate_count": 3,
+    "novel_lead_count": 49,
+    "high_importance_novel_count": 25,
+    "total_lead_count": 52,
+    "classification": "material_novelty_with_entry_listing_conversion_vs_exit_boundary"
+  },
+  "negative_space": [
+    "Exact 2005-2008 capital-adequacy implementation deadlines, Basel II preparation documents and provisioning thresholds remain unresolved.",
+    "Foreign-bank local-incorporation rules, RMB business permissions and first-incorporation chronology remain source-dependent.",
+    "Exact strategic-investor stakes, valuation controversies and lockup arrangements are not confidently recalled.",
+    "PSBC, CDB and ABC legal conversion and asset-transfer sequences remain uncertain.",
+    "The exact pilot design for village banks and other new rural financial institutions remains unresolved.",
+    "No routine completed judicial bankruptcy of a licensed domestic commercial bank is confidently recalled in 2005-2008.",
+    "Named operating, license and claimant status for earlier distressed local-bank cases remains unknown.",
+    "The 2008 crisis response must be separated from institution resolution; direct foreign-asset losses and bank-specific stress require sources."
+  ],
+  "frontier_updates": {
+    "closed_frontiers": [
+      "TIME-2005-2008__SYS-REGULATION-RESOLUTION"
+    ],
+    "opened_frontiers": [
+      "TIME-2005-2008__SYS-REGULATION-RESOLUTION__ENTRY-CONVERSION-EXIT-CHALLENGE"
+    ],
+    "reason": "The broad pass produced material novelty across large-bank/city-bank listings, foreign-bank local incorporation, PSBC and rural institution formation, ABC/CDB reform, prudential normalization and the 2008 crisis turn. The key remaining blind-value question is categorical: distinguish institution entry/formation, legal conversion/listing and state balance-sheet reform from actual stress intervention or terminal market exit. One orthogonal challenge has higher expected value than a second broad chronology."
+  },
+  "method_observation": {
+    "count": 0,
+    "classification": "none_retained_this_pass",
+    "observation": null,
+    "proposed_validation_probe": null,
+    "proposed_family": null,
+    "shared_change_requested": false
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "single_bounded_pass_complete_with_material_novelty_and_entry_exit_boundary_need",
+  "validation_refs": [],
+  "unverified": true
+}
