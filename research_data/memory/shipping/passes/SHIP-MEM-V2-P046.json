@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P046",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"vessel_ownership_registration_flag_beneficial_owner_special_purpose_company_bareboat_charter_mortgage_recordation_sale_purchase_delivery_manager_operator_identity",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P046-L01","novelty":"new_category","importance":"high","lead":"A vessel's registered owner, economic or beneficial owner, parent group and day-to-day operator can be different entities. Historical replay should therefore avoid treating a single company label as the complete ownership-and-control state."},
+    {"id":"P046-L02","novelty":"new_category","importance":"high","lead":"Single-vessel or small-fleet special-purpose owning companies can separate legal title to an asset from group-level strategy, financing, management and economic exposure. Exact company trees require Evidence, but the structural role is important for claims, finance and asset-transfer analysis."},
+    {"id":"P046-L03","novelty":"new_category","importance":"high","lead":"Flag or vessel registry is an asset identity and regulatory interface rather than proof of commercial ownership. Registration connects the vessel to a nationality/administration framework, while economic ownership, technical management and charter control may sit elsewhere."},
+    {"id":"P046-L04","novelty":"new_category","importance":"high","lead":"Bareboat or demise-type charter control can shift possession and operating responsibilities without transferring registered title. This creates a role state in which the party controlling crewing and operation may differ from the legal owner."},
+    {"id":"P046-L05","novelty":"new_category","importance":"high","lead":"Technical management, commercial management and crewing management can be split across different organizations. Maintenance/class compliance, chartering/employment and personnel functions therefore should not be inferred from vessel ownership alone."},
+    {"id":"P046-L06","novelty":"new_category","importance":"high","lead":"Ship management can be performed in-house or outsourced. The management appointment itself is a time-varying relationship whose start, termination and transfer can matter for safety culture, procurement, maintenance, crewing and operating-cost history."},
+    {"id":"P046-L07","novelty":"new_category","importance":"high","lead":"Mortgage recordation and vessel title are linked but distinct from broader borrower or group financing. A vessel can carry registered security while debt economics, guarantees or lender exposure extend beyond the ship-owning entity."},
+    {"id":"P046-L08","novelty":"new_category","importance":"high","lead":"A vessel sale is a multi-state transition rather than a single price event: agreement, conditions/due diligence, financing or mortgage-release preparation, closing, physical/legal delivery, registry/flag transition, management/crew transition and post-delivery operation can occur at different times."},
+    {"id":"P046-L09","novelty":"new_category","importance":"high","lead":"Sale-and-purchase delivery can change ownership while some operational relationships persist temporarily, or change management/flag/insurance simultaneously. Replay therefore needs separate effective times for title/economic exposure and operational control where supportable."},
+    {"id":"P046-L10","novelty":"new_category","importance":"high","lead":"Changes of flag, registry, name, manager, operator or owning SPV can occur without the physical vessel becoming a new asset. Stable vessel identity should therefore be distinguishable from mutable corporate and registry attributes."},
+    {"id":"P046-L11","novelty":"new_category","importance":"high","lead":"Beneficial or economic-control questions are especially important when screening counterparty, financing, sanctions/compliance, claims or related-party exposure, but exact beneficial-ownership conclusions require authoritative current or historical Evidence and should not be guessed from model memory."},
+    {"id":"P046-L12","novelty":"new_category","importance":"high","lead":"Ownership and management transitions can affect continuity of records and counterparties. Charterers, lenders, insurers, class/flag interfaces, suppliers, crews and port agents may need to recognize a new responsible entity even when the vessel's physical employment barely changes."},
+    {"id":"P046-L13","novelty":"new_category","importance":"high","lead":"Known-time can differ from effective ownership/control time. A sale, management transfer or ownership restructuring may be negotiated privately before public or counterparty visibility, so historical replay should not backfill later-known group identity into earlier decisions."},
+    {"id":"P046-L14","novelty":"useful_refinement","importance":"high","lead":"P045 arrest/mortgage memory is refined because a claim against a vessel-owning entity, a group company, an operator or a bareboat charterer may have different operational implications; exact legal reach remains Evidence-only."},
+    {"id":"P046-L15","novelty":"useful_refinement","importance":"high","lead":"P044 insurance memory is refined because policyholder/member, registered owner, manager and economic owner need not be identical roles; blind Memory should not infer coverage or membership from asset ownership."},
+    {"id":"P046-L16","novelty":"useful_refinement","importance":"high","lead":"Atlas counterparty-risk analysis is refined by separating vessel identity from company identity so historical mergers, bankruptcies, fleet sales and restructurings do not accidentally erase the continuing life of the physical ship."},
+    {"id":"P046-L17","novelty":"useful_refinement","importance":"high","lead":"Atlas capital-cycle analysis is refined because secondhand asset transfers can move vessels between owners and financing structures without changing total fleet supply, while changing leverage, cost base and strategic behavior."},
+    {"id":"P046-L18","novelty":"duplicate","importance":"low","lead":"The atlas already records broad ownership transfers and capital-provider changes in downturns; P046 adds role and identity separation rather than repeating that ships change hands."},
+    {"id":"P046-L19","novelty":"duplicate","importance":"low","lead":"Generic temporal precision, provenance and Memory-not-Evidence rules are already Baseline semantics; P046 applies them to vessel identity, title, management and control changes."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_vessel_registry_flag_title_bareboat_registration_and_mortgage_recordation_rules","reason":"Registry and title rules are jurisdiction-specific and require dated authoritative Evidence."},
+    {"region":"specific_vessel_company_beneficial_owner_parent_spv_manager_operator_or_crewing_relationships","reason":"Entity identity and control are claim-specific historical/current facts requiring corporate, registry, contractual or other authoritative Evidence."},
+    {"region":"named_registry_agents_nominees_trustees_ship_managers_and_current_flag_or_registry_rankings","reason":"Provider and current-market rankings are directory/current-state claims outside blind Memory."},
+    {"region":"exact_sale_purchase_title_documents_closing_steps_mortgage_release_terms_and_delivery_records","reason":"Transaction documents and exact closing mechanics vary by deal and law; blind Memory retains only structural lifecycle states."}
+  ],
+  "stop_reason":"The vessel identity/control layer is populated across registered/economic ownership, SPV/group, flag/registry, bareboat control, technical/commercial/crewing management, mortgage recordation and sale/delivery transitions. Further recall becomes registry-, title-, beneficial-owner-, transaction-, company- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no vessel ownership, beneficial ownership, control, registry status, flag, mortgage recordation, management appointment, sale/delivery, company relationship or jurisdiction-specific title rule is verified."
+}
