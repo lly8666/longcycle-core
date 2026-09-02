@@ -33,12 +33,12 @@
 - 用新结果重建同一张稀疏 exploration map；始终只选一个 `next_probe`，不铺满时间×主题笛卡尔网格。
 - 当前探针在预设问题已回答、边际新颖度明显下降或只剩重复/越界方向时停止；由地图选择下一步，不因有趣而继续钻深。
 - campaign/shard 保持 unsealed；Memory 不得升级为 Evidence、Reality、Outcome 或 seal。
-- 整次最多三-probe 执行只保留一个最重要的 campaign-local 方法观察；共享缺口只写 typed request，不修改 CAP-0006 或公共代码。
+- 整次最多四-probe 执行只保留一个最重要的 campaign-local 方法观察；共享缺口只写 typed request，不修改 CAP-0006 或公共代码。
 
-本次聊天执行以最多 3 个顺序 probe 为目标。第一个 probe 完成后立即做完整 `S -> cursor-only H -> CLEAN`，再读取更新后的 map/cursor 决定第二个；第二个同理决定第三个。不得提前编造后两个 probe，不得并行执行，也不得把三个 raw/receipt/map 攒到最后才交接。若地图没有安全下一步、应转 seal/challenger/review、出现重复低价值方向、能力/权限/L3-L4 阻塞，或无法保证下一个完整 `S/H`，可以提前停止。
+本次聊天执行以最多 4 个顺序 probe 为目标。第一个 probe 完成后立即做完整 `S -> cursor-only H -> CLEAN`，再读取更新后的 map/cursor 决定第二个；以后同理，直到第四个。不得提前编造后续 probe，不得并行执行，也不得把多个 raw/receipt/map 攒到最后才交接。若上一轮被截断，本轮必须先恢复旧 probe 或补缺失的 `H`，达到 `CLEAN` 后再从最新 map 继续；任何新任务都排在恢复之后。若地图没有安全下一步、应转 seal/challenger/review、出现重复低价值方向、能力/权限/L3-L4 阻塞，或无法保证下一个完整 `S/H`，可以提前停止。
 
 旧 `china-banking-1990-2026-blind-memory-atlas-v1-seal.md` 只是 corrected cold provenance，不是有效 structured seal。只认精确 correction、verification、当前 map 和 cursor；不删除旧字节，不把它输入新探针或升级为 Evidence。
 
 当前探针不需要外网、Drive 或数据库，所以不要下载任何对象。未来只有 live cursor 明确要求时，才执行 adapter 中 exact file-id 下载、私有只读 base、intent-before-upload、new immutable object、download-back verification 和 outcome；银行 worker 永不提升全局 generation。
 
-先用简短进度消息报告：main/银行精确 head、continuity 结果及依据、六层目标、允许/禁止输入与路径、第一个 probe、三连跑目标、工具限制和 L3/L4。若为 `CLEAN`，不等待用户回复，顺序执行最多 3 个完整 probe 循环；每个循环都执行 `docs/development/prompts/all-agent-handoff.md` 并达到远端 `S -> cursor-only H -> CLEAN` 后，才自动进入下一个。
+先用简短进度消息报告：main/银行精确 head、continuity 结果及依据、六层目标、允许/禁止输入与路径、第一个 probe、四连跑目标、工具限制和 L3/L4。若为 `CLEAN`，不等待用户回复，顺序执行最多 4 个完整 probe 循环；每个循环都执行 `docs/development/prompts/all-agent-handoff.md` 并达到远端 `S -> cursor-only H -> CLEAN` 后，才自动进入下一个。

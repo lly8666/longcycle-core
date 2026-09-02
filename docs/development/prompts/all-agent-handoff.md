@@ -26,11 +26,11 @@
 
 特殊情况：
 
-- 行业角色正在执行三-probe 切片时，本提示词在**每个 probe 后**完整执行一次。第一个或第二个 probe 的 `H` 验证为 `CLEAN` 后，若本次已完成数小于 3 且新 map 仍给出安全的 `next_probe`，只发简短进度更新，不结束本轮、不等待用户，立即进入下一循环。
+- 行业角色正在执行四-probe 切片时，本提示词在**每个 probe 后**完整执行一次。前三个 probe 的 `H` 验证为 `CLEAN` 后，若本次已完成数小于 4 且新 map 仍给出安全的 `next_probe`，只发简短进度更新，不结束本轮、不等待用户，立即进入下一循环。
 - 没有任何远端实质变化且 continuation 也没变：不要制造空 `S/H`，报告 `NO_MUTATION`。
 - 在 `S` 前被截断：未推送内容不可恢复，下次从旧 cursor 的下一步重做。
 - `S` 已推、`H` 未推：下次自动得到 `RECOVERY_REQUIRED`，必须先审查并补 `H`。
 - 只能保存安全 WIP：允许 H 标记 `progress_state=partial`、`unverified=true` 和一个明确恢复动作，不能伪装完成。
 - L3/L4：停止受影响实现，按六问大白话向用户说明；worker 把升级记录留在自己的 `escalations/` 并由 cursor 指向，不能自行改地基。
 
-每个 probe 的短收据包含：本次序号（例如 `1/3`）、角色/workstream、目标 branch、`S` SHA、`H` SHA、continuity 结果、实际验证、完成状态、地图新选出的唯一下一步、外部 intent/outcome 状态、阻塞或 L3/L4。三连跑结束或提前停止后再输出本轮汇总；不要粘贴长历史，也不要声称聊天中的未推送思路已经交接。
+每个 probe 的短收据包含：本次序号（例如 `1/4`）、角色/workstream、目标 branch、`S` SHA、`H` SHA、continuity 结果、实际验证、完成状态、地图新选出的唯一下一步、外部 intent/outcome 状态、阻塞或 L3/L4。四连跑结束或提前停止后再输出本轮汇总；不要粘贴长历史，也不要声称聊天中的未推送思路已经交接。

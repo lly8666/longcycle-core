@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "THREE-PROBE-SLICE-V1-035",
-  "intent": "Let industry Memory Campaign Leads use one ChatGPT invocation for up to three sequential map-driven probe cycles while preserving a complete S-to-H handoff and continuity audit after every probe.",
+  "intent_id": "FOUR-PROBE-SLICE-V1-035",
+  "intent": "Let industry Memory Campaign Leads use one ChatGPT invocation for up to four sequential map-driven probe cycles while preserving a complete S-to-H handoff after every probe and recovering unfinished work first on the next invocation.",
   "governance_mode": "converging",
   "disposition": "reuse",
   "target_capability_ids": [
@@ -14,7 +14,7 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "CAP-0006 already owns map-driven blind Memory probing and novelty/negative-space stop logic, CAP-0009 owns S-to-H interruption recovery, and CAP-0010 owns isolated workstream routing. Three serial completed cycles extend invocation throughput without adding parallel probes, a new cursor schema or another coordination layer.",
+  "rationale_summary": "CAP-0006 already owns map-driven blind Memory probing and novelty/negative-space stop logic, CAP-0009 owns S-to-H interruption recovery, and CAP-0010 owns isolated workstream routing. Four serial completed cycles extend invocation throughput without adding parallel probes, a new cursor schema or another coordination layer; interruption recovery remains prior to any new task.",
   "rationale_details_ref": "docs/development/agent-governance-operating-manual.md",
   "unmet_requirement": null,
   "evidence_refs": [

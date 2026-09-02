@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "THREE-PROBE-SLICE-V1-035",
-  "goal": "Increase each industry Agent invocation from roughly one probe to as many as three adaptive probes without weakening interruption recovery, map feedback or anti-tunnel stop rules.",
+  "intent_id": "FOUR-PROBE-SLICE-V1-035",
+  "goal": "Increase each industry Agent invocation from roughly one probe to as many as four adaptive probes while making unfinished-work recovery the mandatory first action of the next invocation.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
@@ -15,14 +15,15 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "A Banking or Shipping invocation targets up to three sequential probe cycles without requiring the user to send continue between cycles.",
+    "A Banking or Shipping invocation targets up to four sequential probe cycles without requiring the user to send continue between cycles.",
     "Every probe separately completes append-only raw/receipt/map work as S, a cursor-only H and an exact remote CLEAN audit before the next probe begins.",
     "Only the first probe comes from the startup cursor; the second and third are selected only after rereading the map/cursor produced by the preceding completed cycle.",
-    "Probes are never preselected or run in parallel and three probes are never collapsed into one large uncheckpointed task.",
+    "Probes are never preselected or run in parallel and four probes are never collapsed into one large uncheckpointed task.",
     "The slice stops early when there is no safe next probe, the map routes to seal/challenger/review, continuity or permission is unsafe, required capability is unavailable, L3/L4 appears or the next full S/H cannot be completed safely.",
-    "Three is a soft per-invocation upper target, not a duration, quota, ontology-completion rule or permission to invent low-value probes.",
-    "If interruption occurs after any S, the next invocation still derives RECOVERY_REQUIRED and repairs the latest missing H before new work.",
-    "Coordinator and future-role prompts understand the three-cycle slice but do not preassign later probes or cross-write worker state.",
+    "Four is a soft per-invocation upper target, not a duration, quota, ontology-completion rule or permission to invent low-value probes.",
+    "After any interruption, the next invocation recovers old work before interpreting or executing a new task: redo from the old cursor if interruption preceded S, or derive RECOVERY_REQUIRED and repair the latest missing H if S was pushed.",
+    "When prior probes already have clean H, the successor continues only from the latest map next_probe; it never invents unpersisted future probes or repeats completed work.",
+    "Coordinator and future-role prompts understand the four-cycle slice but do not preassign later probes or cross-write worker state.",
     "No L3/L4 decision is introduced."
   ]
 }
