@@ -1,0 +1,53 @@
+{
+  "schema_version": "longcycle-banking-memory-pass-receipt/v2",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "workstream_id": "banking-domain-v1",
+  "branch": "workstream/banking-domain-v1",
+  "reservation_revision": 1,
+  "assignment_epoch": 1,
+  "probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__saturation-review__blind-001",
+  "family": "bounded_saturation_review",
+  "time_slice_id": "CROSS-TIME",
+  "shard_id": "SYS-MONETARY-CREDIT",
+  "period": ["1990-01-01", "2026-08-31"],
+  "model_vintage": "GPT-5.6 Sol",
+  "output_authority": "MEMORY_LEADS_ONLY_REVIEW_CONTROL",
+  "allowed_input_digest": "exploration-map.json@34bfef012a2d3c96cafe1b5a206735109a7d2139;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "source_visibility": "none",
+  "fresh_banking_search_used": false,
+  "prior_v2_raw_review_challenger_read": false,
+  "sealed_regulation_resolution_raw_read": false,
+  "other_shard_raw_read": false,
+  "banking_evidence_or_source_material_read": false,
+  "preexposure_carveout": {
+    "subject": "China Merchants Bank 2023-08-28 interim-results management discussion",
+    "status": "PREEXPOSED_NOT_BLIND",
+    "honored": true
+  },
+  "artifact_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-MONETARY-CREDIT__saturation-review__blind-001-memory-leads.md",
+  "review_counts": {
+    "memory_lead_count": 0,
+    "novel_lead_count": 0,
+    "duplicate_lead_count": 0,
+    "high_importance_novel_count": 0,
+    "low_novelty_credit": 0
+  },
+  "saturation_review": {
+    "all_nine_primary_time_slices_broad_plus_orthogonal": true,
+    "negative_space_review_complete": true,
+    "independent_challenger_complete": true,
+    "monetary_aggregate_metric_semantics_follow_through_complete": true,
+    "policy_objective_target_tool_hierarchy_follow_through_complete": true,
+    "long_tail_categories_covered_at_compact_control_level": true,
+    "material_omitted_category": false,
+    "material_missing_antecedent": false,
+    "top_level_ontology_stability_used_as_sole_basis": false,
+    "saturation_review_complete": true
+  },
+  "outcome": "saturation_review_complete_no_material_gap",
+  "counts_as_low_novelty_confirmation": false,
+  "shard_sealed": false,
+  "evidence_transition_allowed": false,
+  "next_gate": "bounded_low_novelty_confirmation",
+  "method_observation_added": false
+}
