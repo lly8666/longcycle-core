@@ -1,12 +1,16 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 36,
+  "map_revision": 37,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
-  "primary_period": ["1990-01-01", "2026-08-31"],
+  "primary_period": [
+    "1990-01-01",
+    "2026-08-31"
+  ],
   "authority_class": "research_control_only",
-  "campaign_stage": "seal_candidate",
+  "campaign_stage": "active_recall",
+  "campaign_sealed": false,
   "source_visibility": "none_for_selected_next_probe",
   "source_visibility_scope": "selected_next_probe_only",
   "preexposure_carveout_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json#/preexposure_carveout",
@@ -14,104 +18,100 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "learning_state_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-001.json#/method_observation",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001.json",
-  "latest_pass_receipt_status": "canonical_low_novelty_qualification_3_of_3_memory_only",
-  "latest_control_action_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-001.json",
-  "latest_control_action_status": "prior_explicit_seal_decision_rejected_before_canonical_correction",
-  "batch0_orientation": {
-    "status": "orientation_scaffold_not_saturation",
-    "memory_vintage": "banking-china-1990-2026-v1",
-    "correction_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/legacy-prose-state-correction-v1.json",
-    "raw_history_index_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json#/batch0_refs",
-    "evidence_authority": "NONE"
-  },
-  "active_shards": [{
-    "shard_id": "SYS-REGULATION-RESOLUTION",
-    "selected_time_slice_id": "CROSS-TIME-EXPLICIT-SEAL-DECISION-RETRY",
-    "stage": "seal_candidate",
-    "recent_outcomes": [
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005","family":"bounded_low_novelty_confirmation","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005.json","novel_lead_count":3,"duplicate_lead_count":14,"high_importance_novel_count":2,"outcome":"campaign_local_low_novelty_but_not_canonical_seal_qualifying"},
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-readiness-review__blind-001","family":"bounded_shard_seal_readiness_review","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-readiness-review__blind-001.json","novel_lead_count":0,"duplicate_lead_count":0,"high_importance_novel_count":0,"outcome":"campaign_local_readiness_passed_but_canonical_seal_policy_mismatch_found_at_first_decision"},
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-a__blind-001","family":"terminal_exit_claimant_state_low_novelty_confirmation","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-a__blind-001.json","novel_lead_count":2,"duplicate_lead_count":14,"high_importance_novel_count":1,"outcome":"canonical_low_novelty_qualification_1_of_3_no_material_new_category"},
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-b__blind-001","family":"funding_recoverability_loss_bearer_low_novelty_confirmation","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-b__blind-001.json","novel_lead_count":1,"duplicate_lead_count":15,"high_importance_novel_count":1,"outcome":"canonical_low_novelty_qualification_2_of_3_no_material_new_category"},
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001","family":"preparedness_activation_outcome_state_low_novelty_confirmation","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-c__blind-001.json","novel_lead_count":1,"duplicate_lead_count":15,"high_importance_novel_count":1,"outcome":"canonical_low_novelty_qualification_3_of_3_no_material_new_category"}
-    ],
-    "negative_space_review_complete": true,
-    "independent_challenger_complete": true,
-    "saturation_review_complete": true,
-    "seal_readiness_review_complete": true,
-    "historical_campaign_local_low_novelty_confirmations_observed": 3,
-    "consecutive_low_novelty_passes_observed": 3,
-    "canonical_consecutive_low_novelty_passes_observed": 3,
-    "canonical_qualifying_families_observed": [
-      "terminal_exit_claimant_state_low_novelty_confirmation",
-      "funding_recoverability_loss_bearer_low_novelty_confirmation",
-      "preparedness_activation_outcome_state_low_novelty_confirmation"
-    ],
-    "canonical_low_novelty_policy": {
-      "consecutive_low_novelty_passes_required": 3,
-      "max_high_importance_novel_per_low_pass": 1,
-      "minimum_distinct_recent_families": 3
-    },
-    "fresh_search_used": false
-  }],
+  "latest_control_action_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002.json",
+  "latest_control_action_status": "canonical_shard_seal_authorized_exact_artifact",
+  "sealed_shards": [
+    {
+      "shard_id": "SYS-REGULATION-RESOLUTION",
+      "state": "sealed",
+      "period": [
+        "1990-01-01",
+        "2026-08-31"
+      ],
+      "model_vintage": "GPT-5.6 Sol",
+      "sealed_artifact_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-REGULATION-RESOLUTION-seal-state-v1.json",
+      "sealed_artifact_sha256": "2c44f0125b2b3a8c06bb7a20b34b6119d0f4e05dca33c68d4d92ebeaf74c9784",
+      "seal_decision_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002.json",
+      "canonical_reason_code": "orthogonal_passes_reached_low_marginal_novelty",
+      "evidence_transition_allowed_after_clean_handoff": true,
+      "evidence_status": "not_started_deferred_to_later_clean_handoff"
+    }
+  ],
+  "active_shards": [
+    {
+      "shard_id": "SYS-MONETARY-CREDIT",
+      "selected_time_slice_id": "TIME-1990-1994",
+      "stage": "active_recall",
+      "fresh_search_used": false,
+      "recent_outcomes": []
+    }
+  ],
   "coverage_snapshot": {
     "reviewed_high_value_regions": [
-      {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION","state":"all_primary_time_slices_broad_plus_orthogonal_complete","note":"All primary time slices retain broad plus orthogonal blind coverage."},
-      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__TERMINAL-EXIT-NEGATIVE-SPACE","state":"complete_sparse_true_terminal_set","note":"True/near-terminal states and false positives remain separated."},
-      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-STATE-RED-TEAM","state":"independent_challenge_complete","note":"Strong resolution labels retain minimum-fact gates."},
-      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-FUNDING-LOSS-ALLOCATION","state":"broad_plus_orthogonal_complete","note":"Funding/backstop, recoverability, claimant classes and ultimate loss bearer remain covered."},
-      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__RECOVERY-RESOLUTION-PLANNING-LOSS-ABSORBENCY","state":"broad_plus_orthogonal_complete","note":"Systemic-importance perimeter, planning, resolvability, critical-function continuity, loss absorbency and activation-state boundaries remain covered."},
-      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__CANONICAL-SEAL-QUALIFICATION","state":"three_of_three_distinct_low_novelty_families_complete","note":"Confirmations A, B and C are consecutive, duplicate-dominant, contain no material category, each has high_importance_novel_count=1, and use three distinct families. The canonical qualification gap exposed by the first seal attempt is now closed."}
+      {
+        "region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION",
+        "state": "canonically_sealed_for_model_vintage",
+        "note": "All primary time slices, negative space, independent challenge, funding/loss allocation, preparedness/loss absorbency and canonical three-family low-novelty qualification are complete. Exact source detail remains post-seal Evidence work."
+      }
     ],
     "known_major_gaps": [
-      "No substantive topic/category gap is currently identified inside SYS-REGULATION-RESOLUTION.",
-      "No canonical low-novelty qualification gap remains: the current sequence contains three consecutive qualifying outcomes from three distinct families under the <=1 high-importance ceiling.",
-      "Exact PRC legal powers, rule names, authorities, dates, ratios, eligible instruments, triggers, creditor ordering and named-bank implementation remain deferred Evidence work until a valid structured seal decision succeeds."
+      "SYS-REGULATION-RESOLUTION has no remaining blind-memory category gap and is sealed for GPT-5.6 Sol.",
+      "The remaining Banking campaign contains unsealed atomic shards; SYS-MONETARY-CREDIT is selected next by deterministic manifest-order among unsealed shards.",
+      "Post-seal Evidence for SYS-REGULATION-RESOLUTION is eligible only from a later CLEAN handoff and is not started in the seal action."
     ],
     "deferred_regions": [
-      {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL","state":"deferred","reason":"Remain deferred until a canonical structured seal decision succeeds."},
-      {"region_id":"remaining-v2-manifest-frontier","state":"seal_decision_only","reason":"Do not reopen ordinary recall unless the explicit seal-decision retry detects control-state drift or a failed prerequisite."
+      {
+        "region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL",
+        "state": "post_seal_evidence_eligible_but_deferred",
+        "reason": "The shard is sealed, but Evidence/search is intentionally deferred beyond the seal action and may begin claim by claim from a later CLEAN handoff."
       }
     ]
   },
-  "open_frontiers": [{
-    "frontier_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__EXPLICIT-SEAL-DECISION-RETRY",
-    "priority_rank": 1,
-    "state": "open_decision",
-    "selected_probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002"
-  }],
-  "next_probe": {
-    "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002",
-    "family": "bounded_shard_explicit_seal_decision",
-    "time_slice_id": "CROSS-TIME",
-    "shard_id": "SYS-REGULATION-RESOLUTION",
-    "period": ["1990-01-01", "2026-08-31"],
-    "instruction": "In the next eligible fresh-agent loop, run one explicit shard seal-decision retry using only this compact map, the manifest and internal reasoning over current control metadata. First revalidate exact branch continuity, reservation revision/assignment epoch, map revision, manifest digest and absence of drift. Do not read prior raw outputs, Banking Evidence/source material, other shard raw outputs or fresh Banking search results. This is not a recall pass and must not manufacture leads. Recompute the repository canonical seal policy from the three current qualifying outcomes A/B/C: each must have high_importance_novel_count <= 1, the three families must be distinct, campaign stage must be seal_candidate, negative-space and independent challenger must remain complete, no fresh search may have contaminated the blind stage, no required long-tail family may be missing and no major coverage gap may remain. If every canonical prerequisite still passes, record one structured longcycle-memory-seal-decision/v1 tied to the exact sealed artifact bytes and rebuild the map truthfully as sealed. Do not perform Banking Evidence search in the same atomic action; post-seal Evidence begins only from a later CLEAN handoff. If any prerequisite fails or drift is detected, do not seal and reopen exactly one sparse corrective frontier.",
-    "allowed_input_refs": ["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"],
-    "forbidden_inputs": ["Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","other shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
-    "output_authority": "RESEARCH_CONTROL_ONLY",
-    "one_pass_cannot_self_seal": false,
-    "done_when": "One explicit structured seal decision exists and exactly matches the sealed artifact bytes under the canonical validator; the sparse map truthfully records either a sealed SYS-REGULATION-RESOLUTION shard with Evidence deferred to a later CLEAN handoff or one concrete reopened blind frontier; and no Evidence/search or truth publication occurs inside the seal-decision action itself."
+  "next_shard_selection": {
+    "basis": "first_unsealed_atomic_shard_in_manifest_order",
+    "selected_shard_id": "SYS-MONETARY-CREDIT",
+    "note": "Do not use sealed SYS-REGULATION-RESOLUTION raw content as input to the new atomic recall."
   },
-  "seal_readiness": {
-    "eligible": true,
-    "candidate_conditions_met": true,
-    "dedicated_review_complete": true,
-    "reason_codes": [
-      "all_substantive_blind_prerequisites_passed",
-      "canonical_three_consecutive_low_novelty_passes_complete",
-      "canonical_three_distinct_recent_families_complete",
-      "canonical_high_importance_ceiling_met",
-      "explicit_structured_seal_decision_required"
+  "open_frontiers": [
+    {
+      "frontier_id": "TIME-1990-1994__SYS-MONETARY-CREDIT",
+      "priority_rank": 1,
+      "state": "open",
+      "selected_probe_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001"
+    }
+  ],
+  "next_probe": {
+    "probe_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001",
+    "family": "time_slice_timeline_blind_recall",
+    "time_slice_id": "TIME-1990-1994",
+    "shard_id": "SYS-MONETARY-CREDIT",
+    "period": [
+      "1990-01-01",
+      "1994-12-31"
     ],
-    "historical_campaign_local_low_novelty_confirmations_observed": 3,
-    "canonical_consecutive_low_novelty_passes_observed": 3,
-    "canonical_consecutive_low_novelty_passes_required": 3,
-    "evidence_transition_allowed": false,
-    "shard_sealed": false,
+    "instruction": "In the next eligible fresh-agent loop, run one isolated MEMORY_LEADS_ONLY blind recall pass for SYS-MONETARY-CREDIT in 1990-1994 using only this compact map, the manifest and model internal memory. Focus on the PBOC operating framework, reserve/interest-rate/credit tools, direct and policy credit controls, early marketization, monetary-credit transmission, period-native vocabulary, actors, mechanisms, metric semantics, failures/dead ends and counterexamples. Do not read any prior v2 raw output, sealed SYS-REGULATION-RESOLUTION raw content, other-shard raw, Banking Evidence/source material or fresh Banking search results. Preserve uncertainty and avoid invented exact dates, ratios, rule titles or source-like details. Append one raw unit and bounded receipt, classify novelty honestly, rebuild this same sparse map with exactly one next probe, and close the probe through substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
+    "allowed_input_refs": [
+      "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
+    ],
+    "forbidden_inputs": [
+      "Batch0 raw Banking outputs",
+      "all prior v2 raw blind-pass outputs",
+      "sealed SYS-REGULATION-RESOLUTION raw outputs",
+      "other shard raw outputs",
+      "Banking source or Evidence material",
+      "fresh Banking search results"
+    ],
+    "output_authority": "MEMORY_LEADS_ONLY",
+    "one_pass_cannot_self_seal": true,
+    "done_when": "One append-only raw unit and receipt exist; novelty and uncertainty are explicit; the sparse map is rebuilt with exactly one deterministic next step; and the probe is closed with substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
+  },
+  "seal_transition": {
+    "sealed_shard_id": "SYS-REGULATION-RESOLUTION",
+    "seal_completed": true,
     "campaign_sealed": false,
-    "prior_decision_attempt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-001.json"
+    "evidence_started_in_seal_action": false,
+    "post_seal_evidence_allowed_after_clean_handoff": true,
+    "next_campaign_action": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001"
   }
 }
