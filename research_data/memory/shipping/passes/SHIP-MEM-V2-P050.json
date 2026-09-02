@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P050",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"freight_derivatives_forward_freight_agreements_futures_options_clearing_margin_settlement_hedging_bunker_fx_interest_rate_basis_risk_management",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P050-L01","novelty":"new_category","importance":"high","lead":"A physical freight exposure and a derivative reference are separate objects. Owners, operators, charterers or cargo interests can face a voyage/time/volume exposure whose economics are only imperfectly represented by a route or index used for financial hedging."},
+    {"id":"P050-L02","novelty":"new_category","importance":"high","lead":"Forward Freight Agreement-type exposure is structurally remembered as a financially settled agreement linked to an agreed freight reference and future period rather than the physical carriage of a specific cargo on a specific vessel. Exact contract specifications and settlement formulas require Evidence."},
+    {"id":"P050-L03","novelty":"new_category","importance":"high","lead":"Exchange-traded or otherwise standardized freight futures can create a different execution, liquidity and clearing path from bilateral OTC freight derivatives, even when both seek to hedge or express a view on similar freight-market exposure."},
+    {"id":"P050-L04","novelty":"new_category","importance":"high","lead":"Options add asymmetric payoff states distinct from linear FFA/futures exposure: premium is paid for contingent protection or participation rather than locking a symmetric forward result. Exact strike, expiry and option economics are instrument-specific."},
+    {"id":"P050-L05","novelty":"new_category","importance":"high","lead":"Freight-derivatives brokers, dealers, exchanges/venues, clearing houses, clearing members and end-user treasury/risk functions are distinct roles. Trade origination, execution, intermediation, clearing and final economic exposure should not be collapsed into one counterparty label."},
+    {"id":"P050-L06","novelty":"new_category","importance":"high","lead":"Clearing and collateralization can reduce some bilateral counterparty exposure while creating explicit variation/initial-margin liquidity needs. A hedge that is economically protective over its horizon can still generate near-term cash calls before the physical exposure pays out."},
+    {"id":"P050-L07","novelty":"new_category","importance":"high","lead":"Mark-to-market derivative value, posted collateral and realized physical freight cash flow are separate states. PIT replay should not infer operating cash availability from an eventual hedge gain or loss without preserving when collateral and settlements became due."},
+    {"id":"P050-L08","novelty":"new_category","importance":"high","lead":"Basis risk arises when the chosen freight index/route, vessel class, timing or volume does not match the actual exposure. A hedge can therefore reduce broad market risk while leaving substantial residual commercial risk."},
+    {"id":"P050-L09","novelty":"new_category","importance":"high","lead":"Hedge horizon and volume alignment matter independently of price direction. Under-hedging, over-hedging or a mismatch between derivative periods and physical fixtures can turn a risk-reduction program into a new exposure when fleet employment or cargo commitments change."},
+    {"id":"P050-L10","novelty":"new_category","importance":"high","lead":"Counterparty failure, closeout and clearing default-management are different states from ordinary market losses. Bilateral OTC structures and centrally cleared structures redistribute credit and liquidity risk rather than eliminating it."},
+    {"id":"P050-L11","novelty":"new_category","importance":"high","lead":"Bunker or fuel hedging forms a separate cost-risk layer from freight hedging. A vessel operator can hedge freight revenue yet remain exposed to fuel prices, or hedge fuel cost while freight earnings remain floating; combined economics depend on both layers."},
+    {"id":"P050-L12","novelty":"new_category","importance":"high","lead":"Foreign-exchange and interest-rate hedges can sit alongside freight and bunker hedges because shipping revenues, costs and debt service may be exposed to different currencies and financing rates. These treasury exposures should remain separate from physical vessel-market risk."},
+    {"id":"P050-L13","novelty":"new_category","importance":"high","lead":"Risk-management policy includes decisions about eligible exposures, hedge ratios/horizons, limits, counterparties, collateral liquidity and governance. The structural state is authorized versus actual risk transfer; exact mandates, accounting treatment and control limits are company-specific."},
+    {"id":"P050-L14","novelty":"useful_refinement","importance":"high","lead":"P048 credit memory is refined because derivatives can smooth future operating exposure while simultaneously increasing short-term liquidity pressure through margin calls; credit stress therefore depends on collateral timing as well as eventual hedge economics."},
+    {"id":"P050-L15","novelty":"useful_refinement","importance":"high","lead":"Atlas index-semantics memory becomes more consequential when an index is used for settlement or hedging: route, vessel class, methodology and time bucket differences become direct sources of basis risk rather than merely reporting comparability issues."},
+    {"id":"P050-L16","novelty":"useful_refinement","importance":"high","lead":"P049 capital-market memory is refined because securities-market access and hedge liquidity are different financial states. A company may have access to equity/debt capital yet still face derivative margin stress, or may have limited capital-market access while maintaining a matched hedge book."},
+    {"id":"P050-L17","novelty":"useful_refinement","importance":"medium","lead":"Atlas information-known-time memory is refined because derivative curves, index publications, margin calls and settlement notices have their own known-time sequence that may differ from physical fixture or voyage timing."},
+    {"id":"P050-L18","novelty":"duplicate","importance":"low","lead":"The atlas already distinguishes shipping rate indices by route, unit and market basis; P050 uses that distinction inside hedging and settlement mechanics rather than repeating the index catalog."},
+    {"id":"P050-L19","novelty":"duplicate","importance":"low","lead":"P048 already recalls interest-cost and refinancing exposure; P050 only adds the possibility that interest-rate or FX derivatives alter those treasury exposures without changing the underlying debt identity."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_ffa_futures_options_contract_routes_indices_lots_expiries_strikes_prices_curves_and_settlement_formulas","reason":"Instrument specifications, prices and curves are market- and date-specific financial facts requiring authoritative Evidence."},
+    {"region":"specific_derivatives_brokers_dealers_exchanges_clearing_houses_members_trading_firms_and_company_positions","reason":"Participant identity, positions, exposures and counterparty relationships require claim-scoped market, filing or contractual Evidence."},
+    {"region":"exact_margin_collateral_default_closeout_accounting_risk_limit_and_regulatory_rules","reason":"Margin, clearing, accounting, legal and regulatory requirements vary by venue, contract, participant and jurisdiction; blind Memory retains only structural states."},
+    {"region":"current_freight_forward_curves_open_interest_liquidity_margin_levels_and_hedging_rankings","reason":"Current derivatives-market conditions are time-sensitive source-first claims outside blind Memory."}
+  ],
+  "stop_reason":"The financial-risk-management layer is populated from exposure identification and index/route matching through FFA/futures/options, OTC-versus-cleared execution, collateral/margin, mark-to-market, settlement/closeout and bunker/FX/interest hedging, plus basis and liquidity feedback into operating cash flow and credit. Further recall becomes contract-, route-, index-, curve-, price-, participant-, accounting- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not financial advice; no derivative position, hedge effectiveness, contract term, curve, price, margin requirement, counterparty exposure, accounting treatment, regulatory rule or current market condition is verified."
+}
