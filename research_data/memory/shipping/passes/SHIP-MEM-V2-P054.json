@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P054",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"marine_casualty_emergency_response_collision_grounding_fire_flooding_disabled_vessel_salvage_emergency_tow_place_of_refuge_wreck_removal_general_average_casualty_investigation",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P054-L01","novelty":"new_category","importance":"high","lead":"A marine casualty should first be replayed as an occurrence and vessel/cargo/person safety state, not as a final cause or liability label. Collision, grounding, fire, flooding or machinery disablement can be observed before responsibility is known."},
+    {"id":"P054-L02","novelty":"new_category","importance":"high","lead":"Distress notification and emergency communication create an early known-time layer involving the master/crew, owner/operator and relevant coastal or port authorities. Initial reports are operational signals and may be incomplete or revised."},
+    {"id":"P054-L03","novelty":"new_category","importance":"high","lead":"Immediate casualty response prioritizes life safety and stabilization: damage control, fire response, flooding control, anchoring or other measures can change whether the vessel remains afloat, mobile, navigationally safe or able to continue toward a refuge/repair location."},
+    {"id":"P054-L04","novelty":"new_category","importance":"high","lead":"Emergency towage and salvage are related but distinct assistance states. A disabled vessel may require towage or specialized salvage effort, while exact contractual characterization, rights and reward economics remain case-specific legal facts."},
+    {"id":"P054-L05","novelty":"new_category","importance":"high","lead":"Salvage engagement introduces a multi-party state involving owner/operator, salvors, insurers/P&I and sometimes cargo interests or authorities. Appointment or intervention can precede agreement on reward, security, contribution or liability."},
+    {"id":"P054-L06","novelty":"new_category","importance":"high","lead":"A place-of-refuge or emergency-port decision is a coordination state rather than an automatic right to berth. Vessel condition, cargo hazard, environmental risk, port capability, authority approval and onward repair options can interact before access is resolved."},
+    {"id":"P054-L07","novelty":"new_category","importance":"high","lead":"Refloating, temporary repair, towing to repair, permanent repair and return-to-service are separate recovery milestones. Effective fleet supply can remain constrained long after the casualty event itself ends."},
+    {"id":"P054-L08","novelty":"new_category","importance":"high","lead":"A vessel that cannot economically or safely return to service can enter a wreck/constructive-loss-type operational pathway in which removal, marking, cargo recovery, pollution control or disposal become distinct projects. Exact legal status and cost allocation require Evidence."},
+    {"id":"P054-L09","novelty":"new_category","importance":"high","lead":"Casualty response can create environmental or access constraints beyond hull damage: spill containment, hazardous cargo concerns, channel obstruction or debris may affect ports and nearby traffic even when only one vessel is directly damaged."},
+    {"id":"P054-L10","novelty":"new_category","importance":"high","lead":"General-average-style memory is structurally a deliberate sacrifice or extraordinary expenditure for common maritime safety followed by declaration/security/adjustment/contribution states. Whether a particular event qualifies or how contribution is calculated is a legal/adjustment question outside blind Memory."},
+    {"id":"P054-L11","novelty":"new_category","importance":"high","lead":"Cargo interests may face recovery, forwarding, transshipment, storage, security or delayed-delivery states after a casualty. Physical cargo preservation and delivery can therefore diverge from the vessel's own recovery timeline."},
+    {"id":"P054-L12","novelty":"new_category","importance":"high","lead":"Casualty investigation is a distinct information-production process. Evidence collection, interviews, technical examination and report publication can occur after operational recovery, and safety-oriented findings should not be silently collapsed into civil or criminal liability conclusions."},
+    {"id":"P054-L13","novelty":"new_category","importance":"high","lead":"Casualty severity propagates through effective capacity, charter performance, cargo delivery, port access, insurance claims, financing and asset value on different clocks. One incident can therefore create several overlapping but non-identical operational and financial trajectories."},
+    {"id":"P054-L14","novelty":"useful_refinement","importance":"high","lead":"P053 survey memory is refined because condition/damage observations can support casualty stabilization and investigation, but observation, causal inference and final fault remain separate layers."},
+    {"id":"P054-L15","novelty":"useful_refinement","importance":"high","lead":"P044 insurance/P&I memory is refined because casualty response produces claim-notification, survey, security and loss-mitigation inputs before coverage, adjustment, recovery and liability are resolved."},
+    {"id":"P054-L16","novelty":"useful_refinement","importance":"high","lead":"P051 chartering memory is refined because a casualty can interrupt hire/freight performance, cargo delivery and vessel availability while the contractual off-hire, deviation, termination or damages consequences remain clause- and fact-specific."},
+    {"id":"P054-L17","novelty":"useful_refinement","importance":"medium","lead":"P052 port-call memory is refined because emergency refuge, casualty access and wreck/channel constraints involve authority and service coordination outside an ordinary scheduled port call."},
+    {"id":"P054-L18","novelty":"duplicate","importance":"low","lead":"The atlas already recalls that chokepoints, accidents and operational disruptions can absorb effective capacity; P054 adds the casualty-response state machine rather than repeating disruption as a generic shock."},
+    {"id":"P054-L19","novelty":"duplicate","importance":"low","lead":"Earlier Shipping passes already separate physical readiness, legal availability, insurance and claims. P054 composes those layers around a casualty without creating new semantic owners."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_casualty_event_chronology_damage_cause_fault_negligence_and_liability_findings","reason":"Specific casualty facts and causation/liability conclusions require official, technical, legal and claim-scoped Evidence."},
+    {"region":"exact_salvage_towage_contract_terms_awards_security_reward_and_general_average_adjustment","reason":"Contract rights, salvage awards, guarantees, contribution bases and adjustment calculations are transaction-specific legal/financial facts."},
+    {"region":"exact_casualty_investigation_reports_recommendations_enforcement_and_jurisdictional_rules","reason":"Investigation purpose, authority, findings and downstream legal effect vary by jurisdiction and exact vintage."},
+    {"region":"named_salvors_towage_contractors_average_adjusters_investigators_refuge_ports_and_current_response_capability","reason":"Provider identity, current capability and event participation are source-first factual questions outside blind Memory."}
+  ],
+  "stop_reason":"The casualty-response lifecycle is populated from occurrence/distress and immediate stabilization through towage/salvage, refuge, refloat/repair or wreck removal, cargo recovery, sacrifice/security/contribution and casualty reporting/investigation, plus propagation into capacity, chartering and claims. Further recall becomes event-, contract-, award-, cause-, fault-, cost-, adjustment-, authority- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not legal, safety, salvage, insurance or operational advice; no casualty chronology, cause, fault, liability, salvage/towage right, reward, security, general-average qualification or adjustment, investigation finding, wreck-removal obligation, port/refuge decision or provider capability is verified."
+}
