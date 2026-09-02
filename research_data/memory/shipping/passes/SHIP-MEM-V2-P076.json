@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P076",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_ballast_water_management_tank_inventory_pumping_treatment_system_service_capacity_uptake_release_opportunity_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_ballast_water_service_state_model_only_no_stability_trim_valve_treatment_sampling_exchange_discharge_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"BW-01","novelty_class":"new_category","importance":"high","memory":"Ballast-water service spans owner/manager, master, deck and engineering crews, shore technical or marine support, ballast-water treatment equipment/service actors, sampling or assurance actors and port or shore support. Operational observation, treatment support, assurance evidence and port opportunity should remain separate roles rather than one vendor or compliance directory."},
+    {"id":"BW-02","novelty_class":"new_category","importance":"high","memory":"Tank-group inventory or capacity confidence, pumping availability and treatment-system readiness are distinct service states. Ballast may be physically present while pumping is constrained, or pumping may be available while treatment or destination opportunity is uncertain."},
+    {"id":"BW-03","novelty_class":"new_category","importance":"high","memory":"Ballast-water inventory should preserve affected tank-group or service scope without becoming a stability or trim model. Historical memory can retain whether usable ballast inventory/capacity confidence was normal, constrained, uncertain or restored while exact tank arrangement, quantities, levels and stability implications remain deferred."},
+    {"id":"BW-04","novelty_class":"new_category","importance":"high","memory":"Pumping availability and transfer-path availability are separate from treatment-system readiness. A pump-related service may be available while a treatment stage, tank group or uptake/release interface is restricted; exact lineups, valves, pump rates and routing are not retained."},
+    {"id":"BW-05","novelty_class":"new_category","importance":"high","memory":"Treatment-system readiness and treatment-performance confidence are different states. Equipment being powered, available or running does not itself establish biological or other treatment outcome, sample result, discharge eligibility or compliance; exact parameters, measurements and limits are deferred."},
+    {"id":"BW-06","novelty_class":"new_category","importance":"high","memory":"Sampling, monitoring or assurance confidence should remain distinct from physical treatment readiness. Missing, delayed or uncertain assurance evidence can make service acceptability uncertain without proving physical treatment failure, while equipment degradation does not by itself establish a sample or compliance result."},
+    {"id":"BW-07","novelty_class":"new_category","importance":"high","memory":"Uptake opportunity and release/discharge opportunity are distinct from onboard pumping or treatment capability. A vessel may have technically available equipment while location, timing, receiving-water, port or other external opportunity is constrained; this pass does not infer authorization or legal entitlement from capability."},
+    {"id":"BW-08","novelty_class":"new_category","importance":"high","memory":"Ballast-water degradation has a defensive service lifecycle: observation, uncertain tank/equipment/interface scope, affected inventory/pumping/treatment/opportunity identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No ballast-operation, exchange, discharge, valve or troubleshooting procedure is retained."},
+    {"id":"BW-09","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected tank group, pump, treatment stage or uptake/release interface scope. One part of ballast-water service may be constrained while other service remains available; exact tank plans, piping, valve positions and operating sequences remain deferred."},
+    {"id":"BW-10","novelty_class":"new_category","importance":"high","memory":"Ballast-water service can depend on electrical power, controls/monitoring, pumps and supporting equipment, but dependency observations are not root-cause proof. Loss of support can degrade service, while a ballast-water constraint does not establish an electrical, digital, mechanical or cyber cause."},
+    {"id":"BW-11","novelty_class":"new_category","importance":"high","memory":"Ballast-water-service constraints can propagate into voyage or port-call flexibility and selected vessel-service planning, but those downstream constraints are not by themselves proof of a tank, pump, treatment, stability, discharge or port-authorization root cause."},
+    {"id":"BW-12","novelty_class":"new_category","importance":"high","memory":"Ballast-water service state must remain separate from vessel stability and trim outcome. Ballast inventory and pumping observations can be relevant inputs to other domains, but this Memory pass neither calculates nor asserts stability, trim, loading-condition safety or required ballast actions."},
+    {"id":"BW-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: tank-group availability returns, pumping returns, treatment readiness returns, assurance confidence becomes available, uptake or release opportunity returns and downstream voyage/port flexibility is re-verified. A restarted component or cleared alarm does not prove full ballast-water-service recovery."},
+    {"id":"BW-R01","novelty_class":"useful_refinement","importance":"high","memory":"P073 accommodation/sanitation wastewater and P076 ballast water are independent water-service dimensions. Wastewater collection/treatment readiness does not prove ballast inventory, pumping, treatment or uptake/release opportunity, and ballast-water degradation does not establish sanitation-service loss."},
+    {"id":"BW-R02","novelty_class":"useful_refinement","importance":"high","memory":"P075 machinery oily-waste handling and P076 ballast-water management may share tanks, pumps or shore-support vocabulary at a generic level but remain independent service chains; oily-waste holding or reception does not prove ballast treatment or opportunity states and vice versa."},
+    {"id":"BW-R03","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep pump, treatment-system, sensor/control or interface condition separate from delivered ballast-water service. Sound equipment can coexist with tank-scope or external-opportunity constraints, and acceptable service does not prove every component condition."},
+    {"id":"BW-R04","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical and P068 digital/control availability are support dimensions rather than proxies for ballast-water service. Power or control presence does not prove pumping, treatment, assurance or uptake/release readiness, while a ballast-water constraint does not establish an electrical, digital or cyber cause."},
+    {"id":"BW-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"BW-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P075; P076 applies them specifically to ballast-water management."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact ballast-tank arrangements, capacities/levels, pump rates, piping and valve lineups, stability/trim plans, treatment parameters, measurements or sampling results, exchange/discharge limits and record entries are intentionally not retained.",
+    "Exact ballast uptake, transfer, treatment, exchange, discharge, isolation, bypass, troubleshooting, cleaning, maintenance or emergency procedures are outside this blind pass.",
+    "Named ballast-water treatment vendors, sampling/assurance providers, port-support firms, vessel installations, incidents, deficiencies, discharge events and rule-specific findings require claim-scoped Evidence.",
+    "Private/regional ballast-water equipment-service, sampling/assurance and port-support lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact ballast tank arrangements/capacities/levels, pump rates, piping/valves, stability or trim plans, treatment parameters, sampling results, exchange/discharge limits, records and current configuration.",
+    "Ballast uptake, transfer, treatment, exchange, discharge, bypass, isolation, troubleshooting, cleaning, maintenance or emergency procedures.",
+    "Named equipment/providers/sampling or assurance actors, vessel incidents, deficiencies, discharge events, findings and current readiness.",
+    "Private/regional ballast-water treatment, sampling/assurance and port-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive ballast-water service orientation/source-discovery output. It is not stability, trim, loading, ballast operation, treatment, sampling, environmental-compliance, discharge, engineering or vessel-operating advice and does not establish any exact tank arrangement/capacity/level, pump rate, piping/valve lineup, treatment parameter, sample result, exchange/discharge limit, record entry, procedure, equipment, provider, incident, compliance finding or current-readiness fact.",
+  "stop_reason": "The ballast-water service chain is recalled at useful structural resolution: tank-group inventory/capacity confidence, pumping and path availability, treatment readiness/performance confidence, assurance confidence, uptake/release opportunity, restriction/isolation, dependencies, downstream voyage/port effects and verified restoration are separable states. Further detail would become vessel-, tank-, pump-, stability-, treatment-, sampling-, exchange/discharge-, record-, procedure-, provider-, incident- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
