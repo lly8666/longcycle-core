@@ -1,0 +1,77 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v2",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "pass_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-001",
+  "family": "time_slice_timeline_blind_recall",
+  "shard_id": "SYS-MONETARY-CREDIT",
+  "time_slice_id": "TIME-2023-2026",
+  "period": ["2023-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "allowed_input_digest": "exploration-map.json@17cadb8803cffccae2cf3d02d614d95c483bce3a;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "forbidden_inputs_observed": false,
+  "forbidden_inputs": [
+    "Batch0 raw Banking outputs",
+    "all prior v2 raw blind-pass outputs",
+    "sealed SYS-REGULATION-RESOLUTION raw outputs",
+    "other-shard raw outputs",
+    "Banking source or Evidence material",
+    "fresh Banking search results"
+  ],
+  "raw_output_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2023-2026__SYS-MONETARY-CREDIT__blind-001-memory-leads.md",
+  "raw_commit_sha": "39f77f68640d621a4fcc389ee59b39042d9e35d3",
+  "novelty": {
+    "new_category_count": 18,
+    "useful_refinement_count": 7,
+    "duplicate_count": 1,
+    "novel_or_refining_count": 25,
+    "high_importance_novel_or_refining_count": 22,
+    "total_lead_count": 26,
+    "classification": "high_novelty_low_rate_operating_framework_deposit_mortgage_fiscal_and_structural_tool_broad_recall"
+  },
+  "preexposure_carveout": {
+    "subject": "China Merchants Bank 2023-08-28 interim-results management discussion",
+    "status": "PREEXPOSED_NOT_BLIND",
+    "honored": true,
+    "fresh_novelty_counted_from_direct_overlap": false,
+    "note": "No CMB-specific 2023 interim-results recollection was counted. Generic NIM, deposit repricing and demand-transmission mechanisms were framed only as system-level research questions recoverable independently later."
+  },
+  "negative_space": {
+    "material_missing_antecedent": false,
+    "pre_1990_extension_required": false,
+    "exact_source_detail_deferred": true,
+    "notes": [
+      "Do not equate government-bond trading with QE or deficit monetization.",
+      "Do not equate gross RRR release with net reserve injection.",
+      "Do not equate lower LPR/new-loan pricing with stronger effective credit demand.",
+      "Do not collapse existing-mortgage repricing into new-mortgage floors or developer financing.",
+      "Do not collapse policy-bank/fiscal channels into commercial-bank monetary transmission.",
+      "Do not treat structural relending as direct PBOC lending to final borrowers or automatic bank-risk transfer."
+    ]
+  },
+  "uncertainty": {
+    "exact_dates_rates_ratios_not_asserted": true,
+    "exact_mortgage_rules_not_asserted": true,
+    "exact_structural_tool_parameters_not_asserted": true,
+    "exact_local_debt_program_terms_not_asserted": true,
+    "exact_operating_tool_mechanics_not_asserted": true,
+    "source_like_document_titles_not_asserted": true
+  },
+  "stop_reason": "Broad recall remains high novelty, but the highest-value next action is one independent same-slice orthogonal challenge of operating-framework, mortgage/deposit, fiscal-bond and structural-tool semantics rather than deeper broad recall.",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "database_used": false,
+  "drive_used": false,
+  "shared_control_plane_changed": false,
+  "method_observation": null
+}
