@@ -1,0 +1,68 @@
+{
+  "schema_version": "longcycle-banking-memory-review-receipt/v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "workstream_id": "banking-domain-v1",
+  "branch": "workstream/banking-domain-v1",
+  "reservation_revision": 1,
+  "assignment_epoch": 1,
+  "pass_id": "CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001",
+  "family": "bounded_negative_space_review",
+  "shard_id": "SYS-MONETARY-CREDIT",
+  "period": ["1990-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY_REVIEW_CONTROL",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none_for_selected_probe",
+  "parent_clean_head_sha": "72bcee74460e35a28249abcb0e544176d5670d64",
+  "raw_commit_sha": "66bceeb2909b7080b84e0116f075b51cb4f2b5ee",
+  "raw_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001-memory-leads.md",
+  "allowed_input_digest": "exploration-map.json@f009d4ede4db6d578c45e66e43b647eed4601e6d;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
+  ],
+  "forbidden_inputs_observed": {
+    "batch0_raw_read": false,
+    "prior_v2_raw_read": false,
+    "sealed_regulation_resolution_raw_read": false,
+    "other_shard_raw_read": false,
+    "banking_evidence_or_source_read": false,
+    "fresh_banking_search_used": false,
+    "database_used": false,
+    "drive_used": false
+  },
+  "preexposure_carveout": {
+    "subject": "China Merchants Bank 2023-08-28 interim-results management discussion",
+    "status": "PREEXPOSED_NOT_BLIND",
+    "direct_overlap_counted_as_fresh": false
+  },
+  "review_result": {
+    "material_omission_found": true,
+    "negative_space_review_complete": false,
+    "reopened_frontier_count": 1,
+    "reopened_frontier_id": "CROSS-TIME__SYS-MONETARY-CREDIT__MONETARY-AGGREGATE-METRIC-SEMANTICS",
+    "selected_next_probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__monetary-aggregate-metric-semantics__blind-001",
+    "selected_gap_class": "cross_time_monetary_aggregate_metric_semantics_and_statistical_breakpoints",
+    "reason": "The compact map covers base-money, reserve, TSF, deposit and liquidity mechanisms but does not yet demonstrate dedicated blind coverage of M0/M1/M2 component definitions, deposit/institutional classification boundaries, series breaks and changing signal content across the full horizon. Long-cycle comparability can be false if recurring monetary aggregates are assumed semantically stable."
+  },
+  "other_review_dimensions": {
+    "institution_actor_classes": "no_independent_material_frontier_identified",
+    "policy_tool_families": "no_independent_material_frontier_identified",
+    "money_market_funding_plumbing": "no_independent_material_frontier_identified",
+    "period_native_vocabulary": "material_gap_coupled_to_selected_metric_semantics_frontier",
+    "failed_temporary_dead_end_tools": "no_independent_material_frontier_identified",
+    "contemporaneous_expectations": "no_independent_material_frontier_identified",
+    "bank_borrower_heterogeneity": "no_independent_material_frontier_identified",
+    "counterexamples": "no_independent_material_frontier_identified",
+    "transmission_mechanisms": "no_independent_material_frontier_identified"
+  },
+  "horizon_extension_required": false,
+  "independent_challenger_eligible_after_this_review": false,
+  "counts_as_low_novelty_confirmation": false,
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "method_observation": null,
+  "stop_reason": "bounded_review_found_one_material_gap_and_reopened_exactly_one_sparse_frontier"
+}
