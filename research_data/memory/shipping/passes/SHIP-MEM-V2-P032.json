@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P032",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"crew_human_factors_fatigue_watchkeeping_bridge_engine_resource_management_competency_training_manning_workload_safety_culture",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P032-L01","novelty":"new_category","importance":"high","lead":"A ship's operating crew is a layered role system rather than a headcount: master, deck and engine officers, ratings and specialist roles carry different authority, watch, maintenance and emergency responsibilities. Manning adequacy therefore depends on task coverage and competence mix as well as nominal persons aboard."},
+    {"id":"P032-L02","novelty":"new_category","importance":"high","lead":"Watchkeeping is a continuous transfer-of-control process. A safe watch depends on who is assigned, their fitness/readiness, situational awareness and the quality of handover; an oncoming watch can inherit hidden uncertainty, deferred tasks or misunderstood equipment states."},
+    {"id":"P032-L03","novelty":"new_category","importance":"high","lead":"Fatigue is better represented as accumulated sleep/rest opportunity and workload state than as a binary rested/not-rested label. Port calls, pilotage, cargo operations, maintenance, drills, paperwork and schedule pressure can compress recovery opportunities across multiple watches."},
+    {"id":"P032-L04","novelty":"new_category","importance":"high","lead":"Task saturation can degrade monitoring and decision quality before any individual task is performed incorrectly. Simultaneous navigation, communications, alarms, paperwork, traffic, pilot interaction or equipment faults can consume attention and reduce capacity to detect weak signals."},
+    {"id":"P032-L05","novelty":"new_category","importance":"high","lead":"Bridge and engine resource management depend on explicit task allocation, shared mental models, communication, challenge and cross-check. Multiple competent people do not automatically create redundancy if hierarchy or ambiguity prevents one person from questioning or verifying another."},
+    {"id":"P032-L06","novelty":"new_category","importance":"high","lead":"Handover quality is an information-integrity state linking people across time. Outstanding defects, altered automation modes, navigation constraints, maintenance isolations, cargo conditions or unusual instructions can become latent hazards if they are not transferred with context."},
+    {"id":"P032-L07","novelty":"new_category","importance":"high","lead":"Competency and familiarization are distinct. A seafarer may hold general professional competence yet still need vessel-, equipment-, route- or procedure-specific familiarity before reliably operating a particular bridge, machinery or cargo system."},
+    {"id":"P032-L08","novelty":"new_category","importance":"medium","lead":"Training, drills and simulator-type preparation are readiness inputs rather than proof of performance. Retention, realism, team composition, recency and transfer to the actual vessel environment affect whether training becomes usable operational competence."},
+    {"id":"P032-L09","novelty":"new_category","importance":"high","lead":"Language and communication are operational states, especially in multinational crews and ship-shore interfaces. Standard phrases can reduce ambiguity, but accent, vocabulary, hierarchy, noise, workload and assumptions can still produce partial understanding without obvious communication failure."},
+    {"id":"P032-L10","novelty":"new_category","importance":"high","lead":"Automation changes human workload rather than simply reducing it. Reliable automation can free attention, while unusual modes, opaque logic, nuisance alarms or mode confusion can increase monitoring burden and create over-trust or delayed intervention."},
+    {"id":"P032-L11","novelty":"new_category","importance":"high","lead":"Safety culture can be treated as repeated organizational behavior around reporting, stop-work/challenge, defect escalation, procedure use and production pressure. Formal policies alone do not establish the actual willingness to surface uncertainty or slow an operation."},
+    {"id":"P032-L12","novelty":"new_category","importance":"high","lead":"Shore-side commercial and technical pressure can shape onboard decisions through ETA commitments, port windows, maintenance budgets, staffing and reporting expectations even when the master retains formal operational authority. The pressure channel should be separate from any specific allegation of coercion."},
+    {"id":"P032-L13","novelty":"new_category","importance":"high","lead":"Crew continuity and turnover affect organizational memory. Repeated crew changes can reset vessel-specific familiarity, informal coordination and defect knowledge, while stable teams can accumulate tacit knowledge but may also normalize local workarounds; exact company patterns require Evidence."},
+    {"id":"P032-L14","novelty":"useful_refinement","importance":"high","lead":"P026 navigation-information integrity is refined because the bridge must actively interpret, cross-check and prioritize information; technically available data can fail operationally when workload, fatigue, hierarchy or automation trust prevents effective use."},
+    {"id":"P032-L15","novelty":"useful_refinement","importance":"high","lead":"P027-P028 degraded machinery/electrical modes impose additional human workload. Manual fallback is not free resilience: it can require more staffing, local attendance, cross-checks and sustained attention, reducing capacity for simultaneous tasks."},
+    {"id":"P032-L16","novelty":"useful_refinement","importance":"high","lead":"P029 emergency response depends on pre-casualty team readiness and communication, but emergency performance must still be evaluated against actual information, access and workload rather than assuming drill competence transfers perfectly to a real event."},
+    {"id":"P032-L17","novelty":"useful_refinement","importance":"high","lead":"P031 human-action findings should distinguish an individual's observable action from upstream manning, fatigue, training, equipment design, procedure and organizational conditions. This preserves causal depth without converting every contextual factor into legal blame."},
+    {"id":"P032-L18","novelty":"duplicate","importance":"low","lead":"The atlas already notes that private shipping, labor and crewing are under-recalled; P032 supplies operating-state categories rather than repeating that coverage limitation."},
+    {"id":"P032-L19","novelty":"duplicate","importance":"low","lead":"Generic known-time and Judgment/Outcome separation are already Baseline semantics; P032 applies them specifically to fatigue, workload and competency states that may only be reconstructed imperfectly after an event."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_manning_scales_watch_schedules_rest_hour_rules_and_compliance_thresholds","reason":"Requirements vary by vessel, trade, flag, role and period; exact minima, schedules and compliance judgments require dated Evidence."},
+    {"region":"specific_certificates_training_courses_simulator_standards_and_assessment_regimes","reason":"Blind memory supports competency/familiarization structure but not exact credential, course, standard, provider or historical implementation details."},
+    {"region":"nationality_company_manning_agency_school_and_wage_quality_comparisons","reason":"Country/company/provider comparisons are prone to stereotyping and recall bias and require source-first research rather than a blind directory."},
+    {"region":"specific_human_factor_audits_casualty_findings_and_current_crew_conditions","reason":"Exact findings, fatigue measurements, work/rest records and current vessel staffing require claim-scoped operational or investigation Evidence."}
+  ],
+  "stop_reason":"The normal crew/human-factors chain is populated from role/task coverage and watch handover through fatigue/workload, resource management, competency/familiarization, communication, automation interaction, safety culture and shore pressure. Further recall becomes manning-rule-, rest-hour-, certificate-, training-course-, nationality-, company-, audit-, finding- or casualty-specific.",
+  "truth_boundary":"Memory-only orientation; no manning compliance, fatigue level, certificate validity, training quality, nationality/company performance, audit finding, casualty cause or current crew condition is verified."
+}
