@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P033",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"seafarer_employment_recruitment_crewing_agencies_contract_wages_payment_rotation_relief_repatriation_abandonment_welfare_medical_support",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P033-L01","novelty":"new_category","importance":"high","lead":"Seafarer availability is a lifecycle spanning worker, owner/operator or shipmanager, recruitment/crewing intermediary, master, travel/port support and medical or welfare services. A berth can be operationally uncovered even when the labor market has enough nominal people if qualification, travel or joining state is not ready."},
+    {"id":"P033-L02","novelty":"new_category","importance":"high","lead":"Recruitment and selection are capacity gates rather than administrative preliminaries. Role fit, qualification checks, references, medical/document readiness and vessel-specific experience can determine whether a candidate is usable for a particular assignment; exact screening regimes require Evidence."},
+    {"id":"P033-L03","novelty":"new_category","importance":"high","lead":"Employment agreement and vessel-assignment state should be separated from physical presence onboard. A person may be selected, contracted, assigned, awaiting travel, onboard, extended beyond planned tour, relieved or awaiting repatriation, and these states carry different operational consequences."},
+    {"id":"P033-L04","novelty":"new_category","importance":"high","lead":"Wage state has at least accrual, calculation, payment/remittance, receipt and dispute dimensions. Delayed or uncertain payment can affect retention, morale and willingness to extend service before it becomes a formal abandonment or insolvency event."},
+    {"id":"P033-L05","novelty":"new_category","importance":"high","lead":"Joining readiness depends on travel, immigration/visa, medical/document status, port access and vessel schedule lining up at the same time. A planned crew change can fail because one interface is unavailable even when replacement personnel are already nominated."},
+    {"id":"P033-L06","novelty":"new_category","importance":"high","lead":"Tour length and rotation planning form a queue of future relief obligations. Repeated schedule changes, port omissions, travel disruption or weak replacement supply can push planned relief dates outward and convert a staffing plan into a fatigue and retention problem."},
+    {"id":"P033-L07","novelty":"new_category","importance":"high","lead":"Relief execution is a handoff event, not only a headcount swap. Incoming and outgoing crew need overlapping transfer of defects, procedures, cargo or voyage context and local operating knowledge; compressed or disrupted relief can amplify the handover risks identified in P032."},
+    {"id":"P033-L08","novelty":"new_category","importance":"medium","lead":"Welfare state includes communication with family, access to shore services where feasible, accommodation/living conditions and practical support during long tours. These factors can influence retention and resilience without implying a specific statutory entitlement or company-quality ranking."},
+    {"id":"P033-L09","novelty":"new_category","importance":"high","lead":"Illness or injury creates both a medical and staffing state: fitness for duty, onboard treatment capability, need for shore care, temporary task redistribution, medical disembarkation and replacement timing can affect safe manning before a formal repatriation occurs."},
+    {"id":"P033-L10","novelty":"new_category","importance":"high","lead":"Repatriation is a coordinated exit process linking the vessel schedule, port access, travel documents, transport, medical needs and the party arranging or funding the journey. Delay can extend exposure and leave the next assignment or relief chain unresolved."},
+    {"id":"P033-L11","novelty":"new_category","importance":"high","lead":"Abandonment can be represented structurally as loss of reliable employer support for wages, subsistence, care or return travel while crew remain attached to the vessel. Resolution may require insurers, financial-security arrangements, flag/port authorities, unions or welfare bodies, but exact legal triggers and cases require Evidence."},
+    {"id":"P033-L12","novelty":"new_category","importance":"high","lead":"Retention and turnover affect vessel-specific organizational memory. Persistent late relief, payment uncertainty, weak welfare support or unattractive tour patterns can reduce return rates and increase the frequency with which P032 familiarization must be rebuilt."},
+    {"id":"P033-L13","novelty":"new_category","importance":"high","lead":"Crewing intermediaries and shipmanagers create an information-and-responsibility chain between employer demand and individual seafarers. Availability, documents, payment questions, travel changes and relief plans can be distributed across organizations, so operational truth may be fragmented even without misconduct."},
+    {"id":"P033-L14","novelty":"useful_refinement","importance":"high","lead":"P032 fatigue/workload is refined by the relief pipeline: accumulated fatigue may be partly an employment/rotation outcome when intended relief cannot occur, so a watch-level fatigue state should retain the contemporaneous planned-versus-actual relief context."},
+    {"id":"P033-L15","novelty":"useful_refinement","importance":"high","lead":"P023 crew-change clearance is refined as only one interface in a larger lifecycle. Administrative clearance at a port does not guarantee a successful change if replacement travel, documentation, medical readiness, vessel timing or onward repatriation remain unresolved."},
+    {"id":"P033-L16","novelty":"useful_refinement","importance":"high","lead":"The atlas counterparty-risk theme extends to crew-support obligations: owner/operator or intermediary financial distress can become an operating issue through wage, provisioning, travel, medical or repatriation failures before vessel ownership or charter contracts are formally resolved."},
+    {"id":"P033-L17","novelty":"useful_refinement","importance":"high","lead":"Known-time replay should separate a planned relief date, a nominated replacement, confirmed travel, actual embarkation and actual repatriation. Later successful relief must not be backfilled into an earlier period when the crew still faced genuine uncertainty about leaving the vessel."},
+    {"id":"P033-L18","novelty":"duplicate","importance":"low","lead":"The atlas already records labor/crewing as under-recalled negative space; P033 converts that broad gap into employment-lifecycle states rather than repeating the limitation."},
+    {"id":"P033-L19","novelty":"duplicate","importance":"low","lead":"Generic counterparty risk, information known-time and trajectory preservation already exist in the atlas/Baseline; P033 applies them specifically to crew employment, relief and repatriation."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_employment_contract_wage_leave_repatriation_financial_security_and_union_terms","reason":"Exact entitlements, rates, contract clauses, collective agreements and legal obligations vary by period, flag, nationality and contract and require dated Evidence."},
+    {"region":"specific_crewing_agencies_shipmanagers_unions_welfare_bodies_and_country_rankings","reason":"Blind recall is vulnerable to salience and stereotype bias; provider, nationality and jurisdiction comparisons require source-first research rather than a directory."},
+    {"region":"specific_abandonment_medical_repatriation_and_unpaid_wage_cases","reason":"Individual cases, chronology, responsibility and remedies require claim-scoped legal, insurer, authority or participant Evidence."},
+    {"region":"current_seafarer_shortages_wages_visa_access_and_crew_availability","reason":"Current 2025-2026 labor-market and travel conditions are outside blind-current authority and require fresh source-first collection."}
+  ],
+  "stop_reason":"The seafarer employment/welfare lifecycle is populated from recruitment and assignment through contract/pay, joining, tour/rotation/relief, welfare/medical support, repatriation and abandonment resolution. Further recall becomes contract-, wage-, union-, nationality-, agency-, medical-case-, abandonment-case- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no employment entitlement, wage level, contract term, agency quality, medical decision, abandonment determination, repatriation obligation, labor shortage or current crew availability is verified."
+}
