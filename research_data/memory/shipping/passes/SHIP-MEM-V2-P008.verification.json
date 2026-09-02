@@ -1,0 +1,72 @@
+{
+  "schema_version": "shipping-memory-pass-verification/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "pass_id": "SHIP-MEM-V2-P008",
+  "result": "pass",
+  "authority_limitation": "This verification checks Memory-only control-plane integrity, allowed-input isolation, novelty accounting, exploration-map transition and observed worker-boundary CI. It does not externally verify any remembered ship-agency, clearance, customs, immigration, health, security, husbandry, disbursement, digital-port or compliance claim.",
+  "verified_artifacts": [
+    "research_data/memory/shipping/passes/SHIP-MEM-V2-P008.json",
+    ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P008.json",
+    "research_data/memory/shipping/exploration-map.json"
+  ],
+  "input_state": {
+    "source_visibility": "atlas_only",
+    "allowed_input_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+    "model": "GPT-5.6 Sol",
+    "surface": "ChatGPT chat",
+    "run_date": "2026-09-02"
+  },
+  "checks": {
+    "probe_matches_map_selected_next_probe": true,
+    "source_visibility_is_atlas_only": true,
+    "allowed_input_digest_pinned": true,
+    "model_instrument_vintage_pinned": true,
+    "fresh_search_used": false,
+    "repository_evidence_search_used": false,
+    "evidence_promotion_performed": false,
+    "new_category_count_matches_receipt": true,
+    "useful_refinement_count_matches_receipt": true,
+    "duplicate_count_matches_receipt": true,
+    "reviewed_no_specific_memory_count_matches_receipt": true,
+    "high_importance_novel_count_recorded": true,
+    "one_campaign_local_method_observation_only": true,
+    "one_pass_did_not_self_seal": true,
+    "both_reopened_shards_remain_unsealed": true,
+    "evidence_transition_remains_disabled": true,
+    "exactly_one_open_frontier": true,
+    "exactly_one_next_probe": true,
+    "next_probe_is_SHIP_MEM_V2_P009": true,
+    "substantive_diff_within_reservation": true
+  },
+  "novelty_observation": {
+    "new_category_count": 13,
+    "useful_refinement_count": 4,
+    "duplicate_count": 2,
+    "reviewed_no_specific_memory_count": 4,
+    "high_importance_novel_count": 9,
+    "interpretation": "P008 remained high-novelty at the administrative port-call level. It added local agent and protective-agency structure, pre-arrival service sequencing, customs/immigration/health/security gates, husbandry and crew/spares logistics, PDA/FDA working-capital and audit risk, cash-to-master, local information asymmetry, single-window information infrastructure and multi-party timestamp provenance. Recall quality declined when it approached exact local forms, notice windows, agent authority clauses, tariffs, current digital implementations or specific compliance cases."
+  },
+  "map_transition": {
+    "from_revision": 8,
+    "to_revision": 9,
+    "closed_frontier": "shipping-ship-agency-husbandry-port-call-clearance-disbursement-v1",
+    "opened_frontier": "shipping-hydrography-weather-routing-navigation-information-v1",
+    "selected_next_probe": "SHIP-MEM-V2-P009",
+    "campaign_stage": "active_recall",
+    "seal_eligible": false,
+    "evidence_transition_allowed": false
+  },
+  "remote_ci_observation": {
+    "observed_substantive_checkpoint_sha": "ad96cb83c5cd2b12f7bb5078b8ea2b69a9981ee4",
+    "architecture_baseline_run_id": 33594137426,
+    "validate_unchanged_baseline_and_owner_routing": "success",
+    "worker_diff_stays_inside_main_reservation": "success",
+    "changed_memory_seal_claims_have_exact_decision_or_supersession": "success",
+    "focused_worker_continuity_and_boundary_regressions": "success",
+    "remote_worker_continuity_clean": "failure_expected_before_cursor_handoff",
+    "note": "The substantive checkpoint intentionally precedes the cursor-only handoff, so continuity is expected to be non-CLEAN until H acknowledges the final substantive S. The legacy portable-memory one-shot workflow is not a current worker correctness gate."
+  },
+  "external_historical_truth_verified": false,
+  "evidence_transition_performed": false
+}
