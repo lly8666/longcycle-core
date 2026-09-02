@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P071",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_freshwater_potable_water_production_desalination_bunkering_storage_distribution_consumption_quality_shortage_contamination_isolation_restoration_hotel_service",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_service_availability_and_quality_confidence_state_model_only_no_treatment_dosing_sampling_or_consumption_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"FW-01","novelty_class":"new_category","importance":"high","memory":"Shipboard freshwater service spans owner/manager, master, engineering crew, hotel/catering or accommodation users, shore technical or marine support, water-system equipment/service actors and port or shore water-supply actors. Source provision, onboard equipment condition, inventory custody, distribution and quality confidence can therefore belong to different responsibilities."},
+    {"id":"FW-02","novelty_class":"new_category","importance":"high","memory":"Freshwater source availability and onboard water inventory are separate states. Onboard production equipment or a shore-supply opportunity may be unavailable while stored inventory remains, and an available source does not prove that sufficient usable inventory has been produced or received."},
+    {"id":"FW-03","novelty_class":"new_category","importance":"high","memory":"Onboard production readiness and actual production are distinct lifecycle states. Equipment may be installed, available, degraded, unavailable or under support while observed water production is a separate event or interval; exact process, rate and treatment parameters are deferred."},
+    {"id":"FW-04","novelty_class":"new_category","importance":"high","memory":"Shore or port water supply has offer/availability, vessel acceptance/readiness, transfer indication, receipt and closure states. Those states do not by themselves establish water quality, exact quantity or regulatory suitability, which require claim-scoped Evidence."},
+    {"id":"FW-05","novelty_class":"new_category","importance":"high","memory":"Storage and inventory should preserve quantity-confidence and location/availability separately from source history. A historical replay benefits from knowing when inventory was believed available without turning blind Memory into tank-capacity, sounding, consumption or transfer calculations."},
+    {"id":"FW-06","novelty_class":"new_category","importance":"high","memory":"Intended-use separation is structurally useful: potable/domestic or accommodation use and selected technical uses should not be assumed interchangeable. The pass retains the existence of use-class distinctions while deferring exact vessel piping, tank assignments, cross-connections and suitability rules."},
+    {"id":"FW-07","novelty_class":"new_category","importance":"high","memory":"Freshwater demand/consumption and supply/production are separate clocks. A shortage can emerge from changing demand, reduced production, reduced shore access, uncertain inventory or distribution loss without any one factor being established as the root cause."},
+    {"id":"FW-08","novelty_class":"new_category","importance":"high","memory":"Shortage or degraded-availability has a lifecycle that can preserve observation, uncertain scope, service restriction or reduced availability, resupply/recovery expectation, restoration indication and verification. This is a state model only and contains no rationing or operating procedure."},
+    {"id":"FW-09","novelty_class":"new_category","importance":"high","memory":"Water quality confidence is separate from both quantity and confirmed contamination. Structural states can include normal confidence, concern or suspicion, evidence pending, restricted/isolated status, result or clearance indication and restored confidence without retaining thresholds, tests, organisms, treatment or health advice."},
+    {"id":"FW-10","novelty_class":"new_category","importance":"high","memory":"Distribution availability is distinct from source and storage availability. Water can exist onboard while an affected distribution segment or end-use service is unavailable, so downstream service loss should not automatically be attributed to production failure or depleted inventory."},
+    {"id":"FW-11","novelty_class":"new_category","importance":"high","memory":"Isolation should be represented as a bounded service state rather than a whole-vessel conclusion. A source, storage location or distribution segment may be treated as unavailable or segregated while other supply remains; exact valves, piping, procedures and reasons are deferred."},
+    {"id":"FW-12","novelty_class":"new_category","importance":"high","memory":"Freshwater degradation can propagate into accommodation, galley, sanitation and selected technical services, but simultaneous downstream problems are dependency observations rather than proof of a water-source, distribution or quality root cause."},
+    {"id":"FW-13","novelty_class":"new_category","importance":"medium","memory":"Restoration should keep source/production return, inventory confidence, distribution return, end-use availability and quality-confidence clearance as potentially different timestamps. Resumed production or transfer alone does not establish complete freshwater-service recovery."},
+    {"id":"FW-R01","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical availability can be an upstream dependency for water production and distribution, but electrical power being present does not prove freshwater production, inventory, distribution or quality confidence."},
+    {"id":"FW-R02","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep watermaker, pump or treatment-equipment condition separate from freshwater service state. Healthy equipment can coexist with insufficient source/inventory or an isolated service, and water availability does not prove equipment condition."},
+    {"id":"FW-R03","novelty_class":"useful_refinement","importance":"high","memory":"Crew-welfare and accommodation outcomes should treat freshwater availability as one possible dependency rather than a complete welfare judgment; reduced service can matter while the cause and broader welfare effect remain separately evidenced."},
+    {"id":"FW-R04","novelty_class":"useful_refinement","importance":"medium","memory":"Point-in-time replay should distinguish first onboard observation of a quality concern, any later sample/result or shore notification, and any later clearance. Later knowledge must not silently rewrite what the vessel or manager could have known earlier."},
+    {"id":"FW-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, support, modification and restoration mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"FW-D02","novelty_class":"duplicate","importance":"medium","memory":"Dependency propagation, degraded-service, isolation and verified-restoration mechanics overlap the digital, connectivity and electrical state models recovered in P068-P070; P071 applies them to freshwater service and quality confidence."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact vessel water-system diagrams, tank assignments/capacities, production rates, consumption figures and transfer quantities are intentionally not retained.",
+    "Exact desalination, treatment, dosing, disinfection, sampling, microbiology, laboratory methods, water-quality thresholds and health interpretations are outside this blind pass.",
+    "Named water-system OEMs/service companies, laboratories, port water suppliers, vessel incidents, contamination findings and rule-specific compliance claims require claim-scoped Evidence.",
+    "Private/regional watermaker, treatment, laboratory, bunkering and port-water provider lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact tank/piping topology, capacities, production rates, consumption quantities and transfer details.",
+    "Treatment, dosing, disinfection, sampling, microbiology, testing thresholds or health/consumption guidance.",
+    "Named suppliers, equipment, laboratories, vessel incidents, contamination findings, regulations and current readiness.",
+    "Private/regional freshwater-service lineages and non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive freshwater service-availability and quality-confidence orientation/source-discovery output. It is not potable-water, health, treatment, sampling, engineering, bunkering or vessel-operating advice and does not establish any exact capacity, rate, quantity, treatment parameter, test result, threshold, supplier, incident, contamination finding, compliance status or current-readiness fact.",
+  "stop_reason": "The freshwater lifecycle is recalled at useful structural resolution: source/production, shore supply, inventory, intended use, demand, quality confidence, distribution, isolation and verified restoration are separable states. Further detail would become tank-, piping-, treatment-, sampling-, microbiology-, health-, vessel-, rule-, incident-, supplier- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
