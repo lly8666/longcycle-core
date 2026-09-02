@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P079",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_machinery_cooling_water_seawater_freshwater_closed_loop_heat_exchanger_pump_distribution_temperature_capacity_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_machinery_cooling_service_state_model_only_no_temperature_pressure_flow_chemistry_valve_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"MC-01","novelty_class":"new_category","importance":"high","memory":"Machinery-cooling service spans owner/manager, master, engineering crew, shore technical support, cooling-pump/heat-exchanger/water-treatment equipment or service actors and relevant port or yard support. Onboard observation, equipment support and treatment assurance should remain distinct roles rather than one vendor or maintenance directory."},
+    {"id":"MC-02","novelty_class":"new_category","importance":"high","memory":"Seawater-source or external heat-sink readiness, closed-loop freshwater inventory/capacity confidence, circulation-pump availability and heat-exchange readiness are distinct service states. Availability of one layer does not prove the others."},
+    {"id":"MC-03","novelty_class":"new_category","importance":"high","memory":"Seawater-source/interface readiness should preserve affected intake/source/interface scope without inventing exact sea-chest, strainer, piping or valve arrangements. A source path may be constrained while closed-loop inventory and some onboard circulation remain present."},
+    {"id":"MC-04","novelty_class":"new_category","importance":"high","memory":"Closed-loop inventory or capacity confidence is distinct from freshwater production and from exact tank/system quantity. Historical memory can retain whether cooling-medium inventory or reserve confidence was normal, constrained, uncertain or restored without asserting exact levels or chemistry."},
+    {"id":"MC-05","novelty_class":"new_category","importance":"high","memory":"Circulation-pump readiness and distribution/path availability are separate states. A pump may be available while one cooling branch is restricted, or a path may be intact while pumping capacity or redundancy confidence is degraded; exact lineups and flows are deferred."},
+    {"id":"MC-06","novelty_class":"new_category","importance":"high","memory":"Heat-exchanger availability and heat-removal performance confidence are distinct. Equipment being online or physically available does not itself establish adequate heat-transfer performance, clean surfaces, correct flow, acceptable temperature outcome or root cause."},
+    {"id":"MC-07","novelty_class":"new_category","importance":"high","memory":"Temperature-condition confidence should preserve affected loop, branch or consumer scope and qualitative state without inventing exact readings or limits. An abnormal or uncertain temperature condition does not by itself prove seawater, pump, exchanger, fouling, flow or control cause."},
+    {"id":"MC-08","novelty_class":"new_category","importance":"high","memory":"Water-condition or treatment-confidence concerns are separate from physical circulation availability. Chemistry, contamination or treatment uncertainty can constrain confidence in a closed loop without proving immediate cooling loss, while cooling degradation does not establish a chemical-treatment cause; exact treatment parameters remain deferred."},
+    {"id":"MC-09","novelty_class":"new_category","importance":"high","memory":"Cooling demand/load and reserve-margin confidence are distinct from installed pump or exchanger capacity. Higher machinery load or degraded heat rejection can reduce margin without proving a single component failure; exact thermal balances and capacities are deferred."},
+    {"id":"MC-10","novelty_class":"new_category","importance":"high","memory":"Machinery-cooling degradation has a defensive lifecycle: observation, uncertain source/loop/pump/exchanger/path/consumer scope, affected service dimension, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No cooling-system alignment, treatment or troubleshooting procedure is retained."},
+    {"id":"MC-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected loop, pump, exchanger, branch or consumer scope. Partial cooling service can remain available while one branch or machinery group is constrained; exact piping, valves and bypass arrangements remain deferred."},
+    {"id":"MC-12","novelty_class":"new_category","importance":"high","memory":"Machinery cooling depends on electrical power, pumps, controls/monitoring and sometimes other support services, but dependency observations are not root-cause proof. Cooling degradation can propagate into propulsion, generation or auxiliary-machinery availability, yet those downstream effects do not prove a seawater, loop, pump, exchanger, treatment or control cause."},
+    {"id":"MC-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: source/interface availability returns, loop inventory confidence returns, circulation and heat exchange return, temperature-condition confidence becomes acceptable and affected machinery service is re-verified. A restarted pump or normalized single indication does not prove full cooling-service recovery."},
+    {"id":"MC-R01","novelty_class":"useful_refinement","importance":"high","memory":"P072 HVAC/chilled-water thermal service and P079 machinery cooling are independent thermal-service dimensions. Accommodation-zone cooling does not prove machinery-loop readiness, and machinery-cooling degradation does not establish HVAC loss."},
+    {"id":"MC-R02","novelty_class":"useful_refinement","importance":"high","memory":"P071 potable/freshwater service and P079 closed-loop cooling water share water vocabulary but are distinct inventories and purposes. Potable-water availability does not prove cooling-loop inventory, treatment confidence or circulation readiness, and vice versa."},
+    {"id":"MC-R03","novelty_class":"useful_refinement","importance":"high","memory":"P078 compressed-air service may depend on cooling, but compressor degradation or high temperature does not by itself prove a machinery-cooling root cause. Cooling availability likewise does not prove pneumatic-service readiness."},
+    {"id":"MC-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep pump, exchanger, cooler, strainer, sensor or treatment-equipment condition separate from delivered cooling service. Sound equipment can coexist with source, load or path constraints, and adequate service does not prove every component condition."},
+    {"id":"MC-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"MC-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation, redundancy and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P078; P079 applies them specifically to machinery cooling."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cooling-loop topology, capacities, temperatures, pressures, flow rates, heat-exchanger dimensions/performance values, water-treatment chemistry, piping, valves and instrumentation are intentionally not retained.",
+    "Exact seawater/freshwater alignment, pump changeover, exchanger cleaning, venting, draining, chemical dosing, isolation, bypass, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named cooling-equipment vendors, treatment suppliers, service firms, vessel installations, failures, incidents, deficiencies and current-readiness facts require claim-scoped Evidence.",
+    "Private/regional cooling-pump, exchanger, treatment and shore-service lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact cooling topology, capacities, temperatures, pressures, flow rates, heat-exchanger parameters, chemistry, piping/valves, instrumentation and current configuration.",
+    "Alignment, changeover, cleaning, venting/draining, dosing, isolation/bypass, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/treatment/service providers, vessel failures/incidents/deficiencies and current readiness.",
+    "Private/regional machinery-cooling service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive machinery-cooling service orientation/source-discovery output. It is not cooling-system alignment, water treatment, maintenance, machinery, safety or vessel-operating advice and does not establish any exact arrangement, capacity, temperature, pressure, flow rate, heat-exchanger parameter, treatment chemistry, piping/valve lineup, instrumentation, procedure, provider, incident, deficiency or current-readiness fact.",
+  "stop_reason": "The machinery-cooling service chain is recalled at useful structural resolution: seawater-source/interface readiness, closed-loop inventory/capacity confidence, pump and distribution availability, heat-exchange readiness/performance confidence, temperature and water-condition confidence, demand/load, restriction/isolation, dependencies, downstream effects and verified restoration are separable states. Further detail would become vessel-, loop-, pump-, exchanger-, temperature-, pressure-, flow-, chemistry-, piping-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
