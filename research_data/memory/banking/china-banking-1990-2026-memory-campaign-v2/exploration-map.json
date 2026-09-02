@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 8,
+  "map_revision": 9,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
@@ -18,8 +18,8 @@
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
   "learning_state_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-REGULATION-RESOLUTION__blind-002.json#/method_observation",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-001.json",
-  "latest_pass_receipt_status": "seventh_v2_blind_pass_completed_memory_only",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002.json",
+  "latest_pass_receipt_status": "eighth_v2_blind_pass_completed_memory_only",
   "batch0_orientation": {
     "status": "orientation_scaffold_not_saturation",
     "memory_vintage": "banking-china-1990-2026-v1",
@@ -30,7 +30,7 @@
   "active_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
-      "selected_time_slice_id": "TIME-2005-2008",
+      "selected_time_slice_id": "TIME-2009-2012",
       "stage": "active_recall",
       "recent_outcomes": [
         {
@@ -95,6 +95,15 @@
           "duplicate_lead_count": 3,
           "high_importance_novel_count": 25,
           "outcome": "material_novelty_with_entry_listing_conversion_vs_exit_boundary"
+        },
+        {
+          "pass_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002",
+          "family": "entry_listing_conversion_vs_resolution_blind_challenge",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002.json",
+          "novel_lead_count": 41,
+          "duplicate_lead_count": 4,
+          "high_importance_novel_count": 27,
+          "outcome": "material_but_narrowing_novelty_with_entry_conversion_resolution_state_machine"
         }
       ],
       "negative_space_review_complete": false,
@@ -112,94 +121,76 @@
       {
         "region_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION",
         "state": "two_blind_passes_material_then_narrowing",
-        "note": "Two orthogonal passes activated broad reform and early intervention vocabulary but did not recover a confident institution-specific licensed-bank closure; exact early-case detail is deferred for post-blind source archaeology."
+        "note": "Two orthogonal passes activated broad reform and early intervention vocabulary; exact early-case detail remains deferred."
       },
       {
         "region_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION",
         "state": "two_blind_passes_material_perimeter_discrimination",
-        "note": "Two passes materially separated commercial-bank administrative closure, non-bank bankruptcy and consolidation; remaining 1995-1999 gaps are dominated by exact legal sequencing and claimant treatment."
+        "note": "Two passes materially separated commercial-bank administrative closure, non-bank bankruptcy and consolidation; exact legal and claimant detail remains deferred."
       },
       {
         "region_id": "TIME-2000-2004__SYS-REGULATION-RESOLUTION",
         "state": "two_blind_passes_material_then_narrowing_mechanism_separation",
-        "note": "The broad pass recovered the supervisory/restructuring architecture; the orthogonal challenge separated supervisor, central bank, owner recapitalization, corporatization, operating/license/entity status and claimant treatment. Remaining same-slice gaps are mostly source-like details."
+        "note": "Two passes separated supervisor, central bank, owner recapitalization, corporatization, operating/license/entity status and claimant treatment."
       },
       {
-        "region_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-001",
-        "state": "active_recall_material_novelty_entry_exit_boundary",
-        "note": "The broad pass recovered 49 novel/refining leads across prudential normalization, major-bank and city-bank listing, foreign-bank local incorporation, PSBC and rural institution formation, ABC/CDB reform and the 2008 crisis turn. The strongest remaining blind question is to distinguish entry/formation and conversion/listing from actual stress intervention or terminal exit."
+        "region_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION",
+        "state": "two_blind_passes_material_then_narrowing_entry_conversion_resolution_separation",
+        "note": "The broad pass recovered prudential normalization, listings, foreign/rural entry and reform; the orthogonal challenge separated entry, conversion, listing, recapitalization, ordinary supervision and actual resolution. Remaining same-slice gaps are predominantly exact rules, transaction mechanics and named-case evidence."
       }
     ],
     "known_major_gaps": [
-      "Exact statutory relationship among takeover, suspension, revocation, dissolution, liquidation and court bankruptcy remains unverified across the early periods.",
-      "Claimant hierarchy and named-case depositor/creditor treatment remain source-dependent.",
-      "Exact 2005-2008 Basel-oriented implementation milestones, capital/provisioning thresholds and risk-supervision rules remain unresolved.",
-      "Foreign-bank local-incorporation permissions and legal continuity versus predecessor branches remain unresolved.",
-      "PSBC, ABC and CDB formation/conversion transaction mechanics remain unresolved.",
-      "The rural new-institution pilot design and relationship to existing RCC restructuring remains unresolved.",
-      "No routine completed judicial bankruptcy of a licensed domestic commercial bank is confidently recalled for 2005-2008.",
-      "The current map still needs one orthogonal challenge on formation/listing/conversion versus actual exit/resolution before moving forward chronologically."
+      "Exact legal and claimant treatment for named bank stress/exit episodes across the pre-2009 periods remains source-dependent.",
+      "The bank-resolution statutory action ladder and deposit-protection arrangements remain unverified at claim level.",
+      "No v2 blind pass has yet covered the 2009-2012 post-stimulus regime, including local-government/property concentration and regulatory-perimeter pressure from trust/WMP-style intermediation.",
+      "The transition from crisis-era credit support to renewed prudential tightening, capital/provisioning/liquidity standards and Basel III preparation remains uncovered in this shard.",
+      "Later explicit deposit insurance, small-bank stress, takeover/merger and consolidation eras remain uncovered, so the shard is far from seal readiness."
     ],
     "deferred_regions": [
       {
-        "region_id": "TIME-1990-1994__SYS-REGULATION-RESOLUTION__EARLY-CASE-DETAIL",
+        "region_id": "TIME-1990-2008__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL",
         "state": "deferred",
-        "reason": "Retain for later claim-scoped source archaeology after blind-stage rules permit Evidence work."
-      },
-      {
-        "region_id": "TIME-1995-1999__SYS-REGULATION-RESOLUTION__EXACT-LEGAL-CLAIMANT-DETAIL",
-        "state": "deferred",
-        "reason": "The main bank-versus-nonbank category confusion is already separated; remaining questions are exact legal-instrument and claimant-waterfall details."
-      },
-      {
-        "region_id": "TIME-2000-2004__SYS-REGULATION-RESOLUTION__EXACT-LEGAL-NUMERIC-DETAIL",
-        "state": "deferred",
-        "reason": "Two passes now separate reform mechanisms sufficiently for blind planning; exact statutory and transaction details are deferred rather than guessed."
-      },
-      {
-        "region_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__EXACT-RULE-TRANSACTION-DETAIL",
-        "state": "deferred",
-        "reason": "Do not use blind repetition to guess IPO sizes, strategic-investor stakes, Basel deadlines, foreign-bank business permissions or named-case claimant outcomes."
+        "reason": "Repeated blind passes have already identified the main mechanism categories. Exact statutes, numerical thresholds, transaction terms and claimant outcomes should be recovered later through claim-scoped Evidence archaeology rather than guessed."
       },
       {
         "region_id": "remaining-v2-manifest-frontier",
         "state": "deferred",
-        "reason": "Do not materialize the time-by-shard Cartesian grid. Run only the selected 2005-2008 entry/conversion/exit challenge, then re-rank sparsely."
+        "reason": "Do not materialize the time-by-shard Cartesian grid. Run only the selected 2009-2012 regulation/resolution probe in a future loop, then re-rank sparsely."
       }
     ]
   },
   "open_frontiers": [
     {
-      "frontier_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__ENTRY-CONVERSION-EXIT-CHALLENGE",
+      "frontier_id": "TIME-2009-2012__SYS-REGULATION-RESOLUTION",
       "priority_rank": 1,
       "state": "open",
-      "selected_probe_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002"
+      "selected_probe_id": "TIME-2009-2012__SYS-REGULATION-RESOLUTION__blind-001"
     }
   ],
   "next_probe": {
-    "probe_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002",
-    "family": "entry_listing_conversion_vs_resolution_blind_challenge",
-    "time_slice_id": "TIME-2005-2008",
+    "probe_id": "TIME-2009-2012__SYS-REGULATION-RESOLUTION__blind-001",
+    "family": "time_x_shard_blind_recall",
+    "time_slice_id": "TIME-2009-2012",
     "shard_id": "SYS-REGULATION-RESOLUTION",
     "period": [
-      "2005-01-01",
-      "2008-12-31"
+      "2009-01-01",
+      "2012-12-31"
     ],
-    "instruction": "Run one fresh isolated blind challenge for TIME-2005-2008 x SYS-REGULATION-RESOLUTION. Do not broadly retell the period. Instead discriminate institution entry/formation, legal conversion/corporatization, public listing/strategic investment, state-owner recapitalization, ordinary prudential supervision, and true stress intervention or market exit. Test the distinction across major-bank and city-bank listings, locally incorporated foreign banks, Postal Savings Bank formation, new rural financial institutions, ABC/CDB reform boundary cases, and the remembered scarcity of terminal commercial-bank failures around the 2008 global-crisis turn. Track operating status, banking-license status, legal-entity continuity, ownership/capital action and claimant treatment separately. Preserve approximate timing and institution-perimeter uncertainty. Do not read blind-001 or any other prior raw output; use only this rebuilt map, the manifest and model internal memory.",
+    "instruction": "Run one fresh isolated blind recall unit for TIME-2009-2012 x SYS-REGULATION-RESOLUTION. Focus on the post-global-crisis credit/stimulus regime and its supervisory consequences: local-government financing and property/concentration exposures, capital/provisioning/liquidity tightening and Basel III-oriented preparation, the regulatory perimeter around trust cooperation, wealth-management or other off-balance-sheet intermediation, continued large/city/rural-bank governance and expansion, and any institution-specific stress intervention, merger, suspension, revocation, liquidation or resolution-adjacent events. Keep macro credit policy, ordinary prudential correction, shadow-banking perimeter regulation, owner recapitalization and actual bank resolution separate. Preserve approximate timing, institution perimeter, claimant classes, period-native terminology and contemporaneous expectations. Do not read any prior v2 raw pass; use only this rebuilt map, the manifest and model internal memory.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
-      "all prior v2 raw blind-pass outputs including TIME-2005-2008 blind-001",
+      "all prior v2 raw blind-pass outputs",
       "other shard raw outputs",
       "Banking source or Evidence material",
       "fresh Banking search results"
     ],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One append-only raw blind challenge and bounded receipt exist for the entry/listing/conversion versus resolution discrimination problem; novelty and negative space are classified; the same sparse map is rebuilt with exactly one deterministic next_probe; and the shard remains unsealed."
+    "done_when": "One append-only raw blind unit and bounded receipt exist for TIME-2009-2012 x SYS-REGULATION-RESOLUTION; novelty and negative space are classified; the same sparse map is rebuilt with exactly one deterministic next_probe; and the shard remains unsealed."
   },
   "seal_readiness": {
     "eligible": false,
@@ -267,6 +258,14 @@
         "novel_lead_count": 49,
         "duplicate_lead_count": 3,
         "high_importance_novel_count": 25
+      },
+      {
+        "pass_id": "TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002",
+        "family": "entry_listing_conversion_vs_resolution_blind_challenge",
+        "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2005-2008__SYS-REGULATION-RESOLUTION__blind-002.json",
+        "novel_lead_count": 41,
+        "duplicate_lead_count": 4,
+        "high_importance_novel_count": 27
       }
     ],
     "historical_correction_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/legacy-prose-state-correction-v1.json"
@@ -275,7 +274,7 @@
     "maximum_open_frontiers": 64,
     "current_open_frontiers": 1,
     "maximum_recent_seal_outcomes": 8,
-    "current_recent_seal_outcomes": 7,
+    "current_recent_seal_outcomes": 8,
     "selected_next_probe_count": 1
   }
 }
