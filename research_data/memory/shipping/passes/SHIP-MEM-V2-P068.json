@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P068",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_it_ot_cybersecurity_network_architecture_asset_inventory_identity_access_remote_vendor_connectivity_configuration_software_patch_backup_restore_monitoring_incident_response_recovery_change_management",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-02",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_state_model_only_no_vulnerability_or_attack_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CY-01","novelty_class":"new_category","importance":"high","memory":"Shipboard digital risk has distinct owner/manager, master/crew, technical IT/OT support, equipment OEM or vendor support, system-integrator, shore IT/security and assurance roles. Responsibility for operations, access, configuration and incident support can cross organizational boundaries without being equivalent to system ownership."},
+    {"id":"CY-02","novelty_class":"new_category","importance":"high","memory":"Asset inventory is a lifecycle state, not a static device list. Installed hardware, software/firmware, logical services, ownership/support responsibility and criticality can diverge from documentation after replacements, temporary equipment or upgrades."},
+    {"id":"CY-03","novelty_class":"new_category","importance":"high","memory":"IT/OT network or zone/interface architecture is a boundary-management state rather than a topology fact to publish. The useful structural memory is whether intended trust/interface boundaries and interdependencies are known, current and controlled; exact addresses, routes and diagrams are deferred."},
+    {"id":"CY-04","novelty_class":"new_category","importance":"high","memory":"Identity and access have join/change/revoke and privilege states. Account existence, authorization, authentication mechanism and actual session/use should remain separately clocked, especially across crew turnover, shore support and vendor access."},
+    {"id":"CY-05","novelty_class":"new_category","importance":"high","memory":"Vendor remote connectivity is an operational-support dependency with enabled/disabled, authorized-window, session/approval and support-availability states. Remote capability can improve repairability while also requiring explicit governance; no technical connection details are retained."},
+    {"id":"CY-06","novelty_class":"new_category","importance":"high","memory":"Configuration and software/firmware version baselines are separate from physical hardware condition. Intended/approved version, installed version, pending change and verified post-change behavior can diverge in time."},
+    {"id":"CY-07","novelty_class":"new_category","importance":"high","memory":"Patch or update governance is a controlled-change lifecycle rather than a simple latest/not-latest flag. Availability, applicability assessment, compatibility/testing, approval, deployment, fallback and verification can occur on different clocks, especially for operational technology."},
+    {"id":"CY-08","novelty_class":"new_category","importance":"high","memory":"Backup state and recovery capability are different. A backup can exist while being stale, incomplete or unverified for restoration; recovery readiness requires scope, known-good reference, accessibility and tested restore confidence without exposing implementation details."},
+    {"id":"CY-09","novelty_class":"new_category","importance":"high","memory":"Logging/monitoring is an observation layer with coverage and known-time. The existence of logs or alarms is not proof that an event was detected, understood or attributable; monitoring gaps and later reconstruction must remain explicit."},
+    {"id":"CY-10","novelty_class":"new_category","importance":"high","memory":"A cyber or digital anomaly lifecycle can be represented defensively as observation/triage, scope assessment, containment decision, continuity workaround, recovery/restoration and post-event review. This pass retains no attack method, exploit path or tactical response procedure."},
+    {"id":"CY-11","novelty_class":"new_category","importance":"high","memory":"Business/operational continuity during digital degradation is a separate state from cyber cause attribution. Navigation, cargo, machinery support, communications or administration may be degraded to different degrees while root cause remains uncertain."},
+    {"id":"CY-12","novelty_class":"new_category","importance":"high","memory":"Controlled change and configuration-management records matter to historical replay: planned change, emergency change, implementation, validation and rollback/recovery should be temporally distinct so later stability does not rewrite what was known at the change point."},
+    {"id":"CY-13","novelty_class":"new_category","importance":"medium","memory":"Third-party and lifecycle obsolescence risk crosses cyber and equipment support: unsupported operating environments, discontinued vendor support or incompatible dependencies can increase recovery friction even without a known incident or hardware defect."},
+    {"id":"CY-R01","novelty_class":"useful_refinement","importance":"high","memory":"P067 software/firmware supportability should distinguish vendor-support state from shipboard authorization and installed-configuration state; a vendor can offer an update or remote service without the vessel having assessed, approved or deployed it."},
+    {"id":"CY-R02","novelty_class":"useful_refinement","importance":"high","memory":"P026/P027-style digital observations and alarms should not be treated as independent corroboration merely because they appear in multiple systems; shared networks, clocks, software or upstream sensors can create common-mode information dependencies."},
+    {"id":"CY-R03","novelty_class":"useful_refinement","importance":"high","memory":"Technical availability should separate digital-control degradation from underlying machinery condition. A mechanically sound function may become unavailable through control/configuration/support loss, while a cyber alert does not by itself prove physical malfunction."},
+    {"id":"CY-R04","novelty_class":"useful_refinement","importance":"medium","memory":"Incident recovery should preserve both service restoration time and confidence/verification state; restored output is not automatically proof that configuration integrity, data completeness or root cause has been fully established."},
+    {"id":"CY-D01","novelty_class":"duplicate","importance":"medium","memory":"Software/firmware version and vendor-support states partially overlap the marine-equipment lifecycle recovered in P067."},
+    {"id":"CY-D02","novelty_class":"duplicate","importance":"medium","memory":"Alarm/log observation versus interpretation and shared digital dependencies overlap earlier instrumentation, alarm and evidence-integrity memory."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact network diagrams, addresses, credentials, access-control settings and remote-access implementation are intentionally not retained.",
+    "Exact software/firmware versions, patch levels, vulnerabilities, exploits, malware, indicators and incident tactics require authoritative security-safe Evidence and are outside this blind pass.",
+    "Named ship systems, cyber vendors, managed-service providers, integrators and forensic firms are not retained as a provider or target directory.",
+    "Named incidents, affected vessels, causal attribution, loss amounts, regulatory findings and current cyber posture require claim-scoped Evidence."
+  ],
+  "negative_space": [
+    "Exact technical topology, credentials, vulnerabilities, exploitability and security-control configurations.",
+    "Named shipboard IT/OT products and current software/patch/support status.",
+    "Private/regional maritime cyber, remote-support, managed-service and forensic provider lineages.",
+    "Historical non-English predecessor terminology for shipboard automation networking, remote support and cyber incidents."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive orientation/source-discovery output. It is not cybersecurity, incident-response, network, engineering, navigation or operational advice and does not expose or establish any topology, credential, vulnerability, exploit, named system, provider, incident, attribution or current security-posture fact.",
+  "stop_reason": "The defensive shipboard IT/OT governance lifecycle is recalled at useful structural resolution. Further detail would become topology-, credential-, vulnerability-, exploit-, product-, incident-, provider- or jurisdiction-specific and is intentionally deferred rather than converted into operational cyber guidance."
+}
