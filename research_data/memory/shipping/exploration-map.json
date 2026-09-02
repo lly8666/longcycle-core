@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
   "workstream_id": "shipping-domain-v1",
-  "revision": 5,
+  "revision": 6,
   "authority_class": "research_control_only",
   "campaign": {
     "campaign_id": "shipping-adaptive-memory-v2",
@@ -15,9 +15,9 @@
     "fresh_search_used": false
   },
   "campaign_ref": "research_data/memory/shipping/exploration-map.json#/campaign",
-  "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json#/method_observation",
+  "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json#/method_observation",
   "current_prompt_ref": "research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json",
   "latest_pass_receipt_status": "completed_memory_pass_unverified_until_exact_head_ci",
   "legacy_inputs": [
     {
@@ -38,38 +38,11 @@
       "shard_id": "shipping-1970-present-whole-industry",
       "stage": "active_recall",
       "recent_outcomes": [
-        {
-          "pass_id": "SHIP-MEM-V2-P001",
-          "family": "cross_cycle_long_tail_institutional_topology",
-          "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
-          "novel_lead_count": 18,
-          "duplicate_lead_count": 2,
-          "high_importance_novel_count": 9
-        },
-        {
-          "pass_id": "SHIP-MEM-V2-P002",
-          "family": "regional_private_cabotage_small_port_aliases",
-          "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
-          "novel_lead_count": 16,
-          "duplicate_lead_count": 2,
-          "high_importance_novel_count": 8
-        },
-        {
-          "pass_id": "SHIP-MEM-V2-P003",
-          "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
-          "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
-          "novel_lead_count": 17,
-          "duplicate_lead_count": 2,
-          "high_importance_novel_count": 9
-        },
-        {
-          "pass_id": "SHIP-MEM-V2-P004",
-          "family": "ship_design_machinery_equipment_repair_conversion_ecosystem",
-          "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json",
-          "novel_lead_count": 18,
-          "duplicate_lead_count": 2,
-          "high_importance_novel_count": 10
-        }
+        {"pass_id": "SHIP-MEM-V2-P001", "family": "cross_cycle_long_tail_institutional_topology", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json", "novel_lead_count": 18, "duplicate_lead_count": 2, "high_importance_novel_count": 9},
+        {"pass_id": "SHIP-MEM-V2-P002", "family": "regional_private_cabotage_small_port_aliases", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json", "novel_lead_count": 16, "duplicate_lead_count": 2, "high_importance_novel_count": 8},
+        {"pass_id": "SHIP-MEM-V2-P003", "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json", "novel_lead_count": 17, "duplicate_lead_count": 2, "high_importance_novel_count": 9},
+        {"pass_id": "SHIP-MEM-V2-P004", "family": "ship_design_machinery_equipment_repair_conversion_ecosystem", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json", "novel_lead_count": 18, "duplicate_lead_count": 2, "high_importance_novel_count": 10},
+        {"pass_id": "SHIP-MEM-V2-P005", "family": "marine_fuel_bunkering_quality_credit_testing_infrastructure", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json", "novel_lead_count": 18, "duplicate_lead_count": 2, "high_importance_novel_count": 10}
       ],
       "has_major_coverage_gaps": true
     },
@@ -81,92 +54,44 @@
     }
   ],
   "reviewed_orientation_regions": [
-    {
-      "region_id": "legacy-period-and-sector-sweep",
-      "status": "orientation_only",
-      "basis_ref": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json",
-      "interpretation": "Broad headings and remembered leads establish a starting index, not saturation."
-    },
-    {
-      "region_id": "legacy-container-pandemic-cycle",
-      "status": "orientation_only",
-      "basis_ref": "research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.verification.json",
-      "interpretation": "One representative cycle packet is an orientation sample, not an orthogonal confirmation pass."
-    },
-    {
-      "region_id": "cross-cycle-long-tail-institutional-topology",
-      "status": "high_novelty_active_recall",
-      "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
-      "interpretation": "P001 surfaced substantial non-operating institutional topology—liability mutuals, class, flags/inspection, vetting, labor/crewing, managers, contracts, creditor rights, brokers and port labor."
-    },
-    {
-      "region_id": "regional-private-cabotage-small-port-aliases",
-      "status": "high_novelty_active_recall",
-      "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
-      "interpretation": "P002 added family/private ownership clusters, regional tonnage-provider and feeder layers, domestic cabotage finance/entry regimes, lighterage/small-port topology and local-language search vocabulary while refusing low-confidence actor lineages."
-    },
-    {
-      "region_id": "marine-insurance-beyond-p-and-i",
-      "status": "high_novelty_active_recall",
-      "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
-      "interpretation": "P003 added hull/machinery, loss-of-hire, cargo/open-cover, general-average security and adjusting, total-loss concepts, reinsurance accumulation, lender interests, builders risk and claims-professional topology while refusing exact legal wording."
-    },
-    {
-      "region_id": "technical-supply-design-machinery-repair-conversion",
-      "status": "high_novelty_active_recall",
-      "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json",
-      "interpretation": "P004 added independent design houses, engine-licensing structures, cargo-containment and equipment specialists, bridge/automation and propulsion layers, coatings, BWTS/scrubber retrofit chains, maker-list procurement, OEM service/spares, repair-yard capacity and conversion engineering. It stopped before becoming an exhaustive component/vendor catalog."
-    }
+    {"region_id": "legacy-period-and-sector-sweep", "status": "orientation_only", "basis_ref": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "interpretation": "Broad headings and remembered leads establish a starting index, not saturation."},
+    {"region_id": "legacy-container-pandemic-cycle", "status": "orientation_only", "basis_ref": "research_data/memory/shipping/container-pandemic-cycle-2020-2023/blind-orientation.verification.json", "interpretation": "One representative cycle packet is an orientation sample, not an orthogonal confirmation pass."},
+    {"region_id": "cross-cycle-long-tail-institutional-topology", "status": "high_novelty_active_recall", "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json", "interpretation": "P001 surfaced substantial non-operating institutional topology."},
+    {"region_id": "regional-private-cabotage-small-port-aliases", "status": "high_novelty_active_recall", "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json", "interpretation": "P002 added private/regional, cabotage, lighterage and local-language topology while refusing exhaustive geography."},
+    {"region_id": "marine-insurance-beyond-p-and-i", "status": "high_novelty_active_recall", "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json", "interpretation": "P003 added hull/cargo/reinsurance/average-adjusting and claims topology while deferring exact legal wording."},
+    {"region_id": "technical-supply-design-machinery-repair-conversion", "status": "high_novelty_active_recall", "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json", "interpretation": "P004 added design, engine-licensing, equipment, service and repair/conversion structures and stopped before vendor cataloging."},
+    {"region_id": "marine-fuel-bunkering-quality-credit-infrastructure", "status": "high_novelty_active_recall", "basis_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json", "interpretation": "P005 added the bunker transaction chain from storage/blending and credit through delivery, measurement, sampling/testing, onboard handling and dispute mitigation, plus structural alternative-fuel infrastructure constraints. It stopped before supplier rankings, exact port rules or legal outcomes."}
   ],
   "known_major_gaps": [
-    "marine_fuel_bunkering_supply_credit_quality_testing_and_port_infrastructure",
-    "exact_class_labor_port_state_control_cabotage_insurance_and_equipment_chronology",
-    "private_regional_repair_service_and_operator_lineages_in_low_recall_geographies",
-    "historical_non_english_predecessor_and_technical_names_requiring_source_archaeology"
+    "ship_recycling_demolition_cash_buyer_scrap_finance_and_end_of_life_regulatory_ecosystem",
+    "exact_class_labor_port_state_control_cabotage_insurance_bunker_equipment_and_recycling_chronology",
+    "private_regional_repair_service_operator_bunker_and_recycling_lineages_in_low_recall_geographies",
+    "historical_non_english_predecessor_technical_bunker_and_recycling_names_requiring_source_archaeology"
   ],
   "open_frontiers": [
     {
-      "frontier_id": "shipping-marine-fuel-bunkering-quality-credit-infrastructure-v1",
+      "frontier_id": "shipping-ship-recycling-demolition-cash-buyer-end-of-life-v1",
       "priority_rank": 1,
       "state": "open",
-      "next_probe": "SHIP-MEM-V2-P005",
-      "why_high_information": "P004 closes the technical-supply/design/repair frontier with high novelty. The atlas treats fuel price and speed as a mechanism but does not map the bunker-fuel institutional chain itself. Physical suppliers, traders, credit, blending, sampling/testing, delivery infrastructure and fuel-transition logistics can affect operating cost and vessel availability without requiring exact current-market claims."
+      "next_probe": "SHIP-MEM-V2-P006",
+      "why_high_information": "After P005, the atlas still treats scrapping mostly as a supply-adjustment option rather than an institutional chain. Sale-for-recycling, cash buyers/intermediaries, demolition-yard geography/capacity, scrap-value finance, hazardous-material controls and end-of-life compliance can shape effective fleet exit and cycle clearing without requiring exact current yard rankings or legal chronology."
     }
   ],
   "deferred_regions": [
-    {
-      "region_id": "exact_historical_numbers_and_chronology",
-      "state": "deferred",
-      "reason": "Exact values and dates require later claim-scoped Evidence and are not a blind-memory completion quota."
-    },
-    {
-      "region_id": "exact_marine_insurance_clause_versions_thresholds_and_legal_effects",
-      "state": "deferred",
-      "reason": "P003 showed that mechanism-level recall is useful but exact policy wording, legal thresholds and version chronology are precision-fragile and must be Evidence-first."
-    },
-    {
-      "region_id": "exhaustive_equipment_vendor_and_repair_yard_catalog",
-      "state": "deferred",
-      "reason": "P004 showed that mechanism-first technical topology is high-yield but exhaustive vendor/component enumeration rapidly becomes low-value catalog work and chronology guesswork."
-    },
-    {
-      "region_id": "country_by_country_private_actor_grid",
-      "state": "deferred",
-      "reason": "P002 showed that blind recall quality drops quickly when regional probing becomes exhaustive geographic enumeration."
-    },
-    {
-      "region_id": "current_2025_2026_market_snapshot",
-      "state": "outside_scope",
-      "reason": "Current-state claims require source-first collection; stale blind memory is not current authority."
-    }
+    {"region_id": "exact_historical_numbers_and_chronology", "state": "deferred", "reason": "Exact values and dates require later claim-scoped Evidence and are not a blind-memory completion quota."},
+    {"region_id": "exact_marine_insurance_clause_versions_thresholds_and_legal_effects", "state": "deferred", "reason": "Mechanism-level recall is useful but exact insurance wording and legal effects are precision-fragile."},
+    {"region_id": "exhaustive_equipment_vendor_and_repair_yard_catalog", "state": "deferred", "reason": "Mechanism-first technical topology is useful; exhaustive vendor enumeration is low-value catalog work."},
+    {"region_id": "exact_bunker_supplier_lineages_port_rules_standard_thresholds_and_legal_outcomes", "state": "deferred", "reason": "P005 showed high-yield transaction-chain recall but exact company, port, standard and legal chronology requires Evidence."},
+    {"region_id": "country_by_country_private_actor_grid", "state": "deferred", "reason": "Blind recall quality drops when regional probing becomes exhaustive geographic enumeration."},
+    {"region_id": "current_2025_2026_market_snapshot", "state": "outside_scope", "reason": "Current-state claims require source-first collection; stale blind memory is not current authority."}
   ],
   "next_probe": {
-    "probe_id": "SHIP-MEM-V2-P005",
-    "frontier_id": "shipping-marine-fuel-bunkering-quality-credit-infrastructure-v1",
+    "probe_id": "SHIP-MEM-V2-P006",
+    "frontier_id": "shipping-ship-recycling-demolition-cash-buyer-end-of-life-v1",
     "status": "planned_not_executed",
     "required_capability": "high_capability_reasoning",
     "task_packet": {
-      "family": "marine_fuel_bunkering_quality_credit_testing_infrastructure",
+      "family": "ship_recycling_demolition_cash_buyer_scrap_finance_end_of_life",
       "period_start": "1970-01-01",
       "period_end": "2026-08-31",
       "source_visibility": "atlas_only",
@@ -177,19 +102,15 @@
       ],
       "fresh_search_forbidden": true,
       "questions": [
-        "Which physical bunker suppliers, traders/intermediaries, barge operators, terminals, major bunkering-hub institutions and credit relationships are under-recalled relative to the compact atlas without becoming a company ranking?",
-        "Which blending, specification, sampling, laboratory testing, quantity measurement, off-spec dispute or delivery-document mechanisms materially connect bunker procurement to vessel reliability and operating cost without inventing exact legal wording?",
-        "How do conventional fuel grades and the transition toward LNG, methanol, ammonia or other fuels change storage, delivery, segregation, training and port-infrastructure constraints at a structural level while avoiding current-state vendor claims?",
-        "Which remembered historical terms, actor classes or source-discovery vocabulary are genuinely new categories or useful refinements, and where is recall too price-, company- or chronology-specific to retain?"
+        "Which actor classes and transaction steps connect an owner deciding to scrap a vessel with cash buyers/intermediaries, sale-for-recycling, final voyage, demolition yards and scrap buyers without becoming a yard/company ranking?",
+        "How do vessel age, steel/scrap value, freight and asset markets, debt, class/regulatory cost and final-voyage economics interact with the timing of fleet exit at a structural level?",
+        "Which hazardous-material, worker-safety, environmental, flag/port/owner or recycling-regime constraints are remembered strongly enough to create source-discovery vocabulary while exact legal text and dates remain deferred to Evidence?",
+        "Which regional yard clusters, historical terms, intermediaries or negative-space areas are genuinely new categories or useful refinements, and where does recall become too company-, country- or chronology-specific to retain?"
       ],
       "output_contract": {
         "industry_memory_output_required": true,
         "method_observation_limit": 1,
-        "novelty_classes": [
-          "new_category",
-          "useful_refinement",
-          "duplicate"
-        ],
+        "novelty_classes": ["new_category", "useful_refinement", "duplicate"],
         "reviewed_no_specific_memory_allowed": true,
         "one_pass_cannot_self_seal": true
       }
@@ -202,58 +123,24 @@
     "independent_challenger_complete": false,
     "has_major_coverage_gaps": true,
     "recent_outcomes": [
-      {
-        "pass_id": "SHIP-MEM-V2-P001",
-        "family": "cross_cycle_long_tail_institutional_topology",
-        "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json",
-        "novel_lead_count": 18,
-        "duplicate_lead_count": 2,
-        "high_importance_novel_count": 9
-      },
-      {
-        "pass_id": "SHIP-MEM-V2-P002",
-        "family": "regional_private_cabotage_small_port_aliases",
-        "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json",
-        "novel_lead_count": 16,
-        "duplicate_lead_count": 2,
-        "high_importance_novel_count": 8
-      },
-      {
-        "pass_id": "SHIP-MEM-V2-P003",
-        "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting",
-        "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json",
-        "novel_lead_count": 17,
-        "duplicate_lead_count": 2,
-        "high_importance_novel_count": 9
-      },
-      {
-        "pass_id": "SHIP-MEM-V2-P004",
-        "family": "ship_design_machinery_equipment_repair_conversion_ecosystem",
-        "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json",
-        "novel_lead_count": 18,
-        "duplicate_lead_count": 2,
-        "high_importance_novel_count": 10
-      }
+      {"pass_id": "SHIP-MEM-V2-P001", "family": "cross_cycle_long_tail_institutional_topology", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P001.json", "novel_lead_count": 18, "duplicate_lead_count": 2, "high_importance_novel_count": 9},
+      {"pass_id": "SHIP-MEM-V2-P002", "family": "regional_private_cabotage_small_port_aliases", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P002.json", "novel_lead_count": 16, "duplicate_lead_count": 2, "high_importance_novel_count": 8},
+      {"pass_id": "SHIP-MEM-V2-P003", "family": "marine_insurance_hull_cargo_reinsurance_average_adjusting", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P003.json", "novel_lead_count": 17, "duplicate_lead_count": 2, "high_importance_novel_count": 9},
+      {"pass_id": "SHIP-MEM-V2-P004", "family": "ship_design_machinery_equipment_repair_conversion_ecosystem", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P004.json", "novel_lead_count": 18, "duplicate_lead_count": 2, "high_importance_novel_count": 10},
+      {"pass_id": "SHIP-MEM-V2-P005", "family": "marine_fuel_bunkering_quality_credit_testing_infrastructure", "receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P005.json", "novel_lead_count": 18, "duplicate_lead_count": 2, "high_importance_novel_count": 10}
     ],
     "eligible": false,
-    "reason_codes": [
-      "campaign_stage_not_seal_candidate",
-      "major_coverage_gap_open",
-      "high_importance_novelty_present",
-      "insufficient_orthogonal_low_novelty_passes",
-      "negative_space_review_incomplete",
-      "independent_challenger_incomplete"
-    ]
+    "reason_codes": ["campaign_stage_not_seal_candidate", "major_coverage_gap_open", "high_importance_novelty_present", "insufficient_orthogonal_low_novelty_passes", "negative_space_review_incomplete", "independent_challenger_incomplete"]
   },
   "evidence_transition": {
     "allowed": false,
-    "reason": "Both reopened Shipping shards remain unsealed. P001 through P004 all produced high-importance novel Memory, so post-seal Evidence work remains disabled until a future exact shard-local seal decision independently recomputes green."
+    "reason": "Both reopened Shipping shards remain unsealed. P001 through P005 all produced high-importance novel Memory, so post-seal Evidence work remains disabled until a future exact shard-local seal decision independently recomputes green."
   },
   "bounds": {
     "maximum_open_frontiers": 64,
     "maximum_recent_seal_outcomes": 8,
     "current_open_frontier_count": 1,
-    "current_recent_seal_outcome_count": 4,
+    "current_recent_seal_outcome_count": 5,
     "selected_next_probe_count": 1
   }
 }
