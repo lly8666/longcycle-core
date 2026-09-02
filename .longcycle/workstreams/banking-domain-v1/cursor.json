@@ -4,13 +4,13 @@
   ],
   "assignment_epoch": 1,
   "branch": "workstream/banking-domain-v1",
-  "checkpoint_based_on_head_sha": "eeb4beb7ef58b501ecb48f56d853eedb419f993b",
-  "current_task": "In the next eligible fresh-agent loop, execute only the dedicated seal-readiness review selected by the Banking exploration map. Keep the shard unsealed and use no Banking Evidence/search or prior raw outputs.",
-  "cursor_sequence": 40,
+  "checkpoint_based_on_head_sha": "6cb50ec6bd1a7611cbe5211c5d496627df5480f7",
+  "current_task": "In the next eligible fresh-agent loop, execute only the explicit shard seal-decision action selected by Banking exploration map revision 32. Do not perform Banking Evidence/search in the same atomic action.",
+  "cursor_sequence": 41,
   "insufficient_capability_action": "stop_and_escalate",
   "integration_request_refs": [],
-  "last_completed_action": "Completed CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005 at S=eeb4beb7ef58b501ecb48f56d853eedb419f993b. The bounded MEMORY_LEADS_ONLY confirmation records 17 observations: 0 new categories, 3 refinements, 14 duplicates; 2 high-importance refinements. No material category or antecedent was recovered, completing the required third consecutive low-novelty pass after the latest material-category reset. Revision 31 therefore enters seal_candidate_review with candidate conditions met but shard_sealed=false and evidence_transition_allowed=false. The blind pass did not self-seal. No Evidence/search/prior raw, database/Drive, truth promotion, seal or shared change occurred. Exact S CI run 33606675659 passed all substantive checks and failed continuity only because this cursor-only H was pending.",
-  "next_atomic_action": "In the next fresh-agent loop, if continuity remains CLEAN and revision 31 still selects it, run CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-readiness-review__blind-001 using only the compact map, manifest and internal reasoning over their control metadata. Audit all formal prerequisites. Do not read prior raw, use Evidence/search, manufacture leads, self-seal or start Evidence. If all prerequisites pass, record seal-candidate readiness and rebuild exactly one explicit seal-decision next step; otherwise reopen exactly one concrete sparse blind frontier.",
+  "last_completed_action": "Completed CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-readiness-review__blind-001 at S=6cb50ec6bd1a7611cbe5211c5d496627df5480f7. This was a control-metadata-only review, not a recall pass: it created no raw Memory leads and used only revision-31 exploration map plus the manifest. All nine formal prerequisites passed: all primary time slices have broad plus orthogonal coverage; negative-space, independent challenger and saturation review are complete; prior funding/loss and recovery/resolution-preparedness gaps were followed through; three consecutive low-novelty confirmations occurred after the latest material-category reset; contamination boundaries remain intact; and no material blind frontier remains open. Revision 32 therefore records seal_candidate_ready=true and seal_readiness eligible=true, but shard_sealed=false, campaign_sealed=false and evidence_transition_allowed=false. Exact S CI run 33607315789 passed all substantive checks and failed continuity only because this cursor-only H was pending. No Evidence/search/prior raw, database/Drive, truth promotion, seal or shared change occurred.",
+  "next_atomic_action": "In the next fresh-agent loop, if continuity remains CLEAN and revision 32 still selects it, run CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-001 as a separate explicit control action. Revalidate branch/reservation/map/manifest and no drift. Do not read prior raw or use Banking Evidence/search. If readiness still holds, record one structured shard seal decision and rebuild the map; do not begin Evidence work in that same atomic action. If any prerequisite has drifted, do not seal and reopen exactly one concrete sparse blind frontier.",
   "parent_refs": [
     "terminal_mission=STRATEGIC_COMPASS.md#2-一句话使命",
     "long_term_direction=STRATEGIC_COMPASS.md#5-项目终局与非终局",
@@ -21,18 +21,18 @@
     "baseline=.longcycle/baseline/current.json",
     "capability_admission=.longcycle/workstreams/banking-domain-v1/capability-admission.json"
   ],
-  "partial_summary": "This invocation completed low-novelty restart 2 and restart 3. The post-preparedness-reset streak is now 3/3 with no map-changing category, so revision 31 transitions from active recall into a dedicated seal-candidate review boundary. The shard is still unsealed and Evidence remains disabled. The invocation stops early at the review boundary rather than treating review/seal as another ordinary blind probe.",
+  "partial_summary": "The SYS-REGULATION-RESOLUTION memory shard covers the primary 1990-01-01 through 2026-08-31 horizon, with pre-1990 material used only as selective antecedent context. The dedicated seal-readiness review passed all formal prerequisites from compact control metadata. The shard is not yet sealed; revision 32 exposes exactly one explicit seal-decision step and keeps Evidence disabled until a later clean handoff after that decision.",
   "progress_state": "planned",
   "receipt_refs": [
-    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005.json"
+    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-readiness-review__blind-001.json"
   ],
   "required_capability": "high_capability_reasoning",
   "reservation_revision": 1,
   "schema_version": "longcycle-workstream-cursor/v2",
-  "task_done_when": "One bounded seal-readiness review receipt exists; each formal prerequisite is explicitly pass/fail from compact control state; the shard remains unsealed; and the sparse map is rebuilt with exactly one deterministic next step: either one concrete reopened blind frontier or one explicit seal-decision step.",
+  "task_done_when": "One explicit structured seal decision exists; the map truthfully records either a sealed SYS-REGULATION-RESOLUTION shard with Evidence deferred to a later clean handoff or one concrete reopened blind frontier; and no Evidence/search or truth publication occurs inside the seal-decision action itself.",
   "unverified": true,
   "verification_head_sha": null,
   "verification_refs": [],
-  "why_now": "Three consecutive post-reset low-novelty confirmations are now complete, and the map has intentionally left ordinary recall mode. The next correct action is a separate review of seal prerequisites, not more routine memory probing and not automatic Evidence transition.",
+  "why_now": "Blind recall has reached its formal control boundary: three post-reset low-novelty confirmations are complete and the dedicated seal-readiness review passed all prerequisites. The next correct action is a separate explicit seal decision, not more recall and not immediate Evidence archaeology.",
   "workstream_id": "banking-domain-v1"
 }
