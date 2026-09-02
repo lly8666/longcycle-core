@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P049",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"shipping_capital_markets_public_equity_ipo_followon_bonds_convertibles_private_equity_alternative_capital_nav_discount_premium_dividends_buybacks_issuance_investor_cycle",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P049-L01","novelty":"new_category","importance":"high","lead":"A publicly listed shipping issuer is not automatically identical to each shipowning SPV, operating subsidiary, manager or vessel-owning legal entity. Public-company capital structure, fleet-asset ownership and operating control should remain separate layers unless exact filings establish the links."},
+    {"id":"P049-L02","novelty":"new_category","importance":"high","lead":"Listing or IPO-type entry creates access to a broader equity investor base but also adds disclosure, governance, board and market-valuation interfaces. Capital-market access therefore changes both financing options and the information/discipline environment around fleet decisions."},
+    {"id":"P049-L03","novelty":"new_category","importance":"high","lead":"Follow-on equity issuance is a distinct state from initial listing. Existing public companies can raise new equity when valuation, investor demand and strategic use of proceeds align, potentially financing acquisitions, newbuildings, deleveraging or balance-sheet repair."},
+    {"id":"P049-L04","novelty":"new_category","importance":"high","lead":"Public bonds and convertible securities create financing channels distinct from secured vessel loans. They can shift maturity, collateral, refinancing and dilution exposure toward issuer-level capital markets rather than individual vessel mortgages."},
+    {"id":"P049-L05","novelty":"new_category","importance":"high","lead":"Private equity, private credit and other alternative-capital sponsors can enter shipping through platform equity, asset acquisitions, joint ventures or recapitalizations and later exit through asset sales, strategic sales, refinancing or public-market transactions. Entry and exit should be modeled as separate states."},
+    {"id":"P049-L06","novelty":"new_category","importance":"high","lead":"A shipping company's equity-market value can trade at a discount or premium to an asset/NAV-style reference. That relationship can influence whether issuing shares, buying back shares, selling assets or purchasing vessels appears relatively attractive, without implying that any one NAV measure is authoritative."},
+    {"id":"P049-L07","novelty":"new_category","importance":"high","lead":"Public equity can function as acquisition currency: a highly valued issuer may use shares or mixed consideration to acquire fleets or companies, while a deeply discounted equity currency can make asset sales, buybacks or private transactions relatively more attractive."},
+    {"id":"P049-L08","novelty":"new_category","importance":"high","lead":"Dividend and share-repurchase choices compete with fleet capex, secondhand acquisitions, debt reduction and liquidity retention for the same capital pool. Capital return therefore belongs inside the shipping capital-allocation state machine rather than as an after-the-fact payout metric."},
+    {"id":"P049-L09","novelty":"new_category","importance":"high","lead":"Capital-market access is window-dependent. A company may have operating cash flow and asset value yet still face poor issuance economics when investor risk appetite or sector valuation is weak; conversely, favorable market windows can accelerate issuance and fleet investment before operating fundamentals change materially."},
+    {"id":"P049-L10","novelty":"new_category","importance":"high","lead":"Equity and unsecured/debt-market access can amplify the shipping capital cycle. Strong freight narratives, high asset values and receptive investors can fund ordering or acquisitions, while valuation compression and closed markets can force deleveraging, asset sales or slower investment."},
+    {"id":"P049-L11","novelty":"new_category","importance":"high","lead":"Recapitalization can occur before or during financial distress through new equity, sponsor capital, exchange or restructuring transactions. A stressed owner therefore need not move directly from covenant/default pressure to enforcement; capital-market or private-capital intervention can alter the path."},
+    {"id":"P049-L12","novelty":"new_category","importance":"high","lead":"Investor expectations about freight normalization, fleet supply, asset values and management capital allocation can affect market valuation and financing capacity. PIT replay should preserve those contemporaneous expectations separately from later vessel-price or earnings outcomes."},
+    {"id":"P049-L13","novelty":"new_category","importance":"high","lead":"Controlling/founding shareholders, sponsor investors, boards/management and dispersed public holders can have different economic horizons and governance rights. Ownership concentration and public float should therefore not be collapsed into one generic investor role."},
+    {"id":"P049-L14","novelty":"useful_refinement","importance":"high","lead":"P048 ship-finance memory is refined because secured vessel debt is only one layer of capital availability; issuer-level equity, bonds/convertibles and sponsor capital can refinance, supplement or replace bank/leasing exposure at different points in the cycle."},
+    {"id":"P049-L15","novelty":"useful_refinement","importance":"high","lead":"Atlas capital-cycle memory is refined by separating four coupled but non-identical states: freight cash flow, vessel/asset value, private-credit availability and securities-market valuation/access. A change in any one can redirect fleet investment or deleveraging."},
+    {"id":"P049-L16","novelty":"useful_refinement","importance":"high","lead":"P047 secondhand-sale memory is refined because buyer capacity can come from newly raised public/private equity or bond proceeds, and seller decisions can be influenced by whether the issuer's own shares are cheap or expensive relative to fleet assets."},
+    {"id":"P049-L17","novelty":"useful_refinement","importance":"medium","lead":"Atlas Judgment-revision memory is refined by adding investor-cycle expectations and capital-return policy as contemporaneous judgments that can change before the underlying fleet cycle is resolved."},
+    {"id":"P049-L18","novelty":"duplicate","importance":"low","lead":"The atlas already names public shipping equity and private equity/alternative capital among recurring capital providers; P049 adds issuance, valuation and capital-allocation state mechanics rather than repeating their existence."},
+    {"id":"P049-L19","novelty":"duplicate","importance":"low","lead":"P048 already recalls alternative capital and recapitalization alongside banks/leasing; P049 only extends that memory into issuer-level securities and public/private investor interfaces."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_ipo_followon_bond_convertible_issue_terms_prices_yields_nav_discount_premium_dividend_and_buyback_metrics","reason":"Security terms, valuation, pricing and market-performance claims require exact contemporaneous Evidence."},
+    {"region":"specific_shipping_issuers_underwriters_bondholders_private_equity_funds_sponsors_investors_and_ownership_positions","reason":"Company, fund, investor and ownership identities require claim-scoped filings, transaction records or other authoritative Evidence."},
+    {"region":"exact_securities_listing_disclosure_governance_takeover_tax_and_jurisdiction_rules","reason":"Legal and regulatory requirements vary by market, issuer and date; blind Memory retains only structural roles and states."},
+    {"region":"current_shipping_equity_valuations_nav_discounts_credit_spreads_issue_windows_and_investor_rankings","reason":"Current capital-market conditions are time-sensitive source-first claims outside blind Memory."}
+  ],
+  "stop_reason":"The capital-markets lifecycle is populated from listing/public-company identity through follow-on equity, bonds/convertibles, private-capital entry/exit, valuation-relative capital allocation, dividends/buybacks, acquisition currency and recapitalization, plus feedback into fleet investment and deleveraging. Further recall becomes issuer-, security-, price-, ownership-, fund-, transaction- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not financial advice; no issuer valuation, NAV, security price, issue term, dividend, buyback, ownership position, investor identity, financing availability or current capital-market condition is verified."
+}
