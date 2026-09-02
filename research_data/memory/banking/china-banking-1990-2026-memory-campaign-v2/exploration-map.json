@@ -1,12 +1,12 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 54,
+  "map_revision": 55,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
   "primary_period": ["1990-01-01", "2026-08-31"],
   "authority_class": "research_control_only",
-  "campaign_stage": "active_recall",
+  "campaign_stage": "negative_space_review_pending",
   "campaign_sealed": false,
   "source_visibility": "none_for_selected_next_probe",
   "source_visibility_scope": "selected_next_probe_only",
@@ -15,8 +15,8 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-MONETARY-CREDIT__blind-001.json",
-  "latest_pass_receipt_status": "high_novelty_low_rate_operating_framework_deposit_mortgage_fiscal_and_structural_tool_broad_recall_memory_only",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002.json",
+  "latest_pass_receipt_status": "high_novelty_orthogonal_policy_rate_bond_operation_deposit_debt_swap_mortgage_and_facility_semantics_memory_only",
   "sealed_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
@@ -34,19 +34,10 @@
   "active_shards": [
     {
       "shard_id": "SYS-MONETARY-CREDIT",
-      "selected_time_slice_id": "TIME-2023-2026",
-      "stage": "active_recall",
+      "selected_time_slice_id": "CROSS-TIME-NEGATIVE-SPACE-REVIEW",
+      "stage": "negative_space_review_pending",
       "fresh_search_used": false,
       "recent_outcomes": [
-        {
-          "pass_id": "TIME-2020-2022__SYS-MONETARY-CREDIT__blind-002",
-          "family": "time_slice_orthogonal_blind_recall",
-          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2020-2022__SYS-MONETARY-CREDIT__blind-002.json",
-          "novel_lead_count": 23,
-          "duplicate_lead_count": 1,
-          "high_importance_novel_count": 21,
-          "outcome": "prior_time_slice_broad_plus_orthogonal_complete"
-        },
         {
           "pass_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-001",
           "family": "time_slice_timeline_blind_recall",
@@ -55,6 +46,15 @@
           "duplicate_lead_count": 1,
           "high_importance_novel_count": 22,
           "outcome": "high_novelty_low_rate_operating_framework_deposit_mortgage_fiscal_and_structural_tool_broad_recall"
+        },
+        {
+          "pass_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002",
+          "family": "time_slice_orthogonal_blind_recall",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002.json",
+          "novel_lead_count": 26,
+          "duplicate_lead_count": 1,
+          "high_importance_novel_count": 25,
+          "outcome": "high_novelty_orthogonal_policy_rate_bond_operation_deposit_debt_swap_mortgage_and_facility_semantics"
         }
       ],
       "negative_space_review_complete": false,
@@ -64,7 +64,6 @@
   ],
   "coverage_snapshot": {
     "reviewed_high_value_regions": [
-      {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION", "state": "canonically_sealed_for_model_vintage", "note": "The sealed regulation/resolution shard remains isolated from active monetary-credit recall."},
       {"region_id": "TIME-1990-1994__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Administrative credit-plan regime and transition semantics covered."},
       {"region_id": "TIME-1995-1999__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Indirect-tool transition, market plumbing and deflation-era transmission covered."},
       {"region_id": "TIME-2000-2004__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "FX/base-money accounting, sterilization, market venues, reserve/rate semantics and heterogeneous transmission covered."},
@@ -73,41 +72,42 @@
       {"region_id": "TIME-2013-2016__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Interbank stress, facility architecture, first-generation LPR, funding competition, targeted/broad easing, FX offsets, corridor candidates, NCD funding and MPA boundaries covered."},
       {"region_id": "TIME-2017-2019__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Deleveraging/stance separation, MPA/TSF perimeter, funding segmentation, structural support and 2019 LPR transition covered."},
       {"region_id": "TIME-2020-2022__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Pandemic liquidity/credit layering, direct-tool intermediary risk, legacy LPR conversion, structural tools, deposit transmission, mortgage/property boundaries and fiscal/PBOC balance-sheet semantics covered."},
-      {"region_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__BROAD", "state": "broad_blind_recall_complete_high_novelty", "note": "Broad coverage now includes low-inflation/real-rate transmission, short-policy-rate versus MLF/LPR signaling, RRR and government-bond/fiscal-deposit liquidity, government-bond trading and buyout-reverse-repo candidates, deposit repricing/termization/NIM, existing-mortgage repricing, property and affordable-housing channels, PSL/policy-bank boundaries, local-debt refinancing, government-bond-heavy TSF, credit-idling concerns, structural technology/equipment tools, capital-market support-tool boundaries and FX constraints. CMB 2023-08-28 direct overlap was excluded from fresh novelty."}
+      {"region_id": "TIME-2023-2026__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Low-inflation/real-rate transmission, policy-rate/MLF/LPR/DR007 layers, two-sided bond operations, buyout reverse repo and corridor candidates, fiscal-deposit/RRR liquidity, deposit self-discipline/term/NCD repricing, mortgage adjustment objects, property/affordable-housing/PSL boundaries, local-debt loan-to-bond substitution, government-bond TSF, anti-idling cleanup, structural and capital-market support facilities, long-bond risk and FX constraints are covered at blind-memory level. CMB 2023-08-28 direct overlap was excluded from novelty."},
+      {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION", "state": "canonically_sealed_for_model_vintage", "note": "The sealed regulation/resolution shard remains isolated from monetary-credit review."}
     ],
     "known_major_gaps": [
-      "The 2023-2026 slice still needs an independent orthogonal challenge of seven-day OMO versus MLF/LPR policy signaling, DR007/corridor plumbing, buyout reverse repo/temporary repo/government-bond trading versus QE labels, gross-versus-net RRR and fiscal-deposit liquidity, deposit self-discipline/term repricing/NCD funding, existing-mortgage versus new-mortgage/developer channels, affordable-housing relending/PSL/policy-bank boundaries, local-debt swaps and government-bond TSF, structural-tool eligibility/risk-bearing, capital-market support facilities, FX constraints and real-rate transmission.",
-      "After 2023-2026 obtains broad plus orthogonal depth, the shard still requires negative-space review, independent challenger, saturation review and measured low-novelty controls before any seal decision; one pass cannot self-seal.",
-      "Exact 2023-2026 rates/ratios, operation dates and quantities, mortgage adjustment rules, structural-tool parameters, local-debt program terms, deposit-pricing rules and document titles remain deferred Evidence work after a future valid shard seal."
+      "All nine primary SYS-MONETARY-CREDIT time slices now have broad plus orthogonal blind depth, but the shard has not yet passed a dedicated cross-time negative-space review over forgotten actors, old vocabulary, failed/dead-end tools, metric-semantic shifts, counterexamples, contemporaneous expectations and mechanism omissions.",
+      "After negative-space review, the shard still requires an independent challenger, saturation review and measured low-novelty confirmation sequence before any seal decision; one review cannot self-seal.",
+      "Exact rates/ratios, legal or policy-document wording, operation dates/quantities, mortgage rules, structural-tool parameters, local-debt terms and source-specific facts remain deferred Evidence work after a future valid shard seal."
     ],
     "deferred_regions": [
-      {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL", "state": "post_seal_evidence_eligible_but_deferred", "reason": "Not selected by the sparse map; keep separate from active unsealed-shard recall."}
+      {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL", "state": "post_seal_evidence_eligible_but_deferred", "reason": "Not selected by the sparse map; keep separate from active unsealed-shard review."}
     ]
   },
   "open_frontiers": [
-    {"frontier_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__ORTHOGONAL-002", "priority_rank": 1, "state": "open", "selected_probe_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002"}
+    {"frontier_id": "CROSS-TIME__SYS-MONETARY-CREDIT__NEGATIVE-SPACE-REVIEW", "priority_rank": 1, "state": "open", "selected_probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001"}
   ],
   "next_probe": {
-    "probe_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002",
-    "family": "time_slice_orthogonal_blind_recall",
-    "time_slice_id": "TIME-2023-2026",
+    "probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__negative-space-review__blind-001",
+    "family": "bounded_negative_space_review",
+    "time_slice_id": "CROSS-TIME",
     "shard_id": "SYS-MONETARY-CREDIT",
-    "period": ["2023-01-01", "2026-08-31"],
-    "instruction": "Run one isolated orthogonal MEMORY_LEADS_ONLY blind pass over SYS-MONETARY-CREDIT in 2023-2026 using only this compact map, the manifest and model internal memory. Do not read the prior 2023-2026 blind-001 raw output; use only this map's compact coverage statement. Challenge the broad pass for seven-day OMO policy-rate versus MLF/LPR signaling, DR007 and corridor plumbing, buyout reverse repo/temporary repo/government-bond trading versus QE or deficit-monetization labels, RRR gross release versus central-bank-funding replacement/fiscal-deposit absorption, government-bond issuance and TSF composition, deposit self-discipline/term repricing/NCD funding and realized liability beta, existing-mortgage repricing versus new-mortgage floors/add-points and developer financing, affordable-housing relending/PSL/policy-bank versus commercial-bank risk, local-debt swaps/refinancing and bank asset substitution, technology/equipment/carbon/inclusive structural-tool eligibility and risk-bearing, capital-market support facilities versus ordinary bank credit, FX constraints and nominal-versus-real rate transmission. Honor the CMB 2023-08-28 preexposure carveout and do not count direct overlap as fresh novelty. Do not read Batch0 raw, any prior v2 raw including blind-001, sealed SYS-REGULATION-RESOLUTION raw, other-shard raw, Banking Evidence/source material or fresh Banking search results. Preserve uncertainty and avoid invented exact dates, rates, reserve ratios, operation quantities, mortgage rules, structural-tool parameters, local-debt terms, deposit formulas or source-like details. Append one raw unit and bounded receipt, classify novelty honestly, rebuild the sparse map with exactly one next probe, and close S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
+    "period": ["1990-01-01", "2026-08-31"],
+    "instruction": "In the next eligible fresh-agent loop, perform one bounded cross-time negative-space review for SYS-MONETARY-CREDIT using only this compact map, the manifest and model internal reasoning/memory. This is a review boundary, not another ordinary time-slice recall pass. Do not read Batch0 raw, any prior v2 raw, sealed SYS-REGULATION-RESOLUTION raw, other-shard raw, Banking Evidence/source material or fresh Banking search results. Audit the compact coverage for materially missing institution/actor classes, policy-tool families, money-market/funding plumbing, old period-native vocabulary, metric-semantic shifts, failed/dead-end or temporary tools, contemporaneous policy/market expectations, bank/borrower heterogeneity, counterexamples and transmission mechanisms across all nine time slices. Honor the CMB 2023-08-28 preexposure carveout. Do not manufacture exact rates/dates/legal wording. If a material omission is found, reopen exactly one concrete sparse blind frontier and keep negative_space_review_complete=false. If no material omission is found, mark negative-space review complete and select exactly one independent-challenger next step. Do not seal, do not begin Evidence, and do not treat this review as a low-novelty confirmation by itself. Close the review through substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
-      "all prior v2 raw blind-pass outputs including the 2023-2026 blind-001 raw",
+      "all prior v2 raw blind-pass outputs",
       "sealed SYS-REGULATION-RESOLUTION raw outputs",
       "other shard raw outputs",
       "Banking source or Evidence material",
       "fresh Banking search results"
     ],
-    "output_authority": "MEMORY_LEADS_ONLY",
+    "output_authority": "MEMORY_LEADS_ONLY_REVIEW_CONTROL",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One orthogonal 2023-2026 raw unit and receipt exist; omissions/refinements/duplicates, preexposure handling and uncertainty are explicit; the sparse map selects exactly one deterministic next step; and the probe closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
+    "done_when": "One bounded cross-time negative-space review control artifact/receipt exists; any material omission reopens exactly one sparse frontier, otherwise negative-space review becomes complete with exactly one independent-challenger next step; and the review closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN without Evidence or seal promotion."
   }
 }
