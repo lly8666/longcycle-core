@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P078",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_compressed_air_starting_air_service_air_control_air_pneumatic_generation_receiver_storage_distribution_demand_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_compressed_air_pneumatic_service_state_model_only_no_pressure_setpoint_valve_starting_control_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CA-01","novelty_class":"new_category","importance":"high","memory":"Compressed-air service spans owner/manager, master, engineering crew, shore technical support, compressor or pneumatic equipment/service actors and relevant port or yard support. Equipment support, onboard operating observation and shore service should remain distinct roles rather than one maintenance directory."},
+    {"id":"CA-02","novelty_class":"new_category","importance":"high","memory":"Compressor or generation readiness, stored receiver reserve and downstream distribution availability are distinct service states. A compressor can be available while stored margin is constrained, or stored reserve can exist while a distribution path or intended-use branch is restricted."},
+    {"id":"CA-03","novelty_class":"new_category","importance":"high","memory":"Receiver inventory or capacity confidence should preserve stored-air margin qualitatively without inventing exact pressure, capacity or alarm values. Historical memory can retain normal, constrained, uncertain or restored reserve confidence while exact instrumentation and settings remain deferred."},
+    {"id":"CA-04","novelty_class":"new_category","importance":"high","memory":"Distribution or path availability is separate from generation and storage. One branch, consumer group or use-scope may be unavailable while other compressed-air service remains usable; exact piping, valve positions and routing are not retained."},
+    {"id":"CA-05","novelty_class":"new_category","importance":"high","memory":"Starting-air, service-air and control-air purposes should remain distinct use scopes. Availability for one purpose does not prove availability, quality or reserve margin for another, and the pass does not infer starting or control actions from service-state observations."},
+    {"id":"CA-06","novelty_class":"new_category","importance":"high","memory":"Demand/load and reserve-margin confidence are distinct from compressor nameplate capacity or instantaneous measured pressure. High or abnormal demand can erode service margin without proving compressor failure, leakage, valve condition or control malfunction."},
+    {"id":"CA-07","novelty_class":"new_category","importance":"high","memory":"Air-condition or quality confidence for sensitive uses is separate from pressure/availability. Moisture, contamination or treatment-confidence concerns can constrain selected service without proving low pressure or compressor unavailability; exact dew point, oil content, filter condition and treatment parameters are deferred."},
+    {"id":"CA-08","novelty_class":"new_category","importance":"high","memory":"Compressed-air degradation has a defensive lifecycle: observation, uncertain generation/storage/path/use scope, affected service dimension, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No compressor operation, starting sequence, valve manipulation or troubleshooting procedure is retained."},
+    {"id":"CA-09","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected compressor, receiver, distribution branch or use-scope without describing the isolation method. Partial pneumatic service can remain available while one branch or function is constrained."},
+    {"id":"CA-10","novelty_class":"new_category","importance":"high","memory":"Compressed-air service can depend on electrical power, cooling, controls/monitoring and supporting equipment, but dependency observations are not root-cause proof. Loss of support can degrade pneumatic service, while a pneumatic constraint does not establish an electrical, cooling, digital or mechanical cause."},
+    {"id":"CA-11","novelty_class":"new_category","importance":"high","memory":"Compressed-air-service degradation can propagate into machinery starting availability, selected automation/control functions and maintenance/service tasks, but those downstream effects do not themselves prove a compressor, receiver, distribution, air-quality or control root cause."},
+    {"id":"CA-12","novelty_class":"new_category","importance":"high","memory":"Redundancy or alternate-source/path confidence is a structural state separate from exact crossover arrangements or operating sequence. Historical memory may retain whether an independent or alternate service route was known available, uncertain, restricted or restored without instructing how to align it."},
+    {"id":"CA-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: generation returns, stored reserve becomes adequate, a distribution branch returns, air-condition confidence becomes acceptable and downstream starting/control/service capability is re-verified. A restarted compressor alone does not prove full pneumatic-service recovery."},
+    {"id":"CA-R01","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical availability is a support dimension rather than a proxy for compressed-air service. Power presence does not prove compressor generation, receiver margin, path availability or air-condition confidence, while pneumatic degradation does not establish an electrical cause."},
+    {"id":"CA-R02","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep compressor, dryer/filter, receiver, control or valve condition separate from delivered compressed-air service. Sound equipment can coexist with reserve, path or demand constraints, and acceptable service does not prove every component condition."},
+    {"id":"CA-R03","novelty_class":"useful_refinement","importance":"high","memory":"P072 HVAC/ventilation airflow and P078 compressed air both involve air but are separate services. Accommodation/zone airflow does not prove pneumatic generation, stored reserve or starting/control-air availability, and compressed-air degradation does not establish HVAC loss."},
+    {"id":"CA-R04","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control availability and P078 control-air availability are independent dimensions. Control-system logic or network availability does not prove physical control-air supply, and control-air degradation does not establish a cyber or software cause."},
+    {"id":"CA-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"CA-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation, redundancy and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P077; P078 applies them specifically to compressed-air/pneumatic service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact compressor/receiver arrangements, capacities, pressures, alarm/setpoint values, piping, valves, starting/control logic and instrumentation are intentionally not retained.",
+    "Exact compressor starting/stopping, receiver charging, branch alignment, isolation, draining, drying/filtering, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named compressor/pneumatic vendors, service firms, vessel installations, failures, incidents, deficiencies and current-readiness facts require claim-scoped Evidence.",
+    "Private/regional compressor/pneumatic service lineages and historical non-English starting-air/service-air/control-air terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact compressor/receiver topology, capacities, pressures, setpoints, piping/valves, control logic, instrumentation and current configuration.",
+    "Starting/stopping, charging, alignment, isolation, draining, drying/filtering, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel failures/incidents/deficiencies and current readiness.",
+    "Private/regional compressor/pneumatic service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive compressed-air/pneumatic service orientation/source-discovery output. It is not compressor operation, machinery-starting, pneumatic-control, maintenance, safety or vessel-operating advice and does not establish any exact arrangement, capacity, pressure, setpoint, piping/valve lineup, control logic, instrumentation, procedure, provider, incident, deficiency or current-readiness fact.",
+  "stop_reason": "The compressed-air service chain is recalled at useful structural resolution: generation readiness, receiver reserve/capacity confidence, distribution availability, use-scope, demand/load, air-condition confidence, redundancy, restriction/isolation, dependencies, downstream effects and verified restoration are separable states. Further detail would become vessel-, compressor-, receiver-, pressure-, setpoint-, piping-, control-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
