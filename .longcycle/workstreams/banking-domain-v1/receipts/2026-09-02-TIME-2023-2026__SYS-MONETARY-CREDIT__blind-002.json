@@ -1,0 +1,78 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v2",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "pass_id": "TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002",
+  "family": "time_slice_orthogonal_blind_recall",
+  "shard_id": "SYS-MONETARY-CREDIT",
+  "time_slice_id": "TIME-2023-2026",
+  "period": ["2023-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "allowed_input_digest": "exploration-map.json@9236893cee6f107574f735ffb318bf9f8dc3685f;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "forbidden_inputs_observed": false,
+  "forbidden_inputs": [
+    "Batch0 raw Banking outputs",
+    "all prior v2 raw blind-pass outputs including the 2023-2026 blind-001 raw",
+    "sealed SYS-REGULATION-RESOLUTION raw outputs",
+    "other-shard raw outputs",
+    "Banking source or Evidence material",
+    "fresh Banking search results"
+  ],
+  "raw_output_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2023-2026__SYS-MONETARY-CREDIT__blind-002-memory-leads.md",
+  "raw_commit_sha": "0d3ac569eed13390b61940d988d25ddec28e4948",
+  "novelty": {
+    "new_category_count": 12,
+    "useful_refinement_count": 14,
+    "duplicate_count": 1,
+    "novel_or_refining_count": 26,
+    "high_importance_novel_or_refining_count": 25,
+    "total_lead_count": 27,
+    "classification": "high_novelty_orthogonal_policy_rate_bond_operation_deposit_debt_swap_mortgage_and_facility_semantics"
+  },
+  "preexposure_carveout": {
+    "subject": "China Merchants Bank 2023-08-28 interim-results management discussion",
+    "status": "PREEXPOSED_NOT_BLIND",
+    "honored": true,
+    "fresh_novelty_counted_from_direct_overlap": false,
+    "note": "No direct CMB-specific 2023 interim-results recollection was used; NIM/deposit/demand items remain system-level research hypotheses."
+  },
+  "negative_space": {
+    "material_missing_antecedent": false,
+    "pre_1990_extension_required": false,
+    "all_primary_time_slices_broad_plus_orthogonal_complete_after_pass": true,
+    "dedicated_negative_space_review_required": true,
+    "notes": [
+      "Do not collapse policy rate, MLF, LPR, DR007 and actual loan rates.",
+      "Do not label two-sided government-bond operations as QE without balance-sheet and purpose evidence.",
+      "Do not infer net liquidity from headline RRR release without facility/fiscal offsets.",
+      "Do not read slower bank-loan growth as pure tightening when debt swaps or anti-idling cleanup alter composition.",
+      "Do not collapse existing mortgage repricing, new mortgage pricing and developer financing.",
+      "Do not treat structural/capital-market facilities as automatic final-risk transfer to the PBOC."
+    ]
+  },
+  "uncertainty": {
+    "exact_dates_rates_ratios_not_asserted": true,
+    "exact_operation_mechanics_not_asserted": true,
+    "exact_mortgage_rules_not_asserted": true,
+    "exact_structural_tool_parameters_not_asserted": true,
+    "exact_local_debt_program_terms_not_asserted": true,
+    "source_like_document_titles_not_asserted": true
+  },
+  "stop_reason": "The final primary time slice now has broad plus orthogonal blind depth. Remaining work is cross-time negative-space/challenger/saturation control, not a third ordinary 2023-2026 recall pass.",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "database_used": false,
+  "drive_used": false,
+  "shared_control_plane_changed": false,
+  "method_observation": null
+}
