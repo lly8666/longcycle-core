@@ -1,0 +1,75 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2013-2016__SYS-REGULATION-RESOLUTION__blind-002",
+  "family": "deposit_insurance_perimeter_vs_resolution_blind_challenge",
+  "time_slice_id": "TIME-2013-2016",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["2013-01-01", "2016-12-31"],
+  "prompt_version": "exploration-map-revision-12",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@6142408c158b387e6f0d36ae8aa44e4aa92b21b8;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2013-2016__SYS-REGULATION-RESOLUTION__blind-002-memory-leads.md",
+    "commit_sha": "06b8b37a343635dc09590196e2034c4bed399026",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 19,
+    "useful_refinement_count": 22,
+    "duplicate_count": 4,
+    "novel_lead_count": 41,
+    "high_importance_novel_count": 35,
+    "total_lead_count": 45,
+    "classification": "material_but_narrowing_novelty_with_safety_net_claimant_resolution_separation"
+  },
+  "negative_space": [
+    "No high-confidence 2013-2016 licensed-bank terminal failure with verified insured-depositor payout, license revocation and claimant waterfall emerged from blind memory.",
+    "Exact deposit-insurance exclusions, aggregation rules, premium design, fund powers and reimbursement mechanics remain source-dependent.",
+    "Exact Sheyang and Hengfeng operating, supervisory, ownership and license-state facts remain unverified.",
+    "Exact interbank/NCD/non-standard prudential rule details remain source-dependent.",
+    "Further 2013-2016 blind repetition would likely become rule-text or named-case guessing rather than recover a new top-level mechanism."
+  ],
+  "frontier_updates": {
+    "closed_frontiers": ["TIME-2013-2016__SYS-REGULATION-RESOLUTION__SAFETY-NET-PERIMETER-RESOLUTION-CHALLENGE"],
+    "opened_frontiers": ["TIME-2017-2019__SYS-REGULATION-RESOLUTION"],
+    "reason": "The orthogonal challenge separates claimant protection, liquidity support, shareholder support, prudential/perimeter correction, administrative intervention, license/entity change and court/claimant settlement. Remaining 2013-2016 gaps are predominantly exact legal, rule and named-case evidence. The 2017-2019 deleveraging and small-bank-stress period has materially higher blind information value."
+  },
+  "method_observation": {
+    "count": 1,
+    "classification": "confirmed_claimant_resolution_state_extension",
+    "observation": "Once explicit deposit insurance exists, the regulation/resolution state model needs an independent claimant-protection layer: insurance membership, insured/uninsured amount, reimbursement or transfer, fund support and claimant settlement must be distinct from institution operating/license/entity state and from owner/liquidity support.",
+    "proposed_validation_probe": "TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-001",
+    "proposed_family": "time_x_shard_blind_recall",
+    "shared_change_requested": false
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "orthogonal_2013_2016_safety_net_challenge_complete_with_diminishing_same_slice_returns",
+  "validation_refs": [],
+  "unverified": true
+}
