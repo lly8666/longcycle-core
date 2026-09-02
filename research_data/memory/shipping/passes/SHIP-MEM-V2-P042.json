@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P042",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"seafarer_injury_disability_death_compensation_claims_social_security_pension_insurance_benefits_dependants_return_to_work_long_term_support",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P042-L01","novelty":"new_category","importance":"high","lead":"Seafarer compensation and social protection form a financial-support lifecycle distinct from the underlying medical event. Injury, illness-related work loss, disability or death can close medically while benefit, claim or dependant-support states remain open."},
+    {"id":"P042-L02","novelty":"new_category","importance":"high","lead":"Incident or condition notification creates a claim/support candidate rather than an entitlement. Notice timing, identity/employment records and initial event/medical information begin the administrative chain without deciding coverage, causation or amount."},
+    {"id":"P042-L03","novelty":"new_category","importance":"high","lead":"Eligibility or coverage is its own state. Employment relationship, contract/collective arrangement, insurance or mutual cover, social-protection membership and jurisdictional connections may all matter structurally, but exact entitlement rules require Evidence."},
+    {"id":"P042-L04","novelty":"new_category","importance":"high","lead":"Medical status, work capacity and claim causation are separate questions. A person may have documented impairment without a finalized compensation decision, and a benefits process may require repeated medical/work-capacity updates without the Memory pass determining diagnosis or causation."},
+    {"id":"P042-L05","novelty":"new_category","importance":"high","lead":"Temporary support can bridge the period before final disability or return-to-work status. Wage-replacement-like support, maintenance/subsistence, treatment-related expenses or family assistance may run on different timelines and from different payers."},
+    {"id":"P042-L06","novelty":"new_category","importance":"high","lead":"Disability is a trajectory rather than one binary label. Temporary versus longer-term work incapacity, degree or functional impact, reassessment, rehabilitation and possible improvement can change the support state over time; exact rating systems are deferred."},
+    {"id":"P042-L07","novelty":"new_category","importance":"high","lead":"Death creates a separate dependant/beneficiary workflow involving notification, identity/relationship documentation, immediate family support, benefit/claim review and eventual payment or dispute. Exact beneficiary rules and amounts are Evidence questions."},
+    {"id":"P042-L08","novelty":"new_category","importance":"high","lead":"Multiple protection layers can overlap: employer or contractual benefits, insurer/P&I-type support, collective or welfare funds, national social security and pension arrangements may need coordination rather than assuming one payer or one claim."},
+    {"id":"P042-L09","novelty":"new_category","importance":"high","lead":"Coordination among payers can create timing and responsibility uncertainty. One layer may wait for documentation or a decision from another, while the household still faces immediate cash-flow needs; exact priority, recovery and subrogation rules are not retained."},
+    {"id":"P042-L10","novelty":"new_category","importance":"high","lead":"Claim estimate, reserve, offer, approved amount and cash actually paid are different states. For historical replay, expected liability or an announced settlement cannot be backfilled as completed payment before the relevant known-time and execution state."},
+    {"id":"P042-L11","novelty":"new_category","importance":"high","lead":"Review, disagreement and dispute are normal possible states rather than proof of bad faith. Questions over eligibility, causation, work capacity, beneficiary identity, amount or documentation can keep a claim open and change expected timing without this pass choosing a side."},
+    {"id":"P042-L12","novelty":"new_category","importance":"high","lead":"Payment does not always equal lifecycle closure. Lump-sum or periodic support, continuing medical or rehabilitation needs, survivor/pension payments and later reassessment can leave financial-protection obligations active after an initial payment."},
+    {"id":"P042-L13","novelty":"new_category","importance":"high","lead":"Return-to-work and long-term support couple financial protection back to labor supply. Rehabilitation, retraining, modified duties, certification/fitness review or permanent exit can determine whether a claim trajectory ends in resumed seafaring, shore work or long-term non-participation."},
+    {"id":"P042-L14","novelty":"useful_refinement","importance":"high","lead":"P036 occupational health is refined by separating clinical/readiness recovery from financial-support closure. Medical improvement can precede claim resolution, while long-term disability support can continue after active treatment ends."},
+    {"id":"P042-L15","novelty":"useful_refinement","importance":"high","lead":"P033 employment and wage states are refined because ordinary payroll, sick-pay-like support, compensation and social-protection payments can have different sources, eligibility gates and timing even when all affect household cash flow."},
+    {"id":"P042-L16","novelty":"useful_refinement","importance":"high","lead":"P041 legal/support uncertainty is refined because compensation disputes and documentation may continue independently of any criminal or administrative process, and person-level legal release does not close financial claims."},
+    {"id":"P042-L17","novelty":"useful_refinement","importance":"medium","lead":"Atlas counterparty risk is refined at the household level: delayed or disputed payments can transmit insurer/employer/fund administration and solvency concerns into seafarer welfare even when the vessel remains operational."},
+    {"id":"P042-L18","novelty":"duplicate","importance":"low","lead":"Generic known-time, no-lookahead and revision-by-version are already Baseline semantics; P042 applies them to claim estimates, approvals, payments and reassessments."},
+    {"id":"P042-L19","novelty":"duplicate","importance":"low","lead":"The atlas already captures counterparty and capital-cycle risk broadly; P042 adds the person/household compensation-support lifecycle rather than restating that payment failure creates risk."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_compensation_social_security_pension_insurance_entitlements_amounts_limits_formulas_and_offsets","reason":"Exact benefit rules and monetary terms vary by contract, scheme and jurisdiction and require authoritative dated Evidence; this pass makes no entitlement or valuation determination."},
+    {"region":"specific_injury_disability_death_claims_medical_causation_ratings_and_disputes","reason":"Individual medical causation, disability assessment, claim chronology and outcome require claim-scoped Evidence and professional/legal context."},
+    {"region":"named_insurers_p_and_i_clubs_claims_handlers_unions_welfare_funds_pension_funds_and_social_security_bodies","reason":"Provider identity, capability, coverage and historical role become organization-specific claims requiring Evidence."},
+    {"region":"country_specific_current_compensation_social_security_pension_tax_and_claims_practice","reason":"Current entitlements, procedures and enforcement are time-sensitive legal/administrative claims requiring source-first authoritative material."}
+  ],
+  "stop_reason":"The compensation/social-protection chain is populated from notification through eligibility, documentation, temporary support, disability/death/beneficiary states, multi-layer coordination, review/dispute, payment and long-term return-to-work/support. Further recall becomes entitlement-, amount-, formula-, medical-causation-, contract-, case-, fund-, provider- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not financial, medical or legal advice; no entitlement, coverage, causation, disability rating, beneficiary status, payment amount, pension/social-security right, claim outcome, provider capability or jurisdiction-specific rule is verified."
+}
