@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P073",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_wastewater_sewage_greywater_collection_holding_treatment_system_service_capacity_transfer_shore_reception_discharge_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_wastewater_sanitation_service_state_model_only_no_discharge_rule_treatment_parameter_sampling_valve_or_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"WW-01","novelty_class":"new_category","importance":"high","memory":"Shipboard wastewater service spans owner/manager, master, engineering crew, hotel/catering or accommodation users, shore technical or marine support, wastewater equipment/service actors and port or shore reception actors. Operational observation, equipment support, accommodation demand and reception opportunity should remain separate roles rather than one vendor/compliance directory."},
+    {"id":"WW-02","novelty_class":"new_category","importance":"high","memory":"Collection availability, holding availability and treatment-system readiness are distinct service states. Wastewater can still be collected while treatment is degraded, or treatment equipment may be nominally ready while upstream collection or downstream transfer is constrained."},
+    {"id":"WW-03","novelty_class":"new_category","importance":"high","memory":"Holding inventory and capacity confidence are separate from nominal tank existence. Historical memory should preserve whether available holding margin was normal, constrained, uncertain or restored without retaining exact tank capacities, levels, sounding methods or alarm thresholds."},
+    {"id":"WW-04","novelty_class":"new_category","importance":"high","memory":"Wastewater service demand or inflow and available collection/holding/treatment capacity follow different clocks. Occupancy and accommodation use can change service margin without proving equipment failure; exact generation rates, capacities and loading thresholds are deferred."},
+    {"id":"WW-05","novelty_class":"new_category","importance":"high","memory":"Wastewater stream or service scope should not be collapsed into a vessel-wide binary. Sewage/blackwater, greywater and other sanitation-related collection paths may have different availability or handling states, while exact vessel definitions, piping and rule treatment remain Evidence work."},
+    {"id":"WW-06","novelty_class":"new_category","importance":"high","memory":"Treatment-system readiness and treatment-performance confidence are different states. Equipment being available or running does not itself establish process performance, discharge quality or compliance; exact treatment parameters, sampling results and limits are intentionally deferred."},
+    {"id":"WW-07","novelty_class":"new_category","importance":"high","memory":"Onboard holding/treatment capability and transfer or shore-reception opportunity are distinct. A vessel may have limited onboard margin while a reception option exists, or ample holding while reception is unavailable; this pass does not infer legal permission, acceptance conditions or discharge entitlement from either state."},
+    {"id":"WW-08","novelty_class":"new_category","importance":"high","memory":"Wastewater degradation has a defensive service lifecycle: observation, uncertain scope, affected collection/holding/treatment or transfer service identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No valve lineup, bypass, discharge, treatment or troubleshooting procedure is retained."},
+    {"id":"WW-09","novelty_class":"new_category","importance":"high","memory":"Isolation and restriction should preserve service scope. One collection branch, holding function, treatment train or transfer interface may be unavailable while other sanitation service continues; exact piping, valves, tanks, overboard arrangements and operating actions remain deferred."},
+    {"id":"WW-10","novelty_class":"new_category","importance":"high","memory":"Wastewater service can depend on upstream electrical, controls/monitoring, pumping or other supporting utilities, but dependency observations are not root-cause proof. Loss of a supporting service can degrade wastewater capability, while wastewater degradation does not establish an electrical, digital or equipment cause."},
+    {"id":"WW-11","novelty_class":"new_category","importance":"high","memory":"Wastewater constraints can propagate into sanitation, accommodation and selected hotel-service availability, but a downstream hygiene, odor, fixture or accommodation-service observation is not by itself proof of a collection, holding, treatment or discharge root cause."},
+    {"id":"WW-12","novelty_class":"new_category","importance":"high","memory":"Port or shore reception should preserve location/time opportunity, interface availability and acceptance/capacity confidence as separate observations. A reception facility or transfer interface being present does not prove immediate availability, accepted waste type, commercial terms or regulatory authorization."},
+    {"id":"WW-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: collection returns, usable holding margin returns, treatment readiness returns, transfer/reception becomes available, and downstream sanitation service is verified. A restarted component or cleared alarm does not by itself establish full wastewater-service recovery."},
+    {"id":"WW-R01","novelty_class":"useful_refinement","importance":"high","memory":"P071 incoming freshwater service and P073 outbound wastewater service are independent utility dimensions. Reduced freshwater use may change wastewater demand, but freshwater availability does not prove wastewater collection, holding, treatment or transfer readiness, and wastewater degradation does not prove freshwater failure."},
+    {"id":"WW-R02","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical availability can be an upstream dependency for pumps, controls or treatment equipment, but power being present does not prove wastewater service readiness and a wastewater problem does not establish an electrical cause."},
+    {"id":"WW-R03","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep pump, tank, treatment-unit, sensor/control or transfer-interface condition separate from delivered sanitation service. Sound equipment can coexist with collection/holding/transfer constraints, and acceptable service does not prove every component condition."},
+    {"id":"WW-R04","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control availability should remain separate from physical wastewater state. Loss of monitoring or control visibility can make readiness uncertain without proving physical service loss, while a physical wastewater constraint does not establish a digital or cyber cause."},
+    {"id":"WW-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"WW-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P072; P073 applies them specifically to wastewater and sanitation service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact vessel wastewater/sewage/greywater piping, tank capacities, levels, treatment process parameters, discharge limits, sampling results, transfer rates and valve arrangements are intentionally not retained.",
+    "Exact treatment operation, chemical dosing, sampling, discharge, overboard, transfer, isolation, bypass, troubleshooting, cleaning, maintenance or emergency procedures are outside this blind pass.",
+    "Named wastewater equipment vendors, treatment-service firms, reception contractors, vessel installations, incidents, deficiencies, discharge events and rule-specific findings require claim-scoped Evidence.",
+    "Private/regional marine sewage/greywater treatment, pump/tank service and port-reception lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact wastewater topology, tank capacities/levels, treatment parameters, sampling results, discharge limits, transfer rates, valves and current service configuration.",
+    "Treatment, dosing, sampling, discharge, bypass, transfer, isolation, troubleshooting, cleaning, maintenance or emergency procedures.",
+    "Named equipment/providers/reception contractors, vessel incidents, deficiencies, discharge events, assurance findings and current readiness.",
+    "Private/regional wastewater and reception-service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive wastewater/sewage/greywater service orientation/source-discovery output. It is not wastewater-treatment, sanitation, discharge, environmental-compliance, engineering, health or vessel-operating advice and does not establish any exact piping, tank capacity/level, treatment parameter, sample result, discharge limit, transfer rate, valve arrangement, procedure, equipment, provider, incident, compliance finding or current-readiness fact.",
+  "stop_reason": "The wastewater/sanitation service chain is recalled at useful structural resolution: collection, holding margin, demand, treatment readiness/performance confidence, transfer/reception opportunity, restriction/isolation, dependencies, downstream sanitation effects and verified restoration are separable states. Further detail would become vessel-, tank-, treatment-, discharge-, sampling-, procedure-, incident-, contractor- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
