@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 39,
+  "map_revision": 40,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
@@ -15,8 +15,8 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1990-1994__SYS-MONETARY-CREDIT__blind-002.json",
-  "latest_pass_receipt_status": "high_novelty_orthogonal_same_slice_memory_only",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-MONETARY-CREDIT__blind-001.json",
+  "latest_pass_receipt_status": "high_novelty_transition_period_broad_recall_memory_only",
   "sealed_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
@@ -39,22 +39,22 @@
       "fresh_search_used": false,
       "recent_outcomes": [
         {
-          "pass_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001",
-          "family": "time_slice_timeline_blind_recall",
-          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001.json",
-          "novel_lead_count": 18,
-          "duplicate_lead_count": 0,
-          "high_importance_novel_count": 12,
-          "outcome": "high_novelty_broad_first_pass"
-        },
-        {
           "pass_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-002",
           "family": "time_slice_orthogonal_blind_recall",
           "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1990-1994__SYS-MONETARY-CREDIT__blind-002.json",
           "novel_lead_count": 15,
           "duplicate_lead_count": 4,
           "high_importance_novel_count": 11,
-          "outcome": "high_novelty_orthogonal_material_semantic_refinement"
+          "outcome": "prior_time_slice_broad_plus_orthogonal_complete"
+        },
+        {
+          "pass_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__blind-001",
+          "family": "time_slice_timeline_blind_recall",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1995-1999__SYS-MONETARY-CREDIT__blind-001.json",
+          "novel_lead_count": 17,
+          "duplicate_lead_count": 1,
+          "high_importance_novel_count": 13,
+          "outcome": "high_novelty_transition_period_broad_recall"
         }
       ],
       "negative_space_review_complete": false,
@@ -67,49 +67,54 @@
       {
         "region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION",
         "state": "canonically_sealed_for_model_vintage",
-        "note": "The regulation/resolution shard remains sealed and isolated from the active monetary-credit blind stage."
+        "note": "The regulation/resolution shard remains sealed and isolated from active monetary-credit recall."
       },
       {
         "region_id": "TIME-1990-1994__SYS-MONETARY-CREDIT",
         "state": "broad_plus_orthogonal_complete",
-        "note": "The slice now covers the mixed credit-plan/relending/administered-rate framework, 1993-94 tightening, leakage channels, policy-credit segmentation, loan-scale accounting semantics, reserve/cash-plan distinctions, monetary aggregates and period-native vocabulary. No material antecedent requires extending before 1990."
+        "note": "Mixed administrative monetary regime covered with instrument, actor, metric, leakage and old-vocabulary challenges."
+      },
+      {
+        "region_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__BROAD",
+        "state": "broad_blind_recall_complete_high_novelty",
+        "note": "Broad transition coverage now includes direct loan-limit retreat, monetary aggregates, administered easing, reserve reform, interbank/bond infrastructure, open-market/rediscount transition, Asian-crisis/deflation context, bank-balance-sheet transmission blockage, fiscal interaction and guidance persistence."
       }
     ],
     "known_major_gaps": [
-      "SYS-MONETARY-CREDIT has not yet covered the 1995-1999 transition from direct credit controls toward more indirect monetary instruments and aggregate targeting.",
+      "The 1995-1999 monetary-credit slice still needs an independent orthogonal actor/instrument/metric/market-infrastructure/transmission challenge.",
       "Later monetary-credit time slices remain untouched in v2 and must stay blind.",
-      "Exact policy dates, reserve/rate values, money definitions, relending volumes, legal authorities and named documents remain deferred Evidence work after a future valid shard seal."
+      "Exact market launch dates, reserve/rate values, monetary targets, legal authorities, relending/rediscount terms and policy-document names remain deferred Evidence work after a future valid seal."
     ],
     "deferred_regions": [
       {
         "region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL",
         "state": "post_seal_evidence_eligible_but_deferred",
-        "reason": "Not selected by the sparse map; keep separate from the active monetary-credit blind stage."
+        "reason": "Not selected by the sparse map; keep separate from active unsealed-shard recall."
       }
     ]
   },
   "open_frontiers": [
     {
-      "frontier_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__BROAD-001",
+      "frontier_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__ORTHOGONAL-002",
       "priority_rank": 1,
       "state": "open",
-      "selected_probe_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__blind-001"
+      "selected_probe_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__blind-002"
     }
   ],
   "next_probe": {
-    "probe_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__blind-001",
-    "family": "time_slice_timeline_blind_recall",
+    "probe_id": "TIME-1995-1999__SYS-MONETARY-CREDIT__blind-002",
+    "family": "time_slice_orthogonal_blind_recall",
     "time_slice_id": "TIME-1995-1999",
     "shard_id": "SYS-MONETARY-CREDIT",
     "period": ["1995-01-01", "1999-12-31"],
-    "instruction": "Run one isolated broad MEMORY_LEADS_ONLY blind pass for SYS-MONETARY-CREDIT in 1995-1999 using only this compact map, the manifest and model internal memory. Focus on the transition from loan-scale/direct credit control toward monetary aggregates and indirect instruments; PBOC relending/reserve/rate operations; interbank and bond-market operating infrastructure; the Asian-financial-crisis and domestic deflation context; credit-policy transmission to state/commercial banks; period-native vocabulary, metric semantics, failures/dead ends and counterexamples. Do not read any prior v2 raw output, sealed SYS-REGULATION-RESOLUTION raw content, other-shard raw, Banking Evidence/source material or fresh Banking search results. Preserve uncertainty and avoid invented exact dates, ratios, rule titles or source-like details. Append one raw unit and bounded receipt, classify novelty honestly, rebuild the same sparse map with exactly one next probe, and close the probe through substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
+    "instruction": "Run one isolated orthogonal MEMORY_LEADS_ONLY blind pass over SYS-MONETARY-CREDIT in 1995-1999 using only this compact map, the manifest and model internal memory. Do not read the prior 1995-1999 blind-001 raw output; use only this map's compact coverage statement. Challenge the broad pass for forgotten actors/institutions, reserve and monetary-aggregate metric semantics, market plumbing, bill/rediscount and open-market implementation limits, loan-limit cancellation versus surviving guidance, Asian-crisis/deflation transmission failures, fiscal-monetary boundaries, period-native terminology, dead ends and counterexamples. Do not read Batch0 raw, any prior v2 raw, sealed SYS-REGULATION-RESOLUTION raw, other-shard raw, Banking Evidence/source material or fresh Banking search results. Preserve uncertainty and avoid invented exact dates, ratios, launch dates, rule titles or source-like details. Append one raw unit and bounded receipt, classify novelty honestly, rebuild the sparse map with exactly one next probe, and close S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
-      "all prior v2 raw blind-pass outputs",
+      "all prior v2 raw blind-pass outputs including the 1995-1999 blind-001 raw",
       "sealed SYS-REGULATION-RESOLUTION raw outputs",
       "other shard raw outputs",
       "Banking source or Evidence material",
@@ -117,6 +122,6 @@
     ],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One append-only broad 1995-1999 raw unit and receipt exist; novelty and uncertainty are explicit; the sparse map selects exactly one deterministic next step; and the probe closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
+    "done_when": "One orthogonal 1995-1999 raw unit and receipt exist; omissions/refinements/duplicates and uncertainty are explicit; the sparse map selects exactly one deterministic next step; and the probe closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
   }
 }
