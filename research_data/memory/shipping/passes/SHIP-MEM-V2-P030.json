@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P030",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"marine_casualty_salvage_emergency_towage_place_of_refuge_pollution_response_wreck_removal_owner_insurer_authority_coordination",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P030-L01","novelty":"new_category","importance":"high","lead":"A serious casualty commonly creates a shore-side owner/operator response layer in parallel with the master's onboard command. Technical management, operations and senior decision-makers coordinate assistance, commercial consequences and information without automatically replacing onboard navigational command."},
+    {"id":"P030-L02","novelty":"new_category","importance":"high","lead":"Distress and casualty notification is a multi-recipient state chain rather than one call: vessel-to-shore reports can need repeated updates to owner/operator, coastal or port authorities, rescue or traffic services, insurers and other affected parties as location, condition and intentions become clearer."},
+    {"id":"P030-L03","novelty":"new_category","importance":"medium","lead":"Hull-and-machinery and liability/P&I-type insurance interests can participate in different parts of the casualty response and cost/claim chain. The structural memory is distinct insurance-role coordination, not any exact coverage, policy wording or legal obligation."},
+    {"id":"P030-L04","novelty":"new_category","importance":"high","lead":"External salvage capability has a mobilization state: appropriate people, tugs, pumps, firefighting, diving, lifting or other resources may exist regionally yet still require contracting, transit, weather access and authority clearance before becoming usable at the casualty."},
+    {"id":"P030-L05","novelty":"new_category","importance":"high","lead":"Once external responders arrive, the interface between ship command, owner representatives, salvors and public authorities becomes an operational state of its own. Plans for stabilization, towage or entry to sheltered waters can require aligned authority and information even when each participant has sufficient technical capability."},
+    {"id":"P030-L06","novelty":"new_category","importance":"high","lead":"Emergency towage depends on both tug capability and casualty-side connection readiness. A disabled vessel may need a safe towing point, line-handling access, compatible equipment, sufficient structural condition and acceptable weather/sea-room before a tow can actually be established."},
+    {"id":"P030-L07","novelty":"new_category","importance":"high","lead":"Salvage stabilization is often a bundle rather than one action: external firefighting, dewatering, temporary patching, temporary power, ballast/trim changes or securing damaged systems may be combined to stop deterioration before movement or repair is attempted."},
+    {"id":"P030-L08","novelty":"new_category","importance":"high","lead":"Refloating, towing or moving a damaged vessel requires a condition-assessment state distinct from immediate lifesaving response. Grounding reaction, structural damage, residual stability, machinery/steering condition and route clearance can constrain what movement is safe; exact calculations are deferred."},
+    {"id":"P030-L09","novelty":"new_category","importance":"medium","lead":"Cargo or bunker transfer/lightering can be a casualty-control option when reducing draft, load, pollution exposure or fire/flooding consequence improves stabilization or refloat/tow prospects. Exact transfer rules and case-specific feasibility require Evidence."},
+    {"id":"P030-L10","novelty":"new_category","importance":"high","lead":"A place of refuge is an acceptance and readiness state, not an automatically available destination. Coastal/port authorities, berth or anchorage suitability, casualty condition, pollution risk, draft and local response capability can all affect whether sheltered access is granted or operationally feasible."},
+    {"id":"P030-L11","novelty":"new_category","importance":"high","lead":"Pollution response can become a parallel casualty workstream with containment, recovery, shoreline or port-protection priorities that differ from saving the vessel or cargo. Environmental-control progress and vessel-stabilization progress should therefore remain separate states."},
+    {"id":"P030-L12","novelty":"new_category","importance":"high","lead":"If a casualty cannot be recovered as a trading vessel, the operational state can transition from salvage to wreck marking, hazard reduction and removal/clearance. Wreck-removal readiness is therefore a distinct long-tail phase rather than merely the end timestamp of a casualty."},
+    {"id":"P030-L13","novelty":"new_category","importance":"high","lead":"Casualty response can absorb external capacity as well as vessel capacity: salvage tugs, channel/anchorage space, refuge berths, pollution resources and navigation restrictions may remain committed for days or longer, extending a local casualty into a port or route-capacity disruption."},
+    {"id":"P030-L14","novelty":"useful_refinement","importance":"high","lead":"P029's external-assistance interface is refined because assistance has mobilization, contracting/acceptance, transit and connection gates. A call for help should not be replayed as if effective rescue or towage capacity were instantly present."},
+    {"id":"P030-L15","novelty":"useful_refinement","importance":"high","lead":"P013's claims-evidence chain is refined by casualty response: contemporaneous condition reports, photographs, logs, surveys, pollution observations and response decisions can become important later, so evidence preservation begins during stabilization rather than only after the vessel reaches safety."},
+    {"id":"P030-L16","novelty":"useful_refinement","importance":"high","lead":"P022/P025 effective-access mechanics are refined because a casualty or wreck can create temporary channel, anchorage or berth restrictions whose duration depends on stabilization and clearance rather than simply on the initial incident time."},
+    {"id":"P030-L17","novelty":"useful_refinement","importance":"medium","lead":"Asset recovery after a major casualty can branch toward temporary repair and tow, permanent repair, prolonged lay-up, sale/as-is disposal or wreck removal. The structural branch matters to effective fleet supply even though exact total-loss classifications and economics are deferred."},
+    {"id":"P030-L18","novelty":"duplicate","importance":"low","lead":"Normal harbor towage and marine-service readiness were already captured by P022; P030 retains only towage mobilized because a casualty has impaired ordinary self-propelled or port-call capability."},
+    {"id":"P030-L19","novelty":"duplicate","importance":"low","lead":"Onboard firefighting, flooding control, muster and abandonment thresholds were already captured by P029; P030 begins where outside assistance and public/insurance coordination materially enter the response."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_salvage_contract_forms_awards_liens_and_jurisdictional_law","reason":"Blind memory can identify a contracting/authority interface but cannot establish legal effect, priority, award calculation or jurisdiction-specific rights."},
+    {"region":"specific_salvage_towage_place_of_refuge_pollution_and_wreck_cases","reason":"Exact casualty chronology, responders, decisions, costs, outcomes and official findings require dated claim-scoped Evidence."},
+    {"region":"salvage_emergency_towage_pollution_response_and_wreck_removal_provider_lineages","reason":"Private and regional provider histories are uneven in model memory and require source archaeology rather than a recalled directory."},
+    {"region":"current_casualty_wreck_pollution_or_place_of_refuge_status","reason":"Current response conditions are outside blind historical-memory scope and require live source-first information."}
+  ],
+  "stop_reason":"The external casualty-response chain is populated from notification and shore-side coordination through salvage mobilization, tow connection, stabilization/assessment, refuge, pollution response and wreck-removal transition. Further recall becomes contract-, law-, award-, authority-, provider-, incident-, wreck- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no salvage contract, legal rule, casualty chronology, tow/refuge decision, pollution event, wreck-removal obligation, provider capability, cost or current response state is verified."
+}
