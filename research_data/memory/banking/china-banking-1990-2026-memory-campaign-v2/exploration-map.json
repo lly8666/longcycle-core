@@ -1,13 +1,10 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 37,
+  "map_revision": 38,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
-  "primary_period": [
-    "1990-01-01",
-    "2026-08-31"
-  ],
+  "primary_period": ["1990-01-01", "2026-08-31"],
   "authority_class": "research_control_only",
   "campaign_stage": "active_recall",
   "campaign_sealed": false,
@@ -18,16 +15,13 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_control_action_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002.json",
-  "latest_control_action_status": "canonical_shard_seal_authorized_exact_artifact",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001.json",
+  "latest_pass_receipt_status": "high_novelty_first_time_slice_broad_recall_memory_only",
   "sealed_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
       "state": "sealed",
-      "period": [
-        "1990-01-01",
-        "2026-08-31"
-      ],
+      "period": ["1990-01-01", "2026-08-31"],
       "model_vintage": "GPT-5.6 Sol",
       "sealed_artifact_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-REGULATION-RESOLUTION-seal-state-v1.json",
       "sealed_artifact_sha256": "2c44f0125b2b3a8c06bb7a20b34b6119d0f4e05dca33c68d4d92ebeaf74c9784",
@@ -43,7 +37,20 @@
       "selected_time_slice_id": "TIME-1990-1994",
       "stage": "active_recall",
       "fresh_search_used": false,
-      "recent_outcomes": []
+      "recent_outcomes": [
+        {
+          "pass_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001",
+          "family": "time_slice_timeline_blind_recall",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001.json",
+          "novel_lead_count": 18,
+          "duplicate_lead_count": 0,
+          "high_importance_novel_count": 12,
+          "outcome": "high_novelty_broad_first_pass"
+        }
+      ],
+      "negative_space_review_complete": false,
+      "independent_challenger_complete": false,
+      "saturation_review_complete": false
     }
   ],
   "coverage_snapshot": {
@@ -51,52 +58,49 @@
       {
         "region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION",
         "state": "canonically_sealed_for_model_vintage",
-        "note": "All primary time slices, negative space, independent challenge, funding/loss allocation, preparedness/loss absorbency and canonical three-family low-novelty qualification are complete. Exact source detail remains post-seal Evidence work."
+        "note": "The regulation/resolution shard remains sealed and is not an allowed raw input to the active monetary-credit recall."
+      },
+      {
+        "region_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__BROAD",
+        "state": "broad_blind_recall_complete_high_novelty",
+        "note": "Broad first-pass coverage now includes quantity credit controls, PBOC relending, administered rates, 1993-94 tightening, interbank leakage, policy/commercial credit separation, reserve/cash-plan semantics, monetary-aggregate transition and counterexamples."
       }
     ],
     "known_major_gaps": [
-      "SYS-REGULATION-RESOLUTION has no remaining blind-memory category gap and is sealed for GPT-5.6 Sol.",
-      "The remaining Banking campaign contains unsealed atomic shards; SYS-MONETARY-CREDIT is selected next by deterministic manifest-order among unsealed shards.",
-      "Post-seal Evidence for SYS-REGULATION-RESOLUTION is eligible only from a later CLEAN handoff and is not started in the seal action."
+      "The 1990-1994 monetary-credit slice has not yet received an orthogonal actor/metric/mechanism/terminology challenge.",
+      "Later monetary-credit time slices remain untouched in v2 and must stay blind.",
+      "Exact reserve ratios, interest-rate levels, relending volumes, official target dates, legal authorities and policy-document titles remain deferred Evidence work after a future valid seal."
     ],
     "deferred_regions": [
       {
         "region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL",
         "state": "post_seal_evidence_eligible_but_deferred",
-        "reason": "The shard is sealed, but Evidence/search is intentionally deferred beyond the seal action and may begin claim by claim from a later CLEAN handoff."
+        "reason": "Not selected by the sparse map; keep separate from the active unsealed shard."
       }
     ]
   },
-  "next_shard_selection": {
-    "basis": "first_unsealed_atomic_shard_in_manifest_order",
-    "selected_shard_id": "SYS-MONETARY-CREDIT",
-    "note": "Do not use sealed SYS-REGULATION-RESOLUTION raw content as input to the new atomic recall."
-  },
   "open_frontiers": [
     {
-      "frontier_id": "TIME-1990-1994__SYS-MONETARY-CREDIT",
+      "frontier_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__ORTHOGONAL-002",
       "priority_rank": 1,
       "state": "open",
-      "selected_probe_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001"
+      "selected_probe_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-002"
     }
   ],
   "next_probe": {
-    "probe_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001",
-    "family": "time_slice_timeline_blind_recall",
+    "probe_id": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-002",
+    "family": "time_slice_orthogonal_blind_recall",
     "time_slice_id": "TIME-1990-1994",
     "shard_id": "SYS-MONETARY-CREDIT",
-    "period": [
-      "1990-01-01",
-      "1994-12-31"
-    ],
-    "instruction": "In the next eligible fresh-agent loop, run one isolated MEMORY_LEADS_ONLY blind recall pass for SYS-MONETARY-CREDIT in 1990-1994 using only this compact map, the manifest and model internal memory. Focus on the PBOC operating framework, reserve/interest-rate/credit tools, direct and policy credit controls, early marketization, monetary-credit transmission, period-native vocabulary, actors, mechanisms, metric semantics, failures/dead ends and counterexamples. Do not read any prior v2 raw output, sealed SYS-REGULATION-RESOLUTION raw content, other-shard raw, Banking Evidence/source material or fresh Banking search results. Preserve uncertainty and avoid invented exact dates, ratios, rule titles or source-like details. Append one raw unit and bounded receipt, classify novelty honestly, rebuild this same sparse map with exactly one next probe, and close the probe through substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
+    "period": ["1990-01-01", "1994-12-31"],
+    "instruction": "Run one isolated orthogonal MEMORY_LEADS_ONLY blind pass over SYS-MONETARY-CREDIT in 1990-1994 using only this compact map, the manifest and model internal memory. Do not read the prior blind-001 raw output; use only this map's compact coverage statement. Challenge the broad pass for forgotten actors/institutions, instrument and metric semantics, implementation leakage, policy dead ends, old names/search keys, contemporaneous intent-versus-realized-transmission boundaries and counterexamples. Pay particular attention to distinctions among credit plan/loan scale, central-bank lending, reserve versus payment-reserve concepts, administered rates, cash-plan vocabulary, interbank funding and the policy-bank transition. Do not read Batch0 raw, any prior v2 raw, sealed SYS-REGULATION-RESOLUTION raw, other-shard raw, Banking Evidence/source material or fresh Banking search results. Preserve uncertainty and avoid invented exact dates, ratios, rule titles or source-like details. Append one raw unit and bounded receipt, classify novelty honestly, rebuild the sparse map with exactly one next probe, and close S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
       "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
     ],
     "forbidden_inputs": [
       "Batch0 raw Banking outputs",
-      "all prior v2 raw blind-pass outputs",
+      "all prior v2 raw blind-pass outputs including blind-001",
       "sealed SYS-REGULATION-RESOLUTION raw outputs",
       "other shard raw outputs",
       "Banking source or Evidence material",
@@ -104,14 +108,6 @@
     ],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One append-only raw unit and receipt exist; novelty and uncertainty are explicit; the sparse map is rebuilt with exactly one deterministic next step; and the probe is closed with substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
-  },
-  "seal_transition": {
-    "sealed_shard_id": "SYS-REGULATION-RESOLUTION",
-    "seal_completed": true,
-    "campaign_sealed": false,
-    "evidence_started_in_seal_action": false,
-    "post_seal_evidence_allowed_after_clean_handoff": true,
-    "next_campaign_action": "TIME-1990-1994__SYS-MONETARY-CREDIT__blind-001"
+    "done_when": "One orthogonal append-only raw unit and receipt exist; omissions/refinements/duplicates are explicit; the sparse map selects exactly one next step; and the probe closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN."
   }
 }
