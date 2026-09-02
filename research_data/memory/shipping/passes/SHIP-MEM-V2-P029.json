@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P029",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"shipboard_emergency_response_fire_detection_suppression_flooding_watertight_integrity_damage_control_muster_lifesaving_abandon_ship",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P029-L01","novelty":"new_category","importance":"high","lead":"Shipboard emergency response has an explicit command-and-role layer: the master or designated emergency command function coordinates bridge, deck and engine teams while specialized fire or damage-control parties execute local actions. Command state and task execution state should not be collapsed into one generic crew response."},
+    {"id":"P029-L02","novelty":"new_category","importance":"high","lead":"Detection and confirmation are separate emergency states. Smoke, heat, flooding, bilge, pressure or other alarms can indicate a possible casualty, but location, severity and source may remain uncertain until corroborated by local observation or additional indications."},
+    {"id":"P029-L03","novelty":"new_category","importance":"high","lead":"Containment depends on boundaries and isolation actions: closing openings, ventilation paths, fuel or energy sources and compartment connections can limit propagation. The structural category is integrity of the containment boundary, not any exact fire-door, damper or shutdown requirement."},
+    {"id":"P029-L04","novelty":"new_category","importance":"high","lead":"Fire response is staged rather than binary: locate/confirm, isolate, attack or activate suppression, cool adjacent boundaries, monitor for re-ignition and restore access. Different stages can succeed or fail independently and can consume crew, power, water and ventilation capacity."},
+    {"id":"P029-L05","novelty":"new_category","importance":"medium","lead":"Fixed and portable suppression create different readiness states. A fixed system may protect a defined space but can require evacuation/isolation before release, while portable response depends more directly on safe access, crew reach and sustained supply; exact system requirements are deferred."},
+    {"id":"P029-L06","novelty":"new_category","importance":"high","lead":"Flooding response is a rate-and-boundary problem: locating and isolating the ingress source, preserving watertight subdivision and sustaining dewatering capacity matter relative to the ongoing ingress rate. Installed pumps alone do not imply recoverable flooding."},
+    {"id":"P029-L07","novelty":"new_category","importance":"high","lead":"Watertight integrity is an operating state, not merely a design attribute. Doors, hatches, penetrations and structural boundaries must remain functionally closed or controllable for subdivision assumptions to hold during damage."},
+    {"id":"P029-L08","novelty":"new_category","importance":"high","lead":"Damage control links local casualty state to whole-vessel survivability through stability, trim, free-surface, progressive flooding and structural-condition judgments. Exact damage-stability calculations and thresholds require vessel-specific Evidence, but the decision layer is structurally distinct from pumping alone."},
+    {"id":"P029-L09","novelty":"new_category","importance":"high","lead":"Emergency access and escape routes can degrade as smoke, heat, water, structural damage or loss of lighting blocks normal paths. Response capability therefore depends on whether teams can physically reach a casualty and later withdraw, not only on whether equipment exists."},
+    {"id":"P029-L10","novelty":"new_category","importance":"high","lead":"Emergency communications and command continuity are independent readiness states. Loss of normal bridge, internal communication or electrical services can fragment situational awareness even when local responders remain capable, forcing simpler or more manual coordination."},
+    {"id":"P029-L11","novelty":"new_category","importance":"high","lead":"Muster and personnel accountability form a decision-critical state: knowing who is safe, missing, trapped, responding or already evacuated affects search priorities, suppression choices and whether an abandon-ship decision can be executed coherently."},
+    {"id":"P029-L12","novelty":"new_category","importance":"medium","lead":"Lifesaving readiness includes availability, access, embarkation and launch/deployment conditions for survival craft or equivalent means, not merely installed count. Fire, list, weather, damage or blocked access can make nominally present lifesaving capacity unavailable."},
+    {"id":"P029-L13","novelty":"new_category","importance":"high","lead":"Abandon ship is a threshold decision in a changing survivability state, not the automatic endpoint of any major casualty. Remaining aboard may preserve a larger survival platform while evacuation introduces its own exposure; the relevant memory category is the transition criterion under deteriorating control, stability, fire or flooding."},
+    {"id":"P029-L14","novelty":"useful_refinement","importance":"high","lead":"P028 emergency power is refined as an enabling service for emergency response rather than proof of recovery. Limited power can support alarms, lighting, communications or selected pumps while the casualty still progresses and normal propulsion or cargo capability remains unavailable."},
+    {"id":"P029-L15","novelty":"useful_refinement","importance":"high","lead":"P027 alarm and automation states should be replayed with emergency verification timing: an alarm is an observation requiring interpretation and prioritization, and later confirmation of a casualty must not rewrite what the crew actually knew when the first alarm occurred."},
+    {"id":"P029-L16","novelty":"useful_refinement","importance":"medium","lead":"Cargo type and containment can alter emergency propagation and response choices, linking P014 cargo-handling and dangerous-goods readiness to casualty response without establishing any cargo-specific firefighting, gas or evacuation rule."},
+    {"id":"P029-L17","novelty":"useful_refinement","importance":"medium","lead":"External port, tug, fire, rescue or shore assistance becomes relevant only after communication, location, access and transfer-of-control states align. Shipboard emergency capability and outside assistance should remain separate layers rather than assuming help is immediately available."},
+    {"id":"P029-L18","novelty":"duplicate","importance":"low","lead":"The atlas already captures safety regulation as a source of effective-supply change; P029 retains operational casualty progression rather than repeating broad safety-rule history."},
+    {"id":"P029-L19","novelty":"duplicate","importance":"low","lead":"General machinery/electrical degraded operation and alarm overload were already captured by P027-P028; P029 uses them only when they change containment, survivability, muster or evacuation decisions."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_fire_detection_suppression_equipment_and_regulatory_requirements","reason":"Blind memory supports the functional response chain but cannot establish equipment arrangements, capacities, inspection intervals or rule versions for a particular vessel or era."},
+    {"region":"specific_fire_flooding_damage_control_and_abandon_ship_casualties","reason":"Exact casualty chronology, causes, response actions, losses and investigation findings require dated claim-scoped Evidence."},
+    {"region":"vessel_specific_damage_stability_dewatering_and_survivability_thresholds","reason":"These depend on hull form, compartmentation, loading, damage extent and approved calculations; blind recall cannot establish numerical thresholds."},
+    {"region":"current_emergency_readiness_drill_status_and_equipment_condition","reason":"Current readiness is outside historical blind-memory scope and requires source-first inspection or operational records."}
+  ],
+  "stop_reason":"The whole-vessel emergency chain is populated from command, detection/confirmation and containment through firefighting, flooding/dewatering, watertight integrity, damage survivability, access/communications, muster and evacuation threshold. Further recall becomes equipment-, rule-, drill-, casualty-, damage-case- or vessel-specific.",
+  "truth_boundary":"Memory-only orientation; no specific fire, flooding, casualty, response action, equipment capability, regulation, drill result, damage-stability threshold or vessel readiness state is verified."
+}
