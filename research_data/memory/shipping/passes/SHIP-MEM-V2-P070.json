@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P070",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_electrical_power_generation_distribution_generator_switchboard_transformer_load_management_blackout_emergency_power_ups_battery_shore_power_power_quality_recovery",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_power_availability_state_model_only_no_switching_protection_or_emergency_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"EP-01","novelty_class":"new_category","importance":"high","memory":"Shipboard electrical availability crosses owner/manager, chief engineer and engineering/electro-technical crew, shore technical support, electrical equipment OEM or integrator, yard and assurance roles. Operational responsibility, equipment support, modification history and assurance status can sit with different actors and should remain separate."},
+    {"id":"EP-02","novelty_class":"new_category","importance":"high","memory":"Power-source readiness and actual power production are different states. A generating source may be nominally available, unavailable, under maintenance, started or carrying load at different times; exact machinery, ratings and operating steps are deferred."},
+    {"id":"EP-03","novelty_class":"new_category","importance":"high","memory":"Generation capacity and electrical demand/load are separate clocks. Adequate installed capacity does not prove sufficient available margin at a particular time, and a load reduction can preserve continuity without changing source hardware condition."},
+    {"id":"EP-04","novelty_class":"new_category","importance":"high","memory":"Distribution availability is not equivalent to source availability. A power source can be healthy while a distribution section or downstream feed is unavailable, and downstream loss should not automatically be attributed to generation failure."},
+    {"id":"EP-05","novelty_class":"new_category","importance":"high","memory":"Power quality or unstable/degraded supply is structurally distinct from complete loss of power. Sensitive digital, communications or control functions can be impaired even when some electrical service remains available; exact electrical parameters are Evidence work."},
+    {"id":"EP-06","novelty_class":"new_category","importance":"high","memory":"A blackout or broad electrical-degradation lifecycle can be represented defensively as observation, uncertain scope, continuity state, alternate/emergency supply state, restoration indication and post-restoration verification. This pass retains no switching sequence, protection action or emergency procedure."},
+    {"id":"EP-07","novelty_class":"new_category","importance":"high","memory":"Emergency electrical supply is a separate readiness and service state from main generation. Installed emergency capability does not prove that it was available, energized, sufficient for every affected function or actually used during a specific event."},
+    {"id":"EP-08","novelty_class":"new_category","importance":"high","memory":"UPS or battery-backed continuity should separate installed presence, available stored-energy state, supported load scope, degradation/health confidence and tested continuity. Exact chemistry, capacity, autonomy and configuration are deferred."},
+    {"id":"EP-09","novelty_class":"new_category","importance":"high","memory":"Shore power is an external-source lifecycle with physical availability, vessel readiness, permission/compatibility assessment, connection state, supplied state and disconnection state. Exact voltages, interfaces, procedures and port requirements are not retained."},
+    {"id":"EP-10","novelty_class":"new_category","importance":"high","memory":"Electrical redundancy must preserve common-mode dependencies. Multiple generators, feeds, UPS units or downstream systems are not automatically independent when they share distribution, control, cooling, fuel, space or maintenance dependencies; exact topology remains deferred."},
+    {"id":"EP-11","novelty_class":"new_category","importance":"high","memory":"Electrical degradation can propagate into connectivity, digital systems, pumps, machinery auxiliaries, cargo support and hotel services, but simultaneous downstream outages are dependency observations rather than proof of one electrical root cause."},
+    {"id":"EP-12","novelty_class":"new_category","importance":"high","memory":"Restoration should preserve both service-return time and verification confidence. Re-energization or resumed output does not by itself establish stable power quality, complete downstream recovery, configuration integrity or resolved cause."},
+    {"id":"EP-13","novelty_class":"new_category","importance":"medium","memory":"Electrical modification and lifecycle change should keep intended design/as-built state, approved change, installed change and later verification temporally distinct. Historical replay benefits from knowing that electrical dependencies can change across refits without silently rewriting earlier topology assumptions."},
+    {"id":"EP-R01","novelty_class":"useful_refinement","importance":"high","memory":"P069 connectivity redundancy should explicitly distinguish multiple communications paths from independent power availability; apparently redundant links can fail together through a shared electrical dependency without implying a network or provider cause."},
+    {"id":"EP-R02","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital incident/recovery states should separate electrical-service loss or instability from cyber or software cause attribution. Digital unavailability during power degradation is not evidence of a cyber event."},
+    {"id":"EP-R03","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment condition/support should distinguish electrical supply availability from the condition of the powered equipment. A sound component may be unavailable because its feed is lost, while an energized component can still have its own defect."},
+    {"id":"EP-R04","novelty_class":"useful_refinement","importance":"medium","memory":"P066 as-built systems integration should treat electrical-source/distribution dependencies as versioned design relationships rather than timeless vessel facts; refits and substitutions can change dependencies while older records remain historically valid."},
+    {"id":"EP-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic maintenance, commissioning, modification and OEM-support states overlap the equipment lifecycle already recovered in P067."},
+    {"id":"EP-D02","novelty_class":"duplicate","importance":"medium","memory":"Common-mode dependency, restoration confidence and observation-versus-cause distinctions overlap P068/P069 digital and connectivity state mechanics; P070 applies them specifically to electrical availability."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact one-line diagrams, voltages, ratings, bus arrangements, transformer data, protection settings and switching configurations are intentionally not retained.",
+    "Exact blackout recovery sequences, emergency switching procedures, maintenance steps and troubleshooting actions are outside this blind pass.",
+    "Named electrical OEMs/integrators/service providers, vessel installations, incidents, deficiencies and rule-specific compliance findings require claim-scoped Evidence.",
+    "Private/regional marine electrical service, battery/power-conversion and shore-power provider lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact vessel electrical topology, voltages, capacities, settings and switching/protection details.",
+    "Operational blackout, emergency-power, shore-power or troubleshooting procedures.",
+    "Named equipment, providers, incidents, vessel deficiencies, assurance findings and current readiness.",
+    "Private/regional electrical-support lineages and non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive electrical-availability orientation/source-discovery output. It is not electrical, engineering, switching, protection, emergency-response or vessel-operating advice and does not establish any exact topology, voltage, rating, setting, procedure, equipment, provider, incident, compliance finding or current-readiness fact.",
+  "stop_reason": "The shipboard electrical availability lifecycle is recalled at useful structural resolution: source, demand, distribution, quality, emergency/backup supply, external shore supply, propagation and verified restoration are separable states. Further detail would become vessel-, voltage-, protection-, switching-, equipment-, rule-, incident-, provider- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
