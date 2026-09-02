@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P041",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"seafarer_detention_criminalization_witness_suspect_status_legal_assistance_consular_support_fair_treatment_bail_restriction_repatriation",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P041-L01","novelty":"new_category","importance":"high","lead":"After a casualty, security, pollution, cargo or port-state event, an individual seafarer can move from ordinary crew status into witness, interviewee, investigation subject, suspect, detained/restricted person or released person. These person-level legal/process states are operationally meaningful even when no legal conclusion is known."},
+    {"id":"P041-L02","novelty":"new_category","importance":"high","lead":"Individual legal status can decouple from vessel status. A ship may be operationally cleared while one or more crew remain required for interviews or unable to leave a jurisdiction, or a crew member may be free to travel while the vessel remains detained or under investigation."},
+    {"id":"P041-L03","novelty":"new_category","importance":"high","lead":"Access to legal assistance is a support/readiness state rather than proof of outcome. Representation, advice, document review and communication with authorities can affect whether a seafarer understands and can participate in a process; exact rights and procedures are jurisdiction-specific Evidence questions."},
+    {"id":"P041-L04","novelty":"new_category","importance":"high","lead":"Language and documentation are separate process gates. Interpretation/translation, identity and employment records, voyage or watch records, statements and notices can determine whether the individual and supporting organizations share the same understanding of status and next steps without establishing the truth of allegations."},
+    {"id":"P041-L05","novelty":"new_category","importance":"high","lead":"Consular or diplomatic support is structurally distinct from legal representation. It can help with identity, family contact, welfare, local liaison and travel-document problems while not deciding the case or replacing local legal process."},
+    {"id":"P041-L06","novelty":"new_category","importance":"high","lead":"Employer, owner/operator, shipmanager, crewing function, union/welfare support and insurer may form a multi-party support chain around accommodation, subsistence, communication, replacement planning and legal-cost coordination. Exact contractual or statutory duties are not retained in blind Memory."},
+    {"id":"P041-L07","novelty":"new_category","importance":"high","lead":"Detention or travel restriction creates a crew-availability state independent of medical fitness, qualification and employment contract. A seafarer can be fully qualified and willing to work yet unavailable for the next assignment because the person cannot legally leave or travel."},
+    {"id":"P041-L08","novelty":"new_category","importance":"high","lead":"Charge-or-no-charge uncertainty and process duration are important trajectory states. The practical burden can begin before any formal accusation and can persist while authorities decide whether to release, retain, charge, transfer or seek further information; exact terminology varies by system."},
+    {"id":"P041-L09","novelty":"new_category","importance":"high","lead":"Release or bail-type status is not necessarily equivalent to unrestricted mobility. Conditions, reporting requirements, document retention or geographic limits can leave a person unable to resume normal travel or employment even after physical detention ends."},
+    {"id":"P041-L10","novelty":"new_category","importance":"high","lead":"Employment and household welfare can continue as a separate state during legal uncertainty. Pay, subsistence, accommodation, communication with family, remittances and replacement-crew arrangements may become material even when the underlying legal matter is unresolved."},
+    {"id":"P041-L11","novelty":"new_category","importance":"high","lead":"Investigation information has person-level known-time. A seafarer may initially know only that an interview is requested, later learn that status has changed, and later still receive a release, charge or other disposition; replay should not backfill the later classification into earlier interviews."},
+    {"id":"P041-L12","novelty":"new_category","importance":"high","lead":"Repatriation after legal restriction is a chained state: release/permission to leave, identity and travel documents, transport booking, border/transit admissibility and employer/agent coordination may all have to align before the person actually returns home."},
+    {"id":"P041-L13","novelty":"new_category","importance":"high","lead":"Resolution does not end all consequences. Employment continuity, medical or psychosocial support, family welfare, reputation, certification/employability questions and future willingness to sail can remain open after a legal/process state closes, requiring separate later Evidence."},
+    {"id":"P041-L14","novelty":"useful_refinement","importance":"high","lead":"P031 casualty investigation is refined by adding person-level process status. Evidence collection and root-cause analysis can coexist with changing witness/subject/suspect/restriction states that must not be collapsed into the vessel-level investigation lifecycle."},
+    {"id":"P041-L15","novelty":"useful_refinement","importance":"high","lead":"P033 employment/repatriation is refined because employer willingness and contractual relief planning do not guarantee crew availability when an authority or legal process restricts the individual."},
+    {"id":"P041-L16","novelty":"useful_refinement","importance":"high","lead":"P039 cross-border mobility is refined by separating travel admissibility from legal permission to depart. Valid documents, visa and transport can all be ready while a person remains unable to leave because of a process restriction."},
+    {"id":"P041-L17","novelty":"useful_refinement","importance":"medium","lead":"P040 security post-event recovery is refined because the human aftermath may continue as an individual legal/support trajectory after the direct threat and vessel-security state have ended."},
+    {"id":"P041-L18","novelty":"duplicate","importance":"low","lead":"Generic known-time, no-lookahead and Memory-not-Evidence rules are already Baseline semantics; P041 applies them to changing interview, detention, release and disposition states."},
+    {"id":"P041-L19","novelty":"duplicate","importance":"low","lead":"Generic counterparty and operational disruption are already present in the atlas; P041 adds the person-level legal-availability/support state machine rather than restating that disruptions create cost and delay."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_criminal_civil_administrative_procedure_rights_detention_charge_bail_and_departure_rules","reason":"Exact legal status, rights, terminology, procedural sequence and authority powers vary by jurisdiction and require authoritative dated Evidence; this pass is not legal advice."},
+    {"region":"specific_seafarer_detention_criminalization_pollution_casualty_or_security_cases","reason":"Individual case facts, allegations, findings, outcomes and chronology require claim-scoped Evidence and should not be reconstructed from blind Memory."},
+    {"region":"named_maritime_law_firms_legal_aid_programs_unions_consulates_and_support_providers","reason":"Provider identity, capability and historical role become directory/company-specific claims requiring Evidence."},
+    {"region":"country_specific_current_enforcement_practice_fair_treatment_compliance_and_repatriation_conditions","reason":"Current legal practice and compliance are time-sensitive jurisdictional claims and require source-first authoritative material."}
+  ],
+  "stop_reason":"The person-level legal/support chain is populated from interview/witness status through subject/suspect uncertainty, detention/restriction, legal/consular/language support, release conditions, employment/family support and completed repatriation. Further recall becomes procedure-, rights-, charge-, case-, lawyer-, authority-, current-practice- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not legal advice; no legal status, right, duty, charge, detention basis, bail/release condition, case outcome, provider capability, authority practice or jurisdiction-specific rule is verified."
+}
