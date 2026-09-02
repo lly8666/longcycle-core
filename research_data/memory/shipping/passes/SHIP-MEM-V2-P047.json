@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P047",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"secondhand_ship_sale_purchase_brokers_valuation_inspection_moa_deposit_financing_closing_delivery_mortgage_discharge_flag_class_transition",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P047-L01","novelty":"new_category","importance":"high","lead":"The secondhand ship market is a transaction layer that reallocates existing fleet rather than creating new physical capacity. It changes ownership, leverage, cost basis and strategic optionality while aggregate vessel count is initially unchanged."},
+    {"id":"P047-L02","novelty":"new_category","importance":"high","lead":"Sale-and-purchase brokers can intermediate market information, buyer/seller discovery, indications and negotiation without themselves owning the vessel. Brokered market color is distinct from a completed transaction and exact broker reports require Evidence."},
+    {"id":"P047-L03","novelty":"new_category","importance":"high","lead":"Indicative value, broker valuation, asking level, offer, agreed price and eventual closing value are different states. Asset-market replay should not collapse pre-deal indications into realized transactions."},
+    {"id":"P047-L04","novelty":"new_category","importance":"high","lead":"Technical inspection and records review can change transaction probability or price expectations because vessel condition, maintenance history, class status and upcoming repair obligations affect the buyer's expected post-acquisition cash needs."},
+    {"id":"P047-L05","novelty":"new_category","importance":"high","lead":"A secondhand deal normally passes through negotiation and an agreement/MOA-type state before closing. Commercial agreement does not itself mean title, possession or operating control has transferred."},
+    {"id":"P047-L06","novelty":"new_category","importance":"high","lead":"Deposit and condition-satisfaction states create a period in which buyer and seller are economically committed to varying degrees while financing, documentation, inspection or other closing prerequisites may remain unresolved."},
+    {"id":"P047-L07","novelty":"new_category","importance":"high","lead":"Buyer financing availability can be a transaction gate. A willing buyer and seller may fail to close if debt, leasing, equity or internal liquidity is unavailable on acceptable terms; exact financing terms remain Evidence-only."},
+    {"id":"P047-L08","novelty":"new_category","importance":"high","lead":"Seller-side mortgage discharge and release of existing security can be part of closing preparation. The vessel may therefore sit at the intersection of old financing exit and new financing entry during ownership transfer."},
+    {"id":"P047-L09","novelty":"new_category","importance":"high","lead":"Closing and delivery are operational events as well as legal/financial events. Payment, title/possession transfer, document handover, physical delivery location and acceptance can have distinct timestamps or conditions."},
+    {"id":"P047-L10","novelty":"new_category","importance":"high","lead":"Post-delivery transition can include flag/registry, class interface, insurance, manager, crew, supplier, chartering and accounting changes. The ship can remain physically employed while its surrounding institutional stack changes rapidly."},
+    {"id":"P047-L11","novelty":"new_category","importance":"high","lead":"Secondhand-market liquidity is cyclical. In weak markets, fewer willing financed buyers and more pressured sellers can widen uncertainty and slow price discovery; in strong markets, rapid turnover and rising values can reinforce collateral and ordering capacity. Exact liquidity and prices require Evidence."},
+    {"id":"P047-L12","novelty":"new_category","importance":"high","lead":"Distressed or forced selling differs from ordinary discretionary asset rotation because lender pressure, covenant stress, liquidity need, insolvency or enforcement can reduce timing optionality and connect vessel prices directly to financing conditions."},
+    {"id":"P047-L13","novelty":"new_category","importance":"high","lead":"The sale-versus-continue-trading-versus-scrap decision is an option comparison across expected earnings, vessel condition/age, regulatory capex, financing, secondhand value and recycling value. No single price series captures the whole decision boundary."},
+    {"id":"P047-L14","novelty":"useful_refinement","importance":"high","lead":"P046 ownership transition is refined by distinguishing agreement, closing and delivery; ownership/control should not be moved at the first public sale report if the transaction has not yet completed."},
+    {"id":"P047-L15","novelty":"useful_refinement","importance":"high","lead":"Atlas asset-operating leverage is refined because vessel price changes affect collateral, refinancing and equity optionality even before freight cash flows change, creating feedback between asset markets and operating strategy."},
+    {"id":"P047-L16","novelty":"useful_refinement","importance":"high","lead":"Atlas capital-cycle memory is refined because secondhand purchases can expand an individual owner's fleet much faster than newbuilding delivery while merely reallocating industry capacity; firm growth and industry supply growth must remain separate."},
+    {"id":"P047-L17","novelty":"useful_refinement","importance":"high","lead":"P045 enforcement memory is refined because judicial/forced sale and ordinary brokered S&P may both transfer vessel ownership but arise from very different seller optionality, process and price-discovery states."},
+    {"id":"P047-L18","novelty":"duplicate","importance":"low","lead":"The atlas already notes that asset prices move strongly with freight cycles and that downturns transfer vessels to stronger capital; P047 adds the transaction state machine rather than repeating that cyclical fact."},
+    {"id":"P047-L19","novelty":"duplicate","importance":"low","lead":"P046 already separates stable vessel identity from mutable ownership/management attributes; P047 applies that distinction to the market process that changes those attributes."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_moa_forms_clauses_deposit_terms_conditions_default_remedies_and_title_documents","reason":"Contract language and closing requirements are deal- and jurisdiction-specific and require authoritative Evidence."},
+    {"region":"specific_vessel_sale_prices_valuations_offers_bids_broker_assessments_and_transaction_dates","reason":"Exact asset values and deal chronology require transaction, broker, registry, company or other claim-scoped Evidence."},
+    {"region":"named_sale_purchase_brokers_valuers_inspectors_escrow_agents_financiers_lawyers_and_current_rankings","reason":"Provider capability and current rankings are directory/current-state claims outside blind Memory."},
+    {"region":"exact_financing_mortgage_discharge_flag_class_insurance_and_delivery_transition_requirements","reason":"These depend on transaction structure, counterparties and jurisdiction; blind Memory retains only structural handoff states."}
+  ],
+  "stop_reason":"The secondhand S&P lifecycle is populated from market indication and valuation through negotiation, inspection, agreement/deposit/conditions, financing and mortgage-discharge preparation, closing/delivery and post-delivery transition, with capital-cycle and distressed-sale feedbacks. Further recall becomes contract-, price-, broker-, transaction-, vessel-, company- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation; no vessel price, valuation, sale agreement, deposit, condition, financing, mortgage discharge, closing, delivery, broker view, ownership transfer or transaction-specific fact is verified."
+}
