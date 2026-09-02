@@ -1,0 +1,78 @@
+{
+  "schema_version": "longcycle-industry-memory-seal-decision-attempt/v1",
+  "record_type": "industry_memory_seal_decision_attempt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "action_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-001",
+  "family": "bounded_shard_explicit_seal_decision",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["1990-01-01", "2026-08-31"],
+  "session_date": "2026-09-02",
+  "authority": "RESEARCH_CONTROL_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "truth_promotion_performed": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@bb2b16fad34c140041daa4d89dbbe91d6e48908d;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "control_revalidation": {
+    "main_head_sha": "d2ce81e04301a4c2249b9c69bca58b405937b827",
+    "worker_start_head_sha": "f887dc833a04cbd5a53cd316bd849d6e78dfc4b0",
+    "map_revision": 32,
+    "reservation_revision": 1,
+    "assignment_epoch": 1,
+    "prior_h_architecture_baseline_run": 33607401583,
+    "prior_h_continuity_clean": true,
+    "branch_or_reservation_drift": false
+  },
+  "canonical_gate": {
+    "audit_ref": "scripts/audit_memory_seals.py",
+    "policy_ref": "src/longcycle/application/memory_campaign.py",
+    "consecutive_low_novelty_passes_required": 3,
+    "max_high_importance_novel_per_low_pass": 1,
+    "minimum_distinct_recent_families": 3,
+    "campaign_stage_required_for_decision": "seal_candidate",
+    "negative_space_review_required": true,
+    "independent_challenger_required": true,
+    "fresh_search_forbidden": true
+  },
+  "observed_candidate_state": {
+    "campaign_local_low_novelty_confirmations": 3,
+    "confirmation_family": "bounded_low_novelty_confirmation",
+    "distinct_recent_families": 1,
+    "high_importance_novel_counts": [2, 2, 2],
+    "negative_space_review_complete": true,
+    "independent_challenger_complete": true,
+    "seal_readiness_review_complete": true,
+    "fresh_search_used": false,
+    "material_blind_frontier_open_before_decision": false
+  },
+  "decision": "reopen_blind_frontier",
+  "decision_reason_codes": [
+    "canonical_seal_policy_recent_family_orthogonality_not_met",
+    "canonical_seal_policy_high_importance_ceiling_not_met",
+    "map_readiness_cannot_override_architecture_baseline_seal_gate"
+  ],
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "reopened_frontier": {
+    "frontier_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__CANONICAL-SEAL-ORTHOGONAL-CONFIRMATION-A",
+    "selected_probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__canonical-seal-orthogonal-confirmation-a__blind-001",
+    "family": "terminal_exit_claimant_state_low_novelty_confirmation",
+    "reason": "Generate a fresh bounded confirmation family under the canonical <=1 high-importance ceiling. If it qualifies, later confirmations must use different families until three consecutive orthogonal qualifying passes exist."
+  },
+  "method_observation": {
+    "observation_id": "seal_readiness_map_must_match_canonical_saturation_policy",
+    "text": "A campaign-local readiness counter is insufficient for sealing unless its low-novelty definition and family orthogonality also satisfy the repository's canonical memory seal audit policy.",
+    "shared_change_requested": false
+  },
+  "stop_reason": "explicit_seal_decision_rejected_reopen_one_sparse_canonical_frontier",
+  "unverified": true
+}
