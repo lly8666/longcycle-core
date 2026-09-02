@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P075",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_machinery_oily_water_bilge_sludge_waste_oil_collection_separation_holding_capacity_transfer_shore_reception_service_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_machinery_oily_waste_bilge_sludge_service_state_model_only_no_separator_discharge_recordkeeping_valve_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"OW-01","novelty_class":"new_category","importance":"high","memory":"Machinery-origin oily-water, bilge-residue, sludge and waste-oil service spans owner/manager, master, engineering crew, shore technical or marine support, oily-water/separation equipment-service actors, waste contractors and port or shore reception actors. Equipment support, onboard operational observation and reception opportunity should remain separate roles rather than one vendor or compliance directory."},
+    {"id":"OW-02","novelty_class":"new_category","importance":"high","memory":"Source or stream scope, collection availability, holding availability and separation/treatment-equipment readiness are distinct service states. Oily residues may still be collected while separation equipment is degraded, or equipment may be nominally ready while upstream collection, holding margin or downstream transfer is constrained."},
+    {"id":"OW-03","novelty_class":"new_category","importance":"high","memory":"Oily water, bilge residues, sludge and waste oil should not be collapsed into a single vessel-wide binary service label. Their source, collection, holding, treatment or transfer states may differ, while exact vessel definitions, piping and rule treatment remain Evidence work."},
+    {"id":"OW-04","novelty_class":"new_category","importance":"high","memory":"Holding inventory and capacity confidence are separate from nominal tank existence. Historical memory should preserve whether usable holding margin was normal, constrained, uncertain or restored without retaining exact tank capacities, levels, sounding methods, alarm thresholds or transfer quantities."},
+    {"id":"OW-05","novelty_class":"new_category","importance":"high","memory":"Oily-waste generation or inflow and available collection/holding/separation capacity follow different clocks. Machinery operation, maintenance or housekeeping circumstances can change service demand without proving separator or tank failure; exact rates, quantities and thresholds are deferred."},
+    {"id":"OW-06","novelty_class":"new_category","importance":"high","memory":"Separation or treatment-equipment readiness and treatment-result confidence are different states. Equipment being available or running does not itself establish effluent quality, discharge eligibility, record correctness or compliance; exact parameters, measurements and limits are intentionally deferred."},
+    {"id":"OW-07","novelty_class":"new_category","importance":"high","memory":"Onboard collection, holding and separation capability are distinct from transfer or shore-reception opportunity. A vessel may have limited onboard margin while reception is available, or ample holding while reception is unavailable; neither condition establishes discharge permission, contractor acceptance or legal entitlement."},
+    {"id":"OW-08","novelty_class":"new_category","importance":"high","memory":"Machinery oily-waste service has a defensive degradation lifecycle: observation, uncertain scope, affected collection/holding/separation or transfer identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No separator, discharge, bypass, transfer or troubleshooting procedure is retained."},
+    {"id":"OW-09","novelty_class":"new_category","importance":"high","memory":"Restriction and isolation should preserve affected source, tank-group, equipment or transfer-interface scope. One collection source, holding function, separator-related service or transfer interface may be constrained while other oily-waste service continues; exact piping, tank routes, overboard arrangements and valve positions remain deferred."},
+    {"id":"OW-10","novelty_class":"new_category","importance":"high","memory":"Oily-waste service can depend on electrical power, controls or monitoring, pumps and supporting machinery, but dependency observations are not root-cause proof. Loss of supporting service can degrade collection or treatment readiness, while an oily-waste constraint does not establish which upstream dependency failed."},
+    {"id":"OW-11","novelty_class":"new_category","importance":"high","memory":"Oily-water, bilge or sludge constraints can propagate into machinery-space housekeeping, maintenance scheduling or selected technical services, but accumulation, housekeeping pressure or maintenance delay is not by itself proof of a separator, tank, discharge or reception root cause."},
+    {"id":"OW-12","novelty_class":"new_category","importance":"high","memory":"Port or shore oily-waste reception should preserve location/time opportunity, interface availability and acceptance or capacity confidence as separate observations. A reception facility, contractor or transfer interface being present does not prove immediate availability, accepted waste stream, commercial terms or regulatory authorization."},
+    {"id":"OW-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: collection returns, usable holding margin returns, separation/treatment readiness returns, transfer or reception becomes available, and downstream machinery-space service is verified. A restarted component or cleared alarm does not by itself establish full oily-waste-service recovery."},
+    {"id":"OW-R01","novelty_class":"useful_refinement","importance":"high","memory":"P073 accommodation/sanitation wastewater and P075 machinery-origin oily waste are independent environmental-service dimensions. Wastewater collection or treatment availability does not prove bilge/sludge/waste-oil handling readiness, and an oily-waste constraint does not establish sewage/greywater service loss."},
+    {"id":"OW-R02","novelty_class":"useful_refinement","importance":"high","memory":"P074 solid-waste service is independent from machinery oily-waste service. Garbage storage, processing or port-reception opportunity does not prove oily-water/sludge holding, separation or transfer readiness, and oily-waste degradation does not prove solid-waste failure."},
+    {"id":"OW-R03","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep pump, tank, separator/treatment unit, monitor/control or transfer-interface condition separate from delivered oily-waste service. Sound equipment can coexist with source, holding or reception constraints, and acceptable service does not prove every component condition."},
+    {"id":"OW-R04","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical and P068 digital/control availability are upstream support dimensions, not proxies for physical oily-waste state. Power or controls being present do not prove collection, holding, separation or transfer readiness, while a physical oily-waste constraint does not establish an electrical, digital or cyber cause."},
+    {"id":"OW-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"OW-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P074; P075 applies them specifically to machinery-origin oily waste."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact oily-water/bilge/sludge/waste-oil piping, tank capacities or levels, separator/treatment parameters, measurements, discharge limits, transfer rates, valve arrangements and record entries are intentionally not retained.",
+    "Exact separation, treatment, discharge, transfer, isolation, bypass, troubleshooting, cleaning, maintenance or emergency procedures are outside this blind pass.",
+    "Named separator or treatment vendors, service firms, waste contractors, reception providers, vessel installations, incidents, deficiencies, discharge events and rule-specific findings require claim-scoped Evidence.",
+    "Private/regional oily-waste, bilge/sludge equipment-service and port-reception lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact oily-waste topology, tanks/capacities/levels, separator or treatment parameters, sample/sensor values, discharge limits, transfer rates, valves, records and current configuration.",
+    "Separation, treatment, discharge, bypass, transfer, isolation, troubleshooting, cleaning, maintenance or emergency procedures.",
+    "Named equipment/providers/waste contractors/reception contractors, vessel incidents, deficiencies, discharge events, findings and current readiness.",
+    "Private/regional oily-waste/bilge/sludge equipment-service and reception lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive machinery oily-water/bilge/sludge/waste-oil service orientation/source-discovery output. It is not separator-operation, environmental-compliance, discharge, engineering or vessel-operating advice and does not establish any exact piping, tank capacity/level, separator or treatment parameter, measurement, discharge limit, transfer rate, valve arrangement, record entry, procedure, equipment, provider, incident, compliance finding or current-readiness fact.",
+  "stop_reason": "The machinery-origin oily-waste service chain is recalled at useful structural resolution: source/scope, collection, holding margin, demand, separation/treatment readiness and result confidence, transfer/reception opportunity, restriction/isolation, dependencies, downstream machinery-service effects and verified restoration are separable states. Further detail would become vessel-, source-stream-, tank-, separator-, discharge-, record-, procedure-, incident-, contractor- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
