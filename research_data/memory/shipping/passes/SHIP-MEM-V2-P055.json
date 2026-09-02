@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P055",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"ship_recycling_demolition_end_of_life_cash_buyer_recycling_yard_beaching_drydock_hazardous_materials_inventory_steel_recovery_worker_environmental_safety_compliance",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P055-L01","novelty":"new_category","importance":"high","lead":"End-of-life begins as an owner capital-allocation decision among continued trading, lay-up, repair/retrofit, sale for further trading and sale for demolition. A vessel can be commercially obsolete before it is physically incapable of sailing, so fleet exit is an economic state transition rather than simply technical failure."},
+    {"id":"P055-L02","novelty":"new_category","importance":"high","lead":"The demolition decision couples freight expectations, vessel age and condition, expected repair or survey cost, financing pressure, regulatory burden, secondhand value, scrap-value expectations and access to a recycling buyer or yard. These drivers can move differently and delay or accelerate actual scrapping."},
+    {"id":"P055-L03","novelty":"new_category","importance":"high","lead":"A demolition sale may involve an intermediary or cash-buyer-type role between the shipowner/seller and the ultimate recycling yard. Commercial buyer identity, final recycling location and physical yard operator should therefore remain distinct unless exact transaction Evidence links them."},
+    {"id":"P055-L04","novelty":"new_category","importance":"high","lead":"Sale for further trading and sale for recycling are distinct exit pathways even when both transfer ownership. The former preserves fleet capacity under a new owner; the latter initiates permanent asset withdrawal and should not be inferred merely from an ownership change."},
+    {"id":"P055-L05","novelty":"new_category","importance":"high","lead":"A demolition transaction still has a delivery and handover state. The vessel may need a final voyage, crew, fuel, documentation and an agreed delivery place before dismantling begins, so the economic scrapping decision can precede physical fleet removal by a meaningful interval."},
+    {"id":"P055-L06","novelty":"new_category","importance":"high","lead":"End-of-life closure spans several registries and obligations: flag/registration status, class or statutory status, mortgages or financing security, insurance and ownership records can close on different clocks. Physical dismantling should not be treated as the sole marker of legal or financial asset closure."},
+    {"id":"P055-L07","novelty":"new_category","importance":"high","lead":"Hazardous-material inventories and onboard substances create an information and handling layer before and during recycling. Identifying hazardous materials, preparing the vessel and controlling their removal are structurally separate from recovering ordinary steel and reusable equipment."},
+    {"id":"P055-L08","novelty":"new_category","importance":"high","lead":"Recycling-yard preparation and dismantling can proceed through staged access, decontamination or removal of liquids/materials, cutting/dismantling and segregation. Exact beaching, landing, dry-dock or other physical methods and their acceptability are yard- and jurisdiction-specific Evidence questions."},
+    {"id":"P055-L09","novelty":"new_category","importance":"high","lead":"Recovered value is not only hull steel. Machinery, non-ferrous metals, equipment and other reusable or recyclable materials can follow distinct recovery streams, while contaminated or hazardous wastes require separate handling and disposal states."},
+    {"id":"P055-L10","novelty":"new_category","importance":"high","lead":"Worker safety is an intrinsic recycling-process state because cutting, confined spaces, fire/explosion hazards, heavy lifts and hazardous materials can create risks that differ from ordinary vessel operation. Blind Memory retains the existence of these risk interfaces, not any yard-specific safety judgment."},
+    {"id":"P055-L11","novelty":"new_category","importance":"high","lead":"Environmental control is also a process state: containment and disposal of oils, residues, coatings, asbestos-type or other hazardous materials, runoff and waste streams can determine whether material recovery creates external harm. Exact compliance or environmental performance requires Evidence."},
+    {"id":"P055-L12","novelty":"new_category","importance":"high","lead":"Recycling capacity itself can be a bottleneck. Yard availability, buyer appetite, delivery geography, regulatory eligibility and downstream scrap-material demand can affect how quickly an economically obsolete vessel becomes actual removed capacity."},
+    {"id":"P055-L13","novelty":"new_category","importance":"high","lead":"Fleet-supply removal should distinguish demolition sale date, delivery/handover, withdrawal from trading, start of dismantling and recycling completion. Using one scrapping date for all purposes can distort point-in-time capacity and asset-cycle replay."},
+    {"id":"P055-L14","novelty":"useful_refinement","importance":"high","lead":"Atlas scrapping optionality is refined because the relevant comparison is not simply freight rate versus scrap price; repair/retrofit cost, financing, regulatory burden, resale-for-trading value and recycling execution capacity mediate the decision and its timing."},
+    {"id":"P055-L15","novelty":"useful_refinement","importance":"high","lead":"P047 secondhand-sale memory is refined by separating ordinary trading sale from demolition sale: both transfer ownership, but only the latter is oriented toward permanent fleet withdrawal and materially different downstream counterparties and closure states."},
+    {"id":"P055-L16","novelty":"useful_refinement","importance":"high","lead":"P054 casualty memory is refined because a casualty can push a vessel toward recycling, but casualty damage, constructive-loss-type insurance treatment and actual demolition are different states that may not coincide."},
+    {"id":"P055-L17","novelty":"useful_refinement","importance":"medium","lead":"Atlas regulation-as-supply memory is refined because recycling rules can alter the cost, eligible location and timing of permanent fleet exit, not just operating or retrofit choices for vessels that remain in service."},
+    {"id":"P055-L18","novelty":"duplicate","importance":"low","lead":"The atlas already identifies scrapping as a supply-side adjustment margin depending on age, regulation, debt and expected recovery; P055 adds execution and role/state detail rather than rediscovering scrapping itself."},
+    {"id":"P055-L19","novelty":"duplicate","importance":"low","lead":"Earlier passes already map vessel ownership transfer, financing closure and technical condition. P055 composes those states at end-of-life without redefining their semantics."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_demolition_sale_scrap_price_cash_buyer_margin_currency_payment_and_delivery_terms","reason":"Transaction pricing, margins and terms are deal-specific financial facts requiring authoritative Evidence."},
+    {"region":"specific_recycling_yard_methods_hazardous_material_inventory_quantities_worker_incidents_and_environmental_performance","reason":"Facility process, material quantities, safety incidents and environmental outcomes require yard- and event-specific Evidence."},
+    {"region":"exact_ship_recycling_regulations_certificates_notifications_approvals_and_jurisdictional_eligibility","reason":"Rules, effective dates and legal compliance vary by flag, owner, destination and exact historical vintage."},
+    {"region":"named_cash_buyers_yards_brokers_certifiers_waste_handlers_steel_buyers_and_current_capacity_rankings","reason":"Actor identity, current capacity and market ranking are source-first factual questions outside blind Memory."}
+  ],
+  "stop_reason":"The end-of-life lifecycle is populated from continue/lay-up/repair/resale/demolition choice through demolition sale/intermediation, final voyage/delivery and legal-financial closure to hazardous-material handling, dismantling/material segregation, worker/environment risk interfaces and permanent fleet removal. Further recall becomes price-, yard-, process-, hazardous-material-, labor-, environmental-, provider- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not legal, environmental, labor, safety, recycling or investment advice; no demolition transaction, scrap price, yard method, hazardous-material inventory, worker/environmental outcome, regulatory compliance, actor identity or current recycling capacity is verified."
+}
