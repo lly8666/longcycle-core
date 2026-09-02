@@ -4,13 +4,13 @@
   ],
   "assignment_epoch": 1,
   "branch": "workstream/banking-domain-v1",
-  "checkpoint_based_on_head_sha": "6ebd5e61c5bec453317ae6116b26a0d9dca2dcf4",
+  "checkpoint_based_on_head_sha": "e0eef0f6ea83477eecfd500d8c0d1ea2c1c8893d",
   "current_task": "Execute only the next blind probe selected by the rebuilt Banking exploration map. Keep the shard unsealed and use no Banking Evidence/search or prior raw outputs.",
-  "cursor_sequence": 31,
+  "cursor_sequence": 32,
   "insufficient_capability_action": "stop_and_escalate",
   "integration_request_refs": [],
-  "last_completed_action": "Completed CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001 at S=6ebd5e61c5bec453317ae6116b26a0d9dca2dcf4. The bounded review records 30 MEMORY_LEADS_ONLY observations: 10 new, 14 refinements, 6 duplicates; 16 high-importance novel/refining. Time-slice, negative-space and independent-challenge coverage are materially complete, but the review found one remaining blind mechanism gap: resolution funding/backstop/loss allocation. Three consecutive low-novelty passes are not observed, so the shard remains unsealed. No Banking Evidence/search/prior raw, database/Drive, truth promotion, seal or shared change occurred. Exact S CI run 33601198350 passed all substantive checks and failed continuity only because this cursor-only H was pending.",
-  "next_atomic_action": "From revision 22 map and the manifest only, run CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-funding-loss-allocation__blind-001. Separate deposit-insurance participation/payout, financial-stability backstop, PBOC liquidity, public/shareholder capital, special-bond recapitalization, AMC/asset-transfer financing, successor capitalization and claimant loss allocation. Preserve uncertainty; do not read prior raw or use Banking Evidence/search.",
+  "last_completed_action": "Completed CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-funding-loss-allocation__blind-001 at S=e0eef0f6ea83477eecfd500d8c0d1ea2c1c8893d. The MEMORY_LEADS_ONLY pass records 46 leads: 18 new, 22 refinements, 6 duplicates; 29 high-importance novel/refining. It separates liquidity, solvency capital, asset-transfer financing, successor capitalization and final loss absorption, and recovers deposit-insurance, financial-stability backstop, PBOC relending/liquidity, special-bond capital, shareholder rescue and AMC roles as unsourced leads. No Evidence/search/prior raw, database/Drive, truth promotion, seal or shared change occurred. Exact S CI run 33601548921 passed all substantive checks and failed continuity only because this cursor-only H was pending.",
+  "next_atomic_action": "From revision 23 map and manifest only, run CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-funding-loss-allocation__blind-002. Challenge ultimate loss bearer versus temporary/recoverable liquidity, capital, asset-purchase, guarantee or transfer funding, and keep shareholder/capital-instrument/wholesale/depositor claims separate. Do not read prior raw or use Banking Evidence/search.",
   "parent_refs": [
     "terminal_mission=STRATEGIC_COMPASS.md#2-一句话使命",
     "long_term_direction=STRATEGIC_COMPASS.md#5-项目终局与非终局",
@@ -21,18 +21,18 @@
     "baseline=.longcycle/baseline/current.json",
     "capability_admission=.longcycle/workstreams/banking-domain-v1/capability-admission.json"
   ],
-  "partial_summary": "The manifest-driven saturation review is complete but did not establish saturation. It found one material cross-time mechanism gap in resolution funding/backstop/loss allocation, while the formal three-consecutive-low-novelty condition remains unmet. Revision 22 selects exactly one targeted follow-up and the shard remains unsealed.",
+  "partial_summary": "The saturation-review funding gap is materially confirmed and broadly filled, but novelty remains high. Revision 23 selects one orthogonal challenge on final loss bearer versus temporary/recoverable funding role. The shard remains unsealed and has not begun a low-novelty streak.",
   "progress_state": "planned",
   "receipt_refs": [
-    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001.json"
+    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-funding-loss-allocation__blind-001.json"
   ],
   "required_capability": "high_capability_reasoning",
   "reservation_revision": 1,
   "schema_version": "longcycle-workstream-cursor/v2",
-  "task_done_when": "One append-only funding/loss-allocation raw unit and receipt exist; the mechanism stack is separated without truth promotion; the same sparse map is rebuilt with exactly one deterministic next probe; and no prior raw, Evidence/search or database mutation occurs.",
+  "task_done_when": "One append-only orthogonal loss-bearer raw unit and receipt exist; funding roles and ultimate loss bearers are separated without exact-case guessing; the sparse map is rebuilt with exactly one deterministic next probe; and no prior raw, Evidence/search or database mutation occurs.",
   "unverified": true,
   "verification_head_sha": null,
   "verification_refs": [],
-  "why_now": "The saturation review found this mechanism gap as the highest remaining blind information value. Filling it is required before any low-novelty confirmation or seal consideration.",
+  "why_now": "The broad funding stack is now covered; the remaining material ambiguity is whether a payer merely advances recoverable support or bears final economic loss, and which claimant class absorbs it.",
   "workstream_id": "banking-domain-v1"
 }
