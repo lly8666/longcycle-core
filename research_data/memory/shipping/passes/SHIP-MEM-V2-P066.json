@@ -1,0 +1,60 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P066",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "naval_architecture_vessel_design_engineering_hull_form_hydrostatics_stability_structures_machinery_arrangement_systems_integration_model_testing_plan_approval_design_change_as_built",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-02",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"NA-01","novelty_class":"new_category","importance":"high","memory":"Vessel design is a multi-role engineering chain rather than a single shipyard output. Structurally distinct roles include owner/newbuilding requirements, yard design office, independent naval architect or specialist consultant, classification plan-approval function, model-test or analysis capability, equipment OEM/system integrator and the eventual operator."},
+    {"id":"NA-02","novelty_class":"new_category","importance":"high","memory":"A design-basis or owner-requirement state precedes detailed engineering. Mission, cargo/trade assumptions, capacity, speed/efficiency targets, regulatory/class constraints and maintainability expectations can change over time, so the design basis needs versioned known-time rather than a timeless specification."},
+    {"id":"NA-03","novelty_class":"new_category","importance":"high","memory":"General arrangement and principal geometry act as coordination states across cargo capacity, machinery spaces, access, accommodation and safety systems. Exact dimensions are vessel-specific Evidence, but design maturity and interface dependence are reusable structural memory."},
+    {"id":"NA-04","novelty_class":"new_category","importance":"high","memory":"Hull-form, hydrostatics and powering/performance prediction form an analysis layer separate from actual sea performance. Predicted resistance, propulsion or efficiency outcomes should not be treated as realized operating facts."},
+    {"id":"NA-05","novelty_class":"new_category","importance":"high","memory":"Stability is a design-and-verification state with assumptions, loading conditions and later as-built inputs. A design calculation or approval is not interchangeable with the vessel's later physical loading/condition state or an operational stability judgment."},
+    {"id":"NA-06","novelty_class":"new_category","importance":"high","memory":"Structural design is a distinct engineering layer involving load assumptions, material/arrangement decisions and approval/revision states. Exact scantlings, loads and rules remain Evidence, while structural maturity and late-change propagation are useful Memory categories."},
+    {"id":"NA-07","novelty_class":"new_category","importance":"high","memory":"Machinery arrangement and maintainability are design states, not only equipment-selection facts. Space, access, redundancy, piping/cabling interfaces, removal routes and serviceability can create later maintenance or repair constraints even when individual machinery items are technically adequate."},
+    {"id":"NA-08","novelty_class":"new_category","importance":"high","memory":"Systems integration is its own maturity state. Electrical, automation/control, piping, communications, safety and cargo systems can each be locally complete while cross-system interfaces, signals, power dependencies or control logic remain unresolved."},
+    {"id":"NA-09","novelty_class":"new_category","importance":"high","memory":"Model testing, simulation or specialist analysis are prediction/validation inputs with scope and known-time, not final truth. The relationship between design model, assumptions, measured model-test result and later full-scale performance must remain explicit."},
+    {"id":"NA-10","novelty_class":"new_category","importance":"high","memory":"Plan submission, review, comments, approval and resubmission form a separate assurance workflow. Approval status can constrain construction or change release, but approval itself does not prove the as-built vessel, later condition or legal seaworthiness."},
+    {"id":"NA-11","novelty_class":"new_category","importance":"high","memory":"Design change is a lifecycle state with ripple effects. A late owner, yard, class or supplier change can propagate through weight, space, interfaces, procurement, construction sequence, testing and schedule rather than remaining a local drawing revision."},
+    {"id":"NA-12","novelty_class":"new_category","importance":"high","memory":"Weight growth and center-of-gravity/configuration change are useful design-control states because accumulated local modifications can affect performance, stability margin and payload assumptions even before an obvious operational defect exists. Exact values remain vessel-specific Evidence."},
+    {"id":"NA-13","novelty_class":"new_category","importance":"medium","memory":"As-built configuration and technical handover are separate from design-intent completion. Drawings, equipment lists, settings, manuals and change records can lag or diverge from installed reality, influencing maintenance, retrofit and later investigation."},
+    {"id":"NA-R01","novelty_class":"useful_refinement","importance":"high","memory":"Classification plan approval should remain separate from physical condition, construction quality and actual performance; it is an assurance state over submitted design information, not self-executing proof of the finished vessel."},
+    {"id":"NA-R02","novelty_class":"useful_refinement","importance":"high","memory":"Repair, conversion and retrofit work inherit the original design basis and interface constraints. A retrofit is therefore not merely an equipment swap; it may reopen weight, structural, power, space, stability or systems-integration dependencies."},
+    {"id":"NA-R03","novelty_class":"useful_refinement","importance":"high","memory":"Equipment-OEM changes can propagate beyond procurement into foundation/interface design, controls, power, cooling, piping, testing and documentation; supplier substitution and design maturity should therefore be separately clocked."},
+    {"id":"NA-R04","novelty_class":"useful_refinement","importance":"medium","memory":"Casualty or performance analysis should distinguish original design intent, approved design revision, as-built configuration, later modification and event-time physical/operational state rather than attributing a later outcome directly to the nominal design."},
+    {"id":"NA-D01","novelty_class":"duplicate","importance":"medium","memory":"Shipyard project, repair/conversion and classification-survey roles overlap earlier Shipping memory, though P066 adds the upstream design-engineering state machine."},
+    {"id":"NA-D02","novelty_class":"duplicate","importance":"medium","memory":"Plan approval and design-document follow-up partially overlap the classification/statutory assurance layer recovered in P063."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact hull dimensions, hydrostatics, stability criteria, structural scantlings, power predictions and model-test values are too vessel- and calculation-specific for blind retention.",
+    "Exact class rules, plan-approval requirements, regulatory design criteria and approval chronology require dated authoritative Evidence.",
+    "Named naval-architecture firms, model basins, shipyard design offices, consultants, OEMs and system integrators are not retained as a provider directory.",
+    "Exact design defects, performance shortfalls, change orders and named-vessel as-built divergences require claim-scoped Evidence."
+  ],
+  "negative_space": [
+    "Exact design calculations, rule checks and vessel-specific engineering margins.",
+    "Private/regional naval-architecture, engineering-consulting, model-test and systems-integration provider lineages.",
+    "Historical non-English predecessor terminology for naval architecture, plan approval and ship-design engineering.",
+    "Named-vessel design evolution, approved revisions, as-built configuration and current technical status."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only orientation/source-discovery output. It is not naval-architecture, stability, structural, engineering, classification, safety, performance or regulatory advice and does not establish any named vessel, design, yard, consultant, model-test, approval or performance fact.",
+  "stop_reason": "The upstream vessel-design engineering lifecycle is recalled at useful structural resolution. Further depth would become calculation-, rule-, vessel-, yard-, consultant-, supplier- or jurisdiction-specific and should be deferred to Evidence rather than blind engineering detail."
+}
