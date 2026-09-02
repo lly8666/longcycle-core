@@ -1,0 +1,49 @@
+{
+  "schema_version": "longcycle-industry-memory-pass/v1",
+  "pass_id": "SHIP-MEM-V2-P013",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "family": "cargo_surveying_tally_draft_survey_sampling_quantity_quality_inspection_claims_evidence",
+  "authority_class": "research_only_model_memory",
+  "source_visibility": "atlas_only",
+  "fresh_search_used": false,
+  "evidence_used": false,
+  "model_instrument": {"model": "GPT-5.6 Sol", "surface": "ChatGPT chat", "run_date": "2026-09-02"},
+  "period": {"start": "1970-01-01", "end": "2026-08-31", "precision": "bounded_campaign_not_claim_exact"},
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads": [
+    {"id":"P013-L01","novelty":"new_category","importance":"high","lead":"Independent cargo surveyors and marine survey firms form a neutral-or-party-appointed observation layer between ship, terminal, cargo interests, charterers and insurers; the useful structural role is attendance, measurement, condition recording and report issuance rather than a company directory."},
+    {"id":"P013-L02","novelty":"new_category","importance":"high","lead":"Tally clerks or equivalent counting and recording functions create a unit-movement record during loading and discharge; mismatches between ship, terminal and cargo-side tallies can become shortage evidence."},
+    {"id":"P013-L03","novelty":"new_category","importance":"high","lead":"Draft surveys estimate bulk cargo quantity from vessel displacement before and after cargo operations, with hydrostatic data, drafts, density and consumables creating a measurement chain whose uncertainty matters commercially."},
+    {"id":"P013-L04","novelty":"new_category","importance":"high","lead":"Liquid-bulk quantity determination may rely on tank ullage or sounding, temperature-density correction, shore-tank measurements or meters; ship and shore figures can differ and require reconciliation rather than assuming one number is truth."},
+    {"id":"P013-L05","novelty":"new_category","importance":"medium","lead":"Weighbridges, belt scales, terminal scales and other shore-side quantity systems can provide an independent or competing quantity basis for bulk or breakbulk cargo, creating a measurement-system comparison problem."},
+    {"id":"P013-L06","novelty":"new_category","importance":"high","lead":"Representative sampling is its own operational chain: where, when and how samples are drawn, mixed, split, sealed, labeled, stored and transferred can determine whether later quality testing is persuasive."},
+    {"id":"P013-L07","novelty":"new_category","importance":"high","lead":"Sample seals and chain-of-custody records preserve identity across ship, terminal, laboratory and disputing parties; broken or ambiguous custody can weaken otherwise sophisticated laboratory results."},
+    {"id":"P013-L08","novelty":"new_category","importance":"high","lead":"Pre-loading hold or tank cleanliness and fitness inspection can prevent contamination disputes by documenting the receiving space before cargo is loaded; cleanliness acceptance is distinct from later cargo quality."},
+    {"id":"P013-L09","novelty":"new_category","importance":"medium","lead":"Cargo condition observation can include moisture, temperature, odor, visible contamination, packaging condition, infestation or other cargo-specific indicators; the transferable category is condition-at-stage, not a commodity checklist."},
+    {"id":"P013-L10","novelty":"new_category","importance":"high","lead":"Damage surveys after wetting, shifting, crushing, contamination, reefer deviation or handling incidents can connect physical observations to probable timing and handling stages without themselves deciding legal liability."},
+    {"id":"P013-L11","novelty":"new_category","importance":"high","lead":"Independent laboratories and assay or testing services convert retained samples into quality evidence; retesting, split samples and competing laboratories create an evidence-comparison layer distinct from the original cargo transaction."},
+    {"id":"P013-L12","novelty":"new_category","importance":"medium","lead":"Outturn or discharge reconciliation compares manifested or bill quantities, loaded measurements and discharged or received quantities; the gap can reflect measurement tolerance, loss, leakage, handling, moisture change or record inconsistency rather than one automatic cause."},
+    {"id":"P013-L13","novelty":"new_category","importance":"high","lead":"Joint surveys and multi-party attendance create a shared contemporaneous record when owner, charterer, cargo, terminal or insurer interests disagree; who was invited, attended and reserved position can become part of provenance."},
+    {"id":"P013-L14","novelty":"useful_refinement","importance":"medium","lead":"Bills of lading, mate's receipts and cargo manifests should be read alongside independent measurement and condition records: transport documents record contractual or operational representations, while survey records may support or contest quantity and apparent condition."},
+    {"id":"P013-L15","novelty":"useful_refinement","importance":"medium","lead":"Statements of Facts, terminal time logs and notices from port-call or charter administration become stronger claims evidence when linked to survey attendance and the exact stage at which quantity or damage observations were made."},
+    {"id":"P013-L16","novelty":"useful_refinement","importance":"high","lead":"Marine insurance and P&I claims handling often depends on early survey appointment and preservation of contemporaneous evidence; claims quality is partly an operational response process, not only a later legal process."},
+    {"id":"P013-L17","novelty":"useful_refinement","importance":"medium","lead":"Cargo and bunker measurement share sampling and custody ideas, but cargo surveying broadens them across quantity, quality, condition and document reconciliation, so the reusable mechanism is evidence-chain integrity rather than fuel-specific testing."},
+    {"id":"P013-L18","novelty":"duplicate","importance":"low","lead":"The general principle that event-time records and later-known information must be separated is already captured by the atlas information-known-time and prior provenance leads."},
+    {"id":"P013-L19","novelty":"duplicate","importance":"low","lead":"The broad observation that port operational delays change realized voyage economics is already represented in port bottleneck, agency and charter-administration passes; this probe retains only cargo-evidence-specific timing."}
+  ],
+  "reviewed_no_specific_memory": [
+    {"region":"commodity_specific_sampling_and_test_standards","reason":"Recall contains many commodity-specific methods but exact standard names, editions, tolerances and acceptance rules are precision-fragile and are deferred to Evidence."},
+    {"region":"survey_company_and_labor_lineages","reason":"No reliable blind-memory basis for a historical ranking or lineage of survey firms, tally organizations or local labor providers; a company directory would add false precision."},
+    {"region":"national_licensing_and_port_rules","reason":"Exact licensing, compulsory-survey, tally and port-specific practices vary by jurisdiction and period and are not retained without source-first verification."},
+    {"region":"legal_evidentiary_weight_and_liability","reason":"A survey report, protest, tally or laboratory result can be important evidence, but exact legal weight, burden, time-bar or liability consequences are jurisdiction or contract specific and are deferred."}
+  ],
+  "stop_reason": "The structural measurement-and-condition evidence chain is well populated; further blind recall is increasingly commodity-, standard-, company-, claim- or jurisdiction-specific and would violate the bounded atlas_only contract.",
+  "method_observation": {"class":"claims_begin_at_measurement_design","observation":"Cargo disputes are easier to map when the research lens starts before the claim and follows who measured what, by which method, at which stage, with what sample or record custody; the later claim is an outcome of that evidence chain rather than the starting category.","status":"campaign_local_hypothesis_to_test"},
+  "truth_boundary": "All leads are model-memory research orientation only. They do not verify cargo quantity, quality, condition, survey practice, standards, claims outcomes or historical truth."
+}
