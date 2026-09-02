@@ -1,0 +1,72 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-001",
+  "family": "time_x_shard_blind_recall",
+  "time_slice_id": "TIME-2023-2026",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["2023-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-17",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_carveout_subject": "China Merchants Bank 2023-08-28 interim-results management discussion",
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@73647706d9095dac2a768c291507032e739d0a73;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-001-memory-leads.md",
+    "commit_sha": "0673f9a7cb57d59cd1781acd1b706a6764dc8719",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 46,
+    "useful_refinement_count": 18,
+    "duplicate_count": 4,
+    "novel_lead_count": 64,
+    "high_importance_novel_count": 42,
+    "total_lead_count": 68,
+    "classification": "material_novelty_with_modern_prudential_repricing_and_small_bank_exit_state_boundary"
+  },
+  "negative_space": [
+    "Exact NFRA mandate-transfer dates, local bureau conversion details and consumer-protection responsibility transfers remain source-dependent.",
+    "Exact capital-rule risk weights, financial-asset classification overdue thresholds, restructured-asset cure rules and implementation dates are deferred.",
+    "Exact deposit-rate rounds, manual-interest-supplement notices, mortgage repricing eligibility and sector NIM levels are not guessed.",
+    "Exact property whitelist rules, LGFV circular numbers, key-province lists, debt-swap headline amounts and bank accounting treatment remain Evidence work.",
+    "Named 2023-2026 rural/village-bank mergers, absorbed institution lists, license cancellations and customer-contract succession require claim-scoped verification.",
+    "No high-confidence blind memory was recovered of a 2023-2026 PRC licensed commercial bank entering ordinary court bankruptcy with a fully remembered statutory deposit-insurance payout and final claimant waterfall.",
+    "Blind memory is materially stronger for 2023-2024 than for named 2025-2026 institution-specific events; the tail was not filled with invented failures."
+  ],
+  "frontier_updates": {
+    "closed_frontiers": ["TIME-2023-2026__SYS-REGULATION-RESOLUTION"],
+    "opened_frontiers": ["TIME-2023-2026__SYS-REGULATION-RESOLUTION__SMALL-BANK-EXIT-STATE-CHALLENGE"],
+    "reason": "The broad pass recovers material modern prudential and debt-management categories plus an accelerated rural/village-bank consolidation vocabulary. The highest-value orthogonal risk is now categorical: provincial rural reform, village-bank branch conversion, capital support, delisting, asset-liability transfer, license termination and claimant continuity can all be collapsed into a vague 'risk resolution' label. One fresh state challenge should discriminate these before moving to a different shard or saturation review."
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "2023_2026_broad_recall_complete_with_small_bank_exit_state_boundary_selected_for_orthogonal_challenge",
+  "validation_refs": [],
+  "unverified": true
+}
