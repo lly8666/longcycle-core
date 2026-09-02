@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P077",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_fuel_bunker_fuel_oil_supply_delivery_sampling_quality_confidence_storage_inventory_transfer_consumption_service_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_fuel_bunker_service_state_model_only_no_transfer_valve_sampling_treatment_safety_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"FB-01","novelty_class":"new_category","importance":"high","memory":"Fuel/bunker service spans owner or manager, master, chief engineer and engineering crew, shore technical or procurement support, fuel supplier or bunker-delivery actors, testing or survey actors and port or terminal support. Commercial supply, onboard technical acceptance, assurance and port opportunity should remain distinct roles rather than one vendor directory."},
+    {"id":"FB-02","novelty_class":"new_category","importance":"high","memory":"Supply or delivery opportunity is distinct from onboard receiving readiness, usable tank capacity and downstream consumption margin. A supplier may be available while vessel-side receipt is constrained, or vessel readiness may exist while delivery timing or location is unavailable."},
+    {"id":"FB-03","novelty_class":"new_category","importance":"high","memory":"Product identity or grade confidence and product-quality confidence are separate states. Knowing what product was ordered or declared does not itself establish measured quality, fitness, compatibility, compliance or machinery outcome; exact specifications and limits remain deferred."},
+    {"id":"FB-04","novelty_class":"new_category","importance":"high","memory":"Sampling, testing or survey confidence should remain distinct from physical product condition and transfer readiness. Missing, delayed or disputed assurance can leave acceptability uncertain without proving that fuel is defective, while an adverse machinery symptom does not by itself prove a fuel-quality cause."},
+    {"id":"FB-05","novelty_class":"new_category","importance":"high","memory":"Receiving or transfer readiness is a scoped interface state separate from supplier delivery availability. Historical memory can retain whether an intended receiving path or tank scope was available, restricted, uncertain or restored without retaining manifold details, lineups, valve positions, rates or procedures."},
+    {"id":"FB-06","novelty_class":"new_category","importance":"high","memory":"Tank inventory and usable-capacity confidence should preserve product or tank-group scope without inventing exact quantities. Onboard stock can be physically present while usable margin, segregation confidence or receiving capacity is constrained or uncertain."},
+    {"id":"FB-07","novelty_class":"new_category","importance":"high","memory":"Consumption margin or endurance confidence is distinct from instantaneous consumption rate and from voyage-planning conclusions. A vessel may have fuel onboard while operational margin is uncertain, restricted or recovering; exact rates, quantities and voyage calculations are deferred."},
+    {"id":"FB-08","novelty_class":"new_category","importance":"high","memory":"Fuel-service degradation has a defensive lifecycle: observation, uncertain source/product/tank/interface scope, affected supply/quality/receiving/inventory/consumption dimension, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No bunkering, transfer, treatment or machinery troubleshooting procedure is retained."},
+    {"id":"FB-09","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected product, source, tank group, receiving interface or consumer scope. One fuel-service segment may be constrained while other onboard fuel remains usable; exact transfer sequences, valves, tank arrangements and changeover actions remain deferred."},
+    {"id":"FB-10","novelty_class":"new_category","importance":"high","memory":"Fuel service can depend on transfer equipment, heating or treatment support, electrical power, controls and monitoring, but dependency observations are not root-cause proof. Loss of support can degrade service, while a fuel-service constraint does not establish an electrical, digital, mechanical or product-quality cause."},
+    {"id":"FB-11","novelty_class":"new_category","importance":"high","memory":"Fuel-service degradation can propagate into machinery availability, voyage flexibility and port-call planning, but those downstream effects are not themselves proof of a supplier, product-quality, tank, transfer, treatment or consumption root cause."},
+    {"id":"FB-12","novelty_class":"new_category","importance":"high","memory":"Product segregation or commingling confidence is a structural service state distinct from exact tank topology or changeover practice. Historical memory may retain that product-scope confidence was intact, uncertain, restricted or restored without asserting compatibility, required actions or exact onboard arrangement."},
+    {"id":"FB-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: delivery opportunity returns, receiving readiness returns, product identity/quality confidence becomes acceptable, usable inventory margin returns and downstream machinery or voyage flexibility is re-verified. A completed delivery or restarted consumer does not prove full fuel-service recovery."},
+    {"id":"FB-R01","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical generation/distribution and P077 fuel supply are independent energy-service dimensions. Electrical availability does not prove fuel supply, quality, inventory or transfer readiness, and a fuel constraint does not establish an electrical generation or distribution failure."},
+    {"id":"FB-R02","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle should keep pumps, heaters, purifiers, sensors or transfer interfaces separate from delivered fuel service. Sound equipment can coexist with supply, product-confidence or tank-scope constraints, and acceptable fuel service does not prove every component condition."},
+    {"id":"FB-R03","novelty_class":"useful_refinement","importance":"high","memory":"P075 machinery oily-waste handling and P077 fuel service share oil, tank and transfer vocabulary but are independent chains. Waste-oil holding/reception does not prove fuel inventory or receiving readiness, and fuel availability does not establish oily-waste handling capacity."},
+    {"id":"FB-R04","novelty_class":"useful_refinement","importance":"high","memory":"P071 freshwater bunkering and P077 fuel bunkering share generic supplier/receipt/storage semantics, but product identity, quality-confidence, tank scope, consumption margin and downstream consequences remain service-specific and cannot be inferred across the two."},
+    {"id":"FB-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"FB-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered in P068-P076; P077 applies them specifically to fuel/bunker service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact fuel grades/specifications, tank arrangements/capacities/quantities, transfer rates, piping/valves, heating or treatment parameters, sampling methods/results, consumption rates and safety limits are intentionally not retained.",
+    "Exact bunkering, receiving, sampling, transfer, segregation, changeover, heating, treatment, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named fuel suppliers, bunker barges, terminals, testing/survey firms, vessel deliveries, quality disputes, incidents, commercial terms and current-readiness facts require claim-scoped Evidence.",
+    "Private/regional bunker-supply, testing/survey and terminal-support lineages plus historical non-English terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact fuel specifications, tank arrangements/capacities/quantities, transfer rates, piping/valves, heating/treatment parameters, sample results, consumption rates, safety limits and current configuration.",
+    "Bunkering, receiving, sampling, transfer, segregation, changeover, treatment, troubleshooting, maintenance or emergency procedures.",
+    "Named suppliers/barges/terminals/testing or survey actors, commercial terms, vessel incidents, quality disputes, findings and current readiness.",
+    "Private/regional bunker-supply, testing/survey and terminal-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive fuel/bunker service orientation/source-discovery output. It is not bunkering, transfer, sampling, treatment, machinery, safety, commercial or vessel-operating advice and does not establish any exact fuel specification, tank arrangement/capacity/quantity, transfer rate, piping/valve lineup, treatment parameter, sample result, consumption rate, safety limit, procedure, supplier, incident, quality finding or current-readiness fact.",
+  "stop_reason": "The fuel/bunker service chain is recalled at useful structural resolution: supply/delivery opportunity, product identity and quality confidence, assurance confidence, receiving/transfer readiness, tank inventory/capacity confidence, consumption margin, scoped restriction/isolation, dependencies, downstream effects and verified restoration are separable states. Further detail would become fuel-type-, vessel-, supplier-, tank-, transfer-, sample-, parameter-, commercial-, procedure-, incident- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
