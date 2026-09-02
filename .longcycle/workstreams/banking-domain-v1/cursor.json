@@ -4,13 +4,13 @@
   ],
   "assignment_epoch": 1,
   "branch": "workstream/banking-domain-v1",
-  "checkpoint_based_on_head_sha": "7686ae3fd9e338115ceb78faf08e5c9017e3db56",
-  "current_task": "In the next eligible fresh-agent loop, execute only the next blind probe selected by the Banking exploration map. Keep the shard unsealed and use no Banking Evidence/search or prior raw outputs.",
-  "cursor_sequence": 38,
+  "checkpoint_based_on_head_sha": "6d5810fcf49f504361436ccf390420beb63149e6",
+  "current_task": "Execute only the next blind probe selected by the rebuilt Banking exploration map. Keep the shard unsealed and use no Banking Evidence/search or prior raw outputs.",
+  "cursor_sequence": 39,
   "insufficient_capability_action": "stop_and_escalate",
   "integration_request_refs": [],
-  "last_completed_action": "Completed CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-003 at S=7686ae3fd9e338115ceb78faf08e5c9017e3db56. The bounded MEMORY_LEADS_ONLY confirmation records 16 observations: 0 new categories, 3 refinements, 13 duplicates; 2 high-importance refinements. No material category or antecedent was recovered, so this counts as low-novelty confirmation restart 1 of the 3 consecutive passes required after the preparedness-category reset. The shard remains unsealed and Evidence transition remains forbidden. No Evidence/search/prior raw, database/Drive, truth promotion, seal or shared change occurred. Exact S CI run 33604978956 passed all substantive checks and failed continuity only because this cursor-only H was pending. This invocation has reached its four-probe cap.",
-  "next_atomic_action": "In the next fresh-agent loop, if continuity remains CLEAN and revision 29 still selects it, run CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-004 using only map, manifest and internal memory. Count only map-changing novelty; mark semantic/evidence-state restatement duplicate. If duplicate-dominant with no material category, record low-novelty confirmation restart 2 and set the streak to 2/3 while keeping the shard unsealed because a third consecutive low-novelty pass would still be required.",
+  "last_completed_action": "Completed CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-004 at S=6d5810fcf49f504361436ccf390420beb63149e6. The bounded MEMORY_LEADS_ONLY confirmation records 18 observations: 0 new categories, 4 refinements, 14 duplicates; 2 high-importance refinements. No material category or antecedent was recovered, so this is low-novelty confirmation restart 2 of the 3 consecutive passes required after the preparedness-category reset. The shard remains unsealed and Evidence transition remains forbidden. No Evidence/search/prior raw, database/Drive, truth promotion, seal or shared change occurred. Exact S CI run 33606248097 passed all substantive checks and failed continuity only because this cursor-only H was pending.",
+  "next_atomic_action": "From revision 30 map and manifest only, run CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-005. Count only genuinely map-changing novelty; mark semantic/evidence-state/comparative/source-detail restatement duplicate. If no material category appears and returns remain duplicate-dominant, record the third consecutive low-novelty confirmation (3/3) but do not self-seal or start Evidence; rebuild the map into a seal-candidate/review state with exactly one deterministic seal-readiness review next step.",
   "parent_refs": [
     "terminal_mission=STRATEGIC_COMPASS.md#2-一句话使命",
     "long_term_direction=STRATEGIC_COMPASS.md#5-项目终局与非终局",
@@ -21,18 +21,18 @@
     "baseline=.longcycle/baseline/current.json",
     "capability_admission=.longcycle/workstreams/banking-domain-v1/capability-admission.json"
   ],
-  "partial_summary": "This invocation first found and filled an ex-ante recovery/resolution preparedness and loss-absorbency gap, then orthogonally stabilized preparedness versus activation states. A fresh bounded confirmation is now duplicate-dominant and restarts the low-novelty streak at 1/3. Revision 29 selects confirmation restart 2. This invocation completed four probes and intentionally did not start it.",
+  "partial_summary": "The second independent bounded confirmation after the preparedness reset is duplicate-dominant and advances the formal low-novelty streak to 2/3. Revision 30 selects exactly one third confirmation. The shard remains unsealed; even a 3/3 result may only transition to seal-readiness review, not self-seal or Evidence.",
   "progress_state": "planned",
   "receipt_refs": [
-    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-003.json"
+    ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__low-novelty-confirmation__blind-004.json"
   ],
   "required_capability": "high_capability_reasoning",
   "reservation_revision": 1,
   "schema_version": "longcycle-workstream-cursor/v2",
-  "task_done_when": "One append-only second restart confirmation raw unit and receipt exist; genuine category novelty is separated from duplicates; the sparse map is rebuilt with exactly one deterministic next probe; and no prior raw, Evidence/search or database mutation occurs.",
+  "task_done_when": "One append-only third restart confirmation raw unit and receipt exist; genuine category novelty is separated from duplicates; the sparse map is rebuilt with exactly one deterministic next step; and a 3/3 result transitions only to seal-readiness review rather than self-sealing or Evidence.",
   "unverified": true,
   "verification_head_sha": null,
   "verification_refs": [],
-  "why_now": "The first bounded confirmation after the preparedness reset was genuinely low novelty, but the manifest requires three consecutive low-novelty passes. A second independent bounded confirmation is therefore the only selected next step.",
+  "why_now": "Two consecutive bounded confirmations after the latest material-category reset are genuinely low novelty. The manifest requires one third independent confirmation before seal readiness can even be reconsidered.",
   "workstream_id": "banking-domain-v1"
 }
