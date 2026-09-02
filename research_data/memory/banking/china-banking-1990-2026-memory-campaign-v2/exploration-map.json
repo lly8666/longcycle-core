@@ -1,6 +1,6 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 20,
+  "map_revision": 21,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
@@ -15,8 +15,8 @@
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
   "learning_state_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002.json#/method_observation",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001.json",
-  "latest_pass_receipt_status": "nineteenth_v2_blind_pass_completed_memory_only",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001.json",
+  "latest_pass_receipt_status": "twentieth_v2_blind_pass_completed_memory_only",
   "batch0_orientation": {
     "status": "orientation_scaffold_not_saturation",
     "memory_vintage": "banking-china-1990-2026-v1",
@@ -26,72 +26,73 @@
   },
   "active_shards": [{
     "shard_id": "SYS-REGULATION-RESOLUTION",
-    "selected_time_slice_id": "CROSS-TIME-RED-TEAM",
-    "stage": "independent_challenge",
+    "selected_time_slice_id": "CROSS-TIME-SATURATION-REVIEW",
+    "stage": "saturation_review",
     "recent_outcomes": [
-      {"pass_id":"TIME-2013-2016__SYS-REGULATION-RESOLUTION__blind-002","family":"deposit_insurance_perimeter_vs_resolution_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2013-2016__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":41,"duplicate_lead_count":4,"high_importance_novel_count":35,"outcome":"material_but_narrowing_novelty_with_safety_net_claimant_resolution_separation"},
       {"pass_id":"TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-001","family":"time_x_shard_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-001.json","novel_lead_count":60,"duplicate_lead_count":4,"high_importance_novel_count":29,"outcome":"material_novelty_with_small_bank_intervention_and_claimant_stratification"},
       {"pass_id":"TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-002","family":"small_bank_intervention_claimant_state_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":48,"duplicate_lead_count":4,"high_importance_novel_count":33,"outcome":"material_but_narrowing_novelty_with_target_bank_vs_system_contagion_state_separation"},
       {"pass_id":"TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-001","family":"time_x_shard_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-001.json","novel_lead_count":60,"duplicate_lead_count":4,"high_importance_novel_count":40,"outcome":"material_novelty_with_claimant_access_fraud_deposit_and_consolidation_boundary"},
       {"pass_id":"TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-002","family":"claimant_access_fraud_vs_bank_state_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":50,"duplicate_lead_count":4,"high_importance_novel_count":36,"outcome":"material_but_narrowing_novelty_with_claimant_legal_characterization_and_consolidation_state_separation"},
       {"pass_id":"TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-001","family":"time_x_shard_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-001.json","novel_lead_count":64,"duplicate_lead_count":4,"high_importance_novel_count":42,"outcome":"material_novelty_with_modern_prudential_repricing_and_small_bank_exit_state_boundary"},
       {"pass_id":"TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002","family":"small_bank_consolidation_license_entity_claimant_state_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":46,"duplicate_lead_count":4,"high_importance_novel_count":31,"outcome":"material_but_narrowing_novelty_with_policy_consolidation_vs_distress_exit_separation"},
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001","family":"cross_time_terminal_bank_exit_negative_space_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001.json","novel_lead_count":49,"duplicate_lead_count":5,"high_importance_novel_count":34,"outcome":"material_negative_space_novelty_with_sparse_true_terminal_bank_exit_set"}
+      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001","family":"cross_time_terminal_bank_exit_negative_space_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001.json","novel_lead_count":49,"duplicate_lead_count":5,"high_importance_novel_count":34,"outcome":"material_negative_space_novelty_with_sparse_true_terminal_bank_exit_set"},
+      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001","family":"independent_resolution_state_red_team_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001.json","novel_lead_count":42,"duplicate_lead_count":6,"high_importance_novel_count":36,"outcome":"material_but_classifier_stabilizing_novelty_with_minimum_fact_resolution_tests"}
     ],
     "negative_space_review_complete": true,
-    "independent_challenger_complete": false,
+    "independent_challenger_complete": true,
     "fresh_search_used": false
   }],
   "coverage_snapshot": {
     "reviewed_high_value_regions": [
-      {"region_id":"batch0-whole-industry-orientation","state":"orientation_only","note":"Four immutable blind outputs remain planning scaffolding only."},
+      {"region_id":"batch0-whole-industry-orientation","state":"orientation_only","note":"Four immutable blind outputs remain planning scaffolding only and are not saturation proof."},
       {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION","state":"all_primary_time_slices_broad_plus_orthogonal_complete","note":"Every primary time slice has broad recall plus an orthogonal challenge; exact rules and named-case facts remain deferred to later Evidence archaeology."},
-      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__TERMINAL-EXIT-NEGATIVE-SPACE","state":"negative_space_complete_sparse_true_terminal_set","note":"Hainan Development Bank and Baoshang remain the clearest terminal anchors; Shantou Commercial Bank is a suspension/reorganization near-terminal anchor. Major non-bank and policy-consolidation false positives are explicitly rejected."
+      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__TERMINAL-EXIT-NEGATIVE-SPACE","state":"complete_sparse_true_terminal_set","note":"The negative-space pass finds a sparse true/near-terminal set and explicitly rejects major non-bank/policy-consolidation false positives."},
+      {"region_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-STATE-RED-TEAM","state":"independent_challenge_complete_classifier_survives_with_minimum_fact_gates","note":"Twelve ambiguous state pairs now have minimum-fact tests. The sparse-terminal conclusion survives the red-team but remains unverified memory."
       }
     ],
     "known_major_gaps": [
-      "An independent red-team has not yet attacked the classifier across ambiguous state pairs such as suspension versus closure, takeover versus support, merger versus failure, and deposit transfer versus insurance payout.",
-      "Exact Hainan Development Bank, Shantou Commercial Bank and Baoshang legal/successor/claimant mechanics remain source-dependent.",
-      "The negative-space pass did not reveal a broad hidden population of ordinary commercial-bank court bankruptcies; this sparse result should be challenged rather than assumed complete.",
-      "After the selected independent red-team, a saturation review is still required before any seal consideration."
+      "A bounded saturation review has not yet applied the manifest saturation rule to the complete compact coverage snapshot and recent novelty trajectory.",
+      "Recent blind passes still produce material new/refining state categories, so the manifest requirement of three consecutive low-novelty passes is not visibly satisfied.",
+      "Exact Hainan Development Bank, Shantou Commercial Bank, Baoshang and modern merger/license/claimant mechanics remain source-dependent and should not be guessed as extra blind detail.",
+      "The saturation review must decide whether a genuinely new blind category/frontier remains or whether further blind repetition would merely restate state tests and source-like details."
     ],
     "deferred_regions": [
       {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL","state":"deferred","reason":"Use later claim-scoped Evidence archaeology rather than blind guessing for legal powers, closure dates, license status, insurance mechanics, creditor thresholds and claimant outcomes."},
-      {"region_id":"remaining-v2-manifest-frontier","state":"deferred","reason":"Run only the selected independent cross-time resolution-state red-team, then re-rank sparsely toward saturation review."
+      {"region_id":"remaining-v2-manifest-frontier","state":"deferred","reason":"Run only the selected bounded saturation review; it must either select exactly one materially missing blind frontier or explicitly keep the shard unsealed for failure of the manifest saturation criteria."
       }
     ]
   },
   "open_frontiers": [{
-    "frontier_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__RESOLUTION-STATE-RED-TEAM",
+    "frontier_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__SATURATION-REVIEW",
     "priority_rank": 1,
     "state": "open",
-    "selected_probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001"
+    "selected_probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001"
   }],
   "next_probe": {
-    "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001",
-    "family": "independent_resolution_state_red_team_blind_challenge",
+    "probe_id": "CROSS-TIME__SYS-REGULATION-RESOLUTION__saturation-review__blind-001",
+    "family": "bounded_shard_saturation_review",
     "time_slice_id": "CROSS-TIME",
     "shard_id": "SYS-REGULATION-RESOLUTION",
     "period": ["1990-01-01", "2026-08-31"],
-    "instruction": "Run one fresh isolated independent red-team blind challenge against the SYS-REGULATION-RESOLUTION state classifier. Do not retell chronology and do not search for more names unless an ambiguity needs an internal-memory example. Attack the following confusions: closure versus suspension/rectification; supervisory takeover versus liquidity support or management custody; owner/public recapitalization versus resolution; distress asset-liability transfer versus ordinary NPL sale; absorption merger versus failure; branch conversion versus bank exit; listing/delisting versus banking-license state; banking-license termination versus legal-person dissolution; customer deposit transfer versus statutory deposit-insurance payout; shareholder/wholesale-creditor loss versus depositor loss; licensed bank versus trust/securities/P2P/non-bank failure; fraud/access restriction versus bank insolvency. For each pair, state the minimum facts required before assigning the stronger resolution label and identify false-positive triggers. Preserve uncertainty, honor the manifest preexposure carveout, and do not read any prior raw output; use only this rebuilt map, the manifest and model internal memory.",
+    "instruction": "In the next eligible fresh-agent loop, run one bounded saturation review for SYS-REGULATION-RESOLUTION using only this compact exploration map, the manifest and model internal memory. Do not read prior raw outputs and do not perform Banking Evidence/search. Review the manifest saturation rule explicitly: primary time x shard coverage, negative-space completeness, required long-tail categories, independent challenge status, whether any material missing antecedent/category remains, and whether three consecutive low-novelty passes are actually present. Do not manufacture low novelty by reclassifying material leads. If a genuinely material missing blind category is identified, select exactly one sparse next probe for it and keep the shard unsealed. If no such category is identified but the formal low-novelty criterion is not met, keep the shard unsealed and select exactly one bounded low-novelty confirmation probe rather than sealing. Only a future state that genuinely satisfies every manifest condition may become a seal candidate. Honor the preexposure carveout and preserve uncertainty.",
     "allowed_input_refs": ["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"],
     "forbidden_inputs": ["Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","other shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority": "MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One append-only independent red-team raw unit and bounded receipt exist; ambiguous resolution-state pairs have minimum-fact tests and false-positive triggers; independent challenger status is updated; the same sparse map is rebuilt with exactly one deterministic next_probe; and the shard remains unsealed."
+    "done_when": "One bounded saturation-review raw unit and receipt exist; every manifest saturation criterion is assessed without confidence inflation; the same sparse map is rebuilt with exactly one deterministic next_probe or an explicitly justified seal-candidate transition only if all criteria are genuinely met; and no Evidence/search/truth promotion occurs."
   },
   "seal_readiness": {
     "eligible": false,
-    "reason_codes": ["not_in_seal_candidate_stage","independent_challenger_incomplete","saturation_review_incomplete","material_novelty_in_negative_space_pass"],
+    "reason_codes": ["not_in_seal_candidate_stage","saturation_review_incomplete","three_consecutive_low_novelty_passes_not_observed","material_novelty_in_recent_passes"],
     "recent_outcomes": [
-      {"pass_id":"TIME-2013-2016__SYS-REGULATION-RESOLUTION__blind-002","family":"deposit_insurance_perimeter_vs_resolution_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2013-2016__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":41,"duplicate_lead_count":4,"high_importance_novel_count":35},
       {"pass_id":"TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-001","family":"time_x_shard_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-001.json","novel_lead_count":60,"duplicate_lead_count":4,"high_importance_novel_count":29},
       {"pass_id":"TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-002","family":"small_bank_intervention_claimant_state_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2017-2019__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":48,"duplicate_lead_count":4,"high_importance_novel_count":33},
       {"pass_id":"TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-001","family":"time_x_shard_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-001.json","novel_lead_count":60,"duplicate_lead_count":4,"high_importance_novel_count":40},
       {"pass_id":"TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-002","family":"claimant_access_fraud_vs_bank_state_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2020-2022__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":50,"duplicate_lead_count":4,"high_importance_novel_count":36},
       {"pass_id":"TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-001","family":"time_x_shard_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-001.json","novel_lead_count":64,"duplicate_lead_count":4,"high_importance_novel_count":42},
       {"pass_id":"TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002","family":"small_bank_consolidation_license_entity_claimant_state_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002.json","novel_lead_count":46,"duplicate_lead_count":4,"high_importance_novel_count":31},
-      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001","family":"cross_time_terminal_bank_exit_negative_space_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001.json","novel_lead_count":49,"duplicate_lead_count":5,"high_importance_novel_count":34}
+      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001","family":"cross_time_terminal_bank_exit_negative_space_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__terminal-exit-negative-space__blind-001.json","novel_lead_count":49,"duplicate_lead_count":5,"high_importance_novel_count":34},
+      {"pass_id":"CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001","family":"independent_resolution_state_red_team_blind_challenge","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__resolution-state-red-team__blind-001.json","novel_lead_count":42,"duplicate_lead_count":6,"high_importance_novel_count":36}
     ]
   }
 }
