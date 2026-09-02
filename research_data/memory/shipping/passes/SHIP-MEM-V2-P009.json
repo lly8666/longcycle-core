@@ -1,0 +1,74 @@
+{
+  "schema_version": "longcycle-industry-memory-pass/v1",
+  "pass_id": "SHIP-MEM-V2-P009",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "authority_class": "research_only_model_memory",
+  "family": "hydrography_charts_notices_weather_routing_navigation_information",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "source_visibility": "atlas_only",
+  "fresh_search_used": false,
+  "evidence_used": false,
+  "model_vintage": {
+    "provider": "OpenAI",
+    "model": "GPT-5.6 Sol",
+    "instrument": "ChatGPT connected-GitHub blind-memory probe",
+    "status": "pinned"
+  },
+  "allowed_input_refs": [
+    "research_data/memory/shipping/atlas-1970-present/atlas.json",
+    "research_data/memory/shipping/atlas-1970-present/atlas.verification.json",
+    "research_data/memory/shipping/seal-correction-v1.json"
+  ],
+  "allowed_input_digest_sha256": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_boundary": "All retained statements are model-memory research leads for source discovery only. No external search, repository Evidence search, current-provider lookup, standard verification or historical truth promotion was performed.",
+  "leads": [
+    {"lead_id":"P009-L01","novelty_class":"new_category","importance":"high","theme":"hydrographic_survey_to_official_product_chain","memory":"Hydrographic survey, sounding/bathymetry, shoreline and aids-to-navigation information pass through an official publication chain before reaching ships; the institutional chain matters because seabed or channel change is operationally useful only after authoritative processing and distribution.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L02","novelty_class":"new_category","importance":"high","theme":"official_chart_and_publication_ecosystem","memory":"Paper charts, sailing directions, light/list-type publications and electronic navigational products form a versioned information ecosystem rather than a one-time reference; vessel safety depends on having the applicable edition plus subsequent corrections.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L03","novelty_class":"new_category","importance":"high","theme":"notices_to_mariners_and_local_warnings","memory":"Notices to Mariners, temporary/preliminary corrections and local or coastal navigational warnings are a recurring bridge between newly observed hazards or changes and the shipboard navigation picture; update latency itself is a researchable failure mode.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L04","novelty_class":"new_category","importance":"high","theme":"enc_ecdis_update_workflow","memory":"Electronic charting shifts correction work from manual chart marking toward licensed data, update packages, onboard ECDIS ingestion and configuration; digital distribution reduces some friction but introduces entitlement, version, integration and cyber/communications dependencies.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L05","novelty_class":"new_category","importance":"high","theme":"datum_position_reference_consistency","memory":"Chart datum, geodetic reference, tide/water-level reference and positioning-system assumptions can become dangerous when mismatched or misunderstood; a numerically precise position is not sufficient if the underlying reference frames differ.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L06","novelty_class":"new_category","importance":"high","theme":"under_keel_clearance_information_chain","memory":"Draft, tide, squat, channel depth, dredging status and survey recency combine into under-keel-clearance decisions; port access can therefore depend on information freshness as much as nominal berth or channel dimensions.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L07","novelty_class":"new_category","importance":"high","theme":"weather_routeing_service_chain","memory":"Weather routeing links meteorological and ocean forecasts with vessel characteristics, schedule, fuel use and safety limits; the operational output is a route/speed recommendation whose value depends on forecast quality, update cadence and master/operator decision rights.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L08","novelty_class":"new_category","importance":"high","theme":"wave_current_wind_fuel_tradeoff","memory":"Wind, waves and currents change speed-through-water, fuel burn and voyage time; route optimization can trade a longer geographic route for lower resistance, lower damage risk or a more reliable arrival time.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L09","novelty_class":"new_category","importance":"high","theme":"ice_and_seasonal_navigation_information","memory":"Ice charts, ice forecasts, route recommendations and local restrictions form a specialized navigation-information layer in seasonal waters; uncertainty can alter route choice, escort needs, waiting time and effective trading range.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L10","novelty_class":"new_category","importance":"medium","theme":"tropical_cyclone_and_extreme_weather_advisory_chain","memory":"Tropical-cyclone and severe-weather advisories drive avoidance, speed reduction, port departure/arrival timing and shelter decisions; the research value lies in decision timing and information vintage rather than cataloguing named storms.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L11","novelty_class":"new_category","importance":"medium","theme":"communications_and_update_availability","memory":"Navigation information is only actionable if it reaches the vessel: satellite, radio, shore-system or onboard-network outages can leave a bridge team with stale products even when a newer warning exists ashore.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L12","novelty_class":"new_category","importance":"medium","theme":"bridge_team_update_and_cross_check_process","memory":"The last mile is procedural: officers must receive, apply, verify and cross-check chart, warning, weather and voyage-plan updates. Human workload and handover quality can therefore mediate otherwise sound information infrastructure.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L13","novelty_class":"new_category","importance":"medium","theme":"navigation_information_provenance_and_versioning","memory":"A useful research record should preserve product identity, edition/update number, issue time, receipt time and application time because a later-correct chart or forecast must not be retroactively treated as known on the earlier voyage.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L14","novelty_class":"useful_refinement","importance":"high","theme":"effective_capacity_information_constraint","memory":"The atlas concept of effective versus nominal capacity extends to information: a physically available vessel and open port can still lose trading capacity through weather deviation, draft restrictions or delayed navigational updates.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L15","novelty_class":"useful_refinement","importance":"medium","theme":"fuel_speed_tradeoff_forecast_conditioned","memory":"The atlas fuel/speed tradeoff is forecast-conditioned rather than static: weather and current information can change the fuel-optimal speed and route on the same nominal voyage.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L16","novelty_class":"useful_refinement","importance":"medium","theme":"port_bottleneck_channel_information","memory":"Port bottlenecks include hydrographic and navigation-information states such as shoaling, dredging, temporary depth limits, buoy changes or local warnings, not only berth queues and crane productivity.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L17","novelty_class":"useful_refinement","importance":"medium","theme":"information_known_time_navigation","memory":"The atlas known-time principle is especially important for navigational information because survey/event time, publication time, transmission time, onboard receipt time and application time can all differ.","retain_for_source_discovery":true},
+    {"lead_id":"P009-L18","novelty_class":"duplicate","importance":"low","theme":"chokepoint_weather_routing","memory":"Weather or physical conditions at chokepoints can force delay or route changes; this is already represented by the atlas chokepoint and effective-capacity leads.","retain_for_source_discovery":false},
+    {"lead_id":"P009-L19","novelty_class":"duplicate","importance":"low","theme":"route_distance_tonne_mile","memory":"Route deviation can raise sailing distance and tonne-miles; this is already represented by the atlas tonne-mile mechanism and is not a separate category here.","retain_for_source_discovery":false}
+  ],
+  "reviewed_no_specific_memory": [
+    {"region":"country_by_country_hydrographic_office_directory","result":"reviewed_no_specific_memory","reason":"Recall can name some famous national offices but a directory would be uneven and low-value without Evidence."},
+    {"region":"exact_enc_ecdis_standard_versions_and_transition_dates","result":"reviewed_no_specific_memory","reason":"Exact standard numbers, carriage dates and edition transitions are precision-fragile and deferred to Evidence."},
+    {"region":"current_weather_routeing_provider_and_software_market","result":"reviewed_no_specific_memory","reason":"Current vendor capability and market share require fresh source-first research and are outside atlas_only recall."},
+    {"region":"incident_specific_chart_or_warning_causation","result":"reviewed_no_specific_memory","reason":"Attributing a grounding or casualty to stale charts, warnings or forecast use requires incident-specific Evidence."}
+  ],
+  "method_observation": {
+    "class": "information_state_is_operational_infrastructure",
+    "observation": "Blind recall remains high-yield when information is treated as a versioned operational chain from observation through publication, transmission, receipt and application. It degrades when probing turns into standards, vendor or national-office cataloguing.",
+    "status": "campaign_local_hypothesis_to_test"
+  },
+  "deferred_precision": [
+    "exact hydrographic-office responsibilities and national publication practices",
+    "exact chart/ECDIS standard versions and carriage dates",
+    "current navigation-software or weather-routeing vendor capability",
+    "casualty-specific legal or causal findings"
+  ],
+  "completion": {
+    "new_category_count": 13,
+    "useful_refinement_count": 4,
+    "duplicate_count": 2,
+    "novel_lead_count": 17,
+    "high_importance_novel_count": 9,
+    "reviewed_no_specific_memory_count": 4,
+    "one_pass_self_seal": false,
+    "status": "completed_memory_pass"
+  }
+}
