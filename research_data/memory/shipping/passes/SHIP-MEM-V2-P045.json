@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v1",
+  "pass_id":"SHIP-MEM-V2-P045",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "family":"vessel_arrest_maritime_liens_claims_security_mortgages_creditor_priority_judicial_sale_release_owner_charterer_cargo_claimants",
+  "authority_class":"research_only_model_memory",
+  "source_visibility":"atlas_only",
+  "fresh_search_used":false,
+  "evidence_used":false,
+  "model_instrument":{"model":"GPT-5.6 Sol","surface":"ChatGPT chat","run_date":"2026-09-02"},
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_digest_sha256":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "memory_leads":[
+    {"id":"P045-L01","novelty":"new_category","importance":"high","lead":"A vessel can be physically seaworthy yet legally or commercially unavailable because a claim, arrest, attachment-like restraint or demanded security prevents departure or normal disposition. Effective fleet capacity therefore includes a legal-asset-availability state separate from technical readiness."},
+    {"id":"P045-L02","novelty":"new_category","importance":"high","lead":"Maritime-claim enforcement is a multi-actor interface among the vessel's registered owner or operator, claimant, charter or cargo interests, lenders/mortgagees, insurers or P&I-type security support, and a court or enforcement authority. Blind Memory should preserve these role distinctions without deciding which claim is valid or ranks first."},
+    {"id":"P045-L03","novelty":"new_category","importance":"high","lead":"Claim assertion and vessel immobilization are distinct states. A demand may exist before any vessel restraint, and a restraint can sometimes be avoided, lifted or substituted by acceptable security before the underlying liability is resolved."},
+    {"id":"P045-L04","novelty":"new_category","importance":"high","lead":"Security-for-release is an operational bridge between unresolved liability and continued vessel use. The practical question can be whether acceptable security is arranged in time, not whether final fault or damages have already been adjudicated."},
+    {"id":"P045-L05","novelty":"new_category","importance":"high","lead":"Arrest or similar immobilization creates a custody-and-maintenance problem. Crew welfare, stores, port costs, technical upkeep, class/flag requirements, cargo care and safe lay-up can continue while the vessel is commercially inactive."},
+    {"id":"P045-L06","novelty":"new_category","importance":"high","lead":"A vessel subject to legal restraint can create knock-on charter and cargo performance states: missed laycan or delivery, off-hire or hire disputes, cargo delay, substitute tonnage needs and schedule disruption may arise independently of the merits of the original claim."},
+    {"id":"P045-L07","novelty":"new_category","importance":"high","lead":"Ship mortgages and other secured-lending positions form a parallel asset-claim layer. A lender's concern is not only borrower solvency but also preservation, insurance, trading status and recoverable value of the particular vessel or fleet collateral."},
+    {"id":"P045-L08","novelty":"new_category","importance":"high","lead":"Multiple claimants can compete against the same vessel value. The structural Memory state is the existence of potentially different secured, maritime, contractual or statutory claim classes and a priority-resolution process; exact lien classes and ranking are jurisdiction-specific and require Evidence."},
+    {"id":"P045-L09","novelty":"new_category","importance":"high","lead":"Enforcement can progress from claim/security pressure to restraint, continued custody, negotiated release, refinancing/workout, or sale. Judicial or forced-sale pathways can transfer the asset to a new owner even though the ship itself remains serviceable."},
+    {"id":"P045-L10","novelty":"new_category","importance":"high","lead":"Sale proceeds and vessel value are not the same as the operating business. A forced or distressed sale can terminate or rearrange ownership while leaving charter, cargo, crew, management, mortgage and insurance interfaces to be separately resolved."},
+    {"id":"P045-L11","novelty":"new_category","importance":"high","lead":"Arrest risk is geographically contingent because enforcement opportunity depends on where the vessel calls. This can influence port-call, routing, fixture or settlement decisions, but exact forum-shopping strategy, legal thresholds and current jurisdictional advantages are Evidence-only."},
+    {"id":"P045-L12","novelty":"new_category","importance":"high","lead":"Cross-border shipping creates temporal mismatch between operational urgency and legal resolution. Vessel schedules and cargo obligations run in days while claim, priority and enforcement disputes can persist much longer, making interim security and asset availability especially important."},
+    {"id":"P045-L13","novelty":"new_category","importance":"high","lead":"Known-time matters in asset enforcement. Market participants may learn of a claim, restraint, release, sale process or creditor action at different times, and later legal outcomes must not be projected backward into earlier financing, chartering or trading decisions."},
+    {"id":"P045-L14","novelty":"useful_refinement","importance":"high","lead":"P044 claims-security memory is refined by separating security sufficiency from final liability. Security can restore operational availability while coverage, fault, quantum and ultimate recovery remain unresolved."},
+    {"id":"P045-L15","novelty":"useful_refinement","importance":"high","lead":"The atlas effective-versus-nominal-capacity theme is refined because a technically ready vessel may be legally immobilized; fleet supply analysis should not equate seaworthiness with commercial availability."},
+    {"id":"P045-L16","novelty":"useful_refinement","importance":"high","lead":"The atlas capital-cycle and counterparty-risk themes are refined because creditor stress can attach to specific vessel collateral and create asset-level enforcement, not only corporate restructuring or generalized financing scarcity."},
+    {"id":"P045-L17","novelty":"useful_refinement","importance":"high","lead":"P041 person-status separation is extended by recognizing three independently moving states after a serious event: vessel legal availability, individual crew legal/travel availability and corporate/creditor financial status."},
+    {"id":"P045-L18","novelty":"duplicate","importance":"low","lead":"The atlas already captures counterparty insolvency and asset ownership changes broadly; P045 adds the vessel-specific restraint/security/enforcement state machine rather than repeating generic distress."},
+    {"id":"P045-L19","novelty":"duplicate","importance":"low","lead":"Generic claim-scoped authority, no-lookahead and Memory-not-Evidence rules are already Baseline semantics; P045 applies them to arrest, security, creditor and sale states without making legal findings."}
+  ],
+  "reviewed_no_specific_memory":[
+    {"region":"exact_maritime_lien_classes_arrest_thresholds_priority_rules_and_court_procedure","reason":"These are legal and jurisdiction-specific; exact rules, filing steps and priority require dated authoritative Evidence."},
+    {"region":"specific_vessel_arrests_mortgage_enforcements_judicial_sales_or_claim_distributions","reason":"Case chronology, validity, ranking, amounts and outcomes require claim-scoped court, registry, party or other authoritative Evidence."},
+    {"region":"named_law_firms_marshals_bailiffs_security_providers_mortgagees_claimants_and_current_jurisdiction_rankings","reason":"Provider capability and present enforcement attractiveness are directory/current-state claims outside blind Memory."},
+    {"region":"exact_security_instruments_mortgage_terms_release_amounts_sale_prices_and_proceeds_waterfalls","reason":"Instrument terms, valuation and distribution are transaction-specific and require Evidence; blind Memory retains only structural states."}
+  ],
+  "stop_reason":"The vessel-specific legal-asset lifecycle is populated from claim assertion and security demand through restraint, custody, release/security, competing creditor positions, enforcement/sale and ownership transition. Further recall becomes law-, lien-class-, court-procedure-, priority-, instrument-, transaction-, case-, company- or jurisdiction-specific.",
+  "truth_boundary":"Memory-only orientation and not legal advice; no claim validity, lien status, priority, arrest basis, security sufficiency, mortgage enforceability, court procedure, judicial-sale effect, proceeds allocation, company exposure or jurisdiction-specific rule is verified."
+}
