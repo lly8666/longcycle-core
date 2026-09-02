@@ -1,0 +1,75 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002",
+  "family": "small_bank_consolidation_license_entity_claimant_state_blind_challenge",
+  "time_slice_id": "TIME-2023-2026",
+  "shard_id": "SYS-REGULATION-RESOLUTION",
+  "period": ["2023-01-01", "2026-08-31"],
+  "prompt_version": "exploration-map-revision-18",
+  "prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
+  "model_vintage": "GPT-5.6 Sol",
+  "session_date": "2026-09-02",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "banking_evidence_used": false,
+  "batch0_raw_used": false,
+  "prior_v2_raw_used": false,
+  "other_shard_raw_used": false,
+  "database_or_drive_used": false,
+  "preexposure_carveout_honored": true,
+  "preexposure_overlap_counted_as_fresh_novelty": false,
+  "allowed_input_digest_scheme": "ordered_git_blob_sha1_v1",
+  "allowed_input_digest": "exploration-map.json@07558001d5d81d24c28f71e643ae51c2748261f7;china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "allowed_input_refs": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json"
+  ],
+  "raw_output": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2023-2026__SYS-REGULATION-RESOLUTION__blind-002-memory-leads.md",
+    "commit_sha": "a4862ca2934ff16aed0146c75730966c13b4bffd",
+    "append_only": true,
+    "authority": "MEMORY_LEADS_ONLY"
+  },
+  "novelty": {
+    "new_category_count": 25,
+    "useful_refinement_count": 21,
+    "duplicate_count": 4,
+    "novel_lead_count": 46,
+    "high_importance_novel_count": 31,
+    "total_lead_count": 50,
+    "classification": "material_but_narrowing_novelty_with_policy_consolidation_vs_distress_exit_separation"
+  },
+  "negative_space": [
+    "Province-level rural reform can be an apex-governance change, staged absorption or full legal-person consolidation; exact province/institution mappings remain source-dependent.",
+    "Village-bank branch conversion can terminate an independent banking license without depositor loss or statutory deposit-insurance payout.",
+    "Bank of Jinzhou privatization/delisting is a listing/ownership event unless Evidence shows a separate banking-license or claimant event.",
+    "No high-confidence 2023-2026 named court-bankruptcy, Baoshang-style takeover or statutory deposit-insurance payout case was recovered in this challenge.",
+    "Further 2023-2026 named-case repetition would mostly guess exact institution lists, approvals, license dates and transaction mechanics."
+  ],
+  "method_observation": {
+    "observation_id": "legal_entity_exit_requires_customer_successor_state_split",
+    "scope": "campaign_local_only",
+    "shared_change_requested": false,
+    "text": "For bank merger or branch-conversion research, legal-entity exit should never be recorded alone. The same case record needs an explicit successor-counterparty/customer-continuity field because an entity can disappear while customer claims continue at a successor bank."
+  },
+  "frontier_updates": {
+    "closed_frontiers": ["TIME-2023-2026__SYS-REGULATION-RESOLUTION__SMALL-BANK-EXIT-STATE-CHALLENGE"],
+    "opened_frontiers": ["CROSS-TIME__SYS-REGULATION-RESOLUTION__TERMINAL-EXIT-NEGATIVE-SPACE"],
+    "reason": "All primary time slices now have a broad blind pass plus an orthogonal same-slice challenge. The latest challenge produced material but narrowing state discrimination and left mostly exact modern-case Evidence. Before any saturation review, the highest-value blind frontier is cross-time negative space: explicitly search model memory for genuine licensed-bank terminal exits, takeovers, license withdrawals, liquidations, bankruptcies and claimant-loss episodes, while excluding non-bank failures and policy consolidation false positives."
+  },
+  "stage_after_pass": "active_recall",
+  "one_pass_cannot_self_seal": true,
+  "shard_sealed": false,
+  "campaign_sealed": false,
+  "evidence_transition_allowed": false,
+  "truth_promotion_performed": false,
+  "stop_reason": "2023_2026_small_bank_state_challenge_complete_with_same_slice_returns_now_source_like",
+  "validation_refs": [],
+  "unverified": true
+}
