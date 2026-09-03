@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":95,
+  "map_revision":96,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001.json",
-  "latest_pass_receipt_status":"transaction_franchise_gap_closed_return_to_distinct_saturation_review",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-005.json",
+  "latest_pass_receipt_status":"low_novelty_saturation_confirmation_1_of_3",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","period":["1990-01-01","2026-08-31"],"model_vintage":"GPT-5.6 Sol","sealed_artifact_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-REGULATION-RESOLUTION-seal-state-v1.json","sealed_artifact_sha256":"2c44f0125b2b3a8c06bb7a20b34b6119d0f4e05dca33c68d4d92ebeaf74c9784","seal_decision_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002.json","canonical_reason_code":"orthogonal_passes_reached_low_marginal_novelty","evidence_transition_allowed_after_clean_handoff":true,"evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","period":["1990-01-01","2026-08-31"],"model_vintage":"GPT-5.6 Sol","sealed_artifact_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-MONETARY-CREDIT-seal-state-v1.json","sealed_artifact_sha256":"624f6093d372132a14a594d876de0458a2ff2558f1ba4dcac1e7be9798419cab","seal_decision_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__SYS-MONETARY-CREDIT__seal-decision__blind-001.json","canonical_reason_code":"orthogonal_passes_reached_low_marginal_novelty","evidence_transition_allowed_after_clean_handoff":true,"evidence_status":"not_started_deferred_to_later_clean_handoff"}
@@ -25,9 +25,11 @@
     "selected_time_slice_id":"CROSS-TIME",
     "stage":"saturation_review",
     "fresh_search_used":false,
+    "low_novelty_confirmation_count":1,
+    "low_novelty_confirmation_required":3,
     "recent_outcomes":[
-      {"pass_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-004","family":"cross_time_customer_franchise_business_model_counterexample_saturation_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-004.json","novel_lead_count":61,"duplicate_lead_count":4,"high_importance_novel_count":36,"outcome":"material_transaction_franchise_gap_reopen_required","counts_as_low_novelty_confirmation":false},
-      {"pass_id":"CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001","family":"state_bank_transaction_franchise_customer_primacy_recovery_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001.json","novel_lead_count":74,"duplicate_lead_count":4,"high_importance_novel_count":44,"outcome":"transaction_franchise_gap_closed_return_to_distinct_saturation_review","counts_as_low_novelty_confirmation":false}
+      {"pass_id":"CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001","family":"state_bank_transaction_franchise_customer_primacy_recovery_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001.json","novel_lead_count":74,"duplicate_lead_count":4,"high_importance_novel_count":44,"outcome":"transaction_franchise_gap_closed_return_to_distinct_saturation_review","counts_as_low_novelty_confirmation":false},
+      {"pass_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-005","family":"cross_time_metric_semantics_expectations_counterexample_saturation_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-005.json","novel_lead_count":39,"duplicate_lead_count":16,"high_importance_novel_count":12,"outcome":"low_novelty_saturation_confirmation_1_of_3","counts_as_low_novelty_confirmation":true}
     ]
   }],
   "coverage_snapshot":{
@@ -46,12 +48,13 @@
       {"region_id":"CROSS-TIME__BANK-STATE-OWNED__BOCOM-PSBC","state":"material_actor_gap_closed"},
       {"region_id":"CROSS-TIME__BANK-STATE-OWNED__GROUP-PERIMETER","state":"material_group_perimeter_gap_closed"},
       {"region_id":"CROSS-TIME__BANK-STATE-OWNED__GOVERNANCE-PERSONNEL-INCENTIVES","state":"material_governance_personnel_incentives_gap_closed"},
-      {"region_id":"CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE","state":"material_transaction_franchise_gap_closed","note":"Targeted recovery distinguished primary-bank operating-flow relationships from product market share and restored the mechanism from settlement/cash-management/payroll flows to information, operational balances, cross-sell, switching costs and relationship-level economics. No second comparable material category emerged."}
+      {"region_id":"CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE","state":"material_transaction_franchise_gap_closed"},
+      {"region_id":"CROSS-TIME__BANK-STATE-OWNED__SATURATION-REVIEW-005","state":"low_novelty_confirmation_1_of_3","note":"Metric-semantic and expectation-vintage stress testing produced only minor measurement lenses and refinements, with no new material category."}
     ],
     "known_major_gaps":[
-      "BANK-STATE-OWNED has complete primary-slice broad+orthogonal coverage and the actor, group-perimeter, governance/personnel/incentives and transaction-franchise material gaps found by cross-time reviews are closed, but shard saturation is still not established.",
-      "Cross-time low-novelty saturation confirmations remain 0/3; targeted material-gap closures do not count as confirmations.",
-      "A fifth distinct cross-time challenge must stress metric-semantic discontinuities, profitability/accounting interpretation, contemporaneous expectations and falsified narratives without repeating product, governance, actor, perimeter or transaction-franchise recovery.",
+      "No currently measured material BANK-STATE-OWNED gap is open, but saturation requires two more consecutive independent low-novelty confirmations.",
+      "Cross-time low-novelty saturation confirmations are 1/3; the shard must not seal yet.",
+      "A sixth distinct challenge must test geographic/network/service-model and bank-heterogeneity counterexamples without repeating prior semantic, governance, perimeter, actor or transaction-franchise angles.",
       "Evidence for sealed system shards remains deferred."
     ],
     "deferred_regions":[
@@ -59,19 +62,19 @@
       {"region_id":"TIME-1990-2026__SYS-MONETARY-CREDIT__EXACT-SOURCE-DETAIL","state":"post_seal_evidence_eligible_but_deferred","reason":"Not selected by sparse map."}
     ]
   },
-  "selection_basis":{"rule":"resume_distinct_cross_time_saturation_review_after_transaction_franchise_gap_closure","selected_shard_id":"BANK-STATE-OWNED","selected_time_slice_id":"CROSS-TIME"},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-STATE-OWNED__SATURATION-REVIEW-005","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-005"}],
+  "selection_basis":{"rule":"continue_independent_saturation_confirmation_after_first_low_novelty_pass","selected_shard_id":"BANK-STATE-OWNED","selected_time_slice_id":"CROSS-TIME"},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-STATE-OWNED__SATURATION-REVIEW-006","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-006"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-005",
-    "family":"cross_time_metric_semantics_expectations_counterexample_saturation_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-006",
+    "family":"cross_time_geographic_network_service_model_counterexample_saturation_blind_recall",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-STATE-OWNED",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible loop, run one isolated fifth cross-time BANK-STATE-OWNED blind saturation/negative-space challenge using only this rev95 compact map, the manifest and current model internal memory/reasoning. Do not read completed BANK-STATE-OWNED raw or receipts, including prior saturation reviews or targeted recoveries. Use the map only as coverage signals. Deliberately choose a semantic/expectation angle: test whether time-series interpretation still hides material categories behind changing definitions or management narratives. Challenge bank-versus-group scope; period-end versus average balances; loan/NPL/overdue/special-mention/restructured or impairment vocabulary; provisioning/coverage/credit-cost semantics; capital/RWA and ROE denominator changes; NIM versus spread/asset-yield/funding-cost interpretation; fee income versus AUM/customer-assets/custody definitions; cost-income/branch productivity/digital migration measures; transaction volume/customer counts/active-customer semantics; and contemporaneous reform, listing, retail, digital, wealth, internationalization or policy-support narratives later falsified. Preserve uncertainty and do not invent exact accounting-rule dates, formulas or bank definitions. If a material new category appears, reopen exactly one targeted frontier and keep confirmations at 0. If novelty is low and no material category appears, record low-novelty saturation confirmation 1/3 and select a distinct sixth challenge. Do not seal after this pass. Do not read Batch0 raw, prior-v2 raw, sealed-shard raw, other-shard raw, Banking Evidence/source material or fresh Banking search. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse next frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "instruction":"In the next eligible loop, run one isolated sixth cross-time BANK-STATE-OWNED blind saturation/negative-space challenge using only this rev96 compact map, the manifest and current model internal memory/reasoning. Do not read completed BANK-STATE-OWNED raw or receipts. Use the map only as coverage signals. Deliberately choose a geographic/network/service-model angle: test national versus regional/customer-mix heterogeneity; head-office/provincial/city/county network economics without reopening governance mechanics; urban versus county/rural franchise differences; branch, sub-branch, outlet and agency-model distinctions; physical cash/service infrastructure versus digital migration; regional concentration of corporate/SOE/infrastructure/private/retail activity; service accessibility and inclusive-finance/public-mission tensions; bank-specific counterexamples among ICBC/CCB/BOC/ABC/BoCom/PSBC; and whether similar balance-sheet scale masks fundamentally different geographic operating models. Preserve uncertainty and keep detailed asset, ALM, technology and rural-bank-shard mechanisms out of scope. If a material new category appears, reopen exactly one targeted frontier and reset confirmations to 0. If novelty remains low and no material category appears, record low-novelty confirmation 2/3 and select a distinct seventh challenge. Do not seal after 2/3. Do not read Batch0 raw, prior-v2 raw, sealed-shard raw, other-shard raw, Banking Evidence/source material or fresh Banking search. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse next frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["completed BANK-STATE-OWNED raw and receipts","prior CROSS-TIME saturation-review raw or receipts","all targeted BANK-STATE-OWNED recovery raw or receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass and confirmation outputs","sealed SYS-REGULATION-RESOLUTION raw outputs","sealed SYS-MONETARY-CREDIT raw outputs","other shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["completed BANK-STATE-OWNED raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass and confirmation outputs","sealed SYS-REGULATION-RESOLUTION raw outputs","sealed SYS-MONETARY-CREDIT raw outputs","other shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only fifth cross-time saturation/negative-space raw and bounded receipt exist; the sparse map either reopens exactly one measured material gap or records low-novelty confirmation 1/3 and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only sixth cross-time saturation/negative-space raw and bounded receipt exist; the sparse map either reopens exactly one measured material gap with confirmations reset to 0 or records low-novelty confirmation 2/3 and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
