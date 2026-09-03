@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P082",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_hydraulic_power_oil_reservoir_pump_accumulator_distribution_consumer_demand_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_hydraulic_power_service_state_model_only_no_pressure_fluid_spec_accumulator_charge_valve_actuator_control_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"HY-01","novelty_class":"new_category","importance":"high","memory":"Shipboard hydraulic-power service spans owner/manager, master, engineering and relevant deck crews, shore technical support, hydraulic pump/accumulator/actuator equipment or service actors and port or yard support. Operating observation, equipment service and shore intervention should remain distinct roles rather than one vendor directory."},
+    {"id":"HY-02","novelty_class":"new_category","importance":"high","memory":"Hydraulic pump or source readiness is distinct from electrical prime-power availability and from delivered hydraulic service. A motor or engine drive can be available while a hydraulic source is restricted, and a hydraulic constraint does not by itself prove an electrical, mechanical or control root cause."},
+    {"id":"HY-03","novelty_class":"new_category","importance":"high","memory":"Reservoir inventory or capacity confidence is distinct from fluid-condition confidence. Sufficient apparent inventory does not establish acceptable fluid condition or delivered service, while uncertain condition does not by itself prove inadequate inventory."},
+    {"id":"HY-04","novelty_class":"new_category","importance":"high","memory":"Accumulator or other stored-energy confidence is a separate service dimension from active pump readiness. Stored-energy availability may temporarily support or buffer a consumer while a source state is changing, but exact charge, pressure, capacity and operating logic are deferred."},
+    {"id":"HY-05","novelty_class":"new_category","importance":"high","memory":"Hydraulic distribution or path availability is separate from source readiness. A source can be available while a distribution segment, interface or consumer branch is restricted; exact piping, valves, manifolds, pressures and lineups are not retained."},
+    {"id":"HY-06","novelty_class":"new_category","importance":"high","memory":"Consumer scope should remain explicit. Steering-related equipment, deck machinery and other hydraulic consumers may share a source or distribution layer but can have independent availability states; one consumer outage does not establish loss of the whole hydraulic service."},
+    {"id":"HY-07","novelty_class":"new_category","importance":"high","memory":"Hydraulic demand and available service margin are distinct from simple pump-running state. A source may be running yet margin can be constrained by simultaneous consumers, restriction, stored-energy state or distribution scope; exact loads, pressures and rates remain deferred."},
+    {"id":"HY-08","novelty_class":"new_category","importance":"high","memory":"Fluid-condition or assurance confidence should remain distinct from physical reservoir inventory and pump availability. Missing, delayed or uncertain condition evidence can make service acceptability uncertain without proving a pump or actuator failure, while a service symptom does not establish contamination or fluid degradation."},
+    {"id":"HY-09","novelty_class":"new_category","importance":"high","memory":"Hydraulic-service degradation follows a defensive lifecycle: observation, uncertain source/reservoir/accumulator/distribution/consumer scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No hydraulic operating or troubleshooting procedure is retained."},
+    {"id":"HY-10","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected scope such as source/pump, reservoir or condition-assurance function, accumulator/stored-energy function, distribution branch or consumer interface. One scope may be unavailable while other hydraulic service remains usable; exact valve positions, actuator controls and sequences remain deferred."},
+    {"id":"HY-11","novelty_class":"new_category","importance":"high","memory":"Hydraulic power can depend on electrical or mechanical drive, controls/monitoring, cooling and supporting fluid-management equipment, but dependency observations are not root-cause proof. A support loss can degrade hydraulic service, while a hydraulic constraint does not establish which upstream dependency failed."},
+    {"id":"HY-12","novelty_class":"new_category","importance":"high","memory":"Hydraulic degradation can propagate into selected steering, deck-machinery or other consumer availability, but those downstream effects are not by themselves proof of a pump, reservoir, accumulator, distribution, fluid-condition or actuator root cause."},
+    {"id":"HY-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: source readiness returns, reservoir/condition confidence is re-established, accumulator confidence returns, distribution scope is restored and each affected consumer is separately re-verified. A restarted pump or cleared indication does not prove full hydraulic-service recovery."},
+    {"id":"HY-R01","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical power and P082 hydraulic power are separate utility layers. Electrical availability can support a hydraulic source without proving reservoir, accumulator, distribution or consumer readiness; a hydraulic constraint does not establish an electrical fault."},
+    {"id":"HY-R02","novelty_class":"useful_refinement","importance":"high","memory":"P078 compressed air and P082 hydraulic power share generated/stored/distributed utility vocabulary but remain independent media and service chains. Receiver reserve does not prove hydraulic accumulator confidence, and hydraulic availability does not prove pneumatic service."},
+    {"id":"HY-R03","novelty_class":"useful_refinement","importance":"high","memory":"P080 lubricating-oil service and P082 hydraulic service both involve oil-like fluids, pumps and condition confidence, but lubrication delivery and hydraulic power transmission are independent functions; lubricant inventory/condition does not prove hydraulic service and vice versa."},
+    {"id":"HY-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 generic equipment lifecycle remains distinct from delivered hydraulic service. Pump, accumulator, actuator or control equipment condition can inform component state without proving reservoir margin, distribution availability or consumer-service outcome."},
+    {"id":"HY-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and component lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"HY-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap prior shipboard utility-service passes; P082 applies them specifically to hydraulic power."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact hydraulic topology, reservoir capacities/levels, fluid grades/specifications, pressures, flow rates, accumulator charge, piping/manifolds/valves, actuator controls, instrumentation and current configuration are intentionally not retained.",
+    "Exact hydraulic source selection, charging, alignment, distribution, consumer operation, isolation, depressurization, troubleshooting, flushing, maintenance or emergency procedures are outside this blind pass.",
+    "Named hydraulic equipment/service providers, vessel failures/incidents/deficiencies, inspection findings and current readiness require claim-scoped Evidence.",
+    "Private/regional marine hydraulic equipment/service lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact hydraulic system arrangements, reservoir capacities/levels, fluid specifications, pressures, flow rates, accumulator charge, piping/manifolds/valves, actuator controls, instrumentation and current configuration.",
+    "Hydraulic source selection, charging, alignment, distribution, consumer operation, isolation, depressurization, troubleshooting, flushing, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel failures/incidents/deficiencies, inspection findings and current readiness.",
+    "Private/regional hydraulic equipment/service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive hydraulic-power service orientation/source-discovery output. It is not steering, deck-machinery, hydraulic maintenance, safety or vessel-operating advice and does not establish any exact topology, capacity, level, fluid specification, pressure, flow rate, accumulator charge, piping/valve lineup, actuator control, instrumentation, procedure, provider, incident, deficiency, inspection finding or current-readiness fact.",
+  "stop_reason": "The hydraulic-power service chain is recalled at useful structural resolution: source readiness, reservoir inventory/condition confidence, accumulator/stored-energy confidence, distribution availability, consumer scope, demand/margin, dependencies, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, pump-, reservoir-, accumulator-, pressure-, fluid-, piping-, actuator-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
