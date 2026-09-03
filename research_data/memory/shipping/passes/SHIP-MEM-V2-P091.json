@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P091",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_cargo_tank_inert_gas_generation_supply_distribution_tank_scope_pressure_blanket_condition_monitoring_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_tank_inert_gas_service_state_model_only_no_pressure_flow_oxygen_gas_quality_value_valve_position_purging_inerting_gas_testing_entry_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"IG-01","novelty_class":"new_category","importance":"high","memory":"Cargo-tank inert-gas service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, inert-gas equipment/service actors and relevant terminal, port or yard support. Cargo-operation context, machinery support, tank-scope assurance, monitoring and shore intervention should remain distinct roles rather than one vendor, gas-testing, tanker-operation or safety-procedure directory."},
+    {"id":"IG-02","novelty_class":"new_category","importance":"high","memory":"Inert-gas source or generation readiness is distinct from downstream supply/distribution availability. A source can be ready while the delivery path to a bounded tank scope is unavailable, and a distribution concern does not itself prove source failure."},
+    {"id":"IG-03","novelty_class":"new_category","importance":"high","memory":"Gas-condition or quality confidence is distinct from source/generation readiness. Apparent source operation does not by itself establish suitable delivered gas condition, while a condition concern does not identify the exact source, treatment or measurement cause."},
+    {"id":"IG-04","novelty_class":"new_category","importance":"high","memory":"Supply/distribution availability is distinct from tank-interface or tank-scope confidence. A common distribution path can be available while a particular tank connection or bounded tank scope remains unavailable or uncertain."},
+    {"id":"IG-05","novelty_class":"new_category","importance":"high","memory":"Cargo-tank scope must remain explicit: inert-gas service confidence can differ by tank, tank group, manifolded branch or other bounded cargo-tank scope. A localized concern should not be generalized to all cargo tanks without exact arrangement evidence."},
+    {"id":"IG-06","novelty_class":"new_category","importance":"high","memory":"Pressure or gas-blanket confidence can be represented structurally without numeric pressure values or operating limits. The useful memory distinction is confidence, uncertainty, restriction and verified restoration; no setpoint or adjustment guidance is retained."},
+    {"id":"IG-07","novelty_class":"new_category","importance":"high","memory":"Monitoring/alarm confidence is distinct from the physical gas-condition and pressure/blanket state. Indication or alarm status can alter confidence but does not alone establish exact composition, pressure, duration, root cause or corrective action."},
+    {"id":"IG-08","novelty_class":"new_category","importance":"high","memory":"Support-dependency confidence is a separate dimension: electrical power, controls, cooling/water or other supporting services may enable inert-gas equipment, but their availability is not proof of delivered inert-gas service and their degradation is not automatically the root cause of an inert-gas outcome."},
+    {"id":"IG-09","novelty_class":"new_category","importance":"high","memory":"Multiple sources, paths or bounded tank scopes can create redundancy or substitution confidence, but structural memory should not infer exact approved alignments, source selection, valve arrangements, capacity or operating methods."},
+    {"id":"IG-10","novelty_class":"new_category","importance":"high","memory":"Inert-gas service degradation follows a defensive lifecycle: observation, uncertain source/gas-condition/distribution/tank-scope/blanket/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No purging, inerting, gas-testing, entry, cargo-operation or emergency procedure is retained."},
+    {"id":"IG-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected source, gas-condition domain, distribution branch, tank interface/scope or monitoring domain rather than generalized to the entire tanker cargo system. Exact valve actions, alignments and corrective steps remain deferred."},
+    {"id":"IG-12","novelty_class":"new_category","importance":"high","memory":"Inert-gas degradation can propagate into cargo-operation availability, cargo-condition or safety confidence, terminal compatibility, port rework or schedule, but those downstream effects are not by themselves proof of a source, gas-condition, distribution, tank-interface, pressure/blanket or monitoring root cause."},
+    {"id":"IG-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: source/generation readiness returns, gas-condition confidence is re-established, distribution/tank-scope availability returns, non-numeric pressure/blanket confidence is renewed and monitoring confidence is restored. One running indication or alarm reset does not prove full inert-gas-service restoration."},
+    {"id":"IG-R01","novelty_class":"useful_refinement","importance":"high","memory":"P089 cargo-space ventilation concerns air exchange, while P091 cargo-tank inert-gas service concerns maintaining a bounded cargo-tank gas/blanket confidence state. Shared fan, gas or atmosphere vocabulary must not collapse ventilation and inerting into one service."},
+    {"id":"IG-R02","novelty_class":"useful_refinement","importance":"high","memory":"P090 refrigerated-cargo service maintains unit/cargo condition through power and interfaces, while P091 concerns tanker cargo-tank gas/blanket service. Both influence cargo-operation confidence but their physical paths and failure domains remain distinct."},
+    {"id":"IG-R03","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical service and P068 digital/control service are upstream support dimensions for inert-gas equipment and monitoring; neither equals delivered gas-condition or tank-blanket confidence."},
+    {"id":"IG-R04","novelty_class":"useful_refinement","importance":"high","memory":"Generic service-condition monitoring refines inert-gas confidence only at an epistemic level: observed indicators can change confidence without establishing exact gas composition, pressure adequacy, approved operating state or required action."},
+    {"id":"IG-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic source/distribution/support dependency, monitoring and restoration mechanics overlap prior shipboard utility and equipment-service passes."},
+    {"id":"IG-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P091 applies them specifically to cargo-tank inert-gas service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact inert-gas arrangements, source capacities, pressures, flows, oxygen or gas-quality values, valve positions, tank connections, control modes, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact inerting, purging, gas-freeing, gas-testing, valve alignment, cargo-operation, tank-entry, troubleshooting, maintenance, shutdown or emergency procedures are outside this blind pass.",
+    "Named inert-gas equipment/service providers, terminals, survey/inspection actors, tanker incidents, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional inert-gas equipment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact inert-gas arrangements, source capacities, pressures, flows, oxygen/gas-quality values, valve positions, tank connections, control modes, alarm thresholds, test values and current configuration.",
+    "Inerting, purging, gas-freeing, gas-testing, valve alignment, cargo-operation, tank-entry, troubleshooting, maintenance, shutdown or emergency procedures.",
+    "Named equipment/service providers, terminals, survey/inspection actors, tanker incidents, deficiency findings and current readiness.",
+    "Private/regional inert-gas equipment and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive cargo-tank inert-gas service orientation/source-discovery output. It is not tanker operation, inerting/purging, gas-testing, tank-entry, cargo-handling, safety, emergency-response or vessel-operating advice and does not establish any exact arrangement, capacity, pressure, flow, oxygen/gas-quality value, valve position, tank connection, control mode, alarm threshold, test result, procedure, provider, incident, deficiency finding or current-readiness fact.",
+  "stop_reason": "Cargo-tank inert-gas service is recalled at useful non-operational resolution: source/generation readiness, gas-condition confidence, supply/distribution availability, tank scope, non-numeric pressure/blanket confidence, monitoring/alarm confidence, support dependencies, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, source-, pressure-, flow-, gas-quality-, valve-, tank-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
