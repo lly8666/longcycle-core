@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P100",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_remote_valve_actuation_command_control_power_support_feedback_indication_transfer_path_scope_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_remote_valve_actuation_control_service_state_model_only_no_valve_position_lineup_actuator_pressure_control_logic_fail_safe_action_interlock_test_or_operating_sequence_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"VA-01","novelty_class":"new_category","importance":"high","memory":"Remote cargo-valve actuation/control service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, valve-actuation/control equipment or service actors and relevant terminal, port or yard support. Command/control, actuator support, physical actuation, feedback and transfer-path scope should remain distinct roles rather than one valve-lineup or operating directory."},
+    {"id":"VA-02","novelty_class":"new_category","importance":"high","memory":"Command/control availability is distinct from physical valve-actuation readiness. A command path can be available while the intended actuator or valve function is unavailable or uncertain, and physical actuation concern does not itself prove a command-system failure."},
+    {"id":"VA-03","novelty_class":"new_category","importance":"high","memory":"Actuator power/support readiness is distinct from both command availability and physical valve-function readiness. Electrical, hydraulic, pneumatic or other bounded support can be available while the delivered valve-actuation function remains unavailable, without inferring exact actuator design or parameters."},
+    {"id":"VA-04","novelty_class":"new_category","importance":"high","memory":"Physical actuation-function readiness is a separate service state from transfer-path availability. A transfer path can be conceptually required while one bounded valve actuation function is unavailable or uncertain; no actual valve position or lineup is retained."},
+    {"id":"VA-05","novelty_class":"new_category","importance":"high","memory":"Non-numeric feedback/position-indication confidence is distinct from actual valve-function readiness. Indication can increase or reduce confidence but does not itself establish physical state, flow path, root cause or required action, and no actual position value is retained."},
+    {"id":"VA-06","novelty_class":"new_category","importance":"high","memory":"Local/remote control-interface confidence is distinct from actuator readiness and feedback confidence. Structural memory can represent whether an intended control interface is available, degraded or uncertain without retaining control-transfer procedures or operating sequences."},
+    {"id":"VA-07","novelty_class":"new_category","importance":"high","memory":"Transfer-path scope mapping is distinct from valve-lineup knowledge. Structural memory may associate a valve-actuation function with a bounded line, manifold, tank or interface scope while refusing to infer exact connectivity, positions or an approved cargo-transfer configuration."},
+    {"id":"VA-08","novelty_class":"new_category","importance":"high","memory":"Redundancy or alternate-control confidence can exist across command paths, control interfaces, actuator support or bounded valve functions, but structural memory should not infer exact fallback actions, manual operations, approved substitutions or lineup consequences."},
+    {"id":"VA-09","novelty_class":"new_category","importance":"high","memory":"Protective or fail-safe-state confidence can be represented only as an abstract assurance dimension separate from normal control availability. No fail-safe action, interlock logic, trip condition, resulting valve state or emergency sequence is retained."},
+    {"id":"VA-10","novelty_class":"new_category","importance":"high","memory":"Remote-valve-actuation degradation follows a defensive lifecycle: observation, uncertain command/support/actuation/feedback/interface/scope state, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No valve operation, lineup or cargo-transfer procedure is retained."},
+    {"id":"VA-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected command path, actuator/support function, valve-actuation function, feedback channel, control interface or transfer-path scope rather than generalized to the entire cargo system. Exact valve or control actions remain deferred."},
+    {"id":"VA-12","novelty_class":"new_category","importance":"high","memory":"Remote-valve-actuation degradation can propagate into cargo-transfer availability, terminal compatibility, containment assurance, rework or schedule, but those downstream effects are not themselves proof of a command, actuator, valve-function, feedback, interface or support root cause."},
+    {"id":"VA-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control availability returns, actuator support is available, physical actuation-function confidence is re-established, feedback/indication and local/remote interface confidence are renewed, and the affected transfer-path scope is separately verified. One indication change or command acknowledgement does not prove full restoration."},
+    {"id":"VA-R01","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer models transfer machinery and path availability, while P100 separately models the delivered valve-actuation/control function. A transfer path concern does not identify a valve-actuation root cause, and healthy valve actuation does not establish an approved or available transfer lineup."},
+    {"id":"VA-R02","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support cargo-valve command and indication, but digital/control availability is distinct from actuator support, physical valve function and bounded transfer-path scope."},
+    {"id":"VA-R03","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical and P082 hydraulic services can be upstream support dimensions for some valve actuators, but support availability does not equal delivered cargo-valve actuation or feedback confidence."},
+    {"id":"VA-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine valve/actuator condition and restoration, but an equipment lifecycle state does not equal delivered remote cargo-valve actuation/control service across the intended transfer-path scope."},
+    {"id":"VA-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic command, support, physical-function, feedback, interface and restoration mechanics overlap prior shipboard control, equipment and service passes."},
+    {"id":"VA-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P100 applies them specifically to remote cargo-valve actuation/control."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cargo-valve arrangements, valve positions, lineups, actuator types or pressures, control logic, fail-safe actions, interlocks, feedback values, test values and current configuration are intentionally not retained.",
+    "Exact valve operation, control transfer, lineup, actuator isolation, manual backup, testing, troubleshooting, cargo-transfer coordination, shutdown or emergency procedures are outside this blind pass.",
+    "Named valve/actuator/control providers, terminals, inspectors, tanker incidents, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-valve actuation/control equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact cargo-valve arrangements, positions, lineups, actuator types/pressures, control logic, fail-safe actions, interlocks, feedback values, test values and current configuration.",
+    "Valve operation, control transfer, lineup, actuator isolation, manual backup, testing, troubleshooting, cargo-transfer coordination, shutdown or emergency procedures.",
+    "Named equipment providers, terminals, inspectors, tanker incidents, deficiency findings and current readiness.",
+    "Private/regional cargo-valve actuation/control equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive remote cargo-valve actuation/control service orientation/source-discovery output. It is not valve-operation, lineup, control-transfer, testing, cargo-transfer, shutdown, emergency-response or vessel-operating advice and does not establish any exact valve position, lineup, actuator type/pressure, control logic, fail-safe action, interlock, feedback value, test result, procedure, provider, incident, deficiency finding or current-readiness fact.",
+  "stop_reason": "Remote cargo-valve actuation/control service is recalled at useful non-operational resolution: command/control availability, actuator/power-support readiness, physical actuation-function readiness, non-numeric feedback/indication confidence, local/remote interface confidence, transfer-path scope, redundancy and abstract protective-state assurance are separable states. Further detail would become vessel-, tanker-type-, valve-, position-, lineup-, actuator-, pressure-, control-logic-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
