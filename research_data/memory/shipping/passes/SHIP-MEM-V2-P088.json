@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P088",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_cargo_securing_lashing_securing_points_devices_condition_tension_confidence_cargo_unit_scope_monitoring_verification_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_securing_service_state_model_only_no_lashing_pattern_calculation_force_tension_pretension_device_setting_inspection_limit_or_securing_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CS-01","novelty_class":"new_category","importance":"high","memory":"Cargo-securing service spans owner/manager, master and deck/cargo team, shore cargo or technical support, securing-equipment/service actors and relevant terminal, port or yard support. Cargo planning/context, onboard execution, condition verification and shore intervention should remain distinct roles rather than one lashing, calculation, inspection or operating directory."},
+    {"id":"CS-02","novelty_class":"new_category","importance":"high","memory":"Securing-plan or voyage-context confidence is distinct from physical securing-device readiness. A cargo-securing context can be defined while particular points/devices are unavailable, and available securing hardware does not itself establish that the relevant cargo context is adequately represented."},
+    {"id":"CS-03","novelty_class":"new_category","importance":"high","memory":"Securing-point or structural-interface readiness is distinct from securing-device availability. A device can appear serviceable while its intended attachment/interface is unavailable or uncertain, and an interface concern does not itself establish device causality."},
+    {"id":"CS-04","novelty_class":"new_category","importance":"high","memory":"Securing-device availability and condition confidence are distinct states. Presence of a device does not establish condition confidence, and a condition concern does not by itself identify the exact component, defect or required action."},
+    {"id":"CS-05","novelty_class":"new_category","importance":"high","memory":"Cargo-unit scope matters: securing confidence can differ by cargo unit, bay, hold, deck area or other bounded scope. A localized securing concern should not be generalized to all cargo without exact stowage and securing evidence."},
+    {"id":"CS-06","novelty_class":"new_category","importance":"high","memory":"Holding or tension confidence can be represented structurally without numeric force, tension or pretension values. The useful distinction is between confidence, uncertainty, restriction and verified restoration; no lashing calculation or adjustment guidance is retained."},
+    {"id":"CS-07","novelty_class":"new_category","importance":"high","memory":"Monitoring/verification confidence is distinct from the physical securing state itself. Inspection or monitoring can increase or decrease confidence but does not by itself prove the exact physical state, cause, adequacy or corrective action."},
+    {"id":"CS-08","novelty_class":"new_category","importance":"high","memory":"Securing confidence can evolve across port, departure, voyage and arrival contexts, so timestamps and observation context matter. This structural memory does not retain inspection intervals, weather thresholds, adjustment triggers or operational decision rules."},
+    {"id":"CS-09","novelty_class":"new_category","importance":"high","memory":"Alternate securing points, devices or bounded cargo scopes can create redundancy or substitution confidence, but structural memory should not infer exact approved substitutions, arrangements, load paths, device combinations or operating methods."},
+    {"id":"CS-10","novelty_class":"new_category","importance":"high","memory":"Cargo-securing degradation follows a defensive lifecycle: observation, uncertain context/point/device/cargo-scope/holding/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation of the affected scope, restoration indication and post-restoration verification. No securing, adjustment, inspection or emergency procedure is retained."},
+    {"id":"CS-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected cargo unit, securing point/interface, securing device family or confidence domain rather than generalized to the entire cargo securing system. Exact lashings, device settings, substitutions and corrective steps remain deferred."},
+    {"id":"CS-12","novelty_class":"new_category","importance":"high","memory":"Cargo-securing degradation can propagate into cargo acceptance, voyage flexibility, weather-routing constraints, port rework or schedule, but those downstream effects are not by themselves proof of a securing-point, device, condition, holding/tension or monitoring root cause."},
+    {"id":"CS-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: securing context is re-established, affected points/interfaces are available, device condition confidence returns, cargo-unit scope is cleared, non-numeric holding confidence is restored and monitoring/verification confidence is renewed. A single inspection or device replacement does not prove full securing-service restoration."},
+    {"id":"CS-R01","novelty_class":"useful_refinement","importance":"high","memory":"P087 cargo-handling/lifting gear covers transfer and lifting capability, while P088 cargo securing covers voyage-stage holding of cargo after handling. Successful lifting or placement does not establish securing confidence, and a securing concern does not prove a lifting-gear cause."},
+    {"id":"CS-R02","novelty_class":"useful_refinement","importance":"high","memory":"P086 hatch-cover/cargo-access securing and integrity apply to cargo-space boundaries, while P088 securing applies to cargo units and their securing interfaces. Shared words such as securing or holding represent different functional scopes and should not be conflated."},
+    {"id":"CS-R03","novelty_class":"useful_refinement","importance":"high","memory":"P085 mooring/anchoring holding confidence applies vessel-to-berth/anchor functions, while P088 applies cargo-to-vessel securing confidence. Both use non-numeric holding concepts but their interfaces, actors and downstream outcomes remain distinct."},
+    {"id":"CS-R04","novelty_class":"useful_refinement","importance":"high","memory":"Generic inspection/condition mechanics from equipment and service passes refine P088 only as monitoring/verification confidence; they do not turn observed condition into numeric adequacy, approved arrangements or securing instructions."},
+    {"id":"CS-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic equipment/device condition, observation, verification and restoration mechanics overlap prior marine-equipment and shipboard-service passes."},
+    {"id":"CS-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and verified-restoration mechanics overlap prior shipboard service passes; P088 applies them specifically to cargo securing/lashing confidence."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cargo-securing manuals, lashing arrangements/patterns, strength calculations, forces, accelerations, tensions, pretension, device settings, cargo-specific limits and current securing configuration are intentionally not retained.",
+    "Exact lashing, tightening, loosening, substitution, inspection, adjustment, re-securing, weather-response, troubleshooting or emergency procedures are outside this blind pass.",
+    "Named securing-equipment providers, calculation/inspection actors, vessel incidents/cargo shifts, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-securing/lashing equipment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact cargo-securing manuals, lashing arrangements/patterns, calculations, forces, accelerations, tensions, pretension, device settings, limits and current securing configuration.",
+    "Lashing, tightening, loosening, substitution, inspection, adjustment, re-securing, weather-response, troubleshooting or emergency procedures.",
+    "Named equipment/providers/calculation or inspection actors, vessel incidents/cargo shifts, deficiency findings and current readiness.",
+    "Private/regional cargo-securing/lashing equipment and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive cargo-securing/lashing service orientation/source-discovery output. It is not cargo-securing, lashing, stability, weather-routing, inspection, adjustment, emergency-response, safety or vessel-operating advice and does not establish any exact lashing arrangement, pattern, calculation, force, acceleration, tension, pretension, device setting, inspection threshold, approved substitution, procedure, provider, incident, cargo shift, deficiency finding or current-readiness fact.",
+  "stop_reason": "Cargo-securing/lashing service is recalled at useful non-operational resolution: securing context, securing-point/interface readiness, device availability/condition, cargo-unit scope, non-numeric holding/tension confidence, monitoring/verification confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, cargo-type-, lashing-pattern-, calculation-, force/tension-, device-, setting-, inspection-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
