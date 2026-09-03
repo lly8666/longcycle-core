@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P081",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_steam_boiler_condensate_feedwater_heating_service_generation_distribution_demand_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_steam_boiler_service_state_model_only_no_pressure_temperature_chemistry_burner_piping_valve_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"ST-01","novelty_class":"new_category","importance":"high","memory":"Shipboard steam/boiler service spans owner or manager, master, engineering crew, shore technical support, boiler/burner/feedwater-treatment equipment or service actors and relevant port or yard support. Operational observation, equipment service, water-condition assurance and shore support should remain distinct roles rather than one vendor or maintenance directory."},
+    {"id":"ST-02","novelty_class":"new_category","importance":"high","memory":"Boiler or steam-generation readiness is a service state distinct from fuel availability, electrical/control support and downstream steam use. Supporting inputs can be present while steam generation is restricted, and a steam-service constraint does not by itself prove a fuel, electrical, control or burner cause."},
+    {"id":"ST-03","novelty_class":"new_category","importance":"high","memory":"Feedwater inventory or capacity confidence should remain distinct from feedwater-condition confidence and from boiler readiness. Physical water availability does not itself establish acceptable condition, circulation readiness or steam-generation capability."},
+    {"id":"ST-04","novelty_class":"new_category","importance":"high","memory":"Condensate-return or recovery confidence is distinct from make-up/feedwater availability. Reduced or uncertain return can affect service margin without proving a boiler, feedwater, distribution or consumer-side root cause, and exact condensate arrangements or quantities remain deferred."},
+    {"id":"ST-05","novelty_class":"new_category","importance":"high","memory":"Steam-distribution or path availability is separate from generation readiness. Steam can be available at a generating source while a distribution segment or consumer interface is restricted; exact piping, valves, pressures and lineups are not retained."},
+    {"id":"ST-06","novelty_class":"new_category","importance":"high","memory":"Heating-consumer scope should be preserved separately from the common steam source. Fuel-conditioning/heating, accommodation-related heating and selected machinery or process support may be distinct service scopes; degradation in one consumer scope does not prove loss of all steam service."},
+    {"id":"ST-07","novelty_class":"new_category","importance":"high","memory":"Steam-service demand and available generation/distribution margin are distinct from simple equipment-running state. A boiler or source may be available while useful margin is constrained by demand, distribution scope or supporting-system limitations; exact loads, rates and operating targets remain deferred."},
+    {"id":"ST-08","novelty_class":"new_category","importance":"high","memory":"Feedwater or boiler-water condition/assurance confidence is distinct from physical inventory and equipment readiness. Missing, delayed or uncertain condition evidence can make service acceptability uncertain without proving physical equipment failure, while an equipment alarm or restriction does not establish a chemistry result."},
+    {"id":"ST-09","novelty_class":"new_category","importance":"high","memory":"Steam/boiler degradation follows a defensive service lifecycle: observation, uncertain source/feedwater/condensate/distribution/consumer scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No boiler-operation or troubleshooting procedure is retained."},
+    {"id":"ST-10","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve affected scope such as a boiler/generation unit, feedwater or condensate function, distribution segment or consumer interface. One scope can be unavailable while another remains serviceable; exact valve positions, piping arrangements and sequences remain deferred."},
+    {"id":"ST-11","novelty_class":"new_category","importance":"high","memory":"Steam service can depend on fuel, electrical power, controls, water supply and cooling or other machinery support, but dependency observations are not root-cause proof. Loss of support can degrade steam service, while a steam constraint does not establish which upstream support failed."},
+    {"id":"ST-12","novelty_class":"new_category","importance":"high","memory":"Steam-service degradation can propagate into fuel heating/conditioning, accommodation heating and selected machinery-support availability, but those downstream effects are not by themselves proof of boiler, burner, feedwater, condensate, distribution or water-condition root cause."},
+    {"id":"ST-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: generation readiness returns, feedwater/condensate confidence returns, distribution scope is restored, water-condition assurance becomes acceptable and downstream consumers are re-verified. A restarted boiler or cleared indication does not prove full steam-service recovery."},
+    {"id":"ST-R01","novelty_class":"useful_refinement","importance":"high","memory":"P077 fuel/bunker service is an upstream consumable-supply dimension, whereas P081 steam service is a generated thermal-utility dimension. Fuel availability or product confidence does not prove steam generation/distribution readiness, and steam degradation does not establish a bunker-supply problem."},
+    {"id":"ST-R02","novelty_class":"useful_refinement","importance":"high","memory":"P071 freshwater service and P081 feedwater/condensate service can share water-supply vocabulary but are not interchangeable. Potable/freshwater inventory or distribution does not prove boiler feedwater condition, condensate return or steam availability, and steam-service degradation does not establish potable-water loss."},
+    {"id":"ST-R03","novelty_class":"useful_refinement","importance":"high","memory":"P079 machinery cooling and P081 steam/boiler service are separate thermal-support chains. Cooling availability may be a dependency for some equipment but does not prove boiler/feedwater/distribution readiness; a steam constraint does not by itself establish cooling-system failure."},
+    {"id":"ST-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 generic equipment lifecycle remains distinct from delivered steam service. Equipment condition, maintenance state or shore support can inform boiler/burner/pump components without proving generation margin, feedwater/condensate confidence, distribution availability or downstream consumer service."},
+    {"id":"ST-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and component lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"ST-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap the defensive service-state patterns recovered across prior shipboard utility passes; P081 applies them specifically to steam/boiler service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact boiler/steam/feedwater/condensate arrangements, capacities, pressures, temperatures, water-condition or chemistry measurements, burner parameters, loads, piping, valves, instrumentation and current configuration are intentionally not retained.",
+    "Exact boiler, burner, feedwater, condensate, steam-distribution, water-treatment, isolation, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named boiler/burner/feedwater-treatment vendors, service providers, vessel installations, failures, incidents, deficiencies, inspection findings and current readiness require claim-scoped Evidence.",
+    "Private/regional marine boiler, steam, feedwater-treatment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact boiler/steam/feedwater/condensate topology, capacities, pressures, temperatures, water-condition or chemistry measurements, burner parameters, loads, piping/valves, instrumentation and current configuration.",
+    "Boiler, burner, feedwater, condensate, steam-distribution, water-treatment, isolation, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel failures/incidents/deficiencies, inspection findings and current readiness.",
+    "Private/regional boiler/steam/feedwater-treatment service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive steam/boiler service orientation/source-discovery output. It is not boiler, burner, water-treatment, machinery, maintenance, safety or vessel-operating advice and does not establish any exact arrangement, capacity, pressure, temperature, water-condition/chemistry value, burner parameter, load, piping/valve lineup, instrumentation, procedure, provider, incident, deficiency, inspection finding or current-readiness fact.",
+  "stop_reason": "The steam/boiler service chain is recalled at useful structural resolution: generation readiness, feedwater and condensate confidence, distribution availability, consumer scope, demand/margin, water-condition assurance, dependencies, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, boiler-, burner-, pressure-, temperature-, chemistry-, piping-, procedure-, provider-, incident- or jurisdiction-specific and is deferred to claim-scoped Evidence."
+}
