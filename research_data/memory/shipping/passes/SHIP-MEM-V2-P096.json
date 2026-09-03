@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P096",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_tank_high_level_overfill_alarm_independent_detection_protective_interface_tank_scope_assurance_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_high_level_overfill_protective_assurance_state_model_only_no_threshold_setpoint_sensor_type_trip_logic_shutdown_interface_valve_pump_action_test_or_emergency_sequence_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"OP-01","novelty_class":"new_category","importance":"high","memory":"Liquid-cargo high-level/overfill protective assurance spans owner/manager, master and deck/cargo team, engineering crew, shore technical/cargo support, protective-equipment/service actors and relevant terminal, port or yard support. Independent detection, tank scope, alarm/indication, protective interface, operational restriction and shore coordination should remain distinct roles rather than one loading, trip-testing, shutdown or emergency-response directory."},
+    {"id":"OP-02","novelty_class":"new_category","importance":"high","memory":"Independent high-level/overfill detection readiness is distinct from routine tank-gauging readiness. A normal gauging system can appear available while an independent protective channel is unavailable or uncertain, and a protective-channel concern does not itself prove the routine gauging system is wrong."},
+    {"id":"OP-03","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface confidence is distinct from common protective-system readiness. A common alarm or protection function can appear available while one tank, tank group or bounded protective interface remains unavailable or uncertain."},
+    {"id":"OP-04","novelty_class":"new_category","importance":"high","memory":"Alarm/indication confidence is a separate state from independent detection readiness. An alarm path can be uncertain despite a detection element appearing available, and an alarm indication alone does not establish actual tank level, threshold crossing, root cause or corrective action."},
+    {"id":"OP-05","novelty_class":"new_category","importance":"high","memory":"Protective-interface readiness is distinct from detection and alarm confidence. A protective signal/interface can be available, degraded or uncertain without inferring any exact automatic or manual response, shutdown action, valve action, pump action or terminal sequence."},
+    {"id":"OP-06","novelty_class":"new_category","importance":"high","memory":"Independence confidence is structurally distinct from simple redundancy. Protective assurance can depend on meaningful separation from routine gauging, shared power, shared control, shared sensing or shared communication paths, but blind memory should not infer exact architecture or independence criteria."},
+    {"id":"OP-07","novelty_class":"new_category","importance":"high","memory":"Support-dependency confidence is separate from delivered overfill protection. Electrical, control, alarm, communication or other supporting services can influence protective availability, but a support concern is not root-cause proof and healthy support does not guarantee independent protective assurance."},
+    {"id":"OP-08","novelty_class":"new_category","importance":"high","memory":"Environmental/safety assurance is an outcome dimension distinct from protective-system state. A transfer restriction, spill concern, terminal concern or safety-assurance downgrade can motivate investigation or restriction but is not by itself proof of detection, alarm, protective-interface or independence failure."},
+    {"id":"OP-09","novelty_class":"new_category","importance":"high","memory":"Protective availability should be scoped by tank, tank group, detection channel, alarm path or protective interface rather than generalized to the entire cargo operation. A degraded scope can coexist with confidence elsewhere without implying an approved workaround or substitution."},
+    {"id":"OP-10","novelty_class":"new_category","importance":"high","memory":"Overfill-protection degradation follows a defensive lifecycle: observation, uncertain detection/tank/alarm/protective-interface/independence scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No loading, shutdown, trip-test, valve, pump or emergency procedure is retained."},
+    {"id":"OP-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected detection channel, tank/interface, alarm path, protective interface or support domain rather than generalized to all cargo systems. Exact bypass, reset, testing or response actions remain deferred."},
+    {"id":"OP-12","novelty_class":"new_category","importance":"high","memory":"Overfill-protection degradation can propagate into cargo-transfer restrictions, terminal compatibility, environmental/safety assurance, port rework, claims exposure or schedule, but those downstream effects are not by themselves proof of a detection, tank-interface, alarm, protective-interface or independence root cause."},
+    {"id":"OP-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: independent detection confidence returns, affected tank/interface scope is re-established, alarm/indication confidence is renewed, protective-interface and independence confidence are re-established, and downstream transfer or terminal restrictions are separately cleared. One alarm reset or normal indication does not prove full protective-assurance restoration."},
+    {"id":"OP-R01","novelty_class":"useful_refinement","importance":"high","memory":"P095 routine tank gauging concerns measurement validity and quantity confidence, while P096 concerns independent high-level/overfill protective assurance. Healthy routine gauging does not equal independent protection, and protection degradation does not by itself prove routine measurement invalid."},
+    {"id":"OP-R02","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer concerns movement capability, while P096 concerns a protective layer that can constrain transfer. Transfer machinery readiness does not establish protective readiness, and a transfer restriction does not prove a pump or line fault."},
+    {"id":"OP-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support alarm, indication, communication and protective interfaces, but data/control-path availability is distinct from independent detection and delivered overfill-protection assurance."},
+    {"id":"OP-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine protective-sensor/alarm equipment condition and restoration, but an equipment lifecycle state does not equal delivered independent protective assurance across the intended tank and interface scope."},
+    {"id":"OP-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic detection/interface/monitoring/redundancy and restoration mechanics overlap prior shipboard equipment, control and cargo-service passes."},
+    {"id":"OP-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P096 applies them specifically to independent high-level/overfill protective assurance."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact high-level/overfill protection arrangements, thresholds, setpoints, sensor types, trip logic, shutdown interfaces, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact loading response, trip testing, bypass/reset, shutdown, valve/pump actions, terminal coordination, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named protective-equipment providers, terminals, inspectors, tanker incidents, spill events, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional overfill-protection equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact high-level/overfill protection arrangements, thresholds, setpoints, sensor types, trip logic, shutdown interfaces, alarm thresholds, test values and current configuration.",
+    "Loading response, trip testing, bypass/reset, shutdown, valve/pump actions, terminal coordination, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment providers, terminals, inspectors, tanker incidents, spill events, deficiency findings and current readiness.",
+    "Private/regional overfill-protection equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive high-level/overfill protective-assurance orientation/source-discovery output. It is not loading, trip-testing, bypass/reset, shutdown, valve/pump, terminal, emergency-response or vessel-operating advice and does not establish any exact threshold, setpoint, sensor type, trip logic, shutdown interface, alarm threshold, test result, procedure, provider, incident, spill event, deficiency finding or current-readiness fact.",
+  "stop_reason": "Independent high-level/overfill protective assurance is recalled at useful non-operational resolution: independent detection readiness, tank-scope confidence, alarm/indication confidence, protective-interface readiness, independence/support confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, sensor-, threshold-, setpoint-, trip-, shutdown-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
