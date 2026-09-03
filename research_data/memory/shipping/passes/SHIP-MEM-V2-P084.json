@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P084",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_propulsion_thrust_prime_mover_drive_train_shaft_propulsor_command_control_feedback_support_redundancy_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_propulsion_thrust_service_state_model_only_no_start_stop_maneuvering_power_rpm_speed_pitch_control_transfer_or_emergency_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"PR-01","novelty_class":"new_category","importance":"high","memory":"Propulsion/thrust service spans owner/manager, master and bridge team, engineering crew, shore technical support, prime-mover/drive-train/propulsor/control equipment or service actors and relevant port or yard support. Command, machinery operation, equipment service, verification and shore intervention should remain separate roles rather than one vendor or operating directory."},
+    {"id":"PR-02","novelty_class":"new_category","importance":"high","memory":"Propulsion-command availability is distinct from prime-mover and propulsor readiness. A valid command path can exist while machinery or a downstream drive element is restricted, and machinery readiness does not itself prove a usable command path."},
+    {"id":"PR-03","novelty_class":"new_category","importance":"high","memory":"Prime-mover readiness is a distinct service state from fuel, electrical, lubrication, cooling and control support. Supporting utilities can appear available while a prime mover is restricted, and a propulsion constraint does not by itself identify which support or component is causal."},
+    {"id":"PR-04","novelty_class":"new_category","importance":"high","memory":"Drive-train or shaft-path readiness should remain separate from prime-mover readiness and propulsor readiness. Power-producing machinery may be available while a shaft, coupling, gear, clutch or other transmission path is restricted; exact arrangements and operating details remain deferred."},
+    {"id":"PR-05","novelty_class":"new_category","importance":"high","memory":"Propulsor readiness is distinct from upstream prime-mover and drive-train readiness. A healthy upstream train does not itself establish delivered propulsor function or thrust response, while a propulsor-related symptom does not prove an upstream machinery cause."},
+    {"id":"PR-06","novelty_class":"new_category","importance":"high","memory":"Propulsion control-path readiness and feedback/indication confidence are separate states from physical machinery readiness. Apparent control availability does not prove physical thrust response, and uncertain feedback does not itself establish mechanical loss."},
+    {"id":"PR-07","novelty_class":"new_category","importance":"high","memory":"Fuel, electrical power, lubrication, cooling and generic control availability are support dimensions rather than proxies for delivered propulsion. Each can constrain propulsion, but availability of all visible supports still does not prove the prime mover, drive train, propulsor or thrust outcome."},
+    {"id":"PR-08","novelty_class":"new_category","importance":"high","memory":"Redundancy or independent-path confidence should be preserved where multiple propulsion sources, trains or propulsors exist. One path can be restricted while another remains usable; exact vessel arrangements, changeover logic and operating sequences remain deferred."},
+    {"id":"PR-09","novelty_class":"new_category","importance":"high","memory":"Thrust or propulsion-response confidence is an outcome-level state distinct from command, control, prime-mover, drive-train and propulsor readiness. Equipment appearing ready does not itself establish expected delivered response, and degraded response does not identify a root cause."},
+    {"id":"PR-10","novelty_class":"new_category","importance":"high","memory":"Propulsion demand and useful service margin are distinct from simple running state. Maneuvering or voyage contexts can require different useful margin, but this Memory pass neither calculates nor asserts required power, RPM, speed, pitch, reserve or operating actions."},
+    {"id":"PR-11","novelty_class":"new_category","importance":"high","memory":"Propulsion degradation follows a defensive lifecycle: observation, uncertain command/control/prime-mover/drive-train/propulsor/support/response scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No propulsion operating or troubleshooting procedure is retained."},
+    {"id":"PR-12","novelty_class":"new_category","importance":"high","memory":"Propulsion-service degradation can propagate into maneuvering, voyage-speed/capacity and schedule flexibility, but those downstream effects are not by themselves proof of a prime-mover, drive-train, propulsor, fuel, electrical, lubrication, cooling or control root cause."},
+    {"id":"PR-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control availability returns, prime-mover readiness returns, drive-train/shaft and propulsor readiness return, support dimensions are re-established, redundancy is re-verified and thrust/response confidence is confirmed. A restarted machine or cleared indication does not prove full propulsion-service recovery."},
+    {"id":"PR-R01","novelty_class":"useful_refinement","importance":"high","memory":"P083 steering and P084 propulsion are complementary first-order maneuvering functions. Steering availability does not prove propulsion/thrust availability, and propulsion readiness does not establish steering command, gear or response confidence."},
+    {"id":"PR-R02","novelty_class":"useful_refinement","importance":"high","memory":"P077 bunker/fuel service is an upstream consumable-supply dimension rather than delivered propulsion. Fuel inventory, identity or transfer readiness does not prove prime-mover, drive-train, propulsor or thrust readiness, and propulsion degradation does not establish a fuel-supply cause."},
+    {"id":"PR-R03","novelty_class":"useful_refinement","importance":"high","memory":"P079 cooling and P080 lubricating-oil services are propulsion support dimensions, not propulsion outcomes. Acceptable cooling or lubrication does not prove propulsion readiness, while propulsion degradation does not itself establish a cooling or lubrication root cause."},
+    {"id":"PR-R04","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical and P068 digital/control availability can support propulsion equipment but remain independent service dimensions. Power or control presence does not prove propulsion response, and a propulsion constraint does not establish an electrical, digital or cyber cause."},
+    {"id":"PR-D01","novelty_class":"duplicate","importance":"medium","memory":"Prime-mover, drive-train, propulsor and control equipment readiness/maintenance mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"PR-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap prior shipboard service passes; P084 applies them specifically to delivered propulsion/thrust function."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact propulsion arrangements, engine/motor/turbine details, power, RPM, vessel speed, propeller/thruster pitch, shafting, gears, clutches, control modes, alarms and current configuration are intentionally not retained.",
+    "Exact propulsion start/stop, maneuvering, control-transfer, changeover, isolation, testing, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named propulsion equipment/service providers, vessel propulsion failures/incidents/deficiencies, inspection/test findings and current readiness require claim-scoped Evidence.",
+    "Private/regional propulsion machinery/drive-train/propulsor/control service lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact propulsion topology, prime-mover/drive/propulsor details, power, RPM, speed, pitch, shaft/gear/clutch configuration, control modes, alarms and current configuration.",
+    "Propulsion start/stop, maneuvering, control-transfer/changeover, isolation, testing, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel failures/incidents/deficiencies, inspection or test findings and current readiness.",
+    "Private/regional propulsion machinery/drive-train/propulsor/control service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive propulsion/thrust service orientation/source-discovery output. It is not navigation, maneuvering, propulsion operation, maintenance, emergency-response, safety or vessel-operating advice and does not establish any exact arrangement, power, RPM, speed, pitch, shaft/gear/clutch state, control mode/sequence, alarm threshold, test result, procedure, provider, incident, deficiency, inspection finding or current-readiness fact.",
+  "stop_reason": "Propulsion/thrust is recalled at useful functional-service resolution: command availability, prime-mover readiness, drive-train/shaft readiness, propulsor readiness, support dimensions, control/feedback, redundancy, thrust/response confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, engine/motor/turbine-, shaft-, gear-, propulsor-, power/RPM/speed/pitch-, control-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
