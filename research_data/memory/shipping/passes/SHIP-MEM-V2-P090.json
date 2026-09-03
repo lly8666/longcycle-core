@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P090",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_refrigerated_cargo_reefer_container_power_distribution_connection_interface_monitoring_condition_cargo_unit_scope_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_refrigerated_cargo_reefer_service_state_model_only_no_voltage_load_outlet_count_setpoint_temperature_alarm_threshold_monitoring_interval_test_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"RF-01","novelty_class":"new_category","importance":"high","memory":"Refrigerated-cargo/reefer service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, refrigerated-cargo/reefer equipment/service actors and terminal, port or yard support. Cargo-condition responsibility, shipboard power support, unit/interface condition and shore intervention should remain distinct roles rather than one vendor, plug-in, monitoring or operating directory."},
+    {"id":"RF-02","novelty_class":"new_category","importance":"high","memory":"Reefer power-supply availability is distinct from downstream distribution/path availability. An upstream source can be available while a bounded distribution segment is unavailable, and a downstream interruption does not itself prove source failure."},
+    {"id":"RF-03","novelty_class":"new_category","importance":"high","memory":"Distribution/path availability is distinct from connection/interface readiness. Power can reach the relevant area while a particular cargo-unit interface is unavailable or uncertain, and an interface concern does not prove an upstream distribution cause."},
+    {"id":"RF-04","novelty_class":"new_category","importance":"high","memory":"Connection/interface readiness is distinct from refrigerated-cargo or reefer-unit condition. A connection can be available while the unit condition is uncertain, and unit degradation does not itself establish an interface fault."},
+    {"id":"RF-05","novelty_class":"new_category","importance":"high","memory":"Refrigerated-cargo or reefer-unit scope must remain explicit: service confidence can differ by unit, socket/interface group, cargo space, bay or other bounded cargo scope. A localized concern should not be generalized to all refrigerated cargo without exact evidence."},
+    {"id":"RF-06","novelty_class":"new_category","importance":"high","memory":"Unit-running indication and unit-condition confidence are distinct states. Apparent running does not by itself prove that the relevant cargo-condition objective is being maintained, while a condition concern does not identify an exact machinery, power or control cause."},
+    {"id":"RF-07","novelty_class":"new_category","importance":"high","memory":"Monitoring/alarm confidence is distinct from unit condition itself. Monitoring can increase or decrease confidence but does not itself establish the exact physical condition, threshold exceedance, duration, root cause or corrective action."},
+    {"id":"RF-08","novelty_class":"new_category","importance":"high","memory":"Cargo-condition confidence is a downstream outcome dimension separate from power, interface and unit-running states. A cargo-condition concern can trigger investigation without proving which supporting state caused it, and apparently healthy support states do not alone prove cargo condition."},
+    {"id":"RF-09","novelty_class":"new_category","importance":"high","memory":"Redundancy/support confidence can exist across power paths, distribution segments, interfaces, units or bounded cargo scopes, but structural memory should not infer exact spare capacity, approved transfer arrangements, circuit allocation or operating methods."},
+    {"id":"RF-10","novelty_class":"new_category","importance":"high","memory":"Reefer-service degradation follows a defensive lifecycle: observation, uncertain source/distribution/interface/unit/cargo-scope/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation of the affected scope, restoration indication and post-restoration verification. No electrical, refrigeration, cargo-care or emergency procedure is retained."},
+    {"id":"RF-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected power path, distribution segment, connection/interface, reefer unit, cargo scope or monitoring domain rather than generalized to all refrigerated cargo. Exact transfer, reconnection, setting or corrective actions remain deferred."},
+    {"id":"RF-12","novelty_class":"new_category","importance":"high","memory":"Reefer-service degradation can propagate into cargo-condition confidence, cargo acceptance, loading/discharge opportunity, port rework, claims exposure or schedule, but those downstream effects are not by themselves proof of a power, connection/interface, unit-condition or monitoring root cause."},
+    {"id":"RF-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: source/distribution availability returns, connection/interface readiness is re-established, the affected unit is running or condition confidence returns, monitoring confidence is renewed and the affected cargo scope is cleared. One restored power indication or alarm reset does not prove full service restoration."},
+    {"id":"RF-R01","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical service is an upstream shipboard utility, while P090 reefer service is cargo-unit-scoped delivery through distribution and connection interfaces to refrigerated cargo. General electrical availability does not equal reefer-service availability."},
+    {"id":"RF-R02","novelty_class":"useful_refinement","importance":"high","memory":"P089 cargo-space ventilation manages air exchange/environmental service at cargo-space scope, while P090 concerns refrigerated-cargo or reefer-unit power/interface/condition service. Shared cargo-condition vocabulary should not collapse these distinct service paths."},
+    {"id":"RF-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support reefer monitoring, indication and alarms, but monitoring confidence remains distinct from physical power delivery, connection readiness and unit/cargo condition."},
+    {"id":"RF-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine reefer-unit condition and restoration, but an equipment lifecycle state does not equal delivered refrigerated-cargo service or cargo-condition confidence."},
+    {"id":"RF-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic source/distribution/interface/equipment condition, monitoring and restoration mechanics overlap prior shipboard utility and equipment-service passes."},
+    {"id":"RF-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P090 applies them specifically to refrigerated-cargo/reefer service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact reefer/refrigerated-cargo power arrangements, outlet/socket counts, loads, voltages, circuit settings, container or cargo setpoints, temperatures, alarm thresholds, monitoring intervals and current configuration are intentionally not retained.",
+    "Exact plug-in/reconnection, power transfer, setting adjustment, defrost/refrigeration operation, monitoring response, testing, troubleshooting, maintenance, cargo-care or emergency procedures are outside this blind pass.",
+    "Named reefer equipment/service providers, terminals, monitoring actors, cargo incidents/claims, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional refrigerated-cargo/reefer equipment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact reefer/refrigerated-cargo power arrangements, outlet/socket counts, loads, voltages, circuit settings, setpoints, temperatures, alarm thresholds, monitoring intervals and current configuration.",
+    "Plug-in/reconnection, power transfer, setting adjustment, refrigeration operation, monitoring response, testing, troubleshooting, maintenance, cargo-care or emergency procedures.",
+    "Named equipment/service providers, terminals, monitoring actors, cargo incidents/claims, deficiency findings and current readiness.",
+    "Private/regional refrigerated-cargo/reefer equipment and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive refrigerated-cargo/reefer service orientation/source-discovery output. It is not electrical, refrigeration, cargo-care, monitoring-response, emergency-response or vessel-operating advice and does not establish any exact arrangement, outlet count, load, voltage, circuit setting, setpoint, temperature, alarm threshold, monitoring interval, test result, procedure, provider, incident, cargo claim, deficiency finding or current-readiness fact.",
+  "stop_reason": "Refrigerated-cargo/reefer service is recalled at useful non-operational resolution: source/distribution availability, connection/interface readiness, reefer-unit/cargo scope, unit-running/condition confidence, monitoring/alarm confidence, cargo-condition outcome confidence, redundancy, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, container-, cargo-type-, outlet-, load-, voltage-, setpoint-, temperature-, alarm-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
