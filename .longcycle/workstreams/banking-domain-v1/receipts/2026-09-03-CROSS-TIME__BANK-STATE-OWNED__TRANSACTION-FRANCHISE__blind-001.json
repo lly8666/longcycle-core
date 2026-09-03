@@ -1,0 +1,57 @@
+{
+  "schema_version": "longcycle-memory-probe-receipt/v2",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001",
+  "family": "state_bank_transaction_franchise_customer_primacy_recovery_blind_recall",
+  "shard_id": "BANK-STATE-OWNED",
+  "time_slice_id": "CROSS-TIME-TRANSACTION-FRANCHISE",
+  "period": ["1990-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "map_input": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+    "map_revision": 94,
+    "blob_sha": "963ece72879bec8321f1d202eb05dde2838dd660"
+  },
+  "manifest_input": {
+    "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+    "blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92"
+  },
+  "raw_output_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE__blind-001-memory-leads.md",
+  "novelty": {
+    "new_category": 54,
+    "useful_refinement": 20,
+    "duplicate": 4,
+    "high_importance_novel_or_refining": 44,
+    "material_gap_found": false
+  },
+  "slice_disposition": "transaction_franchise_gap_closed_return_to_distinct_saturation_review",
+  "counts_as_low_novelty_confirmation": false,
+  "saturation_confirmation_count_after": 0,
+  "targeted_gap": {
+    "gap_id": "CROSS-TIME__BANK-STATE-OWNED__TRANSACTION-FRANCHISE",
+    "closed": true,
+    "closure_summary": "Recovered customer-operating-flow primacy across settlement, cash management, payroll/collections, transaction banking, operational deposits, information, customer ownership, cross-sell and channel integration, with explicit separation from product-level loan/deposit/fee measures.",
+    "second_comparable_material_category_found": false
+  },
+  "horizon_extension": {
+    "required": false,
+    "reason": "No material missing pre-1990 antecedent was identified."
+  },
+  "truth_boundary": {
+    "fresh_banking_search_used": false,
+    "banking_source_or_evidence_read": false,
+    "saturation_review_blind_004_raw_or_receipt_read": false,
+    "completed_bank_state_owned_raw_read": false,
+    "completed_bank_state_owned_receipt_read": false,
+    "batch0_raw_read": false,
+    "prior_v2_raw_read": false,
+    "sealed_shard_raw_read": false,
+    "other_shard_raw_read": false,
+    "database_or_drive_read": false,
+    "truth_promotion_performed": false,
+    "l3_or_l4_mutation_performed": false
+  },
+  "uncertainty_policy": "Exact product labels, bank-specific organizational constructs, account rules, dates, customer counts, transaction volumes and operating-deposit definitions remain unverified leads.",
+  "next_frontier_recommendation": "CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-005"
+}
