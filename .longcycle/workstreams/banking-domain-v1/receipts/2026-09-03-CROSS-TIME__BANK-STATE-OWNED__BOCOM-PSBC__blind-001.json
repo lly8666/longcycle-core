@@ -1,0 +1,49 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v1",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "pass_id": "CROSS-TIME__BANK-STATE-OWNED__BOCOM-PSBC__blind-001",
+  "family": "forgotten_large_state_bank_actor_recovery_blind_recall",
+  "shard_id": "BANK-STATE-OWNED",
+  "time_slice_id": "CROSS-TIME-BOCOM-PSBC",
+  "period": ["1990-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "input_pins": {
+    "exploration_map_revision": 88,
+    "exploration_map_blob_sha": "1adb169731f82a1061bc3990804b93e6f33431c2",
+    "manifest_blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92",
+    "starting_clean_handoff_sha": "6105c8f022182938c1fd18608703c5e2a2988942"
+  },
+  "allowed_inputs_used": [
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json@1adb169731f82a1061bc3990804b93e6f33431c2",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+    "current model internal memory/reasoning"
+  ],
+  "forbidden_inputs_used": [],
+  "fresh_search_used": false,
+  "banking_source_or_evidence_used": false,
+  "completed_bank_state_owned_raw_or_receipts_read": false,
+  "saturation_review_raw_or_receipt_read": false,
+  "raw_output_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__BANK-STATE-OWNED__BOCOM-PSBC__blind-001-memory-leads.md",
+  "novelty": {
+    "new_category": 46,
+    "useful_refinement": 12,
+    "duplicate": 4,
+    "high_importance_novel_or_refining": 35,
+    "material_gap_found": false
+  },
+  "gap_closure": {
+    "targeted_material_gap": "BoCom and PSBC missing from the explicit large-state-owned-bank actor frame",
+    "closed": true,
+    "second_material_actor_gap_found": false,
+    "summary": "Recovered BoCom as an early joint-stock/state-controlled/mixed-shareholder large-bank bridge case and PSBC as a postal-savings/China-Post/agency-network/deposit-led transformation case. Restored point-in-time taxonomy across 四大行/五大行/六大行 and state-owned/state-controlled/joint-stock labels, plus distinct governance, funding, outlet, rural-franchise and metric-semantic mechanisms."
+  },
+  "outcome": "material_actor_gap_closed_return_to_saturation_review",
+  "counts_as_low_novelty_confirmation": false,
+  "saturation_confirmation_count_after_pass": 0,
+  "saturation_confirmation_required": 3,
+  "next_frontier_recommendation": "Return to a distinct cross-time BANK-STATE-OWNED saturation/negative-space challenge; do not re-open BoCom/PSBC unless a later pass identifies a new material sub-gap, and do not seal until three consecutive low-novelty confirmations have been recorded after material gaps are closed.",
+  "truth_promotion_performed": false,
+  "evidence_transition_performed": false
+}
