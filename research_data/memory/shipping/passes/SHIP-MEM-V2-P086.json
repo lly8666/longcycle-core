@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P086",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_cargo_access_hatch_cover_hold_access_actuation_power_support_closing_securing_weather_tightness_drainage_integrity_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_access_hatch_cover_service_state_model_only_no_geometry_seal_securing_setting_load_clearance_test_limit_or_operating_sequence_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"HC-01","novelty_class":"new_category","importance":"high","memory":"Cargo-access/hatch-cover service spans owner/manager, master and deck team, engineering crew, shore technical support, hatch-cover/cargo-access equipment or service actors and relevant port or yard support. Access decisions, deck operation, machinery support, integrity verification and shore intervention should remain distinct roles rather than one vendor, inspection or operating directory."},
+    {"id":"HC-02","novelty_class":"new_category","importance":"high","memory":"Command/control availability is distinct from hatch-cover or cargo-access actuation readiness. A valid command path can exist while an actuator or mechanical access function is restricted, and physical readiness does not itself prove a usable command path."},
+    {"id":"HC-03","novelty_class":"new_category","importance":"high","memory":"Hatch-cover/access actuation readiness is distinct from electrical or hydraulic power-support availability. Supporting power can appear available while the cover/access mechanism is restricted, and an access problem does not by itself establish a power-system root cause."},
+    {"id":"HC-04","novelty_class":"new_category","importance":"high","memory":"Opening/closing access confidence is an outcome-oriented state distinct from actuation readiness. Machinery may appear operable without proving that the relevant cargo-space access can be opened or closed as intended, while incomplete access does not identify the causal component."},
+    {"id":"HC-05","novelty_class":"new_category","importance":"high","memory":"Securing or holding confidence is distinct from opening/closing motion. A cover or access element can move yet have uncertain securing status; conversely a securing concern does not itself prove an actuation, control or power cause."},
+    {"id":"HC-06","novelty_class":"new_category","importance":"high","memory":"Weather-tightness or boundary-integrity confidence is distinct from closing and securing confidence. A closed and apparently secured access boundary does not itself establish protection against environmental ingress, and an integrity concern does not prove a seal, structure, securing or drainage root cause."},
+    {"id":"HC-07","novelty_class":"new_category","importance":"high","memory":"Drainage or interface confidence should remain separate from weather-tightness and access actuation. Drainage paths and boundary interfaces can affect observed integrity outcomes, but this Memory pass does not assert exact drain layouts, clearances, seal geometry or maintenance actions."},
+    {"id":"HC-08","novelty_class":"new_category","importance":"high","memory":"Cargo-space scope matters: one hatch, hold or access boundary can be restricted while another remains available. Localized access or integrity state should not be generalized to the entire vessel without exact arrangement evidence."},
+    {"id":"HC-09","novelty_class":"new_category","importance":"high","memory":"Redundancy or alternate-access confidence may exist across access points or actuation/support paths, but structural memory should preserve only the possibility of scoped alternatives rather than infer exact vessel layout, transfer logic or operating method."},
+    {"id":"HC-10","novelty_class":"new_category","importance":"high","memory":"Cargo-access/hatch-cover degradation follows a defensive lifecycle: observation, uncertain command/actuation/power/access/securing/integrity/drainage scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No hatch-cover operation, testing or troubleshooting procedure is retained."},
+    {"id":"HC-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected access boundary, command path, actuator, power support, securing function, integrity concern or drainage/interface scope rather than generalized to all cargo access. Exact locks, valves, switches, pins or securing steps remain deferred."},
+    {"id":"HC-12","novelty_class":"new_category","importance":"high","memory":"Cargo-access/hatch-cover degradation can propagate into cargo protection, loading/discharge opportunity, port-call timing or voyage flexibility, but those downstream effects are not by themselves proof of an actuation, power, securing, seal/integrity, drainage or control root cause."},
+    {"id":"HC-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control availability returns, actuation readiness returns, opening/closing confidence is re-established, securing confidence returns, integrity and drainage/interface confidence are verified and affected cargo-space scope is cleared. Motion or a cleared indication alone does not prove full service restoration."},
+    {"id":"HC-R01","novelty_class":"useful_refinement","importance":"high","memory":"P085 mooring/anchoring/deck machinery models securing and holding in berth/anchor functions, while P086 applies distinct access-boundary securing and integrity states to cargo spaces. Shared power or machinery concepts do not make the delivered functions interchangeable."},
+    {"id":"HC-R02","novelty_class":"useful_refinement","importance":"high","memory":"P082 hydraulic and P070 electrical services are upstream support dimensions. Their availability does not prove hatch-cover actuation, access, securing or integrity, and cargo-access degradation does not establish a hydraulic or electrical root cause."},
+    {"id":"HC-R03","novelty_class":"useful_refinement","importance":"high","memory":"P066 naval-architecture/design memory covers structural and systems-integration concepts, while P086 captures operational service-state confidence at the cargo-access boundary without retaining design calculations, geometry or class-rule requirements."},
+    {"id":"HC-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 generic equipment lifecycle covers actuator/equipment readiness and maintenance mechanics, while P086 separates delivered access, securing, integrity and drainage-interface confidence from equipment readiness without becoming maintenance guidance."},
+    {"id":"HC-D01","novelty_class":"duplicate","importance":"medium","memory":"Hatch-cover actuator, control and mechanical equipment readiness/maintenance mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"HC-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap prior shipboard service passes; P086 applies them specifically to cargo-access/hatch-cover function."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact hatch-cover/cargo-access arrangements, panel or pontoon geometry, seals, drainage layouts, securing devices/settings, loads, clearances, hydraulic/electrical parameters, control modes, tests, limits and current configuration are intentionally not retained.",
+    "Exact opening/closing, securing, drainage clearing, testing, isolation, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named equipment/service providers, vessel incidents/deficiencies, inspection/test findings, ingress events and current readiness require claim-scoped Evidence.",
+    "Private/regional hatch-cover/cargo-access equipment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact vessel hatch-cover/cargo-access topology, geometry, seals, drainage layouts, securing devices/settings, loads, clearances, hydraulic/electrical parameters, control modes, tests, limits and current configuration.",
+    "Opening/closing, securing, drainage clearing, testing, isolation, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel incidents/deficiencies, inspection/test findings, ingress events and current readiness.",
+    "Private/regional hatch-cover/cargo-access equipment and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive cargo-access/hatch-cover service orientation/source-discovery output. It is not cargo operation, hatch-cover operation, maintenance, testing, emergency-response, structural, safety or vessel-operating advice and does not establish any exact arrangement, geometry, seal, drainage layout, securing device/setting, load, clearance, hydraulic/electrical parameter, control mode, test, limit, sequence, procedure, provider, incident, deficiency, inspection finding, ingress event or current-readiness fact.",
+  "stop_reason": "Cargo-access/hatch-cover service is recalled at useful functional resolution: command/control, actuation, power support, opening/closing access, securing/holding, weather-tightness/integrity, drainage/interface, cargo-space scope, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, cover-type-, seal-, securing-device-, drainage-, load/clearance-, control-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
