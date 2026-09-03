@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P093",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_cargo_vapor_control_return_collection_distribution_terminal_interface_tank_scope_pressure_condition_monitoring_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_vapor_control_return_service_state_model_only_no_flow_pressure_vapor_composition_valve_position_connection_control_setting_terminal_sequence_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CV-01","novelty_class":"new_category","importance":"high","memory":"Cargo-vapor control or return service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, vapor-control/return equipment or service actors and relevant terminal, port or yard support. Shipboard vapor-path readiness, tank scope, terminal interface, monitoring and shore intervention should remain distinct roles rather than one terminal-connection, emissions or operating directory."},
+    {"id":"CV-02","novelty_class":"new_category","importance":"high","memory":"Vapor collection/return path availability is a distinct service state from liquid-cargo transfer and from cargo-tank inert-gas availability. A liquid transfer path or inert-gas blanket can be available while the bounded vapor path remains unavailable or uncertain, and vapor-path uncertainty does not itself prove a liquid-transfer or inert-gas fault."},
+    {"id":"CV-03","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface confidence is distinct from common vapor-path availability. A common vapor collection or return path can appear available while one tank, tank group or bounded tank interface remains unavailable or uncertain."},
+    {"id":"CV-04","novelty_class":"new_category","importance":"high","memory":"Ship/shore or terminal-interface readiness is a separate boundary state from shipboard vapor-path and tank-scope confidence. Terminal-interface uncertainty does not by itself establish a shipboard vapor-control equipment, tank-interface or path root cause."},
+    {"id":"CV-05","novelty_class":"new_category","importance":"high","memory":"Vapor-flow or pressure confidence can be represented structurally without numeric values. The useful distinction is whether useful vapor handling appears available, degraded, uncertain, restricted or restored for the intended scope; no target, limit, adjustment or operating guidance is retained."},
+    {"id":"CV-06","novelty_class":"new_category","importance":"high","memory":"Monitoring/alarm confidence is distinct from physical vapor-path, tank-interface and vapor-handling confidence. Instrument or alarm state can change confidence but does not alone establish actual flow, pressure, vapor condition, duration, root cause or corrective action."},
+    {"id":"CV-07","novelty_class":"new_category","importance":"high","memory":"Support-dependency confidence is separate from delivered cargo-vapor service. Electrical, control, pneumatic, inert-gas or other supporting services can influence availability, but a support concern does not automatically prove the vapor-control root cause and healthy support does not guarantee delivered vapor handling."},
+    {"id":"CV-08","novelty_class":"new_category","importance":"high","memory":"Environmental or compliance confidence is an outcome/assurance dimension distinct from physical vapor-control service state. A compliance concern, terminal restriction or environmental consequence can motivate investigation or restriction but is not by itself proof of a particular vapor path, tank interface, terminal interface or monitoring failure."},
+    {"id":"CV-09","novelty_class":"new_category","importance":"high","memory":"Redundancy or substitution confidence can exist across vapor paths, support paths, tank scopes, monitoring channels or terminal interfaces, but structural memory should not infer exact approved connections, lineups, control modes, capacities or operating sequences."},
+    {"id":"CV-10","novelty_class":"new_category","importance":"high","memory":"Cargo-vapor-control degradation follows a defensive lifecycle: observation, uncertain vapor-path/tank/interface/flow-pressure/monitoring/support scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No connection, valve, purge, transfer, shutdown or emergency procedure is retained."},
+    {"id":"CV-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected vapor-path segment, tank/interface scope, terminal boundary, support domain or monitoring channel rather than generalized to the entire cargo system. Exact valve, connection or control actions remain deferred."},
+    {"id":"CV-12","novelty_class":"new_category","importance":"high","memory":"Cargo-vapor-control degradation can propagate into cargo-operation availability, terminal compatibility, environmental/compliance confidence, port rework, delay or schedule, but those downstream effects are not by themselves proof of a vapor-path, tank-interface, terminal-interface, flow/pressure, support or monitoring root cause."},
+    {"id":"CV-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: vapor-path confidence returns, affected tank/interface scope is re-established, terminal-interface confidence is renewed, useful non-numeric vapor-handling confidence returns, support and monitoring confidence are re-established, and downstream operational or compliance restrictions are separately cleared. One alarm reset or interface indication does not prove full service restoration."},
+    {"id":"CV-R01","novelty_class":"useful_refinement","importance":"high","memory":"P091 cargo-tank inert-gas service concerns gas-generation/supply and blanket-condition confidence, while P093 concerns cargo-vapor collection/return/control at the tank-to-terminal boundary. Healthy inert-gas confidence does not equal vapor-control availability, and vapor-control degradation does not prove inert-gas failure."},
+    {"id":"CV-R02","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer concerns pumps, lines/manifolds and liquid movement, while P093 concerns a distinct vapor-handling path and interface. Healthy liquid transfer does not establish vapor-return readiness, and vapor restriction does not by itself prove a liquid-transfer fault."},
+    {"id":"CV-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support cargo-vapor command, indication and monitoring, but control/monitoring confidence is distinct from physical vapor-path, tank-interface, terminal-interface and delivered vapor-handling confidence."},
+    {"id":"CV-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine vapor-control equipment condition and restoration, but an equipment lifecycle state does not equal delivered cargo-vapor-control service across the intended tank and terminal scope."},
+    {"id":"CV-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic equipment/support/path/interface/monitoring and restoration mechanics overlap prior shipboard utility, equipment and cargo-service passes."},
+    {"id":"CV-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P093 applies them specifically to cargo-vapor control/return."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cargo-vapor-control arrangements, flows, pressures, vapor composition, valve positions, connections, terminal interfaces, control modes, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact vapor connection, line alignment, purge, transfer coordination, monitoring, testing, troubleshooting, maintenance, shutdown, emergency or terminal operating procedures are outside this blind pass.",
+    "Named vapor-control equipment providers, terminals, inspection actors, tanker incidents, environmental events, deficiency findings, disputes and current readiness require claim-scoped Evidence.",
+    "Private/regional vapor-control equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact cargo-vapor-control arrangements, flows, pressures, vapor composition, valve positions, connections, terminal interfaces, control modes, alarm thresholds, test values and current configuration.",
+    "Vapor connection, line alignment, purge, transfer coordination, monitoring, testing, troubleshooting, maintenance, shutdown, emergency or terminal operating procedures.",
+    "Named equipment providers, terminals, inspection actors, tanker incidents, environmental events, deficiency findings, disputes and current readiness.",
+    "Private/regional vapor-control equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive cargo-vapor-control/return service orientation/source-discovery output. It is not tanker cargo operation, terminal connection, emissions-control compliance advice, purge/transfer/shutdown/emergency guidance or vessel-operating advice and does not establish any exact arrangement, flow, pressure, vapor composition, valve position, connection, terminal interface, control mode, alarm threshold, test result, procedure, provider, incident, environmental event, deficiency finding, dispute or current-readiness fact.",
+  "stop_reason": "Cargo-vapor-control/return service is recalled at useful non-operational resolution: vapor-path/interface availability, tank-scope confidence, terminal-interface readiness, non-numeric vapor-flow/pressure confidence, monitoring/alarm confidence, support-dependency confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, flow-, pressure-, vapor-composition-, valve-, connection-, terminal-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
