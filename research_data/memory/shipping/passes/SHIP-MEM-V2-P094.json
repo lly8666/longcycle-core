@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P094",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_tank_heating_temperature_maintenance_heat_source_distribution_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_liquid_cargo_tank_heating_temperature_maintenance_service_state_model_only_no_temperature_pressure_flow_setpoint_valve_position_connection_heating_sequence_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CH-01","novelty_class":"new_category","importance":"high","memory":"Liquid-cargo tank-heating or temperature-maintenance service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, cargo-heating equipment/service actors and relevant terminal, port or yard support. Heat-source readiness, heating path, tank scope, cargo-condition confidence, monitoring and shore support should remain distinct roles rather than one cargo-specific heating or operating directory."},
+    {"id":"CH-02","novelty_class":"new_category","importance":"high","memory":"Heat-source or upstream support readiness is distinct from delivered tank-heating service. A steam, thermal-medium, electrical or other support source can be available while the bounded cargo-heating function is unavailable or uncertain, and cargo-heating degradation does not by itself prove the upstream source failed."},
+    {"id":"CH-03","novelty_class":"new_category","importance":"high","memory":"Heating-medium path availability is distinct from heat-source readiness. A heat source can be ready while the bounded path that delivers heating to an intended cargo-tank scope is unavailable or uncertain, and path uncertainty does not itself establish source failure."},
+    {"id":"CH-04","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface confidence is distinct from common heating-path availability. A common heating source/path can appear available while one tank, tank group or bounded heating interface remains unavailable or uncertain."},
+    {"id":"CH-05","novelty_class":"new_category","importance":"high","memory":"Temperature or cargo-condition confidence can be represented non-numerically as maintained, degrading, uncertain, restricted or restored for the intended scope. This state must not retain cargo-specific targets, limits, setpoints or adjustment guidance."},
+    {"id":"CH-06","novelty_class":"new_category","importance":"high","memory":"Monitoring/alarm confidence is distinct from actual cargo-temperature or heating-service confidence. Instrument or alarm status can change confidence but does not alone establish actual temperature, heat transfer, duration, root cause or corrective action."},
+    {"id":"CH-07","novelty_class":"new_category","importance":"high","memory":"Support-dependency confidence is separate from delivered cargo heating. Electrical, steam/thermal, control, circulation or other supporting services can influence heating availability, but a support concern is not root-cause proof and healthy support does not guarantee delivered heating at the affected tank scope."},
+    {"id":"CH-08","novelty_class":"new_category","importance":"high","memory":"Cargo-condition confidence is an outcome dimension distinct from heating-system state. A cargo-condition concern can motivate restriction, rework or investigation, but it does not by itself prove a heat-source, path, tank-interface or monitoring failure."},
+    {"id":"CH-09","novelty_class":"new_category","importance":"high","memory":"Redundancy or substitution confidence can exist across heat sources, support paths, heating paths, tank groups or monitoring channels, but structural memory should not infer exact connections, valve arrangements, heating sequences, capacities or approved operating modes."},
+    {"id":"CH-10","novelty_class":"new_category","importance":"high","memory":"Cargo-heating degradation follows a defensive lifecycle: observation, uncertain source/path/tank/temperature-condition/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No heating, valve, cargo-transfer, shutdown or emergency procedure is retained."},
+    {"id":"CH-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected heat source/support path, heating-medium path, tank/interface scope or monitoring channel rather than generalized to the entire cargo system. Exact valve, connection or control actions remain deferred."},
+    {"id":"CH-12","novelty_class":"new_category","importance":"high","memory":"Cargo-heating degradation can propagate into cargo-condition confidence, transfer availability, terminal compatibility, rework, claims exposure or schedule, but those downstream effects are not by themselves proof of a heat-source, heating-path, tank-interface, temperature-condition or monitoring root cause."},
+    {"id":"CH-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: heat-source/support confidence returns, heating-path confidence is re-established, affected tank/interface scope is available, non-numeric cargo-temperature/condition confidence recovers, monitoring confidence is renewed and downstream transfer or terminal restrictions are separately cleared. One source-running or alarm-reset indication does not prove full heating-service restoration."},
+    {"id":"CH-R01","novelty_class":"useful_refinement","importance":"high","memory":"P081 steam/boiler service may be an upstream heat-source/support dimension, while P094 concerns delivered liquid-cargo tank heating across a bounded tank scope. Healthy steam service does not equal cargo-heating availability, and cargo-heating degradation does not prove boiler failure."},
+    {"id":"CH-R02","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer concerns physical cargo movement, while P094 concerns cargo temperature/condition maintenance. Transfer readiness does not establish heating readiness, and heating degradation does not by itself prove a cargo-transfer fault."},
+    {"id":"CH-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support cargo-heating command, indication and monitoring, but control/monitoring confidence is distinct from heat-source, heating-path, tank-interface and delivered temperature-maintenance confidence."},
+    {"id":"CH-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine cargo-heating equipment condition and restoration, but an equipment lifecycle state does not equal delivered heating service across the intended tank and cargo-condition scope."},
+    {"id":"CH-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic source/support/path/interface/monitoring and restoration mechanics overlap prior shipboard utility, equipment and cargo-service passes."},
+    {"id":"CH-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P094 applies them specifically to liquid-cargo tank heating and temperature maintenance."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cargo-heating arrangements, heat-source capacities, heating-medium pressures/flows, cargo temperatures, setpoints, valve positions, connections, control modes, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact heating startup/shutdown, valve alignment, temperature adjustment, circulation, cargo-transfer coordination, monitoring, testing, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named cargo-heating equipment providers, terminals, inspection actors, tanker incidents, cargo-condition disputes, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-heating equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact cargo-heating arrangements, heat-source capacities, heating-medium pressures/flows, cargo temperatures, setpoints, valve positions, connections, control modes, alarm thresholds, test values and current configuration.",
+    "Heating startup/shutdown, valve alignment, temperature adjustment, circulation, cargo-transfer coordination, monitoring, testing, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment providers, terminals, inspection actors, tanker incidents, cargo-condition disputes, deficiency findings and current readiness.",
+    "Private/regional cargo-heating equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive liquid-cargo tank-heating/temperature-maintenance service orientation/source-discovery output. It is not tanker cargo heating, transfer, valve-operation, temperature-setting, shutdown/emergency or vessel-operating advice and does not establish any exact arrangement, capacity, pressure, flow, temperature, setpoint, valve position, connection, control mode, alarm threshold, test result, procedure, provider, incident, cargo dispute, deficiency finding or current-readiness fact.",
+  "stop_reason": "Liquid-cargo tank-heating/temperature-maintenance service is recalled at useful non-operational resolution: heat-source/support readiness, heating-medium path availability, tank-scope/interface confidence, non-numeric temperature/condition confidence, monitoring/alarm confidence, support dependencies, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, cargo-type-, temperature-, pressure-, flow-, valve-, connection-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
