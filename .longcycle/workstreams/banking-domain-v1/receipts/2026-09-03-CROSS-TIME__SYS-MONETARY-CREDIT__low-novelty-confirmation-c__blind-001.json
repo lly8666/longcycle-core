@@ -1,0 +1,56 @@
+{
+  "schema_version": "longcycle-industry-memory-pass-receipt/v1",
+  "record_type": "industry_memory_blind_pass_receipt",
+  "workstream_id": "banking-domain-v1",
+  "assignment_epoch": 1,
+  "reservation_revision": 1,
+  "campaign_id": "banking-china-1990-2026-v2",
+  "pass_id": "CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001",
+  "family": "metric_expectation_counterexample_low_novelty_confirmation",
+  "shard_id": "SYS-MONETARY-CREDIT",
+  "period": ["1990-01-01", "2026-08-31"],
+  "model_vintage": "GPT-5.6 Sol",
+  "authority": "MEMORY_LEADS_ONLY",
+  "source_visibility": "none",
+  "raw_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001-memory-leads.md",
+  "allowed_input_digest_ordered": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "git_blob_sha": "d5df3eb943b8f5aada629131146af6f34ca054ae"
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "git_blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92"
+    }
+  ],
+  "input_controls": {
+    "confirmation_a_or_b_raw_or_receipt_read": false,
+    "saturation_review_artifact_read": false,
+    "prior_v2_raw_or_review_or_challenger_read": false,
+    "batch0_raw_read": false,
+    "sealed_regulation_resolution_raw_read": false,
+    "other_shard_raw_read": false,
+    "banking_evidence_or_source_read": false,
+    "fresh_banking_search_used": false,
+    "cmb_2023_08_28_preexposure_counted_as_fresh_novelty": false
+  },
+  "novelty": {
+    "new_category_count": 0,
+    "useful_refinement_count": 0,
+    "duplicate_count": 16,
+    "novel_or_refining_count": 0,
+    "high_importance_novel_or_refining_count": 0
+  },
+  "material_gap_found": false,
+  "material_missing_antecedent_found": false,
+  "pre_1990_horizon_extension_required": false,
+  "qualifies_for_low_novelty_confirmation": true,
+  "qualification_reason": "no_material_category_or_antecedent_and_high_importance_novel_or_refining_within_canonical_ceiling",
+  "distinct_family_from_prior_qualifying_confirmations": true,
+  "one_pass_cannot_self_seal": true,
+  "seal_attempted": false,
+  "evidence_transition_attempted": false,
+  "truth_promotion_attempted": false,
+  "outcome": "qualifying_low_novelty_confirmation_3_of_3",
+  "next_control_requirement": "separate_seal_readiness_review_after_clean_handoff"
+}
