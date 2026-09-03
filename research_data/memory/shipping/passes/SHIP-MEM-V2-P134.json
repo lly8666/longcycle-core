@@ -1,0 +1,69 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v2",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "pass_id":"SHIP-MEM-V2-P134",
+  "authority_class":"research_only_model_memory",
+  "family":"port_terminal_dry_bulk_cargo_quantity_weight_measurement_sampling_quality_custody_handoff_scope_confidence_reconciliation_availability_degradation_isolation_restoration",
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility":"atlas_only",
+  "model_vintage":"GPT-5.6 Sol",
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used":false,
+  "repository_evidence_search_used":false,
+  "drive_used":false,
+  "database_used":false,
+  "memory_is_evidence":false,
+  "preflight_dedup":{"performed_before_raw":true,"comparison_passes":["SHIP-MEM-V2-P125","SHIP-MEM-V2-P128","SHIP-MEM-V2-P130","SHIP-MEM-V2-P133"],"result":"survived_with_heavy_identity_survey_inventory_handoff_dedup","reason":"P125 covers cargo identity/traceability, P128 condition survey and representativeness, P130 storage/inventory, and P133 landside handoff. None separately models a terminal dry-bulk quantity/weight measurement plus sampling/quality and custody-reconciliation confidence boundary, while generic scope, documentation, observation, monitoring and lifecycle mechanics are already represented."},
+  "role_distinctions":["terminal_dry_bulk_cargo_operations","cargo_owner_shipper_receiver_or_trader_interface","independent_survey_measurement_or_sampling_function","storage_reclaim_inventory_interface","landside_or_vessel_handoff_interface","commercial_reconciliation_support_without_contract_adjudication"],
+  "new_categories":[
+    {"id":"p134-n01","label":"terminal_dry_bulk_quantity_measurement_service_readiness","importance":"high","memory":"Terminal dry-bulk quantity or weight measurement can be represented as a delivered assurance service-state distinct from cargo identity, storage inventory and physical transfer-path availability, without retaining exact instrument type, quantity, tolerance or method."},
+    {"id":"p134-n02","label":"measurement_basis_scope_confidence","importance":"high","memory":"Confidence can attach to a bounded measurement basis or transfer scope without asserting a specific scale, draft-survey method, calculation convention, calibration state, unit or contractual basis."},
+    {"id":"p134-n03","label":"sampling_opportunity_readiness","importance":"high","memory":"A terminal can have a distinct opportunity/readiness state for obtaining a sample at an appropriate handoff or cargo-flow scope without retaining sampler design, location, frequency or procedure."},
+    {"id":"p134-n04","label":"sampling_representativeness_confidence","importance":"high","memory":"Sample availability is not equivalent to confidence that the sample represents the bounded lot or flow; representativeness can remain a separate qualitative state without exact statistical or procedural claims."},
+    {"id":"p134-n05","label":"quality_condition_scope_alignment_confidence","importance":"high","memory":"Quality or condition observations can be bounded to the sampled or measured cargo scope and need not imply the whole stockpile, parcel, vessel or contractual cargo condition."},
+    {"id":"p134-n06","label":"custody_handoff_measurement_confidence","importance":"high","memory":"A cargo handoff can carry a distinct confidence state that quantity/quality measurement is sufficiently aligned with the custody boundary, without asserting title transfer, legal custody, exact documents or commercial terms."},
+    {"id":"p134-n07","label":"measurement_provenance_chain_confidence","importance":"high","memory":"Measurement confidence can depend on a traceable chain linking bounded cargo scope, observation/measurement event and resulting record, while exact identifiers, certificates or document contents remain deferred."},
+    {"id":"p134-n08","label":"quantity_inventory_reconciliation_confidence","importance":"high","memory":"Measured receipt/dispatch quantity and storage/inventory confidence can diverge; reconciliation confidence is therefore distinct from either measurement availability or inventory-location readiness alone."},
+    {"id":"p134-n09","label":"measurement_sampling_independent_check_confidence","importance":"high","memory":"An independent or alternate check can be represented abstractly as corroboration confidence without naming surveyors, laboratories, instruments, methods or contractual authority."},
+    {"id":"p134-n10","label":"measurement_sampling_monitoring_indication_confidence","importance":"high","memory":"Monitoring or indication supporting measurement/sampling readiness can degrade separately from the underlying cargo flow or storage service without exact system or alarm claims."},
+    {"id":"p134-n11","label":"measurement_sampling_support_dependency_confidence","importance":"high","memory":"Staffing, instrument availability, communications, power, laboratory access or other support dependency can affect measurement/sampling assurance without retaining exact provider or dependency topology."},
+    {"id":"p134-n12","label":"measurement_sampling_degradation_restriction_isolation_restoration_lifecycle","importance":"high","memory":"The assurance service can move through available, degraded, restricted, isolated, under-restoration and restored states while the physical cargo path remains separately available or unavailable."},
+    {"id":"p134-n13","label":"multi_timestamp_measurement_reconciliation_restoration","importance":"high","memory":"Instrument/service return, sampling opportunity, representativeness confidence, record alignment, reconciliation and restriction release may recover at different times rather than one synthetic restoration timestamp."}
+  ],
+  "useful_refinements":[
+    {"id":"p134-r01","label":"quantity_measurement_vs_cargo_identity_traceability","importance":"high","memory":"P125 identity/lot/parcel traceability can establish what cargo scope is being discussed but not how much cargo was measured or whether measurement was available."},
+    {"id":"p134-r02","label":"sampling_quality_vs_damage_condition_survey","importance":"high","memory":"P128 survey/observation and condition representativeness do not by themselves establish a terminal sampling opportunity or quantity/quality measurement service."},
+    {"id":"p134-r03","label":"measured_quantity_vs_storage_inventory_confidence","importance":"high","memory":"P130 storage/inventory location and reclaim readiness do not make measured receipt/dispatch quantity equivalent to book or physical inventory confidence."},
+    {"id":"p134-r04","label":"measurement_custody_confidence_vs_handoff_path_readiness","importance":"high","memory":"P133 landside handoff readiness does not establish that quantity/quality measurement is aligned to the custody boundary; physical interchange and measurement assurance are separate states."}
+  ],
+  "duplicates":[
+    {"id":"p134-d01","label":"generic_scope_observation_documentation_monitoring_support_lifecycle","memory":"Generic scope alignment, observation validity, record linkage, monitoring, support dependency, degradation, restriction, isolation and restoration repeat prior survey, identity and service-state families."},
+    {"id":"p134-d02","label":"generic_downstream_discrepancy_does_not_prove_measurement_root_cause","memory":"Inventory mismatch, cargo rejection, commercial dispute, rehandling, delay or schedule effects do not by themselves prove a scale, sample, survey or custody root cause; this causal-boundary rule is already campaign-wide."}
+  ],
+  "reviewed_no_specific_memory":[
+    "exact scales, weighbridges, belt scales, draft-survey practices, samplers, laboratories, instruments, calibration states, measurement methods, units, quantities, tolerances and current configuration",
+    "exact sampling frequencies, increments, preparation/testing methods, quality specifications, acceptance criteria, certificates, records, document identifiers and custody-transfer terms",
+    "exact weighing, sampling, testing, reconciliation, acceptance/release, dispute, calibration, maintenance, troubleshooting or emergency procedures",
+    "named terminals, surveyors, laboratories, cargo owners, carriers, authorities, equipment vendors, disputes, incidents, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "downstream_propagation":["inventory_or_stock_confidence_uncertainty","cargo_acceptance_or_release_uncertainty","commercial_reconciliation_uncertainty","rehandling_or_resampling_pressure","throughput_or_schedule_effect"],
+  "negative_space":[
+    "exact measurement instruments, methods, calibration, quantities, units, tolerances, sampling designs, laboratories, quality specifications and current configuration",
+    "exact certificates, records, document contents, custody/title terms, acceptance/rejection criteria, contractual allocations and dispute positions",
+    "exact weighing, sampling, testing, reconciliation, acceptance/release, calibration, maintenance, troubleshooting and emergency procedures",
+    "named terminals, surveyors, laboratories, cargo owners, providers, disputes, incidents, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "novelty":{"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":17,"reviewed_no_specific_memory_count":4},
+  "stop_reason":"The bounded terminal dry-bulk quantity/weight measurement, sampling/quality and custody-reconciliation questions are answered at structural Memory level. Further recall trends toward exact instruments, methods, values, tolerances, specifications, documents, contractual terms, providers or disputes that require Evidence or a different explicitly selected frontier.",
+  "method_observation":null,
+  "retained_method_observation_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
+  "seal_eligible":false,
+  "evidence_transition_allowed":false,
+  "epistemic_boundary":"Memory-only defensive terminal dry-bulk measurement/sampling/custody orientation and source-discovery output; not weighing, sampling, laboratory, custody-transfer, reconciliation, legal, commercial, maintenance or emergency guidance and not proof of any exact instrument, method, quantity, tolerance, specification, document, term, provider, dispute, incident or current-readiness fact."
+}
