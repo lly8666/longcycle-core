@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P095",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_tank_gauging_level_quantity_measurement_tank_scope_instrumentation_monitoring_confidence_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_liquid_cargo_tank_gauging_measurement_confidence_model_only_no_level_ullage_quantity_sensor_range_calibration_parameter_sampling_accounting_or_measurement_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CG-01","novelty_class":"new_category","importance":"high","memory":"Liquid-cargo tank gauging and quantity-measurement service spans owner/manager, master and deck/cargo team, engineering crew, shore technical/cargo support, gauging or measurement equipment/service actors and relevant terminal, port or yard support. Instrument readiness, tank scope, measurement confidence, monitoring, cross-check and shore reconciliation should remain distinct roles rather than one measurement, calibration, sampling or cargo-accounting directory."},
+    {"id":"CG-02","novelty_class":"new_category","importance":"high","memory":"Measurement/instrument readiness is distinct from liquid-cargo transfer readiness. Cargo can be physically movable while the bounded gauging function is unavailable or uncertain, and a measurement concern does not itself prove a cargo-transfer fault."},
+    {"id":"CG-03","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface confidence is distinct from common measurement-system readiness. A common gauging or indication function can appear available while one tank, tank group or bounded measurement interface remains unavailable or uncertain."},
+    {"id":"CG-04","novelty_class":"new_category","importance":"high","memory":"Level/quantity confidence can be represented structurally without retaining any level, ullage, volume, mass or other numeric quantity. Useful states include available, degraded, uncertain, restricted and restored for the intended tank scope."},
+    {"id":"CG-05","novelty_class":"new_category","importance":"high","memory":"Measurement validity confidence is distinct from mere instrument indication. An instrument can produce an indication while confidence in the underlying measurement remains uncertain, and absence of an indication does not by itself establish the physical tank quantity."},
+    {"id":"CG-06","novelty_class":"new_category","importance":"high","memory":"Monitoring/alarm confidence is distinct from measurement validity and tank-level/quantity confidence. Alarm or monitoring status can change assurance but does not alone establish actual quantity, measurement error, duration, root cause or corrective action."},
+    {"id":"CG-07","novelty_class":"new_category","importance":"high","memory":"Redundancy or independent cross-check confidence is a separate state from any one instrument channel. Multiple independent or alternate measurement paths can increase confidence, but structural memory should not infer exact sensor types, calibration relations, manual methods or reconciliation formulas."},
+    {"id":"CG-08","novelty_class":"new_category","importance":"high","memory":"Cargo-quantity reconciliation confidence is an outcome/assurance dimension distinct from shipboard sensor state. A quantity dispute, mismatch or reconciliation concern can motivate investigation or restriction but is not itself proof of an instrument, tank-interface or monitoring root cause."},
+    {"id":"CG-09","novelty_class":"new_category","importance":"high","memory":"Measurement availability should be scoped by tank, tank group, measurement channel or bounded interface rather than generalized to the entire cargo system. A degraded scope can coexist with usable confidence elsewhere without implying exact substitution or measurement procedure."},
+    {"id":"CG-10","novelty_class":"new_category","importance":"high","memory":"Cargo-gauging degradation follows a defensive lifecycle: observation, uncertain instrument/tank/measurement-validity/monitoring/cross-check scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No gauging, calibration, sampling, accounting or transfer procedure is retained."},
+    {"id":"CG-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected measurement channel, tank/interface, monitoring domain or cross-check path rather than generalized to the entire cargo operation. Exact sensor, calibration or manual-measurement actions remain deferred."},
+    {"id":"CG-12","novelty_class":"new_category","importance":"high","memory":"Cargo-gauging degradation can propagate into transfer confidence, cargo-quantity reconciliation, terminal compatibility, claims exposure, rework or schedule, but those downstream effects are not by themselves proof of an instrument, tank-interface, measurement-validity or monitoring root cause."},
+    {"id":"CG-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: instrument/channel readiness returns, affected tank-interface confidence is re-established, non-numeric level/quantity confidence is restored, monitoring/alarm confidence is renewed, independent cross-check confidence is re-established and downstream quantity or terminal restrictions are separately cleared. One display recovery or alarm reset does not prove full measurement-service restoration."},
+    {"id":"CG-R01","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer concerns physical movement through pumps and paths, while P095 concerns measurement assurance. Transfer availability does not equal gauging confidence, and gauging uncertainty does not by itself prove a transfer fault."},
+    {"id":"CG-R02","novelty_class":"useful_refinement","importance":"high","memory":"P094 cargo-heating/temperature maintenance concerns cargo condition, while P095 concerns level/quantity measurement confidence. Temperature-maintenance readiness does not establish quantity-measurement validity, and measurement degradation does not prove heating failure."},
+    {"id":"CG-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support indication, data transport and alarms, but data-path or display availability is distinct from measurement validity and actual tank-level/quantity confidence."},
+    {"id":"CG-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine gauging-instrument condition and restoration, but an instrument lifecycle state does not equal delivered measurement confidence across the intended tank and reconciliation scope."},
+    {"id":"CG-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic instrument/interface/monitoring/redundancy and restoration mechanics overlap prior shipboard equipment, control and cargo-service passes."},
+    {"id":"CG-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P095 applies them specifically to liquid-cargo tank gauging and quantity-measurement confidence."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact gauging arrangements, level/ullage/volume/mass values, sensor types or ranges, calibration parameters, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact gauging, manual measurement, calibration, sampling, cargo-accounting, reconciliation, testing, troubleshooting, maintenance or transfer-coordination procedures are outside this blind pass.",
+    "Named gauging-equipment providers, terminals, inspectors/surveyors, tanker incidents, cargo-quantity disputes, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-gauging equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact gauging arrangements, level/ullage/volume/mass values, sensor types or ranges, calibration parameters, alarm thresholds, test values and current configuration.",
+    "Gauging, manual measurement, calibration, sampling, cargo-accounting, reconciliation, testing, troubleshooting, maintenance or transfer-coordination procedures.",
+    "Named equipment providers, terminals, inspectors/surveyors, tanker incidents, cargo-quantity disputes, deficiency findings and current readiness.",
+    "Private/regional cargo-gauging equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive liquid-cargo tank-gauging/quantity-measurement confidence orientation/source-discovery output. It is not gauging, calibration, sampling, cargo-accounting, transfer or vessel-operating advice and does not establish any exact level, ullage, volume, mass, sensor type/range, calibration parameter, alarm threshold, test result, measurement procedure, provider, incident, cargo dispute, deficiency finding or current-readiness fact.",
+  "stop_reason": "Liquid-cargo tank-gauging/quantity-measurement service is recalled at useful non-operational resolution: instrument readiness, tank-scope/interface confidence, non-numeric level/quantity confidence, measurement validity, monitoring/alarm confidence, independent cross-check confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, instrument-, sensor-, level-, ullage-, quantity-, calibration-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
