@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P098",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_tank_washing_cleaning_machine_supply_support_distribution_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_tank_washing_cleaning_service_state_model_only_no_pressure_flow_temperature_nozzle_pattern_wash_medium_composition_valve_position_sequence_or_entry_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"TW-01","novelty_class":"new_category","importance":"high","memory":"Cargo-tank washing/cleaning service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, tank-washing/cleaning equipment or service actors and relevant terminal, port or yard support. Cleaning-function readiness, tank scope, support and monitoring should remain distinct roles rather than one tank-cleaning or operating directory."},
+    {"id":"TW-02","novelty_class":"new_category","importance":"high","memory":"Cleaning-machine or cleaning-function readiness is distinct from wash-medium supply/support readiness. A supply/support function can be available while the cleaning machinery or delivered cleaning function is unavailable, and machinery concern does not itself prove a supply failure."},
+    {"id":"TW-03","novelty_class":"new_category","importance":"high","memory":"Wash-medium supply/support confidence is distinct from exact medium composition, temperature, pressure or flow. Structural memory can represent whether supply/support is available, degraded, uncertain or restored without retaining preparation or adjustment guidance."},
+    {"id":"TW-04","novelty_class":"new_category","importance":"high","memory":"Cleaning distribution or path availability is distinct from cleaning-machine readiness. Machinery can be ready while the intended bounded distribution path is unavailable or uncertain, and path uncertainty does not by itself prove machinery failure."},
+    {"id":"TW-05","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface confidence is distinct from common cleaning-system availability. A common cleaning service can be available while one tank, tank group or bounded interface remains unavailable or uncertain."},
+    {"id":"TW-06","novelty_class":"new_category","importance":"high","memory":"Non-numeric cleaning-function confidence can be represented as available, degraded, uncertain, restricted or restored for the intended tank scope without retaining cleanliness acceptance criteria, residue limits, wash duration, sequence or operating targets."},
+    {"id":"TW-07","novelty_class":"new_category","importance":"high","memory":"Return, collection or drainage-path confidence can be represented as a separate bounded service state from delivery of wash medium. Cleaning delivery may be available while the downstream collection/return path remains uncertain, without retaining valve lineups or disposal procedures."},
+    {"id":"TW-08","novelty_class":"new_category","importance":"high","memory":"Monitoring or indication confidence is distinct from actual cleaning-function confidence. Instrument, status or alarm information can change confidence but does not alone establish tank condition, cleaning effectiveness, root cause or required action."},
+    {"id":"TW-09","novelty_class":"new_category","importance":"high","memory":"Redundancy or substitution confidence can exist across cleaning machinery, supply/support paths, distribution paths or tank scopes, but structural memory should not infer exact approved lineups, nozzle patterns, capacities, cross-connections or sequences."},
+    {"id":"TW-10","novelty_class":"new_category","importance":"high","memory":"Tank-washing/cleaning degradation follows a defensive lifecycle: observation, uncertain machinery/supply/path/tank/collection/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No tank-cleaning, gas-freeing, entry or emergency procedure is retained."},
+    {"id":"TW-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected cleaning unit/function, supply/support path, distribution segment, collection/return path, tank scope or monitoring domain rather than generalized to the entire cargo system. Exact valve or machine actions remain deferred."},
+    {"id":"TW-12","novelty_class":"new_category","importance":"high","memory":"Tank-washing/cleaning degradation can propagate into cargo-change flexibility, tank-condition confidence, inspection/readiness, terminal compatibility, rework or schedule, but those downstream effects are not themselves proof of a cleaning-machine, supply, distribution, tank-interface, collection or monitoring root cause."},
+    {"id":"TW-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: cleaning-machine/function readiness returns, supply/support and distribution confidence are re-established, affected tank scope is available, collection/return confidence is renewed, monitoring confidence returns and cleaning-function confidence is separately verified. One machine-running indication does not prove full restoration."},
+    {"id":"TW-R01","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer concerns movement of cargo through transfer pumps and paths, while P098 concerns a distinct tank-washing/cleaning service. Transfer readiness does not equal cleaning readiness, and cleaning degradation does not prove cargo-transfer failure."},
+    {"id":"TW-R02","novelty_class":"useful_refinement","importance":"high","memory":"P094 tank heating and P081 generic steam/boiler service can provide heat or utility support in some cleaning contexts, but upstream heat/steam availability does not equal delivered tank-washing/cleaning function."},
+    {"id":"TW-R03","novelty_class":"useful_refinement","importance":"high","memory":"P071 water-service concepts can support wash-medium availability, but generic water readiness does not establish cargo-tank cleaning supply, distribution, collection or cleaning-function confidence."},
+    {"id":"TW-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine cleaning-machine condition and restoration, but an equipment lifecycle state does not equal delivered tank-washing/cleaning service across the intended tank scope."},
+    {"id":"TW-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic machinery, support, path, tank-scope, monitoring and restoration mechanics overlap prior shipboard utility, equipment and cargo-service passes."},
+    {"id":"TW-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P098 applies them specifically to cargo-tank washing/cleaning."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact tank-washing/cleaning arrangements, pressures, flows, temperatures, nozzle patterns, wash-medium composition, valve positions, control modes, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact tank-cleaning, wash-medium preparation, machine alignment, valve operation, gas-freeing, tank entry, inspection, troubleshooting, maintenance, shutdown or emergency procedures are outside this blind pass.",
+    "Named tank-washing equipment providers, terminals, cleaning contractors, inspectors, tanker incidents, contamination disputes, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional tank-washing/cleaning equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact tank-washing/cleaning arrangements, pressures, flows, temperatures, nozzle patterns, wash-medium composition, valve positions, control modes, alarm thresholds, test values and current configuration.",
+    "Tank-cleaning, wash-medium preparation, machine alignment, valve operation, gas-freeing, tank entry, inspection, troubleshooting, maintenance, shutdown or emergency procedures.",
+    "Named equipment providers, terminals, cleaning contractors, inspectors, tanker incidents, contamination disputes, deficiency findings and current readiness.",
+    "Private/regional tank-washing/cleaning equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive cargo-tank-washing/cleaning service orientation/source-discovery output. It is not tank-cleaning, gas-freeing, tank-entry, inspection, valve-operation, emergency-response or vessel-operating advice and does not establish any exact arrangement, pressure, flow, temperature, nozzle pattern, wash-medium composition, valve position, control mode, alarm threshold, test result, procedure, provider, incident, contamination dispute, deficiency finding or current-readiness fact.",
+  "stop_reason": "Cargo-tank washing/cleaning service is recalled at useful non-operational resolution: cleaning-machine/function readiness, wash-medium supply/support, distribution/path availability, tank scope, non-numeric cleaning-function confidence, collection/return confidence, monitoring, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, cargo-type-, pressure-, flow-, temperature-, nozzle-, wash-medium-, valve-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
