@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P097",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_tank_pressure_vacuum_relief_venting_protective_path_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_pressure_vacuum_relief_venting_protective_service_state_model_only_no_set_pressure_capacity_valve_setting_flame_device_detail_test_operating_sequence_or_emergency_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"PV-01","novelty_class":"new_category","importance":"high","memory":"Cargo-tank pressure/vacuum relief and venting service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, relief/venting equipment or service actors and relevant terminal, port or yard support. Protective-path readiness, tank scope, monitoring and shore intervention should remain distinct roles rather than one valve-setting, test or operating directory."},
+    {"id":"PV-02","novelty_class":"new_category","importance":"high","memory":"Protective relief/vent path readiness is distinct from inert-gas source or supply readiness. An inert-gas service can be available while the protective relief/vent path is unavailable or uncertain, and a relief-path concern does not itself prove an inert-gas source failure."},
+    {"id":"PV-03","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface confidence is distinct from common relief/vent path availability. A common protective path can appear available while one tank, tank group or bounded interface remains unavailable or uncertain."},
+    {"id":"PV-04","novelty_class":"new_category","importance":"high","memory":"Non-numeric pressure/vacuum protection confidence is a service outcome state rather than a retained set pressure, capacity or operating target. Structural memory can distinguish available, degraded, uncertain, restricted and restored protection without preserving adjustment guidance."},
+    {"id":"PV-05","novelty_class":"new_category","importance":"high","memory":"Monitoring or indication confidence is distinct from actual protective relief/vent readiness. An indication, alarm or local status can change confidence but does not by itself establish path condition, protection margin, root cause or required action."},
+    {"id":"PV-06","novelty_class":"new_category","importance":"high","memory":"Independence or support confidence is a separate dimension: protective relief/venting may depend on mechanical condition, sensing/indication or other bounded support while still needing independence from ordinary cargo-control functions. Support availability does not equal protective-service availability."},
+    {"id":"PV-07","novelty_class":"new_category","importance":"high","memory":"Protective-path condition can include bounded interface confidence around vent outlets or protective devices without retaining exact flame-device designs, valve settings, path geometry or maintenance/test details. Device-condition uncertainty should remain distinct from tank pressure/vacuum outcome confidence."},
+    {"id":"PV-08","novelty_class":"new_category","importance":"high","memory":"Redundancy or alternate protective-path confidence can exist at system or tank scope, but structural memory should not infer exact arrangements, cross-connections, capacities, approved substitutions or valve positions."},
+    {"id":"PV-09","novelty_class":"new_category","importance":"high","memory":"Pressure/vacuum-relief degradation follows a defensive lifecycle: observation, uncertain path/tank/interface/monitoring/support scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No venting, valve-setting, testing or emergency procedure is retained."},
+    {"id":"PV-10","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected relief/vent path, tank or tank group, monitoring domain, support function or protective interface rather than generalized to the entire cargo system. Exact valve or device actions remain deferred."},
+    {"id":"PV-11","novelty_class":"new_category","importance":"high","memory":"Pressure/vacuum-relief degradation can propagate into cargo-operation restrictions, inert-gas or vapor-control confidence, environmental/safety assurance, terminal compatibility, rework or schedule, but those effects are not themselves proof of a relief-path, tank-interface, monitoring or support root cause."},
+    {"id":"PV-12","novelty_class":"new_category","importance":"high","memory":"Protective-service confidence can remain scope-specific even when cargo transfer is otherwise available. Transfer readiness, vapor-return readiness and relief/vent protection should not be collapsed into a single cargo-system healthy/unhealthy flag."},
+    {"id":"PV-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: protective-path condition returns, tank/interface scope is re-established, monitoring/indication confidence is renewed, support/independence confidence is restored and the affected pressure/vacuum-protection scope is separately verified. One alarm reset or device-ready indication does not prove full restoration."},
+    {"id":"PV-R01","novelty_class":"useful_refinement","importance":"high","memory":"P091 inert-gas service concerns source/supply and blanket confidence, while P097 concerns distinct pressure/vacuum-relief and venting protection. Healthy inert-gas confidence does not equal relief-path readiness, and relief-path degradation does not prove inert-gas failure."},
+    {"id":"PV-R02","novelty_class":"useful_refinement","importance":"high","memory":"P093 cargo-vapor return/control concerns managed vapor-path and terminal-interface availability, while P097 concerns protective pressure/vacuum relief and venting. A vapor-return path can be available while protective relief confidence is degraded or uncertain."},
+    {"id":"PV-R03","novelty_class":"useful_refinement","importance":"high","memory":"P096 high-level/overfill assurance protects a different hazard pathway from P097 pressure/vacuum relief. Independent high-level detection and protective relief/vent readiness should remain separately represented even when both affect cargo-operation restrictions."},
+    {"id":"PV-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine relief/vent-device condition and restoration, but an equipment lifecycle state does not equal delivered pressure/vacuum protective service across the intended tank scope."},
+    {"id":"PV-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic protective-equipment, path, monitoring, support and restoration mechanics overlap prior shipboard utility, equipment and cargo-protection passes."},
+    {"id":"PV-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P097 applies them specifically to cargo-tank pressure/vacuum relief and venting."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact pressure/vacuum relief and venting arrangements, set pressures, capacities, valve settings, path geometry, flame-device details, control modes, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact valve setting, venting, testing, bypass/reset, cargo-operation coordination, troubleshooting, maintenance, shutdown or emergency procedures are outside this blind pass.",
+    "Named relief/venting equipment providers, terminals, inspectors, tanker incidents, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional pressure/vacuum relief, venting equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact pressure/vacuum relief and venting arrangements, set pressures, capacities, valve settings, path geometry, flame-device details, control modes, alarm thresholds, test values and current configuration.",
+    "Valve setting, venting, testing, bypass/reset, cargo-operation coordination, troubleshooting, maintenance, shutdown or emergency procedures.",
+    "Named equipment providers, terminals, inspectors, tanker incidents, deficiency findings and current readiness.",
+    "Private/regional relief/venting equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive pressure/vacuum-relief and venting protective-service orientation/source-discovery output. It is not valve-setting, testing, venting-operation, cargo-operation, emergency-response or vessel-operating advice and does not establish any exact arrangement, set pressure, capacity, valve setting, path, flame-device detail, control mode, alarm threshold, test result, procedure, provider, incident, deficiency finding or current-readiness fact.",
+  "stop_reason": "Pressure/vacuum-relief and venting protective service is recalled at useful non-operational resolution: protective relief/vent path readiness, tank scope, non-numeric pressure/vacuum protection confidence, monitoring/indication confidence, independence/support confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, pressure-, vacuum-, capacity-, valve-, vent-, flame-device-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
