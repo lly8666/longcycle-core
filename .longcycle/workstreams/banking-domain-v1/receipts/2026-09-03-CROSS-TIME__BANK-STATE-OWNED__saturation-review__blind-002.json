@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-blind-memory-pass-receipt/v1",
+  "workstream_id":"banking-domain-v1",
+  "campaign_id":"banking-china-1990-2026-v2",
+  "probe_id":"CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-002",
+  "family":"cross_time_failures_perimeter_semantics_saturation_blind_recall",
+  "shard_id":"BANK-STATE-OWNED",
+  "time_slice_id":"CROSS-TIME",
+  "period":["1990-01-01","2026-08-31"],
+  "model_vintage":"GPT-5.6 Sol",
+  "output_authority":"MEMORY_LEADS_ONLY",
+  "input_refs":[
+    "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json@fa246ec6317a4a561700a7bfc0bdc8f95f9f7b0f",
+    "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json@f1614308cb83f2426bef4a55c35b7cc85c432c92",
+    "current model internal memory/reasoning"
+  ],
+  "raw_output_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__BANK-STATE-OWNED__saturation-review__blind-002-memory-leads.md",
+  "novelty":{
+    "new_category":34,
+    "useful_refinement":16,
+    "duplicate":5,
+    "high_importance_novel_or_refining":28,
+    "estimated_long_tail_token_share":0.68
+  },
+  "material_gap_found":true,
+  "material_gap_id":"large_state_bank_group_perimeter_and_nonbank_subsidiary_architecture",
+  "material_gap_summary":"Cross-time review found that large-state-bank history still lacks explicit treatment of the changing legal/accounting group perimeter: offshore investment-banking platforms, financial leasing, fund/insurance relationships, financial-asset-investment entities, wealth-management subsidiaries, fintech subsidiaries, and bank-versus-group consolidation semantics. This materially affects fee/AUM, capital/RWA, asset-quality, risk-ownership and business-model comparisons.",
+  "slice_disposition":"material_group_perimeter_gap_reopen_required",
+  "counts_as_low_novelty_confirmation":false,
+  "saturation_confirmation_count_after_pass":0,
+  "saturation_confirmation_required":3,
+  "horizon_extension_required":false,
+  "next_frontier_recommendation":"CROSS-TIME__BANK-STATE-OWNED__GROUP-PERIMETER__blind-001",
+  "truth_boundary":{
+    "fresh_banking_search_used":false,
+    "banking_source_or_evidence_used":false,
+    "completed_bank_state_owned_raw_or_receipts_read":false,
+    "prior_cross_time_raw_or_receipt_read":false,
+    "bocom_psbc_recovery_raw_or_receipt_read":false,
+    "batch0_raw_read":false,
+    "prior_v2_raw_read":false,
+    "sealed_shard_raw_read":false,
+    "other_shard_raw_read":false,
+    "database_or_drive_used":false,
+    "truth_promotion_performed":false
+  },
+  "notes":"The dominant new category is not a list of subsidiaries but the perimeter mechanism itself: legal entity, consolidation, capital, fee, AUM and risk ownership change across time. Exact entity names/dates/stakes/consolidation treatment remain unverified leads. Reopen exactly one targeted group-perimeter frontier and keep saturation at 0/3."
+}
