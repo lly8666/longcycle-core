@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P099",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_sampling_sample_point_interface_containment_tank_scope_representativeness_verification_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_liquid_cargo_sampling_assurance_state_model_only_no_sample_volume_purge_container_lab_method_custody_sequence_or_sampling_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"SA-01","novelty_class":"new_category","importance":"high","memory":"Liquid-cargo sampling assurance spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, sampling equipment/service actors, survey or inspection actors and relevant terminal or port support. Shipboard sampling-point readiness, sample assurance and shore/survey interfaces should remain distinct roles rather than one sampling or custody directory."},
+    {"id":"SA-02","novelty_class":"new_category","importance":"high","memory":"Sampling-point or sample-interface readiness is distinct from cargo-transfer path readiness. A transfer path can be available while a bounded sampling point/interface is unavailable or uncertain, and sampling-interface uncertainty does not itself prove transfer-path failure."},
+    {"id":"SA-03","novelty_class":"new_category","importance":"high","memory":"Sampling device or bounded equipment readiness is distinct from sampling-point/interface readiness. A point can be physically available while the intended sampling device/function remains unavailable or uncertain, without retaining device-specific operating guidance."},
+    {"id":"SA-04","novelty_class":"new_category","importance":"high","memory":"Tank/cargo-scope confidence is a separate state from common sampling-system readiness. A common sampling arrangement can be available while one tank, parcel or bounded cargo scope remains uncertain or unavailable."},
+    {"id":"SA-05","novelty_class":"new_category","importance":"high","memory":"Containment/interface confidence is distinct from sample identity or representativeness. Structural memory can track whether the bounded sample interface appears contained and serviceable without retaining purge, opening, container or handling procedures."},
+    {"id":"SA-06","novelty_class":"new_category","importance":"high","memory":"Non-numeric sample-identity confidence is a distinct assurance state: whether the sample is believed to correspond to the intended cargo/tank/parcel scope. This does not establish chemistry, grade, quantity, source chronology or custody fact."},
+    {"id":"SA-07","novelty_class":"new_category","importance":"high","memory":"Non-numeric sample-representativeness confidence is distinct from identity confidence. A sample can be associated with the intended scope while representativeness remains uncertain, and no volume, depth, location, purge or sampling-method rule is retained."},
+    {"id":"SA-08","novelty_class":"new_category","importance":"high","memory":"Sample-condition preservation confidence can be represented structurally without retaining temperature, container, handling or timing instructions. It is an assurance state separate from sample identity, representativeness and later laboratory result."},
+    {"id":"SA-09","novelty_class":"new_category","importance":"high","memory":"Verification or cross-check confidence is distinct from a single sampling indication or one collected sample. Independent records, repeated checks or bounded comparison can affect confidence, but structural memory does not infer exact custody chains, acceptance rules or laboratory methods."},
+    {"id":"SA-10","novelty_class":"new_category","importance":"high","memory":"Shore, terminal, survey or inspection interface confidence is a separate boundary state from shipboard sampling-point and device readiness. Interface uncertainty does not by itself establish a shipboard root cause or a cargo-quality outcome."},
+    {"id":"SA-11","novelty_class":"new_category","importance":"high","memory":"Sampling-assurance degradation follows a defensive lifecycle: observation, uncertain point/device/tank-scope/containment/identity/representativeness/verification/interface scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No sampling, custody or laboratory procedure is retained."},
+    {"id":"SA-12","novelty_class":"new_category","importance":"high","memory":"Sampling degradation can propagate into cargo-quality confidence, quantity/quality reconciliation, terminal compatibility, claims exposure, rework or schedule, but those downstream effects are not themselves proof of a sampling-point, device, containment, identity, representativeness, verification or shore-interface root cause."},
+    {"id":"SA-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: sampling-point/interface readiness returns, device/function readiness is available, tank/cargo scope is re-established, containment confidence is renewed, identity/representativeness and verification confidence are separately restored and shore/survey interface confidence is reconciled. One successful collection indication does not prove full sampling-assurance restoration."},
+    {"id":"SA-R01","novelty_class":"useful_refinement","importance":"high","memory":"P095 gauging/quantity measurement concerns tank-level and quantity confidence, while P099 sampling assurance concerns sample identity, representativeness and bounded interface confidence. Quantity measurement readiness does not establish sampling assurance, and sampling uncertainty does not prove gauging failure."},
+    {"id":"SA-R02","novelty_class":"useful_refinement","importance":"high","memory":"P092 liquid-cargo transfer concerns physical cargo movement and transfer-path availability, while P099 concerns sampling-point/interface and sample-assurance states. Transfer readiness does not equal sampling readiness."},
+    {"id":"SA-R03","novelty_class":"useful_refinement","importance":"high","memory":"P094 tank-temperature/condition maintenance can affect cargo-condition context, but temperature-maintenance confidence is distinct from sample identity, representativeness, preservation and verification confidence."},
+    {"id":"SA-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine sampling-device condition and restoration, but an equipment lifecycle state does not equal delivered sampling assurance across the intended tank/cargo and shore/survey scope."},
+    {"id":"SA-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic interface, scope, monitoring/verification, degradation and restoration mechanics overlap prior shipboard equipment and cargo-service passes."},
+    {"id":"SA-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P099 applies them specifically to liquid-cargo sampling assurance."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact sampling arrangements, sampling locations, sample volumes, purge quantities or steps, container types, sample temperatures, timing rules, laboratory methods, acceptance criteria and current configuration are intentionally not retained.",
+    "Exact sample collection, purge, container handling, labeling, sealing, custody transfer, survey, laboratory, troubleshooting or emergency procedures are outside this blind pass.",
+    "Named sampling-equipment providers, terminals, surveyors, laboratories, tanker incidents, contamination or quality disputes, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional sampling equipment, survey, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact sampling arrangements, locations, sample volumes, purge steps, container types, sample temperatures, timing rules, laboratory methods, acceptance criteria and current configuration.",
+    "Sample collection, purge, container handling, labeling, sealing, custody transfer, survey, laboratory, troubleshooting or emergency procedures.",
+    "Named equipment providers, terminals, surveyors, laboratories, tanker incidents, contamination or quality disputes, deficiency findings and current readiness.",
+    "Private/regional sampling equipment, survey, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive liquid-cargo sampling-assurance orientation/source-discovery output. It is not sampling, purge, container-handling, custody, survey, laboratory, emergency-response or vessel-operating advice and does not establish any exact sample volume, purge step, container type, sample temperature, laboratory method, custody fact, procedure, provider, incident, cargo-quality dispute, deficiency finding or current-readiness fact.",
+  "stop_reason": "Liquid-cargo sampling assurance is recalled at useful non-operational resolution: sampling-point/interface readiness, sampling-device/function readiness, tank/cargo scope, containment confidence, non-numeric sample identity and representativeness confidence, preservation confidence, verification/cross-check and shore/survey interface confidence are separable states. Further detail would become vessel-, tanker-type-, cargo-type-, sample-volume-, purge-, container-, laboratory-, custody-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
