@@ -1,0 +1,57 @@
+{
+  "schema_version":"longcycle-memory-shard-seal-decision/v1",
+  "workstream_id":"banking-domain-v1",
+  "campaign_id":"banking-china-1990-2026-v2",
+  "decision_id":"CROSS-TIME__BANK-STATE-OWNED__seal-decision__blind-001",
+  "family":"bank_state_owned_canonical_seal_decision_control_review",
+  "shard_id":"BANK-STATE-OWNED",
+  "period":["1990-01-01","2026-08-31"],
+  "model_vintage":"GPT-5.6 Sol",
+  "output_authority":"RESEARCH_CONTROL_ONLY",
+  "branch_fence_head_before_decision":"724c6671cd2bd41460eacc39e21c09134edbf71e",
+  "input_refs":[
+    {"path":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","blob_sha":"73d8da552bac06857d86d9b344d1f17a85098af6","map_revision":98},
+    {"path":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","blob_sha":"f1614308cb83f2426bef4a55c35b7cc85c432c92"},
+    {"path":".longcycle/workstreams/banking-domain-v1/reservation.json","blob_sha":"d5538e4c021c290a7c539d499ff822b4ab9281d4","reservation_revision":1,"assignment_epoch":1},
+    {"path":".longcycle/workstreams/banking-domain-v1/capability-admission.json","blob_sha":"2197faebe09e5d28856ebb8aa3304a6431c1e719","disposition":"reuse"},
+    {"path":".longcycle/workstreams/banking-domain-v1/cursor.json","blob_sha":"fe4f5edc0372e784e724120408f16866baa75dd2","cursor_sequence":108},
+    {"kind":"current_model_reasoning"}
+  ],
+  "forbidden_inputs_observed":{
+    "completed_bank_state_owned_raw_or_receipts_read":false,
+    "batch0_raw_read":false,
+    "prior_v2_raw_read":false,
+    "sealed_system_raw_read":false,
+    "other_shard_raw_read":false,
+    "banking_source_or_evidence_read":false,
+    "fresh_banking_search_used":false
+  },
+  "criteria_review":{
+    "primary_time_slice_count":9,
+    "all_primary_time_slices_broad_plus_orthogonal_complete":true,
+    "time_x_shard_coverage_matrix_reviewed_from_compact_state":true,
+    "negative_space_reviewed_from_compact_state":true,
+    "measured_material_gap_count":4,
+    "all_measured_material_gaps_closed":true,
+    "long_tail_coverage_signals_reviewed":true,
+    "low_novelty_confirmation_count":3,
+    "low_novelty_confirmation_required":3,
+    "confirmations_consecutive_and_independent":true,
+    "material_missing_antecedent_open":false,
+    "top_level_ontology_stability_used_as_sufficient_basis":false
+  },
+  "decision":"SEAL",
+  "canonical_reason_code":"three_consecutive_low_novelty_passes_after_material_gap_closure",
+  "decision_rationale":[
+    "The compact map shows broad+orthogonal completion for every primary BANK-STATE-OWNED time slice from 1990-1994 through 2023-2026.",
+    "Cross-time negative-space reviews found material actor, group-perimeter, governance/personnel/incentives and transaction-franchise gaps; each was separately targeted and closed before saturation counting resumed.",
+    "Three consecutive independent low-novelty challenges then tested metric semantics/expectations, geographic/network/service-model heterogeneity, and shock/resilience/policy-commercial counterfactuals without finding a new material category.",
+    "The decision therefore relies on measured coverage, negative-space closure and consecutive low marginal novelty rather than ontology stability alone."
+  ],
+  "seal_artifact_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/BANK-STATE-OWNED-seal-state-v1.json",
+  "seal_artifact_sha256":"214a8a217481f917da30ec20bb36a6ef50dc810d0aa776cf33a0423f1d7bbdaa",
+  "evidence_transition_allowed_after_clean_handoff":true,
+  "evidence_started_in_this_decision":false,
+  "truth_promotion_performed":false,
+  "status":"canonical_seal_decision_recorded"
+}
