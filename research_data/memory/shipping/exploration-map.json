@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
   "workstream_id": "shipping-domain-v1",
-  "revision": 97,
+  "revision": 98,
   "authority_class": "research_control_only",
   "campaign": {
     "campaign_id": "shipping-adaptive-memory-v2",
@@ -17,7 +17,7 @@
   "campaign_ref": "research_data/memory/shipping/exploration-map.json#/campaign",
   "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
   "current_prompt_ref": "research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P097.json",
   "latest_pass_receipt_status": "completed_memory_pass_unverified_until_exact_head_ci",
   "legacy_inputs": [
     {"artifact_ref":"research_data/memory/shipping/atlas-1970-present/atlas.json","artifact_sha256":"a4207eafa27622e14314058e5391aa3cbc4bf16f2cae6756c3f989ed1e9f95fa","active_stage":"orientation_only","supersession_ref":"research_data/memory/shipping/atlas-1970-present/seal-supersession-v1.json"},
@@ -28,14 +28,14 @@
       "shard_id": "shipping-1970-present-whole-industry",
       "stage": "active_recall",
       "recent_outcomes": [
-        {"pass_id":"SHIP-MEM-V2-P089","family":"shipboard_cargo_space_ventilation_air_exchange_fan_damper_power_support_airflow_condition_confidence_cargo_space_scope_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P089.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P090","family":"shipboard_refrigerated_cargo_reefer_container_power_distribution_connection_interface_monitoring_condition_cargo_unit_scope_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P090.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P091","family":"shipboard_cargo_tank_inert_gas_generation_supply_distribution_tank_scope_pressure_blanket_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P091.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P092","family":"shipboard_liquid_cargo_transfer_pump_stripping_manifold_valve_line_tank_scope_pressure_flow_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P092.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P093","family":"shipboard_cargo_vapor_control_return_collection_distribution_terminal_interface_tank_scope_pressure_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P093.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P094","family":"shipboard_liquid_cargo_tank_heating_temperature_maintenance_heat_source_distribution_tank_scope_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P094.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P095","family":"shipboard_liquid_cargo_tank_gauging_level_quantity_measurement_tank_scope_instrumentation_monitoring_confidence_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P095.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
-        {"pass_id":"SHIP-MEM-V2-P096","family":"shipboard_liquid_cargo_tank_high_level_overfill_alarm_independent_detection_protective_interface_tank_scope_assurance_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
+        {"pass_id":"SHIP-MEM-V2-P096","family":"shipboard_liquid_cargo_tank_high_level_overfill_alarm_independent_detection_protective_interface_tank_scope_assurance_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
+        {"pass_id":"SHIP-MEM-V2-P097","family":"shipboard_liquid_cargo_tank_pressure_vacuum_relief_venting_protective_path_tank_scope_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P097.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
       ],
       "has_major_coverage_gaps": true
     },
@@ -44,54 +44,54 @@
   "reviewed_orientation_regions": [
     {"region_id":"legacy-period-and-sector-sweep","status":"orientation_only","basis_ref":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","interpretation":"Broad headings establish orientation, not saturation."},
     {"region_id":"marine-insurance-pandi-incremental-repeat","status":"overlap_detected_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json","interpretation":"P065 exposed recent-window-only frontier repetition and established the retained campaign-local de-dup hypothesis."},
-    {"region_id":"shipboard-cargo-space-ventilation-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P089.json","interpretation":"P089 separated ventilation command/control, fan/air-mover readiness, electrical support, air-path/damper confidence, delivered air-exchange confidence, cargo-space scope, condition/monitoring confidence, scoped restriction/isolation and verified restoration without exact airflow, atmosphere thresholds or entry/operating procedures."},
     {"region_id":"shipboard-refrigerated-cargo-reefer-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P090.json","interpretation":"P090 separated power source/distribution, connection/interface readiness, reefer-unit/cargo scope, unit-running/condition confidence, monitoring/alarm confidence, cargo-condition outcome confidence, scoped restriction/isolation and verified restoration without exact electrical or temperature settings and procedures."},
     {"region_id":"shipboard-cargo-tank-inert-gas-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P091.json","interpretation":"P091 separated inert-gas source/generation readiness, gas-condition confidence, supply/distribution, tank scope, non-numeric pressure/blanket confidence, monitoring/alarm confidence, support dependencies, scoped restriction/isolation and verified restoration without exact atmosphere values or tanker operating procedures."},
     {"region_id":"shipboard-liquid-cargo-transfer-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P092.json","interpretation":"P092 separated cargo-pump/machinery readiness, power/support, transfer-line/manifold path availability, tank/terminal-interface scope, non-numeric transfer-flow confidence, monitoring/alarm confidence, stripping/residual-transfer scope, scoped restriction/isolation and verified restoration without exact pressure/flow, valve lineup or loading/discharge procedures."},
     {"region_id":"shipboard-cargo-vapor-control-return-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P093.json","interpretation":"P093 separated vapor-path/interface availability, tank scope, terminal-interface readiness, non-numeric vapor-flow/pressure confidence, monitoring/alarm confidence, support dependencies, environmental/compliance outcome confidence, scoped restriction/isolation and verified restoration without exact vapor-control settings, connections or procedures."},
     {"region_id":"shipboard-liquid-cargo-tank-heating-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P094.json","interpretation":"P094 separated heat-source/support readiness, heating-medium path availability, tank scope, non-numeric temperature/condition confidence, monitoring/alarm confidence, support dependencies, scoped restriction/isolation and verified restoration without exact temperatures, pressures, flows, setpoints, valve actions or heating procedures."},
     {"region_id":"shipboard-liquid-cargo-tank-gauging-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P095.json","interpretation":"P095 separated measurement/instrument readiness, tank scope, non-numeric level/quantity confidence, measurement-validity confidence, monitoring/alarm confidence, independent cross-check confidence, reconciliation outcome confidence, scoped restriction/isolation and verified restoration without exact level, ullage, quantity, calibration or measurement procedures."},
-    {"region_id":"shipboard-liquid-cargo-overfill-protection-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json","interpretation":"P096 separated independent high-level detection readiness, tank scope, alarm/indication confidence, protective-interface readiness, independence/support confidence, environmental/safety outcome assurance, scoped restriction/isolation and verified restoration without exact thresholds, setpoints, trip logic, shutdown actions or testing procedures."}
+    {"region_id":"shipboard-liquid-cargo-overfill-protection-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json","interpretation":"P096 separated independent high-level detection readiness, tank scope, alarm/indication confidence, protective-interface readiness, independence/support confidence, environmental/safety outcome assurance, scoped restriction/isolation and verified restoration without exact thresholds, setpoints, trip logic, shutdown actions or testing procedures."},
+    {"region_id":"shipboard-liquid-cargo-pressure-vacuum-relief-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P097.json","interpretation":"P097 separated protective relief/vent path readiness, tank scope, non-numeric pressure/vacuum protection confidence, monitoring/indication confidence, independence/support confidence, scoped restriction/isolation and verified restoration without exact set pressures, capacities, valve settings, flame-device details, tests or operating procedures."}
   ],
   "known_major_gaps": [
-    "shipboard_liquid_cargo_tank_pressure_vacuum_relief_venting_protective_path_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
-    "exact_vessel_pressure_vacuum_relief_venting_arrangements_set_pressures_capacities_valve_settings_paths_flame_devices_control_modes_alarm_thresholds_tests_and_operating_sequences",
-    "private_regional_marine_pressure_vacuum_relief_venting_equipment_service_terminal_and_shore_support_lineages",
-    "historical_non_english_predecessor_pressure_vacuum_relief_venting_and_tank_protection_terms_requiring_source_archaeology"
+    "shipboard_liquid_cargo_tank_washing_cleaning_machine_supply_support_distribution_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
+    "exact_vessel_cargo_tank_washing_cleaning_arrangements_pressures_flows_temperatures_nozzle_patterns_wash_medium_valve_positions_control_modes_tests_and_operating_sequences",
+    "private_regional_marine_cargo_tank_washing_cleaning_equipment_service_terminal_and_shore_support_lineages",
+    "historical_non_english_predecessor_cargo_tank_washing_cleaning_and_wash_system_terms_requiring_source_archaeology"
   ],
   "open_frontiers": [
     {
-      "frontier_id": "shipping-shipboard-liquid-cargo-pressure-vacuum-relief-service-v1",
+      "frontier_id": "shipping-shipboard-liquid-cargo-tank-washing-cleaning-service-v1",
       "priority_rank": 1,
       "state": "open",
-      "next_probe": "SHIP-MEM-V2-P097",
-      "why_high_information": "P091 modeled inert-gas blanket confidence, P093 cargo-vapor return/control and P096 high-level/overfill protection, but not the distinct cargo-tank pressure/vacuum relief and venting protective service. A bounded future pass can distinguish protective relief/vent path readiness, tank-scope confidence, non-numeric pressure/vacuum protection confidence, monitoring/indication confidence, independence/support confidence, degradation/restriction, isolation and verified restoration without exact set pressures, capacities, valve settings, tests or operating sequences."
+      "next_probe": "SHIP-MEM-V2-P098",
+      "why_high_information": "P092-P097 now cover liquid transfer, vapor control, tank heating, gauging, overfill protection and pressure/vacuum relief, but not cargo-tank washing/cleaning service readiness. A bounded next pass can distinguish cleaning-machine/function readiness, wash-medium supply/support, distribution/path availability, tank-scope confidence, non-numeric cleaning-function confidence, monitoring and restoration without exact pressures, flows, temperatures, nozzle patterns, valve positions or tank-cleaning procedures."
     }
   ],
   "deferred_regions": [
     {"region_id":"exact_historical_numbers_and_chronology","state":"deferred","reason":"Exact values/dates require Evidence."},
-    {"region_id":"exact_shipboard_liquid_cargo_overfill_protection_facts","state":"deferred","reason":"P096 showed high-yield high-level/overfill protective-assurance states but exact arrangements, thresholds, setpoints, sensor types, trip logic, shutdown interfaces, alarm thresholds, tests, procedures, incidents and current readiness require authoritative Evidence."},
+    {"region_id":"exact_shipboard_pressure_vacuum_relief_facts","state":"deferred","reason":"P097 showed high-yield pressure/vacuum relief and venting protective-service states but exact arrangements, set pressures, capacities, valve settings, path geometry, flame-device details, controls, tests, procedures, incidents and current readiness require authoritative Evidence."},
     {"region_id":"exact_prior_shipboard_service_facts","state":"deferred","reason":"Exact topology, capacities, settings, procedures, providers, incidents and current readiness for previously probed shipboard services remain Evidence work."},
     {"region_id":"country_by_country_private_actor_grid","state":"deferred","reason":"Blind recall degrades under exhaustive geography."},
     {"region_id":"current_2025_2026_market_snapshot","state":"outside_scope","reason":"Current-state claims require source-first collection."}
   ],
   "next_probe": {
-    "probe_id": "SHIP-MEM-V2-P097",
-    "frontier_id": "shipping-shipboard-liquid-cargo-pressure-vacuum-relief-service-v1",
-    "status": "planned_not_executed_future_handoff",
+    "probe_id": "SHIP-MEM-V2-P098",
+    "frontier_id": "shipping-shipboard-liquid-cargo-tank-washing-cleaning-service-v1",
+    "status": "planned_not_executed_until_prior_handoff_clean",
     "required_capability": "high_capability_reasoning",
     "task_packet": {
-      "family": "shipboard_liquid_cargo_tank_pressure_vacuum_relief_venting_protective_path_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
+      "family": "shipboard_liquid_cargo_tank_washing_cleaning_machine_supply_support_distribution_tank_scope_condition_monitoring_availability_degradation_isolation_restoration",
       "period_start": "1970-01-01",
       "period_end": "2026-08-31",
       "source_visibility": "atlas_only",
       "allowed_input_refs": ["research_data/memory/shipping/atlas-1970-present/atlas.json","research_data/memory/shipping/atlas-1970-present/atlas.verification.json","research_data/memory/shipping/seal-correction-v1.json"],
       "fresh_search_forbidden": true,
       "questions": [
-        "Which role distinctions connect owner/manager, master/deck/cargo team, engineering crew, shore technical/cargo support, pressure/vacuum relief or venting equipment/service actors and relevant terminal/port/yard support without becoming a valve-setting, tank-venting, testing or emergency-response directory?",
-        "Which protective relief/vent path readiness, tank-scope/interface confidence, non-numeric pressure/vacuum protection confidence, monitoring/indication confidence, independence/support confidence, degradation/restriction, isolation, restoration and verification states are remembered structurally while exact arrangements, set pressures, capacities, valve settings, paths, flame devices, control modes, alarm thresholds, tests and operating sequences remain deferred?",
-        "How can pressure/vacuum-relief service degradation propagate into cargo-operation restrictions, inert-gas/vapor-control confidence, environmental/safety assurance, terminal compatibility or schedule without treating those downstream effects as proof of a relief path, tank-interface, pressure/vacuum-protection, monitoring or support root cause?",
-        "Which pressure/vacuum-relief and venting vocabulary is genuinely new/refinement after campaign-wide de-duplication, and where does recall become too vessel-, tanker-type-, pressure-, vacuum-, capacity-, valve-, vent-, flame-device-, test-, procedure-, provider- or incident-specific to retain?"
+        "Which role distinctions connect owner/manager, master/deck/cargo team, engineering crew, shore technical/cargo support, tank-washing/cleaning equipment or service actors and relevant terminal/port/yard support without becoming a tank-cleaning, gas-freeing or operating directory?",
+        "Which cleaning-machine/function readiness, wash-medium supply/support, distribution/path availability, tank-scope/interface confidence, non-numeric cleaning-function confidence, monitoring/indication confidence, degradation/restriction, isolation, restoration and verification states are remembered structurally while exact arrangements, pressures, flows, temperatures, nozzle patterns, wash-medium composition, valve positions, control modes, tests and operating sequences remain deferred?",
+        "How can tank-washing/cleaning degradation propagate into cargo-change flexibility, tank-condition confidence, inspection/readiness, terminal compatibility, rework or schedule without treating those downstream effects as proof of a cleaning-machine, supply, distribution, tank-interface or monitoring root cause?",
+        "Which tank-washing/cleaning vocabulary is genuinely new/refinement after campaign-wide de-duplication, and where does recall become too vessel-, tanker-type-, cargo-type-, pressure-, flow-, temperature-, nozzle-, wash-medium-, valve-, test-, procedure-, provider- or incident-specific to retain?"
       ],
       "output_contract": {"industry_memory_output_required":true,"method_observation_limit":1,"novelty_classes":["new_category","useful_refinement","duplicate"],"reviewed_no_specific_memory_allowed":true,"one_pass_cannot_self_seal":true}
     }
@@ -103,14 +103,14 @@
     "independent_challenger_complete": false,
     "has_major_coverage_gaps": true,
     "recent_outcomes": [
-      {"pass_id":"SHIP-MEM-V2-P089","family":"shipboard_cargo_space_ventilation_air_exchange_fan_damper_power_support_airflow_condition_confidence_cargo_space_scope_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P089.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P090","family":"shipboard_refrigerated_cargo_reefer_container_power_distribution_connection_interface_monitoring_condition_cargo_unit_scope_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P090.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P091","family":"shipboard_cargo_tank_inert_gas_generation_supply_distribution_tank_scope_pressure_blanket_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P091.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P092","family":"shipboard_liquid_cargo_transfer_pump_stripping_manifold_valve_line_tank_scope_pressure_flow_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P092.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P093","family":"shipboard_cargo_vapor_control_return_collection_distribution_terminal_interface_tank_scope_pressure_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P093.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P094","family":"shipboard_liquid_cargo_tank_heating_temperature_maintenance_heat_source_distribution_tank_scope_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P094.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P095","family":"shipboard_liquid_cargo_tank_gauging_level_quantity_measurement_tank_scope_instrumentation_monitoring_confidence_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P095.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
-      {"pass_id":"SHIP-MEM-V2-P096","family":"shipboard_liquid_cargo_tank_high_level_overfill_alarm_independent_detection_protective_interface_tank_scope_assurance_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
+      {"pass_id":"SHIP-MEM-V2-P096","family":"shipboard_liquid_cargo_tank_high_level_overfill_alarm_independent_detection_protective_interface_tank_scope_assurance_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P096.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
+      {"pass_id":"SHIP-MEM-V2-P097","family":"shipboard_liquid_cargo_tank_pressure_vacuum_relief_venting_protective_path_tank_scope_condition_monitoring_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P097.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
     ]
   }
 }
