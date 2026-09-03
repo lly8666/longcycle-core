@@ -1,0 +1,68 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v2",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "pass_id":"SHIP-MEM-V2-P132",
+  "authority_class":"research_only_model_memory",
+  "family":"port_terminal_dry_bulk_stormwater_runoff_drainage_sediment_material_loss_collection_containment_environmental_boundary_scope_monitoring_availability_degradation_isolation_restoration",
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility":"atlas_only",
+  "model_vintage":"GPT-5.6 Sol",
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used":false,
+  "repository_evidence_search_used":false,
+  "drive_used":false,
+  "database_used":false,
+  "memory_is_evidence":false,
+  "role_distinctions":["terminal_operator_governance","berth_and_stockyard_cargo_operations","drainage_or_environmental_support","shore_maintenance_and_service_actor","cargo_interest_interface","port_or_community_boundary_actor"],
+  "new_categories":[
+    {"id":"p132-n01","label":"terminal_dry_bulk_runoff_drainage_assurance_readiness","importance":"high","memory":"A terminal dry-bulk runoff/drainage assurance state can be represented separately from berth-transfer readiness, storage/reclaim readiness and downstream environmental outcome."},
+    {"id":"p132-n02","label":"runoff_source_scope_confidence","importance":"high","memory":"Runoff or material-loss source scope can be bounded to a berth, transfer-point, stockyard or storage area without retaining exact layouts, drains, flows or cargo locations."},
+    {"id":"p132-n03","label":"terminal_drainage_path_availability","importance":"high","memory":"Drainage-path availability can be represented separately from source condition, collection condition and final environmental-boundary confidence."},
+    {"id":"p132-n04","label":"sediment_material_loss_collection_readiness","importance":"high","memory":"A non-specific sediment or cargo-material collection readiness state can be retained without exact basins, sumps, traps, quantities or treatment arrangements."},
+    {"id":"p132-n05","label":"runoff_containment_boundary_confidence","importance":"high","memory":"Confidence that runoff and entrained material remain within an intended collection/containment scope can be modeled separately from path availability or collection readiness."},
+    {"id":"p132-n06","label":"environmental_boundary_monitoring_confidence","importance":"high","memory":"A non-numeric monitoring-confidence state can represent whether the intended terminal/environmental boundary is being observed without retaining exact monitor locations, values, limits or alarm logic."},
+    {"id":"p132-n07","label":"drainage_service_margin_confidence","importance":"high","memory":"Useful drainage/collection service margin can be represented qualitatively as adequate, uncertain or restricted without retaining exact flow, capacity, precipitation, storage or treatment values."},
+    {"id":"p132-n08","label":"source_to_collection_path_continuity_confidence","importance":"high","memory":"End-to-end continuity from bounded runoff source scope through drainage path to collection/containment can degrade even when individual components appear available."},
+    {"id":"p132-n09","label":"runoff_drainage_support_dependency_confidence","importance":"high","memory":"Delivered drainage assurance can depend on bounded power, pumping, gate/valve, monitoring, cleaning or other support states that can degrade separately from the physical drainage path; exact equipment is deferred."},
+    {"id":"p132-n10","label":"runoff_drainage_degradation_lifecycle","importance":"high","memory":"Runoff/drainage assurance can move through available, degraded, restricted, isolated, under-verification and restored states with separate timestamps."},
+    {"id":"p132-n11","label":"scoped_runoff_restriction_and_isolation","importance":"high","memory":"Restriction or isolation can attach to a source zone, drainage segment, collection scope, containment boundary, monitoring path or support dependency rather than the entire terminal."},
+    {"id":"p132-n12","label":"downstream_environmental_effect_not_root_cause_proof","importance":"high","memory":"Cargo-area restriction, cleanup concern, material loss, environmental-assurance concern, throughput uncertainty, rehandling or schedule effects do not by themselves prove a drainage-path, collection, containment or monitoring root cause."},
+    {"id":"p132-n13","label":"multi_timestamp_runoff_drainage_restoration","importance":"high","memory":"Drainage-path recovery, collection readiness, containment confidence, monitoring verification, restriction release and return to normal cargo-area assurance can occur at different times."}
+  ],
+  "useful_refinements":[
+    {"id":"p132-r01","label":"stormwater_runoff_vs_cargo_spill_containment","importance":"high","memory":"Terminal runoff/drainage assurance should remain distinct from direct cargo-spill containment even where both use collection boundaries or drainage paths."},
+    {"id":"p132-r02","label":"runoff_drainage_vs_dust_environmental_boundary","importance":"high","memory":"P131-type airborne dust environmental-boundary assurance is different from runoff/drainage/material-loss boundary assurance; one can remain satisfactory while the other is degraded."},
+    {"id":"p132-r03","label":"runoff_drainage_vs_storage_reclaim_readiness","importance":"high","memory":"P130 storage/reclaim service can be available while drainage/material-loss assurance is restricted, and drainage degradation does not by itself establish a storage/reclaim root cause."},
+    {"id":"p132-r04","label":"delivered_drainage_service_vs_terminal_infrastructure","importance":"medium","memory":"Long-horizon terminal land/infrastructure availability does not establish the delivered runoff/drainage collection service state at a particular operating scope."}
+  ],
+  "duplicates":[
+    {"id":"p132-d01","label":"generic_service_monitoring_support_lifecycle_pattern","memory":"Generic monitoring-confidence, support-dependency, degradation/restriction/isolation and restoration mechanics repeat campaign-wide service-state patterns."},
+    {"id":"p132-d02","label":"generic_downstream_effect_separation_pattern","memory":"Generic separation of downstream operational/environmental effects from root-cause proof is already campaign-wide."}
+  ],
+  "reviewed_no_specific_memory":[
+    "exact terminal drainage layouts, drain/basin/sump locations, capacities, runoff flows, rainfall values, sediment or cargo-material quantities and current configuration",
+    "exact discharge limits, treatment settings, sampling values, monitoring thresholds, alarm logic, permit conditions or environmental-compliance requirements",
+    "exact runoff-control, drain clearing, pumping, collection, treatment, sampling, cleanup, isolation, troubleshooting, maintenance or emergency procedures",
+    "named terminals, operators, environmental authorities, drainage-equipment vendors, ports, complaints, incidents, discharges, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "downstream_propagation":["cargo_area_restriction","environmental_assurance_concern","cleanup_or_rehandling","throughput_uncertainty_or_schedule_effect"],
+  "negative_space":[
+    "exact layouts, basin/sump capacities, runoff flows, rainfall values, sediment/material quantities and current configuration",
+    "exact discharge limits, treatment settings, sampling values, monitoring thresholds, permit or compliance rules",
+    "exact runoff-control, drainage, collection, treatment, cleanup, testing, isolation, troubleshooting, maintenance or emergency procedures",
+    "named terminals, providers, authorities, complaints, incidents, discharges, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "novelty":{"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":16,"reviewed_no_specific_memory_count":4},
+  "stop_reason":"The bounded terminal dry-bulk runoff/drainage/material-loss assurance questions are answered; further recall trends toward exact layouts, flows, capacities, discharge limits, treatment settings, permit/compliance rules, procedures, providers or incidents that require Evidence.",
+  "method_observation":null,
+  "retained_method_observation_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
+  "seal_eligible":false,
+  "evidence_transition_allowed":false,
+  "epistemic_boundary":"Memory-only defensive terminal dry-bulk runoff/drainage/material-loss containment orientation and source-discovery output; not stormwater, drainage, environmental-compliance, treatment, cleanup, maintenance or emergency guidance and not proof of any exact layout, flow, capacity, value, limit, setting, procedure, provider, incident or current-readiness fact."
+}
