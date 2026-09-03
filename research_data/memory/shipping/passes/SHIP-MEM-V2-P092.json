@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P092",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_transfer_pump_stripping_manifold_valve_line_tank_scope_pressure_flow_condition_monitoring_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_liquid_cargo_transfer_service_state_model_only_no_pressure_flow_valve_position_lineup_manifold_connection_tank_sequence_stripping_parameter_loading_discharge_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CT-01","novelty_class":"new_category","importance":"high","memory":"Liquid-cargo transfer service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, cargo-pump/transfer equipment or service actors and relevant terminal, port or yard support. Shipboard machinery readiness, tank/line scope, terminal interface, monitoring and shore intervention should remain distinct roles rather than one terminal, valve-lineup, loading/discharge or operating directory."},
+    {"id":"CT-02","novelty_class":"new_category","importance":"high","memory":"Cargo-pump or transfer-machinery readiness is distinct from upstream power/support readiness. Supporting electrical, hydraulic or other utility availability can be present while cargo-transfer machinery is unavailable, and a machinery concern does not itself prove an upstream support failure."},
+    {"id":"CT-03","novelty_class":"new_category","importance":"high","memory":"Transfer-line or manifold path availability is distinct from cargo-pump readiness. A pump can be ready while the intended bounded transfer path is unavailable or uncertain, and path uncertainty does not by itself prove a pump fault."},
+    {"id":"CT-04","novelty_class":"new_category","importance":"high","memory":"Tank-scope or tank-interface readiness is distinct from common line/manifold availability. A common transfer path can be available while one tank, tank group or bounded interface remains unavailable or uncertain."},
+    {"id":"CT-05","novelty_class":"new_category","importance":"high","memory":"Ship/shore or terminal-interface confidence is a separate boundary state from shipboard pump, line and tank readiness. Terminal compatibility or interface uncertainty does not by itself establish a shipboard machinery or line root cause."},
+    {"id":"CT-06","novelty_class":"new_category","importance":"high","memory":"Transfer-flow confidence can be represented structurally without numeric pressure or flow values. The useful distinction is whether useful transfer appears available, degraded, uncertain, restricted or restored for the intended scope; no operating target or adjustment guidance is retained."},
+    {"id":"CT-07","novelty_class":"new_category","importance":"high","memory":"Monitoring/alarm confidence is distinct from physical transfer-flow confidence. Instrument or alarm status can change confidence but does not alone establish actual rate, pressure, quantity movement, duration, root cause or corrective action."},
+    {"id":"CT-08","novelty_class":"new_category","importance":"high","memory":"Stripping or residual-transfer scope is structurally distinct from bulk-transfer availability. A system can have confidence for one transfer phase or bounded residual-removal function while another remains uncertain, without retaining exact stripping arrangements, parameters or sequences."},
+    {"id":"CT-09","novelty_class":"new_category","importance":"high","memory":"Redundancy or substitution confidence can exist across pumps, support paths, transfer lines, manifolds, tank scopes or terminal interfaces, but structural memory should not infer exact approved lineups, transfer sequences, cross-connections, capacities or valve operations."},
+    {"id":"CT-10","novelty_class":"new_category","importance":"high","memory":"Liquid-cargo-transfer degradation follows a defensive lifecycle: observation, uncertain pump/support/path/tank/interface/transfer/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation, restoration indication and post-restoration verification. No loading, discharge, stripping, valve-lineup, terminal-interface or emergency procedure is retained."},
+    {"id":"CT-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected cargo pump, support path, transfer-line/manifold segment, tank/interface scope, terminal boundary or monitoring domain rather than generalized to the entire cargo system. Exact valve or pump actions remain deferred."},
+    {"id":"CT-12","novelty_class":"new_category","importance":"high","memory":"Cargo-transfer degradation can propagate into terminal compatibility, cargo-operation availability, port productivity, cargo quantity/condition confidence, rework, claims exposure or schedule, but those downstream effects are not by themselves proof of a pump, support, line/manifold, tank-interface, transfer-flow or monitoring root cause."},
+    {"id":"CT-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: pump/machinery readiness returns, support confidence is available, transfer-line/manifold and tank/interface confidence are re-established, useful transfer-flow confidence returns for the affected scope, monitoring confidence is renewed and any residual-transfer scope is separately verified. One pump-running indication or alarm reset does not prove full cargo-transfer restoration."},
+    {"id":"CT-R01","novelty_class":"useful_refinement","importance":"high","memory":"P091 cargo-tank inert-gas service concerns gas/blanket confidence, while P092 concerns physical liquid-cargo movement through pumps, lines/manifolds and tank/terminal interfaces. Healthy inert-gas confidence does not equal cargo-transfer availability, and transfer degradation does not prove inert-gas failure."},
+    {"id":"CT-R02","novelty_class":"useful_refinement","importance":"high","memory":"P082 hydraulic and P070 electrical services can be upstream support dimensions for cargo-transfer machinery, but support availability does not equal delivered cargo-transfer flow or path availability."},
+    {"id":"CT-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support cargo-transfer command, indication and monitoring, but control/monitoring confidence is distinct from pump, line/manifold, tank-interface and actual transfer-flow confidence."},
+    {"id":"CT-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle concepts refine cargo-pump condition and restoration, but an equipment lifecycle state does not equal delivered liquid-cargo-transfer service across the intended tank and terminal scope."},
+    {"id":"CT-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic machinery/support/path/interface/monitoring and restoration mechanics overlap prior shipboard utility, equipment and cargo-service passes."},
+    {"id":"CT-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P092 applies them specifically to liquid-cargo transfer."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact liquid-cargo-transfer arrangements, pump capacities, pressures, flows, valve positions, lineups, manifold connections, tank sequences, stripping parameters, control modes, alarm thresholds, test values and current configuration are intentionally not retained.",
+    "Exact loading/discharge, stripping, pump start/stop, valve alignment, line clearing, terminal-interface, sampling, troubleshooting, maintenance, shutdown or emergency procedures are outside this blind pass.",
+    "Named cargo-pump/transfer equipment providers, terminals, survey/inspection actors, tanker incidents, cargo quantity/condition disputes, deficiency findings and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-transfer equipment, terminal and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact liquid-cargo-transfer arrangements, pump capacities, pressures, flows, valve positions, lineups, manifold connections, tank sequences, stripping parameters, control modes, alarm thresholds, test values and current configuration.",
+    "Loading/discharge, stripping, pump start/stop, valve alignment, line clearing, terminal-interface, sampling, troubleshooting, maintenance, shutdown or emergency procedures.",
+    "Named equipment providers, terminals, survey/inspection actors, tanker incidents, cargo quantity/condition disputes, deficiency findings and current readiness.",
+    "Private/regional cargo-transfer equipment, terminal and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive liquid-cargo-transfer service orientation/source-discovery output. It is not tanker cargo operation, loading/discharge, stripping, valve-lineup, terminal-interface, sampling, safety, emergency-response or vessel-operating advice and does not establish any exact arrangement, pump capacity, pressure, flow, valve position, lineup, manifold connection, tank sequence, stripping parameter, control mode, alarm threshold, test result, procedure, provider, incident, cargo dispute, deficiency finding or current-readiness fact.",
+  "stop_reason": "Liquid-cargo-transfer service is recalled at useful non-operational resolution: cargo-pump/machinery readiness, power/support readiness, transfer-line/manifold path availability, tank/terminal-interface scope, non-numeric transfer-flow confidence, monitoring/alarm confidence, stripping/residual-transfer scope, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, tanker-type-, pump-, pressure-, flow-, valve-, manifold-, line-, tank-, stripping-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
