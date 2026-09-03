@@ -1,0 +1,69 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v2",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "pass_id":"SHIP-MEM-V2-P135",
+  "authority_class":"research_only_model_memory",
+  "family":"port_terminal_workforce_stevedore_labor_service_coverage_role_boundary_shift_handoff_competency_authorization_availability_degradation_restriction_restoration",
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility":"atlas_only",
+  "model_vintage":"GPT-5.6 Sol",
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used":false,
+  "repository_evidence_search_used":false,
+  "drive_used":false,
+  "database_used":false,
+  "memory_is_evidence":false,
+  "preflight_dedup":{"performed_before_raw":true,"comparison_passes":["SHIP-MEM-V2-P014","SHIP-MEM-V2-P021","SHIP-MEM-V2-P133","SHIP-MEM-V2-P134"],"result":"survived_with_heavy_execution_infrastructure_handoff_and_generic_service_dedup","reason":"P014 models cargo-handling execution, P021 terminal infrastructure/governance, P133 landside handoff and P134 measurement/survey roles. Those families do not separately represent whether the human workforce/service coverage required for terminal execution is available, appropriately bounded and continuous across shifts, while generic availability, monitoring, support and restoration mechanics are already campaign-wide."},
+  "role_distinctions":["terminal_or_stevedore_employer_or_service_provider","organized_contract_or_direct_workforce_without_specific_legal_claim","terminal_cargo_operations_supervision","equipment_and_technical_support","vessel_berth_and_shift_planning_interface","cargo_interest_or_landside_handoff_interface"],
+  "new_categories":[
+    {"id":"p135-n01","label":"terminal_workforce_service_coverage_readiness","importance":"high","memory":"Terminal cargo execution can have a distinct workforce/service-coverage readiness state independent of berth, equipment, cargo and infrastructure readiness, without retaining exact manning levels, rosters or employment terms."},
+    {"id":"p135-n02","label":"workforce_role_boundary_clarity_confidence","importance":"high","memory":"Confidence that required operational, supervisory, technical and interface roles are bounded and understood can be represented separately from the identities of employers, unions, contractors or individuals."},
+    {"id":"p135-n03","label":"shift_handoff_continuity_confidence","importance":"high","memory":"Workforce coverage can remain nominally present while continuity across shift or team handoffs is degraded; handoff continuity is therefore a distinct service confidence state without exact roster or briefing procedure."},
+    {"id":"p135-n04","label":"competency_authorization_scope_confidence","importance":"high","memory":"A role may be staffed yet lack confidence that competency or authorization aligns to the bounded task scope; this can be modeled qualitatively without exact certificates, training standards, licenses or legal requirements."},
+    {"id":"p135-n05","label":"relief_substitution_coverage_confidence","importance":"high","memory":"Relief or substitution capacity can be represented as confidence that required workforce coverage can continue through absence or disruption, without asserting staffing ratios, labor-pool rules or contractor arrangements."},
+    {"id":"p135-n06","label":"workforce_service_margin_confidence","importance":"high","memory":"A terminal may have enough nominal workforce to operate yet little qualitative service margin for simultaneous tasks, disruption or extended coverage; margin can be represented without exact headcount or productivity numbers."},
+    {"id":"p135-n07","label":"employer_provider_interface_confidence","importance":"high","memory":"Where multiple employers, stevedores, contractors or service providers participate, the interface between organizations can carry a distinct coordination-confidence state without asserting contract structure or legal responsibility."},
+    {"id":"p135-n08","label":"workforce_equipment_interface_readiness","importance":"high","memory":"Human coverage and equipment readiness can each be green while their bounded interface is not ready; workforce-equipment interface confidence is distinct from either state alone."},
+    {"id":"p135-n09","label":"workforce_monitoring_indication_confidence","importance":"medium","memory":"Coverage or role-state indication can degrade separately from actual workforce presence without retaining exact dispatch, roster, access or workforce-management systems."},
+    {"id":"p135-n10","label":"workforce_support_dependency_confidence","importance":"high","memory":"Transport, access, communications, supervision, welfare or other support dependencies can affect workforce service coverage without retaining exact provider arrangements or procedures."},
+    {"id":"p135-n11","label":"workforce_degradation_restriction_isolation_lifecycle","importance":"high","memory":"Workforce service can move through available, degraded, restricted, unavailable for a bounded scope, under-restoration and restored states while terminal physical assets remain unchanged."},
+    {"id":"p135-n12","label":"downstream_delay_not_workforce_root_cause","importance":"high","memory":"Queueing, berth delay, reduced handling, rehandling or schedule effects do not by themselves prove a labor, employer, union, contractor, competency or staffing root cause."},
+    {"id":"p135-n13","label":"multi_timestamp_workforce_restoration","importance":"high","memory":"Personnel availability, role coverage, competency/authorization confidence, organizational interface recovery, equipment interface verification and restriction release may recover at different times."}
+  ],
+  "useful_refinements":[
+    {"id":"p135-r01","label":"workforce_service_state_vs_cargo_execution_P014","importance":"high","memory":"P014 represents physical cargo-handling execution as a ship-terminal-cargo-equipment interface; P135 separates the human service-coverage state that enables that execution from the execution outcome itself."},
+    {"id":"p135-r02","label":"workforce_coverage_vs_terminal_infrastructure_P021","importance":"high","memory":"P021 berth/yard/land/gate infrastructure and governed capacity do not establish that the required human workforce is available or appropriately scoped."},
+    {"id":"p135-r03","label":"workforce_coverage_vs_landside_handoff_P133","importance":"high","memory":"P133 rail/truck/barge receipt-dispatch opportunity can be physically ready while workforce coverage for the terminal-side handoff remains restricted, or vice versa."},
+    {"id":"p135-r04","label":"workforce_role_vs_measurement_survey_function_P134","importance":"medium","memory":"P134 distinguishes survey/measurement functions; P135 treats those and other human functions as consumers of a broader workforce/service-coverage and role-boundary state rather than duplicating their technical assurance semantics."}
+  ],
+  "duplicates":[
+    {"id":"p135-d01","label":"generic_availability_monitoring_support_restriction_restoration","memory":"Generic availability, monitoring, support dependency, scoped restriction and restoration mechanics repeat prior terminal and service-state families."},
+    {"id":"p135-d02","label":"generic_interface_and_downstream_root_cause_boundary","memory":"Generic interface confidence and the rule that downstream operational effects do not prove root cause are already campaign-wide patterns."}
+  ],
+  "reviewed_no_specific_memory":[
+    "exact employers, unions, hiring halls, labor contractors, bargaining units, workforce structures, manning levels, headcounts, rosters, shifts and current staffing",
+    "exact pay rates, benefits, collective agreements, jurisdictional labor rules, work rules, seniority, dispatch systems, access arrangements or industrial-relations obligations",
+    "exact competency standards, licenses, certificates, training requirements, briefings, shift-handoff, dispatch, substitution, supervision or emergency staffing procedures",
+    "named terminals, employers, unions, contractors, workers, disputes, strikes, lockouts, incidents, productivity findings, current readiness and private/regional/non-English lineages"
+  ],
+  "downstream_propagation":["terminal_handling_availability_or_rate_uncertainty","transfer_path_or_handoff_restriction","queue_or_berth_delay","rehandling_or_work_resequencing","schedule_or_voyage_effect"],
+  "negative_space":[
+    "exact labor organizations, employment models, contracting structures, manning levels, rosters, pay terms, work rules, training requirements and current staffing",
+    "exact collective agreements, legal duties, union rights, hiring-hall mechanics, dispatch systems, disciplinary processes, dispute-resolution terms and jurisdiction-specific rules",
+    "exact shift planning, staffing, substitution, briefing, access, supervision, training, work-performance, industrial-action or emergency procedures",
+    "named employers, unions, terminals, contractors, disputes, strikes, lockouts, incidents, productivity findings, current readiness and private/regional/non-English lineages"
+  ],
+  "novelty":{"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":16,"reviewed_no_specific_memory_count":4},
+  "stop_reason":"The bounded terminal workforce/service-coverage questions are answered at structural Memory level. Further recall trends toward exact labor organizations, contracts, staffing, pay, work rules, training standards, jurisdictional obligations, named disputes or current workforce facts that require Evidence or a separately selected institutional frontier.",
+  "method_observation":null,
+  "retained_method_observation_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
+  "seal_eligible":false,
+  "evidence_transition_allowed":false,
+  "epistemic_boundary":"Memory-only defensive port-terminal workforce/service-coverage orientation and source-discovery output; not labor-law, union, staffing, industrial-relations, training, operations or emergency guidance and not proof of any exact employer, union, contract, roster, pay term, work rule, qualification, dispute, incident or current-readiness fact."
+}
