@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
   "workstream_id": "shipping-domain-v1",
-  "revision": 84,
+  "revision": 85,
   "authority_class": "research_control_only",
   "campaign": {
     "campaign_id": "shipping-adaptive-memory-v2",
@@ -17,7 +17,7 @@
   "campaign_ref": "research_data/memory/shipping/exploration-map.json#/campaign",
   "learning_state_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
   "current_prompt_ref": "research_data/memory/shipping/exploration-map.json#/next_probe/task_packet",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P084.json",
   "latest_pass_receipt_status": "completed_memory_pass_unverified_until_exact_head_ci",
   "legacy_inputs": [
     {"artifact_ref":"research_data/memory/shipping/atlas-1970-present/atlas.json","artifact_sha256":"a4207eafa27622e14314058e5391aa3cbc4bf16f2cae6756c3f989ed1e9f95fa","active_stage":"orientation_only","supersession_ref":"research_data/memory/shipping/atlas-1970-present/seal-supersession-v1.json"},
@@ -28,14 +28,14 @@
       "shard_id": "shipping-1970-present-whole-industry",
       "stage": "active_recall",
       "recent_outcomes": [
-        {"pass_id":"SHIP-MEM-V2-P076","family":"shipboard_ballast_water_management_tank_inventory_pumping_treatment_system_service_capacity_uptake_release_opportunity_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P076.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P077","family":"shipboard_fuel_bunker_fuel_oil_supply_delivery_sampling_quality_confidence_storage_inventory_transfer_consumption_service_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P077.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P078","family":"shipboard_compressed_air_starting_air_service_air_control_air_pneumatic_generation_receiver_storage_distribution_demand_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P078.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P079","family":"shipboard_machinery_cooling_water_seawater_freshwater_closed_loop_heat_exchanger_pump_distribution_temperature_capacity_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P079.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P080","family":"shipboard_machinery_lubricating_oil_storage_supply_circulation_pump_filter_purifier_condition_cooling_consumption_inventory_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P080.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P081","family":"shipboard_steam_boiler_condensate_feedwater_heating_service_generation_distribution_demand_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P081.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
         {"pass_id":"SHIP-MEM-V2-P082","family":"shipboard_hydraulic_power_oil_reservoir_pump_accumulator_distribution_consumer_demand_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P082.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
-        {"pass_id":"SHIP-MEM-V2-P083","family":"shipboard_steering_steering_gear_rudder_command_control_feedback_response_power_support_redundancy_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
+        {"pass_id":"SHIP-MEM-V2-P083","family":"shipboard_steering_steering_gear_rudder_command_control_feedback_response_power_support_redundancy_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
+        {"pass_id":"SHIP-MEM-V2-P084","family":"shipboard_propulsion_thrust_prime_mover_drive_train_shaft_propulsor_command_control_feedback_support_redundancy_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P084.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
       ],
       "has_major_coverage_gaps": true
     },
@@ -44,54 +44,54 @@
   "reviewed_orientation_regions": [
     {"region_id":"legacy-period-and-sector-sweep","status":"orientation_only","basis_ref":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","interpretation":"Broad headings establish orientation, not saturation."},
     {"region_id":"marine-insurance-pandi-incremental-repeat","status":"overlap_detected_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json","interpretation":"P065 exposed recent-window-only frontier repetition and established the retained campaign-local de-dup hypothesis."},
-    {"region_id":"shipboard-ballast-water-management-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P076.json","interpretation":"P076 separated ballast inventory, pumping, treatment/assurance, opportunity and restoration without ballast-operation guidance."},
-    {"region_id":"shipboard-fuel-bunker-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P077.json","interpretation":"P077 separated bunker supply, product-confidence, receiving, inventory, consumption margin and restoration without transfer or sampling procedures."},
-    {"region_id":"shipboard-compressed-air-pneumatic-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P078.json","interpretation":"P078 separated generation, stored reserve, distribution, use-scope, demand, air-condition confidence and restoration without pneumatic operating procedures."},
-    {"region_id":"shipboard-machinery-cooling-water-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P079.json","interpretation":"P079 separated machinery-cooling source, circulation, heat-exchange, condition confidence and restoration without exact thermal/hydraulic procedures."},
+    {"region_id":"shipboard-fuel-bunker-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P077.json","interpretation":"P077 separated bunker supply, product confidence, receiving, inventory, consumption margin and restoration without transfer or sampling procedures."},
+    {"region_id":"shipboard-compressed-air-pneumatic-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P078.json","interpretation":"P078 separated generation, stored reserve, distribution, use scope, demand, air-condition confidence and restoration without pneumatic operating procedures."},
+    {"region_id":"shipboard-machinery-cooling-water-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P079.json","interpretation":"P079 separated machinery-cooling source, circulation, heat exchange, condition confidence and restoration without exact thermal or hydraulic procedures."},
     {"region_id":"shipboard-machinery-lubricating-oil-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P080.json","interpretation":"P080 separated lubricant identity/condition, inventory, circulation, purification, support dependency and restoration without exact parameters or procedures."},
-    {"region_id":"shipboard-steam-boiler-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P081.json","interpretation":"P081 separated generation, feedwater/condensate, distribution, consumer scope and restoration without exact thermal/chemical procedures."},
+    {"region_id":"shipboard-steam-boiler-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P081.json","interpretation":"P081 separated generation, feedwater/condensate, distribution, consumer scope and restoration without exact thermal or chemical procedures."},
     {"region_id":"shipboard-hydraulic-power-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P082.json","interpretation":"P082 separated source/pump, reservoir/condition, stored energy, distribution, consumer scope and restoration without exact hydraulic parameters or controls."},
-    {"region_id":"shipboard-steering-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json","interpretation":"P083 separated steering command, control/feedback, gear/actuation, hydraulic/electrical support, redundancy, response confidence, scoped restriction/isolation and verified restoration without exact steering modes, tests or procedures."}
+    {"region_id":"shipboard-steering-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json","interpretation":"P083 separated steering command, control/feedback, gear/actuation, hydraulic/electrical support, redundancy, response confidence, scoped restriction/isolation and verified restoration without exact steering modes, tests or procedures."},
+    {"region_id":"shipboard-propulsion-thrust-service","status":"high_novelty_active_recall","basis_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P084.json","interpretation":"P084 separated propulsion command, prime-mover readiness, drive-train/shaft path, propulsor readiness, support utilities, control/feedback, redundancy, thrust/response confidence, scoped restriction/isolation and verified restoration without exact propulsion settings, sequences or procedures."}
   ],
   "known_major_gaps": [
-    "shipboard_propulsion_thrust_prime_mover_drive_train_shaft_propulsor_command_control_feedback_support_redundancy_availability_degradation_isolation_restoration",
-    "exact_vessel_propulsion_arrangements_engine_motor_turbine_or_drive_details_power_rpm_speed_propeller_pitch_shafting_clutch_gear_control_modes_start_stop_maneuvering_or_emergency_procedures",
-    "private_regional_marine_propulsion_engine_motor_drive_train_propulsor_control_equipment_service_and_shore_support_lineages",
-    "historical_non_english_predecessor_propulsion_thrust_prime_mover_drive_train_shaft_propulsor_and_control_terms_requiring_source_archaeology"
+    "shipboard_mooring_anchoring_windlass_capstan_mooring_winch_command_control_power_support_brake_holding_line_anchor_handling_availability_degradation_isolation_restoration",
+    "exact_vessel_mooring_anchor_winch_windlass_capstan_arrangements_line_or_chain_configurations_loads_tensions_brake_settings_power_hydraulic_parameters_control_modes_limits_sequences_and_emergency_actions",
+    "private_regional_marine_mooring_anchor_deck_machinery_equipment_service_and_shore_support_lineages",
+    "historical_non_english_predecessor_mooring_anchoring_winch_windlass_capstan_brake_holding_and_handling_terms_requiring_source_archaeology"
   ],
   "open_frontiers": [
     {
-      "frontier_id": "shipping-shipboard-propulsion-thrust-service-v1",
+      "frontier_id": "shipping-shipboard-mooring-anchoring-deck-machinery-service-v1",
       "priority_rank": 1,
       "state": "open",
-      "next_probe": "SHIP-MEM-V2-P084",
-      "why_high_information": "P083 modeled steering as one first-order maneuvering function while prior utility passes modeled fuel, power, cooling and lubrication separately; none captures delivered propulsion/thrust as a functional service. A bounded pass can distinguish propulsion command availability, prime-mover readiness, drive-train/shaft path readiness, propulsor readiness, supporting fuel/electrical/lube/cooling/control availability, redundancy or independent-path confidence, thrust/response confidence, restriction/isolation and verified restoration without start/stop, maneuvering, power/RPM/speed/pitch settings, control-transfer sequences or emergency procedures."
+      "next_probe": "SHIP-MEM-V2-P085",
+      "why_high_information": "P082 modeled hydraulic utility while P083-P084 modeled first-order maneuvering functions, but deck securing/holding and anchor-handling functions remain uncovered. A bounded pass can distinguish command/control availability, winch/windlass/capstan machinery readiness, electrical/hydraulic power support, brake or holding-function confidence, line/chain/anchor handling-interface readiness, redundancy or consumer scope, degradation/restriction, isolation and verified restoration without loads, tensions, brake settings, exact arrangements, operating sequences, limits or emergency actions."
     }
   ],
   "deferred_regions": [
     {"region_id":"exact_historical_numbers_and_chronology","state":"deferred","reason":"Exact values/dates require Evidence."},
-    {"region_id":"exact_shipboard_steering_facts","state":"deferred","reason":"P083 showed high-yield steering functional states but exact arrangements, rudder angles, response times, modes, pressures, logic, alarms, tests, procedures, incidents and current readiness require authoritative Evidence."},
+    {"region_id":"exact_shipboard_propulsion_facts","state":"deferred","reason":"P084 showed high-yield propulsion functional states but exact arrangements, power, RPM, speed, pitch, drive-train configuration, control modes, alarms, procedures, incidents and current readiness require authoritative Evidence."},
     {"region_id":"exact_prior_shipboard_service_facts","state":"deferred","reason":"Exact topology, capacities, settings, procedures, providers, incidents and current readiness for previously probed shipboard services remain Evidence work."},
     {"region_id":"country_by_country_private_actor_grid","state":"deferred","reason":"Blind recall degrades under exhaustive geography."},
     {"region_id":"current_2025_2026_market_snapshot","state":"outside_scope","reason":"Current-state claims require source-first collection."}
   ],
   "next_probe": {
-    "probe_id": "SHIP-MEM-V2-P084",
-    "frontier_id": "shipping-shipboard-propulsion-thrust-service-v1",
-    "status": "planned_not_executed_until_prior_handoff_clean",
+    "probe_id": "SHIP-MEM-V2-P085",
+    "frontier_id": "shipping-shipboard-mooring-anchoring-deck-machinery-service-v1",
+    "status": "planned_not_executed_future_handoff",
     "required_capability": "high_capability_reasoning",
     "task_packet": {
-      "family": "shipboard_propulsion_thrust_prime_mover_drive_train_shaft_propulsor_command_control_feedback_support_redundancy_availability_degradation_isolation_restoration",
+      "family": "shipboard_mooring_anchoring_windlass_capstan_mooring_winch_command_control_power_support_brake_holding_line_anchor_handling_availability_degradation_isolation_restoration",
       "period_start": "1970-01-01",
       "period_end": "2026-08-31",
       "source_visibility": "atlas_only",
       "allowed_input_refs": ["research_data/memory/shipping/atlas-1970-present/atlas.json","research_data/memory/shipping/atlas-1970-present/atlas.verification.json","research_data/memory/shipping/seal-correction-v1.json"],
       "fresh_search_forbidden": true,
       "questions": [
-        "Which role distinctions connect owner/manager, master/bridge team, engineering crew, shore technical support, propulsion prime-mover/drive-train/propulsor/control equipment or service actors and relevant port/yard support without becoming a vendor, maintenance or operating directory?",
-        "Which propulsion-command availability, prime-mover readiness, drive-train/shaft-path readiness, propulsor readiness, fuel/electrical/lubrication/cooling/control support availability, redundancy/independent-path confidence, thrust/response confidence, degradation/restriction, isolation, restoration and verification states are remembered structurally while exact arrangements, power, RPM, speed, pitch, shaft/gear/clutch details, start/stop sequences, maneuvering methods, control-transfer modes and emergency procedures remain deferred?",
-        "How can propulsion-service degradation propagate into maneuvering, voyage speed/capacity or schedule flexibility without treating downstream effects as proof of a prime-mover, drive-train, propulsor, fuel, electrical, lubrication, cooling or control root cause?",
-        "Which propulsion/thrust vocabulary is genuinely new/refinement after campaign-wide de-duplication, and where does recall become too vessel-, engine/motor/turbine-, shaft-, gear-, propulsor-, RPM-, power-, speed-, pitch-, control-, procedure-, provider- or incident-specific to retain?"
+        "Which role distinctions connect owner/manager, master/bridge team, deck crew, engineering crew, shore technical support, mooring/anchor/deck-machinery equipment or service actors and relevant port/yard support without becoming a vendor, rigging or operating directory?",
+        "Which command/control availability, winch/windlass/capstan machinery readiness, electrical/hydraulic power-support availability, brake/holding-function confidence, line/chain/anchor handling-interface readiness, redundancy or consumer-scope confidence, degradation/restriction, isolation, restoration and verification states are remembered structurally while exact arrangements, loads, tensions, brake settings, line or chain configurations, hydraulic/electrical parameters, control modes, limits, sequences and emergency actions remain deferred?",
+        "How can mooring/anchoring/deck-machinery degradation propagate into berth, anchorage, arrival/departure or port-call flexibility without treating those downstream effects as proof of a command, machinery, brake/holding, power-support or handling-interface root cause?",
+        "Which mooring/anchoring/deck-machinery vocabulary is genuinely new/refinement after campaign-wide de-duplication, and where does recall become too vessel-, winch-, windlass-, capstan-, brake-, line-, chain-, anchor-, load-, tension-, control-, procedure-, provider- or incident-specific to retain?"
       ],
       "output_contract": {"industry_memory_output_required":true,"method_observation_limit":1,"novelty_classes":["new_category","useful_refinement","duplicate"],"reviewed_no_specific_memory_allowed":true,"one_pass_cannot_self_seal":true}
     }
@@ -103,14 +103,14 @@
     "independent_challenger_complete": false,
     "has_major_coverage_gaps": true,
     "recent_outcomes": [
-      {"pass_id":"SHIP-MEM-V2-P076","family":"shipboard_ballast_water_management_tank_inventory_pumping_treatment_system_service_capacity_uptake_release_opportunity_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P076.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P077","family":"shipboard_fuel_bunker_fuel_oil_supply_delivery_sampling_quality_confidence_storage_inventory_transfer_consumption_service_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P077.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P078","family":"shipboard_compressed_air_starting_air_service_air_control_air_pneumatic_generation_receiver_storage_distribution_demand_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P078.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P079","family":"shipboard_machinery_cooling_water_seawater_freshwater_closed_loop_heat_exchanger_pump_distribution_temperature_capacity_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P079.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P080","family":"shipboard_machinery_lubricating_oil_storage_supply_circulation_pump_filter_purifier_condition_cooling_consumption_inventory_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P080.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P081","family":"shipboard_steam_boiler_condensate_feedwater_heating_service_generation_distribution_demand_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P081.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
       {"pass_id":"SHIP-MEM-V2-P082","family":"shipboard_hydraulic_power_oil_reservoir_pump_accumulator_distribution_consumer_demand_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P082.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
-      {"pass_id":"SHIP-MEM-V2-P083","family":"shipboard_steering_steering_gear_rudder_command_control_feedback_response_power_support_redundancy_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
+      {"pass_id":"SHIP-MEM-V2-P083","family":"shipboard_steering_steering_gear_rudder_command_control_feedback_response_power_support_redundancy_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P083.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16},
+      {"pass_id":"SHIP-MEM-V2-P084","family":"shipboard_propulsion_thrust_prime_mover_drive_train_shaft_propulsor_command_control_feedback_support_redundancy_availability_degradation_isolation_restoration","receipt_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P084.json","novel_lead_count":17,"duplicate_lead_count":2,"high_importance_novel_count":16}
     ]
   }
 }
