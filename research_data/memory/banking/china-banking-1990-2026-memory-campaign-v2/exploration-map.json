@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":99,
+  "map_revision":100,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__BANK-STATE-OWNED__seal-decision__blind-001.json",
-  "latest_pass_receipt_status":"canonical_seal_decision_recorded",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-TIME-1990-1994__BANK-JOINT-STOCK__blind-001.json",
+  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","period":["1990-01-01","2026-08-31"],"model_vintage":"GPT-5.6 Sol","sealed_artifact_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-REGULATION-RESOLUTION-seal-state-v1.json","sealed_artifact_sha256":"2c44f0125b2b3a8c06bb7a20b34b6119d0f4e05dca33c68d4d92ebeaf74c9784","seal_decision_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-02-CROSS-TIME__SYS-REGULATION-RESOLUTION__seal-decision__blind-002.json","canonical_reason_code":"orthogonal_passes_reached_low_marginal_novelty","evidence_transition_allowed_after_clean_handoff":true,"evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","period":["1990-01-01","2026-08-31"],"model_vintage":"GPT-5.6 Sol","sealed_artifact_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/SYS-MONETARY-CREDIT-seal-state-v1.json","sealed_artifact_sha256":"624f6093d372132a14a594d876de0458a2ff2558f1ba4dcac1e7be9798419cab","seal_decision_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__SYS-MONETARY-CREDIT__seal-decision__blind-001.json","canonical_reason_code":"orthogonal_passes_reached_low_marginal_novelty","evidence_transition_allowed_after_clean_handoff":true,"evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -26,38 +26,42 @@
     "selected_time_slice_id":"TIME-1990-1994",
     "stage":"active_recall",
     "fresh_search_used":false,
-    "recent_outcomes":[]
+    "recent_outcomes":[
+      {"pass_id":"TIME-1990-1994__BANK-JOINT-STOCK__blind-001","family":"time_slice_timeline_blind_recall","receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-TIME-1990-1994__BANK-JOINT-STOCK__blind-001.json","novel_lead_count":103,"duplicate_lead_count":5,"high_importance_novel_count":24,"outcome":"broad_high_novelty_orthogonal_required","counts_as_low_novelty_confirmation":false}
+    ]
   }],
   "coverage_snapshot":{
     "reviewed_high_value_regions":[
       {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-2026__SYS-MONETARY-CREDIT","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-2026__BANK-STATE-OWNED","state":"canonically_sealed_for_model_vintage","note":"All nine primary time slices reached broad+orthogonal coverage; four measured cross-time material gaps were targeted and closed; three consecutive independent low-novelty confirmations followed; separate rev98 control decision sealed the shard without Evidence or truth promotion."}
+      {"region_id":"TIME-1990-2026__BANK-STATE-OWNED","state":"canonically_sealed_for_model_vintage"},
+      {"region_id":"TIME-1990-1994__BANK-JOINT-STOCK__BROAD","state":"broad_high_novelty_orthogonal_required","note":"Broad recall recovered a heterogeneous early joint-stock cohort with distinct corporate/local/special-zone origins, regional-to-national licensing paths, sponsor/customer/funding structures, early listing experiments and period-native liquidity/asset-quality semantics."}
     ],
     "known_major_gaps":[
-      "BANK-JOINT-STOCK has not yet received fresh-agent primary time-slice blind coverage under campaign v2.",
-      "The first sparse frontier is 1990-1994 broad recall for national joint-stock commercial banks and their early differentiated ownership, regional origins, franchise and funding models.",
-      "Evidence for all sealed shards remains deferred while sparse campaign priority proceeds through unsealed blind-memory shards."
+      "TIME-1990-1994 BANK-JOINT-STOCK broad recall is high novelty and requires one independent orthogonal challenge before the slice can be marked complete.",
+      "The orthogonal challenge must stress institution-by-institution inclusion/chronology, legal/ownership form, sponsor/control, geographic licensing, funding/liquidity, asset-quality semantics and early listing/governance without reading blind-001 raw or receipt.",
+      "Later BANK-JOINT-STOCK primary slices remain unopened.",
+      "Evidence for sealed shards remains deferred while blind-memory priority advances through unsealed shards."
     ],
     "deferred_regions":[
       {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION__EXACT-SOURCE-DETAIL","state":"post_seal_evidence_eligible_but_deferred","reason":"Not selected by sparse map."},
       {"region_id":"TIME-1990-2026__SYS-MONETARY-CREDIT__EXACT-SOURCE-DETAIL","state":"post_seal_evidence_eligible_but_deferred","reason":"Not selected by sparse map."},
-      {"region_id":"TIME-1990-2026__BANK-STATE-OWNED__EXACT-SOURCE-DETAIL","state":"post_seal_evidence_eligible_but_deferred","reason":"Shard is canonically sealed, but Evidence is intentionally deferred while the next unsealed blind shard is selected."}
+      {"region_id":"TIME-1990-2026__BANK-STATE-OWNED__EXACT-SOURCE-DETAIL","state":"post_seal_evidence_eligible_but_deferred","reason":"Not selected by sparse map."}
     ]
   },
-  "selection_basis":{"rule":"advance_to_next_unsealed_bank_type_after_canonical_state_owned_seal","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"TIME-1990-1994"},
-  "open_frontiers":[{"frontier_id":"TIME-1990-1994__BANK-JOINT-STOCK__BROAD","priority_rank":1,"state":"open","selected_probe_id":"TIME-1990-1994__BANK-JOINT-STOCK__blind-001"}],
+  "selection_basis":{"rule":"broad_high_novelty_requires_independent_orthogonal_completion","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"TIME-1990-1994"},
+  "open_frontiers":[{"frontier_id":"TIME-1990-1994__BANK-JOINT-STOCK__ORTHOGONAL","priority_rank":1,"state":"open","selected_probe_id":"TIME-1990-1994__BANK-JOINT-STOCK__blind-002"}],
   "next_probe":{
-    "probe_id":"TIME-1990-1994__BANK-JOINT-STOCK__blind-001",
-    "family":"time_slice_timeline_blind_recall",
+    "probe_id":"TIME-1990-1994__BANK-JOINT-STOCK__blind-002",
+    "family":"institution_ownership_funding_semantics_orthogonal_blind_recall",
     "time_slice_id":"TIME-1990-1994",
     "shard_id":"BANK-JOINT-STOCK",
     "period":["1990-01-01","1994-12-31"],
-    "instruction":"In the next eligible loop, run one isolated broad blind-memory pass for BANK-JOINT-STOCK in 1990-1994 using only this rev99 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts from BANK-STATE-OWNED or other shards, and do not use Banking Evidence/source material or fresh Banking search. Recover period-native leads on the early national/joint-stock commercial-bank cohort and antecedents needed to explain the 1990-1994 horizon: shareholding/ownership forms and old vocabulary; special-economic-zone, ministry/enterprise, local-government or corporate sponsor origins where remembered; early institutions such as China Merchants Bank, CITIC Industrial Bank, Shenzhen Development Bank, Guangdong Development Bank, Fujian Industrial Bank/Industrial Bank, China Everbright Bank, Huaxia Bank and Shanghai Pudong Development Bank only where internal memory supports them; nationwide versus regional branching and licensing; corporate/foreign-trade/private-enterprise customer niches; deposit gathering and wholesale/relationship funding; settlement, trade finance, cards or other early franchise experiments; capital/governance constraints; asset quality and rapid-growth risks; contemporaneous expectations about shareholding reform and competition with specialized/state banks; failures, restructurings, ownership changes, old names, metric semantics, uncertain fragments and counterexamples. Bank of Communications belongs to the sealed BANK-STATE-OWNED scope here and should appear only as a boundary note, not be re-recalled as a joint-stock target. Respect the CMB 2023 preexposure carveout: do not count any directly overlapping modern management-discussion recollection as clean blind evidence. Do not invent exact founding dates, capital amounts, branch counts, ownership percentages, regulatory wording or financial ratios when uncertain. If broad novelty is material, select exactly one orthogonal 1990-1994 BANK-JOINT-STOCK challenge; otherwise follow the sparse map based on measured gaps. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "instruction":"In the next eligible loop, run one isolated orthogonal blind-memory challenge for BANK-JOINT-STOCK in 1990-1994 using only this rev100 compact map, the manifest and current model internal memory/reasoning. Do not read blind-001 raw/receipt or any other completed Banking raw/receipts. Challenge the broad map independently: which institutions genuinely belong inside the slice versus only later; what their period-native legal/shareholding forms were; which were regional, special-zone, enterprise-group or local-government sponsored; whether and when nationwide branching was actually available; how corporate deposits, settlement relationships, interbank borrowing and thin retail networks changed liquidity economics; how early public listing altered SDB-style governance without assuming mature disclosure; how sponsor/customer concentration created both franchise and related-party risk; how early asset quality should be read through overdue/stagnant/bad-debt vocabulary rather than later five-category NPL definitions; and which apparent modern franchises/products are anachronistic if backdated. Explicitly test CMB, CITIC Industrial Bank, Shenzhen Development Bank, Guangdong Development Bank, Fujian Industrial Bank/Industrial Bank, Everbright, Huaxia and Shanghai Pudong Development Bank only where internal memory supports them; keep Minsheng and later entrants as negative-space boundaries. Bank of Communications remains sealed BANK-STATE-OWNED boundary only. Respect the CMB 2023 preexposure carveout and do not count direct modern-management overlap as clean blind evidence. If no second material category emerges, mark 1990-1994 broad+orthogonal complete and select 1995-1999 BANK-JOINT-STOCK broad as the only next frontier. If a second material category appears, reopen exactly one targeted 1990-1994 frontier. Do not invent exact dates, ownership percentages, branch counts, ratios or official wording. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["completed BANK-STATE-OWNED raw and receipts","completed raw or receipts from other Banking shards","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["TIME-1990-1994__BANK-JOINT-STOCK__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only 1990-1994 BANK-JOINT-STOCK broad raw and bounded receipt exist; the sparse map selects exactly one next frontier based on measured novelty/gaps; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only 1990-1994 BANK-JOINT-STOCK orthogonal raw and bounded receipt exist; the sparse map either marks the slice broad+orthogonal complete and selects 1995-1999 broad or reopens exactly one measured material gap; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
