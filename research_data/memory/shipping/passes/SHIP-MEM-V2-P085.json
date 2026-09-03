@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P085",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_mooring_anchoring_windlass_capstan_mooring_winch_command_control_power_support_brake_holding_line_anchor_handling_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_mooring_anchoring_deck_machinery_service_state_model_only_no_load_tension_brake_setting_line_chain_configuration_control_sequence_limit_or_emergency_operating_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"MA-01","novelty_class":"new_category","importance":"high","memory":"Mooring/anchoring/deck-machinery service spans owner/manager, master and bridge team, deck crew, engineering crew, shore technical support, deck-machinery equipment or service actors and relevant port or yard support. Command, deck operation, machinery support, verification and shore intervention should remain distinct roles rather than one vendor, rigging or operating directory."},
+    {"id":"MA-02","novelty_class":"new_category","importance":"high","memory":"Command/control availability is distinct from winch, windlass or capstan machinery readiness. A command path can appear available while the relevant machinery or holding function is restricted, and machinery readiness does not itself prove a usable command/control path."},
+    {"id":"MA-03","novelty_class":"new_category","importance":"high","memory":"Deck-machinery readiness is a distinct service state from electrical or hydraulic support. Supporting utilities can appear available while a winch, windlass, capstan or related handling machine is restricted, and a deck-function constraint does not by itself identify a utility or machinery root cause."},
+    {"id":"MA-04","novelty_class":"new_category","importance":"high","memory":"Electrical and hydraulic power-support availability are separate from delivered mooring or anchoring function. Power presence can support machinery without proving holding or handling capability, while degraded deck function does not itself establish an electrical or hydraulic cause."},
+    {"id":"MA-05","novelty_class":"new_category","importance":"high","memory":"Brake or holding-function confidence is distinct from machinery motion/readiness. A machine can be capable of movement while holding confidence is restricted or uncertain, and a holding concern does not itself prove a brake, control, power or handling-interface root cause."},
+    {"id":"MA-06","novelty_class":"new_category","importance":"high","memory":"Line, chain or anchor handling-interface readiness is distinct from the machinery that drives or controls it. Machinery appearing ready does not prove the attached handling interface is available for its intended function, while an interface symptom does not establish machinery causality."},
+    {"id":"MA-07","novelty_class":"new_category","importance":"high","memory":"Mooring, anchoring and other deck-machinery consumer scopes should remain separable even when they share power, control or machinery families. Availability in one scope does not establish availability in another; exact vessel arrangements and operating sequences remain deferred."},
+    {"id":"MA-08","novelty_class":"new_category","importance":"high","memory":"Redundancy or independent-path confidence matters where multiple machines, stations, power paths or handling scopes exist. One bounded path can be restricted while another remains usable, without inferring exact vessel layout, changeover logic or operating method."},
+    {"id":"MA-09","novelty_class":"new_category","importance":"high","memory":"Functional demand and useful holding/handling margin are distinct from simple equipment-running state. Berth, anchorage or arrival/departure contexts can differ in required margin, but this Memory pass does not calculate or assert loads, tensions, brake settings, limits or operating actions."},
+    {"id":"MA-10","novelty_class":"new_category","importance":"high","memory":"Mooring/anchoring/deck-machinery degradation follows a defensive lifecycle: observation, uncertain command/machinery/power/holding/interface scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No handling, mooring, anchoring, troubleshooting or emergency procedure is retained."},
+    {"id":"MA-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected machinery, brake/holding function, command/control path, power branch, handling interface or consumer function rather than generalized to the entire deck system. Exact isolations, valve/switch states and operating steps remain deferred."},
+    {"id":"MA-12","novelty_class":"new_category","importance":"high","memory":"Mooring/anchoring/deck-machinery degradation can propagate into berth, anchorage, arrival/departure or port-call flexibility, but those downstream effects are not by themselves proof of a command, machinery, brake/holding, electrical, hydraulic or handling-interface root cause."},
+    {"id":"MA-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control availability returns, machinery readiness returns, power support is re-established, holding confidence returns, handling-interface readiness is confirmed and any redundant scope is re-verified. A cleared indication or moving machine does not prove full service restoration."},
+    {"id":"MA-R01","novelty_class":"useful_refinement","importance":"high","memory":"P082 hydraulic-power service is an upstream utility dimension rather than delivered mooring/anchoring function. Hydraulic availability does not prove deck-machinery, holding or handling-interface readiness, and deck-function degradation does not establish a hydraulic root cause."},
+    {"id":"MA-R02","novelty_class":"useful_refinement","importance":"high","memory":"P083 steering and P084 propulsion model first-order maneuvering functions, while P085 covers berth/anchorage securing and handling functions. Their downstream operational effects can interact, but availability or degradation in one functional family does not prove the state or cause of another."},
+    {"id":"MA-R03","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical availability can support deck machinery but remains an independent service dimension. Electrical power or control presence does not prove brake/holding or handling capability, and deck-machinery restriction does not establish an electrical cause."},
+    {"id":"MA-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 generic marine-equipment lifecycle covers machine readiness and maintenance mechanics, while P085 adds delivered deck-function separation across command, power support, holding and handling-interface states without turning the pass into equipment maintenance guidance."},
+    {"id":"MA-D01","novelty_class":"duplicate","importance":"medium","memory":"Winch, windlass, capstan, brake and control equipment readiness/maintenance mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"MA-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap prior shipboard service passes; P085 applies them specifically to mooring/anchoring/deck-machinery functional service."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact mooring/anchoring/deck-machinery arrangements, line or chain configurations, loads, tensions, brake settings, hydraulic/electrical parameters, control modes, limits and current configuration are intentionally not retained.",
+    "Exact mooring, anchoring, line/chain/anchor handling, brake-setting, changeover, isolation, testing, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named equipment/service providers, vessel incidents/deficiencies, inspection or test findings and current readiness require claim-scoped Evidence.",
+    "Private/regional mooring, anchor, deck-machinery and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact vessel mooring/anchoring/deck-machinery topology, line or chain configurations, loads, tensions, brake settings, hydraulic/electrical parameters, control modes, limits and current configuration.",
+    "Mooring, anchoring, line/chain/anchor handling, brake-setting, changeover, isolation, testing, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers, vessel incidents/deficiencies, inspection or test findings and current readiness.",
+    "Private/regional mooring, anchor, deck-machinery and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive mooring/anchoring/deck-machinery service orientation/source-discovery output. It is not mooring, anchoring, line handling, navigation, deck operation, maintenance, emergency-response, safety or vessel-operating advice and does not establish any exact arrangement, load, tension, brake setting, line/chain/anchor configuration, hydraulic/electrical parameter, control mode, operating limit, sequence, procedure, provider, incident, deficiency, inspection finding or current-readiness fact.",
+  "stop_reason": "Mooring/anchoring/deck-machinery is recalled at useful functional-service resolution: command/control availability, machinery readiness, electrical/hydraulic support, brake/holding confidence, handling-interface readiness, consumer scope, useful margin, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, winch-, windlass-, capstan-, brake-, line-, chain-, anchor-, load/tension-, control-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
