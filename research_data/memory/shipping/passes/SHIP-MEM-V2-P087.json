@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P087",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_cargo_handling_lifting_gear_crane_derrick_winch_hoist_command_control_power_support_hoisting_luffing_slewing_brake_holding_load_interface_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_lifting_gear_service_state_model_only_no_safe_working_load_rigging_slinging_rope_brake_limit_device_test_or_lifting_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CG-01","novelty_class":"new_category","importance":"high","memory":"Shipboard cargo-handling/lifting-gear service spans owner/manager, master and deck/cargo team, engineering crew, shore technical support, cargo-gear equipment or service actors and relevant port, terminal or yard support. Cargo planning, gear operation, machinery support, verification and shore intervention should remain distinct roles rather than one vendor, rigging, certification or operating directory."},
+    {"id":"CG-02","novelty_class":"new_category","importance":"high","memory":"Command/control availability is distinct from crane, derrick, hoist or winch machinery readiness. A command path can appear available while machinery is restricted, and machinery readiness does not itself prove a valid command/control path."},
+    {"id":"CG-03","novelty_class":"new_category","importance":"high","memory":"Cargo-gear machinery readiness is distinct from electrical or hydraulic power-support availability. Supporting power can appear available while a lifting machine is restricted, and a cargo-handling constraint does not by itself establish a power-system cause."},
+    {"id":"CG-04","novelty_class":"new_category","importance":"high","memory":"Hoisting, luffing, slewing or other motion-path confidence should remain distinct from generic machinery readiness. A machine can be broadly available while one motion function or path is restricted; exact gear type, geometry, drive arrangement and operation remain deferred."},
+    {"id":"CG-05","novelty_class":"new_category","importance":"high","memory":"Brake or holding confidence is distinct from motion capability. Cargo gear may be able to move while holding confidence is uncertain or restricted, and a holding concern does not itself prove a brake, drive, control or power root cause."},
+    {"id":"CG-06","novelty_class":"new_category","importance":"high","memory":"Load-handling-interface confidence is distinct from machinery motion and holding states. The interface between lifting machinery and the handled load can constrain delivered cargo-handling function, but this pass does not retain rigging, slinging, hook, spreader, rope or attachment procedures or specifications."},
+    {"id":"CG-07","novelty_class":"new_category","importance":"high","memory":"Cargo-operation scope matters: one crane, derrick, hoist, hatch or cargo area can be restricted while another remains usable. A localized gear constraint should not be generalized to all cargo handling without exact vessel and operation evidence."},
+    {"id":"CG-08","novelty_class":"new_category","importance":"high","memory":"Redundancy or alternate-gear confidence can exist where multiple lifting appliances, power paths or handling scopes are available. Structural memory preserves scoped alternatives without inferring exact tandem use, changeover, load sharing or operational method."},
+    {"id":"CG-09","novelty_class":"new_category","importance":"high","memory":"Useful cargo-handling capacity or service margin is distinct from simple machine-running state. Cargo and port contexts can demand different capability, but this pass does not calculate or assert safe working loads, radii, outreach, speeds, combinations, load sharing or operating limits."},
+    {"id":"CG-10","novelty_class":"new_category","importance":"high","memory":"Cargo-gear degradation follows a defensive lifecycle: observation, uncertain command/machinery/power/motion/holding/interface scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No lifting, rigging, testing or troubleshooting procedure is retained."},
+    {"id":"CG-11","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected lifting appliance, command path, power branch, motion function, brake/holding function or load interface rather than generalized to all cargo gear. Exact switches, valves, brakes, limit devices and securing steps remain deferred."},
+    {"id":"CG-12","novelty_class":"new_category","importance":"high","memory":"Cargo-gear degradation can propagate into loading/discharge opportunity, port productivity, cargo flexibility and schedule, but those downstream effects are not by themselves proof of a machinery, power, motion-path, brake/holding, load-interface or control root cause."},
+    {"id":"CG-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control availability returns, machinery readiness returns, required motion paths are available, holding confidence is restored, load-interface confidence is verified and affected cargo-operation scope is cleared. Movement or a cleared indication alone does not prove full cargo-handling-service restoration."},
+    {"id":"CG-R01","novelty_class":"useful_refinement","importance":"high","memory":"P086 cargo-access/hatch-cover service determines access and boundary confidence, while P087 cargo gear determines onboard lifting/handling capability. An open hold does not prove lifting capability, and available cargo gear does not establish hatch/access integrity."},
+    {"id":"CG-R02","novelty_class":"useful_refinement","importance":"high","memory":"P085 mooring/anchoring deck machinery may share winch, brake, hydraulic or electrical concepts with cargo gear, but delivered berth/anchor holding and delivered cargo lifting are distinct functional scopes and should not be inferred from one another."},
+    {"id":"CG-R03","novelty_class":"useful_refinement","importance":"high","memory":"P082 hydraulic and P070 electrical services are upstream support dimensions rather than delivered cargo lifting. Their availability does not prove machinery, motion, holding or load-interface readiness, and cargo-gear degradation does not establish a utility cause."},
+    {"id":"CG-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 generic equipment lifecycle covers cargo-gear machinery readiness, service and maintenance mechanics, while P087 separates motion-path, holding, load-interface and cargo-operation outcome states without retaining maintenance or lifting instructions."},
+    {"id":"CG-D01","novelty_class":"duplicate","importance":"medium","memory":"Crane, derrick, hoist, winch, drive and control equipment readiness/maintenance mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"CG-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap prior shipboard service passes; P087 applies them specifically to onboard cargo-handling/lifting function."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cargo-gear arrangements, crane/derrick/hoist/winch types, safe working loads, radii/outreach, rigging/slinging, wire ropes, sheaves, brakes, limit devices, hydraulic/electrical parameters, control modes, tests and current configuration are intentionally not retained.",
+    "Exact lifting, rigging, slinging, hoisting, luffing, slewing, tandem, load-transfer, testing, isolation, troubleshooting, maintenance or emergency procedures are outside this blind pass.",
+    "Named cargo-gear providers, certification/testing actors, vessel incidents/deficiencies, inspection/test findings and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-handling/lifting-gear equipment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact vessel cargo-gear arrangements, gear types, safe working loads, radii/outreach, rigging/slinging, wire ropes, sheaves, brakes, limit devices, hydraulic/electrical parameters, control modes, tests and current configuration.",
+    "Lifting, rigging, slinging, hoisting, luffing, slewing, tandem, load-transfer, testing, isolation, troubleshooting, maintenance or emergency procedures.",
+    "Named equipment/providers/certification actors, vessel incidents/deficiencies, inspection/test findings and current readiness.",
+    "Private/regional cargo-handling/lifting-gear equipment and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive shipboard cargo-handling/lifting-gear service orientation/source-discovery output. It is not lifting, rigging, slinging, cargo-operation, maintenance, testing, emergency-response, safety or vessel-operating advice and does not establish any exact gear arrangement, safe working load, radius/outreach, rope, sheave, brake, limit device, power parameter, control mode, test, lifting sequence, procedure, provider, certification, incident, deficiency, inspection finding or current-readiness fact.",
+  "stop_reason": "Cargo-handling/lifting-gear service is recalled at useful functional resolution: command/control, machinery, power support, motion paths, brake/holding, load interface, cargo-operation scope, useful margin, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, crane-, derrick-, hoist-, winch-, rigging-, rope-, load-, brake-, limit-device-, control-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
