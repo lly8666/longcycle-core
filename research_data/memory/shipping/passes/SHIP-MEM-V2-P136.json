@@ -1,0 +1,69 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v2",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "pass_id":"SHIP-MEM-V2-P136",
+  "authority_class":"research_only_model_memory",
+  "family":"port_terminal_integrated_cargo_operation_readiness_berth_transfer_storage_landside_measurement_workforce_dependency_alignment_change_propagation_scope_confidence_degradation_restriction_restoration",
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility":"atlas_only",
+  "model_vintage":"GPT-5.6 Sol",
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used":false,
+  "repository_evidence_search_used":false,
+  "drive_used":false,
+  "database_used":false,
+  "memory_is_evidence":false,
+  "preflight_dedup":{"performed_before_raw":true,"comparison_passes":["SHIP-MEM-V2-P014","SHIP-MEM-V2-P129","SHIP-MEM-V2-P130","SHIP-MEM-V2-P133","SHIP-MEM-V2-P134","SHIP-MEM-V2-P135"],"result":"survived_only_as_thin_integrated_readiness_layer","reason":"P014 already models cargo execution as a stateful ship-terminal-cargo-equipment interface, while P129/P130/P133/P134/P135 cover transfer, storage, landside handoff, measurement/custody and workforce states. A bounded integrated cargo-operation readiness and dependency-alignment layer may still be useful, but most monitoring, support, constraint, lifecycle and propagation abstractions are expected duplicates or refinements."},
+  "role_distinctions":["terminal_integrated_operations_or_shift_coordination","berth_and_vessel_interface","transfer_path_and_equipment_service","storage_reclaim_and_inventory_service","landside_receipt_dispatch_service","measurement_sampling_and_custody_assurance","workforce_service_coverage"],
+  "new_categories":[
+    {"id":"p136-n01","label":"integrated_terminal_cargo_operation_readiness","importance":"high","memory":"A terminal cargo movement can require a bounded integrated readiness state across berth/vessel interface, transfer path, storage/reclaim, landside handoff, measurement/custody and workforce coverage rather than assuming that isolated component readiness automatically composes into executable service."},
+    {"id":"p136-n02","label":"cross_interface_dependency_alignment_confidence","importance":"high","memory":"Confidence can attach to whether the required interfaces are mutually aligned for the same bounded cargo-operation scope, without retaining exact plans, sequences, windows, rates or control-room logic."},
+    {"id":"p136-n03","label":"readiness_composition_confidence","importance":"high","memory":"Integrated readiness is not necessarily a simple minimum, sum or all-green conjunction of component states; composition can remain an explicit qualitative confidence judgment."},
+    {"id":"p136-n04","label":"limiting_interface_scope_confidence","importance":"high","memory":"A bounded operation may be constrained by one or more interfaces, but the limiting scope should be represented without inferring a universal bottleneck or exact throughput effect."},
+    {"id":"p136-n05","label":"cross_interface_continuity_confidence","importance":"high","memory":"Continuity across sequential or coupled terminal interfaces can degrade even when each interface has some local availability, without preserving exact operating sequence."},
+    {"id":"p136-n06","label":"change_propagation_scope_confidence","importance":"high","memory":"A change or restriction in one interface can propagate into other readiness states, but propagation should be scope-bounded and should not turn downstream effects into proof of the originating cause."},
+    {"id":"p136-n07","label":"cross_interface_temporal_alignment_confidence","importance":"high","memory":"Component readiness may occur at different times; integrated service can depend on sufficient temporal alignment without retaining exact windows, slots or schedules."},
+    {"id":"p136-n08","label":"integrated_readiness_monitoring_indication_confidence","importance":"medium","memory":"A synthesized readiness view or indication can be uncertain even when component observations exist, without retaining exact dashboards, controls or decision-support systems."},
+    {"id":"p136-n09","label":"integrated_support_dependency_confidence","importance":"medium","memory":"Shared support dependencies can affect several interfaces at once, but exact dependency topology, provider identity and control logic remain deferred."},
+    {"id":"p136-n10","label":"integrated_scoped_constraint_confidence","importance":"high","memory":"Integrated operation can be available for one bounded cargo movement or interface combination while restricted for another; restriction should remain scoped rather than collapsed to terminal-wide availability."},
+    {"id":"p136-n11","label":"integrated_degradation_restriction_restoration_lifecycle","importance":"high","memory":"Integrated readiness can move through available, degraded, restricted, unavailable for a bounded scope, under-restoration and restored states while component states recover asynchronously."},
+    {"id":"p136-n12","label":"multi_timestamp_integrated_restoration","importance":"high","memory":"Transfer, storage, handoff, measurement and workforce recovery can occur at different times, so integrated readiness restoration should not be represented by one synthetic timestamp."},
+    {"id":"p136-n13","label":"downstream_effect_not_integrated_root_cause_proof","importance":"high","memory":"Congestion, reduced throughput, rehandling, berth delay or schedule effects do not by themselves prove which integrated interface caused the constraint."}
+  ],
+  "useful_refinements":[
+    {"id":"p136-r01","label":"integrated_readiness_vs_stateful_execution_P014","importance":"high","memory":"P014 establishes physical cargo execution as a stateful interface; P136 tests whether an explicit pre-execution/in-operation integrated readiness layer across multiple terminal services adds durable semantics beyond that broad execution state."},
+    {"id":"p136-r02","label":"integrated_readiness_vs_transfer_storage_states_P129_P130","importance":"high","memory":"Transfer-path and storage/reclaim readiness are necessary inputs but do not individually establish that the full bounded cargo movement can proceed."},
+    {"id":"p136-r03","label":"integrated_readiness_vs_landside_measurement_workforce_P133_P134_P135","importance":"high","memory":"Landside handoff, measurement/custody and workforce coverage can each be available while mutual scope or timing alignment remains uncertain."},
+    {"id":"p136-r04","label":"propagation_without_root_cause_inference","importance":"high","memory":"Cross-interface propagation refines the campaign-wide causal-boundary rule: downstream operational effects can narrow the affected scope but cannot by themselves identify the initiating interface."}
+  ],
+  "duplicates":[
+    {"id":"p136-d01","label":"generic_monitoring_support_availability_degradation_restoration","memory":"Generic monitoring, support dependency, availability, degradation, restriction and restoration mechanics repeat prior terminal/service-state families."},
+    {"id":"p136-d02","label":"component_readiness_categories_already_owned_by_prior_passes","memory":"Transfer, storage, landside, measurement/custody and workforce readiness categories are already owned by P129/P130/P133/P134/P135 and are not new merely because they appear in an integrated view."}
+  ],
+  "reviewed_no_specific_memory":[
+    "exact berth plans, cargo programs, loading or discharge sequences, stockyard routes, landside slots, measurement checkpoints, staffing plans, operating windows, rates, capacities and current integrated readiness",
+    "exact control-room logic, dashboards, decision rights, escalation thresholds, constraints, optimization rules, communication protocols and change-control rules",
+    "exact integrated planning, scheduling, sequencing, dispatch, coordination, restriction-release, recovery, troubleshooting or emergency procedures",
+    "named terminals, operators, planners, service providers, cargo owners, incidents, disruptions, bottlenecks, productivity findings, current readiness and private/regional/non-English lineages"
+  ],
+  "downstream_propagation":["bounded_cargo_operation_restriction","queue_or_berth_delay","throughput_uncertainty","rehandling_or_resequencing_pressure","schedule_or_voyage_effect"],
+  "negative_space":[
+    "exact operating plans, sequences, windows, rates, capacities, staffing plans, equipment routes, measurement checkpoints and current integrated configuration",
+    "exact controls, dashboards, optimization logic, thresholds, decision rights, communications, escalation and change-management rules",
+    "exact planning, scheduling, sequencing, dispatch, coordination, restriction-release, recovery, troubleshooting and emergency procedures",
+    "named terminals, operators, service providers, cargo owners, incidents, disruptions, bottlenecks, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "novelty":{"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":15,"reviewed_no_specific_memory_count":4},
+  "stop_reason":"The bounded integrated terminal-readiness questions are answered at structural Memory level. Most additional recall collapses into already-owned component service states or exact operating plans, sequences, windows, capacities, controls and procedures that require Evidence. The thin surviving synthesis layer should be heavily campaign-wide de-duplicated before any durable novelty claim.",
+  "method_observation":null,
+  "retained_method_observation_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
+  "seal_eligible":false,
+  "evidence_transition_allowed":false,
+  "epistemic_boundary":"Memory-only defensive integrated port-terminal cargo-operation readiness orientation and source-discovery output; not terminal planning, scheduling, optimization, dispatch, control-room, maintenance, troubleshooting or emergency guidance and not proof of any exact plan, sequence, window, capacity, rate, control, provider, incident or current-readiness fact."
+}
