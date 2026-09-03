@@ -1,0 +1,80 @@
+{
+  "schema_version": "longcycle-industry-memory-pass/v2",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "pass_id": "SHIP-MEM-V2-P101",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_liquid_cargo_ship_shore_emergency_shutdown_link_protective_interface_signal_indication_independence_terminal_scope_availability_degradation_isolation_restoration",
+  "period": {"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "allowed_inputs": [
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "drive_used": false,
+  "database_used": false,
+  "memory_is_evidence": false,
+  "role_distinctions": [
+    "owner_or_manager_governance",
+    "master_deck_cargo_operational_oversight",
+    "engineering_support",
+    "shore_technical_and_cargo_support",
+    "ship_shore_shutdown_link_equipment_or_service_actor",
+    "terminal_or_port_interface_actor"
+  ],
+  "new_categories": [
+    {"id":"p101-n01","label":"shutdown_link_interface_readiness","importance":"high","memory":"The delivered ship/shore protective link/interface can be represented as a service-state distinct from cargo-transfer machinery or normal valve-control readiness."},
+    {"id":"p101-n02","label":"ship_endpoint_readiness","importance":"high","memory":"The ship-side endpoint can have its own readiness and degradation state without inferring signal type, trip logic or shutdown action."},
+    {"id":"p101-n03","label":"shore_endpoint_readiness","importance":"high","memory":"The shore-side endpoint can be modeled separately from the ship endpoint and from terminal-wide cargo-transfer readiness."},
+    {"id":"p101-n04","label":"inter_endpoint_link_path_availability","importance":"high","memory":"The bounded connection/path between ship and shore endpoints can be available, degraded, isolated or restored independently of endpoint hardware state."},
+    {"id":"p101-n05","label":"non_operational_signal_indication_confidence","importance":"high","memory":"A non-operational confidence state can represent whether link status/indication is trustworthy without retaining actual signal values, test methods or response sequences."},
+    {"id":"p101-n06","label":"independence_support_confidence","importance":"high","memory":"Confidence in protective independence/support should remain distinct from mere shared power/control availability and from proof of any exact fail-safe design."},
+    {"id":"p101-n07","label":"terminal_interface_scope","importance":"high","memory":"Readiness can be scoped to the particular ship/shore terminal interface rather than generalized to all terminal or vessel cargo operations."},
+    {"id":"p101-n08","label":"transfer_operation_scope_localization","importance":"high","memory":"A restriction can be localized to the affected transfer/interface scope without inferring whole-vessel or whole-terminal unavailability."},
+    {"id":"p101-n09","label":"endpoint_link_redundancy_confidence","importance":"high","memory":"Redundancy or alternate-interface confidence can be represented abstractly without inferring approved changeover, bypass or substitution procedures."},
+    {"id":"p101-n10","label":"protective_link_degradation_lifecycle","importance":"high","memory":"The service can move through available, degraded, restricted, isolated, under-verification and restored states while retaining timestamps for each transition."},
+    {"id":"p101-n11","label":"scoped_restriction_and_isolation","importance":"high","memory":"Restriction/isolation can be attributed separately to link path, ship endpoint, shore endpoint, indication domain, support dependency or terminal interface."},
+    {"id":"p101-n12","label":"downstream_effect_not_root_cause_proof","importance":"high","memory":"Cargo-transfer restriction, terminal incompatibility, protective-assurance loss, rework or schedule effect should not by itself prove which endpoint, link, indication or support layer caused degradation."},
+    {"id":"p101-n13","label":"multi_timestamp_restoration_verification","importance":"high","memory":"Physical repair, link availability, indication confidence, interface acceptance and operational release can occur at different times and should not be collapsed into one restoration timestamp."}
+  ],
+  "useful_refinements": [
+    {"id":"p101-r01","label":"overfill_protection_vs_ship_shore_link","importance":"high","memory":"P096-style tank high-level/overfill assurance is a different protective function from ship/shore shutdown-link interface readiness even when downstream transfer restrictions overlap."},
+    {"id":"p101-r02","label":"normal_valve_actuation_vs_shutdown_link","importance":"high","memory":"P100-style normal remote cargo-valve actuation/control readiness does not establish readiness of a separate ship/shore emergency-shutdown communication/interface layer."},
+    {"id":"p101-r03","label":"terminal_vapor_interface_vs_shutdown_link","importance":"high","memory":"A terminal-interface concept from vapor-control service refines scope handling but does not duplicate the protective shutdown-link service."},
+    {"id":"p101-r04","label":"utility_control_support_vs_delivered_protective_link","importance":"medium","memory":"Electrical/control support can be an upstream dependency while the delivered protective link/interface remains a separate service-state confidence domain."}
+  ],
+  "duplicates": [
+    {"id":"p101-d01","label":"generic_protective_service_state_lifecycle","memory":"Generic available/degraded/restricted/isolated/restored lifecycle mechanics are already represented across prior protective-service families."},
+    {"id":"p101-d02","label":"generic_scoped_degradation_and_restoration","memory":"Generic scope-localization, downstream-effect separation and verified-restoration mechanics are repeated campaign-wide rather than unique to this family."}
+  ],
+  "reviewed_no_specific_memory": [
+    "exact signal media or signal types",
+    "exact trip logic, shutdown actions or interlocks",
+    "exact response timing, test values or operating sequences",
+    "named terminal/provider/incident/current-readiness facts"
+  ],
+  "downstream_propagation": [
+    "cargo_transfer_restriction",
+    "terminal_compatibility_confidence",
+    "protective_assurance_confidence",
+    "rework_or_schedule_effect"
+  ],
+  "negative_space": [
+    "exact ship/shore shutdown-link arrangements, endpoint topology, signal types, trip logic, shutdown actions, interlocks, response timing, test values and current configuration",
+    "exact shutdown-link testing, connection, arming, transfer coordination, bypass, reset, troubleshooting, emergency-response or operating procedures",
+    "named shutdown-link providers, terminals, inspectors, incidents, deficiency findings and current readiness",
+    "private or regional terminal/link equipment and support lineages plus non-English predecessor terminology"
+  ],
+  "novelty": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":16,"reviewed_no_specific_memory_count":4},
+  "stop_reason": "The bounded structural questions are answered; further recall trends toward exact signal, trip, shutdown, interlock, timing, test, procedure, provider or incident detail that is deferred to Evidence.",
+  "method_observation": null,
+  "retained_method_observation_ref": ".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
+  "seal_eligible": false,
+  "evidence_transition_allowed": false,
+  "epistemic_boundary": "Memory-only defensive ship/shore shutdown-link service-state orientation and source-discovery output; not shutdown, trip, bypass, testing, cargo-transfer or emergency-response operating advice and not proof of any exact arrangement, signal, action, interlock, timing, procedure, provider, incident or current-readiness fact."
+}
