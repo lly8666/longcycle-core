@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P083",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_steering_steering_gear_rudder_command_control_feedback_response_power_support_redundancy_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_steering_service_state_model_only_no_emergency_steering_control_transfer_test_rudder_angle_response_time_pressure_logic_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"SG-01","novelty_class":"new_category","importance":"high","memory":"Steering service spans owner/manager, master and bridge team, engineering crew, shore technical support, steering-gear/control equipment or service actors and relevant port or yard support. Command responsibility, equipment support, verification and shore intervention should remain separate roles rather than one operating or vendor directory."},
+    {"id":"SG-02","novelty_class":"new_category","importance":"high","memory":"Steering command availability is distinct from steering-gear power and actuation readiness. A valid command path can exist while gear or actuation is restricted, and available machinery does not itself prove that command transmission is usable."},
+    {"id":"SG-03","novelty_class":"new_category","importance":"high","memory":"Control-path readiness and feedback/indication confidence are separate states. A control channel can appear available while feedback confidence is uncertain, and uncertain indication does not by itself prove loss of physical steering response."},
+    {"id":"SG-04","novelty_class":"new_category","importance":"high","memory":"Steering-gear or actuation readiness should remain separate from hydraulic and electrical support availability. Supporting utilities may be present while the steering consumer is restricted, and a steering-service constraint does not establish a hydraulic or electrical root cause."},
+    {"id":"SG-05","novelty_class":"new_category","importance":"high","memory":"Rudder or steering-response confidence is an outcome-level state distinct from command, control and gear readiness. Equipment appearing ready does not itself establish expected response, while degraded response does not identify whether command, feedback, gear, support utility or another interface is causal."},
+    {"id":"SG-06","novelty_class":"new_category","importance":"high","memory":"Redundancy or independent-path confidence should be preserved separately from aggregate steering availability. One control, power or actuation path can be restricted while another remains available; exact arrangements, transfer methods and sequences remain deferred."},
+    {"id":"SG-07","novelty_class":"new_category","importance":"high","memory":"Steering-service availability can be scope-specific by command/control path, gear or actuation unit, support-power path or feedback channel rather than one binary vessel-wide state. Exact local/remote or emergency-mode procedures and configuration details are not retained."},
+    {"id":"SG-08","novelty_class":"new_category","importance":"high","memory":"Steering demand and useful service margin are distinct from equipment-running state. Maneuvering context can increase dependence on timely reliable steering response without this Memory pass calculating required response, safe limits, rudder angles or operating actions."},
+    {"id":"SG-09","novelty_class":"new_category","importance":"high","memory":"Steering degradation follows a defensive lifecycle: observation, uncertain command/control/feedback/gear/support/response scope, affected-state identification, restriction or unavailability, bounded isolation, restoration indication and post-restoration verification. No steering-operation or emergency-response procedure is retained."},
+    {"id":"SG-10","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should preserve the affected command path, control/feedback channel, steering-gear or actuation scope, or supporting power path. One scope can be constrained while another remains usable; exact switching, transfer, bypass or testing sequences remain deferred."},
+    {"id":"SG-11","novelty_class":"new_category","importance":"high","memory":"Steering can depend on hydraulic power, electrical power, controls/monitoring and mechanical actuation, but dependency observations are not root-cause proof. Loss of support can degrade steering, while a steering symptom does not establish which support or component failed."},
+    {"id":"SG-12","novelty_class":"new_category","importance":"high","memory":"Steering-service degradation can propagate into maneuvering, berthing and voyage flexibility, but those downstream constraints are not by themselves proof of a command, control, feedback, gear, hydraulic, electrical or actuator root cause."},
+    {"id":"SG-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control availability returns, gear or actuation readiness returns, support-power paths return, feedback confidence is re-established, redundancy is re-verified and steering-response confidence is confirmed. A cleared indication or restarted unit does not prove full steering-service recovery."},
+    {"id":"SG-R01","novelty_class":"useful_refinement","importance":"high","memory":"P082 hydraulic power is a support utility while P083 steering is a consumer functional service. Hydraulic source, reservoir, accumulator and distribution availability do not prove steering command, feedback, gear or response confidence, and steering degradation does not establish a hydraulic root cause."},
+    {"id":"SG-R02","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical power is another support dimension rather than a proxy for steering service. Electrical availability can support steering equipment without proving command/control or response, while a steering constraint does not establish an electrical failure."},
+    {"id":"SG-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control availability and P083 steering-control service remain distinct. Generic control-network or interface availability does not prove steering command/feedback semantics or physical response, and a steering anomaly does not establish a cyber or digital cause."},
+    {"id":"SG-R04","novelty_class":"useful_refinement","importance":"high","memory":"P067 equipment lifecycle remains separate from delivered steering function. Component condition, maintenance or service state can inform gear/control equipment without proving command availability, redundancy or steering-response outcome."},
+    {"id":"SG-D01","novelty_class":"duplicate","importance":"medium","memory":"Equipment readiness, maintenance, shore support and component lifecycle mechanics overlap the generic marine-equipment lifecycle recovered in P067."},
+    {"id":"SG-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, dependency, restriction/isolation and verified-restoration mechanics overlap prior shipboard service passes; P083 applies them specifically to steering function."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact steering-gear/rudder arrangements, rudder angles, response times, local/remote/emergency configurations, hydraulic pressures, electrical/control logic, alarm thresholds, tests and current configuration are intentionally not retained.",
+    "Exact control transfer, steering operation, emergency steering, isolation, testing, troubleshooting, maintenance or recovery procedures are outside this blind pass.",
+    "Named steering equipment/service providers, vessel steering failures/incidents/deficiencies, inspection or test findings and current readiness require claim-scoped Evidence.",
+    "Private/regional steering-gear/control service lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact steering/rudder topology, angles, response times, control modes/configurations, hydraulic pressures, electrical/control logic, alarm thresholds, tests and current configuration.",
+    "Control transfer, steering operation, emergency steering, isolation, testing, troubleshooting, maintenance or recovery procedures.",
+    "Named equipment/providers, vessel failures/incidents/deficiencies, inspection or test findings and current readiness.",
+    "Private/regional steering equipment/control service lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive steering-service orientation/source-discovery output. It is not navigation, maneuvering, emergency steering, maintenance, safety or vessel-operating advice and does not establish any exact arrangement, rudder angle, response time, control mode or transfer sequence, hydraulic pressure, electrical/control logic, alarm threshold, test step/result, procedure, provider, incident, deficiency, inspection finding or current-readiness fact.",
+  "stop_reason": "Steering is recalled at useful functional-service resolution: command availability, control/feedback confidence, gear/actuation readiness, hydraulic/electrical support, redundancy, response confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, gear-, rudder-, mode-, response-, pressure-, logic-, alarm-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
