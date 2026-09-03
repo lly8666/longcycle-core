@@ -1,0 +1,48 @@
+{
+  "schema_version":"longcycle-blind-memory-pass-receipt/v1",
+  "workstream_id":"banking-domain-v1",
+  "campaign_id":"banking-china-1990-2026-v2",
+  "pass_id":"TIME-1990-1994__BANK-JOINT-STOCK__blind-002",
+  "family":"institution_ownership_funding_semantics_orthogonal_blind_recall",
+  "shard_id":"BANK-JOINT-STOCK",
+  "time_slice_id":"TIME-1990-1994",
+  "period":["1990-01-01","1994-12-31"],
+  "output_authority":"MEMORY_LEADS_ONLY",
+  "model_vintage":"GPT-5.6 Sol",
+  "input_refs":[
+    {"path":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","blob_sha":"5ea86efe7d37fade1b64ac663a83f52532660761","map_revision":100},
+    {"path":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","blob_sha":"f1614308cb83f2426bef4a55c35b7cc85c432c92"},
+    {"kind":"current_model_internal_memory_reasoning"}
+  ],
+  "branch_fence_head_before_pass":"4edca55864bc08ccd4ba60467cf86aca98d989a4",
+  "fresh_banking_search_used":false,
+  "banking_source_or_evidence_read":false,
+  "blind_001_raw_or_receipt_read":false,
+  "completed_banking_raw_or_receipt_read":false,
+  "sealed_shard_raw_read":false,
+  "other_shard_raw_read":false,
+  "cmb_2023_preexposure_direct_overlap_counted_as_blind":false,
+  "raw_output_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-1990-1994__BANK-JOINT-STOCK__blind-002-memory-leads.md",
+  "novelty":{
+    "new_category":49,
+    "useful_refinement":24,
+    "duplicate":7,
+    "novel_lead_count":73,
+    "high_importance_novel_or_refining":21,
+    "material_gap_found":false
+  },
+  "assessment":{
+    "low_novelty":false,
+    "counts_as_low_novelty_confirmation":false,
+    "second_material_category_found":false,
+    "disposition":"orthogonal_slice_complete",
+    "reason":"The independent challenge produced substantial institution-level and semantic refinements but no second material category beyond the broad map's heterogeneous institution chronology, ownership/sponsor form, geographic licensing, corporate/settlement franchise, funding/liquidity, early listing/governance and asset-quality semantics. Remaining uncertainty is primarily evidence/chronology detail."
+  },
+  "boundary_notes":[
+    "Blind-001 raw/receipt was not read.",
+    "Bank of Communications remained a sealed BANK-STATE-OWNED boundary and was not recalled as a joint-stock target.",
+    "Minsheng and later entrants remained negative-space boundaries for 1990-1994.",
+    "No exact founding/opening/listing dates, ownership percentages, branch counts, ratios, regulatory thresholds or official wording were promoted as facts."
+  ],
+  "status":"orthogonal_slice_complete"
+}
