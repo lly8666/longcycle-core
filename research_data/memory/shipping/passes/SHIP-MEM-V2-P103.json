@@ -1,0 +1,47 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v2",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "pass_id":"SHIP-MEM-V2-P103",
+  "authority_class":"research_only_model_memory",
+  "family":"shipboard_liquid_cargo_manifold_transfer_line_pressure_temperature_instrumentation_measurement_indication_validity_scope_availability_degradation_isolation_restoration",
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility":"atlas_only",
+  "model_vintage":"GPT-5.6 Sol",
+  "allowed_inputs":[{"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},{"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},{"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}],
+  "allowed_input_ordered_digest":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used":false,"repository_evidence_search_used":false,"drive_used":false,"database_used":false,"memory_is_evidence":false,
+  "role_distinctions":["owner_or_manager_governance","master_deck_cargo_operational_oversight","engineering_support","shore_technical_and_cargo_support","cargo_instrumentation_or_calibration_service_actor","terminal_or_port_interface_actor"],
+  "new_categories":[
+    {"id":"p103-n01","label":"manifold_line_instrument_readiness","importance":"high","memory":"Manifold/transfer-line instrumentation readiness can be represented separately from transfer machinery, valve actuation and physical connection readiness."},
+    {"id":"p103-n02","label":"pressure_measurement_confidence_non_numeric","importance":"high","memory":"A non-numeric pressure-measurement confidence state can be tracked without retaining values, ranges, thresholds or operating implications."},
+    {"id":"p103-n03","label":"temperature_measurement_confidence_non_numeric","importance":"high","memory":"A non-numeric temperature-measurement confidence state is distinct from exact cargo temperature values or tank-heating setpoints."},
+    {"id":"p103-n04","label":"indication_availability_confidence","importance":"high","memory":"Indication availability can degrade independently from the underlying sensing element or the physical transfer path."},
+    {"id":"p103-n05","label":"measurement_validity_confidence","importance":"high","memory":"Measurement validity/confidence is a separate state from whether an indication is merely present."},
+    {"id":"p103-n06","label":"cross_check_confidence","importance":"high","memory":"Independent or alternate cross-check confidence can be represented abstractly without inferring calibration methods or acceptance criteria."},
+    {"id":"p103-n07","label":"manifold_scope_localization","importance":"high","memory":"Instrumentation degradation can be scoped to a manifold/interface domain rather than generalized to all transfer instrumentation."},
+    {"id":"p103-n08","label":"transfer_line_scope_localization","importance":"high","memory":"A transfer-line segment or measurement domain can carry its own confidence/restriction state without exposing exact topology."},
+    {"id":"p103-n09","label":"instrument_support_dependency_confidence","importance":"high","memory":"Power, signal or support dependency confidence can be tracked separately from delivered measurement validity without inferring exact architecture."},
+    {"id":"p103-n10","label":"instrumentation_degradation_lifecycle","importance":"high","memory":"Instrumentation service can move through available, degraded, restricted, isolated, under-verification and restored states with separate timestamps."},
+    {"id":"p103-n11","label":"scoped_instrument_restriction_isolation","importance":"high","memory":"Restriction/isolation can be attributed to an instrument, indication domain, validity domain, support dependency or manifold/line scope."},
+    {"id":"p103-n12","label":"downstream_effect_not_measurement_root_cause_proof","importance":"high","memory":"Transfer restriction, terminal incompatibility, containment concern, rework or schedule effects do not alone prove an instrument, indication, validity or support root cause."},
+    {"id":"p103-n13","label":"multi_timestamp_measurement_restoration","importance":"high","memory":"Instrument repair, indication return, validity confirmation, cross-check completion and operational release can occur at different times."}
+  ],
+  "useful_refinements":[
+    {"id":"p103-r01","label":"tank_gauging_vs_manifold_line_instrumentation","importance":"high","memory":"P095 tank level/quantity gauging is related measurement vocabulary but does not duplicate pressure/temperature instrumentation at manifold/transfer-line scope."},
+    {"id":"p103-r02","label":"transfer_flow_confidence_vs_measurement_validity","importance":"high","memory":"P092 transfer-flow confidence is refined by distinguishing delivered transfer performance from instrumentation measurement validity."},
+    {"id":"p103-r03","label":"physical_connection_vs_instrumentation","importance":"high","memory":"P102 physical connection and containment readiness do not establish manifold/line instrument readiness or measurement validity."},
+    {"id":"p103-r04","label":"generic_monitoring_vs_typed_measurement_domains","importance":"medium","memory":"Generic monitoring mechanics refine this family, while pressure/temperature measurement and validity remain distinct confidence domains."}
+  ],
+  "duplicates":[
+    {"id":"p103-d01","label":"generic_instrument_condition_lifecycle","memory":"Generic instrument/equipment condition and restoration mechanics repeat prior measurement and service-state families."},
+    {"id":"p103-d02","label":"generic_scoped_degradation_and_verification","memory":"Generic scope localization, downstream-effect separation and verification mechanics are already campaign-wide."}
+  ],
+  "reviewed_no_specific_memory":["exact instrument types, locations or ranges","exact pressure/temperature values, thresholds or setpoints","exact alarm logic, calibration values, testing or adjustment methods","named provider, terminal, incident or current-readiness facts"],
+  "downstream_propagation":["cargo_transfer_confidence","terminal_compatibility_confidence","containment_assurance_confidence","rework_or_schedule_effect"],
+  "negative_space":["exact manifold/transfer-line instrument arrangements, instrument types, ranges, pressure/temperature values, thresholds, setpoints, alarm logic, calibration data, test values and current configuration","exact calibration, testing, adjustment, alarm-response, transfer-monitoring, troubleshooting or operating procedures","named instrumentation/calibration providers, terminals, inspectors, incidents, deficiency findings and current readiness","private/regional instrumentation service lineages plus non-English predecessor terminology"],
+  "novelty":{"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":16,"reviewed_no_specific_memory_count":4},
+  "stop_reason":"The bounded structural questions are answered; further recall trends toward exact values, setpoints, calibration, testing, procedure, provider or incident detail that is deferred to Evidence.",
+  "method_observation":null,"retained_method_observation_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation","seal_eligible":false,"evidence_transition_allowed":false,
+  "epistemic_boundary":"Memory-only defensive manifold/transfer-line instrumentation service-state orientation/source-discovery output; not calibration, alarm-response, testing, cargo-transfer or operating advice and not proof of any exact instrument, range, value, threshold, setpoint, logic, procedure, provider, incident or current-readiness fact."
+}
