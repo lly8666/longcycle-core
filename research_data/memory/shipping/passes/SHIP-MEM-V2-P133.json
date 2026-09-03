@@ -1,0 +1,69 @@
+{
+  "schema_version":"longcycle-industry-memory-pass/v2",
+  "workstream_id":"shipping-domain-v1",
+  "campaign_id":"shipping-adaptive-memory-v2",
+  "pass_id":"SHIP-MEM-V2-P133",
+  "authority_class":"research_only_model_memory",
+  "family":"port_terminal_dry_bulk_landside_rail_truck_barge_receipt_dispatch_transfer_interface_queue_handoff_path_scope_monitoring_availability_degradation_isolation_restoration",
+  "period":{"start":"1970-01-01","end":"2026-08-31","precision":"bounded_campaign_not_claim_exact"},
+  "source_visibility":"atlas_only",
+  "model_vintage":"GPT-5.6 Sol",
+  "allowed_inputs":[
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.json","blob_sha":"13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path":"research_data/memory/shipping/atlas-1970-present/atlas.verification.json","blob_sha":"a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path":"research_data/memory/shipping/seal-correction-v1.json","blob_sha":"49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest":"87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "fresh_search_used":false,
+  "repository_evidence_search_used":false,
+  "drive_used":false,
+  "database_used":false,
+  "memory_is_evidence":false,
+  "preflight_dedup":{"performed_before_raw":true,"comparison_passes":["SHIP-MEM-V2-P020","SHIP-MEM-V2-P021","SHIP-MEM-V2-P129","SHIP-MEM-V2-P130"],"result":"survived_with_heavy_generic_dedup","reason":"P020 models container inland intermodal handoffs, P021 terminal land/gate infrastructure and governance, P129 berth-side dry-bulk transfer paths, and P130 storage/reclaim. None separately models the delivered dry-bulk terminal-to-landside-carrier receipt/dispatch interface state, while generic queue, monitoring, support and degradation mechanics are already represented and must not be counted as new."},
+  "role_distinctions":["terminal_or_port_operator_governance","terminal_dry_bulk_cargo_operations","landside_rail_truck_or_barge_carrier_interface","cargo_interest_shipper_receiver_or_forwarding_interface","shore_technical_and_maintenance_support","vessel_berth_or_stockyard_planning_interface"],
+  "new_categories":[
+    {"id":"p133-n01","label":"terminal_dry_bulk_landside_receipt_dispatch_service_readiness","importance":"high","memory":"A dry-bulk terminal can have a distinct delivered landside receipt/dispatch service-state linking cargo arrival or departure opportunity to terminal operations without reducing the state to land ownership, gate infrastructure, berth equipment or storage capacity."},
+    {"id":"p133-n02","label":"landside_carrier_terminal_handoff_opportunity_confidence","importance":"high","memory":"Rail, truck or barge handoff opportunity can be represented as bounded confidence that a carrier-terminal interchange can occur, without retaining exact slots, tracks, gates, queues, schedules, rates or operating procedures."},
+    {"id":"p133-n03","label":"arrival_to_terminal_acceptance_interface_confidence","importance":"high","memory":"Inbound carrier arrival and terminal acceptance are distinct interface states: carrier presence does not by itself establish terminal acceptance readiness, and terminal readiness does not prove carrier availability."},
+    {"id":"p133-n04","label":"terminal_to_departing_carrier_release_interface_confidence","importance":"high","memory":"Outbound cargo release toward a landside carrier can be represented separately from inbound receipt and from storage/reclaim readiness, without asserting exact release documents, gate steps or dispatch sequence."},
+    {"id":"p133-n05","label":"landside_transfer_path_scope_confidence","importance":"high","memory":"Landside-interface assurance can attach to a bounded mode, handoff zone or terminal-side path scope without preserving exact tracks, roads, gates, hoppers, dumpers, loaders or route geometry."},
+    {"id":"p133-n06","label":"queue_access_availability_confidence","importance":"high","memory":"A terminal may be technically capable yet operationally constrained by access or queue availability; this can be represented qualitatively without exact queue length, appointment logic, dwell time, slot count or schedule."},
+    {"id":"p133-n07","label":"multi_mode_landside_interface_substitution_confidence","importance":"high","memory":"Where more than one landside mode or interchange path exists, substitution confidence can be modeled abstractly without claiming a specific terminal's rail, truck or barge configuration or redundancy."},
+    {"id":"p133-n08","label":"stockyard_feed_dispatch_boundary_confidence","importance":"high","memory":"The landside interface can be separated from the stockyard/storage-reclaim boundary: interface readiness may exist while feed/dispatch into storage is restricted, or vice versa."},
+    {"id":"p133-n09","label":"landside_interface_monitoring_indication_confidence","importance":"high","memory":"Monitoring or indication confidence for the landside handoff can degrade separately from the physical interface without retaining exact sensors, systems, messages, controls or displays."},
+    {"id":"p133-n10","label":"landside_interface_support_dependency_confidence","importance":"high","memory":"Power, communications, staffing, maintenance, documentation or other support dependencies can affect the delivered interface state without requiring exact dependency topology or provider identity."},
+    {"id":"p133-n11","label":"cargo_identity_acceptance_scope_confidence","importance":"high","memory":"A bounded dry-bulk handoff can depend on confidence that the cargo/lot and acceptance scope align, while exact documents, samples, specifications or custody-transfer rules remain deferred."},
+    {"id":"p133-n12","label":"landside_interface_degradation_restriction_isolation_restoration_lifecycle","importance":"high","memory":"The receipt/dispatch interface can move through available, degraded, restricted, isolated, under-restoration and restored states with scope-specific timing."},
+    {"id":"p133-n13","label":"multi_timestamp_landside_interface_restoration","importance":"high","memory":"Carrier access return, terminal acceptance or release readiness, path verification, monitoring/support recovery and restriction release can occur at different times rather than one synthetic restoration timestamp."}
+  ],
+  "useful_refinements":[
+    {"id":"p133-r01","label":"dry_bulk_landside_interface_vs_container_inland_handoff","importance":"high","memory":"P020 establishes container inland intermodal/drayage/rail/barge/ICD/gate handoffs, but dry-bulk receipt/dispatch can remain a separate cargo-system interface without inheriting container-specific gate, box or inland-network semantics."},
+    {"id":"p133-r02","label":"operating_interface_vs_terminal_land_gate_infrastructure","importance":"high","memory":"P021 land/gate/yard infrastructure and concession/investment capacity do not establish the current delivered landside receipt/dispatch handoff service-state."},
+    {"id":"p133-r03","label":"landside_interface_vs_berth_transfer_path","importance":"high","memory":"P129 berth-side shiploader/unloader/conveyor path readiness does not establish rail/truck/barge receipt or dispatch availability on the landside boundary."},
+    {"id":"p133-r04","label":"receipt_dispatch_interface_vs_storage_reclaim","importance":"high","memory":"P130 storage/reclaim service can be available while the landside handoff is restricted, and landside receipt/dispatch can be available while stockyard feed/reclaim is constrained."}
+  ],
+  "duplicates":[
+    {"id":"p133-d01","label":"generic_queue_monitoring_support_and_service_lifecycle","memory":"Generic availability, queue/access confidence, monitoring, support dependency, degradation, restriction, isolation and restoration mechanics repeat prior inland, terminal and service-state families."},
+    {"id":"p133-d02","label":"generic_downstream_effect_does_not_prove_root_cause","memory":"Stockyard restriction, berth readiness loss, throughput uncertainty, rehandling, vessel waiting or schedule effects do not by themselves prove a carrier, queue, handoff or transfer-path root cause; this causal boundary is already campaign-wide."}
+  ],
+  "reviewed_no_specific_memory":[
+    "exact terminal rail tracks, road gates, barge berths, hoppers, dumpers, loaders, scales, queue layouts, capacities, rates, dwell times, appointment windows, schedules and current configuration",
+    "exact access controls, dispatch logic, documentation, custody-transfer terms, cargo specifications, sampling requirements, monitoring thresholds, alarms, messages or operating limits",
+    "exact receipt, dispatch, gate, rail, truck, barge, loading, unloading, queue-management, isolation, maintenance, troubleshooting or emergency procedures",
+    "named terminals, railways, trucking companies, barge operators, cargo owners, ports, providers, incidents, outages, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "downstream_propagation":["stockyard_feed_or_dispatch_restriction","berth_or_vessel_readiness_uncertainty","cargo_throughput_uncertainty","rehandling_or_staging_pressure","schedule_or_voyage_effect"],
+  "negative_space":[
+    "exact landside terminal layouts, tracks, gates, barge interfaces, equipment, queues, capacities, rates, dwell times and schedules",
+    "exact cargo acceptance/release documents, custody terms, specifications, sampling rules, controls, messages, thresholds and operating limits",
+    "exact rail/truck/barge receipt-dispatch, queue-management, loading/unloading, isolation, maintenance, troubleshooting and emergency procedures",
+    "named terminals, carriers, cargo owners, providers, incidents, outages, findings, current readiness and private/regional/non-English lineages"
+  ],
+  "novelty":{"new_category":13,"useful_refinement":4,"duplicate":2,"novel_lead_count":17,"high_importance_novel_count":17,"reviewed_no_specific_memory_count":4},
+  "stop_reason":"The bounded dry-bulk landside receipt/dispatch interface questions are answered at structural Memory level. Further recall trends toward exact gates, tracks, hoppers, queues, rates, capacities, schedules, documents, controls, procedures, providers or incidents that require Evidence or a different explicitly selected frontier.",
+  "method_observation":null,
+  "retained_method_observation_ref":".longcycle/workstreams/shipping-domain-v1/receipts/SHIP-MEM-V2-P065.json#/method_observation",
+  "seal_eligible":false,
+  "evidence_transition_allowed":false,
+  "epistemic_boundary":"Memory-only defensive dry-bulk terminal landside receipt/dispatch interface orientation and source-discovery output; not rail, trucking, barge, terminal-operation, queue-management, maintenance, troubleshooting or emergency guidance and not proof of any exact layout, queue, capacity, rate, schedule, document, procedure, provider, incident or current-readiness fact."
+}
