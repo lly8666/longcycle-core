@@ -1,0 +1,61 @@
+{
+  "schema_version": "shipping-adaptive-memory-pass/v2",
+  "pass_id": "SHIP-MEM-V2-P089",
+  "campaign_id": "shipping-adaptive-memory-v2",
+  "workstream_id": "shipping-domain-v1",
+  "authority_class": "research_only_model_memory",
+  "family": "shipboard_cargo_space_ventilation_air_exchange_fan_damper_power_support_airflow_condition_confidence_cargo_space_scope_availability_degradation_isolation_restoration",
+  "period_start": "1970-01-01",
+  "period_end": "2026-08-31",
+  "period_precision": "bounded_campaign_not_claim_exact",
+  "source_visibility": "atlas_only",
+  "model_vintage": "GPT-5.6 Sol",
+  "instrument": "ChatGPT connected-GitHub blind-memory probe",
+  "run_date": "2026-09-03",
+  "fresh_search_used": false,
+  "repository_evidence_search_used": false,
+  "memory_is_evidence": false,
+  "safety_scope": "defensive_cargo_space_ventilation_service_state_model_only_no_airflow_rate_damper_position_gas_concentration_temperature_humidity_threshold_calculation_test_entry_or_operating_procedure_guidance",
+  "allowed_inputs": [
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.json", "blob_sha": "13f7229105cf0d1296e65c8eb3a54044aace7a87"},
+    {"path": "research_data/memory/shipping/atlas-1970-present/atlas.verification.json", "blob_sha": "a41bd0bbecd711c7669b59424a369b259eda0b3c"},
+    {"path": "research_data/memory/shipping/seal-correction-v1.json", "blob_sha": "49bea718f80f17f2f38a1ab7009b5b4d6c4b757a"}
+  ],
+  "allowed_input_ordered_digest": "87aceb993a7e1a2725db985d431671fd1835f146a5c54fba702981e545f415bf",
+  "structural_memory": [
+    {"id":"CV-01","novelty_class":"new_category","importance":"high","memory":"Cargo-space ventilation service spans owner/manager, master and deck/cargo team, engineering crew, shore technical or cargo support, ventilation equipment/service actors and relevant port or yard support. Cargo-space use, machinery support, condition observation and shore intervention should remain distinct roles rather than one vendor, gas-testing, enclosed-space or operating directory."},
+    {"id":"CV-02","novelty_class":"new_category","importance":"high","memory":"Ventilation command/control availability is distinct from fan or air-mover readiness. A command path can be available while the physical air mover is unavailable, and fan readiness does not itself establish command/control availability."},
+    {"id":"CV-03","novelty_class":"new_category","importance":"high","memory":"Fan or air-mover readiness is distinct from upstream electrical power-support availability. Electrical support can be present while the air mover is degraded, and an unavailable fan does not by itself prove an electrical root cause."},
+    {"id":"CV-04","novelty_class":"new_category","importance":"high","memory":"Electrical power-support availability is an enabling state, not the delivered ventilation outcome. Power availability does not establish that the intended cargo-space air exchange is occurring."},
+    {"id":"CV-05","novelty_class":"new_category","importance":"high","memory":"Air-path confidence is distinct from fan readiness. Ducts, openings, dampers or other bounded path interfaces can be unavailable or uncertain even when an air mover is ready, and path uncertainty does not itself prove a fan fault."},
+    {"id":"CV-06","novelty_class":"new_category","importance":"high","memory":"Damper or air-path configuration confidence can be represented structurally as available, uncertain, restricted or restored without retaining exact positions, alignments, control settings or operating instructions."},
+    {"id":"CV-07","novelty_class":"new_category","importance":"high","memory":"Airflow or air-exchange confidence is an outcome state distinct from fan-running indication, electrical support and air-path availability. Apparent machinery operation does not alone prove useful exchange at the intended cargo-space scope."},
+    {"id":"CV-08","novelty_class":"new_category","importance":"high","memory":"Cargo-space scope matters: ventilation confidence can differ by hold, compartment, deck space or other bounded cargo area. A localized ventilation concern should not be generalized to the whole vessel without exact arrangement evidence."},
+    {"id":"CV-09","novelty_class":"new_category","importance":"high","memory":"Condition or monitoring confidence is distinct from the ventilation service state itself. Observations can increase or decrease confidence in a cargo-space environment but do not by themselves prove the exact airflow, cause, concentration, threshold exceedance or required corrective action."},
+    {"id":"CV-10","novelty_class":"new_category","importance":"high","memory":"Multiple fans, paths or bounded cargo-space scopes can create redundancy or substitution confidence, but structural memory should not infer exact approved alignments, transfer logic, capacities or operating methods."},
+    {"id":"CV-11","novelty_class":"new_category","importance":"high","memory":"Cargo-space ventilation degradation follows a defensive lifecycle: observation, uncertain command/fan/power/path/air-exchange/space/monitoring scope, affected-state identification, restriction or uncertainty, bounded isolation of the affected scope, restoration indication and post-restoration verification. No ventilation, gas-testing, entry or emergency procedure is retained."},
+    {"id":"CV-12","novelty_class":"new_category","importance":"high","memory":"Restriction or isolation should be scoped to the affected fan or air mover, control path, power-support path, air path/damper function, cargo-space scope or monitoring domain rather than generalized to all cargo ventilation. Exact arrangements and corrective actions remain deferred."},
+    {"id":"CV-13","novelty_class":"new_category","importance":"medium","memory":"Restoration can have multiple timestamps: command/control becomes available, fan readiness returns, power support is available, air-path confidence is re-established, useful air-exchange confidence returns for the affected cargo-space scope and condition/monitoring confidence is renewed. One running indication or observation does not prove full service restoration."},
+    {"id":"CV-R01","novelty_class":"useful_refinement","importance":"high","memory":"P086 hatch-cover/cargo-access work covers access, securing, boundary integrity and drainage; P089 cargo-space ventilation covers air movement and exchange through a distinct service path. An opening or intact boundary does not by itself establish ventilation service, and ventilation degradation does not prove an access-boundary cause."},
+    {"id":"CV-R02","novelty_class":"useful_refinement","importance":"high","memory":"P070 electrical service is an upstream support dimension for ventilation equipment. Electrical availability does not equal cargo-space airflow/air-exchange availability, and a ventilation shortfall does not prove an electrical cause."},
+    {"id":"CV-R03","novelty_class":"useful_refinement","importance":"high","memory":"P068 digital/control service can support ventilation command, indication and monitoring, but control-path confidence is distinct from fan, air-path and delivered air-exchange confidence."},
+    {"id":"CV-R04","novelty_class":"useful_refinement","importance":"high","memory":"P079 machinery-cooling service manages heat-removal support for machinery, while P089 concerns cargo-space air exchange/environmental service. Shared temperature or fan vocabulary should not collapse these distinct functional scopes."},
+    {"id":"CV-D01","novelty_class":"duplicate","importance":"medium","memory":"Generic equipment readiness, support dependency, observation, verification and restoration mechanics overlap prior marine-equipment and shipboard-service passes."},
+    {"id":"CV-D02","novelty_class":"duplicate","importance":"medium","memory":"Scoped degradation, restriction/isolation, downstream-effect separation and multi-stage restoration mechanics overlap prior shipboard service passes; P089 applies them specifically to cargo-space ventilation/air-exchange confidence."}
+  ],
+  "reviewed_no_specific_memory": [
+    "Exact cargo-space ventilation arrangements, fan capacities, airflow rates, damper positions, ducting/openings, gas concentrations, temperature/humidity values or thresholds, cargo-specific requirements and current configuration are intentionally not retained.",
+    "Exact ventilation alignment, start/stop, gas-testing, enclosed-space entry, atmosphere-control, troubleshooting, maintenance, emergency or weather-response procedures are outside this blind pass.",
+    "Named ventilation-equipment providers, gas-testing/inspection actors, vessel incidents, cargo-condition findings, deficiency records and current readiness require claim-scoped Evidence.",
+    "Private/regional cargo-ventilation equipment and shore-support lineages plus historical non-English predecessor terminology remain deferred for source archaeology."
+  ],
+  "negative_space": [
+    "Exact cargo-space ventilation arrangements, fan capacities, airflow rates, damper positions, ducting/openings, gas concentrations, temperature/humidity values or thresholds, cargo-specific requirements and current configuration.",
+    "Ventilation alignment, start/stop, gas-testing, enclosed-space entry, atmosphere-control, troubleshooting, maintenance, emergency or weather-response procedures.",
+    "Named equipment/providers/gas-testing or inspection actors, vessel incidents, cargo-condition findings, deficiency records and current readiness.",
+    "Private/regional cargo-ventilation equipment and shore-support lineages plus non-English predecessor terminology."
+  ],
+  "counts": {"new_category":13,"useful_refinement":4,"duplicate":2,"novel":17,"high_importance_novel":16,"reviewed_no_specific_memory":4},
+  "epistemic_boundary": "Memory-only defensive cargo-space ventilation/air-exchange service orientation/source-discovery output. It is not ventilation operation, gas-testing, enclosed-space entry, atmosphere-control, cargo-care, safety, emergency-response or vessel-operating advice and does not establish any exact arrangement, fan capacity, airflow rate, damper position, duct/opening state, gas concentration, temperature/humidity threshold, cargo-specific requirement, control mode, test result, procedure, provider, incident, deficiency finding or current-readiness fact.",
+  "stop_reason": "Cargo-space ventilation/air-exchange service is recalled at useful non-operational resolution: command/control, fan/air-mover readiness, electrical support, air-path/damper confidence, airflow/air-exchange confidence, cargo-space scope, condition/monitoring confidence, scoped restriction/isolation and verified restoration are separable states. Further detail would become vessel-, cargo-type-, fan-, damper-, duct-, airflow-, concentration-, temperature/humidity-, calculation-, test-, procedure-, provider- or incident-specific and is deferred to claim-scoped Evidence."
+}
