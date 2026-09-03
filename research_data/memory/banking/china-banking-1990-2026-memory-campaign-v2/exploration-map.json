@@ -1,12 +1,12 @@
 {
   "schema_version": "longcycle-industry-memory-exploration-map/v1",
-  "map_revision": 66,
+  "map_revision": 67,
   "campaign_id": "banking-china-1990-2026-v2",
   "workstream_id": "banking-domain-v1",
   "industry": "China Banking",
   "primary_period": ["1990-01-01", "2026-08-31"],
   "authority_class": "research_control_only",
-  "campaign_stage": "low_novelty_confirmation_pending",
+  "campaign_stage": "seal_readiness_review_pending",
   "campaign_sealed": false,
   "source_visibility": "none_for_selected_next_probe",
   "source_visibility_scope": "selected_next_probe_only",
@@ -15,8 +15,8 @@
   "model_vintage_status": "pinned_by_first_v2_blind_pass_receipt",
   "campaign_ref": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-b__blind-001.json",
-  "latest_pass_receipt_status": "qualifying_low_novelty_confirmation_2_of_3",
+  "latest_pass_receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001.json",
+  "latest_pass_receipt_status": "qualifying_low_novelty_confirmation_3_of_3",
   "sealed_shards": [
     {
       "shard_id": "SYS-REGULATION-RESOLUTION",
@@ -34,8 +34,8 @@
   "active_shards": [
     {
       "shard_id": "SYS-MONETARY-CREDIT",
-      "selected_time_slice_id": "CROSS-TIME-LOW-NOVELTY-CONFIRMATION-C",
-      "stage": "low_novelty_confirmation_pending",
+      "selected_time_slice_id": "CROSS-TIME-SEAL-READINESS-REVIEW",
+      "stage": "seal_readiness_review_pending",
       "fresh_search_used": false,
       "recent_outcomes": [
         {
@@ -57,6 +57,16 @@
           "high_importance_novel_count": 1,
           "outcome": "qualifying_low_novelty_confirmation_2_of_3",
           "counts_as_low_novelty_confirmation": true
+        },
+        {
+          "pass_id": "CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001",
+          "family": "metric_expectation_counterexample_low_novelty_confirmation",
+          "receipt_ref": ".longcycle/workstreams/banking-domain-v1/receipts/2026-09-03-CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001.json",
+          "novel_lead_count": 0,
+          "duplicate_lead_count": 16,
+          "high_importance_novel_count": 0,
+          "outcome": "qualifying_low_novelty_confirmation_3_of_3",
+          "counts_as_low_novelty_confirmation": true
         }
       ],
       "negative_space_review_complete": true,
@@ -64,13 +74,15 @@
       "saturation_review_complete": true,
       "low_novelty_confirmation_progress": {
         "required_consecutive": 3,
-        "qualifying_consecutive": 2,
+        "qualifying_consecutive": 3,
         "review_or_challenger_passes_do_not_count": true,
         "qualifying_family_history": [
           "policy_regime_instrument_transmission_low_novelty_confirmation",
-          "funding_reserve_balance_sheet_low_novelty_confirmation"
+          "funding_reserve_balance_sheet_low_novelty_confirmation",
+          "metric_expectation_counterexample_low_novelty_confirmation"
         ],
-        "next_confirmation_family": "metric_expectation_counterexample_low_novelty_confirmation"
+        "canonical_high_importance_ceiling_per_pass": 1,
+        "all_three_within_ceiling": true
       }
     }
   ],
@@ -85,18 +97,17 @@
       {"region_id": "TIME-2017-2019__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Deleveraging/stance separation, MPA/TSF perimeter, funding segmentation, structural support and 2019 LPR transition covered."},
       {"region_id": "TIME-2020-2022__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Pandemic liquidity/credit layering, direct-tool intermediary risk, legacy LPR conversion, structural tools, deposit transmission, mortgage/property boundaries and fiscal/PBOC balance-sheet semantics covered."},
       {"region_id": "TIME-2023-2026__SYS-MONETARY-CREDIT", "state": "broad_plus_orthogonal_complete", "note": "Low-inflation/real-rate transmission, policy-rate/MLF/LPR/DR007 layers, bond/fiscal liquidity, deposit/NCD repricing, mortgage/property/local-debt and structural-tool boundaries covered at blind-memory level."},
-      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__MONETARY-AGGREGATE-METRIC-SEMANTICS", "state": "broad_plus_orthogonal_complete", "note": "M0/M1/M2 definition vintages, consolidated holder-sector accounting, payment/near-money forms and old-release/backcast/component-vintage PIT semantics represented."},
-      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__NEGATIVE-SPACE-REVIEW", "state": "complete_after_material_gap_follow_through", "note": "Negative-space review gap received broad+orthogonal follow-through; rerun found no second material category."},
-      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__POLICY-OBJECTIVE-TARGET-TOOL-HIERARCHY", "state": "broad_plus_orthogonal_complete", "note": "Objectives, anchors, operating targets/signals, tools, autonomous liquidity, market/bank transmission and borrower outcomes are explicitly layered."},
+      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__MONETARY-AGGREGATE-METRIC-SEMANTICS", "state": "broad_plus_orthogonal_complete", "note": "Definition vintages, consolidated holder-sector accounting, payment/near-money forms and release/backcast/component-vintage PIT semantics represented."},
+      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__NEGATIVE-SPACE-REVIEW", "state": "complete_after_material_gap_follow_through", "note": "Material metric-semantic gap received broad+orthogonal follow-through; rerun found no second material category."},
+      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__POLICY-OBJECTIVE-TARGET-TOOL-HIERARCHY", "state": "broad_plus_orthogonal_complete", "note": "Objectives, anchors, operating targets/signals, tools, autonomous liquidity, market/bank transmission and borrower outcomes explicitly layered."},
       {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__INDEPENDENT-CHALLENGER", "state": "complete_after_rerun_no_material_ontology_gap", "note": "Challenger-reopened hierarchy gap received follow-through; rerun found no second category-level omission."},
       {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__SATURATION-REVIEW", "state": "complete_no_material_gap", "note": "Dedicated whole-map review found no material omitted category and earned zero low-novelty credit."},
-      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__LOW-NOVELTY-CONFIRMATION-A", "state": "qualifying_1_of_3", "note": "Zero new categories, one useful refinement, fifteen duplicates, high-importance novel/refining one; no material gap."},
-      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__LOW-NOVELTY-CONFIRMATION-B", "state": "qualifying_2_of_3", "note": "Funding/reserve/balance-sheet confirmation recovered zero new categories, one timing refinement and fifteen duplicates; high-importance novel/refining one, with no material gap or antecedent."},
+      {"region_id": "CROSS-TIME__SYS-MONETARY-CREDIT__LOW-NOVELTY-CONFIRMATIONS", "state": "three_consecutive_qualifying_distinct_families", "note": "A: 0 new/1 refinement/15 duplicates/high1; B: 0 new/1 refinement/15 duplicates/high1; C: 0 new/0 refinement/16 duplicates/high0. No material category or antecedent in any pass."},
       {"region_id": "TIME-1990-2026__SYS-REGULATION-RESOLUTION", "state": "canonically_sealed_for_model_vintage", "note": "Sealed regulation/resolution remains isolated."}
     ],
     "known_major_gaps": [
-      "Measured low-novelty qualification is 2/3. One additional consecutive qualifying confirmation from a third distinct family is required before any seal-readiness decision.",
-      "Any later confirmation that reveals a material category or material missing antecedent must reopen exactly one sparse blind frontier and reset qualification. One pass cannot self-seal.",
+      "The three measured low-novelty confirmations are complete, but a separate seal-readiness control still must recompute all shard prerequisites and confirm that no control-state inconsistency blocks an explicit structured seal decision. The third confirmation cannot self-seal.",
+      "Even if seal readiness passes, the actual structured seal artifact/decision must be a separate action with exact artifact digest and canonical recomputation; Evidence remains disabled until a valid seal and later CLEAN handoff.",
       "Exact official objective wording, target definitions, actor mandates, operating-target/policy-rate designations, collateral/eligibility histories, transition dates, rates, quantities, named facility design and source wording remain deferred Evidence work after a future valid shard seal."
     ],
     "deferred_regions": [
@@ -104,31 +115,31 @@
     ]
   },
   "open_frontiers": [
-    {"frontier_id": "CROSS-TIME__SYS-MONETARY-CREDIT__LOW-NOVELTY-CONFIRMATION-C", "priority_rank": 1, "state": "open", "selected_probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001"}
+    {"frontier_id": "CROSS-TIME__SYS-MONETARY-CREDIT__SEAL-READINESS-REVIEW", "priority_rank": 1, "state": "open", "selected_probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__seal-readiness-review__blind-001"}
   ],
   "next_probe": {
-    "probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__low-novelty-confirmation-c__blind-001",
-    "family": "metric_expectation_counterexample_low_novelty_confirmation",
+    "probe_id": "CROSS-TIME__SYS-MONETARY-CREDIT__seal-readiness-review__blind-001",
+    "family": "bounded_seal_readiness_review",
     "time_slice_id": "CROSS-TIME",
     "shard_id": "SYS-MONETARY-CREDIT",
     "period": ["1990-01-01", "2026-08-31"],
-    "instruction": "Run one isolated third-family low-novelty confirmation using only this compact map, the manifest and model internal reasoning/memory. Do not read confirmation-A/B raw or receipts, saturation-review artifact, any prior v2 raw/review/challenger output, Batch0 raw, sealed regulation-resolution raw, other-shard raw, Banking Evidence/source material or fresh Banking search. Attack cross-time metric semantics and series vintages, contemporaneous policy expectations and interpretation traps, old vocabulary, dead ends, stock/flow/base-effect counterexamples, aggregate-versus-composition effects, bank/borrower heterogeneity and cases where headline stance or financing growth would mislead. Honor the CMB carveout and preserve uncertainty; do not invent exact dates, formulas, official wording or quantities. Classify each item as new_category/useful_refinement/duplicate. A material category or antecedent reopens one sparse frontier and resets qualification; otherwise measure novelty honestly. If the result is the third consecutive qualifying confirmation from a distinct family, mark 3/3 but do not seal; transition only to a separate seal-readiness control boundary for a later fresh-agent action. Close S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
+    "instruction": "In the next eligible fresh-agent loop, run one bounded seal-readiness control review using only this compact map, the manifest and current repository governance/canonical seal-control definitions; do not read any prior v2 raw blind-pass/confirmation/review/challenger output, sealed regulation-resolution raw, other-shard raw, Banking Evidence/source material or fresh Banking search. This is research control, not a recall confirmation and not the seal itself. Recompute that all nine time slices have broad+orthogonal depth; negative-space review, independent challenger and saturation review are complete; both reopened material gaps have broad+orthogonal follow-through; the three most recent qualifying confirmations are consecutive, from three distinct families and each within the canonical high-importance ceiling; no material missing antecedent or required long-tail family remains; and campaign/shard identity/model vintage/source-visibility constraints are coherent. If any prerequisite fails, reopen exactly one sparse corrective frontier or keep seal readiness pending. If all prerequisites pass, mark seal readiness complete and select exactly one separate structured seal-decision control for a later fresh-agent action. Do not create a sealed artifact, do not declare saturation as a seal, do not begin Evidence and do not truth-promote Memory. Close substantive S -> cursor-only H -> exact-H Architecture Baseline CLEAN.",
     "allowed_input_refs": [
       "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
-      "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json"
+      "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "repository governance and canonical memory-seal control definitions"
     ],
     "forbidden_inputs": [
-      "confirmation-A/B raw or receipts",
-      "saturation-review raw/control artifact",
-      "all prior v2 raw blind-pass, review and challenger outputs",
+      "all prior v2 raw blind-pass and confirmation outputs",
+      "all prior v2 review and challenger raw/control artifacts except compact map metadata",
       "Batch0 raw Banking outputs",
       "sealed SYS-REGULATION-RESOLUTION raw outputs",
       "other shard raw outputs",
       "Banking source or Evidence material",
       "fresh Banking search results"
     ],
-    "output_authority": "MEMORY_LEADS_ONLY",
+    "output_authority": "RESEARCH_CONTROL_ONLY",
     "one_pass_cannot_self_seal": true,
-    "done_when": "One bounded confirmation-C raw/receipt exists with measured novelty and material-gap assessment; any material gap reopens exactly one sparse frontier, otherwise qualifying progress may reach 3/3 and the map transitions to one separate seal-readiness control boundary without seal or Evidence; and the pass closes through S, cursor-only H and exact-H Architecture Baseline CLEAN."
+    "done_when": "One bounded seal-readiness control artifact/receipt exists; failed prerequisites reopen one sparse corrective frontier, otherwise seal readiness becomes complete with exactly one separate structured seal-decision next step; and the control closes through substantive S, cursor-only H and exact-H Architecture Baseline CLEAN without a seal artifact, Evidence or truth promotion."
   }
 }
