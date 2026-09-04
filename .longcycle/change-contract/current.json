@@ -14,13 +14,10 @@
   ],
   "schema_impact": "no JSON schema version change; reservation_revision receives an enforced transition invariant and worker boundary evaluation reads refreshed integration-base reservation authority",
   "baseline_critical_tests_touched": true,
-  "architecture_change_ref": "docs/development/workstream-reservation-integration.md#5-versioned-reservation-authority-transition",
+  "architecture_change_ref": null,
   "counterexample_refs": [],
-  "affected_invariants": [
-    "active reservation authority mutation must advance reservation_revision exactly once",
-    "worker cursor acknowledgement, not branch-local reservation equality, proves adoption of refreshed main authority"
-  ],
-  "compatibility_plan_ref": "docs/development/workstream-reservation-integration.md#5-versioned-reservation-authority-transition",
+  "affected_invariants": [],
+  "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
     "PR CI rejects an active reservation authority-field mutation when reservation_revision is unchanged.",
