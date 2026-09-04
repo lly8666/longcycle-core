@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":119,
+  "map_revision":120,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001.json",
-  "latest_pass_receipt_status":"targeted_gap_closed_return_to_saturation_review",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002.json",
+  "latest_pass_receipt_status":"low_novelty_confirmation_1_of_3",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -27,10 +27,10 @@
     "stage":"saturation_review_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-001","family":"cross_time_saturation_review_blind_recall","novel_lead_count":84,"duplicate_lead_count":0,"high_importance_novel_count":24,"outcome":"material_gap_reopens_targeted_frontier"},
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001","family":"late_entry_troubled_governance_restructuring_blind_recall","novel_lead_count":61,"duplicate_lead_count":0,"high_importance_novel_count":17,"outcome":"targeted_gap_closed_return_to_saturation_review"}
+      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001","family":"late_entry_troubled_governance_restructuring_blind_recall","novel_lead_count":61,"duplicate_lead_count":0,"high_importance_novel_count":17,"outcome":"targeted_gap_closed_return_to_saturation_review"},
+      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002","family":"cross_time_negative_space_independent_blind_recall","novel_lead_count":15,"duplicate_lead_count":30,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_1_of_3"}
     ],
-    "low_novelty_confirmations":0,
+    "low_novelty_confirmations":1,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
@@ -47,28 +47,29 @@
       {"region_id":"TIME-2017-2019__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2020-2022__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2023-2026__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__LATE-ENTRY-TROUBLED-GOVERNANCE","state":"targeted_gap_closed","note":"Targeted blind recall materially deepened Hengfeng, Bohai, Zheshang, Guangfa and SDB-to-Ping-An lineage/governance/funding/restructuring mechanics without a second material category. Return to independent saturation review; confirmations remain 0/3."}
+      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__LATE-ENTRY-TROUBLED-GOVERNANCE","state":"targeted_gap_closed"},
+      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-002","state":"low_novelty_confirmation","confirmation_index":1,"note":"Independent negative-space review produced only peripheral adjacency leads and no material gap."}
     ],
     "known_major_gaps":[
-      "The measured late-entry/troubled-governance gap is closed for blind-memory planning, but BANK-JOINT-STOCK still lacks the manifest-required three consecutive low-novelty saturation confirmations.",
-      "The next independent cross-time review must challenge residual negative space across institutions, funding/assets, wealth, asset-quality/capital semantics, technology/payments, cross-border/FX, contemporaneous expectations, failures and counterexamples without reading any completed raw/receipts.",
-      "Low-novelty confirmations remain 0 of 3; no sealing is allowed yet.",
+      "No material gap is currently open after targeted late-entry/troubled-governance closure and independent negative-space review.",
+      "BANK-JOINT-STOCK still requires two additional consecutive independent low-novelty confirmations before saturation/seal review.",
+      "The next pass must emphasize mechanisms, metric semantics, contemporaneous expectations, failed narratives and counterexamples across the full horizon without reading any completed raw/receipts.",
       "Evidence remains deferred while BANK-JOINT-STOCK is unsealed."
     ]
   },
-  "selection_basis":{"rule":"targeted_material_gap_closed_resume_independent_saturation_review","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-002","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002"}],
+  "selection_basis":{"rule":"first_low_novelty_confirmation_requires_independent_followup","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-003","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-003"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002",
-    "family":"cross_time_negative_space_independent_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-003",
+    "family":"mechanisms_metrics_expectations_counterexamples_independent_blind_recall",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-JOINT-STOCK",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible loop, run one independent cross-time saturation-review blind-memory challenge for BANK-JOINT-STOCK using only this rev119 compact map, the manifest and current model internal memory/reasoning. Do not read the prior saturation-review raw/receipt, targeted-governance raw/receipt, or any completed Banking raw/receipts; do not use Banking Evidence/source material or fresh Banking search. Independently challenge residual negative space across the full cohort and horizon: forgotten institutions/actors and renamed entities; funding/deposit/interbank transitions; loan/investment/nonstandard asset mixes; private-enterprise/property/LGFV/retail credit cycles; WMP/wealth/fee/AUM migration; NPL/ECL/provision/write-off/capital/RWA semantics; technology/payment/digital successes and dead ends; cross-border/FX/trade-finance edges; failed contemporaneous expectations, old vocabulary and counterexamples. Explicitly challenge whether the now-covered late-entry/troubled-governance axis was the last material category, but do not repeat it unless a distinct mechanism appears. Keep Bank of Communications in sealed BANK-STATE-OWNED and respect the CMB 2023 preexposure carveout. Do not invent exact dates, balances, ratios, ownership percentages, thresholds or official wording. If material new gaps appear, select exactly one targeted frontier and keep/reset low-novelty confirmations at 0. If novelty is genuinely low and negative-space review is complete, record low-novelty confirmation 1 of 3 and select exactly one independent follow-up. Do not seal on confirmation 1. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "instruction":"In the next eligible loop, run one independent cross-time saturation confirmation for BANK-JOINT-STOCK using only this rev120 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Use a deliberately different angle from prior reviews: challenge mechanisms, metric semantics, contemporaneous expectations, failed narratives and counterexamples across funding/deposits, wholesale/interbank markets, loan/investment/nonstandard asset mix, property/LGFV/private-enterprise/retail cycles, WMP/wealth/AUM, NPL/ECL/provision/write-off/capital/RWA, technology/payment/digital, cross-border/FX/trade finance, ownership/governance and restructuring. Probe for false causal stories, metric-denominator effects, reclassification versus economic change, failed strategy narratives, and any forgotten actor or mechanism that would materially alter the cohort story. Keep Bank of Communications in sealed BANK-STATE-OWNED and respect the CMB 2023 preexposure carveout. Do not invent exact dates, balances, ratios, ownership percentages, thresholds or official wording. If a material gap appears, open exactly one targeted frontier and reset confirmations to 0. If novelty remains genuinely low with no material gap, record low-novelty confirmation 2 of 3 and select exactly one further independent confirmation; do not seal at 2/3. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
     "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only independent saturation-review raw and bounded receipt exist; the sparse map either opens exactly one measured material gap or records low-novelty confirmation 1/3 and selects exactly one independent follow-up; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
+    "done_when":"One append-only independent saturation-confirmation raw and bounded receipt exist; the sparse map either opens exactly one measured material gap or records low-novelty confirmation 2/3 and selects exactly one further independent confirmation; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
