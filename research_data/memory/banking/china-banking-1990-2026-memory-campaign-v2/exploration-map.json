@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":118,
+  "map_revision":119,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-001.json",
-  "latest_pass_receipt_status":"material_gap_reopens_targeted_frontier",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001.json",
+  "latest_pass_receipt_status":"targeted_gap_closed_return_to_saturation_review",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -24,11 +24,11 @@
   "active_shards":[{
     "shard_id":"BANK-JOINT-STOCK",
     "selected_time_slice_id":"CROSS-TIME",
-    "stage":"material_gap_targeted_recall",
+    "stage":"saturation_review_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2023-2026__BANK-JOINT-STOCK__blind-002","family":"low_rate_deposit_property_lgfv_wealth_capital_orthogonal_blind_recall","novel_lead_count":70,"duplicate_lead_count":5,"high_importance_novel_count":16,"outcome":"orthogonal_slice_complete"},
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-001","family":"cross_time_saturation_review_blind_recall","novel_lead_count":84,"duplicate_lead_count":0,"high_importance_novel_count":24,"outcome":"material_gap_reopens_targeted_frontier"}
+      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-001","family":"cross_time_saturation_review_blind_recall","novel_lead_count":84,"duplicate_lead_count":0,"high_importance_novel_count":24,"outcome":"material_gap_reopens_targeted_frontier"},
+      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001","family":"late_entry_troubled_governance_restructuring_blind_recall","novel_lead_count":61,"duplicate_lead_count":0,"high_importance_novel_count":17,"outcome":"targeted_gap_closed_return_to_saturation_review"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -47,28 +47,28 @@
       {"region_id":"TIME-2017-2019__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2020-2022__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2023-2026__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-001","state":"material_gap_found","note":"Cross-time negative-space review found a material under-covered axis around late-entry, troubled or restructured national joint-stock institutions and ownership/governance/recapitalization mechanisms, especially Hengfeng, Bohai and Zheshang, with Guangfa and SDB-to-Ping-An as restructuring comparators. Low-novelty confirmations remain 0/3."}
+      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__LATE-ENTRY-TROUBLED-GOVERNANCE","state":"targeted_gap_closed","note":"Targeted blind recall materially deepened Hengfeng, Bohai, Zheshang, Guangfa and SDB-to-Ping-An lineage/governance/funding/restructuring mechanics without a second material category. Return to independent saturation review; confirmations remain 0/3."}
     ],
     "known_major_gaps":[
-      "Targeted blind-memory coverage is needed for late-entry/troubled/restructured national joint-stock institutions, especially Hengfeng, Bohai and Zheshang, with Guangfa and SDB-to-Ping-An as comparators.",
-      "The targeted pass must challenge institution lineage/renames, ownership and shareholder influence, recapitalization/restructuring, deposit and wholesale-funding franchise, related-party or governance risk, business-model divergence, failure/repair mechanisms, old vocabulary, contemporaneous expectations and counterexamples without reading completed Banking raw/receipts.",
-      "All nine primary time slices remain broad+orthogonal complete, but the material cross-time gap means BANK-JOINT-STOCK is not saturated; low-novelty confirmations are reset/held at 0 of 3.",
+      "The measured late-entry/troubled-governance gap is closed for blind-memory planning, but BANK-JOINT-STOCK still lacks the manifest-required three consecutive low-novelty saturation confirmations.",
+      "The next independent cross-time review must challenge residual negative space across institutions, funding/assets, wealth, asset-quality/capital semantics, technology/payments, cross-border/FX, contemporaneous expectations, failures and counterexamples without reading any completed raw/receipts.",
+      "Low-novelty confirmations remain 0 of 3; no sealing is allowed yet.",
       "Evidence remains deferred while BANK-JOINT-STOCK is unsealed."
     ]
   },
-  "selection_basis":{"rule":"cross_time_saturation_review_found_material_late_entry_troubled_governance_gap","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__LATE-ENTRY-TROUBLED-GOVERNANCE","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001"}],
+  "selection_basis":{"rule":"targeted_material_gap_closed_resume_independent_saturation_review","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-002","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__late-entry-troubled-governance__blind-001",
-    "family":"late_entry_troubled_governance_restructuring_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002",
+    "family":"cross_time_negative_space_independent_blind_recall",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-JOINT-STOCK",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible loop, run one isolated targeted blind-memory pass for the material BANK-JOINT-STOCK cross-time gap using only this rev118 compact map, the manifest and current model internal memory/reasoning. Do not read the saturation-review raw/receipt or any other completed Banking raw/receipts, and do not use Banking Evidence/source material or fresh Banking search. Focus on late-entry, troubled or restructured national joint-stock institutions: independently recover Hengfeng, Bohai and Zheshang lineages/business models/governance/funding/recapitalization/restructuring, with Guangfa and Shenzhen Development Bank-to-Ping-An as restructuring comparators; test renamed/predecessor institutions, shareholder types and influence, related-party/governance risk, market versus deposit funding, corporate/SME/private-enterprise franchise, capital and asset-quality repair, failed expectations, old vocabulary and counterexamples. Do not assume an institution existed or had nationwide status in a period if uncertain. Keep Bank of Communications in sealed BANK-STATE-OWNED and respect the CMB 2023 preexposure carveout. Do not invent exact dates, ownership percentages, balances, ratios, thresholds or official wording. If the targeted pass finds a second material category, open exactly one orthogonal targeted frontier. If it closes the measured gap without a second material category, return to cross-time saturation review with low-novelty confirmations still 0/3. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "instruction":"In the next eligible loop, run one independent cross-time saturation-review blind-memory challenge for BANK-JOINT-STOCK using only this rev119 compact map, the manifest and current model internal memory/reasoning. Do not read the prior saturation-review raw/receipt, targeted-governance raw/receipt, or any completed Banking raw/receipts; do not use Banking Evidence/source material or fresh Banking search. Independently challenge residual negative space across the full cohort and horizon: forgotten institutions/actors and renamed entities; funding/deposit/interbank transitions; loan/investment/nonstandard asset mixes; private-enterprise/property/LGFV/retail credit cycles; WMP/wealth/fee/AUM migration; NPL/ECL/provision/write-off/capital/RWA semantics; technology/payment/digital successes and dead ends; cross-border/FX/trade-finance edges; failed contemporaneous expectations, old vocabulary and counterexamples. Explicitly challenge whether the now-covered late-entry/troubled-governance axis was the last material category, but do not repeat it unless a distinct mechanism appears. Keep Bank of Communications in sealed BANK-STATE-OWNED and respect the CMB 2023 preexposure carveout. Do not invent exact dates, balances, ratios, ownership percentages, thresholds or official wording. If material new gaps appear, select exactly one targeted frontier and keep/reset low-novelty confirmations at 0. If novelty is genuinely low and negative-space review is complete, record low-novelty confirmation 1 of 3 and select exactly one independent follow-up. Do not seal on confirmation 1. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only targeted late-entry/troubled-governance raw and bounded receipt exist; the sparse map either opens exactly one measured orthogonal gap or returns to one cross-time saturation-review frontier with low-novelty confirmations still 0/3; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
+    "done_when":"One append-only independent saturation-review raw and bounded receipt exist; the sparse map either opens exactly one measured material gap or records low-novelty confirmation 1/3 and selects exactly one independent follow-up; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
