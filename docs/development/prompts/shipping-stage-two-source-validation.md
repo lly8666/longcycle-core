@@ -9,7 +9,7 @@
 ## 绝对边界
 
 - 先刷新精确 `main` 与精确 Shipping worker head；只认 GitHub 远端事实。
-- 先读取并遵守 `docs/development/prompts/all-agent-takeover.md`、`docs/development/prompts/github-connect-chat-adapter.md`、`AGENTS.md` 固定启动集，以及 **main 上** `.longcycle/workstreams/shipping-domain-v1/reservation.json`、`change-contract.json`、`capability-admission.json`。
+- 先读取并遵守 `docs/development/prompts/all-agent-takeover.md`、`docs/development/prompts/github-connect-chat-adapter.md`、`AGENTS.md` 固定启动集，以及 **main 上** `.longcycle/workstreams/shipping-domain-v1/reservation.json`、`change-contract.json`、`capability-admission.json` 和 `.longcycle/handoff/current.json`。
 - 读取 worker head 的 `.longcycle/workstreams/shipping-domain-v1/cursor.json`、P146 receipt/verification、`research_data/memory/shipping/campaign-seal-v1.json` 和 `research_data/memory/shipping/exploration-map.json`，只为确认阶段边界；不要遍历全部 146 个 Memory pass。
 - 必须先确认 P146 已封存 `shipping-adaptive-memory-v2`：map 为 `stage=sealed_blind_memory`、`open_frontiers=[]`、`next_probe=null`，且 exact worker head 的 `worker-fast` 为 success/CLEAN。若 live Git 不再满足这些事实，先做 continuity/recovery，不开始本试点。
 - **不得执行 P147，不得为了“最多四个 probe”补第四个 blind-Memory probe，不得重新打开 sealed Memory campaign。** 四-probe 规则只属于已结束的 blind-Memory 阶段，不适用于本来源验证试点。
@@ -17,17 +17,17 @@
 - ChatGPT 聊天模式不假定通用外网。不得用普通网页浏览、搜索引擎或模型记忆补来源。只复用仓库已经批准的 GitHub / source identity / preserved-material / acquisition 路径；如果当前允许路径拿不到足够来源，记录有界 source gap 并停止，不猜测、不伪造引用。
 - 不需要 Drive/数据库，除非 live main reservation/cursor 后续明确授权；本试点默认不使用。
 
-## Reservation revision 2 的过渡
+## 第二阶段授权接收
 
-本阶段预计 main 将 `shipping-domain-v1` 保持 `lifecycle_state=active`，并把 `reservation_revision` 提升到 2；`assignment_epoch` 仍为 1，因为没有更换永久角色或 writer fence。
+本阶段**沿用现有 reservation fence**。不要假定某个固定 revision 数字，也不要自行增加 `reservation_revision` 或 `assignment_epoch`；两者必须与 refreshed main 完全一致。当前阶段授权来自 refreshed main 的 reservation / Change Contract / capability admission / global handoff 与本提示词的组合，而不是 worker 自己扩大权限。
 
-如果 worker cursor 仍停在 P146 的 revision 1 CLEAN H：
+如果 worker cursor 仍停在 P146 的 sealed/CLEAN H，且它记录的 reservation revision / assignment epoch 与 refreshed main 一致：
 
-1. 这不是 P147，也不是新研究工作；先把它视为一次**授权接收**。
-2. 从 refreshed main 读取 revision 2 的 reservation/change-contract/capability-admission；这些 main-owned 文件是新阶段权限来源，worker 不得改写它们。
-3. 只更新自己 branch 的 `cursor.json`，把 `reservation_revision` 改为 2，保留 `assignment_epoch=1`，把 current task/next action 改成本提示词的唯一来源验证试点；不得同时写 Memory/raw/map/Evidence。
-4. 该授权接收提交必须仍是 cursor-only；刷新 exact worker head，等待 `worker-fast` 成功并重新判定 CLEAN 后，才可开始试点的第一个 substantive S。
-5. 若 revision/epoch/branch/writer 事实与上述预期不一致，停止并按 continuity 协议上报；不要自行扩大权限。
+1. 这不是 P147，也不是新研究 probe；先把它视为一次**阶段授权接收**。
+2. 只更新自己 branch 的 `cursor.json`：保持 `reservation_revision` 和 `assignment_epoch` 与 refreshed main 完全一致，把 `current_task`、`why_now`、`task_done_when`、`next_atomic_action` 从 sealed-stop 状态改成下面这个唯一来源验证试点，并保留 P146 seal / receipt / map 作为阶段边界引用。
+3. 不得在这次授权接收中写 Memory/raw/map/Evidence/Domain Pack，也不得改 main-owned reservation/change-contract/capability-admission/global handoff。
+4. 该授权接收提交必须是 cursor-only；刷新 exact worker head，等待 `worker-fast` 成功并重新判定 CLEAN 后，才可开始试点的第一个 substantive S。
+5. 若 revision/epoch/branch/writer/ancestry 事实不一致，按 continuity 协议停止或恢复；不要自行改 fence。
 
 ## 第二阶段唯一试点
 
@@ -64,4 +64,4 @@
 - 若来源路径不可用、关键 known-at 无法建立、只能依靠 sealed Memory、或 no-lookahead 无法证明，安全结果是 bounded partial/source gap，不是假装完成。
 - 完成本**一个**代表性 trajectory 后停止并 H；不要自行授权下一条 Shipping 轨迹，也不要关闭整个 `shipping-domain-v1` reservation。是否继续第三阶段由 `global_serial` 重新评估。
 
-启动时先简短报告：main/Shipping exact SHA、P146 seal/CLEAN 证据、main reservation revision/epoch、是否已完成 cursor-only revision-2 授权接收、六层目标、本试点唯一 claim-cluster 选择标准、允许的来源/路径、通用外网不可用边界以及 L3/L4 状态。满足 CLEAN 后不等待用户确认，执行上述一个代表性来源验证试点。
+启动时先简短报告：main/Shipping exact SHA、P146 seal/CLEAN 证据、main reservation revision/epoch、是否已完成 cursor-only 阶段授权接收、六层目标、本试点唯一 claim-cluster 选择标准、允许的来源/路径、通用外网不可用边界以及 L3/L4 状态。满足 CLEAN 后不等待用户确认，执行上述一个代表性来源验证试点。
