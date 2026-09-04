@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":165,
+  "map_revision":166,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,65 +14,60 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2023-2026__BANK-RURAL__blind-002.json",
-  "latest_pass_receipt_status":"orthogonal_slice_complete",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-RURAL__saturation-review__blind-001.json",
+  "latest_pass_receipt_status":"material_gap_reopen_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"BANK-STATE-OWNED","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
-    {"shard_id":"BANK-JOINT-STOCK","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff","seal_state_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/BANK-JOINT-STOCK-seal-state-v1.json"},
-    {"shard_id":"BANK-CITY","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff","seal_state_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/BANK-CITY-seal-state-v1.json"}
+    {"shard_id":"BANK-JOINT-STOCK","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
+    {"shard_id":"BANK-CITY","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"}
   ],
   "active_shards":[{
     "shard_id":"BANK-RURAL",
-    "selected_time_slice_id":null,
-    "stage":"cross_time_saturation_review",
+    "selected_time_slice_id":"TIME-1995-1999",
+    "stage":"time_slice_reopen_recall",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2020-2022__BANK-RURAL__blind-002","family":"funding_geography_shareholder_confidence_provincial_resolution_orthogonal_blind_recall","novel_lead_count":36,"duplicate_lead_count":8,"high_importance_novel_count":14,"outcome":"orthogonal_slice_complete"},
       {"pass_id":"TIME-2023-2026__BANK-RURAL__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":53,"duplicate_lead_count":2,"high_importance_novel_count":22,"outcome":"broad_high_novelty_orthogonal_required"},
-      {"pass_id":"TIME-2023-2026__BANK-RURAL__blind-002","family":"consolidation_lowrate_localmission_orthogonal_blind_recall","novel_lead_count":39,"duplicate_lead_count":6,"high_importance_novel_count":15,"outcome":"orthogonal_slice_complete"}
+      {"pass_id":"TIME-2023-2026__BANK-RURAL__blind-002","family":"consolidation_lowrate_localmission_orthogonal_blind_recall","novel_lead_count":39,"duplicate_lead_count":6,"high_importance_novel_count":15,"outcome":"orthogonal_slice_complete"},
+      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-001","family":"cross_time_saturation_review_blind_recall","novel_lead_count":39,"duplicate_lead_count":3,"high_importance_novel_count":17,"outcome":"material_gap_reopen_required"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
     "reviewed_high_value_regions":[
-      {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-2026__SYS-MONETARY-CREDIT","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-2026__BANK-STATE-OWNED","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-2026__BANK-JOINT-STOCK","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-2026__BANK-CITY","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
+      {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopened_by_cross_time_gap","note":"Cross-time saturation review found materially missing early lineage/governance categories: remembered Agricultural-Bank/RCC administrative separation and management reassignment, county-union versus grassroots legal-person structure, rural cooperative foundation negative-space cleanup, and old cooperative/governance vocabulary. These are MEMORY_LEADS_ONLY and require one independent bounded reopen probe."},
+      {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete","note":"Cross-time review also surfaced later cooperative ownership/capital and asset-quality semantic leads such as qualification/investment shares, special central-bank bills and old-to-five-category loan classification, but only one earliest bounded frontier is opened at a time."},
       {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2009-2012__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2013-2016__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2017-2019__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2020-2022__BANK-RURAL","state":"broad_plus_orthogonal_complete","note":"Funding geography is an overlay rather than a new lineage; village banks remain a sponsor-led tail; RCC/RCB-derived institutions remain heterogeneous; provincial shared services/resolution capacity are cross-cutting mechanisms."},
-      {"region_id":"TIME-2023-2026__BANK-RURAL","state":"broad_plus_orthogonal_complete","note":"Provincial legal-person consolidation is a real successor-cohort operating architecture because it can change legal balance-sheet perimeter, capital/liquidity allocation, governance, treasury and technology, but it is not a universal period-wide BANK-RURAL replacement lineage. Strong independent county rural commercial banks remain a falsifier; persistent low-rate/NIM pressure is cross-cutting; legacy predecessor risks and local heterogeneity survive inside successors and require provenance."}
+      {"region_id":"TIME-2020-2022__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
+      {"region_id":"TIME-2023-2026__BANK-RURAL","state":"broad_plus_orthogonal_complete"}
     ],
     "known_major_gaps":[
-      "All primary BANK-RURAL time slices from 1990-1994 through 2023-2026 are broad+orthogonal complete for this model vintage, but the shard is not yet saturated or sealed.",
-      "A cross-time saturation review must inspect the compact time×shard coverage and negative-space matrix for forgotten actors, failed/restructured institutions, old vocabulary, mechanisms, metric semantics, contemporaneous expectations and counterexamples without reading completed raw passes.",
-      "The manifest requires three consecutive low-novelty confirmations before a saturation claim; BANK-RURAL currently has zero such confirmations in the cross-time saturation-review phase.",
-      "Exact province reform chronologies, successor/predecessor legal perimeters, capital/risk mutualization, merger terms, institution-specific ratios and post-merger Outcomes remain Evidence-stage questions unless a saturation review identifies a genuinely missing blind-memory category first.",
+      "Cross-time saturation review was materially novel, so BANK-RURAL remains unsaturated with low-novelty confirmations reset/held at 0/3.",
+      "The earliest selected reopen is 1995-1999: test RCC separation/management reassignment, county-versus-grassroots legal-person structures, rural cooperative foundation cleanup and contemporaneous governance expectations without reading completed raw passes.",
+      "A later frontier may need to test 2000-2004 cooperative ownership/capital vocabulary, central-bank special-bill reform support and asset-quality classification semantics, but it must not be opened until the current single frontier closes.",
+      "Exact legal relationships, dates, institution names, reform terms, asset transfers, metric definitions and official wording remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-RURAL is unsealed."
     ]
   },
-  "selection_basis":{"rule":"all_primary_time_slices_broad_plus_orthogonal_complete_begin_cross_time_saturation_review","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SATURATION-REVIEW-001","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-001"}],
+  "selection_basis":{"rule":"cross_time_saturation_review_material_gap_reopen_earliest_bounded_period","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-1995-1999"},
+  "open_frontiers":[{"frontier_id":"TIME-1995-1999__BANK-RURAL__LINEAGE-GOVERNANCE-REOPEN-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-1995-1999__BANK-RURAL__lineage-governance-rural-foundation__blind-003"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-001",
-    "family":"cross_time_saturation_review_blind_recall",
-    "time_slice_id":"CROSS-TIME",
+    "probe_id":"TIME-1995-1999__BANK-RURAL__lineage-governance-rural-foundation__blind-003",
+    "family":"lineage_governance_rural_foundation_reopen_blind_recall",
+    "time_slice_id":"TIME-1995-1999",
     "shard_id":"BANK-RURAL",
-    "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible invocation, run one isolated cross-time BANK-RURAL saturation-review blind recall using only this rev165 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Review the compact time×shard coverage and negative-space matrix across RCCs, rural cooperative banks, rural commercial banks, village banks and provincial reform structures. Probe specifically for materially missing forgotten actors, failed/restructured institution classes, old vocabulary/search keys, mechanisms, metric-semantic changes, contemporaneous expectations, counterexamples and selective pre-1990 antecedents needed to explain the primary horizon. Do not merely retell completed time slices. Challenge whether any unreviewed cross-time category would reopen a specific period; if yes, select exactly one bounded frontier and keep low-novelty confirmations at zero. If the pass is genuinely low novelty, record confirmation 1/3 and select exactly one independent saturation confirmation frontier. Do not seal BANK-RURAL until the manifest-required consecutive-low-novelty rule and coverage/negative-space reviews are truthfully satisfied. Preserve MEMORY_LEADS_ONLY and defer Evidence until a later clean handoff after genuine seal readiness.",
+    "period":["1995-01-01","1999-12-31"],
+    "instruction":"Run one isolated BANK-RURAL 1995-1999 reopen blind-memory challenge using only this rev166 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read CROSS-TIME saturation-review raw/receipt or any other completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Test the materially missing early lineage/governance layer: remembered separation of RCC administration from Agricultural Bank structures and subsequent management reassignment; county union versus grassroots credit-cooperative legal-person arrangements; the distinction between RCCs and rural cooperative foundations plus any cleanup/transfer spillovers; old governance vocabulary and contemporaneous expectations about commercialization, local responsibility and prudential control. Preserve uncertainty and do not invent exact dates, institution lists, asset-transfer amounts, legal findings or official wording. Keep SYS-REGULATION-RESOLUTION and ASSET themes separate. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, then close S -> cursor-only H -> exact-H CLEAN. If this independent reopen largely confirms/refines the saturation-review gap, mark the 1995-1999 reopen complete and select at most one next bounded unresolved cross-time category. If it surfaces a second materially missing category within 1995-1999, select one further same-period challenge instead. Do not count a low-novelty saturation confirmation while a reopened gap remains active.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["CROSS-TIME__BANK-RURAL__saturation-review__blind-001 raw and receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only cross-time BANK-RURAL saturation-review raw and bounded receipt exist; the sparse map records measured novelty, updates low-novelty confirmation state truthfully and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only BANK-RURAL 1995-1999 reopen raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one truthful next frontier; low-novelty confirmations remain 0/3 while the reopened gap is unresolved; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
