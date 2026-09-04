@@ -1,0 +1,94 @@
+{
+  "schema_version": "shipping-stage2-source-archaeology/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "container-pandemic-cycle-2020-2023",
+  "stage": "stage2_source_validation",
+  "result": "bounded_source_gap",
+  "authorization": {
+    "main_head_sha": "b9aebf0492715b6d907ca0dab54b791715cee16b",
+    "worker_phase_ack_head_sha": "34726af8e5dfd49408eb8b6877513b5d4074fb31",
+    "assignment_epoch": 1,
+    "reservation_revision": 1,
+    "pilot_limit": 1
+  },
+  "scope_guardrails": {
+    "sealed_campaign_reopened": false,
+    "p147_or_fourth_blind_memory_probe_started": false,
+    "generic_web_used": false,
+    "drive_used": false,
+    "main_written": false,
+    "memory_used_as_factual_authority": false
+  },
+  "minimum_sufficient_source_set": {
+    "independent_source_documents_required": true,
+    "contemporaneous_judgment_required": true,
+    "later_outcome_required": true,
+    "claim_scoped_authority_required": true,
+    "valid_time_required": true,
+    "known_at_time_required": true,
+    "pit_replay_requires_both_historical_and_later_cutoffs": true
+  },
+  "archaeology_log": [
+    {
+      "surface": "worker_reserved_container_cycle_directory",
+      "path": "research_data/memory/shipping/container-pandemic-cycle-2020-2023",
+      "result": "memory_only",
+      "detail": "The preserved files are sealed Memory artifacts and therefore may guide research control only; they are excluded from factual authority and from the minimum sufficient source set."
+    },
+    {
+      "surface": "worker_reserved_tree",
+      "queries": [
+        "domain_packs/shipping",
+        "tests/shipping",
+        "shipping/source",
+        "source-manifest"
+      ],
+      "result": "no_preserved_independent_shipping_source_pack_found"
+    },
+    {
+      "surface": "repository_releases",
+      "queries": [
+        "shipping",
+        "container"
+      ],
+      "result": "no_reusable_shipping_container_source_pack_found"
+    },
+    {
+      "surface": "main_research_governance",
+      "refs": [
+        "docs/research/agent-collection-contract.md",
+        "docs/research/source-authority-policy.md"
+      ],
+      "result": "discovery_material_cannot_be_promoted_to_evidence",
+      "detail": "Search results, snippets, AI summaries, unarchived titles, and untraceable paraphrases are discovery material only. A pilot cannot manufacture Evidence, Judgment, Outcome, or Reality objects without archived claim-scoped source documents."
+    },
+    {
+      "surface": "live_data_plane_and_stage_authorization",
+      "result": "github_only_path_active_for_this_chat",
+      "detail": "No live cursor authorization enabled Drive acquisition, and generic web browsing is not an approved Evidence path for this execution."
+    }
+  ],
+  "excluded_material": [
+    {
+      "path_prefix": "research_data/memory/shipping/",
+      "reason": "P146 campaign is sealed; Memory is hypothesis/research-control provenance only and is not factual authority."
+    },
+    {
+      "material_class": "search_snippet_or_unarchived_web_material",
+      "reason": "Source Authority Policy classifies it as discovery material rather than Evidence."
+    }
+  ],
+  "conclusion": {
+    "status": "bounded_source_gap",
+    "meaning": "No minimum sufficient independently sourced set for a representative 2020-2023 container-pandemic claim cluster is obtainable through the currently authorized GitHub-only repository path.",
+    "not_a_real_world_negative_claim": true,
+    "candidate_trajectory_selected": false,
+    "claims_created": 0,
+    "grounded_evidence_created": 0,
+    "reality_objects_created": 0,
+    "judgment_objects_created": 0,
+    "outcome_objects_created": 0,
+    "pit_replay_attempted": false
+  },
+  "stop_condition": "The single authorized stage-two pilot is closed truthfully as a bounded source gap. Do not start a second trajectory, reopen sealed Memory, or substitute generic web/Memory for Evidence. Resume source validation only if refreshed main control-plane authority explicitly makes a repository-approved source acquisition path available and advances the Shipping cursor."
+}
