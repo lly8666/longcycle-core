@@ -1,0 +1,140 @@
+{
+  "schema_version": "shipping-stage2-source-selection/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "container-pandemic-cycle-2020-2023",
+  "stage": "stage2_source_validation",
+  "result": "candidate_selected_minimum_source_set_content_verified",
+  "authorization": {
+    "main_head_sha": "2a98e9af078fae3b37ea098ce06f43c99b53f445",
+    "worker_phase_ack_head_sha": "9cc553817fb906aca609ea5a57e421b9c96aea8e",
+    "assignment_epoch": 1,
+    "reservation_revision": 1,
+    "pilot_limit": 1,
+    "restored_authority": "restored_post_seal_chatgpt_search"
+  },
+  "continuity": {
+    "p146_seal_ref": "research_data/memory/shipping/campaign-seal-v1.json",
+    "exploration_map_ref": "research_data/memory/shipping/exploration-map.json",
+    "blind_memory_campaign_reopened": false,
+    "p147_or_fourth_blind_memory_probe_started": false,
+    "prior_gap_ref": "domain_packs/shipping/source-validation/container-pandemic-cycle-2020-2023-source-gap.json",
+    "prior_gap_preserved": true,
+    "prior_gap_scope": "former GitHub-only execution with generic_web_used=false",
+    "prior_gap_completion_effect_superseded": true,
+    "memory_used_as_factual_authority": false
+  },
+  "selected_trajectory": {
+    "trajectory_id": "container-market-normalization-2022q3-to-2023",
+    "selection_status": "selected_single_pilot_trajectory",
+    "question": "Did the late-2022 participant judgment that container freight rates had peaked and begun normalising precede a later 2023 outcome of materially lower freight rates and earnings as congestion eased and market conditions normalised?",
+    "memory_lead_ref": "research_data/memory/shipping/passes/SHIP-MEM-V2-P143.json#new_judgment_categories",
+    "memory_lead_use": "research_control_and_search_key_only",
+    "scope_guard": "This is one normalization-clock trajectory. It does not open a contract-basis trajectory, an inventory-only trajectory, P147, or a second pilot."
+  },
+  "claim_plan": {
+    "historical_reality": {
+      "as_of": "2022-11-02",
+      "planned_claim": "Maersk reported moderating logistics demand, easing supply bottlenecks, and quarter-on-quarter declines in freight and charter rates during Q3 2022.",
+      "source_ids": ["SRC-MAERSK-Q3-2022"]
+    },
+    "contemporaneous_judgment": {
+      "known_at": "2022-11-02",
+      "speaker": "Soren Skou, CEO of A.P. Moller - Maersk",
+      "planned_claim": "Maersk judged that Ocean freight rates had peaked and started to normalise, and expected Ocean earnings to decline in coming periods.",
+      "source_ids": ["SRC-MAERSK-Q3-2022"]
+    },
+    "later_outcome": {
+      "outcome_period": "2023",
+      "first_known_at_upper_bound": "2024-02-08",
+      "planned_claim": "Maersk's 2023 reporting showed a large decline in average Ocean freight rates and profitability after market normalisation and easing congestion; Hapag-Lloyd independently reported a similarly large fall in its 2023 average freight rate.",
+      "source_ids": ["SRC-MAERSK-AR-2023", "SRC-HAPAG-AR-2023"]
+    },
+    "pit_cutoffs_planned": ["2022-11-02", "2024-03-14"],
+    "no_lookahead_rule": "The 2023 outcome sources are invisible at the 2022-11-02 cutoff and may only appear at a later cutoff after their own first-known dates."
+  },
+  "sources": [
+    {
+      "source_id": "SRC-MAERSK-Q3-2022",
+      "publisher": "A.P. Moller - Maersk",
+      "title": "A.P. Moller - Maersk continues the record streak with strong Q3 results",
+      "document_kind": "issuer_press_release_webpage",
+      "upstream_role": "primary_participant_original",
+      "url": "https://www.maersk.com/news/articles/2022/11/02/maersk-continues-the-record-streak-with-strong-q3-results",
+      "published_at": "2022-11-02",
+      "first_known_at_upper_bound": "2022-11-02",
+      "date_precision": "day",
+      "retrieved_at": "2026-09-04",
+      "retrieval_mode": "ChatGPT_Search_then_interactive_web_read",
+      "source_capture_state": "content_verified",
+      "materialization_status": "not_materialized",
+      "claim_relevant_locator": "official page paragraphs under CEO quote and Market situation",
+      "claim_relevant_excerpt": "freight rates have peaked and started to normalize during the quarter",
+      "material_roles": ["reality", "judgment"],
+      "authority_note": "Issuer/participant original statement. The CEO quote is direct contemporaneous Judgment; the same release's market-situation statements are participant-reported Reality inputs, subject to later claim-scoped Evidence grounding."
+    },
+    {
+      "source_id": "SRC-MAERSK-AR-2023",
+      "publisher": "A.P. Moller - Maersk",
+      "title": "Annual Report 2023",
+      "document_kind": "issuer_annual_report_pdf",
+      "upstream_role": "primary_participant_original",
+      "url": "https://www.maersk.com/~/media_sc9/maersk/news/press-releases/files/2024/02/08/apmm-annual-report-2023.pdf",
+      "published_at": "2024-02-08",
+      "first_known_at_upper_bound": "2024-02-08",
+      "date_precision": "day",
+      "retrieved_at": "2026-09-04",
+      "retrieval_mode": "ChatGPT_Search_then_interactive_pdf_read",
+      "source_capture_state": "content_verified",
+      "materialization_status": "pending_materialization",
+      "claim_relevant_locator": "Annual Report 2023 p.37 (PDF page index 36); market context p.13",
+      "claim_relevant_excerpt": "The freight rates decreased by 50% on average from 2022 levels",
+      "material_roles": ["later_outcome"],
+      "authority_note": "Issuer annual report. Claim-relevant PDF text and page layout were actually read; raw PDF bytes were not materialized by this worker and are not required for source selection."
+    },
+    {
+      "source_id": "SRC-HAPAG-AR-2023",
+      "publisher": "Hapag-Lloyd AG",
+      "title": "Hapag-Lloyd publishes 2023 annual report and announces forecast for the current financial year",
+      "document_kind": "issuer_annual_report_press_release_webpage",
+      "upstream_role": "independent_primary_participant_original",
+      "url": "https://www.hapag-lloyd.com/en/company/press/releases/2024/03/hapag-lloyd-publishes-2023-annual-report-and-announces-forecast-.html",
+      "published_at": "2024-03-14",
+      "first_known_at_upper_bound": "2024-03-14",
+      "date_precision": "day",
+      "retrieved_at": "2026-09-04",
+      "retrieval_mode": "ChatGPT_Search_then_interactive_web_read",
+      "source_capture_state": "content_verified",
+      "materialization_status": "not_materialized",
+      "claim_relevant_locator": "official press release key figures, Liner Shipping Segment",
+      "claim_relevant_excerpt": "lower average freight rate of 1,500 USD/TEU (2022: 2,863 USD/TEU)",
+      "material_roles": ["later_outcome_corroboration"],
+      "authority_note": "Independent liner issuer reporting its own 2023 realised freight-rate outcome; it is not treated as a second trajectory or as proof of Maersk-specific results."
+    }
+  ],
+  "search_log": {
+    "search_enabled": true,
+    "generic_web_used": true,
+    "queries": [
+      "site:maersk.com Q3 2022 freight rates peaked normalize Maersk",
+      "site:maersk.com Annual Report 2023 freight rates decreased 50%",
+      "site:hapag-lloyd.com 2023 annual report freight rate 1500 2863"
+    ],
+    "primary_domains_checked": ["maersk.com", "hapag-lloyd.com"],
+    "reverse_query_performed": true,
+    "result": "found",
+    "stop_reason": "The selected Maersk source pair directly supports the planned contemporaneous Judgment and later Outcome scopes, and an independent Hapag-Lloyd issuer source corroborates the broad 2023 freight-rate normalisation outcome. Further source counting would not improve the bounded source-selection decision."
+  },
+  "evidence_boundary": {
+    "search_results_are_evidence": false,
+    "memory_is_evidence": false,
+    "locator_only_promoted": false,
+    "raw_materialization_required_for_content_verified": false,
+    "grounded_evidence_created": 0,
+    "reality_objects_created": 0,
+    "judgment_objects_created": 0,
+    "outcome_objects_created": 0,
+    "pit_replay_attempted": false,
+    "meaning": "This S completes only source archaeology and single-cluster selection. Formal Grounded Evidence and truth-bearing objects remain the next atomic task."
+  },
+  "next_atomic_action": "Ground the selected claim scopes against these content-verified representations under CAP-0001/CAP-0002, then compose exactly one Reality/Judgment/Outcome trajectory and CAP-0005/CAP-0007 no-lookahead replay without expanding the pilot."
+}
