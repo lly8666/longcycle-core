@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":160,
+  "map_revision":161,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2017-2019__BANK-RURAL__blind-001.json",
-  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2017-2019__BANK-RURAL__blind-002.json",
+  "latest_pass_receipt_status":"orthogonal_slice_complete",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -25,13 +25,13 @@
   ],
   "active_shards":[{
     "shard_id":"BANK-RURAL",
-    "selected_time_slice_id":"TIME-2017-2019",
-    "stage":"orthogonal_recall_pending",
+    "selected_time_slice_id":"TIME-2020-2022",
+    "stage":"time_slice_recall",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2013-2016__BANK-RURAL__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":111,"duplicate_lead_count":7,"high_importance_novel_count":30,"outcome":"broad_high_novelty_orthogonal_required"},
       {"pass_id":"TIME-2013-2016__BANK-RURAL__blind-002","family":"marketfunding_shadowcredit_provincialunion_digital_npl_orthogonal_blind_recall","novel_lead_count":90,"duplicate_lead_count":9,"high_importance_novel_count":22,"outcome":"orthogonal_slice_complete"},
-      {"pass_id":"TIME-2017-2019__BANK-RURAL__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":117,"duplicate_lead_count":8,"high_importance_novel_count":32,"outcome":"broad_high_novelty_orthogonal_required"}
+      {"pass_id":"TIME-2017-2019__BANK-RURAL__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":117,"duplicate_lead_count":8,"high_importance_novel_count":32,"outcome":"broad_high_novelty_orthogonal_required"},
+      {"pass_id":"TIME-2017-2019__BANK-RURAL__blind-002","family":"deleveraging_tiering_shadowunwind_governance_orthogonal_blind_recall","novel_lead_count":92,"duplicate_lead_count":9,"high_importance_novel_count":22,"outcome":"orthogonal_slice_complete"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -49,28 +49,28 @@
       {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2009-2012__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2013-2016__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2017-2019__BANK-RURAL","state":"broad_complete_orthogonal_pending","note":"Broad recall recovered financial-deleveraging effects on interbank/NCD/investment funding; asset-management-rule/WMP/nonstandard unwind and reintermediation; late-period small-bank market-discipline and liquidity segmentation; inclusive/private-SME credit reallocation; shareholder/capital/NPL-recognition stress; village-bank sponsor economics; digital/internet-deposit precursors; and provincial-union support. High novelty requires independent same-slice falsification."}
+      {"region_id":"TIME-2017-2019__BANK-RURAL","state":"broad_plus_orthogonal_complete","note":"Broad and orthogonal recall converge on pre-existing cohort heterogeneity exposed by deleveraging and late-period small-bank market-discipline shocks. Wholesale funding and shadow-asset complexity are strategy/risk dimensions rather than a second period-wide rural-bank model; provincial-union support and recognition changes are cross-cutting mechanisms; village banks remain a smaller sponsor-led parallel lineage; internet/digital deposits are an emerging funding technique rather than a new lineage."}
     ],
     "known_major_gaps":[
-      "BANK-RURAL 2017-2019 broad recall is high novelty and requires one independent same-slice orthogonal challenge before the slice can be marked complete.",
-      "The orthogonal challenge must distinguish whether post-deleveraging funding-market segmentation and shadow-asset unwind create a second period-wide BANK-RURAL model or instead reveal pre-existing cohort heterogeneity; test small-bank counterparty tiering, deposit/provincial-union backstops, WMP/nonstandard reintermediation, recognition/capital semantics, shareholder governance, village-bank sponsor dependence and internet-deposit precursors.",
-      "BANK-RURAL 2020-2022 and 2023-2026 remain unopened.",
-      "Exact histories, dates, balances, ratios, ownership structures, sponsorship/restructuring terms, instrument usage and official classifications remain Evidence-stage questions.",
+      "BANK-RURAL 1990-1994 through 2017-2019 are broad+orthogonal complete. TIME-2020-2022 is the next unopened primary slice.",
+      "The 2020-2022 broad challenge should recover pandemic relief/forbearance and delayed asset-quality recognition; agriculture, household, micro/SME and county-economy stress; property-downturn and local-government spillovers; small/village-bank governance, fraud, related-party and depositor-confidence risks including the remembered Henan village-bank episode without inventing actors/dates/amounts or confusing village banks with RCC/RCB lineage; internet/platform-deposit restrictions and liability competition; NIM/margin pressure; WMP/net-value transition; digital-channel acceleration; provincial-union liquidity/governance and early consolidation signals; capital/NPL/overdue/restructuring semantics and regional counterexamples.",
+      "BANK-RURAL 2023-2026 remains unopened.",
+      "Exact histories, event dates, actors, balances, ratios, ownership structures, sponsorship/restructuring terms, depositor amounts and official classifications remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-RURAL is unsealed."
     ]
   },
-  "selection_basis":{"rule":"broad_high_novelty_requires_independent_same_slice_orthogonal_challenge","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-2017-2019"},
-  "open_frontiers":[{"frontier_id":"TIME-2017-2019__BANK-RURAL__ORTHOGONAL-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-2017-2019__BANK-RURAL__blind-002"}],
+  "selection_basis":{"rule":"prior_slice_broad_plus_orthogonal_complete_advance_to_next_primary_slice","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-2020-2022"},
+  "open_frontiers":[{"frontier_id":"TIME-2020-2022__BANK-RURAL__BROAD-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-2020-2022__BANK-RURAL__blind-001"}],
   "next_probe":{
-    "probe_id":"TIME-2017-2019__BANK-RURAL__blind-002",
-    "family":"deleveraging_tiering_shadowunwind_governance_orthogonal_blind_recall",
-    "time_slice_id":"TIME-2017-2019",
+    "probe_id":"TIME-2020-2022__BANK-RURAL__blind-001",
+    "family":"time_slice_timeline_blind_recall",
+    "time_slice_id":"TIME-2020-2022",
     "shard_id":"BANK-RURAL",
-    "period":["2017-01-01","2019-12-31"],
-    "instruction":"Run one isolated independent BANK-RURAL 2017-2019 orthogonal blind-memory challenge using only this rev160 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read TIME-2017-2019__BANK-RURAL__blind-001 raw/receipt, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately avoid replaying the broad timeline. Falsify from six angles: (1) whether NCD/interbank counterparty tiering after deleveraging and late-period small-bank resolution shock creates a distinct wholesale-fragile rural-bank model or merely exposes a pre-existing upper-tier strategy cohort; (2) WMP/nonstandard/委外/嵌套 unwind, reintermediation and net-value transition versus simple deposit-loan banks; (3) provincial-union liquidity/support versus standalone legal-person risk; (4) shareholder pledges/related parties/capital replenishment versus genuine business-model differences; (5) overdue-90-day/NPL/restructuring/write-off recognition semantics; and (6) village-bank sponsor dependence plus internet/digital deposit acquisition as an emerging but not yet system-wide alternative funding model. Preserve BANK-CITY boundary for the external small-bank resolution shock and preserve other theme shards. If no second period-wide structural category emerges, mark 2017-2019 broad+orthogonal complete and advance exactly one frontier to 2020-2022 broad in the next invocation. If a genuinely distinct second category emerges, open exactly one targeted frontier instead. Do not invent exact dates, balances, ratios, ownership shares, sponsorship/restructuring terms, outlet counts or official wording. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "period":["2020-01-01","2022-12-31"],
+    "instruction":"In the next eligible invocation, run one isolated BANK-RURAL 2020-2022 broad blind-memory recall using only this rev161 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Recover pandemic relief/forbearance, renewal and delayed recognition; agriculture, household, county micro/SME/private-enterprise credit and income shocks; property downturn, land/local-government and guarantee-chain spillovers; small/rural-bank margin pressure, deposit competition and internet/platform-deposit restrictions; WMP/net-value transition and residual investment-book risks; digital/mobile channel acceleration; provincial-union liquidity, governance, technology and early consolidation/restructuring signals; village-bank sponsor/ownership/franchise risks; fraud, related-party, online-channel and depositor-confidence failures including the remembered Henan village-bank episode as a blind lead only, without inventing exact actors, dates, amounts or legal findings and without treating all village banks or RCC/RCBs as equivalent; capital, NPL, overdue, special-mention, restructuring/write-off and forbearance semantics; contemporaneous expectations and regional counterexamples. Preserve BANK-CITY, BANK-STATE-OWNED, SYS-REGULATION-RESOLUTION and asset-theme boundaries. Do not invent exact dates, balances, ratios, ownership shares, sponsorship/restructuring terms, depositor amounts, outlet counts or official wording. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, then close S -> cursor-only H -> exact-H CLEAN. If broad recall remains materially novel, select one independent same-slice orthogonal challenge rather than advancing prematurely.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-2017-2019__BANK-RURAL__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only independent BANK-RURAL 2017-2019 orthogonal raw and bounded receipt exist; the sparse map either marks the slice broad+orthogonal complete and advances to 2020-2022 broad for the next invocation, or opens exactly one measured targeted gap; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only BANK-RURAL 2020-2022 broad raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
