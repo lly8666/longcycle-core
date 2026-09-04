@@ -1,0 +1,213 @@
+{
+  "schema_version": "longcycle-grounded-evidence-spec/v2",
+  "task_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+  "epistemic_guardrails": [
+    "This execution grounds only the four claim-scoped Evidence candidates prepared by shipping-domain-v1; it does not promote FactAssertions, JudgmentAssertions, Reality, Outcome or PIT replay objects.",
+    "The three repository representations are truthful content_verified readable representations of the selected official sources; they are not claimed to be raw-source materialization.",
+    "P146 remains sealed, no P147 or fourth blind-Memory probe is opened, and no second Shipping trajectory is authorized.",
+    "The contemporaneous 2022 management statement remains a Judgment candidate and is not rewritten using later outcomes.",
+    "The Maersk and Hapag-Lloyd 2023 rate observations remain later-outcome Evidence candidates and do not retroactively alter the 2022 Reality/Judgment candidates."
+  ],
+  "sources": [
+    {
+      "key": "maersk-official",
+      "name": "A.P. Moller - Maersk official issuer materials",
+      "publisher_domain": "maersk.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Direct Maersk issuer release and annual-report statements about its own freight-rate conditions and management judgment."
+        }
+      ]
+    },
+    {
+      "key": "hapag-official",
+      "name": "Hapag-Lloyd AG official issuer materials",
+      "publisher_domain": "hapag-lloyd.com",
+      "kind": "company",
+      "quality_grade": "A",
+      "transport": "materialized",
+      "authority_profiles": [
+        {
+          "claim_scope": "self_statement",
+          "authority_class": "primary_self_statement",
+          "authority_basis": "direct_speaker_record",
+          "rationale": "Direct Hapag-Lloyd issuer statement reporting its own annual freight-rate figures."
+        }
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "key": "maersk-q3-2022",
+      "vintage_id": "SHIP-2022-11-02-MAERSK-Q3",
+      "source_key": "maersk-official",
+      "retrieval_url": "https://www.maersk.com/news/articles/2022/11/02/maersk-continues-the-record-streak-with-strong-q3-results",
+      "original_source_url": "https://www.maersk.com/news/articles/2022/11/02/maersk-continues-the-record-streak-with-strong-q3-results",
+      "external_id": "SRC-MAERSK-Q3-2022",
+      "title": "Maersk continues the record streak with strong Q3 results",
+      "published_at": null,
+      "first_known_at": "2022-11-02T23:59:59Z",
+      "expected_sha256": "70f73e7c69d0982fac12876ed38eaab54179c780e43ddf92ed7d4e391daa820e",
+      "material_path": "domain_packs/shipping/source-validation/representations/maersk-q3-2022-content-verified-v1.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "retrieval_host": "www.maersk.com",
+        "published_date_only": "2022-11-02",
+        "known_time_policy": "conservative_end_of_day_utc_upper_bound",
+        "source_cluster": "maersk-origin",
+        "source_capture_state": "content_verified",
+        "content_verification_mode": "ChatGPT_Search_then_interactive_web_read",
+        "representation_git_blob_sha": "a485bfe171218b23a7650f847c02ae88eed1f4f0",
+        "readable_representation_sha256": "70f73e7c69d0982fac12876ed38eaab54179c780e43ddf92ed7d4e391daa820e",
+        "upstream_media_type": "text/html",
+        "raw_source_materialized": false
+      }
+    },
+    {
+      "key": "maersk-ar-2023",
+      "vintage_id": "SHIP-2024-02-08-MAERSK-AR-2023-P37",
+      "source_key": "maersk-official",
+      "retrieval_url": "https://www.maersk.com/~/media_sc9/maersk/news/press-releases/files/2024/02/08/apmm-annual-report-2023.pdf",
+      "original_source_url": "https://www.maersk.com/~/media_sc9/maersk/news/press-releases/files/2024/02/08/apmm-annual-report-2023.pdf",
+      "external_id": "SRC-MAERSK-AR-2023",
+      "title": "A.P. Moller - Maersk Annual Report 2023, p.37 claim representation",
+      "published_at": null,
+      "first_known_at": "2024-02-08T23:59:59Z",
+      "expected_sha256": "8f2484773272c81d38250fdcdbdd075619fd1544b74b08fecc2cb52d9f2ddcae",
+      "material_path": "domain_packs/shipping/source-validation/representations/maersk-ar-2023-p37-content-verified-v1.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "retrieval_host": "www.maersk.com",
+        "published_date_only": "2024-02-08",
+        "known_time_policy": "conservative_end_of_day_utc_upper_bound",
+        "source_cluster": "maersk-origin",
+        "source_capture_state": "content_verified",
+        "content_verification_mode": "interactive_pdf_read_plus_page_screenshot",
+        "representation_git_blob_sha": "91d97353ee53dd8a89607bfbd6b3a67f7a7bff14",
+        "readable_representation_sha256": "8f2484773272c81d38250fdcdbdd075619fd1544b74b08fecc2cb52d9f2ddcae",
+        "upstream_media_type": "application/pdf",
+        "upstream_locator": "Annual Report 2023 p.37 (PDF page index 36)",
+        "raw_source_materialized": false
+      }
+    },
+    {
+      "key": "hapag-ar-2023",
+      "vintage_id": "SHIP-2024-03-14-HAPAG-AR-2023",
+      "source_key": "hapag-official",
+      "retrieval_url": "https://www.hapag-lloyd.com/en/company/press/releases/2024/03/hapag-lloyd-publishes-2023-annual-report-and-announces-forecast-.html",
+      "original_source_url": "https://www.hapag-lloyd.com/en/company/press/releases/2024/03/hapag-lloyd-publishes-2023-annual-report-and-announces-forecast-.html",
+      "external_id": "SRC-HAPAG-AR-2023",
+      "title": "Hapag-Lloyd publishes 2023 annual report and announces forecast for 2024",
+      "published_at": null,
+      "first_known_at": "2024-03-14T23:59:59Z",
+      "expected_sha256": "c60c68bb9c6affd826667e2d0de7d7dd177c692167b4fe5b03a7957ba9e31035",
+      "material_path": "domain_packs/shipping/source-validation/representations/hapag-2023-results-content-verified-v1.txt",
+      "content_type": "text/plain; charset=utf-8",
+      "retrieval_provenance": {
+        "retrieval_host": "www.hapag-lloyd.com",
+        "published_date_only": "2024-03-14",
+        "known_time_policy": "conservative_end_of_day_utc_upper_bound",
+        "source_cluster": "hapag-origin",
+        "source_capture_state": "content_verified",
+        "content_verification_mode": "ChatGPT_Search_then_interactive_web_read",
+        "representation_git_blob_sha": "837cabf94177ce24dcd2b3d8b326520fb44529cc",
+        "readable_representation_sha256": "c60c68bb9c6affd826667e2d0de7d7dd177c692167b4fe5b03a7957ba9e31035",
+        "upstream_media_type": "text/html",
+        "raw_source_materialized": false
+      }
+    }
+  ],
+  "fragments": [
+    {
+      "fragment_key": "ship-reality-q3-2022-rate-direction",
+      "document_key": "maersk-q3-2022",
+      "excerpt": "Freight and charter rates declined in Q3 2022 relative to the previous quarter",
+      "occurrence": 0,
+      "claim_context": {
+        "claim_id": "SHIP-REALITY-Q3-2022-RATE-DIRECTION",
+        "epistemic_layer": "reality",
+        "claim_role": "historical_reality_candidate",
+        "stance": "supports",
+        "source_cluster": "maersk-origin",
+        "representation_locator": "representation:line:2",
+        "candidate_only": true,
+        "known_time": {"upper_bound": "2022-11-02T23:59:59Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "ship-judgment-2022-11-02-peak",
+      "document_key": "maersk-q3-2022",
+      "excerpt": "freight rates have peaked and started to normalize during the quarter",
+      "occurrence": 0,
+      "claim_context": {
+        "claim_id": "SHIP-JUDGMENT-2022-11-02-PEAK",
+        "epistemic_layer": "judgment",
+        "claim_role": "contemporaneous_judgment_candidate",
+        "stance": "supports",
+        "speaker": "Soren Skou, CEO of A.P. Moller - Maersk",
+        "source_cluster": "maersk-origin",
+        "representation_locator": "representation:line:1",
+        "candidate_only": true,
+        "known_time": {"upper_bound": "2022-11-02T23:59:59Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "ship-outcome-maersk-2023-rate",
+      "document_key": "maersk-ar-2023",
+      "excerpt": "The freight rates decreased by 50% on average from 2022 levels",
+      "occurrence": 0,
+      "claim_context": {
+        "claim_id": "SHIP-OUTCOME-MAERSK-2023-RATE",
+        "epistemic_layer": "outcome",
+        "claim_role": "later_outcome_candidate",
+        "stance": "supports",
+        "source_cluster": "maersk-origin",
+        "representation_locator": "representation:line:1; upstream Annual Report 2023 p.37",
+        "candidate_only": true,
+        "known_time": {"upper_bound": "2024-02-08T23:59:59Z", "precision": "day"}
+      }
+    },
+    {
+      "fragment_key": "ship-outcome-hapag-2023-rate-check",
+      "document_key": "hapag-ar-2023",
+      "excerpt": "lower average freight rate of 1,500 USD/TEU (2022: 2,863 USD/TEU)",
+      "occurrence": 0,
+      "claim_context": {
+        "claim_id": "SHIP-OUTCOME-HAPAG-2023-RATE-CHECK",
+        "epistemic_layer": "outcome",
+        "claim_role": "later_outcome_corroboration_candidate",
+        "stance": "supports",
+        "source_cluster": "hapag-origin",
+        "representation_locator": "representation:line:1",
+        "candidate_only": true,
+        "known_time": {"upper_bound": "2024-03-14T23:59:59Z", "precision": "day"}
+      }
+    }
+  ],
+  "contradiction_checks": [
+    {
+      "claim_id": "SHIP-REALITY-Q3-2022-RATE-DIRECTION",
+      "would_contradict": "Claim-scoped Maersk source content showing Q3 2022 freight and charter rates did not decline relative to the previous quarter."
+    },
+    {
+      "claim_id": "SHIP-JUDGMENT-2022-11-02-PEAK",
+      "would_contradict": "Contemporaneous Maersk source content showing management had not judged freight rates to have peaked or begun normalising by 2022-11-02."
+    },
+    {
+      "claim_id": "SHIP-OUTCOME-2023-RATE-NORMALIZATION",
+      "rule": "Keep Maersk and Hapag-Lloyd figures as issuer-specific later-outcome observations; do not merge them into a single market-wide statistic."
+    }
+  ],
+  "acceptance": {
+    "required_documents": 3,
+    "required_fragments": 4,
+    "facts_created": 0,
+    "judgments_created": 0
+  }
+}
