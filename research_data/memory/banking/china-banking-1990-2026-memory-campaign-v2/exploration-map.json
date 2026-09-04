@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":167,
+  "map_revision":168,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-1995-1999__BANK-RURAL__lineage-governance-rural-foundation__blind-003.json",
-  "latest_pass_receipt_status":"reopen_confirmed_complete_next_gap_selected",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2000-2004__BANK-RURAL__cooperative-capital-special-bills-metrics__blind-003.json",
+  "latest_pass_receipt_status":"reopen_confirmed_complete_return_to_saturation_review",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -25,13 +25,13 @@
   ],
   "active_shards":[{
     "shard_id":"BANK-RURAL",
-    "selected_time_slice_id":"TIME-2000-2004",
-    "stage":"time_slice_reopen_recall",
+    "selected_time_slice_id":null,
+    "stage":"cross_time_saturation_review",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2023-2026__BANK-RURAL__blind-002","family":"consolidation_lowrate_localmission_orthogonal_blind_recall","novel_lead_count":39,"duplicate_lead_count":6,"high_importance_novel_count":15,"outcome":"orthogonal_slice_complete"},
       {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-001","family":"cross_time_saturation_review_blind_recall","novel_lead_count":39,"duplicate_lead_count":3,"high_importance_novel_count":17,"outcome":"material_gap_reopen_required"},
-      {"pass_id":"TIME-1995-1999__BANK-RURAL__lineage-governance-rural-foundation__blind-003","family":"lineage_governance_rural_foundation_reopen_blind_recall","novel_lead_count":33,"duplicate_lead_count":4,"high_importance_novel_count":14,"outcome":"reopen_confirmed_complete_next_gap_selected"}
+      {"pass_id":"TIME-1995-1999__BANK-RURAL__lineage-governance-rural-foundation__blind-003","family":"lineage_governance_rural_foundation_reopen_blind_recall","novel_lead_count":33,"duplicate_lead_count":4,"high_importance_novel_count":14,"outcome":"reopen_confirmed_complete_next_gap_selected"},
+      {"pass_id":"TIME-2000-2004__BANK-RURAL__cooperative-capital-special-bills-metrics__blind-003","family":"cooperative_capital_special_bills_metric_transition_reopen_blind_recall","novel_lead_count":40,"duplicate_lead_count":4,"high_importance_novel_count":16,"outcome":"reopen_confirmed_complete_return_to_saturation_review"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -39,8 +39,8 @@
   "coverage_snapshot":{
     "reviewed_high_value_regions":[
       {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Independent reopen confirmed the early lineage/governance gap and refined RCC/Agricultural-Bank separation, layered management reassignment, county-union versus grassroots legal-person structure and rural cooperative foundation negative-space spillovers. It found no second independent period-wide structural category. Postal-savings competition and large-bank county retreat remain boundary context, not BANK-RURAL lineage."},
-      {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopened_by_cross_time_gap","note":"Next unresolved category is the ownership/capital and measurement transition: cooperative/member-share capital semantics, county unified-legal-person reform, central-bank special-bill or similar reform support, capital/bad-asset repair and migration from older bad-loan vocabulary toward five-category classification. These remain MEMORY_LEADS_ONLY."},
+      {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Early lineage/governance reopen independently reviewed and closed: RCC/Agricultural-Bank separation, layered management reassignment, county-union versus grassroots legal-person structure and rural cooperative foundation negative-space spillovers are now represented in the compact map as MEMORY_LEADS_ONLY."},
+      {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Ownership/capital/measurement reopen independently reviewed and closed: unified-legal-person perimeter change, cooperative/member-share capital, multiple reform destination forms, conditional central-bank support, local/shareholder repair and old-to-five-category asset-quality comparability are represented as MEMORY_LEADS_ONLY. Exact issuance/redemption and classification-adoption timing remain Evidence/precision questions."},
       {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2009-2012__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2013-2016__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
@@ -49,26 +49,26 @@
       {"region_id":"TIME-2023-2026__BANK-RURAL","state":"broad_plus_orthogonal_complete"}
     ],
     "known_major_gaps":[
-      "BANK-RURAL remains unsaturated with low-novelty confirmations held at 0/3 because material reopen categories are still being resolved.",
-      "The 1995-1999 reopen is independently reviewed and closed; no further same-period challenge is selected.",
-      "The selected 2000-2004 reopen must test cooperative/member-share capital semantics, county unified-legal-person perimeter change, reform-support/special-bill mechanisms and asset-quality metric comparability without reading completed raw passes.",
-      "Do not assume support instruments were unconditional bailouts, do not equate cooperative member shares with ordinary bank equity, and do not compare old bad-loan measures directly with later NPL ratios without source-supported definitions.",
-      "Exact reform dates, legal terms, eligibility, amounts, accounting treatment, share rights and official classification definitions remain Evidence-stage questions.",
+      "The two material gaps found by the first cross-time saturation review have now each received one independent bounded reopen challenge and are closed at the Memory stage.",
+      "BANK-RURAL remains unsealed and returns to cross-time saturation review with low-novelty confirmations still 0/3; no confirmation has yet been earned because the intervening probes were material-gap resolution passes.",
+      "The next saturation review must challenge the full compact negative-space matrix again without reading completed raw/receipts and must not merely repeat the resolved 1995-1999 or 2000-2004 gaps.",
+      "If no new material category emerges, record low-novelty confirmation 1/3 and select exactly one independent confirmation frontier. If a new material category appears, reopen exactly one bounded frontier and keep confirmations at 0/3.",
+      "Exact legal terms, dates, balances, ratios, support eligibility/redemption, share rights and classification definitions remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-RURAL is unsealed."
     ]
   },
-  "selection_basis":{"rule":"earliest_reopen_closed_advance_to_next_material_cross_time_gap","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-2000-2004"},
-  "open_frontiers":[{"frontier_id":"TIME-2000-2004__BANK-RURAL__CAPITAL-METRICS-REOPEN-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-2000-2004__BANK-RURAL__cooperative-capital-special-bills-metrics__blind-003"}],
+  "selection_basis":{"rule":"material_reopens_resolved_return_to_cross_time_saturation_review","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SATURATION-REVIEW-002","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-002"}],
   "next_probe":{
-    "probe_id":"TIME-2000-2004__BANK-RURAL__cooperative-capital-special-bills-metrics__blind-003",
-    "family":"cooperative_capital_special_bills_metric_transition_reopen_blind_recall",
-    "time_slice_id":"TIME-2000-2004",
+    "probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-002",
+    "family":"cross_time_saturation_review_blind_recall",
+    "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-RURAL",
-    "period":["2000-01-01","2004-12-31"],
-    "instruction":"Run one isolated BANK-RURAL 2000-2004 reopen blind-memory challenge using only this rev167 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read the 1995-1999 reopen raw/receipt, the cross-time saturation-review raw/receipt, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Test the materially missing ownership/capital/measurement layer: cooperative member/share capital and any old share categories without backdating unsupported terminology; county unified-legal-person reform as a legal balance-sheet perimeter change; central-bank special bills or related reform-support instruments as conditional mechanisms rather than assumed blanket bailouts; local-government/shareholder capital repair; bad-asset disposal; and migration from older overdue/bad-loan vocabulary toward five-category classification and modern NPL semantics. Distinguish capital injection, asset disposal, legal conversion and governance change. Preserve uncertainty and do not invent exact dates, ratios, amounts, eligibility terms, share rights, province lists or official wording. Keep SYS-MONETARY-CREDIT, SYS-REGULATION-RESOLUTION and CAPITAL-ASSET-QUALITY boundaries explicit. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, then close S -> cursor-only H -> exact-H CLEAN. If this independent reopen confirms/refines the gap without a second material category, close it and select at most one remaining cross-time gap or return to cross-time saturation review. Do not count a low-novelty confirmation while any material reopen remains unresolved.",
+    "period":["1990-01-01","2026-08-31"],
+    "instruction":"Run one isolated cross-time BANK-RURAL saturation-review blind recall using only this rev168 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read the completed saturation-review blind-001 raw/receipt, the 1995-1999 or 2000-2004 reopen raw/receipts, any other completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Re-review the compact time×shard and negative-space matrix across RCCs, rural cooperative banks, rural commercial banks, village banks and provincial reform structures. Probe forgotten actors/infrastructure, failed or restructured institution classes, old vocabulary, mechanisms, metric semantics, contemporaneous expectations, counterexamples and selective pre-1990 antecedents. Do not merely repeat the two resolved reopen packages. Challenge for any genuinely new category that would reopen a bounded period. If none is material and the pass is genuinely low novelty, record low-novelty confirmation 1/3 and select exactly one independent cross-time saturation confirmation frontier. If material novelty appears, select one bounded reopen and keep confirmations at 0/3. Do not seal or begin Evidence until the manifest-required three consecutive low-novelty confirmations and coverage/negative-space reviews are truthfully satisfied.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-1995-1999 reopen raw and receipt","CROSS-TIME saturation-review raw and receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["CROSS-TIME saturation-review blind-001 raw and receipt","TIME-1995-1999 reopen raw and receipt","TIME-2000-2004 reopen raw and receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only BANK-RURAL 2000-2004 reopen raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one truthful next frontier; low-novelty confirmations remain 0/3 while material reopen gaps are unresolved; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only cross-time BANK-RURAL saturation-review blind-002 raw and bounded receipt exist; the sparse map records measured novelty, updates low-novelty confirmation state truthfully and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
