@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 134,
+  "continuity_sequence": 135,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
-  "active_branch": "coordinator/shipping-stage2-source-validation",
-  "active_pr": 181,
-  "checkpoint_based_on_head_sha": "d510a43dc8ab3dd8eeeda2d5237465e88d82b4b9",
+  "active_branch": "coordinator/workstream-authority-transition-hardening",
+  "active_pr": null,
+  "checkpoint_based_on_head_sha": "1740bfb4421c14f22f20c4e63384b3b84313912f",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh exact main and both worker refs through GitHub Connect before acting. Shipping@9c5feb570be391042bb9c1ae26ba971082c7eded is the observed P146 cursor-only H head: its only changed file from S is the Shipping cursor, exact-head worker-fast succeeded, the blind-Memory campaign is sealed, open_frontiers is empty and next_probe is null. Do not execute P147 or a fourth blind-Memory probe. This sequence keeps the existing shipping-domain-v1 reservation active and its current reservation/assignment fence unchanged while authorizing one bounded stage-two 2020-2023 container-pandemic source-validation pilot through the main-owned contract, admission, prompt and handoff. Sealed Memory is hypothesis/control provenance only, never fact. Sequence-130 external Fresh-Agent v3 remains cancelled and cold only.",
+  "bootstrap_instruction": "Refresh exact main and both worker refs through GitHub Connect before acting. PR #182 repaired the Shipping revision-1 reservation mismatch on main@69e4877afcdb19240712ac4d64a48f6db90e376b without touching the Shipping worker branch. Shipping remains at bfb64375e80cdd32e64fc01aa633b13ca205ee18; rerun worker-fast on that exact H succeeded through the boundary, focused regressions and Remote worker continuity is CLEAN. Its cursor progress remains blocked until the Shipping owner refreshes main and performs its own cursor-only resume/phase acknowledgement; no stage-two source-validation work has started. The current global_serial task extends CAP-0010 with versioned reservation authority transitions and base-authority worker fencing. Sequence-130 remains cancelled and Shipping P146 remains sealed with no P147/fourth blind-Memory probe.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,84 +16,83 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents can move from bounded Memory discovery into source-grounded, no-lookahead historical reconstruction without duplicating semantic owners or relying on chat memory.",
-    "short_term_goal": "Truthfully close only Shipping's blind-Memory phase at P146 while keeping shipping-domain-v1 active, then authorize exactly one representative 2020-2023 container-pandemic source-validation trajectory that proves source archaeology, claim-scoped Grounded Evidence, Reality, contemporaneous Judgment, later Outcome and PIT/no-lookahead replay using existing capabilities.",
-    "next_big_step": "Merge the bounded main-owned Shipping stage-two contract/prompt/handoff while preserving the existing reservation fence. Then hand the unchanged Shipping role the dedicated stage-two prompt; its first worker action is a cursor-only phase-authorization acknowledgement that preserves the refreshed main revision/epoch, not P147, after which it may execute only one source-validation trajectory.",
-    "local_optimization_stop_rule": "Do not reopen sealed blind Memory, consume an unused fourth probe slot, add another Shipping trajectory, create a permanent role, browse the general web, or modify shared semantics merely for completeness. Stop after one representative source-validation trajectory or earlier on a bounded source/known-time/capability gap.",
+    "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents can move between phases through durable, versioned control-plane authority without relying on chat memory or cross-writing one another's state.",
+    "short_term_goal": "Land the bounded CAP-0010 workstream-authority hardening, prove it with exact PR-head CI, and preserve Shipping's repaired P146-sealed stage-two boundary so the Shipping owner can resume only through its own cursor and exact-head CLEAN gate.",
+    "next_big_step": "Create the final handoff-only H from substantive S=1740bfb4421c14f22f20c4e63384b3b84313912f, open the main-bound hardening PR, require the new reservation-transition regression gate plus full CI to pass on the exact head, merge, refresh main, then let the unchanged Shipping role clear its blocked progress cursor and continue the one authorized 2020-2023 source-validation pilot.",
+    "local_optimization_stop_rule": "Do not turn this L2 control-plane repair into a new scheduler, distributed lock, permanent role, L3/L4 semantic rewrite or Shipping research expansion. Do not mutate any active reservation merely to encode an atomic task stage; use Change Contract/admission/prompt/cursor unless durable workstream authority truly changes.",
     "parallel_permanent_tracks": [
-      "Architecture Baseline v1 and Capability Registry remain the single semantic control plane.",
-      "Banking remains independently owned by banking-domain-v1 and is outside this bounded Shipping authorization change.",
-      "Shipping remains the same shipping-domain-v1 permanent workstream; only its current phase is redirected from sealed blind Memory to one source-validation pilot, with no writer-fence reassignment.",
-      "GitHub Connect remains the repository control path; Drive is not required for this Shipping pilot unless a future live cursor explicitly changes that fact."
+      "Architecture Baseline v1 remains the semantic baseline; this task extends CAP-0010 governance only.",
+      "Banking remains independently owned by banking-domain-v1 and is not modified by this control-plane hardening task.",
+      "Shipping remains shipping-domain-v1 on reservation_revision=1 and assignment_epoch=1; P146 blind Memory stays sealed and stage two remains exactly one bounded pilot.",
+      "GitHub remains repository authority; no Drive/database generation work is part of this task."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "adaptive-memory-campaign-v1",
-    "last_completed_action": "Refreshed live main@d2ce81e04301a4c2249b9c69bca58b405937b827 and Shipping@9c5feb570be391042bb9c1ae26ba971082c7eded. Confirmed P146's H commit changes only .longcycle/workstreams/shipping-domain-v1/cursor.json, exact-head worker-fast succeeded, and the Shipping exploration map is revision 147 with stage sealed_blind_memory, open_frontiers=[], next_probe=null and evidence_transition_allowed=false. The first PR-head attempt tried to advance reservation_revision before the worker cursor could acknowledge it; Architecture Baseline correctly failed at workstream manifest isolation. The repair preserved reservation_revision=1 and assignment_epoch=1, kept lifecycle_state=active, restored the existing capability route, narrowed the current second-stage acceptance through reservation done_when/Change Contract/admission, and corrected docs/development/prompts/shipping-stage-two-source-validation.md so the Shipping owner later performs only a cursor-only phase authorization acknowledgement while preserving whatever revision/epoch refreshed main owns. Final substantive S=d510a43dc8ab3dd8eeeda2d5237465e88d82b4b9. No Shipping worker branch file was written.",
-    "current_task": "Land the bounded main-owned Shipping stage-two authorization without crossing the Shipping worker branch: preserve P146 sealed/no-P147 truth, keep shipping-domain-v1 active and its existing fence unchanged, and merge the contract/admission/reservation clarification, dedicated prompt and global handoff only after exact PR-head CI.",
-    "why_now": "The previous global handoff still advertised obsolete Shipping P004/P005 continuation even though live Shipping has advanced through P146 and deliberately terminalized blind Memory before the fourth probe slot. Leaving that stale state risks an unauthorized P147 or treating sealed Memory as truth. The failed first PR-head validation also proved that fence advancement cannot be predeclared from global_serial without the worker cursor, so this repair authorizes the new phase inside the existing reservation instead of cross-writing the worker.",
-    "done_when": "The global handoff no longer advertises Shipping P004/P005; it records P146 sealed and next_probe=null; shipping-domain-v1 remains active with the existing reservation/assignment fence; main owns a bounded contract for exactly one 2020-2023 container-pandemic source-validation trajectory using existing CAP-0001 through CAP-0007 with CAP-0005/CAP-0007 as the current replay/orchestration path and no general-web shortcut; the dedicated stage-two prompt is merged; exact PR-head CI, Architecture Baseline and continuity contract checks are green; and the user is told which prompt to copy.",
+    "parent_workstream_id": "workstream-authority-transition-v1",
+    "last_completed_action": "Merged PR #182 after exact Architecture Baseline and full-ci success, restoring Shipping's original revision-1 reservation.done_when. Re-ran worker-fast for exact Shipping H=bfb64375e80cdd32e64fc01aa633b13ca205ee18 against repaired main; all steps passed including Remote worker continuity is CLEAN. Then prepared substantive S=1740bfb4421c14f22f20c4e63384b3b84313912f on coordinator/workstream-authority-transition-hardening: added scripts/validate_reservation_transitions.py and incident regression tests, changed worker boundary validation to read reservation authority from the supplied integration base and require cursor revision/epoch acknowledgement, updated Architecture Baseline CI, extended CAP-0010, and documented the two-phase main-authorize then cursor-adopt transaction. No worker branch file was written by global_serial.",
+    "current_task": "Complete the global_serial integration of versioned workstream reservation authority transitions and base-authority worker fencing.",
+    "why_now": "PR #181 proved the old control plane could merge a same-revision main-owned reservation mutation that left a long-lived worker unable to pass its boundary gate. The fail-closed worker correctly stopped, so the architectural response is to preserve main authority/worker cursor separation while making transition versioning and adoption machine-enforced.",
+    "done_when": "S-to-H changes only .longcycle/handoff/current.json; the final PR contains the reservation transition validator, worker base-authority boundary, CAP-0010 admission/card updates, protocol documentation and regression tests; exact PR-head Architecture Baseline and full CI succeed; main is refreshed after merge; and Shipping remains untouched by global_serial with its repaired exact H proven continuity-CLEAN.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Verify final S=d510a43dc8ab3dd8eeeda2d5237465e88d82b4b9 to this H changes only .longcycle/handoff/current.json, refresh PR #181 exact head and changed paths, require all exact-head checks to succeed, merge with expected-head protection, refresh main, and report docs/development/prompts/shipping-stage-two-source-validation.md to the user."
+    "next_atomic_action": "Verify S=1740bfb4421c14f22f20c4e63384b3b84313912f to this H is handoff-only, open the hardening PR to refreshed main, inspect the exact diff, require fresh exact-head Architecture Baseline and full CI success, merge with expected-head protection, then refresh main and report the tested result."
   },
   "active_context": {
-    "context_id": "shipping-stage2-source-validation-134",
-    "context_kind": "bounded_industry_source_validation_authorization",
-    "label": "Shipping P146 seal reconciliation and one 2020-2023 source-validation pilot authorization",
+    "context_id": "workstream-authority-transition-v1-135",
+    "context_kind": "bounded_control_plane_hardening",
+    "label": "Versioned reservation authority transition and Shipping compatibility repair",
     "root_path": "docs/development",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      "docs/development/prompts/shipping-stage-two-source-validation.md",
-      "docs/development/prompts/github-connect-chat-adapter.md",
-      "docs/development/remote-worker-continuity.md",
-      ".longcycle/workstreams/shipping-domain-v1/reservation.json",
-      ".longcycle/workstreams/shipping-domain-v1/change-contract.json",
-      ".longcycle/workstreams/shipping-domain-v1/capability-admission.json",
-      ".longcycle/capabilities/cards/CAP-0005.json",
-      ".longcycle/capabilities/cards/CAP-0007.json"
+      "docs/development/workstream-reservation-integration.md",
+      "scripts/validate_reservation_transitions.py",
+      "scripts/validate_workstream_boundaries.py",
+      "tests/test_reservation_transitions.py",
+      "tests/test_workstream_boundaries.py",
+      ".github/workflows/architecture-baseline.yml",
+      ".longcycle/capabilities/cards/CAP-0010.json",
+      ".longcycle/workstreams/shipping-domain-v1/reservation.json"
     ],
     "core_exclusion_terms": [
-      "SHIP-MEM-V2-P147",
-      "fourth-probe-for-quota",
-      "sealed-memory-as-fact",
-      "general-web-as-evidence-shortcut",
-      "new-shipping-permanent-role",
-      "industry-worker-cross-write",
-      "hindsight-rewrite"
+      "distributed-lock",
+      "new-permanent-role",
+      "same-revision-authority-mutation",
+      "worker-reservation-self-write",
+      "shipping-P147",
+      "fourth-memory-probe",
+      "sealed-memory-as-fact"
     ]
   },
   "pending_user_directives": [
-    "All durable repository authority comes from refreshed remote Git refs; local cache and chat memory are never authority.",
-    "Shipping P146 formally seals the blind-Memory campaign. Do not execute P147, do not consume a fourth probe slot merely to reach four, and do not cross-write the Shipping worker branch from global_serial.",
-    "Close only Shipping's blind-Memory phase, not the whole shipping-domain-v1 reservation; prefer the existing workstream and do not create a new permanent role.",
-    "Authorize exactly one representative 2020-2023 container-pandemic source-validation pilot covering source archaeology, claim-scoped Grounded Evidence, Reality, contemporaneous Judgment, later Outcome and PIT/no-lookahead replay.",
-    "Chat mode has no assumed general web. Reuse existing CAP-0005/CAP-0007 plus GitHub/repository-approved source acquisition paths; sealed Memory is never factual authority.",
-    "Sequence-130 genuine external Fresh-Agent v3 remains cancelled/suppressed; do not schedule, block on, or automatically reactivate it."
+    "Modify the architecture and process as proposed and run tests after the change.",
+    "Repository authority and control operations use refreshed remote Git/GitHub facts; do not rely on chat memory as authority.",
+    "Shipping P146 remains the sealed blind-Memory boundary; no P147, fourth probe or substantive stage-two research may be invented by global_serial.",
+    "Do not cross-write Shipping worker cursor/research state from global_serial; Shipping resumes through its own cursor after refreshed-main authority is safe.",
+    "Sequence-130 genuine external Fresh-Agent v3 remains cancelled/suppressed."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33851876105,
-    "observed_head_sha": "9a8ef7bf8fc49d8211116a310e82efec6934559f",
-    "conclusion": "The first PR-head Architecture Baseline attempt on 9a8ef7bf8fc49d8211116a310e82efec6934559f correctly failed at Parallel workstream manifests remain isolated because that attempt advanced main reservation_revision while the worker cursor still acknowledged revision 1. The repair keeps the existing fence unchanged and requires a new exact-head CI run; the failed old head is not merge authority. Shipping exact worker head 9c5feb570be391042bb9c1ae26ba971082c7eded independently had worker-fast success in run 33835465016.",
-    "mypy_summary": "No Python or shared application code is changed by this authorization slice.",
-    "pytest_summary": "Control-plane JSON and prompt changes require fresh exact PR-head CI and Architecture Baseline after the fence-preserving repair.",
-    "ruff_summary": "No Python files are changed by this authorization slice.",
-    "refresh_instruction": "Refresh exact main, PR head and both active worker refs before any integration action. Do not reuse the failed 9a8ef7bf check result. Shipping must remain at/after the sealed P146 continuity story with no unauthorized P147; after merge, its phase adoption is performed by the Shipping owner via cursor-only acknowledgement preserving refreshed main revision/epoch, not by global_serial cross-writing the worker branch."
+    "last_observed_run": 33853263002,
+    "observed_head_sha": "bfb64375e80cdd32e64fc01aa633b13ca205ee18",
+    "conclusion": "PR #182 exact head ef0c4bb9c6942d48babf1f936a8121d7124d5880 passed Architecture Baseline run 33857577895 and full-ci run 33857578166, then merged as main@69e4877afcdb19240712ac4d64a48f6db90e376b. The failed Shipping worker-fast run 33853263002 was re-run after that main repair; latest-attempt worker-fast job 100974923556 succeeded through all steps, including Worker diff stays inside the main reservation and Remote worker continuity is CLEAN. The separate authority-hardening branch still requires fresh exact PR-head CI before merge.",
+    "mypy_summary": "Architecture hardening changes Python governance scripts and tests, so final full CI must re-run mypy on the exact PR head.",
+    "pytest_summary": "New regressions explicitly cover PR #181's same-revision done_when mutation, exact +1 revision transitions, spurious/skipped revisions, assignment-epoch versioning and base-authority worker acknowledgement.",
+    "ruff_summary": "New/modified Python governance scripts require final exact-head Ruff through full CI.",
+    "refresh_instruction": "Do not reuse PR #182 or Shipping worker-fast success as merge authority for the hardening PR. Refresh the hardening PR exact head and require its own Architecture Baseline and full CI success. After merge, refresh main and both worker refs before any Shipping continuation."
   },
   "workstreams": [
     {
-      "workstream_id": "adaptive-memory-campaign-v1",
+      "workstream_id": "workstream-authority-transition-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "shipping_stage2_authorization_repaired_pending_exact_pr_ci",
-      "summary": "global_serial reconciled live Shipping P146 and prepared a fence-preserving main-owned stage-two contract, reuse admission, reservation acceptance clarification and dedicated prompt. The initial revision-2 approach was rejected by Architecture Baseline and repaired without touching the worker branch or shared semantic code.",
+      "status": "substantive_s_complete_handoff_ready_for_pr",
+      "summary": "CAP-0010 is extended on the integration branch with a main-side reservation transition validator, base-authority worker boundary semantics, Architecture Baseline gate, incident regression tests and a documented two-phase authority transaction. No product semantic owner or database schema changes.",
       "next_actions": [
-        "Verify the final S-to-H delta is handoff-only and refresh PR #181 exact head/diff.",
-        "Merge only after the repaired exact head passes ci, Architecture Baseline and Fresh-Agent Continuity v3 contract checks.",
-        "After merge, tell the user to copy docs/development/prompts/shipping-stage-two-source-validation.md."
+        "Verify S-to-H is handoff-only, open the hardening PR, and inspect exact changed paths.",
+        "Require fresh exact-head Architecture Baseline and full CI including the new transition tests.",
+        "Merge with expected-head protection and refresh main."
       ],
       "blockers": []
     },
@@ -101,10 +100,10 @@
       "workstream_id": "banking-domain-v1",
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "live_head_refreshed_outside_this_bounded_task",
-      "summary": "Banking remote head was refreshed as 971fccc6560e3d2ec8855e20511675a426cb334e. This Shipping authorization task did not audit or alter Banking's current cursor, receipts, map or branch.",
+      "status": "outside_bounded_task",
+      "summary": "The last observed Banking ref remains 971fccc6560e3d2ec8855e20511675a426cb334e; this task does not claim a current Banking continuity state and makes no Banking branch change.",
       "next_actions": [
-        "Banking continues only from its own refreshed reservation/cursor after its independent continuity audit; this global_serial slice makes no Banking change."
+        "Banking continues only after its own refreshed reservation/cursor continuity audit."
       ],
       "blockers": []
     },
@@ -112,12 +111,12 @@
       "workstream_id": "shipping-domain-v1",
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "p146_blind_memory_sealed_stage2_authorized_pending_main_merge",
-      "summary": "Shipping@9c5feb570be391042bb9c1ae26ba971082c7eded is observed CLEAN for the sealed campaign boundary: P146 H is cursor-only, worker-fast succeeded, map revision 147 has sealed_blind_memory/open_frontiers=[]/next_probe=null and Evidence transition was not authorized. The existing shipping-domain-v1 reservation remains active with reservation_revision=1 and assignment_epoch=1; current stage-two authorization is bounded to one source-validation pilot and does not reopen Memory.",
+      "status": "p146_sealed_control_plane_repaired_continuity_clean_progress_blocked",
+      "summary": "Shipping exact H remains bfb64375e80cdd32e64fc01aa633b13ca205ee18. Main reservation revision 1 is again byte-compatible on the reserved done_when field after PR #182, and the latest worker-fast attempt on that unchanged H succeeded through Remote worker continuity is CLEAN. The branch-local cursor still truthfully records progress_state=blocked/unverified and that the stage-two pilot has not started; global_serial has not edited it.",
       "next_actions": [
-        "Do not run P147 or any fourth blind-Memory probe.",
-        "After the stage-two authorization merges, the Shipping owner first performs only the cursor-only phase-authorization acknowledgement described in docs/development/prompts/shipping-stage-two-source-validation.md, preserving the refreshed main reservation_revision/assignment_epoch, and reaches CLEAN.",
-        "Then execute exactly one representative 2020-2023 container-pandemic source-validation trajectory using approved source paths, claim-scoped Evidence, Reality, contemporaneous Judgment, later Outcome and PIT/no-lookahead replay; stop after that one pilot."
+        "Do not run P147 or a fourth blind-Memory probe.",
+        "After the hardening merge, the Shipping owner refreshes exact main/worker refs and clears the repaired control-plane blocker through its own cursor-only resume/phase acknowledgement, then requires exact-head worker-fast CLEAN.",
+        "Only after that may Shipping execute the single authorized 2020-2023 source-validation trajectory and then stop."
       ],
       "blockers": []
     }
@@ -133,27 +132,24 @@
     ".longcycle/capabilities/active-index.json"
   ],
   "deep_reference_paths": [
-    "docs/development/agent-governance-operating-manual.md",
-    "docs/development/prompts/coordinator-fresh-agent.md",
-    "docs/development/prompts/shipping-stage-two-source-validation.md",
-    "docs/development/prompts/github-connect-chat-adapter.md",
-    "docs/development/prompts/all-agent-takeover.md",
-    "docs/development/prompts/all-agent-handoff.md",
-    "docs/development/remote-worker-continuity.md",
     "docs/development/workstream-reservation-integration.md",
-    ".longcycle/capabilities/cards/CAP-0005.json",
-    ".longcycle/capabilities/cards/CAP-0007.json"
+    "docs/development/remote-worker-continuity.md",
+    "scripts/validate_reservation_transitions.py",
+    "scripts/validate_workstream_boundaries.py",
+    "tests/test_reservation_transitions.py",
+    "tests/test_workstream_boundaries.py",
+    ".github/workflows/architecture-baseline.yml",
+    ".longcycle/capabilities/cards/CAP-0010.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Which single 2020-2023 container-pandemic claim cluster has the smallest sufficient repository-approved source set that can independently support both a contemporaneous Judgment and a later Outcome without relying on sealed Memory?"
+    "Which single 2020-2023 container-pandemic claim cluster will the Shipping owner select after its repaired cursor is again progress-ready and exact-head CLEAN?"
   ],
   "ordered_next_actions": [
-    "Verify final S=d510a43dc8ab3dd8eeeda2d5237465e88d82b4b9 to H changes only .longcycle/handoff/current.json and refresh PR #181 changed paths.",
-    "Require fresh exact PR-head ci, Architecture Baseline and Fresh-Agent Continuity v3 contract success; merge only with expected-head protection.",
-    "Refresh main after merge and confirm shipping-domain-v1 remains active on its existing fence, while the new bounded stage-two contract and prompt are present.",
-    "Tell the user to copy docs/development/prompts/shipping-stage-two-source-validation.md into a fresh Shipping chat.",
-    "The Shipping owner must first acknowledge the new phase with cursor-only H while preserving refreshed main revision/epoch and reach CLEAN; global_serial must not write that worker branch.",
-    "Only then may Shipping execute one representative 2020-2023 source-validation trajectory; no P147, fourth Memory probe or second pilot is authorized."
+    "Verify S=1740bfb4421c14f22f20c4e63384b3b84313912f to H changes only .longcycle/handoff/current.json.",
+    "Open the workstream-authority hardening PR to refreshed main and inspect the exact changed-file set.",
+    "Require fresh exact-head Architecture Baseline and full CI, including tests/test_reservation_transitions.py, to succeed.",
+    "Merge only with expected-head protection, then refresh main and verify the new validator/workflow/docs are present.",
+    "Leave Shipping branch untouched; the Shipping owner later refreshes main, updates its own cursor after the repaired blocker, reaches exact-head CLEAN and only then starts the one authorized stage-two pilot."
   ]
 }
