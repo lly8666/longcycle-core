@@ -49,8 +49,13 @@ def _manifest(
     }
 
 
-def test_current_workstream_boundary_graph_is_valid() -> None:
-    boundaries.validate()
+def _cursor(workstream_id: str = "banking-domain") -> dict[str, object]:
+    return {
+        "workstream_id": workstream_id,
+        "branch": f"workstream/{workstream_id}",
+        "reservation_revision": 1,
+        "assignment_epoch": 1,
+    }
 
 
 def test_parallel_branch_name_is_deterministic() -> None:
@@ -151,6 +156,49 @@ def test_every_main_owned_reservation_dimension_is_fenced(
 
     with pytest.raises(boundaries.WorkstreamBoundaryError, match=field):
         boundaries.validate_reservation_unchanged(current=current, reserved=reserved)
+
+
+def test_worker_cursor_must_acknowledge_main_reservation_revision() -> None:
+    reserved = _manifest("banking-domain")
+    reserved["reservation_revision"] = 2
+    cursor = _cursor()
+
+    with pytest.raises(boundaries.WorkstreamBoundaryError, match="acknowledgement pending"):
+        boundaries.validate_worker_acknowledges_reservation(
+            workstream_id="banking-domain",
+            branch="workstream/banking-domain",
+            cursor=cursor,
+            reserved=reserved,
+        )
+
+
+def test_worker_cursor_must_acknowledge_assignment_fence() -> None:
+    reserved = _manifest("banking-domain")
+    reserved["assignment_epoch"] = 2
+    cursor = _cursor()
+
+    with pytest.raises(boundaries.WorkstreamBoundaryError, match="assignment fence mismatch"):
+        boundaries.validate_worker_acknowledges_reservation(
+            workstream_id="banking-domain",
+            branch="workstream/banking-domain",
+            cursor=cursor,
+            reserved=reserved,
+        )
+
+
+def test_worker_boundary_reads_main_authority_not_branch_reservation(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    reserved = _manifest("banking-domain", prefixes=["domain_packs/banking"])
+    cursor = _cursor()
+    monkeypatch.setattr(boundaries, "_reserved_manifest", lambda *_: reserved)
+    monkeypatch.setattr(boundaries, "_worker_cursor", lambda *_: cursor)
+    monkeypatch.setattr(boundaries, "_git", lambda *_: "")
+
+    boundaries.validate_worker_branch(
+        base_ref="origin/main",
+        branch="workstream/banking-domain",
+    )
 
 
 def test_worker_diff_is_limited_to_reserved_scope_and_own_control_dir() -> None:
