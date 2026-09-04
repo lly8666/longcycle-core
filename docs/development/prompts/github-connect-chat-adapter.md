@@ -4,13 +4,14 @@
 
 ```text
 GitHub Connect      = 仓库、分支、提交、PR、CI 和交接控制面
+ChatGPT Search      = seal 后的来源发现与原文读取通道（当前窗口可用时）
 ChatGPT 临时沙箱    = 当前会话内的文件整理、哈希和数据库私有副本（可用时）
 Google Drive        = 大文件的不可变上下载运输（任务需要且连接可用时）
 模型内部知识        = blind Memory probe 的输入之一，不是 Evidence
-通用外网            = 不假定可用
+搜索/网页读取能力   = 启动时按当前窗口实际工具判断；不因聊天模式一概禁用
 ```
 
-Agent 不运行本地 `git`、终端脚本或 worktree 命令，也不能声称运行了它没有的工具。仓库所有读写都通过 GitHub Connect 完成。
+Agent 不运行本地 `git`、终端脚本或 worktree 命令，也不能声称运行了它没有的工具。仓库所有读写都通过 GitHub Connect 完成；ChatGPT Search 只承担研究来源发现/读取，不承担仓库写入或 Evidence 认证。
 
 ## 1. 每次启动
 
@@ -51,14 +52,31 @@ Agent 不运行本地 `git`、终端脚本或 worktree 命令，也不能声称�
 
 若 `S` 前截断，从旧 cursor 下一步重做。若 `S` 后截断，下轮先补 `H`。若只完成安全 WIP，H 如实写 `progress_state=partial` 和 `unverified=true`；越界或无法判断则 `BLOCKED`。
 
-## 4. 无外网研究边界
+## 4. ChatGPT Search 与旧 Evidence 执行边界
 
-当前 Banking 和 Shipping 任务都是 blind Memory probe，聊天 Agent 可以执行：只使用 cursor/map 允许的仓库输入和模型当前内部记忆，保留模糊时间与不确定性，输出始终标为 Memory。
+先按 live cursor 判断阶段，再决定是否搜索；“聊天模式”本身既不授权搜索污染 blind Memory，也不禁止 seal 后的正常来源研究。
 
-- 不用 GitHub 全站搜索、旧 Evidence、其他 shard 或被禁止 raw 补答案。
+### Blind Memory 阶段
+
+只使用 cursor/map 允许的仓库输入和模型当前内部记忆，保留模糊时间与不确定性，输出始终标为 Memory：
+
+- 不用 ChatGPT Search、GitHub 全站搜索、旧 Evidence、其他 shard 或被禁止 raw 补答案。
 - 不把内部记忆写成来源，不伪造引文。
 - 不把 Memory 升级为 Evidence、Reality、Outcome 或 seal。
-- 若以后 cursor 明确需要外部 Evidence，而本会话没有对应访问能力，报告 `CAPABILITY_BLOCKED_EXTERNAL_SOURCE` 并交接；不能用猜测代替。
+
+### Seal 后 self-verification / source discovery / Evidence 阶段
+
+沿用 `METHODOLOGY_CORE.md` M1/M3/M7、`docs/research/model-memory-exhaustion-protocol.md` 和 `docs/research/agent-collection-contract.md` 的既有执行方案，不另设更严门槛：
+
+1. 启动时查看当前 ChatGPT 窗口是否有 Search/网页读取能力；可用就直接使用，不需要额外角色或新的架构批准。
+2. 高能力 Agent 先用 sealed Memory 的 actor、旧称、approximate period、机制和 search keys 做 self-verification，追 primary/authoritative source、反向查询、citation chain 与同源转载关系。
+3. 搜索结果、排名、snippet、AI 摘要和候选 URL 都只是 discovery material。必须打开并实际读取来源，按 claim scope 判断 authority；`not_found != false`。
+4. 完全沿用既有三态：只确认 document identity/locator 是 `locator_verified`；实际读到 claim-relevant 原文并保存精确页码/章节/excerpt 或忠实 readable representation 后可记为 `content_verified`；取得并核验 raw bytes 后才是 `materialized`。Raw byte materialization 不是已经 content-verified Evidence 的前置条件。
+5. Grounded Evidence 继续要求 claim-scoped content、source identity、实际 retrieval host/URL、publisher、时间和精确 locator；随后才进入 Reality、Judgment、Outcome 与 PIT/no-lookahead。搜索工具及其 citation 本身不获得 Evidence authority。
+6. unresolved 搜索的最低深度、权威原文已直接解决时的停止规则、高影响 claim 的反向查询，继续复用现有 `verification_stop_decision` 语义；不得另加固定网页数、固定来源数或下载配额。
+7. 网页可读内容、PDF readable representation、原始 bytes 和大文件需要交接时，继续走 `.longcycle/handoff/data-plane.json` 已有的 provenance/Drive/延迟 materialization 路径；transport 不改变来源等级。
+
+若当前窗口没有 Search/网页读取能力，而 live cursor 需要外部来源，报告 `CAPABILITY_BLOCKED_EXTERNAL_SOURCE` 并完成交接，交给有该能力的新聊天窗口继续同一角色。工具缺失本身不是 `bounded_source_gap`，也不是现实世界的 `not_found`。只有实际执行了当时获授权且可用的 discovery/source 路径，并达到旧协议的停止条件后，才可以如实记录 bounded source gap。
 
 ## 5. 沿用初代 Agent 的 Drive 上下载路径
 
@@ -88,10 +106,10 @@ Drive 只是字节运输，当前数据库代际仍由刷新后的 main Git 指�
 
 ## 6. 启动报告与自动继续
 
-先用简短进度消息报告：main/worker 精确 SHA、continuity 状态及依据、六层目标、允许/禁止输入、唯一下一步、当前外网/Drive 能力是否影响该任务、是否存在 L3/L4。
+先用简短进度消息报告：main/worker 精确 SHA、continuity 状态及依据、六层目标、允许/禁止输入、唯一下一步、当前 Search/网页读取/Drive 能力是否影响该任务、是否存在 L3/L4。
 
 - 状态为 `CLEAN` 且没有用户决策阻塞：报告后在同一轮自动执行唯一下一步，不把启动报告变成等待用户回复的关卡。
 - 状态不安全：只恢复或上报，不开始新任务。
 - 结束前执行 `docs/development/prompts/all-agent-handoff.md`；被截断时由下一轮通过同一个启动审计自动补完缺失的 `H`。
 
-行业 Memory Campaign Lead 的一次聊天执行默认目标是最多 4 个**顺序** probe。每个 probe 都单独完成 `S -> H -> CLEAN`，然后重读地图动态选择下一个；不并行、不预排、不把四个 probe 合成一个无中间检查点的大任务。上一轮被截断时，下一轮第一动作永远是恢复旧 probe/缺失的 `H`，达到 `CLEAN` 后再继续。没有安全下一步或无法保证下一次完整交接时可以提前结束。
+行业 Memory Campaign Lead 只有在 live cursor 仍处于 blind Memory 阶段时，才以最多 4 个**顺序** probe 为软目标。每个 probe 都单独完成 `S -> H -> CLEAN`，然后重读地图动态选择下一个；不并行、不预排、不把四个 probe 合成一个无中间检查点的大任务。上一轮被截断时，下一轮第一动作永远是恢复旧 probe/缺失的 `H`，达到 `CLEAN` 后再继续。seal 后的搜索/Evidence 阶段按 cursor 的一个有界 source/claim task 执行，不继承四-probe 配额。没有安全下一步或无法保证下一次完整交接时可以提前结束。

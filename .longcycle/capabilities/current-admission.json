@@ -1,33 +1,45 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "WORKSTREAM-AUTHORITY-TRANSITION-V1-036",
-  "intent": "Harden parallel workstream authority transitions so main-owned reservation mutations are versioned, worker boundaries read refreshed integration-base authority, and cursor acknowledgement is the only worker adoption mechanism.",
+  "intent_id": "POST-SEAL-CHATGPT-SEARCH-RESTORE-V1-037",
+  "intent": "Restore the already-adopted post-seal high-model ChatGPT Search/self-verification route in chat-agent prompts and let the same Shipping pilot resume without changing Evidence semantics or workstream authority.",
   "governance_mode": "converging",
-  "disposition": "extend",
+  "disposition": "reuse",
   "target_capability_ids": [
-    "CAP-0010"
-  ],
-  "closest_existing_capability_ids": [
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0006",
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "CAP-0010 already owns parallel workstream reservation/routing and its boundary validator; CAP-0009 remains the continuity owner. The incident exposed an incomplete authority-transition guard, not a need for a new semantic owner: extend CAP-0010 with exact reservation revision transitions and base-authority worker fencing while preserving CAP-0009 CLEAN/BLOCKED semantics.",
-  "rationale_details_ref": "docs/development/workstream-reservation-integration.md",
+  "closest_existing_capability_ids": [
+    "CAP-0001",
+    "CAP-0002",
+    "CAP-0006",
+    "CAP-0009",
+    "CAP-0010"
+  ],
+  "rationale_summary": "No capability is missing. CAP-0006 already owns post-seal verification/search depth; CAP-0001/CAP-0002 already own source identity and unchanged Grounded Evidence certification; CAP-0009 owns fresh-chat capability-aware handoff; CAP-0010 owns main authorization versus worker cursor adoption. The defect is prompt/control-plane drift that converted 'search is not Evidence' into 'search is forbidden'. Reuse the existing owners and restore their original execution boundary.",
+  "rationale_details_ref": "docs/development/prompts/github-connect-chat-adapter.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "scripts/validate_workstream_boundaries.py",
-    "scripts/validate_reservation_transitions.py",
-    "tests/test_reservation_transitions.py",
-    "docs/development/workstream-reservation-integration.md"
+    "METHODOLOGY_CORE.md",
+    "src/longcycle/application/memory_campaign.py",
+    "docs/research/model-memory-exhaustion-protocol.md",
+    "docs/research/agent-collection-contract.md",
+    ".longcycle/capabilities/cards/CAP-0001.json",
+    ".longcycle/capabilities/cards/CAP-0002.json",
+    ".longcycle/capabilities/cards/CAP-0006.json"
   ],
   "planned_paths": [
-    "scripts/validate_workstream_boundaries.py",
-    "scripts/validate_reservation_transitions.py",
-    "tests/test_workstream_boundaries.py",
-    "tests/test_reservation_transitions.py",
-    ".github/workflows/architecture-baseline.yml",
-    "docs/development/workstream-reservation-integration.md",
-    ".longcycle/capabilities/cards/CAP-0010.json",
+    "docs/development/prompts/github-connect-chat-adapter.md",
+    "docs/development/prompts/all-agent-takeover.md",
+    "docs/development/prompts/new-role-creation.md",
+    "docs/development/prompts/shipping-fresh-agent.md",
+    "docs/development/prompts/shipping-stage-two-source-validation.md",
+    "docs/development/agent-governance-operating-manual.md",
+    ".longcycle/workstreams/shipping-domain-v1/change-contract.json",
+    ".longcycle/workstreams/shipping-domain-v1/capability-admission.json",
+    "tests/test_chat_agent_prompt_contracts.py",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"

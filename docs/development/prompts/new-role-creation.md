@@ -8,7 +8,7 @@
 
 `{ROLE_REQUEST}`
 
-所有操作都在 ChatGPT 聊天模式完成：仓库只用 GitHub Connect；不假定本地 git/终端/worktree 或通用外网；大数据库只在当前任务明确需要时走现有 ChatGPT 私有沙箱 + Google Drive 不可变运输路径。
+所有操作都在 ChatGPT 聊天模式完成：仓库只用 GitHub Connect；不假定本地 git/终端/worktree。ChatGPT Search/网页读取能力在每个窗口启动时按实际工具盘点：blind Memory 阶段禁用新搜索，seal 后 self-verification/source/Evidence 阶段可按旧协议直接使用；大数据库只在当前任务明确需要时走现有 ChatGPT 私有沙箱 + Google Drive 不可变运输路径。
 
 先完整读取 `docs/development/prompts/all-agent-takeover.md`、`docs/development/prompts/github-connect-chat-adapter.md`、`docs/development/agent-governance-operating-manual.md`，并按 `AGENTS.md` 从刷新后的 `main` 恢复使命、Baseline、全局 handoff、能力 owner 和活动 workstream。不要让我重复背景。
 
@@ -31,7 +31,7 @@
 6. 运行最小高信号检查：registry/boundary、适用的 Baseline/能力检查、精确远端 CI。新角色合同或共同 worker 协议发生实质变化时，做一次无旧聊天的角色接班演练；以后每个临时 Agent 不重复整套大型 drill。
 7. 用通用交接提示词完成 `S -> H`。全局 handoff 只增加该活动 workstream 的有界路由，不复制其历史。
 
-对于行业 Memory Campaign Lead，专用提示词默认采用“一次聊天执行最多 4 个顺序 probe”的切片：每个 probe 独立 `S -> H -> CLEAN`，后一个只能由前一个完成后更新的地图选择。它是提高单次有效工作量的软目标，不是固定时长、完成度配额或预排四任务；没有安全下一步时提前停止。任何中断后的下一次启动都先恢复旧 probe/缺失的 `H`，再接受新任务。
+对于行业 Memory Campaign Lead，只有 live cursor 仍处于 blind Memory 阶段时，专用提示词才采用“一次聊天执行最多 4 个顺序 probe”的切片：每个 probe 独立 `S -> H -> CLEAN`，后一个只能由前一个完成后更新的地图选择。它是提高单次有效工作量的软目标，不是固定时长、完成度配额或预排四任务；没有安全下一步时提前停止。seal 后改由 cursor 的有界 self-verification/source/Evidence task 驱动，直接使用当前可用的 ChatGPT Search 并沿用旧 Evidence 认证标准。任何中断后的下一次启动都先恢复旧工作/缺失的 `H`，再接受新任务。
 
 新角色提示词必须让接班 Agent：
 
@@ -41,6 +41,7 @@
 - 只写 reservation 范围，一条分支同一时刻一个写入者；
 - 被截断后由下轮先补 S-without-H；
 - Memory/Evidence、PIT/no-lookahead、Reality/Judgment/Outcome 和 provenance 边界不因行业而改；
+- 不把“搜索不是 Evidence”误写成“禁止 seal 后搜索”；Search 缺失时报 capability blocker，不能把工具缺失冒充 source gap；
 - Drive 只搬精确不可变数据库对象，worker 永不提升全局 generation。
 
 最终向用户交付：分类结论及理由、角色拓扑位置、六层目标、写入边界、分支/文件路径、能力与变更等级、测试结果、远端 `S/H`、是否有 L3/L4，以及一段可以直接粘贴到全新聊天的专用角色提示词。若判定不该创建新角色，也要直接给出更小的替代做法和对应提示词。
