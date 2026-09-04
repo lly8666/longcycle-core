@@ -1,0 +1,86 @@
+{
+  "schema_version": "longcycle-reality-projection-spec/v2",
+  "task_id": "SHIP-STAGE2-RJO-EXECUTION-001-REALITY",
+  "source_evidence_task_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+  "allowed_claim_roles": [
+    "historical_reality_candidate",
+    "later_outcome_candidate",
+    "later_outcome_corroboration_candidate"
+  ],
+  "subjects": [
+    {
+      "id": "3e2491ec-ea70-5ce6-9739-85fd1fc1fd5a",
+      "entity_type": "organization",
+      "canonical_name": "A.P. Moller - Maersk"
+    },
+    {
+      "id": "a253e8c9-dce2-5b75-965a-7cc413115b03",
+      "entity_type": "organization",
+      "canonical_name": "Hapag-Lloyd AG"
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": "ship-reality-maersk-q3-2022-rate-direction",
+      "evidence_fragment_key": "ship-reality-q3-2022-rate-direction",
+      "subject_entity_id": "3e2491ec-ea70-5ce6-9739-85fd1fc1fd5a",
+      "predicate_code": "shipping.freight_rate_qoq_direction",
+      "value_text": "Freight and charter rates declined in Q3 2022 relative to the previous quarter",
+      "value_kind": "text",
+      "valid_time_kind": "period",
+      "valid_from": "2022-07-01T00:00:00Z",
+      "valid_to": "2022-10-01T00:00:00Z",
+      "valid_time_precision": "quarter",
+      "valid_time_text": "Q3 2022",
+      "statistical_scope": "Maersk issuer-reported freight and charter rate direction",
+      "dimensions_complete": false,
+      "metadata": {
+        "trajectory_id": "container-market-normalization-2022q3-to-2023",
+        "epistemic_role": "historical_reality",
+        "issuer_specific": true
+      }
+    },
+    {
+      "fact_key": "ship-reality-maersk-2023-average-rate-change",
+      "evidence_fragment_key": "ship-outcome-maersk-2023-rate",
+      "subject_entity_id": "3e2491ec-ea70-5ce6-9739-85fd1fc1fd5a",
+      "predicate_code": "shipping.average_freight_rate_change_from_prior_year",
+      "value_text": "The freight rates decreased by 50% on average from 2022 levels",
+      "value_kind": "text",
+      "valid_time_kind": "period",
+      "valid_from": "2023-01-01T00:00:00Z",
+      "valid_to": "2024-01-01T00:00:00Z",
+      "valid_time_precision": "year",
+      "valid_time_text": "2023",
+      "statistical_scope": "Maersk issuer-reported average freight-rate change from 2022",
+      "dimensions_complete": false,
+      "metadata": {
+        "trajectory_id": "container-market-normalization-2022q3-to-2023",
+        "epistemic_role": "later_reality",
+        "issuer_specific": true,
+        "upstream_locator": "Annual Report 2023 p.37 (PDF page index 36)"
+      }
+    },
+    {
+      "fact_key": "ship-reality-hapag-2023-average-rate-level",
+      "evidence_fragment_key": "ship-outcome-hapag-2023-rate-check",
+      "subject_entity_id": "a253e8c9-dce2-5b75-965a-7cc413115b03",
+      "predicate_code": "shipping.average_freight_rate_level_with_prior_year_comparator",
+      "value_text": "lower average freight rate of 1,500 USD/TEU (2022: 2,863 USD/TEU)",
+      "value_kind": "text",
+      "valid_time_kind": "period",
+      "valid_from": "2023-01-01T00:00:00Z",
+      "valid_to": "2024-01-01T00:00:00Z",
+      "valid_time_precision": "year",
+      "valid_time_text": "2023",
+      "statistical_scope": "Hapag-Lloyd issuer-reported average freight rate with 2022 comparator",
+      "dimensions_complete": false,
+      "metadata": {
+        "trajectory_id": "container-market-normalization-2022q3-to-2023",
+        "epistemic_role": "later_reality_corroboration",
+        "issuer_specific": true,
+        "independence_rule": "Independent broad normalization corroboration only; not proof of Maersk-specific realization."
+      }
+    }
+  ]
+}
