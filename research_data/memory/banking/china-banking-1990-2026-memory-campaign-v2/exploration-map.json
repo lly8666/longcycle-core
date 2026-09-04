@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":128,
+  "map_revision":129,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2000-2004__BANK-CITY__blind-001.json",
-  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2000-2004__BANK-CITY__blind-002.json",
+  "latest_pass_receipt_status":"orthogonal_slice_complete",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -24,13 +24,14 @@
   ],
   "active_shards":[{
     "shard_id":"BANK-CITY",
-    "selected_time_slice_id":"TIME-2000-2004",
-    "stage":"orthogonal_recall_pending",
+    "selected_time_slice_id":"TIME-2005-2008",
+    "stage":"time_slice_recall_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
       {"pass_id":"TIME-1995-1999__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":90,"duplicate_lead_count":4,"high_importance_novel_count":24,"outcome":"broad_high_novelty_orthogonal_required"},
       {"pass_id":"TIME-1995-1999__BANK-CITY__blind-002","family":"legal_form_inherited_assets_local_franchise_orthogonal_blind_recall","novel_lead_count":85,"duplicate_lead_count":5,"high_importance_novel_count":20,"outcome":"orthogonal_slice_complete"},
-      {"pass_id":"TIME-2000-2004__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":93,"duplicate_lead_count":5,"high_importance_novel_count":24,"outcome":"broad_high_novelty_orthogonal_required"}
+      {"pass_id":"TIME-2000-2004__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":93,"duplicate_lead_count":5,"high_importance_novel_count":24,"outcome":"broad_high_novelty_orthogonal_required"},
+      {"pass_id":"TIME-2000-2004__BANK-CITY__blind-002","family":"operating_maturation_governance_franchise_expansion_orthogonal_blind_recall","novel_lead_count":91,"duplicate_lead_count":8,"high_importance_novel_count":20,"outcome":"orthogonal_slice_complete"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -43,28 +44,28 @@
       {"region_id":"TIME-1990-2026__BANK-JOINT-STOCK","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-1994__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-1995-1999__BANK-CITY","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2000-2004__BANK-CITY","state":"broad_complete_orthogonal_required","note":"Broad recall recovered post-consolidation operating maturation, local SME/private-enterprise and municipal-project credit, deposit/settlement franchise, capital/NPL cleanup, core-system/retail modernization and the local-depth-versus-geographic-expansion strategic tension. One independent same-slice orthogonal challenge is required."}
+      {"region_id":"TIME-2000-2004__BANK-CITY","state":"broad_plus_orthogonal_complete","note":"Broad and independent orthogonal recall converge on post-consolidation operating maturation, headquarters-versus-branch governance, inherited bad-asset stock versus new-vintage NPL formation, SME/private-enterprise and municipal-project credit, transaction/settlement funding, capital cleanup, technology/control integration and the home-city-depth versus geographic-expansion tension. No second material category emerged."}
     ],
     "known_major_gaps":[
-      "2000-2004 BANK-CITY requires one independent orthogonal challenge before the slice can be marked complete.",
-      "The orthogonal pass must test whether post-consolidation modernization was economically real rather than formal: governance/branch control, inherited versus new NPL formation, strategic-shareholder effects, SME franchise versus local concentration, municipal infrastructure/property risk, transaction deposits versus administrative funding, technology/control integration and early expansion ambitions.",
-      "Exact strategic-investor dates/stakes, branch approvals, capital/NPL ratios, ownership changes and official regional-expansion rules remain Evidence-stage questions.",
+      "BANK-CITY chronological coverage now has 1990-1994, 1995-1999 and 2000-2004 broad+orthogonal complete; 2005-2008 remains unopened.",
+      "The 2005-2008 slice should challenge accelerating city-bank growth during the credit/property upswing, cross-region expansion becoming more operationally real, listing/IPO and strategic-investor/capital paths among stronger city banks, SME/private-enterprise credit, property and municipal-infrastructure exposure with cautious transition toward later LGFV vocabulary, early retail/card/wealth activity, interbank/wholesale funding emergence, NPL/provision/capital dynamics, 2007 tightening and the first 2008 global-crisis shock, plus weak/restructured banks and regional heterogeneity.",
+      "Exact listing/founding/branch approval dates, shareholder stakes, capital/NPL ratios and official terminology remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-CITY is unsealed."
     ]
   },
-  "selection_basis":{"rule":"material_broad_recall_requires_same_slice_orthogonal_challenge","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-2000-2004"},
-  "open_frontiers":[{"frontier_id":"TIME-2000-2004__BANK-CITY__ORTHOGONAL","priority_rank":1,"state":"open","selected_probe_id":"TIME-2000-2004__BANK-CITY__blind-002"}],
+  "selection_basis":{"rule":"advance_to_next_primary_time_slice_after_broad_plus_orthogonal_completion","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-2005-2008"},
+  "open_frontiers":[{"frontier_id":"TIME-2005-2008__BANK-CITY","priority_rank":1,"state":"open","selected_probe_id":"TIME-2005-2008__BANK-CITY__blind-001"}],
   "next_probe":{
-    "probe_id":"TIME-2000-2004__BANK-CITY__blind-002",
-    "family":"operating_maturation_governance_franchise_expansion_orthogonal_blind_recall",
-    "time_slice_id":"TIME-2000-2004",
+    "probe_id":"TIME-2005-2008__BANK-CITY__blind-001",
+    "family":"time_slice_timeline_blind_recall",
+    "time_slice_id":"TIME-2005-2008",
     "shard_id":"BANK-CITY",
-    "period":["2000-01-01","2004-12-31"],
-    "instruction":"In the next eligible loop, run one isolated independent orthogonal blind-memory challenge for BANK-CITY in 2000-2004 using only this rev128 compact map, the manifest and current model internal memory/reasoning. Do not read blind-001 raw/receipt or any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately challenge whether post-consolidation modernization was economically real rather than legal/formal: headquarters versus branch credit control; inherited bad-asset stock versus new NPL formation; repeated recapitalization and shareholder/strategic-investor effects; SME/private-enterprise franchise versus local concentration/guarantee chains; municipal infrastructure/property/development-zone exposures without forcing later LGFV terminology backward; transaction/settlement deposits versus administrative/public-sector funding; treasury/core-system/data integration; retail/card/internet-banking maturity; capital/provision/NPL semantics; home-city depth versus early regional expansion and execution risk; failed/restructured banks, old names and counterexamples. Keep rural and national joint-stock banks outside this shard. Do not invent exact dates, balances, ratios, ownership percentages, branch counts, approval terms or official wording. If no second material category emerges, mark TIME-2000-2004 BANK-CITY broad+orthogonal complete and select exactly one 2005-2008 broad frontier. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "period":["2005-01-01","2008-12-31"],
+    "instruction":"In the next eligible invocation, run one isolated broad blind-memory recall for BANK-CITY in 2005-2008 using only this rev129 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Challenge city-bank acceleration during the credit/property upswing; cross-region branching/expansion becoming materially more real and its governance/execution costs; IPO/listing and strategic-investor/capital paths among stronger city banks without inventing exact dates or stakes; local SME/private-enterprise and municipal-infrastructure credit; property/development-zone exposures and the cautious transition toward later LGFV concepts without back-casting mature terminology; local transaction deposits, interbank and emerging wholesale-funding dependence; retail/card/wealth beginnings; NPL/provision/write-off/capital semantics; 2007 tightening and the initial 2008 global-financial-crisis shock; weak/restructured city banks, failed expansion narratives, regional heterogeneity, old names and counterexamples. Keep rural banks and national joint-stock banks outside this shard. Do not invent exact dates, balances, ratios, ownership percentages, branch counts, approval terms or official wording. If broad recall is materially novel, select exactly one same-slice orthogonal follow-up. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-2000-2004__BANK-CITY__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only independent 2000-2004 BANK-CITY orthogonal raw and bounded receipt exist; the sparse map either opens exactly one measured second material category or marks the slice broad+orthogonal complete and selects exactly one 2005-2008 broad frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
+    "done_when":"One append-only 2005-2008 BANK-CITY broad raw and bounded receipt exist; the sparse map selects exactly one measured follow-up, normally a same-slice orthogonal challenge if novelty is material; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
