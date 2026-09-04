@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":137,
+  "map_revision":138,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2017-2019__BANK-CITY__blind-002.json",
-  "latest_pass_receipt_status":"orthogonal_slice_complete",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2020-2022__BANK-CITY__blind-001.json",
+  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -25,12 +25,12 @@
   "active_shards":[{
     "shard_id":"BANK-CITY",
     "selected_time_slice_id":"TIME-2020-2022",
-    "stage":"time_slice_recall_pending",
+    "stage":"orthogonal_recall_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2013-2016__BANK-CITY__blind-002","family":"funding_liquidity_credit_migration_ownership_control_orthogonal_blind_recall","novel_lead_count":90,"duplicate_lead_count":8,"high_importance_novel_count":23,"outcome":"orthogonal_slice_complete"},
       {"pass_id":"TIME-2017-2019__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":107,"duplicate_lead_count":7,"high_importance_novel_count":29,"outcome":"broad_high_novelty_orthogonal_required"},
-      {"pass_id":"TIME-2017-2019__BANK-CITY__blind-002","family":"weak_bank_resolution_funding_segmentation_recognition_orthogonal_blind_recall","novel_lead_count":96,"duplicate_lead_count":9,"high_importance_novel_count":24,"outcome":"orthogonal_slice_complete"}
+      {"pass_id":"TIME-2017-2019__BANK-CITY__blind-002","family":"weak_bank_resolution_funding_segmentation_recognition_orthogonal_blind_recall","novel_lead_count":96,"duplicate_lead_count":9,"high_importance_novel_count":24,"outcome":"orthogonal_slice_complete"},
+      {"pass_id":"TIME-2020-2022__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":102,"duplicate_lead_count":7,"high_importance_novel_count":27,"outcome":"broad_high_novelty_orthogonal_required"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -47,28 +47,29 @@
       {"region_id":"TIME-2005-2008__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2009-2012__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2013-2016__BANK-CITY","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2017-2019__BANK-CITY","state":"broad_plus_orthogonal_complete","note":"Broad and independent orthogonal recall converge on deleveraging, WMP/non-standard unwind, wholesale-funding differentiation, Baoshang-era counterparty segmentation, private-enterprise/property/LGFV credit migration, NPL/capital recognition and weak-bank governance/resolution tails. Weak-bank resolution is an extreme-tail and market-segmentation trigger rather than a second period-wide city-bank business model."}
+      {"region_id":"TIME-2017-2019__BANK-CITY","state":"broad_plus_orthogonal_complete"},
+      {"region_id":"TIME-2020-2022__BANK-CITY","state":"broad_complete_orthogonal_required","note":"Broad recall recovered pandemic relief and delayed asset-quality recognition, property-LGFV-local-fiscal feedback, SME/retail bifurcation, deposit termization and NIM pressure, WMP net-value/customer-asset migration, digital acceleration, capital/provision semantics and weak-bank governance/recapitalization tails. One independent same-slice orthogonal challenge is required."}
     ],
     "known_major_gaps":[
-      "BANK-CITY chronological coverage now has 1990-1994 through 2017-2019 broad+orthogonal complete; 2020-2022 remains unopened.",
-      "The 2020-2022 slice should challenge pandemic-era credit/support and repayment relief, property downturn and developer/mortgage stress, LGFV/local-fiscal pressure, retail/consumer/SME changes, WMP net-value transition, deposit competition and NIM pressure, digital-channel acceleration, capital/NPL/provision recognition, governance/related-party cases, weak-bank restructuring and regional heterogeneity.",
-      "Exact institution exposures, relief/restructuring volumes, property/LGFV balances, WMP metrics, NIM/deposit pricing, capital/NPL/provision ratios and official classifications remain Evidence-stage questions.",
+      "2020-2022 BANK-CITY requires one independent orthogonal challenge before the slice can be marked complete.",
+      "The orthogonal pass must test whether pandemic forbearance/recognition timing or property-LGFV-local-fiscal feedback forms a second structural category rather than dimensions of the same local concentration and balance-sheet adaptation regime.",
+      "Exact institution exposures, relief/restructuring volumes, property/LGFV balances, WMP metrics, NIM/deposit pricing, capital/NPL/provision ratios, ownership changes and official classifications remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-CITY is unsealed."
     ]
   },
-  "selection_basis":{"rule":"advance_to_next_primary_time_slice_after_broad_plus_orthogonal_completion","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-2020-2022"},
-  "open_frontiers":[{"frontier_id":"TIME-2020-2022__BANK-CITY","priority_rank":1,"state":"open","selected_probe_id":"TIME-2020-2022__BANK-CITY__blind-001"}],
+  "selection_basis":{"rule":"material_broad_recall_requires_same_slice_orthogonal_challenge","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-2020-2022"},
+  "open_frontiers":[{"frontier_id":"TIME-2020-2022__BANK-CITY__ORTHOGONAL","priority_rank":1,"state":"open","selected_probe_id":"TIME-2020-2022__BANK-CITY__blind-002"}],
   "next_probe":{
-    "probe_id":"TIME-2020-2022__BANK-CITY__blind-001",
-    "family":"time_slice_timeline_blind_recall",
+    "probe_id":"TIME-2020-2022__BANK-CITY__blind-002",
+    "family":"forbearance_property_lgfv_deposit_recognition_orthogonal_blind_recall",
     "time_slice_id":"TIME-2020-2022",
     "shard_id":"BANK-CITY",
     "period":["2020-01-01","2022-12-31"],
-    "instruction":"In the next eligible invocation, run one isolated broad blind-memory recall for BANK-CITY in 2020-2022 using only this rev137 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Challenge pandemic-era repayment relief and credit support; SME/retail/consumer changes; property developer, mortgage and land/fiscal stress; LGFV refinancing and local-government support; WMP net-value transition and legacy cleanup; deposit competition, termization and NIM pressure; wholesale funding and liquidity after prior credit segmentation; digital-channel acceleration; capital/provision/NPL semantics under forbearance/restructuring; governance/related-party cases, weak-bank recapitalization/restructuring and regional heterogeneity. Keep rural banks and national joint-stock banks outside this shard. Do not invent exact dates, balances, ratios, ownership stakes, relief volumes, WMP metrics, branch counts or official wording. If broad recall is materially novel, select exactly one same-slice orthogonal follow-up. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "instruction":"In the next eligible loop, run one isolated independent orthogonal blind-memory challenge for BANK-CITY in 2020-2022 using only this rev138 compact map, the manifest and current model internal memory/reasoning. Do not read blind-001 raw/receipt or any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately test pandemic relief and recognition from a different angle: repeated extension/renewal versus genuine borrower normalization; overdue/special-mention/restructured/NPL stock-flow semantics; developer, mortgage, construction-chain and land-collateral risk; LGFV refinancing and local-fiscal support; deposit termization and WMP-to-deposit/AUM migration; asset repricing versus funding rigidity; digital origination vintage quality; capital/provision effects; weak-bank recapitalization, shareholder/governance repair and strong-city-bank counterexamples. Determine whether forbearance/recognition timing or property-LGFV-local-fiscal feedback forms a second period-wide structural category. Keep rural banks and national joint-stock banks outside this shard. Do not invent exact dates, balances, ratios, stakes, relief volumes, WMP metrics, branch counts or official wording. If no second material category emerges, mark TIME-2020-2022 BANK-CITY broad+orthogonal complete and select exactly one 2023-2026 broad frontier. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["TIME-2020-2022__BANK-CITY__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only 2020-2022 BANK-CITY broad raw and bounded receipt exist; the sparse map selects exactly one measured follow-up, normally a same-slice orthogonal challenge if novelty is material; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
+    "done_when":"One append-only independent 2020-2022 BANK-CITY orthogonal raw and bounded receipt exist; the sparse map either opens exactly one measured second material category or marks the slice broad+orthogonal complete and selects exactly one 2023-2026 broad frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
