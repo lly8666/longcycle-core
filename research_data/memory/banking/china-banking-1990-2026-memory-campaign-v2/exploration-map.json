@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":172,
+  "map_revision":173,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2005-2008__BANK-RURAL__metropolitan-rcb-urbanization-scale__blind-003.json",
-  "latest_pass_receipt_status":"reopen_confirmed_complete_return_to_saturation_review",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-RURAL__saturation-review__blind-004.json",
+  "latest_pass_receipt_status":"low_novelty_confirmation_1_of_3",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -26,14 +26,14 @@
   "active_shards":[{
     "shard_id":"BANK-RURAL",
     "selected_time_slice_id":null,
-    "stage":"cross_time_saturation_review",
+    "stage":"cross_time_saturation_confirmation",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2020-2022__BANK-RURAL__provincial-united-bank-two-tier__blind-003","family":"provincial_united_bank_two_tier_topology_reopen_blind_recall","novel_lead_count":32,"duplicate_lead_count":4,"high_importance_novel_count":14,"outcome":"reopen_confirmed_complete_return_to_saturation_review"},
       {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-003","family":"cross_time_saturation_review_blind_recall","novel_lead_count":32,"duplicate_lead_count":8,"high_importance_novel_count":13,"outcome":"material_gap_reopen_required"},
-      {"pass_id":"TIME-2005-2008__BANK-RURAL__metropolitan-rcb-urbanization-scale__blind-003","family":"metropolitan_rcb_urbanization_scale_reopen_blind_recall","novel_lead_count":31,"duplicate_lead_count":5,"high_importance_novel_count":12,"outcome":"reopen_confirmed_complete_return_to_saturation_review"}
+      {"pass_id":"TIME-2005-2008__BANK-RURAL__metropolitan-rcb-urbanization-scale__blind-003","family":"metropolitan_rcb_urbanization_scale_reopen_blind_recall","novel_lead_count":31,"duplicate_lead_count":5,"high_importance_novel_count":12,"outcome":"reopen_confirmed_complete_return_to_saturation_review"},
+      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-004","family":"cross_time_saturation_review_blind_recall","novel_lead_count":17,"duplicate_lead_count":19,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_1_of_3"}
     ],
-    "low_novelty_confirmations":0,
+    "low_novelty_confirmations":1,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
@@ -41,7 +41,7 @@
       {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Early lineage/governance reopen independently reviewed and closed."},
       {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Ownership/capital/measurement reopen independently reviewed and closed."},
-      {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Metropolitan/high-urbanization RCB cohort independently reviewed and closed: rural-credit legal lineage can persist while municipal/suburban consolidation and urbanization produce city-scale diversified institutions. Scale/geography/business-model tags are required for peer selection; later public listing is a continuation/Outcome lead, not part of the formation definition."},
+      {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Metropolitan/high-urbanization RCB cohort independently reviewed and closed."},
       {"region_id":"TIME-2009-2012__BANK-RURAL","state":"broad_plus_orthogonal_complete","note":"Later public listing/capital-market access for strong/metropolitan RCBs remains a continuation/Outcome lead and Evidence-stage precision question."},
       {"region_id":"TIME-2013-2016__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2017-2019__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
@@ -49,26 +49,26 @@
       {"region_id":"TIME-2023-2026__BANK-RURAL","state":"broad_plus_orthogonal_complete"}
     ],
     "known_major_gaps":[
-      "All four material cross-time gaps recovered so far have received one independent bounded reopen challenge and are represented in the compact map as MEMORY_LEADS_ONLY.",
-      "BANK-RURAL remains unsealed and returns to cross-time saturation review with low-novelty confirmations still 0/3; the latest probe was a material-gap resolution pass and cannot count as a confirmation.",
-      "The next cross-time review must independently challenge the full compact time×shard and negative-space matrix again without reading completed raw/receipts and without merely retelling the four resolved reopen packages.",
-      "If no genuinely new bounded material category emerges, record low-novelty confirmation 1/3 and select exactly one independent confirmation frontier. If material novelty appears, reopen exactly one bounded frontier and keep/reset confirmations at 0/3.",
-      "Exact institution identities, dates, ownership, scale, listing facts, asset/mission mixes, legal perimeters, support terms and official terminology remain Evidence-stage questions.",
+      "All material cross-time gaps recovered so far have received one independent bounded reopen challenge and are represented in the compact map as MEMORY_LEADS_ONLY.",
+      "CROSS-TIME saturation-review blind-004 was genuinely low novelty and earns confirmation 1/3: only bounded distribution-channel and denominator-metric refinements were new, with no missing institution class or bounded-period structure.",
+      "BANK-RURAL remains unsealed. Two additional consecutive low-novelty confirmations are required before any saturation/seal claim, and any material bounded category found by either confirmation resets the consecutive count to 0.",
+      "The next confirmation must vary the recall angle toward failures/restructurings, old terminology, minority or edge counterexamples, infrastructure and metric semantics rather than simply repeat blind-004.",
+      "Exact institution identities, dates, ownership, legal perimeters, support terms, metrics, product scopes and official terminology remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-RURAL is unsealed."
     ]
   },
-  "selection_basis":{"rule":"all_recovered_material_reopens_resolved_return_to_cross_time_saturation_review","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SATURATION-REVIEW-004","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-004"}],
+  "selection_basis":{"rule":"first_low_novelty_confirmation_earned_select_independent_confirmation","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SATURATION-CONFIRMATION-005","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-005"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-004",
-    "family":"cross_time_saturation_review_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-005",
+    "family":"cross_time_saturation_confirmation_blind_recall",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-RURAL",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"Run one isolated cross-time BANK-RURAL saturation-review blind recall using only this rev172 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read the completed metropolitan-RCB reopen raw/receipt, saturation-review blind-001/blind-002/blind-003 raw/receipts, earlier reopen raw/receipts, any other completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Re-review the compact time×shard and negative-space matrix across RCCs, rural cooperative banks, ordinary county RCBs, metropolitan/high-urbanization RCBs, village banks, provincial unions, two-tier united-bank structures and province-wide single-legal-person successors. Probe forgotten actors/infrastructure, failed or restructured classes, old vocabulary, mechanisms, metric semantics, contemporaneous expectations, counterexamples and selective antecedents. Do not merely repeat the four resolved reopen packages. Challenge for any genuinely new category that would reopen a bounded period. If none is material and the pass is genuinely low novelty, record low-novelty confirmation 1/3 and select exactly one independent cross-time confirmation frontier. If material novelty appears, select exactly one bounded reopen and keep/reset confirmations at 0/3. Do not seal or begin Evidence until three consecutive low-novelty confirmations and coverage/negative-space reviews are truthfully satisfied.",
+    "instruction":"In the next eligible invocation, run one isolated BANK-RURAL cross-time saturation-confirmation blind recall using only this rev173 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read saturation-review blind-004 raw/receipt, the metropolitan-RCB reopen raw/receipt, any earlier saturation-review or reopen raw/receipts, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Independently challenge the compact negative-space matrix from a different angle, emphasizing failed/restructured institution classes, old terminology/search keys, edge or minority counterexamples, forgotten infrastructure, metric-semantic discontinuities and contemporaneous expectations. Do not merely restate the four resolved material-gap packages or blind-004. If the pass is genuinely low novelty with no bounded material category, advance consecutive low-novelty confirmations to 2/3 and select exactly one final independent confirmation frontier. If any material category appears, reset confirmations to 0 and reopen exactly one bounded frontier. Do not seal BANK-RURAL or begin Evidence until three consecutive confirmations and all coverage/negative-space requirements are truthfully satisfied.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-2005-2008 metropolitan-RCB reopen raw and receipt","CROSS-TIME saturation-review blind-001/blind-002/blind-003 raw and receipts","all earlier reopen raw and receipts","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["CROSS-TIME saturation-review blind-004 raw and receipt","TIME-2005-2008 metropolitan-RCB reopen raw and receipt","all earlier saturation-review/reopen raw and receipts","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only cross-time BANK-RURAL saturation-review blind-004 raw and bounded receipt exist; the sparse map records measured novelty, updates low-novelty confirmation state truthfully and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only BANK-RURAL saturation-confirmation blind-005 raw and bounded receipt exist; the sparse map records measured novelty, updates the consecutive confirmation state truthfully and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
