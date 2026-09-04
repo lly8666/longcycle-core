@@ -1,0 +1,146 @@
+{
+  "schema_version": "shipping-stage2-evidence-preparation/v1",
+  "workstream_id": "shipping-domain-v1",
+  "campaign_id": "container-pandemic-cycle-2020-2023",
+  "stage": "stage2_source_validation",
+  "result": "prepared_content_verified_representations_pending_cap0002_execution",
+  "authorization": {
+    "main_head_sha": "2a98e9af078fae3b37ea098ce06f43c99b53f445",
+    "prior_clean_worker_head_sha": "e678fc3096c2c126e880ba1a9b035395c15649ad",
+    "assignment_epoch": 1,
+    "reservation_revision": 1,
+    "pilot_limit": 1
+  },
+  "source_selection": {
+    "ref": "domain_packs/shipping/source-validation/container-pandemic-cycle-2020-2023-source-selection-v1.json",
+    "blob_sha": "0a6efc3b34b9d28efd97e6bfbbae1296ebc432d1",
+    "trajectory_id": "container-market-normalization-2022q3-to-2023"
+  },
+  "continuity": {
+    "p146_seal_remains_closed": true,
+    "p147_or_fourth_blind_memory_probe_started": false,
+    "second_trajectory_started": false,
+    "memory_used_as_factual_authority": false,
+    "additional_source_discovery_beyond_selected_set": false
+  },
+  "representations": [
+    {
+      "source_id": "SRC-MAERSK-Q3-2022",
+      "publisher": "A.P. Moller - Maersk",
+      "upstream_url": "https://www.maersk.com/news/articles/2022/11/02/maersk-continues-the-record-streak-with-strong-q3-results",
+      "source_media_type": "text/html",
+      "source_capture_state": "content_verified",
+      "content_verification_mode": "ChatGPT_Search_then_interactive_web_read",
+      "claim_relevant_content_preserved": true,
+      "raw_source_materialized": false,
+      "materialization_status": "not_materialized",
+      "representation_content_type": "text/plain; charset=utf-8",
+      "representation_path": "domain_packs/shipping/source-validation/representations/maersk-q3-2022-content-verified-v1.txt",
+      "representation_git_blob_sha": "a485bfe171218b23a7650f847c02ae88eed1f4f0",
+      "readable_representation_sha256": "70f73e7c69d0982fac12876ed38eaab54179c780e43ddf92ed7d4e391daa820e",
+      "published_at_day": "2022-11-02",
+      "first_known_at_upper_bound": "2022-11-02T23:59:59Z",
+      "claim_locators": {
+        "contemporaneous_judgment": "representation:line:1; upstream CEO quote",
+        "historical_reality": "representation:line:2; upstream Market situation"
+      }
+    },
+    {
+      "source_id": "SRC-MAERSK-AR-2023",
+      "publisher": "A.P. Moller - Maersk",
+      "upstream_url": "https://www.maersk.com/~/media_sc9/maersk/news/press-releases/files/2024/02/08/apmm-annual-report-2023.pdf",
+      "source_media_type": "application/pdf",
+      "source_capture_state": "content_verified",
+      "content_verification_mode": "interactive_pdf_read_plus_page_screenshot",
+      "claim_relevant_content_preserved": true,
+      "raw_source_materialized": false,
+      "materialization_status": "pending_materialization",
+      "representation_content_type": "text/plain; charset=utf-8",
+      "representation_path": "domain_packs/shipping/source-validation/representations/maersk-ar-2023-p37-content-verified-v1.txt",
+      "representation_git_blob_sha": "91d97353ee53dd8a89607bfbd6b3a67f7a7bff14",
+      "readable_representation_sha256": "8f2484773272c81d38250fdcdbdd075619fd1544b74b08fecc2cb52d9f2ddcae",
+      "published_at_day": "2024-02-08",
+      "first_known_at_upper_bound": "2024-02-08T23:59:59Z",
+      "claim_locators": {
+        "later_outcome": "upstream Annual Report 2023 p.37 (PDF page index 36); representation:line:1"
+      }
+    },
+    {
+      "source_id": "SRC-HAPAG-AR-2023",
+      "publisher": "Hapag-Lloyd AG",
+      "upstream_url": "https://www.hapag-lloyd.com/en/company/press/releases/2024/03/hapag-lloyd-publishes-2023-annual-report-and-announces-forecast-.html",
+      "source_media_type": "text/html",
+      "source_capture_state": "content_verified",
+      "content_verification_mode": "ChatGPT_Search_then_interactive_web_read",
+      "claim_relevant_content_preserved": true,
+      "raw_source_materialized": false,
+      "materialization_status": "not_materialized",
+      "representation_content_type": "text/plain; charset=utf-8",
+      "representation_path": "domain_packs/shipping/source-validation/representations/hapag-2023-results-content-verified-v1.txt",
+      "representation_git_blob_sha": "837cabf94177ce24dcd2b3d8b326520fb44529cc",
+      "readable_representation_sha256": "c60c68bb9c6affd826667e2d0de7d7dd177c692167b4fe5b03a7957ba9e31035",
+      "published_at_day": "2024-03-14",
+      "first_known_at_upper_bound": "2024-03-14T23:59:59Z",
+      "claim_locators": {
+        "later_outcome_corroboration": "upstream Liner Shipping Segment/key figures; representation:line:1"
+      }
+    }
+  ],
+  "bounded_claim_scopes": [
+    {
+      "claim_id": "SHIP-REALITY-Q3-2022-RATE-DIRECTION",
+      "role": "historical_reality_candidate",
+      "source_id": "SRC-MAERSK-Q3-2022",
+      "scope": "Maersk reported that freight and charter rates declined quarter-on-quarter during Q3 2022.",
+      "representation_locator": "representation:line:2",
+      "status": "prepared_not_grounded"
+    },
+    {
+      "claim_id": "SHIP-JUDGMENT-2022-11-02-PEAK",
+      "role": "contemporaneous_judgment_candidate",
+      "source_id": "SRC-MAERSK-Q3-2022",
+      "speaker": "Soren Skou, CEO of A.P. Moller - Maersk",
+      "scope": "Maersk judged by 2022-11-02 that freight rates had peaked and were normalising during Q3 2022.",
+      "representation_locator": "representation:line:1",
+      "status": "prepared_not_grounded"
+    },
+    {
+      "claim_id": "SHIP-OUTCOME-MAERSK-2023-RATE",
+      "role": "later_outcome_candidate",
+      "source_id": "SRC-MAERSK-AR-2023",
+      "scope": "Maersk reported its 2023 average freight rates were 50% lower than 2022 levels.",
+      "representation_locator": "representation:line:1",
+      "status": "prepared_not_grounded"
+    },
+    {
+      "claim_id": "SHIP-OUTCOME-HAPAG-2023-RATE-CHECK",
+      "role": "later_outcome_corroboration_candidate",
+      "source_id": "SRC-HAPAG-AR-2023",
+      "scope": "Hapag-Lloyd reported a 2023 average freight rate of USD 1,500/TEU versus USD 2,863/TEU in 2022.",
+      "representation_locator": "representation:line:1",
+      "status": "prepared_not_grounded"
+    }
+  ],
+  "evidence_boundary": {
+    "grounded_evidence_created": 0,
+    "evidence_fragment_ids": [],
+    "reality_objects_created": 0,
+    "judgment_objects_created": 0,
+    "outcome_objects_created": 0,
+    "pit_replay_attempted": false,
+    "source_selection_metadata_treated_as_evidence": false,
+    "readable_representation_treated_as_raw_source": false,
+    "status_reason": "The selected source content is now preserved with readable-representation digests, but CAP-0002 ArchivedEvidenceRecorder execution has not run and no EvidenceFragment identifier has been returned."
+  },
+  "execution_preflight": {
+    "existing_executor_ref": "scripts/execute_grounded_evidence_spec.py",
+    "executor_requires_pinned_document_digest": true,
+    "executor_requires_database_url": true,
+    "historical_one_shot_workflows_are_task_specific": true,
+    "shipping_worker_may_modify_shared_ci": false,
+    "current_chat_has_shipping_owned_database_execution_surface": false,
+    "result": "integration_owned_execution_required",
+    "request_ref": ".longcycle/workstreams/shipping-domain-v1/requests/SHIP-STAGE2-EVIDENCE-EXECUTION-001.json"
+  },
+  "next_atomic_action": "Have the integration-owned execution lane run only these three pinned content-verified representations through the existing CAP-0001/CAP-0002 Grounded Evidence path, return persisted document/EvidenceFragment identities plus an immutable verification receipt, and create zero Fact/Judgment promotions. Do not perform more source discovery or start another trajectory."
+}
