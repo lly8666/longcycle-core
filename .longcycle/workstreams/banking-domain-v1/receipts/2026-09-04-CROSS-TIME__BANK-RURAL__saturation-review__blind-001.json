@@ -1,0 +1,28 @@
+{
+  "schema_version":"longcycle-memory-pass-receipt/v1",
+  "workstream_id":"banking-domain-v1",
+  "probe_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-001",
+  "family":"cross_time_saturation_review_blind_recall",
+  "shard_id":"BANK-RURAL",
+  "time_slice_id":"CROSS-TIME",
+  "period":["1990-01-01","2026-08-31"],
+  "authority":"MEMORY_LEADS_ONLY",
+  "model_vintage":"GPT-5.6 Sol",
+  "source_visibility":"none",
+  "fresh_search_used":false,
+  "input_refs":[
+    {"path":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","blob_sha":"fe4847ad3372fae75ad75ce742c08470f1d85314","map_revision":165},
+    {"path":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","blob_sha":"f1614308cb83f2426bef4a55c35b7cc85c432c92"},
+    {"kind":"current_model_internal_memory_reasoning"}
+  ],
+  "forbidden_inputs_observed":false,
+  "raw_output":{"path":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/CROSS-TIME__BANK-RURAL__saturation-review__blind-001-memory-leads.md","blob_sha":"d2c7c10656c1d81fab55efd48651cda22f019bc0"},
+  "novelty":{"new_category":30,"useful_refinement":9,"duplicate":3,"high_importance_novel_or_refinement":17,"long_tail_share":"greater_than_50_percent"},
+  "low_novelty_confirmation_before":0,
+  "low_novelty_confirmation_after":0,
+  "outcome":"material_gap_reopen_required",
+  "decision":"Cross-time saturation review is materially novel. Do not count a low-novelty confirmation and do not seal. Reopen exactly one earliest bounded frontier around the 1995-1999 RCC lineage/governance transition, Agricultural-Bank management separation, county/grassroots legal-person structure, rural cooperative foundation cleanup and related old vocabulary.",
+  "selected_next_probe_id":"TIME-1995-1999__BANK-RURAL__lineage-governance-rural-foundation__blind-003",
+  "evidence_status":"deferred_while_BANK-RURAL_unsealed",
+  "truth_promotion":false
+}
