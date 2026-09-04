@@ -1,0 +1,113 @@
+{
+  "schema_version": "shipping-stage2-rjo-composition/v1",
+  "workstream_id": "shipping-domain-v1",
+  "trajectory_id": "container-market-normalization-2022q3-to-2023",
+  "stage": "stage2_truth_composition",
+  "result": "rjo_specs_prepared_pending_existing_capability_execution",
+  "authorization": {
+    "main_head_sha": "5e156fb2ed9e8154a9c90f72bb224d066101c11c",
+    "prior_clean_worker_head_sha": "cfbfb9b8ced4de14009e5ba875cd7b4978541c0e",
+    "assignment_epoch": 1,
+    "reservation_revision": 1,
+    "pilot_limit": 1
+  },
+  "verified_evidence_input": {
+    "request_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+    "integration_branch": "post-baseline/ship-stage2-evidence-execution-v1",
+    "receipt_commit_sha": "d8dfff4df76e1398e785f20db0aa8d736de315a3",
+    "receipt_path": ".longcycle/handoff/executions/SHIP-STAGE2-EVIDENCE-EXECUTION-001/execution-receipt.json",
+    "execution_head_sha": "37c0ca0e8593f3a14af2bfbbc2507fc4b405a266",
+    "execution_run_id": 33891771982,
+    "verified_success": true,
+    "persisted_document_versions": 3,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0
+  },
+  "evidence_fragments": [
+    {
+      "fragment_key": "ship-reality-q3-2022-rate-direction",
+      "evidence_fragment_id": "7f2be136-a048-5359-9508-928787d86d7b",
+      "document_id": "d6608566-0508-553b-b6ae-ff78ba9836a3",
+      "role": "historical_reality"
+    },
+    {
+      "fragment_key": "ship-judgment-2022-11-02-peak",
+      "evidence_fragment_id": "f1d09a98-8529-5792-a523-74fdd926e3ba",
+      "document_id": "d6608566-0508-553b-b6ae-ff78ba9836a3",
+      "role": "contemporaneous_judgment"
+    },
+    {
+      "fragment_key": "ship-outcome-maersk-2023-rate",
+      "evidence_fragment_id": "f557e28c-ac46-5c16-9b9b-bbcb5eaaca51",
+      "document_id": "adaeed72-4137-5676-8a0c-455abe9ad0ab",
+      "role": "later_reality_for_outcome_context"
+    },
+    {
+      "fragment_key": "ship-outcome-hapag-2023-rate-check",
+      "evidence_fragment_id": "f4940014-4b5b-5466-ae1b-9ce770751fae",
+      "document_id": "1e7506fb-0a6c-5854-ad01-0a4f29c1c00b",
+      "role": "independent_later_reality_corroboration"
+    }
+  ],
+  "projection_specs": {
+    "reality": "domain_packs/shipping/trajectory/container-market-normalization-2022q3-to-2023-reality-projection-v1.json",
+    "judgment": "domain_packs/shipping/trajectory/container-market-normalization-2022q3-to-2023-judgment-projection-v1.json"
+  },
+  "planned_truth_objects": {
+    "reality": [
+      {
+        "fact_key": "ship-reality-maersk-q3-2022-rate-direction",
+        "known_at_upper_bound": "2022-11-02T23:59:59Z",
+        "valid_period": "Q3 2022",
+        "status": "prepared_not_persisted"
+      },
+      {
+        "fact_key": "ship-reality-maersk-2023-average-rate-change",
+        "known_at_upper_bound": "2024-02-08T23:59:59Z",
+        "valid_period": "2023",
+        "status": "prepared_not_persisted"
+      },
+      {
+        "fact_key": "ship-reality-hapag-2023-average-rate-level",
+        "known_at_upper_bound": "2024-03-14T23:59:59Z",
+        "valid_period": "2023",
+        "status": "prepared_not_persisted",
+        "use_rule": "Independent broad normalization corroboration only; not proof of Maersk-specific realization."
+      }
+    ],
+    "judgment": {
+      "judgment_key": "ship-judgment-2022-11-02-peak",
+      "judgment_kind": "thesis",
+      "first_known_at_upper_bound": "2022-11-02T23:59:59Z",
+      "target_period": "Q3 2022",
+      "status": "prepared_not_persisted",
+      "later_evidence_used_to_form_judgment": false
+    },
+    "outcome": {
+      "outcome_key": "ship-outcome-2022-peak-vs-maersk-2023-normalization",
+      "judgment_key": "ship-judgment-2022-11-02-peak",
+      "reality_fact_key": "ship-reality-maersk-2023-average-rate-change",
+      "semantic_relation": "related_milestone",
+      "required_evaluation_status": "indeterminate",
+      "required_timing_relation": "not_comparable",
+      "status": "prepared_not_persisted",
+      "reason": "The 2023 annual average freight-rate decline is historically related normalization evidence, but it is not the same milestone or target definition as the Q3 2022 contemporaneous peak/normalization thesis; CAP-0004 must not manufacture realization or timing precision."
+    }
+  },
+  "execution_boundary": {
+    "capabilities_to_reuse": ["CAP-0003", "CAP-0004", "CAP-0007"],
+    "shared_semantic_change_required": false,
+    "database_backed_execution_required": true,
+    "shipping_worker_has_owned_database_execution_surface": false,
+    "rjo_objects_persisted_by_this_worker": 0,
+    "pit_replay_attempted": false,
+    "replay_must_remain_null_for_this_atomic_action": true,
+    "memory_used_as_factual_authority": false,
+    "new_source_discovery_performed": false,
+    "p146_reopened": false,
+    "p147_started": false,
+    "second_trajectory_started": false
+  },
+  "next_atomic_action": "Integration/global_serial executes only this prepared R/J/O composition through existing CAP-0003/CAP-0004/CAP-0007 semantics, returns immutable canonical Reality/Judgment/Outcome identities and verification, and does not run PIT replay. Only after that result is verified may the Shipping owner prepare the later CAP-0005/CAP-0007 no-lookahead replay atom."
+}
