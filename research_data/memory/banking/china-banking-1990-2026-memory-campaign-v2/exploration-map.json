@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":149,
+  "map_revision":150,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-1990-1994__BANK-RURAL__blind-002.json",
-  "latest_pass_receipt_status":"orthogonal_slice_complete",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-1995-1999__BANK-RURAL__blind-001.json",
+  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -26,11 +26,12 @@
   "active_shards":[{
     "shard_id":"BANK-RURAL",
     "selected_time_slice_id":"TIME-1995-1999",
-    "stage":"time_slice_recall",
+    "stage":"orthogonal_recall_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
       {"pass_id":"TIME-1990-1994__BANK-RURAL__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":103,"duplicate_lead_count":7,"high_importance_novel_count":31,"outcome":"broad_high_novelty_orthogonal_required"},
-      {"pass_id":"TIME-1990-1994__BANK-RURAL__blind-002","family":"rcc_abc_parallel_finance_network_semantics_orthogonal_blind_recall","novel_lead_count":88,"duplicate_lead_count":9,"high_importance_novel_count":24,"outcome":"orthogonal_slice_complete"}
+      {"pass_id":"TIME-1990-1994__BANK-RURAL__blind-002","family":"rcc_abc_parallel_finance_network_semantics_orthogonal_blind_recall","novel_lead_count":88,"duplicate_lead_count":9,"high_importance_novel_count":24,"outcome":"orthogonal_slice_complete"},
+      {"pass_id":"TIME-1995-1999__BANK-RURAL__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":98,"duplicate_lead_count":5,"high_importance_novel_count":29,"outcome":"broad_high_novelty_orthogonal_required"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -42,28 +43,29 @@
       {"region_id":"TIME-1990-2026__BANK-STATE-OWNED","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-2026__BANK-JOINT-STOCK","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-2026__BANK-CITY","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete","note":"Broad and independent orthogonal recall converge on an RCC-centered early rural-bank model: fragmented cooperative hierarchy with ABC administrative/operational links, county/grassroots and village-service layers, TVE/household/agriculture credit, local-government and cooperative governance tensions, local-deposit franchise plus postal/funds-outflow mechanisms, parallel nonbank rural cooperative foundations/informal finance, and historically specific member-share/asset-quality semantics. No second period-wide licensed BANK-RURAL structural category was found."}
+      {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
+      {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_complete_orthogonal_pending","note":"Broad recall recovered RCC-ABC separation/reassignment and operating-independence frictions; county/grassroots governance; rural cooperative-foundation cleanup; TVE/local-enterprise stress under late-1990s slowdown/deflation; historical-loss and member-share capital semantics; postal-savings funds outflow; grassroots credit-station operational risk; and old asset-quality vocabulary. High novelty requires an independent same-slice falsification challenge."}
     ],
     "known_major_gaps":[
-      "BANK-RURAL 1990-1994 is broad+orthogonal complete. TIME-1995-1999 is the next unopened primary slice.",
-      "The 1995-1999 broad challenge should recover RCC-ABC separation/reform and supervisory reconfiguration; rural cooperative-foundation cleanup and other local quasi-finance failures; Asian-crisis/deflation and TVE/local-enterprise stress; asset-quality/capital cleanup; county/provincial governance changes; rural funds-flow and postal-savings debates; and any early rural cooperative-bank/commercial-bank reform experiments without projecting later RCB structures backward.",
+      "BANK-RURAL 1995-1999 broad recall is high novelty and requires one independent same-slice orthogonal challenge before the slice can be marked complete.",
+      "The orthogonal challenge must distinguish whether post-ABC-separation governance, rural cooperative-foundation cleanup, TVE/local-enterprise stress and rural funds-outflow/liquidity constitute a second period-wide licensed BANK-RURAL structural model or are mechanisms inside the RCC-centered transition model.",
       "BANK-RURAL 2000-2004 through 2023-2026 remain unopened.",
       "Exact histories, reform dates, balances, ratios, ownership structures, merger terms, outlet counts and official classifications remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-RURAL is unsealed."
     ]
   },
-  "selection_basis":{"rule":"prior_slice_broad_plus_orthogonal_complete_advance_to_next_primary_slice","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-1995-1999"},
-  "open_frontiers":[{"frontier_id":"TIME-1995-1999__BANK-RURAL__BROAD-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-1995-1999__BANK-RURAL__blind-001"}],
+  "selection_basis":{"rule":"broad_high_novelty_requires_independent_same_slice_orthogonal_challenge","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-1995-1999"},
+  "open_frontiers":[{"frontier_id":"TIME-1995-1999__BANK-RURAL__ORTHOGONAL-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-1995-1999__BANK-RURAL__blind-002"}],
   "next_probe":{
-    "probe_id":"TIME-1995-1999__BANK-RURAL__blind-001",
-    "family":"time_slice_timeline_blind_recall",
+    "probe_id":"TIME-1995-1999__BANK-RURAL__blind-002",
+    "family":"rcc_separation_quasifinance_tve_fundsflow_semantics_orthogonal_blind_recall",
     "time_slice_id":"TIME-1995-1999",
     "shard_id":"BANK-RURAL",
     "period":["1995-01-01","1999-12-31"],
-    "instruction":"In the next eligible invocation, run one isolated BANK-RURAL 1995-1999 broad blind-memory recall using only this rev149 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Recover the RCC-ABC separation/reform process and changes in supervisory/managerial relationships; county-union and provincial coordination structures; rural cooperative-foundation and other quasi-financial cleanup; Asian-crisis/deflation and TVE/local-enterprise stress; asset-quality, historical-loss and capital cleanup; rural deposit/funds-flow and postal-savings issues; cooperative-member/local-government governance; old restructuring and bad-loan vocabulary; any early rural cooperative-bank/commercial-bank experiments; contemporaneous reform expectations, failures/dead ends and regional counterexamples. Preserve BANK-RURAL boundaries with BANK-CITY and BANK-STATE-OWNED; do not project later rural commercial-bank or village-bank models backward. Do not invent exact dates, balances, ratios, ownership shares, merger terms, outlet counts or official wording. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, then close S -> cursor-only H -> exact-H CLEAN. If broad recall remains materially novel, select one independent same-slice orthogonal challenge rather than advancing prematurely.",
+    "instruction":"Run one isolated independent BANK-RURAL 1995-1999 orthogonal blind-memory challenge using only this rev150 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read TIME-1995-1999__BANK-RURAL__blind-001 raw/receipt, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately avoid replaying the broad timeline. Falsify the current model from six angles: (1) formal RCC-ABC separation versus actual settlement/liquidity/personnel dependence; (2) county-union/local-government/member-share governance and who bore historical losses; (3) rural cooperative-foundation cleanup and liability migration versus licensed RCC balance sheets; (4) TVE/collective-enterprise restructuring, legal-obligor continuity and late-1990s deflation/Asian-crisis regional transmission; (5) postal-savings/local funds outflow, deposit confidence and central-bank liquidity support; and (6) old overdue/sluggish/bad-loan, member-share, consolidated-versus-grassroots and rollover/restructuring metric semantics. Keep urban credit cooperatives/city-bank lineages and ABC balance sheets outside BANK-RURAL except as scope checks. If no second period-wide structural category emerges, mark 1995-1999 broad+orthogonal complete and advance exactly one frontier to 2000-2004 broad. If a genuinely distinct second structural category emerges, open exactly one targeted frontier instead. Do not invent exact dates, balances, ratios, ownership shares, merger terms, outlet counts or official wording. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["TIME-1995-1999__BANK-RURAL__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only BANK-RURAL 1995-1999 broad raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only independent BANK-RURAL 1995-1999 orthogonal raw and bounded receipt exist; the sparse map either marks the slice broad+orthogonal complete and advances to 2000-2004 broad, or opens exactly one measured targeted gap; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
