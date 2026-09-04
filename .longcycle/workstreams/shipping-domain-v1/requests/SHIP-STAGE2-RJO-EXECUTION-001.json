@@ -1,0 +1,71 @@
+{
+  "request_id": "SHIP-STAGE2-RJO-EXECUTION-001",
+  "requester_workstream_id": "shipping-domain-v1",
+  "kind": "integration_owned_capability_execution",
+  "status": "open",
+  "requested_result": "Execute the prepared single-trajectory Shipping Reality/Judgment/Outcome composition through existing CAP-0003/CAP-0004/CAP-0007 semantics using the already verified SHIP-STAGE2-EVIDENCE-EXECUTION-001 evidence lineage. Return canonical Reality FactAssertion/version identities, one persisted contemporaneous Judgment identity, one persisted OutcomeEvaluation identity and an immutable verification receipt. Do not run PIT replay in this atomic action.",
+  "parent_value": "Advance the same container-market-normalization-2022q3-to-2023 pilot from verified claim-scoped Evidence into separated Reality, contemporaneous Judgment and later Outcome without lookahead or semantic overclaiming.",
+  "inputs": [
+    {
+      "path": "domain_packs/shipping/trajectory/container-market-normalization-2022q3-to-2023-reality-projection-v1.json",
+      "role": "CAP-0003 grounded Reality projection spec"
+    },
+    {
+      "path": "domain_packs/shipping/trajectory/container-market-normalization-2022q3-to-2023-judgment-projection-v1.json",
+      "role": "CAP-0004 grounded Judgment projection spec"
+    },
+    {
+      "path": "domain_packs/shipping/trajectory/container-market-normalization-2022q3-to-2023-rjo-composition-v1.json",
+      "role": "bounded R/J/O composition and Outcome relation contract"
+    },
+    {
+      "integration_branch": "post-baseline/ship-stage2-evidence-execution-v1",
+      "receipt_commit_sha": "d8dfff4df76e1398e785f20db0aa8d736de315a3",
+      "path": ".longcycle/handoff/executions/SHIP-STAGE2-EVIDENCE-EXECUTION-001/execution-receipt.json",
+      "role": "verified CAP-0002 document/EvidenceFragment identities"
+    }
+  ],
+  "required_capability_reuse": ["CAP-0003", "CAP-0004", "CAP-0007"],
+  "execution_contract": {
+    "source_evidence_task_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+    "required_verified_evidence_fragment_ids": [
+      "7f2be136-a048-5359-9508-928787d86d7b",
+      "f1d09a98-8529-5792-a523-74fdd926e3ba",
+      "f557e28c-ac46-5c16-9b9b-bbcb5eaaca51",
+      "f4940014-4b5b-5466-ae1b-9ce770751fae"
+    ],
+    "reality_fact_keys": [
+      "ship-reality-maersk-q3-2022-rate-direction",
+      "ship-reality-maersk-2023-average-rate-change",
+      "ship-reality-hapag-2023-average-rate-level"
+    ],
+    "judgment_key": "ship-judgment-2022-11-02-peak",
+    "outcome_plan": {
+      "key": "ship-outcome-2022-peak-vs-maersk-2023-normalization",
+      "judgment_key": "ship-judgment-2022-11-02-peak",
+      "reality_fact_key": "ship-reality-maersk-2023-average-rate-change",
+      "semantic_relation": "related_milestone",
+      "required_evaluation_status": "indeterminate",
+      "required_timing_relation": "not_comparable"
+    },
+    "replay": null
+  },
+  "constraints": [
+    "Use only the four already verified EvidenceFragments; do not perform additional source discovery or add another trajectory.",
+    "Keep the 2022 contemporaneous Judgment first-known bound at 2022-11-02 end-of-day UTC and do not use 2023 evidence to form or rewrite it.",
+    "Treat Maersk 2023 as later issuer-specific Reality and Hapag-Lloyd 2023 as independent broad normalization corroboration only.",
+    "The Maersk 2023 annual-average rate decline is a related milestone, not a direct match to the Q3 2022 peak/normalization thesis; the Outcome must remain indeterminate and timing not comparable.",
+    "Do not run CAP-0005 replay, seal integrated memory, create a second trajectory, reopen P146 or start P147.",
+    "Do not require a shared semantic change, Shipping-specific fork, or modification of Shipping cursor by integration/global_serial."
+  ],
+  "acceptance": [
+    "Exactly three grounded Reality FactAssertions reconcile to three canonical Reality versions, each linked to the intended persisted EvidenceFragment and conservative known time.",
+    "Exactly one grounded contemporaneous JudgmentAssertion is persisted from ship-judgment-2022-11-02-peak, with first-known time derived only from the 2022 Judgment fragment.",
+    "Exactly one OutcomeEvaluation is persisted against ship-reality-maersk-2023-average-rate-change with semantic_relation=related_milestone, evaluation_status=indeterminate and timing_relation=not_comparable.",
+    "Hapag-Lloyd 2023 remains a separate canonical Reality corroboration and is not used as direct proof of the Maersk Judgment outcome.",
+    "The execution receipt exposes stable canonical Reality, Judgment and Outcome identities plus verification gates for persisted evidence lineage, known-time preservation, idempotency and non-direct-outcome fail-closed behavior.",
+    "PIT replay run = false and no shared semantic change is introduced."
+  ],
+  "dependency_consequence": "Shipping stage-two remains partial at R/J/O execution preparation. CAP-0005/CAP-0007 PIT/no-lookahead replay stays blocked until this request returns verified canonical Reality/Judgment/Outcome identities.",
+  "recommended_minimal_execution": "On an integration-owned disposable PostgreSQL execution surface, reuse the existing Evidence orchestration inputs and normal CAP-0003 Reality projection, CAP-0004 Judgment persistence and related-milestone Outcome evaluator. A CAP-0007 trajectory wrapper may be used with replay=null. Preserve the prior verified four EvidenceFragment identities or fail closed if the execution cannot reproduce their exact lineage."
+}
