@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v1",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2023-2026__BANK-RURAL__blind-001",
+  "family": "time_slice_timeline_blind_recall",
+  "shard_id": "BANK-RURAL",
+  "time_slice_id": "TIME-2023-2026",
+  "period": ["2023-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "allowed_input_digest_sha256": "38127f2017826da28c210931526df777098b385bb687dd59f0eef36227a892f1",
+  "allowed_inputs": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "blob_sha": "d028083acc1d209a0e83d6858358d19b2b28b01d",
+      "map_revision": 163
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92"
+    },
+    {
+      "kind": "model_internal_memory_reasoning",
+      "vintage": "GPT-5.6 Sol"
+    }
+  ],
+  "forbidden_inputs_confirmed_not_read_for_recall": [
+    "all completed Banking raw and receipts",
+    "all Batch0 raw Banking outputs",
+    "all prior v2 raw blind-pass outputs",
+    "sealed shard raw outputs",
+    "Banking source or Evidence material",
+    "fresh Banking search results"
+  ],
+  "raw_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2023-2026__BANK-RURAL__blind-001-memory-leads.md",
+  "raw_blob_sha": "7f0705e1146947aa6f84e5f9da136576aba3d505",
+  "novelty": {
+    "new_category": 40,
+    "useful_refinement": 13,
+    "duplicate": 2,
+    "high_importance_novel_or_refinement": 22,
+    "assessment": "material"
+  },
+  "negative_space": [
+    "Exact province-by-province reform announcement, legal establishment, predecessor merger and operational-integration chronology remains unresolved.",
+    "It remains unresolved whether unified legal-person consolidation creates material internal capital/risk mutualization or mainly governance/administrative centralization in each province.",
+    "Exact strong independent rural-bank counterexamples and their reasons for remaining outside province-level mergers remain Evidence-stage questions.",
+    "The scale and timing of post-pandemic forbearance-to-asset-quality recognition remains unresolved by cohort.",
+    "The prevalence of deposit termization and remembered nonstandard interest-supplement practices among rural-bank cohorts remains unresolved.",
+    "Exact capital replenishment, NPL disposal and resolution instruments remain Evidence-stage questions."
+  ],
+  "method_observation": "In final-slice rural-bank research, legal-person perimeter change must be modeled separately from announcement and operational integration because consolidation can mechanically alter NIM, capital, NPL and predecessor visibility before its economic effects can be judged.",
+  "stop_reason": "broad_recall_materially_novel_select_one_final_slice_orthogonal_challenge",
+  "next_probe": {
+    "probe_id": "TIME-2023-2026__BANK-RURAL__blind-002",
+    "family": "consolidation_lowrate_localmission_orthogonal_blind_recall",
+    "purpose": "Test whether provincial legal-person consolidation interacting with persistent low-rate economics and local-service mission creates a genuinely new BANK-RURAL operating model or primarily layers a resolution/organizational response over heterogeneous predecessor banks; use strong-independent-county and weak-predecessor counterexamples."
+  },
+  "campaign_sealed": false,
+  "shard_sealed": false,
+  "evidence_status": "not_started_deferred_while_shard_unsealed",
+  "unverified": true,
+  "verification_head_sha": null
+}
