@@ -1,0 +1,134 @@
+{
+  "receipt_kind": "longcycle-integration-execution-receipt",
+  "receipt_version": 1,
+  "request_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+  "result": "verified_success",
+  "source_worker": {
+    "workstream": "shipping-domain-v1",
+    "clean_handoff_head": "cfbfb9b8ced4de14009e5ba875cd7b4978541c0e",
+    "substantive_checkpoint": "c1750a92f0b4a3512bcf5bcc52450f6aca4c081b"
+  },
+  "execution": {
+    "branch": "post-baseline/ship-stage2-evidence-execution-v1",
+    "exact_head": "37c0ca0e8593f3a14af2bfbbc2507fc4b405a266",
+    "issue_number": 188,
+    "workflow": ".github/workflows/research-orchestration-once.yml",
+    "run_id": 33891771982,
+    "entrypoint": "longcycle-research-run",
+    "orchestration_spec": ".longcycle/handoff/executions/SHIP-STAGE2-EVIDENCE-EXECUTION-001/research-orchestration-v2.json",
+    "evidence_spec": ".longcycle/handoff/executions/SHIP-STAGE2-EVIDENCE-EXECUTION-001/grounded-evidence-spec-v2.json",
+    "evidence_spec_git_blob_sha": "1dc759e8d3a62d03ffddd227027c8d336aff1f20",
+    "prepared_evidence_spec_sha256": "5aa4d9447655013c9474d4c127f03956e6cc2e3bd91162c9edef3044956281bb",
+    "grounded_evidence_output_sha256": "6ea942712a7f288aa047c06e001c7b7aa4286351fa20a2bef8deee2901c419ba",
+    "artifact": {
+      "artifact_id": 9944139638,
+      "name": "research-orchestration-33891771982",
+      "sha256": "018b1826235ee75035109e833ebbf330421fd417ee86f49fd643cb09abb118b3",
+      "expires_at": "2026-09-11T15:51:02Z"
+    },
+    "database_surface": "ephemeral_postgresql_17",
+    "database_generation_required": false
+  },
+  "immutable_inputs": {
+    ".longcycle/workstreams/shipping-domain-v1/requests/SHIP-STAGE2-EVIDENCE-EXECUTION-001.json": "a05c1be6de976aa3bebec9acf20ec4673a37029743abc7031cb80818dedffecb",
+    "domain_packs/shipping/source-validation/container-pandemic-cycle-2020-2023-evidence-preparation-v1.json": "f2861c3536fb52049725aec31a4c7fa293cd0e675499044e0c61429adef4f54d",
+    "domain_packs/shipping/source-validation/representations/maersk-q3-2022-content-verified-v1.txt": "7f5a841fd0b771bfd18eb827e93aa92737d01ecd4be75d7a0fea9ef84f6d9e8d",
+    "domain_packs/shipping/source-validation/representations/maersk-ar-2023-p37-content-verified-v1.txt": "a936552e09190205389c58f31d4ee10e49d0b3bb2bb4d85ab0a3cd65c7d6410f",
+    "domain_packs/shipping/source-validation/representations/hapag-2023-results-content-verified-v1.txt": "81fcac69f47d72efb9cd7d2db9d2b8d9a9418cdce2472239c8e112a2e9dd0747"
+  },
+  "documents": [
+    {
+      "document_key": "maersk-q3-2022",
+      "document_id": "d6608566-0508-553b-b6ae-ff78ba9836a3",
+      "source_id": "cc5d44b4-d8da-5399-a722-5e012daea0e2",
+      "content_sha256": "70f73e7c69d0982fac12876ed38eaab54179c780e43ddf92ed7d4e391daa820e",
+      "source_capture_state": "content_verified",
+      "claim_relevant_content_preserved": true,
+      "source_media_type": "text/html",
+      "raw_source_materialized": false,
+      "first_known_at": "2022-11-02T23:59:59+00:00"
+    },
+    {
+      "document_key": "maersk-ar-2023",
+      "document_id": "adaeed72-4137-5676-8a0c-455abe9ad0ab",
+      "source_id": "cc5d44b4-d8da-5399-a722-5e012daea0e2",
+      "content_sha256": "8f2484773272c81d38250fdcdbdd075619fd1544b74b08fecc2cb52d9f2ddcae",
+      "source_capture_state": "content_verified",
+      "claim_relevant_content_preserved": true,
+      "source_media_type": "application/pdf",
+      "raw_source_materialized": false,
+      "first_known_at": "2024-02-08T23:59:59+00:00",
+      "upstream_locator": "Annual Report 2023 p.37 (PDF page index 36)"
+    },
+    {
+      "document_key": "hapag-ar-2023",
+      "document_id": "1e7506fb-0a6c-5854-ad01-0a4f29c1c00b",
+      "source_id": "5aff8b92-fd38-52be-a064-8af0e6e91597",
+      "content_sha256": "c60c68bb9c6affd826667e2d0de7d7dd177c692167b4fe5b03a7957ba9e31035",
+      "source_capture_state": "content_verified",
+      "claim_relevant_content_preserved": true,
+      "source_media_type": "text/html",
+      "raw_source_materialized": false,
+      "first_known_at": "2024-03-14T23:59:59+00:00"
+    }
+  ],
+  "evidence_fragments": [
+    {
+      "fragment_key": "ship-reality-q3-2022-rate-direction",
+      "claim_id": "SHIP-REALITY-Q3-2022-RATE-DIRECTION",
+      "document_id": "d6608566-0508-553b-b6ae-ff78ba9836a3",
+      "evidence_fragment_id": "7f2be136-a048-5359-9508-928787d86d7b",
+      "locator": "visible-text:70:148",
+      "representation_locator": "representation:line:2",
+      "fragment_sha256": "d11b8c5256a15efee3684109afafef376ee9de52d499d927f8f1624cbdaedc36",
+      "candidate_only": true
+    },
+    {
+      "fragment_key": "ship-judgment-2022-11-02-peak",
+      "claim_id": "SHIP-JUDGMENT-2022-11-02-PEAK",
+      "document_id": "d6608566-0508-553b-b6ae-ff78ba9836a3",
+      "evidence_fragment_id": "f1d09a98-8529-5792-a523-74fdd926e3ba",
+      "locator": "visible-text:0:69",
+      "representation_locator": "representation:line:1",
+      "fragment_sha256": "83a811375760c9c713a56a4b60e67f0f63f7e70713df963fb7734f6791614579",
+      "candidate_only": true
+    },
+    {
+      "fragment_key": "ship-outcome-maersk-2023-rate",
+      "claim_id": "SHIP-OUTCOME-MAERSK-2023-RATE",
+      "document_id": "adaeed72-4137-5676-8a0c-455abe9ad0ab",
+      "evidence_fragment_id": "f557e28c-ac46-5c16-9b9b-bbcb5eaaca51",
+      "locator": "visible-text:0:62",
+      "representation_locator": "representation:line:1; upstream Annual Report 2023 p.37",
+      "fragment_sha256": "b00be48dc5231b8b08cf9098e739f865956b7c2ea08ce31ef6beed2fa0a11c73",
+      "candidate_only": true
+    },
+    {
+      "fragment_key": "ship-outcome-hapag-2023-rate-check",
+      "claim_id": "SHIP-OUTCOME-HAPAG-2023-RATE-CHECK",
+      "document_id": "1e7506fb-0a6c-5854-ad01-0a4f29c1c00b",
+      "evidence_fragment_id": "f4940014-4b5b-5466-ae1b-9ce770751fae",
+      "locator": "visible-text:0:65",
+      "representation_locator": "representation:line:1",
+      "fragment_sha256": "dc1d86bee681243c675cbc5ecfec0c7680b1cdfc49d00ec57da7019720d00604",
+      "candidate_only": true
+    }
+  ],
+  "acceptance": {
+    "persisted_document_versions": 3,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "reality_composition_run": false,
+    "judgment_composition_run": false,
+    "outcome_composition_run": false,
+    "pit_replay_run": false
+  },
+  "verification": {
+    "verified": true,
+    "artifact_result_ok": true,
+    "workflow_issue_result": "RESEARCH_ORCHESTRATION_PASS",
+    "worker_cursor_modified": false,
+    "shared_semantics_modified": false
+  }
+}
