@@ -56,6 +56,8 @@ def validate_reservation_unchanged(
     current: dict[str, Any],
     reserved: dict[str, Any],
 ) -> None:
+    """Legacy unit helper proving a worker cannot self-mutate reservation authority."""
+
     for field in RESERVATION_FIELDS:
         current_value = _normalized_reservation_value(field, current.get(field))
         reserved_value = _normalized_reservation_value(field, reserved.get(field))
@@ -202,8 +204,59 @@ def _reserved_manifest(base_ref: str, manifest_path: str) -> dict[str, Any]:
     return payload
 
 
+def _worker_cursor(workstream_id: str) -> dict[str, Any]:
+    cursor_path = ROOT / ".longcycle" / "workstreams" / workstream_id / "cursor.json"
+    try:
+        payload = json.loads(cursor_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise WorkstreamBoundaryError(
+            f"worker cursor {cursor_path.relative_to(ROOT).as_posix()} is unavailable or invalid: {exc}"
+        ) from exc
+    if not isinstance(payload, dict):
+        raise WorkstreamBoundaryError(
+            f"worker cursor {cursor_path.relative_to(ROOT).as_posix()} must contain an object"
+        )
+    return payload
+
+
+def validate_worker_acknowledges_reservation(
+    *,
+    workstream_id: str,
+    branch: str,
+    cursor: dict[str, Any],
+    reserved: dict[str, Any],
+) -> None:
+    if reserved.get("lifecycle_state") != "active":
+        raise WorkstreamBoundaryError(
+            f"{workstream_id}: main reservation is not active: {reserved.get('lifecycle_state')!r}"
+        )
+    if reserved.get("workstream_id") != workstream_id or reserved.get("branch") != branch:
+        raise WorkstreamBoundaryError(
+            f"{workstream_id}: refreshed main reservation identity does not authorize branch {branch!r}"
+        )
+    if cursor.get("workstream_id") != workstream_id or cursor.get("branch") != branch:
+        raise WorkstreamBoundaryError(
+            f"{workstream_id}: worker cursor identity does not match branch {branch!r}"
+        )
+
+    main_revision = reserved.get("reservation_revision")
+    cursor_revision = cursor.get("reservation_revision")
+    if cursor_revision != main_revision:
+        raise WorkstreamBoundaryError(
+            f"{workstream_id}: reservation revision acknowledgement pending; "
+            f"main={main_revision!r} cursor={cursor_revision!r}. "
+            "Refresh main and acknowledge the new reservation revision in cursor.json before substantive work."
+        )
+
+    main_epoch = reserved.get("assignment_epoch")
+    cursor_epoch = cursor.get("assignment_epoch")
+    if cursor_epoch != main_epoch:
+        raise WorkstreamBoundaryError(
+            f"{workstream_id}: assignment fence mismatch; main={main_epoch!r} cursor={cursor_epoch!r}"
+        )
+
+
 def validate_worker_branch(
-    loaded: list[tuple[Path, dict[str, Any]]],
     *,
     base_ref: str,
     branch: str,
@@ -214,21 +267,16 @@ def validate_worker_branch(
         return
 
     validate_worker_merge_target(branch=branch, base_branch=base_branch)
-    matches = [
-        (path, manifest)
-        for path, manifest in loaded
-        if manifest.get("status") in registry.ACTIVE_STATUSES and manifest.get("branch") == branch
-    ]
-    if len(matches) != 1:
-        raise WorkstreamBoundaryError(
-            f"worker branch {branch!r} must match exactly one active registered workstream; "
-            f"found {len(matches)}"
-        )
-
-    path, current = matches[0]
-    manifest_path = path.relative_to(ROOT).as_posix()
+    workstream_id = branch.removeprefix(WORKER_BRANCH_PREFIX)
+    manifest_path = f".longcycle/workstreams/{workstream_id}/reservation.json"
     reserved = _reserved_manifest(base_ref, manifest_path)
-    validate_reservation_unchanged(current=current, reserved=reserved)
+    cursor = _worker_cursor(workstream_id)
+    validate_worker_acknowledges_reservation(
+        workstream_id=workstream_id,
+        branch=branch,
+        cursor=cursor,
+        reserved=reserved,
+    )
 
     diff_output = _git(
         "diff",
@@ -236,13 +284,9 @@ def validate_worker_branch(
         "--diff-filter=ACDMRTUXB",
         f"{base_ref}...{head_ref}",
     )
-    changed_paths = [
-        line.strip()
-        for line in diff_output.splitlines()
-        if line.strip()
-    ]
+    changed_paths = [line.strip() for line in diff_output.splitlines() if line.strip()]
     validate_changed_paths(
-        workstream_id=current["workstream_id"],
+        workstream_id=workstream_id,
         reserved=reserved,
         manifest_path=manifest_path,
         changed_paths=changed_paths,
@@ -256,21 +300,23 @@ def validate(
     base_branch: str | None = None,
     head_ref: str = "HEAD",
 ) -> None:
-    loaded = registry.load_workstreams()
-    manifests = [manifest for _, manifest in loaded]
-    validate_dependency_graph(manifests)
-
     if base_ref is None and branch is None:
+        loaded = registry.load_workstreams()
+        validate_dependency_graph([manifest for _, manifest in loaded])
         return
     if not base_ref or not branch:
         raise WorkstreamBoundaryError("--base-ref and --branch must be supplied together")
-    validate_worker_branch(
-        loaded,
-        base_ref=base_ref,
-        branch=branch,
-        base_branch=base_branch,
-        head_ref=head_ref,
-    )
+    if branch.startswith(WORKER_BRANCH_PREFIX):
+        validate_worker_branch(
+            base_ref=base_ref,
+            branch=branch,
+            base_branch=base_branch,
+            head_ref=head_ref,
+        )
+        return
+
+    loaded = registry.load_workstreams()
+    validate_dependency_graph([manifest for _, manifest in loaded])
 
 
 def main() -> int:

@@ -1,29 +1,32 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "FOUR-PROBE-SLICE-V1-035",
-  "goal": "Increase each industry Agent invocation from roughly one probe to as many as four adaptive probes while making unfinished-work recovery the mandatory first action of the next invocation.",
+  "intent_id": "WORKSTREAM-AUTHORITY-TRANSITION-V1-036",
+  "goal": "Make active workstream reservation authority a versioned main-owned contract and prevent a worker from being blocked merely because its historical branch copy of reservation.json differs from refreshed main.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this changes prompt-level execution slicing only and preserves Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, seal, reservation, cursor and database-generation semantics",
-  "baseline_invariants": [],
-  "schema_impact": "documentation and current governance metadata only; no product schema, migration, capability card, worker reservation/cursor, research artifact, Drive object or database generation change",
-  "baseline_critical_tests_touched": false,
+  "baseline_impact": "none; this extends CAP-0010 governance/control-plane guards and preserves Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, database-generation and worker single-writer semantics",
+  "baseline_invariants": [
+    "main/integration remains the only reservation authority and shared-state writer",
+    "workers cannot mutate reservation/change-contract/capability-admission authority in their implementation diff",
+    "worker substantive work still requires refreshed reservation/fence agreement and exact-head CLEAN continuity",
+    "no L3/L4 semantic owner or product schema is changed"
+  ],
+  "schema_impact": "no JSON schema version change; reservation_revision receives an enforced transition invariant and worker boundary evaluation reads refreshed integration-base reservation authority",
+  "baseline_critical_tests_touched": true,
   "architecture_change_ref": null,
   "counterexample_refs": [],
   "affected_invariants": [],
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "A Banking or Shipping invocation targets up to four sequential probe cycles without requiring the user to send continue between cycles.",
-    "Every probe separately completes append-only raw/receipt/map work as S, a cursor-only H and an exact remote CLEAN audit before the next probe begins.",
-    "Only the first probe comes from the startup cursor; the second and third are selected only after rereading the map/cursor produced by the preceding completed cycle.",
-    "Probes are never preselected or run in parallel and four probes are never collapsed into one large uncheckpointed task.",
-    "The slice stops early when there is no safe next probe, the map routes to seal/challenger/review, continuity or permission is unsafe, required capability is unavailable, L3/L4 appears or the next full S/H cannot be completed safely.",
-    "Four is a soft per-invocation upper target, not a duration, quota, ontology-completion rule or permission to invent low-value probes.",
-    "After any interruption, the next invocation recovers old work before interpreting or executing a new task: redo from the old cursor if interruption preceded S, or derive RECOVERY_REQUIRED and repair the latest missing H if S was pushed.",
-    "When prior probes already have clean H, the successor continues only from the latest map next_probe; it never invents unpersisted future probes or repeats completed work.",
-    "Coordinator and future-role prompts understand the four-cycle slice but do not preassign later probes or cross-write worker state.",
-    "No L3/L4 decision is introduced."
+    "PR CI rejects an active reservation authority-field mutation when reservation_revision is unchanged.",
+    "PR CI rejects a revision bump with no authority mutation and rejects skipped revision numbers.",
+    "Worker boundary checks load the reservation from the supplied integration/base ref and compare only cursor identity, reservation_revision and assignment_epoch acknowledgements against it.",
+    "An actual worker-authored change to reservation.json, change-contract.json or capability-admission.json still fails the changed-path gate.",
+    "A cursor that has not adopted a newer main reservation revision stops with an explicit authority-update-pending error before substantive work.",
+    "Task-stage narrowing that does not change durable workstream acceptance is routed through Change Contract/admission/prompt/cursor rather than mutating reservation.done_when.",
+    "The Shipping PR #181 compatibility defect is repaired separately by restoring its original revision-1 done_when, without touching the Shipping worker branch.",
+    "Architecture Baseline focused regressions and full CI pass on the exact final PR head."
   ]
 }

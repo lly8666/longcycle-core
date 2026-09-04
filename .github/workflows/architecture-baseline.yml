@@ -56,13 +56,12 @@ jobs:
           git fetch --no-tags --depth=1 origin \
             "+refs/tags/$BASELINE_TAG:refs/tags/$BASELINE_TAG"
 
-      - name: Validate unchanged Baseline and owner routing
+      - name: Validate unchanged Baseline and capability routing
         run: |
           python scripts/validate_architecture_baseline.py
           python scripts/capability_registry.py audit
-          python scripts/workstream_registry.py validate
 
-      - name: Worker diff stays inside the main reservation
+      - name: Worker diff stays inside refreshed main reservation
         run: >-
           python scripts/validate_workstream_boundaries.py
           --base-ref origin/main
@@ -77,8 +76,8 @@ jobs:
       - name: Focused worker continuity and boundary regressions
         run: >-
           pytest -q
-          tests/test_workstream_registry.py
           tests/test_workstream_boundaries.py
+          tests/test_reservation_transitions.py
           tests/test_workstream_continuity.py
           tests/test_memory_seal_audit.py
           tests/test_ci_status_target.py
@@ -148,6 +147,12 @@ jobs:
       - name: Workstream dependency topology remains valid
         run: python scripts/validate_workstream_boundaries.py
 
+      - name: Active reservation authority transitions are versioned
+        if: github.event_name == 'pull_request'
+        run: >-
+          python scripts/validate_reservation_transitions.py
+          --base-ref "origin/${{ github.base_ref }}"
+
       - name: Worker PR diff stays inside the base reservation
         if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'workstream/')
         run: >-
@@ -173,6 +178,7 @@ jobs:
           tests/test_architecture_baseline.py
           tests/test_workstream_registry.py
           tests/test_workstream_boundaries.py
+          tests/test_reservation_transitions.py
           tests/test_workstream_continuity.py
           tests/test_memory_seal_audit.py
           tests/test_ci_status_target.py

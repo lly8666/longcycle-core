@@ -18,12 +18,19 @@
       "description": "Workstream registry keeps main-owned reservations separate from worker-owned cursors and builds the compact active router.",
       "kind": "script",
       "path": "scripts/workstream_registry.py"
+    },
+    {
+      "contains": "def validate_transition(",
+      "description": "Reservation transition validation makes every main-owned authority mutation advance reservation_revision exactly once.",
+      "kind": "script",
+      "path": "scripts/validate_reservation_transitions.py"
     }
   ],
   "extension_seams": [
     "Improve deterministic discovery/routing without making opaque similarity a hard blocker.",
     "Tighten admission requirements as governance_mode matures from converging toward core-locked architecture.",
-    "Route parallel development through bounded main-owned reservations and worker-owned cursors without copying workstream history into the global handoff or creating another semantic-owner registry."
+    "Route parallel development through bounded main-owned reservations and worker-owned cursors without copying workstream history into the global handoff or creating another semantic-owner registry.",
+    "Version main-owned reservation authority and let worker cursors acknowledge refreshed base authority without treating stale branch-local reservation copies as a second owner."
   ],
   "guards": [
     {
@@ -37,6 +44,18 @@
       "description": "Full CI fails if capability ownership/index/admission/handoff integration drifts.",
       "kind": "runtime",
       "path": ".github/workflows/ci.yml"
+    },
+    {
+      "contains": "Active reservation authority transitions are versioned",
+      "description": "Architecture Baseline PR CI rejects same-revision authority mutation and unversioned reservation transitions.",
+      "kind": "runtime",
+      "path": ".github/workflows/architecture-baseline.yml"
+    },
+    {
+      "contains": "test_main_cannot_change_active_reservation_authority_without_revision_bump",
+      "description": "Regression tests preserve the incident-derived invariant that main cannot silently mutate an active reservation under the same revision.",
+      "kind": "test",
+      "path": "tests/test_reservation_transitions.py"
     },
     {
       "contains": "## Capability admission gate — do not create parallel semantic owners blindly",
@@ -84,6 +103,7 @@
     "scripts/capability_registry.py",
     "scripts/workstream_registry.py",
     "scripts/validate_workstream_boundaries.py",
+    "scripts/validate_reservation_transitions.py",
     "docs/development/capability-governance.md",
     "docs/development/parallel-agent-development.md",
     "docs/development/workstream-reservation-integration.md",
@@ -91,7 +111,10 @@
     "AGENTS.md",
     "CONTINUE_HERE.md",
     "tests/test_capability_registry.py",
-    ".github/workflows/ci.yml"
+    "tests/test_workstream_boundaries.py",
+    "tests/test_reservation_transitions.py",
+    ".github/workflows/ci.yml",
+    ".github/workflows/architecture-baseline.yml"
   ],
   "status": "active",
   "supersedes": [],
