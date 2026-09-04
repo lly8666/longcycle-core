@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v1",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2023-2026__BANK-RURAL__blind-002",
+  "family": "consolidation_lowrate_localmission_orthogonal_blind_recall",
+  "shard_id": "BANK-RURAL",
+  "time_slice_id": "TIME-2023-2026",
+  "period": ["2023-01-01", "2026-08-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "allowed_input_digest_sha256": "3c37455cfadaef116c62e25a9a7e46932b73c1b66d706233eee3e2858e491ca9",
+  "allowed_inputs": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "blob_sha": "81f9422629accf3641e4df7665396d437c177ec2",
+      "map_revision": 164
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92"
+    },
+    {
+      "kind": "model_internal_memory_reasoning",
+      "vintage": "GPT-5.6 Sol"
+    }
+  ],
+  "forbidden_inputs_confirmed_not_read_for_recall": [
+    "TIME-2023-2026__BANK-RURAL__blind-001 raw and receipt",
+    "all completed Banking raw and receipts",
+    "all Batch0 raw Banking outputs",
+    "all prior v2 raw blind-pass outputs",
+    "sealed shard raw outputs",
+    "Banking source or Evidence material",
+    "fresh Banking search results"
+  ],
+  "raw_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2023-2026__BANK-RURAL__blind-002-memory-leads.md",
+  "raw_blob_sha": "f4b963e2ce7ea81155f0150049177f4212e15fdc",
+  "novelty": {
+    "new_category": 14,
+    "useful_refinement": 25,
+    "duplicate": 6,
+    "high_importance_novel_or_refinement": 15,
+    "assessment": "refinement_dominant"
+  },
+  "structural_conclusion": "Provincial legal-person consolidation is a real successor-cohort operating architecture because it can change legal balance-sheet perimeter, capital/liquidity allocation, governance, treasury and technology. It is not a universal period-wide BANK-RURAL replacement lineage: strong independent county rural commercial banks remain a falsifier, low-rate/NIM pressure is cross-cutting, and legacy predecessor risks/local heterogeneity survive inside successors and require preserved provenance.",
+  "negative_space": [
+    "Exact province-by-province legal completion versus announcement chronology remains unresolved.",
+    "The degree of actual capital/risk mutualization inside each consolidated successor remains unresolved.",
+    "The prevalence and intended long-run role of strong independent rural commercial banks outside provincial mergers remains unresolved.",
+    "Successor operating convergence versus predecessor asset-quality convergence remains unresolved and requires Evidence/Outcome later."
+  ],
+  "method_observation": "Province-level consolidation introduces a legal-perimeter event that must preserve predecessor identity and separate legal establishment, financial perimeter, operational integration and later economic outcomes; successor-only time series are not safe historical substitutes.",
+  "stop_reason": "orthogonal_refinement_dominant_final_slice_complete_move_to_cross_time_saturation_review",
+  "next_probe": {
+    "probe_id": "CROSS-TIME__BANK-RURAL__saturation-review__blind-001",
+    "family": "cross_time_saturation_review_blind_recall",
+    "purpose": "Review the compact BANK-RURAL time×shard coverage and negative-space map across the full primary horizon, probe for material blind gaps without reading completed raw/receipts, and begin the manifest-required low-novelty confirmation sequence before any seal-readiness decision."
+  },
+  "campaign_sealed": false,
+  "shard_sealed": false,
+  "evidence_status": "not_started_deferred_while_shard_unsealed",
+  "unverified": true,
+  "verification_head_sha": null
+}
