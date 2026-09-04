@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":141,
+  "map_revision":142,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2023-2026__BANK-CITY__blind-002.json",
-  "latest_pass_receipt_status":"orthogonal_slice_complete",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-CITY__saturation-review__blind-001.json",
+  "latest_pass_receipt_status":"material_gap_found_targeted_frontier_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -25,12 +25,12 @@
   "active_shards":[{
     "shard_id":"BANK-CITY",
     "selected_time_slice_id":"CROSS-TIME",
-    "stage":"saturation_review",
+    "stage":"material_gap_targeted_recall_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2020-2022__BANK-CITY__blind-002","family":"forbearance_property_lgfv_deposit_recognition_orthogonal_blind_recall","novel_lead_count":92,"duplicate_lead_count":8,"high_importance_novel_count":22,"outcome":"orthogonal_slice_complete"},
       {"pass_id":"TIME-2023-2026__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":108,"duplicate_lead_count":7,"high_importance_novel_count":29,"outcome":"broad_high_novelty_orthogonal_required"},
-      {"pass_id":"TIME-2023-2026__BANK-CITY__blind-002","family":"margin_deposit_resolution_consolidation_orthogonal_blind_recall","novel_lead_count":96,"duplicate_lead_count":9,"high_importance_novel_count":23,"outcome":"orthogonal_slice_complete"}
+      {"pass_id":"TIME-2023-2026__BANK-CITY__blind-002","family":"margin_deposit_resolution_consolidation_orthogonal_blind_recall","novel_lead_count":96,"duplicate_lead_count":9,"high_importance_novel_count":23,"outcome":"orthogonal_slice_complete"},
+      {"pass_id":"CROSS-TIME__BANK-CITY__saturation-review__blind-001","family":"cross_time_actor_failure_governance_franchise_saturation_blind_recall","novel_lead_count":96,"duplicate_lead_count":8,"high_importance_novel_count":23,"outcome":"material_gap_found_targeted_frontier_required"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -49,29 +49,30 @@
       {"region_id":"TIME-2013-2016__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2017-2019__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2020-2022__BANK-CITY","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2023-2026__BANK-CITY","state":"broad_plus_orthogonal_complete","note":"Broad and independent orthogonal recall converge on low-rate/NIM compression, deposit termization and pricing discipline, property/LGFV debt-resolution economics, capital/provision normalization, local-state recapitalization/consolidation tails, wealth/digital adaptation, branch/network economics and strong/weak/stable-low-return cohort bifurcation. Consolidation/governance repair remains a weak-bank tail response rather than a second period-wide city-bank model."}
+      {"region_id":"TIME-2023-2026__BANK-CITY","state":"broad_plus_orthogonal_complete"},
+      {"region_id":"CROSS-TIME__BANK-CITY__PROVINCE-CONSOLIDATION-LINEAGE","state":"material_gap_open","note":"First cross-time saturation review found a distinct multi-city/province-level consolidation lineage: several municipal city-bank predecessors can be combined into a wider regional bank and later absorb additional weak banks. This changes institution-age, branch, asset-quality, capital, shareholder-control and operating-integration semantics and is not equivalent to organic cross-region expansion or standalone recapitalization."}
     ],
     "known_major_gaps":[
-      "All nine primary BANK-CITY time slices are broad+orthogonal complete, but cross-time saturation and negative-space review has not started.",
-      "Cross-time review must independently challenge forgotten city-bank actors and predecessor lineages; failed/restructured institutions; municipal versus private shareholder/governance patterns; cross-region expansion and retrenchment; deposit/funding model evolution; WMP/non-standard and treasury transitions; property/LGFV concentration and resolution; branch/network and digital economics; old vocabulary and metric-semantic breaks; contemporaneous expectations later falsified; strong-bank, weak-bank and stable-low-return counterexamples; and regional archetypes without reading completed raw/receipts.",
-      "Top-level ontology stability alone is not saturation. A material missing actor, lineage, failure mechanism or regional archetype must reopen exactly one targeted frontier and reset/keep low-novelty confirmations at 0.",
-      "Saturation requires three consecutive independent low-novelty confirmations after any material-gap closure plus time×shard and negative-space review. Current count is 0/3.",
-      "Exact institution histories, balances, ratios, ownership stakes, merger terms, branch counts, funding metrics and official classifications remain Evidence-stage questions. Evidence remains deferred while BANK-CITY is unsealed."
+      "One material BANK-CITY gap is open: province-level/multi-city consolidation lineage and post-merger integration. Targeted recall must recover predecessor-pattern diversity, merger versus recapitalization mechanisms, inherited problem-asset stock, shareholder/control transitions, treasury/risk/technology/branch integration and strong/weak counterexamples.",
+      "Potential actor/search-key leads include Huishang Bank, Bank of Jiangsu, Hubei Bank, Zhongyuan Bank, Bank of Jiangxi, Bank of Guizhou, Sichuan Bank, Shanxi Bank and Liaoshen Bank, but exact predecessor lists, dates, ownership stakes, merger terms and legal continuity remain Evidence-stage questions.",
+      "All nine primary BANK-CITY time slices remain broad+orthogonal complete; this cross-time gap does not reopen a primary time slice.",
+      "Low-novelty confirmations remain 0/3. After targeted gap closure, saturation confirmation counting must restart/continue from 0 with independent cross-time challenges.",
+      "Evidence remains deferred while BANK-CITY is unsealed."
     ]
   },
-  "selection_basis":{"rule":"all_primary_time_slices_complete_begin_cross_time_saturation_review","selected_shard_id":"BANK-CITY","selected_time_slice_id":"CROSS-TIME"},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-CITY__SATURATION-REVIEW-001","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-CITY__saturation-review__blind-001"}],
+  "selection_basis":{"rule":"material_cross_time_lineage_gap_requires_exactly_one_targeted_closure_probe","selected_shard_id":"BANK-CITY","selected_time_slice_id":"CROSS-TIME"},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-CITY__PROVINCE-CONSOLIDATION-LINEAGE","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-CITY__province-consolidation-lineage__blind-001"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-CITY__saturation-review__blind-001",
-    "family":"cross_time_actor_failure_governance_franchise_saturation_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-CITY__province-consolidation-lineage__blind-001",
+    "family":"province_level_multi_city_consolidation_lineage_targeted_blind_recall",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-CITY",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible invocation, run one isolated cross-time BANK-CITY saturation/negative-space blind-memory challenge using only this rev141 compact map, the manifest and current model internal memory/reasoning. Do not read any completed BANK-CITY raw/receipts, other completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately challenge forgotten city-bank actors and predecessor lineages; failed/restructured or absorbed institutions; municipal/private shareholder and governance discontinuities; cross-region expansion then retrenchment; deposit/franchise and wholesale-funding evolution; WMP/non-standard/treasury shifts; property/LGFV and local-fiscal concentration across cycles; branch/network/digital economics; old terminology and metric-semantic breaks; contemporaneous expectations later falsified; regional archetypes; and strong-bank, weak-bank and stable-low-return counterexamples. Keep rural banks outside BANK-CITY even where local-bank consolidation creates naming ambiguity. Do not invent exact dates, balances, ratios, ownership stakes, merger terms, branch counts, case amounts or official wording. If a material missing category/actor/lineage/failure mechanism emerges, open exactly one targeted frontier and keep low-novelty confirmations at 0/3. If no material category emerges and novelty is genuinely low, record low-novelty confirmation 1/3 and select exactly one distinct second confirmation challenge. Do not seal on this pass. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "instruction":"In the next eligible loop, run one isolated targeted BANK-CITY blind-memory recall on the multi-city/province-level consolidation lineage using only this rev142 compact map, the manifest and current model internal memory/reasoning. Do not read the completed saturation-review raw/receipt, any completed BANK-CITY raw/receipts, other Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Recover predecessor-pattern diversity and old names; distinguish organic rename, multi-bank merger, absorption, recapitalization and resolution-platform formation; challenge Huishang/Jiangsu/Hubei/Zhongyuan/Jiangxi/Guizhou/Sichuan/Shanxi/Liaoshen-type leads without inventing exact predecessor lists or dates; test inherited NPL/problem-asset stock versus post-merger formation, branch-footprint arithmetic, capital denominator effects, municipal-to-provincial shareholder/control changes, treasury/risk/technology/HR integration, local-fiscal correlation and whether province-wide scale really diversifies risk. Keep rural banks outside BANK-CITY where consolidation names create ambiguity. If this measured lineage gap is adequately recovered and no second material category emerges, close it, keep low-novelty confirmations at 0/3, and return to exactly one distinct cross-time saturation-review frontier. If a genuinely second material category emerges, open exactly one frontier for that category instead. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["all completed BANK-CITY raw and receipts","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["CROSS-TIME__BANK-CITY__saturation-review__blind-001 raw or receipt","all completed BANK-CITY raw and receipts","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only cross-time BANK-CITY saturation-review raw and bounded receipt exist; the sparse map either opens exactly one measured material gap or records low-novelty confirmation 1/3 and selects exactly one distinct follow-up; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
+    "done_when":"One append-only targeted consolidation-lineage raw and bounded receipt exist; the sparse map closes the measured lineage gap and returns to one cross-time saturation-review frontier unless a second measured material category is found; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
