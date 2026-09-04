@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":121,
+  "map_revision":122,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-003.json",
-  "latest_pass_receipt_status":"low_novelty_confirmation_2_of_3",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-004.json",
+  "latest_pass_receipt_status":"low_novelty_confirmation_3_of_3_seal_decision_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -24,13 +24,13 @@
   "active_shards":[{
     "shard_id":"BANK-JOINT-STOCK",
     "selected_time_slice_id":"CROSS-TIME",
-    "stage":"saturation_review_pending",
+    "stage":"seal_decision_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-002","family":"cross_time_negative_space_independent_blind_recall","novel_lead_count":15,"duplicate_lead_count":30,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_1_of_3"},
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-003","family":"mechanisms_metrics_expectations_counterexamples_independent_blind_recall","novel_lead_count":12,"duplicate_lead_count":28,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_2_of_3"}
+      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-003","family":"mechanisms_metrics_expectations_counterexamples_independent_blind_recall","novel_lead_count":12,"duplicate_lead_count":28,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_2_of_3"},
+      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-004","family":"final_independent_negative_space_confirmation_blind_recall","novel_lead_count":10,"duplicate_lead_count":54,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_3_of_3_seal_decision_required"}
     ],
-    "low_novelty_confirmations":2,
+    "low_novelty_confirmations":3,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
@@ -49,28 +49,29 @@
       {"region_id":"TIME-2023-2026__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__LATE-ENTRY-TROUBLED-GOVERNANCE","state":"targeted_gap_closed"},
       {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-002","state":"low_novelty_confirmation","confirmation_index":1},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-003","state":"low_novelty_confirmation","confirmation_index":2,"note":"Independent mechanisms/metrics/expectations/counterexamples review produced only two new counterexample refinements and no material gap."}
+      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-003","state":"low_novelty_confirmation","confirmation_index":2},
+      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-004","state":"low_novelty_confirmation","confirmation_index":3,"note":"Final independent falsification challenge produced no new category, only residual refinements/counterexamples, and no material gap."}
     ],
     "known_major_gaps":[
-      "No material BANK-JOINT-STOCK gap is currently open.",
-      "One more consecutive independent low-novelty confirmation is required before a saturation/seal decision can be considered.",
-      "The next confirmation must independently stress forgotten actors/institutions, business-model heterogeneity, balance-sheet/funding mechanisms, negative-space semantics and counterexamples without reading any completed raw/receipts.",
-      "Evidence remains deferred while BANK-JOINT-STOCK is unsealed."
+      "No material BANK-JOINT-STOCK blind-memory gap is currently open.",
+      "All nine primary time slices are broad+orthogonal complete and the one measured cross-time late-entry/troubled-governance gap is targeted-closure-complete.",
+      "Three consecutive independent low-novelty confirmations are now recorded, satisfying the manifest's saturation prerequisite, but canonical sealing requires a separate explicit seal-decision review after exact-H CLEAN.",
+      "Evidence remains deferred until a canonical seal decision is written and handed off CLEAN."
     ]
   },
-  "selection_basis":{"rule":"second_low_novelty_confirmation_requires_final_independent_confirmation","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-004","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-004"}],
+  "selection_basis":{"rule":"three_consecutive_low_novelty_confirmations_require_explicit_seal_decision","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__SEAL-DECISION","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__seal-decision__blind-001"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-004",
-    "family":"final_independent_negative_space_confirmation_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__seal-decision__blind-001",
+    "family":"canonical_seal_decision_control_review",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-JOINT-STOCK",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible invocation, run one final independent cross-time saturation confirmation for BANK-JOINT-STOCK using only this rev121 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Independently stress forgotten actors/institutions, ownership and business-model heterogeneity, deposit/wholesale-funding and asset-mix mechanisms, private-enterprise/property/LGFV/retail credit cycles, WMP/wealth/AUM, NPL/ECL/provision/write-off/capital/RWA semantics, technology/payment/digital and cross-border edges, failed narratives, old vocabulary and counterexamples. Explicitly try to falsify the current saturation claim rather than merely restating covered categories. Keep Bank of Communications in sealed BANK-STATE-OWNED and respect the CMB 2023 preexposure carveout. Do not invent exact dates, balances, ratios, ownership percentages, thresholds or official wording. If any material gap appears, open exactly one targeted frontier and reset confirmations to 0. If novelty remains genuinely low and no material gap appears, record low-novelty confirmation 3 of 3 and select exactly one seal-decision review frontier; do not begin Evidence before the seal decision and exact-H CLEAN. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
-    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
+    "instruction":"After the final saturation-confirmation probe closes through cursor-only H and exact-H CLEAN, run exactly one explicit BANK-JOINT-STOCK seal-decision control review using only this rev122 compact map, the manifest, reservation/capability control state and current model reasoning. Do not read completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Verify that all nine primary time slices are broad+orthogonal complete, all measured material gaps are closed, the negative-space/time-by-shard requirements were actually challenged, and three consecutive independent low-novelty confirmations are recorded without relying only on ontology stability. If those compact control conditions remain satisfied, write the canonical seal state and one bounded seal-decision receipt, move BANK-JOINT-STOCK from active to sealed in the sparse map, and select exactly one next blind-memory frontier from the manifest. If any compact-control inconsistency is found, do not seal; open exactly one corrective frontier instead. Do not begin Evidence in the seal-decision probe. Close substantive S -> cursor-only H -> exact-H CLEAN.",
+    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",".longcycle/workstreams/banking-domain-v1/reservation.json",".longcycle/workstreams/banking-domain-v1/capability-admission.json","current model reasoning"],
     "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
-    "output_authority":"MEMORY_LEADS_ONLY",
-    "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only final independent saturation-confirmation raw and bounded receipt exist; the sparse map either opens exactly one measured material gap or records low-novelty confirmation 3/3 and selects exactly one seal-decision review frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or premature sealing."
+    "output_authority":"RESEARCH_CONTROL_ONLY",
+    "one_pass_cannot_self_seal":false,
+    "done_when":"One explicit canonical seal decision is recorded without reading completed Banking raw/receipts; the sparse map either seals BANK-JOINT-STOCK and selects exactly one next blind frontier or opens exactly one corrective frontier; and the decision closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
