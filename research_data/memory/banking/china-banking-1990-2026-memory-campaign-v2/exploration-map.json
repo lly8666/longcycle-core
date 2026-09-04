@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":114,
+  "map_revision":115,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2020-2022__BANK-JOINT-STOCK__blind-001.json",
-  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2020-2022__BANK-JOINT-STOCK__blind-002.json",
+  "latest_pass_receipt_status":"orthogonal_slice_complete",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -23,12 +23,12 @@
   ],
   "active_shards":[{
     "shard_id":"BANK-JOINT-STOCK",
-    "selected_time_slice_id":"TIME-2020-2022",
+    "selected_time_slice_id":"TIME-2023-2026",
     "stage":"active_recall",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2017-2019__BANK-JOINT-STOCK__blind-002","family":"deleveraging_wmp_funding_ecl_private_credit_orthogonal_blind_recall","novel_lead_count":67,"duplicate_lead_count":6,"high_importance_novel_count":14,"outcome":"orthogonal_slice_complete"},
-      {"pass_id":"TIME-2020-2022__BANK-JOINT-STOCK__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":84,"duplicate_lead_count":8,"high_importance_novel_count":22,"outcome":"broad_high_novelty_orthogonal_required"}
+      {"pass_id":"TIME-2020-2022__BANK-JOINT-STOCK__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":84,"duplicate_lead_count":8,"high_importance_novel_count":22,"outcome":"broad_high_novelty_orthogonal_required"},
+      {"pass_id":"TIME-2020-2022__BANK-JOINT-STOCK__blind-002","family":"pandemic_property_repricing_ecl_wealth_orthogonal_blind_recall","novel_lead_count":68,"duplicate_lead_count":5,"high_importance_novel_count":15,"outcome":"orthogonal_slice_complete"}
     ]
   }],
   "coverage_snapshot":{
@@ -43,28 +43,28 @@
       {"region_id":"TIME-2009-2012__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2013-2016__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2017-2019__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2020-2022__BANK-JOINT-STOCK__BROAD","state":"broad_high_novelty_orthogonal_required","note":"Broad recall recovered pandemic borrower-support/remote-operation semantics, LPR and front/back-book repricing, deposit termization, property/mortgage/card stress, WMP NAV transition, ECL stage semantics, digital resilience and strong peer divergence."}
+      {"region_id":"TIME-2020-2022__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete","note":"Broad and independent orthogonal recall converged on pandemic borrower-relief versus impairment timing, property/retail transmission, LPR/deposit repricing, WMP/NAV migration, ECL/NPL semantics, digital operating economics and institution-level adaptation. No second material category emerged."}
     ],
     "known_major_gaps":[
-      "TIME-2020-2022 BANK-JOINT-STOCK broad recall is high novelty and requires one independent orthogonal challenge before slice completion.",
-      "The orthogonal challenge must independently test temporary borrower relief versus hidden impairment, property-developer versus mortgage transmission, deposit termization and wealth migration, LPR/NIM repricing, ECL-stage versus NPL semantics, digital operating leverage, and institution-level adaptation without importing post-2022 outcomes backward.",
-      "TIME-2023-2026 BANK-JOINT-STOCK remains unopened.",
+      "TIME-2023-2026 BANK-JOINT-STOCK has not yet received broad fresh-agent blind recall.",
+      "The next slice should test low-rate/NIM compression, deposit termization and repricing, mortgage/loan repricing and asset-duration effects, property and LGFV resolution/exposure, private-enterprise/SME credit, wealth/AUM and fee economics, bond/investment books, capital/RWA and cost discipline, digital/branch operating models, governance and peer divergence through 2026-08-31.",
+      "After the final primary slice, BANK-JOINT-STOCK still requires an explicit cross-time saturation/seal review rather than automatic sealing from one time-slice pass.",
       "Evidence for sealed shards remains deferred while blind-memory priority advances through the active unsealed shard."
     ]
   },
-  "selection_basis":{"rule":"broad_high_novelty_requires_independent_orthogonal_completion","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"TIME-2020-2022"},
-  "open_frontiers":[{"frontier_id":"TIME-2020-2022__BANK-JOINT-STOCK__ORTHOGONAL","priority_rank":1,"state":"open","selected_probe_id":"TIME-2020-2022__BANK-JOINT-STOCK__blind-002"}],
+  "selection_basis":{"rule":"advance_after_2020_2022_broad_plus_orthogonal_completion","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"TIME-2023-2026"},
+  "open_frontiers":[{"frontier_id":"TIME-2023-2026__BANK-JOINT-STOCK__BROAD","priority_rank":1,"state":"open","selected_probe_id":"TIME-2023-2026__BANK-JOINT-STOCK__blind-001"}],
   "next_probe":{
-    "probe_id":"TIME-2020-2022__BANK-JOINT-STOCK__blind-002",
-    "family":"pandemic_property_repricing_ecl_wealth_orthogonal_blind_recall",
-    "time_slice_id":"TIME-2020-2022",
+    "probe_id":"TIME-2023-2026__BANK-JOINT-STOCK__blind-001",
+    "family":"time_slice_timeline_blind_recall",
+    "time_slice_id":"TIME-2023-2026",
     "shard_id":"BANK-JOINT-STOCK",
-    "period":["2020-01-01","2022-12-31"],
-    "instruction":"Run one isolated orthogonal blind-memory challenge for BANK-JOINT-STOCK in 2020-2022 using only this rev114 compact map, the manifest and current model internal memory/reasoning. Do not read blind-001 raw/receipt or any other completed Banking raw/receipts. Independently challenge temporary borrower relief versus hidden impairment; property-developer, project, mortgage, consumer/card and SME transmission; LPR/front-back-book repricing, deposit termization, wholesale funding and NIM; WMP NAV/wealth-subsidiary/customer-asset migration; ECL Stage 1/2/3 versus NPL/special-mention/overdue/restructuring/provision/write-off semantics; digital operating resilience and acquisition economics; and divergence across CMB, Industrial Bank, Minsheng, Ping An Bank, SPDB, CITIC, Everbright, Huaxia and Guangfa. Mention system rules only for bank behavior. Keep Bank of Communications in sealed BANK-STATE-OWNED boundary and respect the CMB 2023 preexposure carveout. Do not import post-2022 outcomes backward and do not invent exact dates, balances, ratios, thresholds or official wording. If no second material category emerges, mark 2020-2022 broad+orthogonal complete and select TIME-2023-2026 BANK-JOINT-STOCK broad as the only next frontier. If a second material category appears, reopen exactly one targeted 2020-2022 frontier. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "period":["2023-01-01","2026-08-31"],
+    "instruction":"Run one isolated broad blind-memory pass for BANK-JOINT-STOCK in 2023-2026 using only this rev115 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts and do not use Banking Evidence/source material or fresh Banking search. Recover period-native leads on low-rate/NIM compression; deposit termization, repricing and customer migration; loan/mortgage repricing and asset-duration effects; property-developer and LGFV/local-government exposure/resolution through bank behavior; private-enterprise/SME/inclusive finance; WMP/wealth-subsidiary/fund/insurance distribution and fee/AUM economics; bond/investment books and treasury; NPL/ECL/provisioning/write-offs/capital/RWA and credit cost; cost discipline, branch productivity, digital/AI/remote-service narratives; institution differentiation across Industrial Bank, Minsheng, Ping An Bank, SPDB, CITIC, Everbright, Huaxia, Guangfa and other genuine national joint-stock peers. Treat CMB 2023 management-detail overlap as PREEXPOSED_NOT_BLIND and do not count it as clean blind memory; only use non-overlapping cohort context or other institutions. Mention system rules only as needed for bank behavior. Keep Bank of Communications in sealed BANK-STATE-OWNED boundary. Do not invent exact dates, balances, ratios, thresholds, ownership changes, product-launch dates or official wording; mark uncertain 2025-2026 fragments explicitly. If broad novelty is material, select exactly one orthogonal 2023-2026 BANK-JOINT-STOCK challenge. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-2020-2022__BANK-JOINT-STOCK__blind-001 raw or receipt","all completed Banking raw and receipts","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only 2020-2022 orthogonal raw and bounded receipt exist; the sparse map either marks the slice broad+orthogonal complete and selects TIME-2023-2026 broad or reopens exactly one measured material gap; and the probe closes through substantive S, cursor-only H and exact-H CLEAN."
+    "done_when":"One append-only 2023-2026 BANK-JOINT-STOCK broad raw and bounded receipt exist; the sparse map selects exactly one next frontier based on measured novelty/gaps; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
