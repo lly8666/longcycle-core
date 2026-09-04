@@ -1,0 +1,46 @@
+{
+  "schema_version": "longcycle-judgment-projection-spec/v2",
+  "task_id": "SHIP-STAGE2-RJO-EXECUTION-001-JUDGMENT",
+  "source_evidence_task_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+  "allowed_claim_roles": [
+    "contemporaneous_judgment_candidate"
+  ],
+  "subjects": [
+    {
+      "id": "3e2491ec-ea70-5ce6-9739-85fd1fc1fd5a",
+      "entity_type": "legal_entity",
+      "canonical_name": "A.P. Moller - Maersk"
+    }
+  ],
+  "judgments": [
+    {
+      "judgment_key": "ship-judgment-2022-11-02-peak",
+      "evidence_refs": [
+        {
+          "fragment_key": "ship-judgment-2022-11-02-peak",
+          "evidence_role": "statement"
+        }
+      ],
+      "subject_entity_id": "3e2491ec-ea70-5ce6-9739-85fd1fc1fd5a",
+      "speaker_name_text": "Soren Skou",
+      "speaker_role": "CEO, A.P. Moller - Maersk",
+      "topic_code": "shipping.freight_rate_normalization",
+      "judgment_kind": "thesis",
+      "target_time_kind": "period",
+      "target_from": "2022-07-01T00:00:00Z",
+      "target_to": "2022-10-01T00:00:00Z",
+      "target_precision": "quarter",
+      "target_text": "Q3 2022",
+      "value_kind": "text",
+      "value_text": "freight rates have peaked and started to normalize during the quarter",
+      "summary": "By 2022-11-02, Maersk management judged that freight rates had peaked and started to normalize during Q3 2022.",
+      "metadata": {
+        "trajectory_id": "container-market-normalization-2022q3-to-2023",
+        "epistemic_role": "contemporaneous_judgment",
+        "statement_known_at_upper_bound": "2022-11-02T23:59:59Z",
+        "no_lookahead": true,
+        "later_2023_evidence_used_to_form_judgment": false
+      }
+    }
+  ]
+}
