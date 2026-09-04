@@ -14,7 +14,7 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 - 每条工作分支同一时刻只能有一个写入者。不同工作分支可以真正并行。
 - 聊天被截断没有关系。已经推送工作但没写交接，就在下次启动时先自动补交接；没有推送的工作不能假装恢复，只能从远端记录的上一步重做。
 - 每次工作完成都采用 `S -> H`：先推送实质工作 `S`，再单独推送只包含游标的交接确认 `H`。
-- 所有长期 Agent 都按 ChatGPT 聊天模式运行：GitHub Connect 管仓库和交接，ChatGPT 私有沙箱处理当前文件/哈希，Drive 运送大数据库，远端 CI 执行测试；不假定通用外网或本地 git/终端存在。
+- 所有长期 Agent 都按 ChatGPT 聊天模式运行：GitHub Connect 管仓库和交接，ChatGPT Search 在 seal 后承担来源发现/原文读取，私有沙箱处理当前文件/哈希，Drive 运送大数据库，远端 CI 执行测试；不假定本地 git/终端存在，Search 能力按当前窗口实际工具判断而不是一概禁用。
 - 行业知识不是按目录标题“填满”。每个行业维护一张稀疏探索地图，每次只做一个信息价值最高的探针，用新颖度、负空间和独立挑战者判断何时停。
 - 旧研究错误不删除、不改写原字节；用精确更正或 supersession 把它移出当前状态和 Evidence 入口。当前地图和游标是唯一热入口。
 - 热交接只保留当前目标、一个下一步和少量指针。多年历史留在 Git、不可变收据和 Drive 对象里，按需查，不塞进每次启动上下文。
@@ -53,11 +53,12 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 | 组件 | 唯一用途 | 不能替代 |
 | --- | --- | --- |
 | GitHub Connect | 查询精确 ref、读写分支文件、比较提交、PR、CI、S/H | 不能装大数据库，也不能变成行业 Evidence 搜索器 |
+| ChatGPT Search / 网页读取 | seal 后按旧协议找 primary source、打开原文、追 citation/reverse query | 搜索结果、snippet、AI 摘要和 citation 本身都不是 Evidence |
 | ChatGPT 私有沙箱 | 当前会话内生成文件、算 SHA/size、打开私有数据库副本（能力可用时） | 不是持久权威，沙箱丢失后只能从 Git/Drive 恢复 |
 | Google Drive | 沿用初代 Agent 跑通的不可变大文件上下载与 round-trip 验证 | 不是当前版本权威，也不是共享可写数据库 |
 | GitHub Actions / 远端 CI | 执行代码、规范 audit 和测试，结果绑定精确提交 | 不能为聊天 Agent伪造通用外网，也不用于无休止下载 PDF |
 
-统一聊天操作协议见 `docs/development/prompts/github-connect-chat-adapter.md`。某个聊天窗口没有 Drive 连接时，只在当前 cursor 真正需要二进制对象时才构成能力阻塞；当前纯 Memory 探针不受影响。
+统一聊天操作协议见 `docs/development/prompts/github-connect-chat-adapter.md`。某个聊天窗口没有 Drive 连接时，只在当前 cursor 真正需要二进制对象时才构成能力阻塞；没有 Search/网页读取时，也只在 seal 后任务确实需要外部来源时构成 `CAPABILITY_BLOCKED_EXTERNAL_SOURCE`。工具缺失不等于 source gap，当前纯 blind Memory 探针不受影响。
 
 ## 3. 治理拓扑
 
@@ -113,8 +114,9 @@ Longcycle 不把一个聊天窗口当成一个长期员工。长期存在的是�
 - 从全局短期目标推导自己的工作流目标、当前原子任务和 `done_when`。
 - 维护一张稀疏探索地图，始终只选择一个 `next_probe`。
 - 严格分开 Memory、Evidence、Reality、Judgment、Outcome；盲回忆阶段不偷看搜索或其他被禁输入。
+- seal 后按 live cursor 进入 high-model self-verification/source discovery，直接使用当前窗口可用的 ChatGPT Search；只有实际读取并按旧 CAP-0001/CAP-0002 规则保存的 claim-scoped 原文内容才能进入 Evidence。
 - 每次探针写不可变原始输出、一个有界收据、更新同一地图，并完成 `S -> H`。
-- 一次聊天执行默认争取连续完成最多四个探针循环；每个探针仍独立 `S -> H -> CLEAN`，后一个只由新地图动态选择。四连跑是软上限，不是硬配额。
+- blind Memory 阶段一次聊天执行默认争取连续完成最多四个探针循环；每个探针仍独立 `S -> H -> CLEAN`，后一个只由新地图动态选择。四连跑是软上限，不是硬配额，不延伸到 seal 后搜索/Evidence 阶段。
 - 每次聊天执行最多提交一个 campaign-local 方法观察；即使连续跑四个 probe，也只保留最重要的一项，不要一边研究一边另造共享框架。
 - 如果需要共享功能，只提请求，不复制实现。
 

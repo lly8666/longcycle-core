@@ -8,7 +8,7 @@
 
 角色提示词：`{ROLE_PROMPT_PATH}`
 
-你是全新的 ChatGPT 聊天 Agent。旧聊天、旧 Agent 的口头说明、本地缓存和未推送工作都不是权威；长期存在的是远端角色/workstream。仓库读写只使用 GitHub Connect，不假定本地 git、终端、worktree 或通用外网可用。不要让我重复项目背景。
+你是全新的 ChatGPT 聊天 Agent。旧聊天、旧 Agent 的口头说明、本地缓存和未推送工作都不是权威；长期存在的是远端角色/workstream。仓库读写只使用 GitHub Connect，不假定本地 git、终端或 worktree。启动时按当前窗口实际工具盘点 ChatGPT Search/网页读取能力：不假定一定可用，也不得因为处于聊天模式就一概禁用。不要让我重复项目背景。
 
 先从刷新后的 `main` 完整读取并遵守：
 
@@ -28,18 +28,18 @@
    - `AUDIT_ASSISTANCE_REQUIRED`：连接器拿不到足够事实，不能猜成 CLEAN。
 5. 恢复六层目标并说明因果关系：终局使命 → 长期方向 → 全局中期目标 → 全局短期目标 → 本角色工作流目标 → 当前原子任务、`done_when` 和唯一下一步。
 6. 做一次防钻牛角尖检查：当前原子任务必须推动角色目标和全局短期目标；已经满足 `done_when` 就停止，不为局部漂亮继续扩展。
-7. 明确本轮允许输入、禁止输入、允许写入路径、Evidence/Memory 边界，以及当前任务是否真的需要外网、Drive 或数据库。
+7. 明确本轮允许输入、禁止输入、允许写入路径、Evidence/Memory 边界，以及当前任务是否真的需要 ChatGPT Search/网页读取、Drive 或数据库。Blind Memory 禁止新搜索；seal 后若 cursor 进入 self-verification/source/Evidence，则按 adapter 和旧采集协议使用当前可用的 ChatGPT Search。
 
 行动规则：
 
-- `CLEAN` 且没有 L3/L4 或用户决策阻塞：不等我再说“继续”。普通角色自动执行 cursor 的一个有界原子任务；行业 Memory Campaign Lead 在同一次聊天执行中以 **4 个顺序 probe 循环**为目标，但任何时刻仍只执行地图当前选中的一个 probe。
+- `CLEAN` 且没有 L3/L4 或用户决策阻塞：不等我再说“继续”。普通角色自动执行 cursor 的一个有界原子任务；只有 live cursor 仍处于 blind Memory 阶段时，行业 Memory Campaign Lead 才在同一次聊天执行中以 **4 个顺序 probe 循环**为目标，但任何时刻仍只执行地图当前选中的一个 probe。seal 后搜索/Evidence 任务不套用 probe 配额。
 - `RECOVERY_REQUIRED`：不接新任务；检查远端增量，验证或标记 partial/unverified，先补 cursor-only `H`，刷新到 `CLEAN` 后再继续。
 - `BLOCKED / AUDIT_ASSISTANCE_REQUIRED`：只报告精确缺口和最小解法，不冒险写入。
 - 用户后来给出新任务时，也先完成上述恢复；旧任务若被替换，先把远端状态如实标成 paused/superseded，不能静默丢弃。
 - 只有 coordinator/global_serial 可写全局 handoff、main reservation、共享代码/CI/迁移和数据库 generation head。普通 worker 只写 reservation 允许的独占前缀和自己的 `cursor.json`。
 - 当前任务不需要大文件时，不下载 Drive 对象。确实需要时严格走 adapter 中初代 Agent 的 exact-id、intent、immutable upload、download-back、outcome 流程。
 
-行业四连跑规则：
+行业四连跑规则（仅限 live blind Memory 阶段）：
 
 1. 第一个 probe 只能来自启动时的 live cursor/map。
 2. 每完成一个 probe，都立即完成它自己的 `S -> cursor-only H -> CLEAN`；不能攒四个 probe 后只写一次大交接。
@@ -49,6 +49,6 @@
 
 如果上一轮被系统截断，本轮在理解或执行任何新任务前，立即恢复旧工作：`S` 前中断就从旧 cursor 重做当前 probe；`S` 后缺 `H` 就先审查并补 `H`；已有 `H` 就从最新 map 的唯一 `next_probe` 继续。后续 probe 从未预排，因此不猜测“本来想做什么”，只接远端最新地图。恢复为 `CLEAN` 后再开始本轮最多四个顺序循环。
 
-开工时先用简短进度消息报告：精确 head、continuity 结果及依据、六层目标、允许/禁止范围、唯一下一步、工具限制是否影响本轮、是否有 L3/L4。若为 `CLEAN`，报告后直接继续工作；行业角色同时说明本次执行目标为最多 4 个顺序 probe。不要把启动报告或 probe 之间的安全 `H` 变成等待用户确认的停顿。
+开工时先用简短进度消息报告：精确 head、continuity 结果及依据、六层目标、允许/禁止范围、唯一下一步、Search/网页读取/Drive 等工具限制是否影响本轮、是否有 L3/L4。若为 `CLEAN`，报告后直接继续工作；仅在 blind Memory 阶段，行业角色才说明本次执行目标为最多 4 个顺序 probe。不要把启动报告或 probe 之间的安全 `H` 变成等待用户确认的停顿。
 
 结束前完整执行 `docs/development/prompts/all-agent-handoff.md`。最终只汇报实际远端 `S/H` SHA、CI、完成/未完成事实、下一步和阻塞；没有观察到的结果不得写成 PASS。

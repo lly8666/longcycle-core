@@ -1,32 +1,34 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "WORKSTREAM-AUTHORITY-TRANSITION-V1-036",
-  "goal": "Make active workstream reservation authority a versioned main-owned contract and prevent a worker from being blocked merely because its historical branch copy of reservation.json differs from refreshed main.",
+  "intent_id": "POST-SEAL-CHATGPT-SEARCH-RESTORE-V1-037",
+  "goal": "Restore Longcycle's inherited post-seal ChatGPT Search/self-verification execution path in chat-agent governance, supersede only the premature completion effect of Shipping's GitHub-only source gap, and keep every existing Evidence certification rule unchanged.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this extends CAP-0010 governance/control-plane guards and preserves Evidence, PIT/no-lookahead, Reality/Judgment/Outcome, provenance, database-generation and worker single-writer semantics",
+  "baseline_impact": "none; this reuses the existing CAP-0006 post-seal search route plus CAP-0001/CAP-0002 source/Evidence semantics and preserves PIT/no-lookahead, Reality/Judgment/Outcome, provenance, database-generation and worker single-writer semantics",
   "baseline_invariants": [
-    "main/integration remains the only reservation authority and shared-state writer",
-    "workers cannot mutate reservation/change-contract/capability-admission authority in their implementation diff",
-    "worker substantive work still requires refreshed reservation/fence agreement and exact-head CLEAN continuity",
-    "no L3/L4 semantic owner or product schema is changed"
+    "blind Memory remains isolated from fresh search until the relevant atlas/shard is sealed",
+    "post-seal model/search activity remains discovery and research control until claim-scoped source content satisfies existing CAP-0001/CAP-0002 rules",
+    "locator_verified, content_verified and materialized retain their existing meanings and raw-byte materialization is not added as an Evidence prerequisite",
+    "Reality, contemporaneous Judgment, later Outcome and PIT/no-lookahead remain separate and fail closed",
+    "worker branch/fence/single-writer and main-owned control-plane authority remain unchanged",
+    "no L3/L4 semantic owner, Baseline expectation, product schema or source-authority rule is changed"
   ],
-  "schema_impact": "no JSON schema version change; reservation_revision receives an enforced transition invariant and worker boundary evaluation reads refreshed integration-base reservation authority",
-  "baseline_critical_tests_touched": true,
+  "schema_impact": "none; prompt, workstream authorization and lightweight governance regression only",
+  "baseline_critical_tests_touched": false,
   "architecture_change_ref": null,
   "counterexample_refs": [],
   "affected_invariants": [],
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "PR CI rejects an active reservation authority-field mutation when reservation_revision is unchanged.",
-    "PR CI rejects a revision bump with no authority mutation and rejects skipped revision numbers.",
-    "Worker boundary checks load the reservation from the supplied integration/base ref and compare only cursor identity, reservation_revision and assignment_epoch acknowledgements against it.",
-    "An actual worker-authored change to reservation.json, change-contract.json or capability-admission.json still fails the changed-path gate.",
-    "A cursor that has not adopted a newer main reservation revision stops with an explicit authority-update-pending error before substantive work.",
-    "Task-stage narrowing that does not change durable workstream acceptance is routed through Change Contract/admission/prompt/cursor rather than mutating reservation.done_when.",
-    "The Shipping PR #181 compatibility defect is repaired separately by restoring its original revision-1 done_when, without touching the Shipping worker branch.",
-    "Architecture Baseline focused regressions and full CI pass on the exact final PR head."
+    "Chat-agent bootstrap distinguishes repository control through GitHub Connect from research discovery/reading through ChatGPT Search and checks Search availability at runtime rather than banning it by chat mode.",
+    "Blind Memory still forbids fresh search; a sealed campaign may use the existing high-model self-verification/search route without creating a new role or semantic owner.",
+    "Search snippets, rankings, AI answers, candidate URLs and citations remain discovery material; Grounded Evidence continues to require the old claim-scoped source identity, readable content, locator, authority, temporal and provenance rules.",
+    "No fixed webpage/source/download quota or raw-byte prerequisite is added. Existing unresolved-exhaustion and authoritative-resolution stop behavior remains authoritative.",
+    "A missing Search/interactive reading tool yields CAPABILITY_BLOCKED_EXTERNAL_SOURCE and handoff, not bounded_source_gap or real-world not_found.",
+    "Shipping's prior GitHub-only source-gap bytes remain immutable; only its stage-completion effect is superseded, and the same single pilot may resume through a worker-owned cursor-only acknowledgement after refreshed-main authority and exact-head CLEAN.",
+    "Shipping P146 remains sealed; no P147, fourth blind-Memory probe, second trajectory or global_serial cross-write of the Shipping cursor is authorized.",
+    "Lightweight prompt-contract regressions, Architecture Baseline, Fresh-Agent Continuity and full CI pass on the exact final PR head."
   ]
 }

@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 137,
+  "continuity_sequence": 138,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
-  "active_branch": "coordinator/workstream-authority-transition-hardening",
-  "active_pr": 183,
-  "checkpoint_based_on_head_sha": "8b24d16a780226f7ed986a824af11371b88ef027",
+  "active_branch": "post-baseline/restore-post-seal-search-v1",
+  "active_pr": 184,
+  "checkpoint_based_on_head_sha": "d05dc9de1feff583c4ba11c155917ed4439b0095",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh exact main and both worker refs through GitHub Connect before acting. PR #182 repaired the Shipping revision-1 reservation mismatch on main@69e4877afcdb19240712ac4d64a48f6db90e376b without touching the Shipping worker branch. Shipping remains at bfb64375e80cdd32e64fc01aa633b13ca205ee18; rerun worker-fast on that exact H succeeded through the boundary, focused regressions and Remote worker continuity is CLEAN. Its cursor progress remains blocked until the Shipping owner refreshes main and performs its own cursor-only resume/phase acknowledgement; no stage-two source-validation work has started. PR #183 extends CAP-0010 with versioned reservation authority transitions and base-authority worker fencing. Exact H=fbd0f7453ac7e481f84bd18d5be97cb630f6112a passed Architecture Baseline and Fresh-Agent Continuity, but full CI failed during Pytest collection because the new test loader did not expose the scripts directory before validate_reservation_transitions imported its sibling workstream_registry module. Substantive S=8b24d16a780226f7ed986a824af11371b88ef027 applies only that mechanical test-loader repair; 44 focused tests, Ruff and the transition CLI passed locally. Fresh exact-head CI is required. Sequence-130 remains cancelled and Shipping P146 remains sealed with no P147/fourth blind-Memory probe.",
+  "bootstrap_instruction": "Refresh exact main, PR #184 and both worker refs through GitHub Connect before acting. PR #183 is merged as main@b9aebf0492715b6d907ca0dab54b791715cee16b. Shipping then acknowledged stage two and closed its single pilot as a GitHub-only bounded source gap at exact H=d917ac9a17202b2ba80a9107d51aa2780b742452; worker-fast run 33875033065 was CLEAN. That result truthfully describes the imposed GitHub-only scope, but newer review found the stage-two prompt had incorrectly converted the inherited rule 'search is discovery, not Evidence' into a blanket ban on ChatGPT Search. User explicitly authorized restoration with no Evidence tightening. PR #184 S=d05dc9de1feff583c4ba11c155917ed4439b0095 restores seal-after-search routing, preserves the old gap bytes while superseding only its pilot-completion effect, and leaves the Shipping cursor untouched. Require exact-head CI, merge, refresh main, then re-run unchanged Shipping H against new main before the Shipping owner cursor-only resumes the same pilot. P146 stays sealed; no P147/fourth blind probe/second trajectory is authorized.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,82 +17,85 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents can move between phases through durable, versioned control-plane authority without relying on chat memory or cross-writing one another's state.",
-    "short_term_goal": "Land the bounded CAP-0010 workstream-authority hardening, prove it with fresh exact PR-head CI, and preserve Shipping's repaired P146-sealed stage-two boundary so the Shipping owner can resume only through its own cursor and exact-head CLEAN gate.",
-    "next_big_step": "Verify H is handoff-only from substantive S=8b24d16a780226f7ed986a824af11371b88ef027, require fresh exact-head Architecture Baseline, Fresh-Agent Continuity and full CI on PR #183, merge only if all succeed, refresh main, then re-run Shipping worker-fast against the new main before the unchanged Shipping role clears its blocked progress cursor and continues the one authorized 2020-2023 source-validation pilot.",
-    "local_optimization_stop_rule": "Do not turn this L2 control-plane repair into a new scheduler, distributed lock, permanent role, L3/L4 semantic rewrite or Shipping research expansion. Do not mutate any active reservation merely to encode an atomic task stage; use Change Contract/admission/prompt/cursor unless durable workstream authority truly changes.",
+    "short_term_goal": "Restore the inherited post-seal ChatGPT Search/self-verification path across durable chat-agent prompts, without tightening CAP-0001/CAP-0002 Evidence rules, then safely release the same Shipping stage-two pilot through refreshed-main authority and a worker-owned cursor acknowledgement.",
+    "next_big_step": "Verify H is handoff-only from S=d05dc9de1feff583c4ba11c155917ed4439b0095, require exact PR #184 Architecture Baseline, Fresh-Agent Continuity and full CI, merge with expected-head protection, refresh main, re-run unchanged Shipping H=d917ac9a17202b2ba80a9107d51aa2780b742452 through worker-fast, and only after CLEAN let the Shipping owner cursor-only acknowledge restored Search authority and continue the original single pilot.",
+    "local_optimization_stop_rule": "Do not redesign Evidence, add a crawler/search platform, create a permanent acquisition role, add source/download quotas, delete the old gap, reopen sealed Memory, expand Shipping to a second trajectory or cross-write its cursor. This is an L2 prompt/control-plane correction that reuses old owners and old stop rules.",
     "parallel_permanent_tracks": [
-      "Architecture Baseline v1 remains the semantic baseline; this task extends CAP-0010 governance only.",
+      "Architecture Baseline v1 remains unchanged; CAP-0001/CAP-0002 Evidence and source semantics are reused byte-for-byte at the implementation level.",
       "Banking remains independently owned by banking-domain-v1 and is not modified by this control-plane hardening task.",
-      "Shipping remains shipping-domain-v1 on reservation_revision=1 and assignment_epoch=1; P146 blind Memory stays sealed and stage two remains exactly one bounded pilot.",
-      "GitHub remains repository authority; no Drive/database generation work is part of this task."
+      "Shipping remains shipping-domain-v1 on reservation_revision=1 and assignment_epoch=1; P146 blind Memory stays sealed, the prior gap is preserved, and stage two remains the same one bounded pilot.",
+      "GitHub remains repository authority; ChatGPT Search is a post-seal discovery/reading surface, while Drive/data-plane transport and source authority retain their existing roles."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "workstream-authority-transition-v1",
-    "last_completed_action": "Merged PR #182 after exact Architecture Baseline and full-ci success, restoring Shipping's original revision-1 reservation.done_when, then re-ran worker-fast for exact Shipping H=bfb64375e80cdd32e64fc01aa633b13ca205ee18 to CLEAN. PR #183 added versioned reservation transition validation, integration-base authority lookup, cursor revision/epoch acknowledgement, CAP-0010 metadata, protocol documentation and regressions. After the L2 Change Contract repair, exact H=fbd0f7453ac7e481f84bd18d5be97cb630f6112a passed Architecture Baseline run 33858634032 and Fresh-Agent Continuity run 33858634015, while full CI run 33858634040 failed only at Pytest collection: tests/test_reservation_transitions.py dynamically loaded the validator without making scripts/workstream_registry.py importable. Substantive S=8b24d16a780226f7ed986a824af11371b88ef027 mirrors the existing workstream-boundary test loader by adding scripts/ to sys.path before module execution. Focused reservation-transition plus workstream-boundary tests passed 44/44, Ruff passed, and the transition CLI passed locally. No validator semantics, Baseline expectation, worker branch, database or Shipping research file changed.",
-    "current_task": "Complete exact-head validation and integration of versioned workstream reservation authority transitions and base-authority worker fencing.",
-    "why_now": "PR #181 proved the old control plane could merge a same-revision main-owned reservation mutation that left a long-lived worker unable to pass its boundary gate. The fail-closed worker correctly stopped, so the architectural response is to preserve main authority/worker cursor separation while making transition versioning and adoption machine-enforced. PR #183's latest full CI then exposed one mechanical test-loader import gap; fixing that exact gap is required before the hardening can safely land and Shipping can be revalidated against the new main.",
-    "done_when": "S-to-H changes only .longcycle/handoff/current.json; PR #183 contains the reservation transition validator, worker base-authority boundary, CAP-0010 admission/card updates, protocol documentation, regression tests and the test-loader import repair; fresh exact PR-head Architecture Baseline, Fresh-Agent Continuity and full CI succeed; main is refreshed after merge; and unchanged Shipping is re-run through worker-fast against that new main to continuity-CLEAN before stage two starts.",
+    "parent_workstream_id": "post-seal-chatgpt-search-restore-v1",
+    "last_completed_action": "PR #183 merged and post-merge Shipping worker-fast was CLEAN. The Shipping owner then made a cursor-only stage-two acknowledgement, searched only GitHub/repository-preserved material because the new prompt explicitly forbade ordinary web/search, preserved domain_packs/shipping/source-validation/container-pandemic-cycle-2020-2023-source-gap.json at S=1262bb00cd97416932c41b6818d3988f685283d3, and closed with cursor-only H=d917ac9a17202b2ba80a9107d51aa2780b742452; worker-fast run 33875033065 succeeded. Review against METHODOLOGY_CORE M1/M3/M7, the model-memory exhaustion protocol, agent collection contract and memory_campaign.py proved the prompt had dropped the old seal-after-search phase. With explicit user authorization to restore it without tightening, S=d05dc9de1feff583c4ba11c155917ed4439b0095 updates common/Shipping prompts and main-side Shipping contract/admission, makes the long-lived Shipping prompt phase-driven, preserves the old gap while superseding only its completion effect, and adds a lightweight prompt-contract regression. No Evidence implementation, Baseline-critical expectation, reservation, worker cursor, sealed artifact, database path or source authority changed. Local focused checks passed 112 tests plus Baseline, capability, workstream, reservation and Ruff validation.",
+    "current_task": "Complete exact-head validation and integration of the L2 post-seal ChatGPT Search restoration on PR #184.",
+    "why_now": "The stage-two pilot stopped for lack of repository-preserved source material only because its prompt prohibited the same ChatGPT Search route that Longcycle's adopted historical-recovery method explicitly enables after seal. Leaving that drift in place would make every future chat industry Agent falsely convert an execution-tool restriction into a research source gap.",
+    "done_when": "S-to-H changes only .longcycle/handoff/current.json; PR #184 restores phase-aware ChatGPT Search routing while preserving blind isolation and every old Evidence/verification stop rule; exact-head Architecture Baseline, Fresh-Agent Continuity and full CI succeed; main is refreshed after merge; unchanged Shipping H=d917ac9a17202b2ba80a9107d51aa2780b742452 is re-run through worker-fast against that main to CLEAN; and the Shipping owner is given the corrected long-term takeover instruction for a cursor-only same-pilot resume.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Commit and push this cursor-only H over S=8b24d16a780226f7ed986a824af11371b88ef027, verify the S-to-H delta contains only .longcycle/handoff/current.json, require Architecture Baseline, Fresh-Agent Continuity and full CI success on the new exact PR head, merge with expected-head protection, refresh main, then re-run Shipping worker-fast before releasing stage two."
+    "next_atomic_action": "Commit and push this cursor-only H over S=d05dc9de1feff583c4ba11c155917ed4439b0095, verify the S-to-H delta contains only .longcycle/handoff/current.json, require exact-head Architecture Baseline, Fresh-Agent Continuity and full CI on PR #184, merge with expected-head protection, refresh main, then re-run unchanged Shipping H through worker-fast before releasing its cursor-only same-pilot resume."
   },
   "active_context": {
-    "context_id": "workstream-authority-transition-v1-137",
-    "context_kind": "bounded_control_plane_hardening",
-    "label": "Versioned reservation authority transition and Shipping compatibility repair",
+    "context_id": "post-seal-chatgpt-search-restore-v1-138",
+    "context_kind": "bounded_prompt_and_control_plane_correction",
+    "label": "Restore inherited post-seal ChatGPT Search without Evidence tightening",
     "root_path": "docs/development",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      "docs/development/workstream-reservation-integration.md",
-      "scripts/validate_reservation_transitions.py",
-      "scripts/validate_workstream_boundaries.py",
-      "tests/test_reservation_transitions.py",
-      "tests/test_workstream_boundaries.py",
-      ".github/workflows/architecture-baseline.yml",
-      ".longcycle/capabilities/cards/CAP-0010.json",
-      ".longcycle/workstreams/shipping-domain-v1/reservation.json"
+      "docs/development/prompts/github-connect-chat-adapter.md",
+      "docs/development/prompts/shipping-fresh-agent.md",
+      "docs/development/prompts/shipping-stage-two-source-validation.md",
+      "docs/research/model-memory-exhaustion-protocol.md",
+      "docs/research/agent-collection-contract.md",
+      "src/longcycle/application/memory_campaign.py",
+      ".longcycle/workstreams/shipping-domain-v1/change-contract.json",
+      "tests/test_chat_agent_prompt_contracts.py"
     ],
     "core_exclusion_terms": [
-      "distributed-lock",
-      "new-permanent-role",
-      "same-revision-authority-mutation",
-      "worker-reservation-self-write",
+      "new-search-platform",
+      "evidence-tightening",
+      "raw-byte-prerequisite",
+      "worker-cursor-cross-write",
+      "delete-old-source-gap",
       "shipping-P147",
       "fourth-memory-probe",
+      "second-shipping-trajectory",
       "sealed-memory-as-fact"
     ]
   },
   "pending_user_directives": [
-    "Modify the architecture and process as proposed and run tests after the change.",
+    "Restore the old ChatGPT Search-enabled post-seal mechanism and retain the old Evidence certification standard and execution plan without any tightening.",
     "Repository authority and control operations use refreshed remote Git/GitHub facts; do not rely on chat memory as authority.",
-    "Shipping P146 remains the sealed blind-Memory boundary; no P147, fourth probe or substantive stage-two research may be invented by global_serial.",
-    "Do not cross-write Shipping worker cursor/research state from global_serial; Shipping resumes through its own cursor after refreshed-main authority is safe.",
+    "Shipping P146 remains the sealed blind-Memory boundary; no P147, fourth probe or second trajectory may be invented by global_serial.",
+    "Preserve the prior GitHub-only bounded source gap as provenance, but supersede its stage-completion effect and continue the same pilot after corrected main authority is CLEAN.",
+    "Do not cross-write Shipping worker cursor/research state from global_serial; Shipping resumes through its own cursor-only acknowledgement after refreshed-main authority is safe.",
     "Sequence-130 genuine external Fresh-Agent v3 remains cancelled/suppressed."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33858634040,
-    "observed_head_sha": "fbd0f7453ac7e481f84bd18d5be97cb630f6112a",
-    "conclusion": "PR #182 exact head ef0c4bb9c6942d48babf1f936a8121d7124d5880 passed Architecture Baseline and full CI, then merged as main@69e4877afcdb19240712ac4d64a48f6db90e376b. Shipping worker-fast was re-run on exact H=bfb64375e80cdd32e64fc01aa633b13ca205ee18 and reached Remote worker continuity is CLEAN. PR #183 H=fbd0f7453ac7e481f84bd18d5be97cb630f6112a passed Architecture Baseline run 33858634032 and Fresh-Agent Continuity run 33858634015; full CI run 33858634040 failed only because Pytest could not import sibling workstream_registry while collecting tests/test_reservation_transitions.py. S=8b24d16a780226f7ed986a824af11371b88ef027 repairs that loader and passed 44 focused tests plus Ruff and the transition CLI locally. No earlier check may be reused; fresh exact-head checks are mandatory.",
-    "mypy_summary": "Architecture hardening changes Python governance scripts and tests, so final full CI must re-run mypy on the exact PR head.",
-    "pytest_summary": "The import repair passed tests/test_reservation_transitions.py plus tests/test_workstream_boundaries.py: 44 passed locally. The existing regressions still cover PR #181's same-revision done_when mutation, exact +1 revision transitions, spurious/skipped revisions, assignment-epoch versioning and base-authority worker acknowledgement.",
-    "ruff_summary": "New/modified Python governance scripts require final exact-head Ruff through full CI.",
-    "refresh_instruction": "Refresh PR #183 after this H and require its own fresh Architecture Baseline and full CI success. After merge, refresh main and both worker refs before any Shipping continuation."
+    "last_observed_run": 33875033065,
+    "observed_head_sha": "d917ac9a17202b2ba80a9107d51aa2780b742452",
+    "conclusion": "PR #183 passed exact-head Architecture Baseline, Fresh-Agent Continuity and full CI, merged as main@b9aebf0492715b6d907ca0dab54b791715cee16b, and unchanged Shipping revalidated CLEAN. Shipping then produced S=1262bb00cd97416932c41b6818d3988f685283d3 plus cursor-only H=d917ac9a17202b2ba80a9107d51aa2780b742452; worker-fast run 33875033065 succeeded, including Remote worker continuity is CLEAN. That source gap used no web because main prompts forbade it. PR #184 S=d05dc9de1feff583c4ba11c155917ed4439b0095 restores the inherited post-seal ChatGPT Search route. Local checks passed 112 focused tests, Architecture Baseline L2 validation, Capability Registry reuse audit, workstream registry/boundary, reservation transitions and Ruff. These local/older results do not replace exact final PR-head CI.",
+    "mypy_summary": "No production Python or type contract changes; final full CI still owns exact-head mypy status.",
+    "pytest_summary": "112 focused tests passed, including the existing post-seal fresh-search prompt, unresolved-exhaustion, authoritative-stop, source three-state/data-plane, workstream, reservation and new chat-agent prompt-contract regressions.",
+    "ruff_summary": "The only new Python file is tests/test_chat_agent_prompt_contracts.py and Ruff passes locally; final exact-head full CI remains authoritative.",
+    "refresh_instruction": "Refresh PR #184 after this H and require exact-head Architecture Baseline, Fresh-Agent Continuity and full CI. After merge, refresh main and unchanged Shipping H before any cursor-only resume."
   },
   "workstreams": [
     {
-      "workstream_id": "workstream-authority-transition-v1",
+      "workstream_id": "post-seal-chatgpt-search-restore-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "pytest_import_repaired_pending_exact_head_ci",
-      "summary": "CAP-0010 is extended on PR #183 with a main-side reservation transition validator, base-authority worker boundary semantics, Architecture Baseline gate, incident regression tests and a documented two-phase authority transaction. Substantive S=8b24d16a780226f7ed986a824af11371b88ef027 fixes the only latest full-CI failure by making the dynamic test loader expose scripts/workstream_registry.py. No validator meaning, product semantic owner or database schema changed.",
+      "status": "substantive_search_restore_pushed_pending_h_and_exact_head_ci",
+      "summary": "PR #184 S=d05dc9de1feff583c4ba11c155917ed4439b0095 restores the old seal-after-search route in shared/Shipping chat prompts, reuses CAP-0001/CAP-0002/CAP-0006/CAP-0009/CAP-0010, preserves the prior gap bytes while superseding only its completion effect, and adds one lightweight regression file. No Baseline, production Evidence code, source-authority rule, reservation or worker cursor changed.",
       "next_actions": [
-        "Verify S=8b24d16a780226f7ed986a824af11371b88ef027 to H is handoff-only and refresh PR #183 exact head.",
-        "Require fresh exact-head Architecture Baseline, Fresh-Agent Continuity and full CI including the new transition tests.",
-        "Merge with expected-head protection, refresh main, and re-run Shipping worker-fast before stage two."
+        "Verify S=d05dc9de1feff583c4ba11c155917ed4439b0095 to H is handoff-only and refresh PR #184 exact head.",
+        "Require exact-head Architecture Baseline, Fresh-Agent Continuity and full CI including the new prompt-contract regressions.",
+        "Merge with expected-head protection, refresh main, and re-run unchanged Shipping H before releasing its same-pilot cursor acknowledgement."
       ],
       "blockers": []
     },
@@ -111,12 +114,12 @@
       "workstream_id": "shipping-domain-v1",
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "p146_sealed_control_plane_repaired_continuity_clean_progress_blocked",
-      "summary": "Shipping exact H remains bfb64375e80cdd32e64fc01aa633b13ca205ee18. Main reservation revision 1 is again compatible on the reserved done_when field after PR #182, and the latest worker-fast attempt on that unchanged H succeeded through Remote worker continuity is CLEAN. The branch-local cursor still truthfully records progress_state=blocked/unverified and that the stage-two pilot has not started; global_serial has not edited it.",
+      "status": "p146_sealed_stage2_git_only_gap_clean_search_restore_pending_main_merge",
+      "summary": "Shipping exact H=d917ac9a17202b2ba80a9107d51aa2780b742452 is CLEAN at worker-fast run 33875033065 and truthfully preserves a bounded source gap for the former GitHub-only/no-Search execution. P146 remains sealed. Main PR #184 will supersede only that gap's pilot-completion effect; global_serial has not edited the worker branch or cursor.",
       "next_actions": [
         "Do not run P147 or a fourth blind-Memory probe.",
-        "After the hardening merge, the Shipping owner refreshes exact main/worker refs and clears the repaired control-plane blocker through its own cursor-only resume/phase acknowledgement, then requires exact-head worker-fast CLEAN.",
-        "Only after that may Shipping execute the single authorized 2020-2023 source-validation trajectory and then stop."
+        "After PR #184 merges and unchanged H revalidates CLEAN against new main, the Shipping owner performs a cursor-only restored-Search acknowledgement for the same single pilot, then requires exact-head worker-fast CLEAN.",
+        "Only after that may Shipping use ChatGPT Search under the old Evidence rules to continue the original 2020-2023 source-validation trajectory and then stop."
       ],
       "blockers": []
     }
@@ -132,24 +135,24 @@
     ".longcycle/capabilities/active-index.json"
   ],
   "deep_reference_paths": [
-    "docs/development/workstream-reservation-integration.md",
-    "docs/development/remote-worker-continuity.md",
-    "scripts/validate_reservation_transitions.py",
-    "scripts/validate_workstream_boundaries.py",
-    "tests/test_reservation_transitions.py",
-    "tests/test_workstream_boundaries.py",
-    ".github/workflows/architecture-baseline.yml",
-    ".longcycle/capabilities/cards/CAP-0010.json"
+    "docs/development/prompts/github-connect-chat-adapter.md",
+    "docs/development/prompts/shipping-fresh-agent.md",
+    "docs/development/prompts/shipping-stage-two-source-validation.md",
+    "docs/research/model-memory-exhaustion-protocol.md",
+    "docs/research/agent-collection-contract.md",
+    "src/longcycle/application/memory_campaign.py",
+    ".longcycle/workstreams/shipping-domain-v1/change-contract.json",
+    "tests/test_chat_agent_prompt_contracts.py"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Which single 2020-2023 container-pandemic claim cluster will the Shipping owner select after its repaired cursor is again progress-ready and exact-head CLEAN?"
+    "Which single 2020-2023 container-pandemic claim cluster will the Shipping owner select after restored ChatGPT Search authority is acknowledged and exact-head CLEAN?"
   ],
   "ordered_next_actions": [
-    "Verify S=8b24d16a780226f7ed986a824af11371b88ef027 to H changes only .longcycle/handoff/current.json.",
-    "Refresh PR #183 and use only the new exact head for validation.",
-    "Require fresh exact-head Architecture Baseline, Fresh-Agent Continuity and full CI, including tests/test_reservation_transitions.py, to succeed.",
-    "Merge only with expected-head protection, then refresh main and verify the new validator/workflow/docs are present.",
-    "Re-run unchanged Shipping through worker-fast against the merged main; only after CLEAN may the Shipping owner acknowledge its phase authorization and start the one authorized stage-two pilot."
+    "Verify S=d05dc9de1feff583c4ba11c155917ed4439b0095 to H changes only .longcycle/handoff/current.json.",
+    "Refresh PR #184 and use only its new exact head for validation.",
+    "Require exact-head Architecture Baseline, Fresh-Agent Continuity and full CI, including tests/test_chat_agent_prompt_contracts.py, to succeed.",
+    "Merge only with expected-head protection, then refresh main and verify the restored phase-aware prompts/contracts are present.",
+    "Re-run unchanged Shipping H=d917ac9a17202b2ba80a9107d51aa2780b742452 through worker-fast against merged main; only after CLEAN may the Shipping owner cursor-only acknowledge restored Search authority and continue the same stage-two pilot."
   ]
 }
