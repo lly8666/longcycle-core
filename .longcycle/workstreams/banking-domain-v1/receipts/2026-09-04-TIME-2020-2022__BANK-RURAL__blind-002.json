@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v1",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2020-2022__BANK-RURAL__blind-002",
+  "family": "funding_geography_shareholder_confidence_provincial_resolution_orthogonal_blind_recall",
+  "shard_id": "BANK-RURAL",
+  "time_slice_id": "TIME-2020-2022",
+  "period": ["2020-01-01", "2022-12-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "allowed_input_digest_sha256": "9b4f518a357fec7f85eebaa083e761bf072d5e8e5099429887ed5b1f10d41f20",
+  "allowed_inputs": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "blob_sha": "5813ac09a41b37f9c8f91e8017e0da8e809a5a9c",
+      "map_revision": 162
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92"
+    },
+    {
+      "kind": "model_internal_memory_reasoning",
+      "vintage": "GPT-5.6 Sol"
+    }
+  ],
+  "forbidden_inputs_confirmed_not_read_for_recall": [
+    "TIME-2020-2022__BANK-RURAL__blind-001 raw and receipt",
+    "all completed Banking raw and receipts",
+    "all Batch0 raw Banking outputs",
+    "all prior v2 raw blind-pass outputs",
+    "sealed shard raw outputs",
+    "Banking source or Evidence material",
+    "fresh Banking search results"
+  ],
+  "raw_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2020-2022__BANK-RURAL__blind-002-memory-leads.md",
+  "raw_blob_sha": "81ec3d32c227a7a5769fb5f27950de09f2cd40b8",
+  "novelty": {
+    "new_category": 12,
+    "useful_refinement": 24,
+    "duplicate": 8,
+    "high_importance_novel_or_refinement": 14,
+    "assessment": "refinement_dominant"
+  },
+  "negative_space": [
+    "Exact province-level reform announcement and establishment sequences inside versus after 2020-2022 remain unresolved.",
+    "The prevalence of third-party internet-deposit dependence across rural commercial banks versus village banks remains unresolved.",
+    "Henan village-bank actors, dates, depositor amounts and legal findings remain deliberately unresolved.",
+    "The distribution of public-capital replenishment across rural-bank forms versus other small/medium banks remains unresolved."
+  ],
+  "method_observation": "A local bank needs separate axes for legal lineage, lending geography, funding geography and support network. Funding geography can materially change run/liability behavior without creating a new institutional lineage.",
+  "structural_conclusion": "No second period-wide BANK-RURAL structural category was recovered. Funding geography is a cross-cutting risk dimension; village banks remain a distinct sponsor-led tail; RCC/RCB-derived institutions remain highly heterogeneous; provincial shared services and resolution capacity are cross-cutting mechanisms rather than pooled solvency.",
+  "stop_reason": "orthogonal_refinement_dominant_no_second_period_wide_category_slice_complete",
+  "next_probe": {
+    "probe_id": "TIME-2023-2026__BANK-RURAL__blind-001",
+    "family": "time_slice_timeline_blind_recall",
+    "purpose": "Open the final primary BANK-RURAL slice with one broad blind recall; keep 2020-2022 closed and do not reopen its episodic tails without a new compact-map reason."
+  },
+  "campaign_sealed": false,
+  "shard_sealed": false,
+  "evidence_status": "not_started_deferred_while_shard_unsealed",
+  "unverified": true,
+  "verification_head_sha": null
+}
