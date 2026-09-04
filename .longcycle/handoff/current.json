@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 135,
+  "continuity_sequence": 136,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
   "active_branch": "coordinator/workstream-authority-transition-hardening",
-  "active_pr": null,
-  "checkpoint_based_on_head_sha": "1740bfb4421c14f22f20c4e63384b3b84313912f",
+  "active_pr": 183,
+  "checkpoint_based_on_head_sha": "ee4e591559eac78a56e2d14f0537d559cd7adeb9",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh exact main and both worker refs through GitHub Connect before acting. PR #182 repaired the Shipping revision-1 reservation mismatch on main@69e4877afcdb19240712ac4d64a48f6db90e376b without touching the Shipping worker branch. Shipping remains at bfb64375e80cdd32e64fc01aa633b13ca205ee18; rerun worker-fast on that exact H succeeded through the boundary, focused regressions and Remote worker continuity is CLEAN. Its cursor progress remains blocked until the Shipping owner refreshes main and performs its own cursor-only resume/phase acknowledgement; no stage-two source-validation work has started. The current global_serial task extends CAP-0010 with versioned reservation authority transitions and base-authority worker fencing. Sequence-130 remains cancelled and Shipping P146 remains sealed with no P147/fourth blind-Memory probe.",
+  "bootstrap_instruction": "Refresh exact main and both worker refs through GitHub Connect before acting. PR #182 repaired the Shipping revision-1 reservation mismatch on main@69e4877afcdb19240712ac4d64a48f6db90e376b without touching the Shipping worker branch. Shipping remains at bfb64375e80cdd32e64fc01aa633b13ca205ee18; rerun worker-fast on that exact H succeeded through the boundary, focused regressions and Remote worker continuity is CLEAN. Its cursor progress remains blocked until the Shipping owner refreshes main and performs its own cursor-only resume/phase acknowledgement; no stage-two source-validation work has started. PR #183 extends CAP-0010 with versioned reservation authority transitions and base-authority worker fencing. Its first exact-head attempt exposed an invalid L2 Change Contract metadata encoding before implementation tests ran; S=ee4e591559eac78a56e2d14f0537d559cd7adeb9 corrected the L2 contract to carry no L3 architecture/compatibility refs or affected Baseline invariants. Fresh exact-head CI is required. Sequence-130 remains cancelled and Shipping P146 remains sealed with no P147/fourth blind-Memory probe.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,8 +17,8 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents can move between phases through durable, versioned control-plane authority without relying on chat memory or cross-writing one another's state.",
-    "short_term_goal": "Land the bounded CAP-0010 workstream-authority hardening, prove it with exact PR-head CI, and preserve Shipping's repaired P146-sealed stage-two boundary so the Shipping owner can resume only through its own cursor and exact-head CLEAN gate.",
-    "next_big_step": "Create the final handoff-only H from substantive S=1740bfb4421c14f22f20c4e63384b3b84313912f, open the main-bound hardening PR, require the new reservation-transition regression gate plus full CI to pass on the exact head, merge, refresh main, then let the unchanged Shipping role clear its blocked progress cursor and continue the one authorized 2020-2023 source-validation pilot.",
+    "short_term_goal": "Land the bounded CAP-0010 workstream-authority hardening, prove it with fresh exact PR-head CI, and preserve Shipping's repaired P146-sealed stage-two boundary so the Shipping owner can resume only through its own cursor and exact-head CLEAN gate.",
+    "next_big_step": "Verify H is handoff-only from corrected substantive S=ee4e591559eac78a56e2d14f0537d559cd7adeb9, require fresh exact-head Architecture Baseline and full CI on PR #183, merge only if both succeed, refresh main, then leave the unchanged Shipping role to clear its blocked progress cursor and continue the one authorized 2020-2023 source-validation pilot.",
     "local_optimization_stop_rule": "Do not turn this L2 control-plane repair into a new scheduler, distributed lock, permanent role, L3/L4 semantic rewrite or Shipping research expansion. Do not mutate any active reservation merely to encode an atomic task stage; use Change Contract/admission/prompt/cursor unless durable workstream authority truly changes.",
     "parallel_permanent_tracks": [
       "Architecture Baseline v1 remains the semantic baseline; this task extends CAP-0010 governance only.",
@@ -29,16 +29,16 @@
   },
   "continuation_cursor": {
     "parent_workstream_id": "workstream-authority-transition-v1",
-    "last_completed_action": "Merged PR #182 after exact Architecture Baseline and full-ci success, restoring Shipping's original revision-1 reservation.done_when. Re-ran worker-fast for exact Shipping H=bfb64375e80cdd32e64fc01aa633b13ca205ee18 against repaired main; all steps passed including Remote worker continuity is CLEAN. Then prepared substantive S=1740bfb4421c14f22f20c4e63384b3b84313912f on coordinator/workstream-authority-transition-hardening: added scripts/validate_reservation_transitions.py and incident regression tests, changed worker boundary validation to read reservation authority from the supplied integration base and require cursor revision/epoch acknowledgement, updated Architecture Baseline CI, extended CAP-0010, and documented the two-phase main-authorize then cursor-adopt transaction. No worker branch file was written by global_serial.",
-    "current_task": "Complete the global_serial integration of versioned workstream reservation authority transitions and base-authority worker fencing.",
-    "why_now": "PR #181 proved the old control plane could merge a same-revision main-owned reservation mutation that left a long-lived worker unable to pass its boundary gate. The fail-closed worker correctly stopped, so the architectural response is to preserve main authority/worker cursor separation while making transition versioning and adoption machine-enforced.",
-    "done_when": "S-to-H changes only .longcycle/handoff/current.json; the final PR contains the reservation transition validator, worker base-authority boundary, CAP-0010 admission/card updates, protocol documentation and regression tests; exact PR-head Architecture Baseline and full CI succeed; main is refreshed after merge; and Shipping remains untouched by global_serial with its repaired exact H proven continuity-CLEAN.",
+    "last_completed_action": "Merged PR #182 after exact Architecture Baseline and full-ci success, restoring Shipping's original revision-1 reservation.done_when. Re-ran worker-fast for exact Shipping H=bfb64375e80cdd32e64fc01aa633b13ca205ee18 against repaired main; all steps passed including Remote worker continuity is CLEAN. PR #183 then added scripts/validate_reservation_transitions.py and incident regression tests, changed worker boundary validation to read reservation authority from the supplied integration base and require cursor revision/epoch acknowledgement, updated Architecture Baseline CI, extended CAP-0010, and documented the two-phase main-authorize then cursor-adopt transaction. The first PR #183 exact-head Architecture Baseline attempt failed before substantive tests because the L2 Change Contract incorrectly populated affected_invariants and architecture/compatibility references. Corrected substantive S=ee4e591559eac78a56e2d14f0537d559cd7adeb9 now conforms to the validator's L2 rule: affected_invariants=[], architecture_change_ref=null, compatibility_plan_ref=null, approval_ref=null. No worker branch file was written by global_serial.",
+    "current_task": "Complete exact-head validation and integration of versioned workstream reservation authority transitions and base-authority worker fencing.",
+    "why_now": "PR #181 proved the old control plane could merge a same-revision main-owned reservation mutation that left a long-lived worker unable to pass its boundary gate. The fail-closed worker correctly stopped, so the architectural response is to preserve main authority/worker cursor separation while making transition versioning and adoption machine-enforced. The first PR #183 CI failure also confirmed the existing Baseline gate rejects malformed L2 authorization before implementation proceeds.",
+    "done_when": "S-to-H changes only .longcycle/handoff/current.json; PR #183 contains the reservation transition validator, worker base-authority boundary, CAP-0010 admission/card updates, protocol documentation and regression tests; fresh exact PR-head Architecture Baseline and full CI succeed after the corrected L2 Change Contract; main is refreshed after merge; and Shipping remains untouched by global_serial with its repaired exact H proven continuity-CLEAN.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Verify S=1740bfb4421c14f22f20c4e63384b3b84313912f to this H is handoff-only, open the hardening PR to refreshed main, inspect the exact diff, require fresh exact-head Architecture Baseline and full CI success, merge with expected-head protection, then refresh main and report the tested result."
+    "next_atomic_action": "Verify S=ee4e591559eac78a56e2d14f0537d559cd7adeb9 to this H is handoff-only, refresh PR #183 exact head, require new Architecture Baseline and full CI success on that exact head, merge with expected-head protection, then refresh main and report the tested result."
   },
   "active_context": {
-    "context_id": "workstream-authority-transition-v1-135",
+    "context_id": "workstream-authority-transition-v1-136",
     "context_kind": "bounded_control_plane_hardening",
     "label": "Versioned reservation authority transition and Shipping compatibility repair",
     "root_path": "docs/development",
@@ -74,23 +74,23 @@
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33853263002,
-    "observed_head_sha": "bfb64375e80cdd32e64fc01aa633b13ca205ee18",
-    "conclusion": "PR #182 exact head ef0c4bb9c6942d48babf1f936a8121d7124d5880 passed Architecture Baseline run 33857577895 and full-ci run 33857578166, then merged as main@69e4877afcdb19240712ac4d64a48f6db90e376b. The failed Shipping worker-fast run 33853263002 was re-run after that main repair; latest-attempt worker-fast job 100974923556 succeeded through all steps, including Worker diff stays inside the main reservation and Remote worker continuity is CLEAN. The separate authority-hardening branch still requires fresh exact PR-head CI before merge.",
+    "last_observed_run": 33858318410,
+    "observed_head_sha": "f8158c1d1c9d6060022dcb74ef5128c719b63566",
+    "conclusion": "PR #182 exact head ef0c4bb9c6942d48babf1f936a8121d7124d5880 passed Architecture Baseline run 33857577895 and full-ci run 33857578166, then merged as main@69e4877afcdb19240712ac4d64a48f6db90e376b. The failed Shipping worker-fast run 33853263002 was re-run after that main repair; latest-attempt worker-fast job 100974923556 succeeded through all steps, including Worker diff stays inside the main reservation and Remote worker continuity is CLEAN. PR #183 initial exact head f8158c1d1c9d6060022dcb74ef5128c719b63566 failed its Architecture Baseline contract validation because an L2 contract incorrectly carried descriptive affected_invariants and architecture/compatibility references. S=ee4e591559eac78a56e2d14f0537d559cd7adeb9 corrected that metadata. No old PR #183 check may be reused; fresh exact-head checks are mandatory.",
     "mypy_summary": "Architecture hardening changes Python governance scripts and tests, so final full CI must re-run mypy on the exact PR head.",
     "pytest_summary": "New regressions explicitly cover PR #181's same-revision done_when mutation, exact +1 revision transitions, spurious/skipped revisions, assignment-epoch versioning and base-authority worker acknowledgement.",
     "ruff_summary": "New/modified Python governance scripts require final exact-head Ruff through full CI.",
-    "refresh_instruction": "Do not reuse PR #182 or Shipping worker-fast success as merge authority for the hardening PR. Refresh the hardening PR exact head and require its own Architecture Baseline and full CI success. After merge, refresh main and both worker refs before any Shipping continuation."
+    "refresh_instruction": "Refresh PR #183 after this H and require its own fresh Architecture Baseline and full CI success. After merge, refresh main and both worker refs before any Shipping continuation."
   },
   "workstreams": [
     {
       "workstream_id": "workstream-authority-transition-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "substantive_s_complete_handoff_ready_for_pr",
-      "summary": "CAP-0010 is extended on the integration branch with a main-side reservation transition validator, base-authority worker boundary semantics, Architecture Baseline gate, incident regression tests and a documented two-phase authority transaction. No product semantic owner or database schema changes.",
+      "status": "corrected_handoff_ready_for_fresh_ci",
+      "summary": "CAP-0010 is extended on PR #183 with a main-side reservation transition validator, base-authority worker boundary semantics, Architecture Baseline gate, incident regression tests and a documented two-phase authority transaction. The initial L2 contract metadata defect has been corrected in substantive S=ee4e591559eac78a56e2d14f0537d559cd7adeb9. No product semantic owner or database schema changes.",
       "next_actions": [
-        "Verify S-to-H is handoff-only, open the hardening PR, and inspect exact changed paths.",
+        "Verify corrected S-to-H is handoff-only and refresh PR #183 exact head.",
         "Require fresh exact-head Architecture Baseline and full CI including the new transition tests.",
         "Merge with expected-head protection and refresh main."
       ],
@@ -112,7 +112,7 @@
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
       "status": "p146_sealed_control_plane_repaired_continuity_clean_progress_blocked",
-      "summary": "Shipping exact H remains bfb64375e80cdd32e64fc01aa633b13ca205ee18. Main reservation revision 1 is again byte-compatible on the reserved done_when field after PR #182, and the latest worker-fast attempt on that unchanged H succeeded through Remote worker continuity is CLEAN. The branch-local cursor still truthfully records progress_state=blocked/unverified and that the stage-two pilot has not started; global_serial has not edited it.",
+      "summary": "Shipping exact H remains bfb64375e80cdd32e64fc01aa633b13ca205ee18. Main reservation revision 1 is again compatible on the reserved done_when field after PR #182, and the latest worker-fast attempt on that unchanged H succeeded through Remote worker continuity is CLEAN. The branch-local cursor still truthfully records progress_state=blocked/unverified and that the stage-two pilot has not started; global_serial has not edited it.",
       "next_actions": [
         "Do not run P147 or a fourth blind-Memory probe.",
         "After the hardening merge, the Shipping owner refreshes exact main/worker refs and clears the repaired control-plane blocker through its own cursor-only resume/phase acknowledgement, then requires exact-head worker-fast CLEAN.",
@@ -146,8 +146,8 @@
     "Which single 2020-2023 container-pandemic claim cluster will the Shipping owner select after its repaired cursor is again progress-ready and exact-head CLEAN?"
   ],
   "ordered_next_actions": [
-    "Verify S=1740bfb4421c14f22f20c4e63384b3b84313912f to H changes only .longcycle/handoff/current.json.",
-    "Open the workstream-authority hardening PR to refreshed main and inspect the exact changed-file set.",
+    "Verify S=ee4e591559eac78a56e2d14f0537d559cd7adeb9 to H changes only .longcycle/handoff/current.json.",
+    "Refresh PR #183 and use only the new exact head for validation.",
     "Require fresh exact-head Architecture Baseline and full CI, including tests/test_reservation_transitions.py, to succeed.",
     "Merge only with expected-head protection, then refresh main and verify the new validator/workflow/docs are present.",
     "Leave Shipping branch untouched; the Shipping owner later refreshes main, updates its own cursor after the repaired blocker, reaches exact-head CLEAN and only then starts the one authorized stage-two pilot."
