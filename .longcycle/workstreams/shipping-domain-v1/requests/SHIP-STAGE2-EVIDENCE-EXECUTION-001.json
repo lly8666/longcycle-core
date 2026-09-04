@@ -1,0 +1,59 @@
+{
+  "request_id": "SHIP-STAGE2-EVIDENCE-EXECUTION-001",
+  "requester_workstream_id": "shipping-domain-v1",
+  "kind": "integration_owned_capability_execution",
+  "status": "open",
+  "requested_result": "Execute the already prepared Shipping stage-two content-verified representations through the existing CAP-0001/CAP-0002 Grounded Evidence path without requiring the Shipping worker to modify shared src, migrations or CI. Return persisted document identities, EvidenceFragment identities and an immutable execution/verification receipt; create zero FactAssertions and zero JudgmentAssertions.",
+  "parent_value": "Complete the same single container-market-normalization-2022q3-to-2023 pilot while preserving the P146 seal, one-trajectory limit and existing Evidence semantics.",
+  "inputs": [
+    {
+      "path": "domain_packs/shipping/source-validation/representations/maersk-q3-2022-content-verified-v1.txt",
+      "sha256": "70f73e7c69d0982fac12876ed38eaab54179c780e43ddf92ed7d4e391daa820e",
+      "source_capture_state": "content_verified",
+      "raw_source_materialized": false
+    },
+    {
+      "path": "domain_packs/shipping/source-validation/representations/maersk-ar-2023-p37-content-verified-v1.txt",
+      "sha256": "8f2484773272c81d38250fdcdbdd075619fd1544b74b08fecc2cb52d9f2ddcae",
+      "source_capture_state": "content_verified",
+      "raw_source_materialized": false
+    },
+    {
+      "path": "domain_packs/shipping/source-validation/representations/hapag-2023-results-content-verified-v1.txt",
+      "sha256": "c60c68bb9c6affd826667e2d0de7d7dd177c692167b4fe5b03a7957ba9e31035",
+      "source_capture_state": "content_verified",
+      "raw_source_materialized": false
+    },
+    {
+      "path": "domain_packs/shipping/source-validation/container-pandemic-cycle-2020-2023-evidence-preparation-v1.json",
+      "role": "bounded claim scopes, source identity, known-at and representation provenance"
+    }
+  ],
+  "observed_execution_gap": {
+    "existing_executor": "scripts/execute_grounded_evidence_spec.py",
+    "executor_requires_database_url": true,
+    "executor_requires_pinned_document_digest": true,
+    "current_shipping_chat_has_repository_control_via_github_connect": true,
+    "current_shipping_chat_has_shipping_owned_database_execution_surface": false,
+    "existing_one_shot_grounded_evidence_workflows_are_task_specific": true,
+    "shipping_worker_is_forbidden_to_add_or_modify_shared_ci": true
+  },
+  "constraints": [
+    "Do not perform additional source discovery or add a second trajectory.",
+    "Do not require raw PDF bytes when the truthful content_verified readable representation is sufficient under existing CAP-0001/CAP-0002 semantics.",
+    "Do not treat the source-selection record, Search citation or model Memory as Evidence.",
+    "Do not create FactAssertions, JudgmentAssertions, Reality, Outcome or PIT replay in the Evidence execution transaction.",
+    "Do not reopen P146, execute P147 or consume a fourth blind-Memory probe.",
+    "Do not require the Shipping worker to modify src/**, migrations/**, shared CI, Capability Registry or main-owned control files."
+  ],
+  "acceptance": [
+    "Exactly three prepared source representations are registered/archived with their pinned digests and truthful upstream-media provenance.",
+    "Exactly four bounded claim-scoped EvidenceFragments are grounded: one 2022 historical Reality candidate, one 2022 contemporaneous Judgment candidate, one Maersk 2023 later-outcome candidate, and one Hapag-Lloyd independent outcome corroboration candidate.",
+    "Persisted fragment locators and representation lineage are returned in an immutable execution result/receipt.",
+    "FactAssertions created = 0 and JudgmentAssertions created = 0.",
+    "No shared semantic change is introduced merely to execute the existing capability."
+  ],
+  "dependency_consequence": "Shipping stage-two is partial at Evidence preparation. Truth-bearing Reality/Judgment/Outcome composition and CAP-0005/CAP-0007 replay remain blocked until CAP-0002 execution returns verified EvidenceFragment identities.",
+  "recommended_minimal_fix": "Use an existing integration-owned disposable execution surface or generic data-plane runner for scripts/execute_grounded_evidence_spec.py with the prepared repository representations as material-root input. If no such surface exists, global_serial should provide the smallest reusable execution adapter rather than a Shipping-specific semantic fork.",
+  "created_from_worker_head_before_request": "88d39c9453542457c7b9d4219c2c201a31cf2238"
+}
