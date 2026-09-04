@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":134,
+  "map_revision":135,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2013-2016__BANK-CITY__blind-001.json",
-  "latest_pass_receipt_status":"broad_high_novelty_orthogonal_required",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-TIME-2013-2016__BANK-CITY__blind-002.json",
+  "latest_pass_receipt_status":"orthogonal_slice_complete",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -24,13 +24,13 @@
   ],
   "active_shards":[{
     "shard_id":"BANK-CITY",
-    "selected_time_slice_id":"TIME-2013-2016",
-    "stage":"orthogonal_recall_pending",
+    "selected_time_slice_id":"TIME-2017-2019",
+    "stage":"time_slice_recall_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2009-2012__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":103,"duplicate_lead_count":6,"high_importance_novel_count":28,"outcome":"broad_high_novelty_orthogonal_required"},
       {"pass_id":"TIME-2009-2012__BANK-CITY__blind-002","family":"platform_refinancing_shadow_funding_case_risk_orthogonal_blind_recall","novel_lead_count":94,"duplicate_lead_count":8,"high_importance_novel_count":24,"outcome":"orthogonal_slice_complete"},
-      {"pass_id":"TIME-2013-2016__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":100,"duplicate_lead_count":6,"high_importance_novel_count":27,"outcome":"broad_high_novelty_orthogonal_required"}
+      {"pass_id":"TIME-2013-2016__BANK-CITY__blind-001","family":"time_slice_timeline_blind_recall","novel_lead_count":100,"duplicate_lead_count":6,"high_importance_novel_count":27,"outcome":"broad_high_novelty_orthogonal_required"},
+      {"pass_id":"TIME-2013-2016__BANK-CITY__blind-002","family":"funding_liquidity_credit_migration_ownership_control_orthogonal_blind_recall","novel_lead_count":90,"duplicate_lead_count":8,"high_importance_novel_count":23,"outcome":"orthogonal_slice_complete"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -46,28 +46,28 @@
       {"region_id":"TIME-2000-2004__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2005-2008__BANK-CITY","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2009-2012__BANK-CITY","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2013-2016__BANK-CITY","state":"broad_complete_orthogonal_required","note":"Broad recall recovered interest-rate-liberalization deposit pressure, NCD/interbank funding, mature WMP/trust/securities-channel and non-standard credit migration, rapid asset expansion, property/LGFV concentration, capital/NPL semantic distortion, 2013 liquidity stress, cross-region governance and ownership/control counterexamples. One independent same-slice orthogonal challenge is required."}
+      {"region_id":"TIME-2013-2016__BANK-CITY","state":"broad_plus_orthogonal_complete","note":"Broad and independent orthogonal recall converge on liberalized deposit competition, NCD/interbank funding, WMP/non-standard credit migration, liquidity/maturity transformation, rapid asset growth, property/LGFV concentration, delayed asset-quality recognition, cross-region governance and ownership/control tail risks. Liquidity and ownership-control dimensions did not form a second period-wide structural category."}
     ],
     "known_major_gaps":[
-      "2013-2016 BANK-CITY requires one independent orthogonal challenge before the slice can be marked complete.",
-      "The orthogonal pass must test whether liquidity/maturity transformation or ownership/related-party control failures constitute a second structural category rather than dimensions of the same rapid-growth model.",
-      "Exact NCD/WMP/non-standard volumes, institution exposures, capital/NPL/provision ratios, branch counts, ownership stakes and official classifications remain Evidence-stage questions.",
+      "BANK-CITY chronological coverage now has 1990-1994 through 2013-2016 broad+orthogonal complete; 2017-2019 remains unopened.",
+      "The 2017-2019 slice should challenge financial deleveraging, interbank and shadow-asset contraction, asset-management-rule transition, NCD/wholesale repricing, small-bank liquidity/credit stress, Baoshang-era counterparty shock, property/LGFV and private-enterprise credit reallocation, capital/NPL recognition, governance/related-party cases and regional heterogeneity.",
+      "Exact institution exposures, NCD/WMP/non-standard balances, liquidity metrics, capital/NPL/provision ratios and official classifications remain Evidence-stage questions.",
       "Evidence remains deferred while BANK-CITY is unsealed."
     ]
   },
-  "selection_basis":{"rule":"material_broad_recall_requires_same_slice_orthogonal_challenge","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-2013-2016"},
-  "open_frontiers":[{"frontier_id":"TIME-2013-2016__BANK-CITY__ORTHOGONAL","priority_rank":1,"state":"open","selected_probe_id":"TIME-2013-2016__BANK-CITY__blind-002"}],
+  "selection_basis":{"rule":"advance_to_next_primary_time_slice_after_broad_plus_orthogonal_completion","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-2017-2019"},
+  "open_frontiers":[{"frontier_id":"TIME-2017-2019__BANK-CITY","priority_rank":1,"state":"open","selected_probe_id":"TIME-2017-2019__BANK-CITY__blind-001"}],
   "next_probe":{
-    "probe_id":"TIME-2013-2016__BANK-CITY__blind-002",
-    "family":"funding_liquidity_credit_migration_ownership_control_orthogonal_blind_recall",
-    "time_slice_id":"TIME-2013-2016",
+    "probe_id":"TIME-2017-2019__BANK-CITY__blind-001",
+    "family":"time_slice_timeline_blind_recall",
+    "time_slice_id":"TIME-2017-2019",
     "shard_id":"BANK-CITY",
-    "period":["2013-01-01","2016-12-31"],
-    "instruction":"In the next eligible loop, run one isolated independent orthogonal blind-memory challenge for BANK-CITY in 2013-2016 using only this rev134 compact map, the manifest and current model internal memory/reasoning. Do not read blind-001 raw/receipt or any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately test funding/liquidity and credit-migration mechanics from a different angle: sticky deposits versus rate-sensitive deposits and NCD/interbank rollover; 2013 liquidity stress and collateral/counterparty dependence; maturity mismatch between WMP/market liabilities and long credit-like investments; loans versus investment-receivables/trust/securities channels; property/LGFV concentration hidden across accounting forms; capital/provision/NPL semantics; head-office/branch treasury and risk-control integration; local-government versus private/industrial shareholder influence; related-party lending, fraud/case-risk and later-troubled-bank antecedents. Determine whether liquidity/maturity transformation or ownership/control failures form a second period-wide structural category. Keep rural banks and national joint-stock banks outside this shard. Do not invent exact dates, balances, ratios, stakes, NCD/WMP/non-standard volumes, case amounts or official wording. If no second material category emerges, mark TIME-2013-2016 BANK-CITY broad+orthogonal complete and select exactly one 2017-2019 broad frontier. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "period":["2017-01-01","2019-12-31"],
+    "instruction":"In the next eligible loop, run one isolated broad blind-memory recall for BANK-CITY in 2017-2019 using only this rev135 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Challenge the city-bank manifestation of financial deleveraging and tighter interbank/shadow regulation; asset-management-rule transition and WMP/non-standard contraction; NCD and wholesale-funding repricing; small-bank liquidity and counterparty stress; Baoshang-era market segmentation and what it meant for city-bank funding confidence without making system policy the shard's primary object; property/LGFV and private-enterprise credit reallocation; capital/provision/NPL recognition; cross-region retrenchment or strategic recalibration; governance/related-party/fraud cases, weak/restructured banks and regional heterogeneity. Keep rural banks and national joint-stock banks outside this shard. Do not invent exact dates, balances, ratios, ownership percentages, branch counts, NCD/WMP/non-standard volumes, case amounts or official wording. If broad recall is materially novel, select exactly one same-slice orthogonal follow-up. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-2013-2016__BANK-CITY__blind-001 raw or receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
     "one_pass_cannot_self_seal":true,
-    "done_when":"One append-only independent 2013-2016 BANK-CITY orthogonal raw and bounded receipt exist; the sparse map either opens exactly one measured second material category or marks the slice broad+orthogonal complete and selects exactly one 2017-2019 broad frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
+    "done_when":"One append-only 2017-2019 BANK-CITY broad raw and bounded receipt exist; the sparse map selects exactly one measured follow-up, normally a same-slice orthogonal challenge if novelty is material; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
