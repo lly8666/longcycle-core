@@ -1,37 +1,33 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "FOUR-PROBE-SLICE-V1-035",
-  "intent": "Let industry Memory Campaign Leads use one ChatGPT invocation for up to four sequential map-driven probe cycles while preserving a complete S-to-H handoff after every probe and recovering unfinished work first on the next invocation.",
+  "intent_id": "WORKSTREAM-AUTHORITY-TRANSITION-V1-036",
+  "intent": "Harden parallel workstream authority transitions so main-owned reservation mutations are versioned, worker boundaries read refreshed integration-base authority, and cursor acknowledgement is the only worker adoption mechanism.",
   "governance_mode": "converging",
-  "disposition": "reuse",
+  "disposition": "extend",
   "target_capability_ids": [
-    "CAP-0006",
-    "CAP-0009",
     "CAP-0010"
   ],
   "closest_existing_capability_ids": [
-    "CAP-0006",
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "CAP-0006 already owns map-driven blind Memory probing and novelty/negative-space stop logic, CAP-0009 owns S-to-H interruption recovery, and CAP-0010 owns isolated workstream routing. Four serial completed cycles extend invocation throughput without adding parallel probes, a new cursor schema or another coordination layer; interruption recovery remains prior to any new task.",
-  "rationale_details_ref": "docs/development/agent-governance-operating-manual.md",
+  "rationale_summary": "CAP-0010 already owns parallel workstream reservation/routing and its boundary validator; CAP-0009 remains the continuity owner. The incident exposed an incomplete authority-transition guard, not a need for a new semantic owner: extend CAP-0010 with exact reservation revision transitions and base-authority worker fencing while preserving CAP-0009 CLEAN/BLOCKED semantics.",
+  "rationale_details_ref": "docs/development/workstream-reservation-integration.md",
   "unmet_requirement": null,
   "evidence_refs": [
-    "docs/development/prompts/all-agent-takeover.md",
-    "docs/development/prompts/all-agent-handoff.md",
-    "docs/development/remote-worker-continuity.md",
-    "docs/research/industry-memory-exploration-map.md"
+    "scripts/validate_workstream_boundaries.py",
+    "scripts/validate_reservation_transitions.py",
+    "tests/test_reservation_transitions.py",
+    "docs/development/workstream-reservation-integration.md"
   ],
   "planned_paths": [
-    "docs/development/prompts/all-agent-takeover.md",
-    "docs/development/prompts/all-agent-handoff.md",
-    "docs/development/prompts/new-role-creation.md",
-    "docs/development/prompts/github-connect-chat-adapter.md",
-    "docs/development/prompts/coordinator-fresh-agent.md",
-    "docs/development/prompts/banking-fresh-agent.md",
-    "docs/development/prompts/shipping-fresh-agent.md",
-    "docs/development/agent-governance-operating-manual.md",
+    "scripts/validate_workstream_boundaries.py",
+    "scripts/validate_reservation_transitions.py",
+    "tests/test_workstream_boundaries.py",
+    "tests/test_reservation_transitions.py",
+    ".github/workflows/architecture-baseline.yml",
+    "docs/development/workstream-reservation-integration.md",
+    ".longcycle/capabilities/cards/CAP-0010.json",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
