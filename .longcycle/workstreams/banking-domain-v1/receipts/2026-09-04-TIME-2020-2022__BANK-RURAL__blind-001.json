@@ -1,0 +1,67 @@
+{
+  "schema_version": "longcycle-memory-pass-receipt/v1",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "TIME-2020-2022__BANK-RURAL__blind-001",
+  "family": "time_slice_timeline_blind_recall",
+  "shard_id": "BANK-RURAL",
+  "time_slice_id": "TIME-2020-2022",
+  "period": ["2020-01-01", "2022-12-31"],
+  "output_authority": "MEMORY_LEADS_ONLY",
+  "model_vintage": "GPT-5.6 Sol",
+  "source_visibility": "none",
+  "fresh_search_used": false,
+  "allowed_input_digest_sha256": "5e1262dbc91be225bb026dcf27eebbb35e912675803067e8bf93b426266d8505",
+  "allowed_inputs": [
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",
+      "blob_sha": "38d21899a136aeb139ee4e20ebe7ec5c2690fdb4",
+      "map_revision": 161
+    },
+    {
+      "path": "research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
+      "blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92"
+    },
+    {
+      "kind": "model_internal_memory_reasoning",
+      "vintage": "GPT-5.6 Sol"
+    }
+  ],
+  "forbidden_inputs_confirmed_not_read_for_recall": [
+    "all completed Banking raw and receipts",
+    "all Batch0 raw Banking outputs",
+    "all prior v2 raw blind-pass outputs",
+    "sealed shard raw outputs",
+    "Banking source or Evidence material",
+    "fresh Banking search results"
+  ],
+  "raw_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/passes/TIME-2020-2022__BANK-RURAL__blind-001-memory-leads.md",
+  "raw_blob_sha": "72e3b38897c3d302c7a33e95ba3ebf2d44489b0c",
+  "novelty": {
+    "new_category": 39,
+    "useful_refinement": 11,
+    "duplicate": 4,
+    "high_importance_novel_or_refinement": 18,
+    "assessment": "material"
+  },
+  "long_tail_rule": "The pass intentionally devotes more than half of its substantive recall space to long-tail mechanisms, actors, failure/restructuring surfaces, vocabulary, metric semantics, uncertain fragments and counterexamples rather than obvious landmarks.",
+  "negative_space": [
+    "Exact in-period provincial rural-credit reform sequences remain unknown.",
+    "The relative importance of internet-platform deposits versus traditional local deposits remains unknown by bank cohort.",
+    "It is unresolved whether Henan-type depositor-confidence failures expose a period-wide BANK-RURAL structure or an episodic village-bank governance/channel tail.",
+    "The timing from pandemic relief into later special-mention, overdue and NPL recognition remains cohort-specific and unverified.",
+    "Exact resilient counterexample institutions and their balance-sheet metrics remain Evidence-stage questions."
+  ],
+  "method_observation": "For 2020-2022 BANK-RURAL, funding geography should be treated as a separate research dimension from legal institution type: a nominally local bank may acquire rate-sensitive remote deposits through internet channels, changing run and governance dynamics without creating a new institutional lineage.",
+  "stop_reason": "broad_recall_materially_novel_select_one_same_slice_orthogonal_challenge",
+  "next_probe": {
+    "probe_id": "TIME-2020-2022__BANK-RURAL__blind-002",
+    "family": "funding_geography_shareholder_confidence_provincial_resolution_orthogonal_blind_recall",
+    "purpose": "Challenge whether the funding-geography, sponsor/shareholder-control, depositor-confidence and provincial-support cluster is structural across BANK-RURAL or mainly an episodic village-bank tail; avoid simply repeating the broad pandemic-credit list."
+  },
+  "campaign_sealed": false,
+  "shard_sealed": false,
+  "evidence_status": "not_started_deferred_while_shard_unsealed",
+  "unverified": true,
+  "verification_head_sha": null
+}
