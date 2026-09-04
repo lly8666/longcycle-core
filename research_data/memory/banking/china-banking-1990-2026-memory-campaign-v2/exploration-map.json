@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":122,
+  "map_revision":123,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,23 +14,21 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-004.json",
-  "latest_pass_receipt_status":"low_novelty_confirmation_3_of_3_seal_decision_required",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-04-CROSS-TIME__BANK-JOINT-STOCK__seal-decision__blind-001.json",
+  "latest_pass_receipt_status":"canonical_seal_decision_SEAL",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
-    {"shard_id":"BANK-STATE-OWNED","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"}
+    {"shard_id":"BANK-STATE-OWNED","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
+    {"shard_id":"BANK-JOINT-STOCK","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff","seal_state_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/BANK-JOINT-STOCK-seal-state-v1.json"}
   ],
   "active_shards":[{
-    "shard_id":"BANK-JOINT-STOCK",
-    "selected_time_slice_id":"CROSS-TIME",
-    "stage":"seal_decision_pending",
+    "shard_id":"BANK-CITY",
+    "selected_time_slice_id":"TIME-1990-1994",
+    "stage":"time_slice_recall_pending",
     "fresh_search_used":false,
-    "recent_outcomes":[
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-003","family":"mechanisms_metrics_expectations_counterexamples_independent_blind_recall","novel_lead_count":12,"duplicate_lead_count":28,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_2_of_3"},
-      {"pass_id":"CROSS-TIME__BANK-JOINT-STOCK__saturation-review__blind-004","family":"final_independent_negative_space_confirmation_blind_recall","novel_lead_count":10,"duplicate_lead_count":54,"high_importance_novel_count":0,"outcome":"low_novelty_confirmation_3_of_3_seal_decision_required"}
-    ],
-    "low_novelty_confirmations":3,
+    "recent_outcomes":[],
+    "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
@@ -38,40 +36,28 @@
       {"region_id":"TIME-1990-2026__SYS-REGULATION-RESOLUTION","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-2026__SYS-MONETARY-CREDIT","state":"canonically_sealed_for_model_vintage"},
       {"region_id":"TIME-1990-2026__BANK-STATE-OWNED","state":"canonically_sealed_for_model_vintage"},
-      {"region_id":"TIME-1990-1994__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-1995-1999__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2000-2004__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2005-2008__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2009-2012__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2013-2016__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2017-2019__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2020-2022__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2023-2026__BANK-JOINT-STOCK","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__LATE-ENTRY-TROUBLED-GOVERNANCE","state":"targeted_gap_closed"},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-002","state":"low_novelty_confirmation","confirmation_index":1},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-003","state":"low_novelty_confirmation","confirmation_index":2},
-      {"region_id":"CROSS-TIME__BANK-JOINT-STOCK__SATURATION-REVIEW-004","state":"low_novelty_confirmation","confirmation_index":3,"note":"Final independent falsification challenge produced no new category, only residual refinements/counterexamples, and no material gap."}
+      {"region_id":"TIME-1990-2026__BANK-JOINT-STOCK","state":"canonically_sealed_for_model_vintage","note":"All nine primary slices broad+orthogonal complete; one measured late-entry/troubled-governance gap targeted-closure-complete; three consecutive independent low-novelty confirmations; explicit compact-control seal decision recorded."}
     ],
     "known_major_gaps":[
-      "No material BANK-JOINT-STOCK blind-memory gap is currently open.",
-      "All nine primary time slices are broad+orthogonal complete and the one measured cross-time late-entry/troubled-governance gap is targeted-closure-complete.",
-      "Three consecutive independent low-novelty confirmations are now recorded, satisfying the manifest's saturation prerequisite, but canonical sealing requires a separate explicit seal-decision review after exact-H CLEAN.",
-      "Evidence remains deferred until a canonical seal decision is written and handed off CLEAN."
+      "BANK-CITY blind-memory coverage has not yet begun in the v2 atomic-shard sequence.",
+      "The 1990-1994 slice must treat urban credit cooperatives and other local urban-credit antecedents carefully because many later city commercial banks did not yet exist in their later legal form.",
+      "City-bank coverage must challenge local-government and local-enterprise ties, predecessor mergers/consolidations, geographic franchise, deposit/funding structure, governance, local asset-quality cycles, failed cross-region strategies, old institution names and metric semantics across all nine primary slices before saturation.",
+      "Evidence remains deferred for active/unsealed BANK-CITY."
     ]
   },
-  "selection_basis":{"rule":"three_consecutive_low_novelty_confirmations_require_explicit_seal_decision","selected_shard_id":"BANK-JOINT-STOCK","selected_time_slice_id":"CROSS-TIME"},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-JOINT-STOCK__SEAL-DECISION","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-JOINT-STOCK__seal-decision__blind-001"}],
+  "selection_basis":{"rule":"next_unsealed_atomic_bank_type_in_manifest_order","selected_shard_id":"BANK-CITY","selected_time_slice_id":"TIME-1990-1994"},
+  "open_frontiers":[{"frontier_id":"TIME-1990-1994__BANK-CITY","priority_rank":1,"state":"open","selected_probe_id":"TIME-1990-1994__BANK-CITY__blind-001"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-JOINT-STOCK__seal-decision__blind-001",
-    "family":"canonical_seal_decision_control_review",
-    "time_slice_id":"CROSS-TIME",
-    "shard_id":"BANK-JOINT-STOCK",
-    "period":["1990-01-01","2026-08-31"],
-    "instruction":"After the final saturation-confirmation probe closes through cursor-only H and exact-H CLEAN, run exactly one explicit BANK-JOINT-STOCK seal-decision control review using only this rev122 compact map, the manifest, reservation/capability control state and current model reasoning. Do not read completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Verify that all nine primary time slices are broad+orthogonal complete, all measured material gaps are closed, the negative-space/time-by-shard requirements were actually challenged, and three consecutive independent low-novelty confirmations are recorded without relying only on ontology stability. If those compact control conditions remain satisfied, write the canonical seal state and one bounded seal-decision receipt, move BANK-JOINT-STOCK from active to sealed in the sparse map, and select exactly one next blind-memory frontier from the manifest. If any compact-control inconsistency is found, do not seal; open exactly one corrective frontier instead. Do not begin Evidence in the seal-decision probe. Close substantive S -> cursor-only H -> exact-H CLEAN.",
-    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json",".longcycle/workstreams/banking-domain-v1/reservation.json",".longcycle/workstreams/banking-domain-v1/capability-admission.json","current model reasoning"],
+    "probe_id":"TIME-1990-1994__BANK-CITY__blind-001",
+    "family":"time_slice_timeline_blind_recall",
+    "time_slice_id":"TIME-1990-1994",
+    "shard_id":"BANK-CITY",
+    "period":["1990-01-01","1994-12-31"],
+    "instruction":"In the next eligible loop, run one isolated broad blind-memory recall for BANK-CITY in 1990-1994 using only this rev123 compact map, the manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Because the later city-commercial-bank legal form was not yet broadly established, recover period-correct urban credit cooperative and local urban-credit antecedents rather than projecting later city-bank names backward. Challenge: urban credit cooperatives/城市信用社 and local cooperative/collective roots; local-government, local-enterprise and neighborhood/commercial customer ties; local deposits and settlement; lending to local SOEs/collectives/private commerce; branch/network and geographic confinement; governance and insider/related-party risk; asset-quality and capital constraints; merger/consolidation precursors; old vocabulary/search keys; contemporaneous expectations; failed local-credit mechanisms and counterexamples. Use selective pre-1990 antecedents only if needed to explain entities or vocabulary inside 1990-1994. Do not invent exact founding/consolidation dates, balances, ratios, ownership percentages, branch counts or official wording. If broad recall is materially novel, select exactly one orthogonal same-slice follow-up. Output MEMORY_LEADS_ONLY; append raw+receipt, rebuild exactly one sparse frontier, and close S -> cursor-only H -> exact-H CLEAN.",
+    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
     "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
-    "output_authority":"RESEARCH_CONTROL_ONLY",
-    "one_pass_cannot_self_seal":false,
-    "done_when":"One explicit canonical seal decision is recorded without reading completed Banking raw/receipts; the sparse map either seals BANK-JOINT-STOCK and selects exactly one next blind frontier or opens exactly one corrective frontier; and the decision closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "output_authority":"MEMORY_LEADS_ONLY",
+    "one_pass_cannot_self_seal":true,
+    "done_when":"One append-only 1990-1994 BANK-CITY broad raw and bounded receipt exist; the sparse map selects exactly one measured follow-up, normally a same-slice orthogonal challenge if novelty is material; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence, truth promotion or sealing."
   }
 }
