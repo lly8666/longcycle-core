@@ -1,0 +1,31 @@
+{
+  "schema_version": "longcycle-banking-seal-decision-receipt/v1",
+  "workstream_id": "banking-domain-v1",
+  "campaign_id": "banking-china-1990-2026-v2",
+  "probe_id": "CROSS-TIME__BANK-JOINT-STOCK__seal-decision__blind-001",
+  "family": "canonical_seal_decision_control_review",
+  "shard_id": "BANK-JOINT-STOCK",
+  "input_map_revision": 122,
+  "input_map_blob_sha": "832b92aed0d8df457c5bca1382430d37bb6ba83b",
+  "manifest_blob_sha": "f1614308cb83f2426bef4a55c35b7cc85c432c92",
+  "reservation_revision": 1,
+  "assignment_epoch": 1,
+  "capability_disposition": "reuse",
+  "completed_banking_raw_or_receipts_read": false,
+  "banking_evidence_used": false,
+  "fresh_banking_search_used": false,
+  "control_findings": {
+    "all_nine_primary_slices_complete": true,
+    "all_measured_material_gaps_closed": true,
+    "time_x_shard_coverage_requirement_satisfied": true,
+    "negative_space_requirement_satisfied": true,
+    "three_consecutive_low_novelty_confirmations": true,
+    "ontology_stability_not_sole_basis": true
+  },
+  "decision": "SEAL",
+  "seal_state_ref": "research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/seals/BANK-JOINT-STOCK-seal-state-v1.json",
+  "seal_performed": true,
+  "evidence_transition_performed": false,
+  "truth_promotion_performed": false,
+  "next_control_action": "Move BANK-JOINT-STOCK to sealed_shards and select exactly one next blind-memory frontier from the manifest; keep Evidence deferred."
+}
