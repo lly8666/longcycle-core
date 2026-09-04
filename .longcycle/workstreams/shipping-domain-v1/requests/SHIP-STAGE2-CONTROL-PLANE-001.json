@@ -1,0 +1,45 @@
+{
+  "request_id": "SHIP-STAGE2-CONTROL-PLANE-001",
+  "requester_workstream_id": "shipping-domain-v1",
+  "kind": "control_plane_reconciliation",
+  "status": "open",
+  "requested_result": "Reconcile the main-owned Shipping reservation/control plane so the authorized stage-two cursor-only phase acknowledgement can pass exact-head worker-fast without requiring the Shipping worker to modify main-owned control files.",
+  "parent_value": "Unblock exactly one authorized 2020-2023 container-pandemic source-validation pilot while preserving the P146 sealed/no-P147 boundary and the existing single-writer fence.",
+  "observed_facts": {
+    "main_sha": "0957250260bd1a80a2ee37093e8d4acf6dec78d3",
+    "worker_head_sha": "1eaee7e3bfec2e5dca8cd50f7dc224e81dfac226",
+    "failed_run_id": 33852906990,
+    "failed_job_id": 100959528837,
+    "failed_step": "Worker diff stays inside the main reservation",
+    "main_reservation_revision": 1,
+    "worker_reservation_revision": 1,
+    "assignment_epoch": 1,
+    "mismatch_field": "done_when",
+    "main_done_when": "A representative shipping trajectory is captured through the reserved domain paths with claim-scoped provenance, contemporaneous Judgment kept separate from later Outcome, and point-in-time replay tests showing no lookahead; for the current second-stage authorization this means exactly one 2020-2023 container-pandemic-cycle source-validation pilot, while the P146 blind-Memory campaign remains sealed and the overall shipping-domain-v1 reservation remains active for later coordinator review.",
+    "worker_checkout_done_when": "A representative shipping trajectory is captured through the reserved domain paths with claim-scoped provenance, contemporaneous Judgment kept separate from later Outcome, and point-in-time replay tests showing no lookahead; shared functionality is requested rather than duplicated."
+  },
+  "diagnosis": "The worker-fast boundary validator loads the worker checkout's reservation and compares every reserved field with origin/main before it evaluates continuity. PR #181 changed the main-owned reservation done_when while preserving reservation_revision=1 and assignment_epoch=1. The existing worker branch therefore cannot pass validate_reservation_unchanged even for a cursor-only stage-two acknowledgement. The worker is forbidden to edit reservation.json, so this requires integration-owned reconciliation.",
+  "constraints": [
+    "Shipping worker must not modify reservation.json, change-contract.json, capability-admission.json, global handoff, shared CI or validator semantics.",
+    "Do not self-increment reservation_revision or assignment_epoch from the worker branch.",
+    "Do not execute P147, consume a fourth blind-Memory probe, reopen the sealed campaign, or start substantive source validation before exact-head worker-fast is CLEAN.",
+    "Preserve sealed Memory as hypothesis/research-control provenance only, never truth-bearing Evidence.",
+    "Prefer the smallest truthful L2 governance repair; do not change Architecture Baseline semantics merely to make CI pass."
+  ],
+  "acceptance": [
+    "Refreshed main and Shipping worker satisfy the reservation field/fence check under the intended stage-two authority.",
+    "A cursor-only stage-two phase acknowledgement at the exact Shipping worker head passes worker-fast, including Worker diff stays inside the main reservation and Remote worker continuity is CLEAN.",
+    "P146 remains sealed with no P147/fourth blind-Memory probe authorized.",
+    "No worker-authored mutation of main-owned control files is required."
+  ],
+  "dependency_consequence": "Shipping stage-two remains blocked. No substantive source archaeology, Grounded Evidence, Reality/Judgment/Outcome or replay work may start until the control-plane mismatch is reconciled and exact-head continuity is CLEAN.",
+  "recommended_minimal_fix": "Prefer restoring main reservation.done_when to the worker-compatible reserved value while keeping the stage-two narrowing in the main-owned Change Contract, capability admission, dedicated prompt and global handoff, if that remains semantically sufficient. Otherwise use an explicitly supported integration-owned reservation revision/synchronization transaction. Do not require the worker to cross-write reservation authority.",
+  "evidence_refs": [
+    ".longcycle/workstreams/shipping-domain-v1/reservation.json",
+    "docs/development/prompts/shipping-stage-two-source-validation.md",
+    ".github/workflows/architecture-baseline.yml",
+    "scripts/validate_workstream_boundaries.py",
+    "docs/development/remote-worker-continuity.md"
+  ],
+  "created_from_worker_head": "1eaee7e3bfec2e5dca8cd50f7dc224e81dfac226"
+}
