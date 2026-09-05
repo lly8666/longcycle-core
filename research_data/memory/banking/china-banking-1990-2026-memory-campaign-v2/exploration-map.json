@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":178,
+  "map_revision":179,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,61 +14,47 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-008.json",
-  "latest_pass_receipt_status":"low_novelty_confirmation_3_of_3_seal_readiness_pending",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__seal-readiness-decision__001.json",
+  "latest_pass_receipt_status":"memory_stage_seal_ready",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"BANK-STATE-OWNED","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"BANK-JOINT-STOCK","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
-    {"shard_id":"BANK-CITY","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"}
+    {"shard_id":"BANK-CITY","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
+    {"shard_id":"BANK-RURAL","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff","seal_decision_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__seal-readiness-decision__001.json"}
   ],
   "active_shards":[{
-    "shard_id":"BANK-RURAL",
-    "selected_time_slice_id":null,
-    "stage":"seal_readiness_decision_pending",
+    "shard_id":"BANK-POLICY-DEVELOPMENT",
+    "selected_time_slice_id":"TIME-1990-1994",
+    "stage":"time_slice_recall",
     "fresh_search_used":false,
-    "recent_outcomes":[
-      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-006","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":17,"duplicate_lead_count":17,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_1_of_3"},
-      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-007","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":15,"duplicate_lead_count":19,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_2_of_3"},
-      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-008","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":18,"duplicate_lead_count":16,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_3_of_3_select_seal_readiness_decision"}
-    ],
-    "low_novelty_confirmations":3,
+    "recent_outcomes":[],
+    "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
-    "reviewed_high_value_regions":[
-      {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Early lineage/governance reopen independently reviewed and closed."},
-      {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Ownership/capital/measurement reopen independently reviewed and closed."},
-      {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Metropolitan/high-urbanization RCB and new-type rural-financial-institution gaps independently reviewed and closed."},
-      {"region_id":"TIME-2009-2012__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2013-2016__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2017-2019__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
-      {"region_id":"TIME-2020-2022__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Provincial united-bank/two-tier topology independently reviewed and closed."},
-      {"region_id":"TIME-2023-2026__BANK-RURAL","state":"broad_plus_orthogonal_complete"}
-    ],
+    "reviewed_high_value_regions":[],
     "known_major_gaps":[
-      "All material BANK-RURAL gaps recovered so far have bounded independent reopen coverage and are represented as MEMORY_LEADS_ONLY.",
-      "Blind-006, blind-007 and blind-008 are three consecutive genuine low-novelty confirmations after the latest reset, satisfying the manifest's numerical saturation condition.",
-      "Blind-008 recovered only channel/infrastructure search-key refinements and selective pre-1990 antecedent context; no missing legal-person class, predecessor lineage, provincial topology or bounded-period structure appeared.",
-      "Numerical 3/3 is necessary but not itself a seal. A separate decision must review the time×shard matrix, negative-space matrix, required long-tail categories, antecedent rule, unresolved gaps and boundary discipline.",
-      "BANK-RURAL remains unsealed until the separate seal-readiness decision is completed through its own S -> cursor-only H -> exact-H CLEAN.",
-      "Evidence remains deferred; seal readiness is not Evidence verification."
+      "BANK-RURAL is memory-stage sealed after a separate rev178 seal-readiness decision reviewed 3/3 confirmations, all nine time slices, negative space, required long-tail categories, selective antecedents, resolved material gaps and boundary discipline. Evidence remains deferred.",
+      "BANK-POLICY-DEVELOPMENT is the next unsealed atomic shard in manifest order and has not yet received v2 time-slice blind depth in the active compact map.",
+      "The first bounded frontier is TIME-1990-1994, emphasizing the policy-versus-commercial credit boundary and the formation/antecedents of policy/development-bank architecture.",
+      "Exact institution creation dates, mandates, funding instruments, fiscal/PBOC relations, loan portfolios, policy phrases and official terminology remain Evidence-stage questions.",
+      "No fresh Banking search or Banking source material is allowed while BANK-POLICY-DEVELOPMENT is unsealed."
     ]
   },
-  "selection_basis":{"rule":"three_consecutive_low_novelty_confirmations_select_separate_seal_readiness_decision","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SEAL-READINESS-DECISION-001","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__seal-readiness-decision__001"}],
+  "selection_basis":{"rule":"next_unsealed_atomic_shard_after_bank_rural_memory_seal","selected_shard_id":"BANK-POLICY-DEVELOPMENT","selected_time_slice_id":"TIME-1990-1994"},
+  "open_frontiers":[{"frontier_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__BROAD-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-RURAL__seal-readiness-decision__001",
-    "family":"seal_readiness_decision",
-    "time_slice_id":"CROSS-TIME",
-    "shard_id":"BANK-RURAL",
-    "period":["1990-01-01","2026-08-31"],
-    "instruction":"Run one separate BANK-RURAL seal-readiness decision using only this rev178 compact exploration map, the exhaustion manifest and current control-plane state. Do not read blind-008/blind-007/blind-006 or any earlier completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Review the manifest saturation rule explicitly: three consecutive low-novelty confirmations, time×shard coverage matrix, negative-space matrix, required long-tail categories, selective pre-1990 antecedents, unresolved material gaps and boundary discipline. This is a research-control decision, not a new recall pass and not Evidence verification. If every requirement is truthfully satisfied, record BANK-RURAL as memory-stage sealed with Evidence still deferred and select exactly one next permitted campaign frontier or clean handoff. If any requirement is not satisfied, keep BANK-RURAL unsealed and identify exactly one bounded missing requirement/frontier. Close the decision through substantive S, cursor-only H and exact-H CLEAN before any subsequent work.",
-    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current workstream control-plane state"],
-    "forbidden_inputs":["CROSS-TIME saturation-confirmation blind-008 raw and receipt","CROSS-TIME saturation-confirmation blind-007 raw and receipt","CROSS-TIME saturation-confirmation blind-006 raw and receipt","all earlier completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
-    "output_authority":"research_control_only",
-    "done_when":"One bounded BANK-RURAL seal-readiness decision receipt exists; the sparse map records either a truthful memory-stage seal or exactly one missing bounded requirement and selects exactly one next frontier; and the decision closes through substantive S, cursor-only H and exact-H CLEAN without Evidence search or truth promotion beyond memory-stage sealing."
+    "probe_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001",
+    "family":"time_slice_broad_blind_recall",
+    "time_slice_id":"TIME-1990-1994",
+    "shard_id":"BANK-POLICY-DEVELOPMENT",
+    "period":["1990-01-01","1994-12-31"],
+    "instruction":"Run one isolated BANK-POLICY-DEVELOPMENT 1990-1994 broad blind-memory recall using only this rev179 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, including sealed BANK-RURAL material, Banking Evidence/source material or fresh Banking search. Recover obvious landmarks plus long-tail leads for the policy-versus-commercial credit boundary: pre-1994 policy-credit antecedents only where needed for the primary horizon; formation and role separation of policy/development-bank institutions; funding and balance-sheet logic; fiscal/PBOC/state-commercial-bank relationships; actors and institutional handoffs; old vocabulary/search keys; contemporaneous expectations; metrics/semantic discontinuities; failed/dead-end arrangements and counterexamples. Preserve uncertainty and do not invent exact dates, amounts, mandates or official wording. Output MEMORY_LEADS_ONLY. After the pass, append one bounded receipt, update the sparse map with measured novelty and exactly one next frontier, and close through substantive S, cursor-only H and exact-H CLEAN before any later probe.",
+    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
+    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs including BANK-RURAL","Banking source or Evidence material","fresh Banking search results"],
+    "output_authority":"MEMORY_LEADS_ONLY",
+    "done_when":"One append-only BANK-POLICY-DEVELOPMENT TIME-1990-1994 blind-001 raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
