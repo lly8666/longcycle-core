@@ -41,6 +41,8 @@
 - 只写 reservation 范围，一条分支同一时刻一个写入者；
 - 被截断后由下轮先补 S-without-H；
 - Memory/Evidence、PIT/no-lookahead、Reality/Judgment/Outcome 和 provenance 边界不因行业而改；
+- 发布要求 canonical Reality 的 R/J/O request 前，区分“事实自身维度完整”和“跨主体可比较”：issuer-specific 窄事实可在主体、指标/口径、时期及必要比较基准/单位都有 Evidence 支持，并以 `statistical_scope`/`scope_guard` 限定边界时声明 `dimensions_complete=true`；不能用 `false` 代替跨公司不可比，也不能为了过门禁凭空补维度；
+- 让 worker-fast 与 main 控制的 integration preflight 在数据库执行前拒绝“request 要 canonical Reality、projection 却声明 target fact 不完整”的必败组合；该规则不得扩张成所有 Judgment 一律完整；
 - 不把“搜索不是 Evidence”误写成“禁止 seal 后搜索”；Search 缺失时报 capability blocker，不能把工具缺失冒充 source gap；
 - Drive 只搬精确不可变数据库对象，worker 永不提升全局 generation。
 

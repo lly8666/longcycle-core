@@ -70,6 +70,13 @@ jobs:
         with:
           ref: ${{ steps.request.outputs.branch }}
           fetch-depth: 0
+      - name: Checkout current main control-plane guards
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: .ci-main-control
+          fetch-depth: 1
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -145,6 +152,12 @@ jobs:
         run: |
           set -euo pipefail
           exec > >(tee /tmp/research-orchestration.log) 2>&1
+
+          echo "main_control_guard_head=$(git -C .ci-main-control rev-parse HEAD)"
+          python .ci-main-control/scripts/preflight_rjo_requests.py \
+            --root "$GITHUB_WORKSPACE" \
+            --orchestration-spec "$ORCHESTRATION_SPEC"
+
           python -m pip install -e '.[dev,postgres,duckdb,s3]'
 
           args=(

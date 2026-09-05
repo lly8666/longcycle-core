@@ -1,7 +1,7 @@
 {
   "schema_version": "longcycle-capability-admission/v2",
-  "intent_id": "RJO-CANONICAL-REALITY-PREFLIGHT-V1-038",
-  "intent": "Add a fail-fast worker-side consistency check for typed R/J/O requests that require canonical Reality from an explicitly dimension-incomplete CAP-0003 projection, while preserving existing epistemic semantics.",
+  "intent_id": "RJO-PREFLIGHT-ROLLOUT-V2-039",
+  "intent": "Extend the existing R/J/O request/projection preflight to the current-main issue execution entry so both new and long-lived worker branches reject the same guaranteed-invalid dimensions_complete=false composition before database execution, and teach disposable agents the distinction without changing epistemic semantics.",
   "governance_mode": "converging",
   "disposition": "reuse",
   "target_capability_ids": [
@@ -16,7 +16,7 @@
     "CAP-0009",
     "CAP-0010"
   ],
-  "rationale_summary": "No capability is missing. CAP-0003 already owns Fact dimension completeness and canonical reconciliation; CAP-0007 already owns fail-closed trajectory execution; CAP-0009 owns durable fresh-agent continuity; CAP-0010 owns workstream routing. The observed Shipping failure was a request/projection consistency defect that should be detected before integration runtime, not a reason to fork or weaken any semantic owner.",
+  "rationale_summary": "No capability is missing. PR #191 already added the same-ref worker-fast preflight under CAP-0003/CAP-0007/CAP-0009/CAP-0010, but active industry branches created before that merge do not inherit its workflow step. The default-branch issue workflow is the existing central execution choke point, so reusing it closes the rollout gap without a new capability, worker-cursor cross-write, or semantic change.",
   "rationale_details_ref": "scripts/preflight_rjo_requests.py",
   "unmet_requirement": null,
   "evidence_refs": [
@@ -25,12 +25,17 @@
     ".longcycle/capabilities/cards/CAP-0009.json",
     ".longcycle/capabilities/cards/CAP-0010.json",
     "src/longcycle/application/reconciliation.py",
-    "src/longcycle/application/reality_projection.py"
+    "src/longcycle/application/reality_projection.py",
+    ".github/workflows/research-orchestration-once.yml",
+    "docs/development/prompts/all-agent-takeover.md",
+    "docs/development/prompts/new-role-creation.md"
   ],
   "planned_paths": [
     "scripts/preflight_rjo_requests.py",
     "tests/test_rjo_request_preflight.py",
-    ".github/workflows/architecture-baseline.yml",
+    ".github/workflows/research-orchestration-once.yml",
+    "docs/development/prompts/all-agent-takeover.md",
+    "docs/development/prompts/new-role-creation.md",
     ".longcycle/capabilities/current-admission.json",
     ".longcycle/change-contract/current.json",
     ".longcycle/handoff/current.json"
