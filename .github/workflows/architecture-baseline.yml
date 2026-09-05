@@ -73,6 +73,12 @@ jobs:
           --base-ref origin/main
           --branch HEAD
 
+      - name: Open R/J/O requests are canonical-Reality-ready
+        shell: bash
+        run: |
+          WORKSTREAM_ID="${GITHUB_REF_NAME#workstream/}"
+          python scripts/preflight_rjo_requests.py "$WORKSTREAM_ID"
+
       - name: Focused worker continuity and boundary regressions
         run: >-
           pytest -q
@@ -81,6 +87,7 @@ jobs:
           tests/test_workstream_continuity.py
           tests/test_memory_seal_audit.py
           tests/test_ci_status_target.py
+          tests/test_rjo_request_preflight.py
 
       - name: Remote worker continuity is CLEAN
         shell: bash
@@ -182,6 +189,7 @@ jobs:
           tests/test_workstream_continuity.py
           tests/test_memory_seal_audit.py
           tests/test_ci_status_target.py
+          tests/test_rjo_request_preflight.py
 
       - name: Baseline-critical semantic regressions
         run: >-

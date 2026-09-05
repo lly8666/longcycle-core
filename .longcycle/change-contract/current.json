@@ -1,20 +1,20 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "POST-SEAL-CHATGPT-SEARCH-RESTORE-V1-037",
-  "goal": "Restore Longcycle's inherited post-seal ChatGPT Search/self-verification execution path in chat-agent governance, supersede only the premature completion effect of Shipping's GitHub-only source gap, and keep every existing Evidence certification rule unchanged.",
+  "intent_id": "RJO-CANONICAL-REALITY-PREFLIGHT-V1-038",
+  "goal": "Prevent worker-owned R/J/O integration requests from demanding canonical Reality while their referenced CAP-0003 projection explicitly marks the requested facts dimension-incomplete, and surface the semantic distinction between fact completeness and cross-entity comparability before integration execution.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this reuses the existing CAP-0006 post-seal search route plus CAP-0001/CAP-0002 source/Evidence semantics and preserves PIT/no-lookahead, Reality/Judgment/Outcome, provenance, database-generation and worker single-writer semantics",
+  "baseline_impact": "none; this reuses CAP-0003 reconciliation, CAP-0007 fail-closed orchestration, CAP-0009 continuity and CAP-0010 workstream routing without changing any Reality/Judgment/Outcome/Evidence/PIT semantic expectation",
   "baseline_invariants": [
-    "blind Memory remains isolated from fresh search until the relevant atlas/shard is sealed",
-    "post-seal model/search activity remains discovery and research control until claim-scoped source content satisfies existing CAP-0001/CAP-0002 rules",
-    "locator_verified, content_verified and materialized retain their existing meanings and raw-byte materialization is not added as an Evidence prerequisite",
+    "dimensions_complete=false remains a CAP-0003 declaration that the FactAssertion itself lacks required dimensions and therefore must fail closed before canonical Reality",
+    "cross-entity or cross-issuer non-comparability remains separate from fact completeness and continues to be expressed through truthful dimensions/statistical scope plus downstream comparability and Outcome relation semantics",
+    "Grounded Evidence identity, locator, provenance and temporal rules remain unchanged",
     "Reality, contemporaneous Judgment, later Outcome and PIT/no-lookahead remain separate and fail closed",
-    "worker branch/fence/single-writer and main-owned control-plane authority remain unchanged",
-    "no L3/L4 semantic owner, Baseline expectation, product schema or source-authority rule is changed"
+    "worker branch/fence/single-writer ownership and global_serial integration authority remain unchanged",
+    "no L3/L4 Baseline, schema, semantic-owner or source-authority change is introduced"
   ],
-  "schema_impact": "none; prompt, workstream authorization and lightweight governance regression only",
+  "schema_impact": "none; static request/projection preflight, CI wiring and regression tests only",
   "baseline_critical_tests_touched": false,
   "architecture_change_ref": null,
   "counterexample_refs": [],
@@ -22,13 +22,12 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "Chat-agent bootstrap distinguishes repository control through GitHub Connect from research discovery/reading through ChatGPT Search and checks Search availability at runtime rather than banning it by chat mode.",
-    "Blind Memory still forbids fresh search; a sealed campaign may use the existing high-model self-verification/search route without creating a new role or semantic owner.",
-    "Search snippets, rankings, AI answers, candidate URLs and citations remain discovery material; Grounded Evidence continues to require the old claim-scoped source identity, readable content, locator, authority, temporal and provenance rules.",
-    "No fixed webpage/source/download quota or raw-byte prerequisite is added. Existing unresolved-exhaustion and authoritative-resolution stop behavior remains authoritative.",
-    "A missing Search/interactive reading tool yields CAPABILITY_BLOCKED_EXTERNAL_SOURCE and handoff, not bounded_source_gap or real-world not_found.",
-    "Shipping's prior GitHub-only source-gap bytes remain immutable; only its stage-completion effect is superseded, and the same single pilot may resume through a worker-owned cursor-only acknowledgement after refreshed-main authority and exact-head CLEAN.",
-    "Shipping P146 remains sealed; no P147, fourth blind-Memory probe, second trajectory or global_serial cross-write of the Shipping cursor is authorized.",
-    "Lightweight prompt-contract regressions, Architecture Baseline, Fresh-Agent Continuity and full CI pass on the exact final PR head."
+    "An open typed integration request with execution_contract.reality_fact_keys and exactly one CAP-0003 Reality projection input fails preflight if any requested target fact resolves to dimensions_complete=false.",
+    "The failure explains that dimensions_complete describes the fact's own dimension completeness and must not be used merely as a proxy for cross-entity non-comparability.",
+    "A narrow issuer/entity-specific Reality fact that is truthful and complete inside its declared statistical_scope/scope_guard can pass with dimensions_complete=true while downstream comparability remains independently fail-closed.",
+    "Missing requested Reality fact keys fail preflight rather than reaching integration execution.",
+    "Closed requests and unrelated requests without reality_fact_keys are not newly blocked.",
+    "The worker-fast exact-head gate runs the preflight before remote CLEAN continuity is accepted, and focused regression tests cover failure, success, missing-key and non-target cases.",
+    "No reconciler behavior, Judgment completeness rule, Outcome relation behavior, Evidence standard or PIT rule changes."
   ]
 }
