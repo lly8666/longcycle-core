@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":174,
+  "map_revision":175,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-005.json",
-  "latest_pass_receipt_status":"material_gap_reopen_required_confirmation_reset",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-TIME-2005-2008__BANK-RURAL__new-type-rural-financial-institutions__blind-004.json",
+  "latest_pass_receipt_status":"reopen_confirmed_complete_return_to_saturation_confirmation",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -25,13 +25,13 @@
   ],
   "active_shards":[{
     "shard_id":"BANK-RURAL",
-    "selected_time_slice_id":"TIME-2005-2008",
-    "stage":"time_slice_reopen_recall",
+    "selected_time_slice_id":null,
+    "stage":"cross_time_saturation_confirmation",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2005-2008__BANK-RURAL__metropolitan-rcb-urbanization-scale__blind-003","family":"metropolitan_rcb_urbanization_scale_reopen_blind_recall","novel_lead_count":31,"duplicate_lead_count":5,"high_importance_novel_count":12,"outcome":"reopen_confirmed_complete_return_to_saturation_review"},
       {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-review__blind-004","family":"cross_time_saturation_review_blind_recall","novel_lead_count":17,"duplicate_lead_count":19,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_1_of_3"},
-      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-005","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":28,"duplicate_lead_count":8,"high_importance_novel_count":11,"outcome":"material_gap_reopen_required_confirmation_reset"}
+      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-005","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":28,"duplicate_lead_count":8,"high_importance_novel_count":11,"outcome":"material_gap_reopen_required_confirmation_reset"},
+      {"pass_id":"TIME-2005-2008__BANK-RURAL__new-type-rural-financial-institutions__blind-004","family":"new_type_rural_financial_institutions_reopen_blind_recall","novel_lead_count":29,"duplicate_lead_count":5,"high_importance_novel_count":12,"outcome":"reopen_confirmed_complete_return_to_saturation_confirmation"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
@@ -41,7 +41,7 @@
       {"region_id":"TIME-1990-1994__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-1995-1999__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Early lineage/governance reopen independently reviewed and closed."},
       {"region_id":"TIME-2000-2004__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Ownership/capital/measurement reopen independently reviewed and closed."},
-      {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopened_by_cross_time_gap","note":"A saturation-confirmation pass recovered a distinct mid-2000s new-type rural-financial-institution pilot family beyond village banks, especially rural fund mutual cooperatives and loan-company forms. This MEMORY_LEADS_ONLY gap concerns legal status, funding/deposit perimeter, sponsor/member ownership, contemporaneous policy rationale, survival/exit and old terminology; it requires one bounded independent reopen."},
+      {"region_id":"TIME-2005-2008__BANK-RURAL","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Metropolitan/high-urbanization RCB cohort and the new-type rural-financial-institution pilot family have each received bounded independent reopen challenges. The latter confirms rural fund mutual cooperative and loan-company forms as distinct minority legal/business models alongside village banks; exact rules remain Evidence questions."},
       {"region_id":"TIME-2009-2012__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2013-2016__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
       {"region_id":"TIME-2017-2019__BANK-RURAL","state":"broad_plus_orthogonal_complete"},
@@ -49,26 +49,26 @@
       {"region_id":"TIME-2023-2026__BANK-RURAL","state":"broad_plus_orthogonal_complete"}
     ],
     "known_major_gaps":[
-      "The prior 1/3 low-novelty sequence is reset to 0/3 because blind-005 recovered a material forgotten institution-family class.",
-      "The selected 2005-2008 reopen must independently test the contemporaneous new-type rural financial institution family, especially rural fund mutual cooperatives and loan-company forms versus village banks.",
-      "Do not collapse licensed rural fund mutual cooperatives into RCC/RCB lineage, informal mutual-aid organizations or rural cooperative foundations; exact legal perimeter is an Evidence question.",
-      "Do not collapse historical regulated loan-company forms into generic lending companies or small-loan companies without Evidence.",
-      "Exact pilot dates, institution counts, ownership/sponsor rules, deposit/funding powers, permitted business, exits and official terms remain Evidence-stage questions.",
+      "All material BANK-RURAL gaps recovered so far have received one independent bounded reopen challenge and are represented in the compact map as MEMORY_LEADS_ONLY.",
+      "The saturation sequence remains 0/3 because blind-005 broke the prior confirmation; the subsequent 2005-2008 probe was a material-gap resolution pass, not a low-novelty confirmation.",
+      "The next cross-time confirmation must independently challenge predecessor/legal-form discontinuities, minority exits, old terminology, forgotten infrastructure, metric semantics and edge counterexamples without reading completed raw/receipts.",
+      "Rural fund mutual cooperatives, regulated loan-company forms and village banks should remain separate subtypes inside the contemporaneous new-type rural-financial-institution pilot family until Evidence resolves exact legal powers and terminology.",
+      "Small-loan companies, informal mutual-aid organizations, rural cooperative foundations, postal savings and other rural-credit providers remain boundary classes unless Evidence proves BANK-RURAL banking-lineage inclusion.",
       "Evidence remains deferred while BANK-RURAL is unsealed."
     ]
   },
-  "selection_basis":{"rule":"saturation_confirmation_material_gap_reset_and_reopen_one_bounded_period","selected_shard_id":"BANK-RURAL","selected_time_slice_id":"TIME-2005-2008"},
-  "open_frontiers":[{"frontier_id":"TIME-2005-2008__BANK-RURAL__NEW-TYPE-RURAL-FINANCIAL-INSTITUTIONS-REOPEN-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-2005-2008__BANK-RURAL__new-type-rural-financial-institutions__blind-004"}],
+  "selection_basis":{"rule":"material_reopen_resolved_return_to_independent_saturation_confirmation","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SATURATION-CONFIRMATION-006","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-006"}],
   "next_probe":{
-    "probe_id":"TIME-2005-2008__BANK-RURAL__new-type-rural-financial-institutions__blind-004",
-    "family":"new_type_rural_financial_institutions_reopen_blind_recall",
-    "time_slice_id":"TIME-2005-2008",
+    "probe_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-006",
+    "family":"cross_time_saturation_confirmation_blind_recall",
+    "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-RURAL",
-    "period":["2005-01-01","2008-12-31"],
-    "instruction":"Run one isolated BANK-RURAL 2005-2008 reopen blind-memory challenge using only this rev174 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read saturation-confirmation blind-005 raw/receipt, any earlier saturation-review or reopen raw/receipts, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Test whether the contemporaneous `new-type rural financial institution` experiment materially included regulated institution forms beyond village banks, especially rural fund mutual cooperatives and loan-company forms. Recover legal status, sponsor/member ownership logic, deposit/funding perimeter, permitted business, rural-service rationale, scale/survival/exit and old terminology. Preserve small-loan companies, informal mutual-aid organizations and rural cooperative foundations as negative-space boundary cases unless later Evidence proves inclusion. Preserve uncertainty; do not invent exact pilot dates, institutions, counts, capital requirements or official legal wording. If the independent reopen confirms/refines one coherent minority pilot-family gap without a second material category, close it and return to cross-time saturation review at 0/3. If another materially distinct institution class appears, select only one bounded frontier. Do not count a saturation confirmation while this material reopen is active and do not begin Evidence prematurely.",
+    "period":["1990-01-01","2026-08-31"],
+    "instruction":"Run one isolated BANK-RURAL cross-time saturation-confirmation blind recall using only this rev175 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read the new-type-rural-financial-institutions reopen raw/receipt, saturation-confirmation blind-005 raw/receipt, any earlier saturation-review/reopen raw/receipts, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Independently challenge predecessor/legal-form discontinuities, failed or marginal institution classes, old terminology/search keys, forgotten infrastructure, metric-semantic discontinuities, contemporaneous expectations and edge counterexamples. Do not merely repeat the resolved early lineage, capital/measurement, metropolitan RCB, provincial topology or new-type-rural-financial-institution packages. If genuinely low novelty with no bounded material category, record confirmation 1/3 and select exactly one independent next confirmation frontier. If material novelty appears, remain/reset at 0/3 and reopen exactly one bounded frontier. Do not seal or begin Evidence prematurely.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["CROSS-TIME saturation-confirmation blind-005 raw and receipt","all earlier saturation-review/reopen raw and receipts","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["TIME-2005-2008 new-type-rural-financial-institutions reopen raw and receipt","CROSS-TIME saturation-confirmation blind-005 raw and receipt","all earlier saturation-review/reopen raw and receipts","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only BANK-RURAL 2005-2008 new-type-rural-financial-institutions reopen raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one truthful next frontier; confirmations remain 0/3 while the material reopen is active; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only BANK-RURAL saturation-confirmation blind-006 raw and bounded receipt exist; the sparse map records measured novelty, updates confirmation state truthfully and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
