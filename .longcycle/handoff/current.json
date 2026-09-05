@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 141,
+  "continuity_sequence": 142,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
-  "active_branch": "post-baseline/rjo-request-preflight-v1",
-  "active_pr": 191,
-  "checkpoint_based_on_head_sha": "032aa6aae8da5d157f185107e667a337ffbb317b",
+  "active_branch": "post-baseline/rjo-preflight-rollout-v1",
+  "active_pr": 192,
+  "checkpoint_based_on_head_sha": "3be30ca290e7a8667e8523e5e9fc84c4d25600d6",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh exact main, PR #191 head and both worker refs before acting. L2 substantive S=032aa6aae8da5d157f185107e667a337ffbb317b adds only the canonical-Reality request/projection preflight. H1=cb611441087af032bf84c79abb4d0eef4e3ffdf7 exposed one full-suite continuity defect: it listed a Shipping execution receipt that exists only on integration branch post-baseline/ship-stage2-rjo-execution-v2@48900b3e1749ea4664b6ea8eb41bade39c1a34b0 as if it were a local deep-context path. This H removes that invalid local-path claim while retaining the immutable cross-branch receipt pointer in prose. Do not edit Shipping or Banking worker state from global_serial.",
+  "bootstrap_instruction": "Refresh exact origin/main, PR #192 and origin/post-baseline/rjo-preflight-rollout-v1 before acting. Main already contains merged PR #191 and the repaired Shipping R/J/O execution has an immutable successful receipt on post-baseline/ship-stage2-rjo-execution-v2@48900b3e1749ea4664b6ea8eb41bade39c1a34b0. L2 substantive S=3be30ca290e7a8667e8523e5e9fc84c4d25600d6 closes only the rollout gap for pre-existing worker branches. This H must remain the sole S-to-H change. Do not edit Shipping or Banking worker state from global_serial.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -17,41 +17,43 @@
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
     "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents advance bounded epistemic trajectories through reusable fail-closed capabilities and repository-backed handoffs.",
-    "short_term_goal": "Land the L2 R/J/O canonical-Reality preflight on exact green main while preserving the verified Shipping integration receipt as an immutable cross-branch outcome and leaving worker cursors single-writer owned.",
-    "next_big_step": "Validate this corrected handoff on the exact PR head, require Architecture Baseline, Fresh-Agent Continuity and full CI to pass, then merge PR #191 only from the expected head and refresh main.",
-    "local_optimization_stop_rule": "Do not redesign Reality, Judgment, Outcome, Evidence or PIT semantics; do not copy integration artifacts into main merely to satisfy a handoff path; do not cross-write worker cursors; stop after the narrow L2 guard is exact-head green and merged.",
+    "short_term_goal": "Land the L2 current-main R/J/O preflight rollout so both new and long-lived worker branches reject an explicit dimension-incomplete canonical-Reality composition before dependency installation or database execution.",
+    "next_big_step": "Require Architecture Baseline, Fresh-Agent Continuity and full CI on the exact PR #192 handoff head; merge only from that expected head after refreshing main, then refresh main again.",
+    "local_optimization_stop_rule": "Do not redesign or tighten Reality, Judgment, Outcome, Evidence, source authority or PIT semantics; do not cross-write worker cursors; stop when the narrow old-branch rollout guard and shared prompt guidance are exact-head green and merged.",
     "parallel_permanent_tracks": [
-      "Shipping remains independently owned by shipping-domain-v1; CLEAN H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a and integration receipt=post-baseline/ship-stage2-rjo-execution-v2@48900b3e1749ea4664b6ea8eb41bade39c1a34b0.",
-      "Banking remains independently owned by banking-domain-v1 and must be refreshed before coordinator inference.",
-      "Architecture Baseline v1 remains unchanged; this L2 guard reuses CAP-0003/CAP-0007/CAP-0009/CAP-0010."
+      "Shipping remains independently owned by shipping-domain-v1; CLEAN H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a and successful R/J/O receipt commit=48900b3e1749ea4664b6ea8eb41bade39c1a34b0.",
+      "Banking remains independently owned by banking-domain-v1 and must be live-refreshed before any coordinator inference.",
+      "Architecture Baseline v1 is unchanged; this L2 rollout reuses CAP-0003, CAP-0007, CAP-0009 and CAP-0010."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "rjo-request-preflight-v1",
-    "last_completed_action": "Diagnosed PR #191 full pytest exactly: 490 tests passed and only HandoffIsolationDrillTest failed because H1 active_context.deep_context_paths contained .longcycle/handoff/executions/SHIP-STAGE2-RJO-EXECUTION-001/execution-receipt.json, which is not present in the PR tree and exists only on the immutable integration receipt commit 48900b3e1749ea4664b6ea8eb41bade39c1a34b0. Corrected the handoff-only pointer without changing the preflight implementation or any epistemic semantic owner.",
-    "current_task": "Require exact-head CI on the corrected PR #191 handoff. If Architecture Baseline, Fresh-Agent Continuity and full CI are all green, refresh main, merge only with the expected PR head, then refresh main again. Do not mutate either worker cursor.",
-    "why_now": "The preflight implementation itself passed its focused tests; the sole red full-suite result was a repository-only reconstruction violation caused by treating a cross-branch receipt as a local deep-context path.",
-    "done_when": "PR #191 exact final head is green across required CI, merges against the refreshed expected main base, main is refreshed after merge, CAP-0003 semantics remain unchanged, and no Shipping or Banking worker state was cross-written.",
+    "parent_workstream_id": "rjo-preflight-rollout-v1",
+    "last_completed_action": "Built S=3be30ca290e7a8667e8523e5e9fc84c4d25600d6 from exact main 0fc9725039d569ce98b407c1ff9da0a1f644c307. The issue-triggered workflow now checks the target orchestration with a dependency-light guard loaded from current main before installation/database work. Focused tests passed, the real failed Shipping v1 fixture was rejected with all three fact keys, and the repaired v2 fixture passed. PR #192 is open.",
+    "current_task": "Publish this handoff-only H, then require all exact-head PR #192 checks to pass. Merge only against refreshed main with the exact expected head; make no worker-state mutation.",
+    "why_now": "PR #191 protects branches that inherit its worker-fast workflow, but long-lived active industry branches retain older workflow files. The default-main issue entry is the existing central choke point that can cover both old and future branches without per-worker migrations.",
+    "done_when": "PR #192 is green across Architecture Baseline, Fresh-Agent Continuity and full CI on one exact head, merges against refreshed main, refreshed main contains the central preflight, and Shipping/Banking cursors remain untouched.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh the new PR #191 exact head and its triggered CI; merge only after all required checks are green."
+    "next_atomic_action": "Commit and push this handoff-only H, verify S-to-H changed only .longcycle/handoff/current.json, then refresh exact PR #192 checks."
   },
   "active_context": {
-    "context_id": "rjo-request-preflight-v1-141",
-    "context_kind": "global_serial_l2_reliability_and_shipping_integration_outcome",
-    "label": "Canonical-Reality request preflight with repository-valid handoff pointers",
+    "context_id": "rjo-preflight-rollout-v1-142",
+    "context_kind": "global_serial_l2_cross_branch_reliability",
+    "label": "Current-main canonical-Reality preflight for long-lived workers",
     "root_path": ".longcycle",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
       "scripts/preflight_rjo_requests.py",
       "tests/test_rjo_request_preflight.py",
-      ".github/workflows/architecture-baseline.yml",
-      ".longcycle/workstreams/shipping-domain-v1/cursor.json"
+      ".github/workflows/research-orchestration-once.yml",
+      "docs/development/prompts/all-agent-takeover.md",
+      "docs/development/prompts/new-role-creation.md"
     ],
     "core_exclusion_terms": [
       "reconciler-semantics-change",
-      "evidence-redesign",
+      "evidence-standard-tightening",
+      "source-authority-change",
       "pit-redesign",
       "worker-cursor-cross-write",
       "blanket-judgment-dimensions-rule",
@@ -59,32 +61,32 @@
     ]
   },
   "pending_user_directives": [
-    "User explicitly authorized L2 repair and testing; do not escalate this narrow reliability fix to L3 unless a real Baseline semantic change becomes necessary.",
-    "Preserve the distinction between fact dimension completeness and cross-entity comparability; do not weaken CAP-0003 fail-closed reconciliation.",
-    "Keep Shipping Evidence IDs, Judgment no-lookahead, related_milestone Outcome, indeterminate/not_comparable and replay=null unchanged.",
+    "User explicitly authorized this L2 repair; report any genuine L3+ issue in plain language instead of silently expanding scope.",
+    "Preserve the original Evidence authentication standard and execution plan without tightening.",
+    "Keep fact dimension completeness separate from cross-entity comparability and related_milestone Outcome semantics.",
     "Do not cross-write Shipping or Banking worker cursor/research state from global_serial."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33943918424,
-    "observed_head_sha": "cb611441087af032bf84c79abb4d0eef4e3ffdf7",
-    "conclusion": "H1 branch Architecture Baseline and Fresh-Agent Continuity were green. PR full CI run 33943918424 had all targeted hard gates green and exactly one aggregate pytest failure: 490 passed, 1 failed because the handoff listed a cross-branch Shipping receipt as a local deep-context path. This H removes only that invalid pointer; exact new-head CI is authoritative.",
-    "mypy_summary": "PASS on prior PR head; no production model/schema change in the handoff repair.",
-    "pytest_summary": "Prior PR head: 490 passed, 1 failed only at repository-only handoff reconstruction due to a nonexistent local receipt path; corrected here without changing test expectations or semantic code.",
-    "ruff_summary": "PASS on prior PR head; handoff repair is JSON-only.",
-    "refresh_instruction": "Refresh exact PR #191 head and all checks after this handoff-only commit; merge only on exact green head, then refresh exact main."
+    "last_observed_run": null,
+    "observed_head_sha": "3be30ca290e7a8667e8523e5e9fc84c4d25600d6",
+    "conclusion": "Local focused verification is green: 23 orchestration/preflight tests, 21 prompt/handoff/preflight tests, capability/workstream audits, Architecture Baseline, and real failed/successful Shipping branch fixtures. Remote exact-H checks remain authoritative.",
+    "mypy_summary": "No src model or schema changed; authoritative full-CI mypy is pending on the exact H.",
+    "pytest_summary": "Focused suites passed locally; real Shipping failed/success fixtures produced the expected reject/pass results.",
+    "ruff_summary": "Changed Python files pass Ruff locally.",
+    "refresh_instruction": "After pushing H, refresh the exact PR #192 head and require Architecture Baseline, Fresh-Agent Continuity and full CI all success before merge."
   },
   "workstreams": [
     {
-      "workstream_id": "rjo-request-preflight-v1",
+      "workstream_id": "rjo-preflight-rollout-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "l2_handoff_pointer_repaired_exact_ci_pending",
-      "summary": "The L2/reuse guard rejects open typed R/J/O requests that demand canonical Reality from requested CAP-0003 projection facts explicitly marked dimensions_complete=false. The only prior full-suite failure was an invalid cross-branch receipt path in the global handoff, now removed.",
+      "status": "l2_substantive_complete_handoff_and_exact_ci_pending",
+      "summary": "The current-main issue entry now gives old and new worker branches the same early explicit-false contradiction guard, while the exact target executor retains all other schema and epistemic authority.",
       "next_actions": [
-        "Require exact-head Architecture Baseline, Fresh-Agent Continuity and full CI.",
-        "Merge PR #191 only from the expected green head after refreshing main, then refresh main again."
+        "Publish H and verify S-to-H isolation.",
+        "Require exact-head PR #192 CI and merge only from the refreshed expected head."
       ],
       "blockers": []
     },
@@ -93,9 +95,9 @@
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
       "status": "rjo_integration_verified_receipt_ready_for_owner_consumption",
-      "summary": "Shipping owner published CLEAN H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a. Global_serial integration run 33943566211 verified three canonical Reality versions, one Judgment and one related_milestone Outcome with replay=false; immutable receipt commit is 48900b3e1749ea4664b6ea8eb41bade39c1a34b0 on post-baseline/ship-stage2-rjo-execution-v2.",
+      "summary": "Shipping's projection repair and R/J/O integration already succeeded; its owner can consume the immutable receipt in its own recovery flow before PIT/no-lookahead.",
       "next_actions": [
-        "Shipping owner consumes the immutable integration outcome in its own recovery flow before PIT/no-lookahead."
+        "Shipping owner consumes receipt commit 48900b3e1749ea4664b6ea8eb41bade39c1a34b0, then follows its live cursor."
       ],
       "blockers": []
     },
@@ -104,7 +106,7 @@
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
       "status": "independent_remote_lane_refresh_before_inference",
-      "summary": "Banking remains independently owned; global_serial made no worker-state write.",
+      "summary": "Banking remains independently owned; this change makes no Banking state write.",
       "next_actions": [
         "Refresh Banking exact head only when routing requires it; otherwise do not intervene."
       ],
@@ -126,18 +128,19 @@
     ".longcycle/capabilities/current-admission.json",
     "scripts/preflight_rjo_requests.py",
     "tests/test_rjo_request_preflight.py",
-    ".github/workflows/architecture-baseline.yml",
-    ".longcycle/workstreams/shipping-domain-v1/cursor.json"
+    ".github/workflows/research-orchestration-once.yml",
+    "docs/development/prompts/all-agent-takeover.md",
+    "docs/development/prompts/new-role-creation.md"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Do all exact-head PR #191 checks pass after removing the invalid cross-branch deep-context path?",
-    "When will the Shipping owner consume integration receipt commit 48900b3e1749ea4664b6ea8eb41bade39c1a34b0 before PIT?"
+    "Do all exact-head PR #192 checks pass?",
+    "When will the Shipping owner consume the successful integration receipt before PIT/no-lookahead?"
   ],
   "ordered_next_actions": [
-    "Refresh exact PR #191 head and triggered CI.",
-    "Require Architecture Baseline, Fresh-Agent Continuity and full CI all green on that exact head.",
-    "Refresh main and merge only if expected PR head/base remain valid.",
+    "Commit and push handoff-only H; prove S-to-H changed only .longcycle/handoff/current.json.",
+    "Refresh exact PR #192 head and all required checks.",
+    "Refresh main and merge only if the expected PR head/base remain valid and all required checks are green.",
     "Refresh exact main after merge and make no worker cursor mutation."
   ]
 }
