@@ -33,11 +33,26 @@
       "valid_time_precision": "quarter",
       "valid_time_text": "Q3 2022",
       "statistical_scope": "Maersk issuer-reported freight and charter rate direction",
-      "dimensions_complete": false,
+      "dimensions_complete": true,
       "metadata": {
         "trajectory_id": "container-market-normalization-2022q3-to-2023",
         "epistemic_role": "historical_reality",
-        "issuer_specific": true
+        "issuer_specific": true,
+        "scope_guard": {
+          "dimensions_complete_only_for": {
+            "issuer": "A.P. Moller - Maersk",
+            "metric": "issuer-reported freight and charter rate direction",
+            "period": "Q3 2022",
+            "comparator": "previous quarter"
+          },
+          "does_not_generalize_to": [
+            "container market as a whole",
+            "other issuers",
+            "other periods",
+            "route or submarket granularity",
+            "causal or forecast claims"
+          ]
+        }
       }
     },
     {
@@ -53,12 +68,27 @@
       "valid_time_precision": "year",
       "valid_time_text": "2023",
       "statistical_scope": "Maersk issuer-reported average freight-rate change from 2022",
-      "dimensions_complete": false,
+      "dimensions_complete": true,
       "metadata": {
         "trajectory_id": "container-market-normalization-2022q3-to-2023",
         "epistemic_role": "later_reality",
         "issuer_specific": true,
-        "upstream_locator": "Annual Report 2023 p.37 (PDF page index 36)"
+        "upstream_locator": "Annual Report 2023 p.37 (PDF page index 36)",
+        "scope_guard": {
+          "dimensions_complete_only_for": {
+            "issuer": "A.P. Moller - Maersk",
+            "metric": "issuer-reported average freight-rate change",
+            "period": "2023",
+            "comparator": "2022 levels"
+          },
+          "does_not_generalize_to": [
+            "container market as a whole",
+            "other issuers",
+            "other periods",
+            "route or submarket granularity",
+            "causal or forecast claims"
+          ]
+        }
       }
     },
     {
@@ -74,12 +104,28 @@
       "valid_time_precision": "year",
       "valid_time_text": "2023",
       "statistical_scope": "Hapag-Lloyd issuer-reported average freight rate with 2022 comparator",
-      "dimensions_complete": false,
+      "dimensions_complete": true,
       "metadata": {
         "trajectory_id": "container-market-normalization-2022q3-to-2023",
         "epistemic_role": "later_reality_corroboration",
         "issuer_specific": true,
-        "independence_rule": "Independent broad normalization corroboration only; not proof of Maersk-specific realization."
+        "independence_rule": "Independent broad normalization corroboration only; not proof of Maersk-specific realization.",
+        "scope_guard": {
+          "dimensions_complete_only_for": {
+            "issuer": "Hapag-Lloyd AG",
+            "metric": "issuer-reported average freight-rate level",
+            "period": "2023",
+            "comparator": "2022 average freight rate"
+          },
+          "does_not_generalize_to": [
+            "container market as a whole",
+            "other issuers",
+            "other periods",
+            "route or submarket granularity",
+            "direct proof of the Maersk Judgment outcome",
+            "causal or forecast claims"
+          ]
+        }
       }
     }
   ]
