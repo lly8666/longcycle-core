@@ -1,14 +1,14 @@
 {
   "schema_version": "longcycle-session-handoff/v5",
-  "continuity_sequence": 139,
+  "continuity_sequence": 140,
   "provenance_ordering": "git_commit_graph",
   "repository": "lly8666/longcycle-core",
-  "active_branch": "post-baseline/coordinator-takeover-sync-v1",
+  "active_branch": "post-baseline/rjo-request-preflight-v1",
   "active_pr": null,
-  "checkpoint_based_on_head_sha": "2a98e9af078fae3b37ea098ce06f43c99b53f445",
+  "checkpoint_based_on_head_sha": "032aa6aae8da5d157f185107e667a337ffbb317b",
   "live_refresh_required": true,
   "do_not_ask_user_to_repeat": true,
-  "bootstrap_instruction": "Refresh exact main and both active worker refs through GitHub Connect before acting; this handoff is a handoff-only coordinator sync built on merged main@2a98e9af078fae3b37ea098ce06f43c99b53f445. PR #184 is already merged and exact main Architecture Baseline/full CI were green, so the inherited post-seal ChatGPT Search/self-verification route is restored without changing CAP-0001/CAP-0002 Evidence semantics. Last observed Banking H=01b798ebd1aebf7fbd59768dcea4e6a100ce91fa is cursor-only from S=dbf704ba6d402c9d61125a3d06e5bff688c4ee31 and worker-fast run 33883354562 is CLEAN; its four-probe invocation stopped at rev161 with TIME-2020-2022__BANK-RURAL__blind-001 deferred to the next eligible invocation. Shipping substantive S=b18bfabd938bdd842faef753ecff1613e02a33db selected exactly one bounded 2022Q3-2023 normalization source set, but H=ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933 is BLOCKED: worker-fast run 33883353379 rejects cursor.json because one source-selection path is declared under multiple pointer kinds. Do not cross-write the Shipping cursor; its owner must repair the cursor-only H and obtain exact-head CLEAN before Grounded Evidence work.",
+  "bootstrap_instruction": "Refresh exact main and both active worker refs before acting. This handoff follows L2 substantive S=032aa6aae8da5d157f185107e667a337ffbb317b, which adds a narrow worker-side preflight for open R/J/O requests that demand canonical Reality from a CAP-0003 projection. Shipping independently repaired its Reality completeness declarations at S=900a5e8bac9b3df2185cf43f728582a61bc93e19 and published CLEAN H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a with worker-fast run 33941215281. Global_serial then reran SHIP-STAGE2-RJO-EXECUTION-001 from that CLEAN H on post-baseline/ship-stage2-rjo-execution-v2@dd66f1da6099490e34da0a0e261ef6814e1925d9; run 33943566211 passed with 3 canonical Reality versions, 1 Judgment, 1 related_milestone Outcome, replay=false, and durable receipt commit 48900b3e1749ea4664b6ea8eb41bade39c1a34b0. Do not edit either worker cursor from global_serial.",
   "core_refs": {
     "strategy_path": "STRATEGIC_COMPASS.md",
     "methodology_path": "METHODOLOGY_CORE.md",
@@ -16,96 +16,76 @@
   },
   "data_plane_manifest_path": ".longcycle/handoff/data-plane.json",
   "strategic_horizon": {
-    "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents can move between phases through durable, versioned control-plane authority without relying on chat memory or cross-writing one another's state.",
-    "short_term_goal": "Stabilize the two active post-restore industry lanes under exact remote continuity: keep Banking independently CLEAN at its probe boundaries, and require Shipping to repair its invalid cursor-only handoff before continuing the already-selected single stage-two source-validation trajectory under unchanged Evidence/PIT semantics.",
-    "next_big_step": "Shipping owner repairs only its cursor pointer-kind conflict and proves exact-H worker-fast CLEAN; then it may ground the already-selected source set into claim-scoped Evidence and continue the same single trajectory. Banking may independently begin its next eligible 2020-2022 blind-recall invocation from rev161 after a fresh CLEAN audit. Coordinator accepts only typed shared-capability/integration requests.",
-    "local_optimization_stop_rule": "Do not redesign Evidence or PIT, add a search/crawler platform, cross-write either worker cursor/research state, reopen Shipping sealed Memory, broaden Shipping to a second trajectory, introduce fresh search into Banking blind recall, or create database/Drive work without a current typed need.",
+    "medium_term_goal": "Operate Longcycle as a stable post-Baseline industrial-memory platform where disposable industry Agents can advance bounded epistemic trajectories through reusable fail-closed capabilities and durable repository-backed handoffs without relying on chat memory.",
+    "short_term_goal": "Land the L2 R/J/O request/projection preflight on main, preserve the now-verified Shipping R/J/O receipt without worker cross-write, and let Shipping resume PIT/no-lookahead only after its owner consumes that immutable integration outcome.",
+    "next_big_step": "Make worker exact-head CI reject canonical-Reality requests whose target projection facts are explicitly dimension-incomplete, while keeping CAP-0003 reconciliation and cross-entity comparability semantics unchanged; then return control to the independent industry lanes.",
+    "local_optimization_stop_rule": "Do not redesign Reality/Judgment/Outcome/Evidence/PIT semantics, generalize every possible request shape, cross-write worker cursors, add source/search work, or turn this observed request-consistency defect into a new semantic owner. Stop after the narrow guard is green on exact PR/main and the Shipping receipt is durably routable.",
     "parallel_permanent_tracks": [
-      "Architecture Baseline v1 remains unchanged; the post-seal Search restoration is complete on main and still reuses CAP-0001/CAP-0002/CAP-0006/CAP-0009/CAP-0010.",
-      "Banking remains independently owned by banking-domain-v1; rev161 is CLEAN and the current four-probe invocation is closed.",
-      "Shipping remains independently owned by shipping-domain-v1; its source-selection S is valid, but its latest cursor-only H is blocked by a local pointer-kind schema error and must be owner-repaired before truth-bearing work.",
-      "GitHub remains repository/control-plane authority; post-seal ChatGPT Search is discovery/interactive reading, never Evidence by itself; Drive/database transport rules are unchanged."
+      "Shipping remains independently owned by shipping-domain-v1; its sequence-166 H is CLEAN and the integration-owned R/J/O receipt is ready for worker consumption.",
+      "Banking remains independently owned by banking-domain-v1; latest observed remote head is eb4c3f36e46bb12791a798582c5bdc3c33c55ff8 and must be refreshed before any coordinator inference or action.",
+      "Architecture Baseline v1 remains unchanged; this L2 guard reuses CAP-0003/CAP-0007/CAP-0009/CAP-0010."
     ]
   },
   "continuation_cursor": {
-    "parent_workstream_id": "post-restore-parallel-control-v1",
-    "last_completed_action": "Completed coordinator takeover audit against refreshed remote facts. Verified PR #184 head H=7d0b1c1ddab2339c4175dd07330dc3cb5bd5de35 was handoff-only after S=d05dc9de1feff583c4ba11c155917ed4439b0095, exact PR Architecture Baseline/full CI were green, and it merged as main@2a98e9af078fae3b37ea098ce06f43c99b53f445 with exact main required contexts green. Re-audited both parallel lanes after concurrent worker movement: Banking completed 2017-2019 orthogonal recall at S=dbf704ba6d402c9d61125a3d06e5bff688c4ee31 and closed with cursor-only H=01b798ebd1aebf7fbd59768dcea4e6a100ce91fa; worker-fast run 33883354562 reports Remote worker continuity is CLEAN. Shipping completed one bounded source-selection artifact at S=b18bfabd938bdd842faef753ecff1613e02a33db and wrote cursor-only H=ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933, but run 33883353379 fails workstream_registry validation because the source-selection path is claimed under multiple cursor pointer kinds. No worker file, Evidence object, database generation or shared semantic owner was modified by the coordinator.",
-    "current_task": "Maintain global_serial routing while Shipping repairs its worker-owned invalid H and Banking remains independent. Do not authorize Shipping Grounded Evidence work until a repaired exact H is CLEAN; do not intervene in Banking's next rev161 probe unless it emits a typed shared request or a governance blocker.",
-    "why_now": "The prior global cursor still described PR #184 as pending even though it is merged, and both workers advanced afterward. A bounded post-merge sync is required so a fresh coordinator starts from live routing facts instead of stale integration state, while preserving worker one-writer boundaries.",
-    "done_when": "Shipping's owner has repaired the cursor-only pointer-kind conflict and exact-head worker-fast is CLEAN before any truth-bearing Evidence step; Banking continues only through its own CLEAN S/H boundaries; any shared request is handled through global_serial without cross-writing worker state. If no typed shared request exists, no additional shared implementation is created.",
+    "parent_workstream_id": "rjo-request-preflight-v1",
+    "last_completed_action": "Verified the other Agent's Shipping diagnosis against live repository state, confirmed Shipping owner S=900a5e8bac9b3df2185cf43f728582a61bc93e19 corrected only the three narrow issuer-specific Reality completeness declarations/scope guards and CLEAN H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a passed worker-fast 33941215281. Ran a fresh global_serial attempt rather than reusing closed Issue #189: Issue #190 / run 33943566211 passed with the original four EvidenceFragment identities, three canonical Reality versions, one no-lookahead Judgment, one related_milestone Outcome with indeterminate/not_comparable, and no replay/PIT. Persisted durable receipt at post-baseline/ship-stage2-rjo-execution-v2@48900b3e1749ea4664b6ea8eb41bade39c1a34b0. Built L2 shared preflight S=032aa6aae8da5d157f185107e667a337ffbb317b on an independent main-based branch; its push CI started as Architecture Baseline run 33943844373 and Fresh-Agent Continuity run 33943844484.",
+    "current_task": "Complete exact validation and promotion of post-baseline/rjo-request-preflight-v1 without changing CAP-0003 semantics. Open a PR only after this handoff-only commit, require exact-head Architecture Baseline/Fresh-Agent/full CI as applicable, merge only from the expected head, then refresh main. Shipping may independently consume the immutable R/J/O receipt; global_serial must not edit its cursor.",
+    "why_now": "The Shipping incident proved a repeatable cross-industry coordination defect: a worker can request canonical Reality while its projection explicitly declares target facts dimension-incomplete, causing an avoidable integration-time fail-closed run. The existing reconciler behaved correctly; the missing guard is earlier static consistency validation and durable routing of the integration outcome.",
+    "done_when": "The narrow preflight and regressions are merged on exact green main, no Baseline semantic expectation changed, the Shipping R/J/O receipt remains immutable and references 3 Reality + 1 Judgment + 1 Outcome with replay=false, and no worker branch/cursor was cross-written by global_serial.",
     "required_capability": "high_capability_reasoning",
     "insufficient_capability_action": "stop_and_escalate",
-    "next_atomic_action": "Refresh Shipping exact head first. If H=ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933 or an equivalent invalid cursor remains, keep Shipping BLOCKED and route an owner-only cursor repair that gives each path exactly one pointer kind; do not start Evidence. If a newer cursor-only H exists, verify S-to-H scope and exact worker-fast CLEAN. Refresh Banking independently; if its latest H remains CLEAN, make no coordinator mutation."
+    "next_atomic_action": "Refresh the preflight branch exact head and S-push CI. If tests expose an implementation-only defect, repair within L2 and then write a fresh handoff-only H. Otherwise publish this H, open the main PR, require exact PR CI, merge with expected head, refresh main, and leave Shipping receipt consumption to the Shipping owner."
   },
   "active_context": {
-    "context_id": "post-restore-parallel-control-v1-139",
-    "context_kind": "global_serial_routing_and_worker_continuity",
-    "label": "Post-restore worker routing with Shipping cursor blocker",
+    "context_id": "rjo-request-preflight-v1-140",
+    "context_kind": "global_serial_l2_reliability_and_shipping_integration_outcome",
+    "label": "Canonical-Reality request preflight after verified Shipping R/J/O retry",
     "root_path": ".longcycle",
     "campaign_root": null,
     "coverage_path": null,
     "deep_context_paths": [
-      "docs/development/prompts/coordinator-fresh-agent.md",
-      "docs/development/prompts/all-agent-takeover.md",
-      "docs/development/prompts/github-connect-chat-adapter.md",
-      "docs/development/agent-governance-operating-manual.md",
-      ".longcycle/workstreams/banking-domain-v1/cursor.json",
-      ".longcycle/workstreams/shipping-domain-v1/cursor.json"
+      "scripts/preflight_rjo_requests.py",
+      "tests/test_rjo_request_preflight.py",
+      ".github/workflows/architecture-baseline.yml",
+      ".longcycle/workstreams/shipping-domain-v1/cursor.json",
+      ".longcycle/handoff/executions/SHIP-STAGE2-RJO-EXECUTION-001/execution-receipt.json"
     ],
     "core_exclusion_terms": [
-      "worker-cursor-cross-write",
+      "reconciler-semantics-change",
       "evidence-redesign",
-      "new-search-platform",
-      "shipping-P147",
-      "second-shipping-trajectory",
-      "banking-fresh-search-during-blind-recall",
-      "unrequested-database-generation"
+      "pit-redesign",
+      "worker-cursor-cross-write",
+      "blanket-judgment-dimensions-rule",
+      "new-semantic-owner"
     ]
   },
   "pending_user_directives": [
-    "Keep the restored post-seal ChatGPT Search/self-verification route and the pre-existing Evidence certification standard; Search remains discovery/reading rather than Evidence.",
-    "Repository authority and control operations use refreshed remote Git/GitHub facts; do not rely on chat memory as authority.",
-    "Shipping P146 remains the sealed blind-Memory boundary; no P147, fourth blind-Memory probe or second trajectory may be invented by global_serial.",
-    "Preserve the prior Shipping GitHub-only bounded source gap as provenance; the same single pilot may continue only through worker-owned CLEAN handoffs.",
-    "Do not cross-write Banking or Shipping worker cursor/research state from global_serial.",
-    "Sequence-130 genuine external Fresh-Agent v3 remains cancelled/suppressed."
+    "User explicitly authorized L2 repair and testing; do not escalate this narrow reliability fix to L3 unless a real Baseline semantic change becomes necessary.",
+    "Preserve the distinction between fact dimension completeness and cross-entity comparability; do not weaken CAP-0003 fail-closed reconciliation.",
+    "Keep Shipping Evidence IDs, Judgment no-lookahead, related_milestone Outcome, indeterminate/not_comparable and replay=null unchanged.",
+    "Do not cross-write Shipping or Banking worker cursor/research state from global_serial."
   ],
   "memory_campaign": null,
   "ci": {
     "authority": "snapshot_not_authoritative",
-    "last_observed_run": 33883353379,
-    "observed_head_sha": "ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933",
-    "conclusion": "Merged main@2a98e9af078fae3b37ea098ce06f43c99b53f445 has longcycle/architecture-baseline=success and longcycle/full-ci=success. Banking exact H=01b798ebd1aebf7fbd59768dcea4e6a100ce91fa passed worker-fast run 33883354562 including Remote worker continuity is CLEAN. Shipping exact H=ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933 failed run 33883353379 before boundary/continuity steps: Architecture Baseline itself passed, Capability Registry audit passed, then workstream_registry rejected shipping cursor.json because one path claims multiple pointer kinds. This is a worker cursor schema blocker, not an L3/L4 Baseline or Evidence semantic change.",
-    "mypy_summary": "No production Python/type change is made by this handoff-only coordinator sync; merged main exact full CI remains authoritative.",
-    "pytest_summary": "No new product test is required for this handoff-only sync; exact main full CI is green, Banking worker-fast is CLEAN, and Shipping's focused run exposes the cursor schema blocker before later checks.",
-    "ruff_summary": "No Python source is changed by this handoff-only sync; exact CI after the sync PR still owns final validation.",
-    "refresh_instruction": "Refresh this sync branch/PR and exact main before merge. On the next activation refresh both worker heads again; Shipping must repair its own cursor and pass exact-head worker-fast before Evidence grounding."
+    "last_observed_run": 33943844373,
+    "observed_head_sha": "032aa6aae8da5d157f185107e667a337ffbb317b",
+    "conclusion": "Substantive S push started Architecture Baseline run 33943844373 and Fresh-Agent Continuity run 33943844484; refresh exact conclusions before PR/merge. Independently, Shipping exact H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a passed worker-fast run 33941215281 and R/J/O integration run 33943566211 passed from exact execution head dd66f1da6099490e34da0a0e261ef6814e1925d9.",
+    "mypy_summary": "No production model/schema or typed semantic owner changed; exact full CI after PR remains authoritative.",
+    "pytest_summary": "Five new static-preflight regression cases cover incomplete target rejection, complete narrow-scope acceptance, missing target rejection, unrelated request ignore and closed request ignore; exact CI remains authoritative.",
+    "ruff_summary": "New Python script/test styling is unverified until exact CI completes; repair only implementation-level findings within L2.",
+    "refresh_instruction": "Refresh exact preflight branch CI before opening/merging the PR, then refresh exact main CI after merge. Refresh both worker heads before any later routing inference."
   },
   "workstreams": [
     {
-      "workstream_id": "post-restore-parallel-control-v1",
+      "workstream_id": "rjo-request-preflight-v1",
       "role": "main_path",
       "parent_goal_ref": "strategic_horizon.short_term_goal",
-      "status": "coordinator_takeover_synced_shipping_blocker_routed",
-      "summary": "PR #184 Search restoration is complete and merged. The coordinator now owns global_serial routing only: Banking is CLEAN, Shipping has a valid single-source-selection S but an invalid cursor-only H, and no shared semantic/database change is currently justified.",
+      "status": "l2_substantive_s_written_ci_pending_handoff_pr",
+      "summary": "L2/reuse guard adds a narrow static consistency preflight for open R/J/O requests with explicit reality_fact_keys and one CAP-0003 Reality projection. It rejects dimension-incomplete requested facts before integration DB execution and does not alter reconciliation semantics.",
       "next_actions": [
-        "Re-audit Shipping exact head and keep it BLOCKED until its owner produces a schema-valid cursor-only H with exact worker-fast CLEAN.",
-        "After Shipping CLEAN, allow only its already-selected single trajectory to proceed under existing CAP-0001/CAP-0002/CAP-0005/CAP-0007 semantics.",
-        "Accept shared work only from a typed request that demonstrates a cross-workstream need."
-      ],
-      "blockers": [
-        "Shipping H=ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933 is invalid because one cursor path claims multiple pointer kinds."
-      ]
-    },
-    {
-      "workstream_id": "banking-domain-v1",
-      "role": "parallel_track",
-      "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "clean_rev161_four_probe_invocation_closed",
-      "summary": "Banking S=dbf704ba6d402c9d61125a3d06e5bff688c4ee31 completed the independent 2017-2019 BANK-RURAL orthogonal challenge; cursor-only H=01b798ebd1aebf7fbd59768dcea4e6a100ce91fa is CLEAN at run 33883354562. Rev161 marks 2017-2019 broad+orthogonal complete and selects TIME-2020-2022__BANK-RURAL__blind-001 for the next eligible invocation; the just-finished four-probe invocation must stop.",
-      "next_actions": [
-        "No coordinator write: Banking owner may start a new eligible invocation only after refreshing exact reservation/cursor continuity.",
-        "If rev161 remains unchanged, Banking may run only TIME-2020-2022__BANK-RURAL__blind-001 as MEMORY_LEADS_ONLY without fresh search."
+        "Publish handoff-only H, open a PR, require exact-head CI and merge only from the expected head.",
+        "After merge, refresh main and verify the guard is authoritative for future worker pushes."
       ],
       "blockers": []
     },
@@ -113,16 +93,24 @@
       "workstream_id": "shipping-domain-v1",
       "role": "parallel_track",
       "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
-      "status": "blocked_invalid_cursor_h_after_valid_source_selection_s",
-      "summary": "Shipping S=b18bfabd938bdd842faef753ecff1613e02a33db selected exactly one bounded container-market-normalization-2022q3-to-2023 source set using restored post-seal Search/interactive reading and created no Grounded Evidence/RJO/PIT object. Cursor-only H=ecfe3c4c3118c530fb82951ebe2fbfe9b3acd933 fails workstream_registry because the source-selection path appears under more than one pointer kind.",
+      "status": "rjo_integration_verified_receipt_ready_for_owner_consumption",
+      "summary": "Shipping independently corrected its narrow issuer-specific Reality completeness/scope declarations and published CLEAN H=babbcbdb5bb24ac558e0389f8672e85c60f1ad0a. Global_serial retry run 33943566211 then verified three canonical Reality versions, one Judgment and one related_milestone Outcome with replay=false; receipt is persisted at integration commit 48900b3e1749ea4664b6ea8eb41bade39c1a34b0.",
       "next_actions": [
-        "Shipping owner repairs only its cursor metadata so every path has exactly one pointer kind; global_serial must not edit the worker cursor.",
-        "Require exact repaired-H worker-fast CLEAN before any Grounded Evidence work.",
-        "After CLEAN, use only the already-selected source representations to ground the bounded Evidence packet; do not broaden search or create a second trajectory unless a planned claim cannot be grounded, in which case shrink the claim or fail closed."
+        "Shipping owner refreshes its branch and consumes the immutable R/J/O receipt in its own cursor/request recovery flow.",
+        "Only after owner-side receipt adoption may Shipping proceed to the already-planned PIT/no-lookahead atomic action."
       ],
-      "blockers": [
-        "Exact H worker-fast run 33883353379 fails workstream_registry cursor validation before continuity can be proven CLEAN."
-      ]
+      "blockers": []
+    },
+    {
+      "workstream_id": "banking-domain-v1",
+      "role": "parallel_track",
+      "parent_goal_ref": "strategic_horizon.parallel_permanent_tracks",
+      "status": "independent_remote_lane_refresh_before_inference",
+      "summary": "Latest observed Banking remote head is eb4c3f36e46bb12791a798582c5bdc3c33c55ff8; no coordinator write or semantic inference was made because Banking remains independently owned.",
+      "next_actions": [
+        "Refresh Banking exact head/cursor/CI only when routing requires it; otherwise do not intervene."
+      ],
+      "blockers": []
     }
   ],
   "resume_read_set": [
@@ -136,22 +124,24 @@
     ".longcycle/capabilities/active-index.json"
   ],
   "deep_reference_paths": [
-    "docs/development/prompts/coordinator-fresh-agent.md",
-    "docs/development/prompts/all-agent-takeover.md",
-    "docs/development/prompts/github-connect-chat-adapter.md",
-    "docs/development/agent-governance-operating-manual.md",
-    ".longcycle/workstreams/banking-domain-v1/cursor.json",
+    ".longcycle/change-contract/current.json",
+    ".longcycle/capabilities/current-admission.json",
+    "scripts/preflight_rjo_requests.py",
+    "tests/test_rjo_request_preflight.py",
+    ".github/workflows/architecture-baseline.yml",
     ".longcycle/workstreams/shipping-domain-v1/cursor.json"
   ],
   "latest_devlogs": [],
   "unresolved_questions": [
-    "Will the Shipping owner repair the duplicate pointer-kind cursor metadata without changing substantive source-selection S, and does the repaired exact H pass worker-fast CLEAN?",
-    "After Shipping CLEAN, can the already-selected three-source set ground every planned claim without broadening search or weakening claim scope?"
+    "Do exact S/H/PR CI runs remain green after the new preflight is exercised against current repository fixtures?",
+    "When will the Shipping owner consume receipt commit 48900b3e1749ea4664b6ea8eb41bade39c1a34b0 and close its open R/J/O request before PIT?"
   ],
   "ordered_next_actions": [
-    "Refresh Shipping exact head; if its cursor remains schema-invalid, keep the lane BLOCKED and do not authorize Evidence grounding.",
-    "When Shipping owner publishes a repaired cursor-only H, compare its checkpoint S to H and require exact worker-fast CLEAN.",
-    "Refresh Banking independently; if H remains CLEAN, do not touch its branch and let the next eligible invocation follow rev161.",
-    "Only if a worker emits a typed repeated/shared capability request, open a bounded global_serial L1/L2 branch; otherwise make no shared implementation."
+    "Refresh exact S-push Architecture Baseline and Fresh-Agent CI.",
+    "Write/push this handoff as a handoff-only H after S=032aa6aae8da5d157f185107e667a337ffbb317b.",
+    "Open the L2 preflight PR against refreshed main and require exact-head CI.",
+    "Merge only if expected PR head and main base remain unchanged and required checks are green.",
+    "Refresh exact main after merge and make no worker cursor mutation.",
+    "Let Shipping owner consume the immutable R/J/O receipt and independently enter PIT/no-lookahead from its CLEAN cursor."
   ]
 }
