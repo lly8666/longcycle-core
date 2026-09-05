@@ -1,0 +1,66 @@
+{
+  "diagnostic_kind": "longcycle-integration-execution-diagnostic",
+  "diagnostic_version": 1,
+  "request_id": "SHIP-STAGE2-RJO-EXECUTION-001",
+  "result": "blocked_by_prepared_reality_projection",
+  "source_worker": {
+    "workstream": "shipping-domain-v1",
+    "exact_head": "556381e5f1b13a379a815cc0164b599571d22714"
+  },
+  "execution": {
+    "branch": "post-baseline/ship-stage2-rjo-execution-v1",
+    "exact_run_head": "b498af213a70e689595fe919fbde3e882eb86785",
+    "issue_number": 189,
+    "run_id": 33936873254,
+    "trajectory_spec": ".longcycle/handoff/executions/SHIP-STAGE2-RJO-EXECUTION-001/epistemic-trajectory-v1.json",
+    "artifact_id": 9960478702,
+    "artifact_name": "research-orchestration-33936873254",
+    "artifact_sha256": "5068a45d8d6112734a9c8924bdb3e86cdcfb5548a1d300b56e15836b03e2849c",
+    "artifact_expires_at": "2026-09-12T01:41:14Z"
+  },
+  "evidence_replay": {
+    "verified": true,
+    "persisted_document_versions": 3,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created": 0,
+    "judgment_assertions_created": 0,
+    "evidence_fragment_ids": {
+      "ship-reality-q3-2022-rate-direction": "7f2be136-a048-5359-9508-928787d86d7b",
+      "ship-judgment-2022-11-02-peak": "f1d09a98-8529-5792-a523-74fdd926e3ba",
+      "ship-outcome-maersk-2023-rate": "f557e28c-ac46-5c16-9b9b-bbcb5eaaca51",
+      "ship-outcome-hapag-2023-rate-check": "f4940014-4b5b-5466-ae1b-9ce770751fae"
+    }
+  },
+  "reality_projection": {
+    "path": "domain_packs/shipping/trajectory/container-market-normalization-2022q3-to-2023-reality-projection-v1.json",
+    "status": "fail_closed",
+    "failed_assertion_id": "d428688b-4b64-5d69-a8e2-eabbe1fcc599",
+    "decision": "review",
+    "reason_codes": ["incomplete_dimensions"],
+    "evaluator_name": "rule_reconciler",
+    "evaluator_version": "2.1.0",
+    "score": 0.97,
+    "prepared_fact_keys_with_dimensions_complete_false": [
+      "ship-reality-maersk-q3-2022-rate-direction",
+      "ship-reality-maersk-2023-average-rate-change",
+      "ship-reality-hapag-2023-average-rate-level"
+    ]
+  },
+  "contract_conflict": {
+    "request_acceptance": "Exactly three grounded Reality FactAssertions reconcile to three canonical Reality versions.",
+    "prepared_projection": "All three requested Reality projection items explicitly declare dimensions_complete=false.",
+    "reconciler_contract": "Any FactAssertion with dimensions_complete=false returns REVIEW with reason incomplete_dimensions before canonical acceptance.",
+    "integration_override_permitted": false
+  },
+  "required_owner_action": {
+    "owner": "shipping-domain-v1",
+    "action": "Repair the prepared Reality projection on the Shipping worker branch so each fact truthfully declares complete dimensions only when supported by its intended issuer-specific statistical scope, then publish a new CLEAN Shipping handoff head. Do not change claim scope, Evidence identities, Judgment no-lookahead boundary, Outcome related_milestone semantics, or PIT prohibition merely to satisfy the reconciler.",
+    "global_serial_next": "After a new CLEAN Shipping head is available, rebuild the integration branch from that exact head and rerun the existing generic longcycle-epistemic-trajectory-v1 issue-triggered workflow with replay=null."
+  },
+  "forbidden_shortcuts": [
+    "Do not flip dimensions_complete to true in an integration-owned copy without Shipping owner support.",
+    "Do not bypass or weaken CAP-0003 reconciliation.",
+    "Do not proceed to Judgment, Outcome, seal or PIT after Reality fails closed.",
+    "Do not modify the Shipping cursor from global_serial."
+  ]
+}
