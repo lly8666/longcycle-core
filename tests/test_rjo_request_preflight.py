@@ -5,11 +5,13 @@ import subprocess
 import sys
 from pathlib import Path
 
-
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "preflight_rjo_requests.py"
 WORKSTREAM_ID = "example-industry-v1"
 REQUEST_PATH = ".longcycle/workstreams/example-industry-v1/requests/RJO-001.json"
 PROJECTION_PATH = "domain_packs/example/trajectory/reality-projection.json"
+CORE_ORCHESTRATION_PATH = ".longcycle/handoff/executions/RJO-001/research-orchestration-v2.json"
+TRAJECTORY_PATH = ".longcycle/handoff/executions/RJO-001/epistemic-trajectory-v1.json"
+WORKFLOW = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "research-orchestration-once.yml"
 
 
 def _write_json(root: Path, relative: str, payload: object) -> None:
@@ -82,6 +84,50 @@ def _run(root: Path) -> subprocess.CompletedProcess[str]:
     )
 
 
+def _run_orchestration(root: Path) -> subprocess.CompletedProcess[str]:
+    return subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--root",
+            str(root),
+            "--orchestration-spec",
+            TRAJECTORY_PATH,
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+
+def _write_trajectory(root: Path) -> None:
+    _write_json(
+        root,
+        CORE_ORCHESTRATION_PATH,
+        {
+            "schema_version": "longcycle-research-orchestration/v2",
+            "task_id": "RJO-001-CORE",
+            "evidence_spec_path": "evidence.json",
+            "evidence_repair_paths": [],
+            "reality_spec_path": PROJECTION_PATH,
+            "immutable_paths": [],
+        },
+    )
+    _write_json(
+        root,
+        TRAJECTORY_PATH,
+        {
+            "schema_version": "longcycle-epistemic-trajectory/v1",
+            "task_id": "RJO-001",
+            "research_orchestration_spec_path": CORE_ORCHESTRATION_PATH,
+            "judgment_spec_path": None,
+            "judgment_context_spec_path": None,
+            "outcome_evaluations": [],
+            "replay": None,
+        },
+    )
+
+
 def test_preflight_rejects_canonical_reality_request_with_incomplete_dimensions(tmp_path: Path) -> None:
     _write_json(tmp_path, REQUEST_PATH, _request(fact_keys=["example-reality"]))
     _write_json(tmp_path, PROJECTION_PATH, _projection(dimensions_complete=False))
@@ -137,3 +183,39 @@ def test_preflight_ignores_closed_rjo_request(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert payload["checked_requests"] == 0
+
+
+def test_current_main_orchestration_guard_rejects_old_branch_projection(tmp_path: Path) -> None:
+    _write_json(tmp_path, PROJECTION_PATH, _projection(dimensions_complete=False))
+    _write_trajectory(tmp_path)
+
+    result = _run_orchestration(tmp_path)
+
+    assert result.returncode == 1
+    assert "RJO_REQUEST_PREFLIGHT_FAIL" in result.stderr
+    assert "example-reality" in result.stderr
+    assert "dimensions_complete=false" in result.stderr
+
+
+def test_current_main_orchestration_guard_accepts_complete_projection(tmp_path: Path) -> None:
+    _write_json(tmp_path, PROJECTION_PATH, _projection(dimensions_complete=True))
+    _write_trajectory(tmp_path)
+
+    result = _run_orchestration(tmp_path)
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["checked_reality_projection"] == PROJECTION_PATH
+    assert payload["orchestration_spec"] == TRAJECTORY_PATH
+
+
+def test_issue_execution_uses_current_main_guard_before_database_execution() -> None:
+    workflow = WORKFLOW.read_text(encoding="utf-8")
+    guard_call = ".ci-main-control/scripts/preflight_rjo_requests.py"
+
+    assert "Checkout current main control-plane guards" in workflow
+    assert "path: .ci-main-control" in workflow
+    assert guard_call in workflow
+    assert '--orchestration-spec "$ORCHESTRATION_SPEC"' in workflow
+    assert workflow.index(guard_call) < workflow.index("python -m pip install")
+    assert workflow.index(guard_call) < workflow.index('longcycle --json research run "${args[@]}"')

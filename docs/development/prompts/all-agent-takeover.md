@@ -38,6 +38,7 @@
 - 用户后来给出新任务时，也先完成上述恢复；旧任务若被替换，先把远端状态如实标成 paused/superseded，不能静默丢弃。
 - 只有 coordinator/global_serial 可写全局 handoff、main reservation、共享代码/CI/迁移和数据库 generation head。普通 worker 只写 reservation 允许的独占前缀和自己的 `cursor.json`。
 - 当前任务不需要大文件时，不下载 Drive 对象。确实需要时严格走 adapter 中初代 Agent 的 exact-id、intent、immutable upload、download-back、outcome 流程。
+- 在发布任何要求 canonical Reality 的 R/J/O typed request 前，先核对请求列出的每个 Reality fact。`dimensions_complete=false` 表示该事实自身仍缺必要统计维度、必定 fail closed；不能仅因为事实是 issuer-specific、不能跨公司比较或 Outcome 只能算 `related_milestone` 就写成 `false`。窄范围事实只有在 Evidence 已支持其主体、指标/口径、时期以及适用的比较基准或单位，并用 `statistical_scope`/`scope_guard` 限定不外推范围时，才可诚实声明 `true`。跨主体可比性和 Outcome 关系仍由各自语义控制；不要把本规则扩张成所有 Judgment 都必须 `dimensions_complete=true`。
 
 行业四连跑规则（仅限 live blind Memory 阶段）：
 

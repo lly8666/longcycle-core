@@ -1,11 +1,11 @@
 {
   "schema_version": "longcycle-change-contract/v1",
-  "intent_id": "RJO-CANONICAL-REALITY-PREFLIGHT-V1-038",
-  "goal": "Prevent worker-owned R/J/O integration requests from demanding canonical Reality while their referenced CAP-0003 projection explicitly marks the requested facts dimension-incomplete, and surface the semantic distinction between fact completeness and cross-entity comparability before integration execution.",
+  "intent_id": "RJO-PREFLIGHT-ROLLOUT-V2-039",
+  "goal": "Make the merged R/J/O canonical-Reality preflight effective for both new and pre-existing industry branches by applying a current-main, dependency-light contradiction check at the issue-triggered integration entry, while teaching all fresh agents the fact-completeness versus comparability distinction.",
   "baseline": "architecture-v1",
   "change_level": "L2",
   "admission_ref": ".longcycle/capabilities/current-admission.json",
-  "baseline_impact": "none; this reuses CAP-0003 reconciliation, CAP-0007 fail-closed orchestration, CAP-0009 continuity and CAP-0010 workstream routing without changing any Reality/Judgment/Outcome/Evidence/PIT semantic expectation",
+  "baseline_impact": "none; this is rollout wiring and fresh-agent guidance for the already-merged CAP-0003/CAP-0007 preflight, reusing CAP-0009 continuity and CAP-0010 routing without changing any Reality/Judgment/Outcome/Evidence/PIT semantic expectation",
   "baseline_invariants": [
     "dimensions_complete=false remains a CAP-0003 declaration that the FactAssertion itself lacks required dimensions and therefore must fail closed before canonical Reality",
     "cross-entity or cross-issuer non-comparability remains separate from fact completeness and continues to be expressed through truthful dimensions/statistical scope plus downstream comparability and Outcome relation semantics",
@@ -14,7 +14,7 @@
     "worker branch/fence/single-writer ownership and global_serial integration authority remain unchanged",
     "no L3/L4 Baseline, schema, semantic-owner or source-authority change is introduced"
   ],
-  "schema_impact": "none; static request/projection preflight, CI wiring and regression tests only",
+  "schema_impact": "none; dependency-light JSON contradiction inspection, central workflow wiring, prompt guidance and regression tests only",
   "baseline_critical_tests_touched": false,
   "architecture_change_ref": null,
   "counterexample_refs": [],
@@ -22,12 +22,12 @@
   "compatibility_plan_ref": null,
   "approval_ref": null,
   "acceptance": [
-    "An open typed integration request with execution_contract.reality_fact_keys and exactly one CAP-0003 Reality projection input fails preflight if any requested target fact resolves to dimensions_complete=false.",
-    "The failure explains that dimensions_complete describes the fact's own dimension completeness and must not be used merely as a proxy for cross-entity non-comparability.",
-    "A narrow issuer/entity-specific Reality fact that is truthful and complete inside its declared statistical_scope/scope_guard can pass with dimensions_complete=true while downstream comparability remains independently fail-closed.",
-    "Missing requested Reality fact keys fail preflight rather than reaching integration execution.",
-    "Closed requests and unrelated requests without reality_fact_keys are not newly blocked.",
-    "The worker-fast exact-head gate runs the preflight before remote CLEAN continuity is accepted, and focused regression tests cover failure, success, missing-key and non-target cases.",
-    "No reconciler behavior, Judgment completeness rule, Outcome relation behavior, Evidence standard or PIT rule changes."
+    "The default-branch issue execution workflow checks the exact target orchestration before database execution using a guard loaded from current main, so long-lived branches do not need their workflow file rewritten merely to inherit the protection.",
+    "An orchestration with a Reality projection explicitly containing dimensions_complete=false fails with a direct explanation before the generic reconciler reaches its identical inevitable REVIEW result.",
+    "A complete narrow issuer/entity-specific Reality projection passes while cross-entity comparability and related_milestone Outcome semantics remain independently fail-closed.",
+    "The cross-ref guard inspects only the stable explicit-false contradiction; all other schema, Evidence and semantic validation remains owned by the exact target branch executor, avoiding accidental future-main tightening of old branches.",
+    "The shared takeover and new-role prompts teach the same distinction to active and future disposable agents without imposing a blanket Judgment completeness rule.",
+    "Focused tests cover the failing and passing orchestration cases and prove the current-main guard executes before database execution.",
+    "No reconciler behavior, Judgment completeness rule, Outcome relation behavior, Evidence standard, source authority or PIT rule changes."
   ]
 }
