@@ -1,0 +1,103 @@
+{
+  "receipt_kind": "longcycle-integration-execution-receipt",
+  "receipt_version": 1,
+  "request_id": "SHIP-STAGE2-RJO-EXECUTION-001",
+  "result": "verified_success",
+  "source_worker": {
+    "workstream": "shipping-domain-v1",
+    "substantive_head": "900a5e8bac9b3df2185cf43f728582a61bc93e19",
+    "clean_handoff_head": "babbcbdb5bb24ac558e0389f8672e85c60f1ad0a",
+    "clean_worker_fast_run_id": 33941215281
+  },
+  "execution": {
+    "branch": "post-baseline/ship-stage2-rjo-execution-v2",
+    "exact_run_head": "dd66f1da6099490e34da0a0e261ef6814e1925d9",
+    "issue_number": 190,
+    "run_id": 33943566211,
+    "trajectory_spec": ".longcycle/handoff/executions/SHIP-STAGE2-RJO-EXECUTION-001/epistemic-trajectory-v1.json",
+    "artifact_id": 9962604157,
+    "artifact_name": "research-orchestration-33943566211",
+    "artifact_sha256": "ddb672c730606763ec449be2364f589481258ced12ff66010ee5430d0d1de969",
+    "artifact_expires_at": "2026-09-12T04:05:03Z",
+    "phases": [
+      "grounded_evidence",
+      "reality_projection",
+      "judgment_persistence",
+      "outcome_evaluation"
+    ],
+    "replay": null,
+    "replay_verified": false
+  },
+  "evidence_lineage": {
+    "persisted_document_versions": 3,
+    "persisted_evidence_fragments": 4,
+    "fact_assertions_created_during_evidence": 0,
+    "judgment_assertions_created_during_evidence": 0,
+    "fragment_ids": {
+      "ship-reality-q3-2022-rate-direction": "7f2be136-a048-5359-9508-928787d86d7b",
+      "ship-judgment-2022-11-02-peak": "f1d09a98-8529-5792-a523-74fdd926e3ba",
+      "ship-outcome-maersk-2023-rate": "f557e28c-ac46-5c16-9b9b-bbcb5eaaca51",
+      "ship-outcome-hapag-2023-rate-check": "f4940014-4b5b-5466-ae1b-9ce770751fae"
+    }
+  },
+  "canonical_reality": {
+    "ship-reality-maersk-q3-2022-rate-direction": {
+      "assertion_id": "d428688b-4b64-5d69-a8e2-eabbe1fcc599",
+      "canonical_fact_version_id": "bd9a8ad1-5c87-540d-80a2-0a460fa19dd0",
+      "known_at": "2022-11-02T23:59:59Z"
+    },
+    "ship-reality-maersk-2023-average-rate-change": {
+      "assertion_id": "b9af3ad8-07e6-541b-9adf-34322c06936b",
+      "canonical_fact_version_id": "827f25e5-ffb4-5870-9ad6-e76391d10d62",
+      "known_at": "2024-02-08T23:59:59Z"
+    },
+    "ship-reality-hapag-2023-average-rate-level": {
+      "assertion_id": "ef616cdb-ac47-523a-934d-53fb9cee9bc1",
+      "canonical_fact_version_id": "d10b62b6-64f6-508f-9f68-4078f634946f",
+      "known_at": "2024-03-14T23:59:59Z"
+    }
+  },
+  "judgment": {
+    "key": "ship-judgment-2022-11-02-peak",
+    "id": "1960a73a-1e65-5049-928d-fb7998da9876",
+    "evidence_fragment_id": "f1d09a98-8529-5792-a523-74fdd926e3ba",
+    "first_known_at": "2022-11-02T23:59:59Z",
+    "later_2023_evidence_used_to_form_judgment": false,
+    "idempotent_reappend_passed": true
+  },
+  "outcome": {
+    "key": "ship-outcome-2022-peak-vs-maersk-2023-normalization",
+    "id": "7ac6b639-d8d8-52c5-b459-ff9680f77aef",
+    "judgment_id": "1960a73a-1e65-5049-928d-fb7998da9876",
+    "canonical_fact_version_id": "827f25e5-ffb4-5870-9ad6-e76391d10d62",
+    "outcome_evidence_fragment_id": "f557e28c-ac46-5c16-9b9b-bbcb5eaaca51",
+    "semantic_relation": "related_milestone",
+    "evaluation_status": "indeterminate",
+    "timing_relation": "not_comparable",
+    "outcome_first_known_at": "2024-02-08T23:59:59Z"
+  },
+  "verification": {
+    "canonical_reality_count": 3,
+    "all_reconciled_accept": true,
+    "all_fact_evidence_ids_persisted": true,
+    "all_known_times_derived_from_grounded_evidence": true,
+    "stable_assertion_to_canonical_mapping": true,
+    "valid_time_semantics_preserved": true,
+    "judgment_count": 1,
+    "judgment_known_time_preserved": true,
+    "judgment_no_lookahead_preserved": true,
+    "outcome_count": 1,
+    "outcome_idempotent_reappend_passed": true,
+    "canonical_reality_linked": true,
+    "outcome_evidence_linked": true,
+    "non_direct_never_claims_realization": true,
+    "no_fake_day_level_timing_error": true,
+    "pit_replay_run": false
+  },
+  "execution_output_sha256": {
+    "grounded_evidence": "6ea942712a7f288aa047c06e001c7b7aa4286351fa20a2bef8deee2901c419ba",
+    "reality": "a5e1b44d50135b80a84f6846fc007f9ea5be47ed7287959ca25369f27496323f",
+    "judgment": "6ccc91355eb8855599d9ca1d2c47d889742a86a2236bdee888308ddcec5de442",
+    "outcome": "c5ed98957674d6a9840992d35737365e61de5cb968681cf7ac2f3c8be9a265d0"
+  }
+}
