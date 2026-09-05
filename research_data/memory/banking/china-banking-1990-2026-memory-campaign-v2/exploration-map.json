@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":177,
+  "map_revision":178,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-007.json",
-  "latest_pass_receipt_status":"low_novelty_confirmation_2_of_3",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-008.json",
+  "latest_pass_receipt_status":"low_novelty_confirmation_3_of_3_seal_readiness_pending",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -26,14 +26,14 @@
   "active_shards":[{
     "shard_id":"BANK-RURAL",
     "selected_time_slice_id":null,
-    "stage":"cross_time_saturation_confirmation",
+    "stage":"seal_readiness_decision_pending",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-2005-2008__BANK-RURAL__new-type-rural-financial-institutions__blind-004","family":"new_type_rural_financial_institutions_reopen_blind_recall","novel_lead_count":29,"duplicate_lead_count":5,"high_importance_novel_count":12,"outcome":"reopen_confirmed_complete_return_to_saturation_confirmation"},
       {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-006","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":17,"duplicate_lead_count":17,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_1_of_3"},
-      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-007","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":15,"duplicate_lead_count":19,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_2_of_3"}
+      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-007","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":15,"duplicate_lead_count":19,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_2_of_3"},
+      {"pass_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-008","family":"cross_time_saturation_confirmation_blind_recall","novel_lead_count":18,"duplicate_lead_count":16,"high_importance_novel_count":4,"outcome":"low_novelty_confirmation_3_of_3_select_seal_readiness_decision"}
     ],
-    "low_novelty_confirmations":2,
+    "low_novelty_confirmations":3,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
@@ -50,25 +50,25 @@
     ],
     "known_major_gaps":[
       "All material BANK-RURAL gaps recovered so far have bounded independent reopen coverage and are represented as MEMORY_LEADS_ONLY.",
-      "Blind-006 and blind-007 are two consecutive genuine low-novelty confirmations after the latest reset, so the current state is 2/3.",
-      "Blind-007 added only old rural-credit product/search-key leads whose natural authority lies mainly in asset/business-line research; ownership overlays and minority rural-service providers did not create a new BANK-RURAL legal class.",
-      "BANK-RURAL remains unsealed. One final independent low-novelty confirmation is required; any material bounded category in that pass resets confirmations to 0.",
-      "The final confirmation must deliberately stress selective pre-1990 antecedents, obscure failed/marginal legal forms, terminology collisions, successor/predecessor mistakes, counterexamples and remaining metric semantics.",
-      "Even if the next pass reaches 3/3, it must transition only to a separate seal-readiness/decision step; do not automatically seal or begin Evidence in the recall pass."
+      "Blind-006, blind-007 and blind-008 are three consecutive genuine low-novelty confirmations after the latest reset, satisfying the manifest's numerical saturation condition.",
+      "Blind-008 recovered only channel/infrastructure search-key refinements and selective pre-1990 antecedent context; no missing legal-person class, predecessor lineage, provincial topology or bounded-period structure appeared.",
+      "Numerical 3/3 is necessary but not itself a seal. A separate decision must review the time×shard matrix, negative-space matrix, required long-tail categories, antecedent rule, unresolved gaps and boundary discipline.",
+      "BANK-RURAL remains unsealed until the separate seal-readiness decision is completed through its own S -> cursor-only H -> exact-H CLEAN.",
+      "Evidence remains deferred; seal readiness is not Evidence verification."
     ]
   },
-  "selection_basis":{"rule":"low_novelty_confirmation_2_select_final_independent_confirmation","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
-  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SATURATION-CONFIRMATION-008","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-008"}],
+  "selection_basis":{"rule":"three_consecutive_low_novelty_confirmations_select_separate_seal_readiness_decision","selected_shard_id":"BANK-RURAL","selected_time_slice_id":null},
+  "open_frontiers":[{"frontier_id":"CROSS-TIME__BANK-RURAL__SEAL-READINESS-DECISION-001","priority_rank":1,"state":"open","selected_probe_id":"CROSS-TIME__BANK-RURAL__seal-readiness-decision__001"}],
   "next_probe":{
-    "probe_id":"CROSS-TIME__BANK-RURAL__saturation-confirmation__blind-008",
-    "family":"cross_time_saturation_confirmation_blind_recall",
+    "probe_id":"CROSS-TIME__BANK-RURAL__seal-readiness-decision__001",
+    "family":"seal_readiness_decision",
     "time_slice_id":"CROSS-TIME",
     "shard_id":"BANK-RURAL",
     "period":["1990-01-01","2026-08-31"],
-    "instruction":"In the next eligible invocation, run one final isolated BANK-RURAL cross-time saturation-confirmation blind recall using only this rev177 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read saturation-confirmation blind-007 or blind-006 raw/receipts, the new-type-rural-financial-institutions reopen raw/receipt, blind-005 raw/receipt, any earlier completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Deliberately stress selective pre-1990 antecedents needed for the primary horizon, obscure failed/marginal legal forms, terminology collisions, successor/predecessor mistakes, weak/strong counterexamples, forgotten infrastructure and remaining metric-semantic discontinuities. If genuinely low novelty with no bounded material category, advance to 3/3 and select exactly one separate seal-readiness/decision frontier; do not seal BANK-RURAL or start Evidence in the same recall pass. If material novelty appears, reset to 0/3 and reopen exactly one bounded frontier. Preserve MEMORY_LEADS_ONLY and uncertainty.",
-    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["CROSS-TIME saturation-confirmation blind-007 raw and receipt","CROSS-TIME saturation-confirmation blind-006 raw and receipt","TIME-2005-2008 new-type-rural-financial-institutions reopen raw and receipt","CROSS-TIME saturation-confirmation blind-005 raw and receipt","all earlier completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
-    "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only BANK-RURAL final saturation-confirmation blind-008 raw and bounded receipt exist; the sparse map records measured novelty, updates confirmation state truthfully and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "instruction":"Run one separate BANK-RURAL seal-readiness decision using only this rev178 compact exploration map, the exhaustion manifest and current control-plane state. Do not read blind-008/blind-007/blind-006 or any earlier completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Review the manifest saturation rule explicitly: three consecutive low-novelty confirmations, time×shard coverage matrix, negative-space matrix, required long-tail categories, selective pre-1990 antecedents, unresolved material gaps and boundary discipline. This is a research-control decision, not a new recall pass and not Evidence verification. If every requirement is truthfully satisfied, record BANK-RURAL as memory-stage sealed with Evidence still deferred and select exactly one next permitted campaign frontier or clean handoff. If any requirement is not satisfied, keep BANK-RURAL unsealed and identify exactly one bounded missing requirement/frontier. Close the decision through substantive S, cursor-only H and exact-H CLEAN before any subsequent work.",
+    "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current workstream control-plane state"],
+    "forbidden_inputs":["CROSS-TIME saturation-confirmation blind-008 raw and receipt","CROSS-TIME saturation-confirmation blind-007 raw and receipt","CROSS-TIME saturation-confirmation blind-006 raw and receipt","all earlier completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "output_authority":"research_control_only",
+    "done_when":"One bounded BANK-RURAL seal-readiness decision receipt exists; the sparse map records either a truthful memory-stage seal or exactly one missing bounded requirement and selects exactly one next frontier; and the decision closes through substantive S, cursor-only H and exact-H CLEAN without Evidence search or truth promotion beyond memory-stage sealing."
   }
 }
