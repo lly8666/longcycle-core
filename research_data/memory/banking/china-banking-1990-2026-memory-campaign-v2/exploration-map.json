@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":179,
+  "map_revision":180,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-CROSS-TIME__BANK-RURAL__seal-readiness-decision__001.json",
-  "latest_pass_receipt_status":"memory_stage_seal_ready",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001.json",
+  "latest_pass_receipt_status":"broad_pass_complete_orthogonal_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -27,34 +27,38 @@
   "active_shards":[{
     "shard_id":"BANK-POLICY-DEVELOPMENT",
     "selected_time_slice_id":"TIME-1990-1994",
-    "stage":"time_slice_recall",
+    "stage":"time_slice_orthogonal_recall",
     "fresh_search_used":false,
-    "recent_outcomes":[],
+    "recent_outcomes":[
+      {"pass_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001","family":"time_slice_broad_blind_recall","novel_lead_count":45,"duplicate_lead_count":2,"high_importance_novel_count":21,"outcome":"broad_pass_complete_orthogonal_required"}
+    ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
-    "reviewed_high_value_regions":[],
+    "reviewed_high_value_regions":[
+      {"region_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT","state":"broad_complete_orthogonal_pending","note":"Broad blind-001 recovered the policy/commercial separation problem, development/export-import/agricultural policy-bank architecture, selective specialized-bank/fiscal/PBOC antecedents, funding/balance-sheet logic, contemporaneous expectations and metric boundaries. Same-slice orthogonal challenge is still required."}
+    ],
     "known_major_gaps":[
-      "BANK-RURAL is memory-stage sealed after a separate rev178 seal-readiness decision reviewed 3/3 confirmations, all nine time slices, negative space, required long-tail categories, selective antecedents, resolved material gaps and boundary discipline. Evidence remains deferred.",
-      "BANK-POLICY-DEVELOPMENT is the next unsealed atomic shard in manifest order and has not yet received v2 time-slice blind depth in the active compact map.",
-      "The first bounded frontier is TIME-1990-1994, emphasizing the policy-versus-commercial credit boundary and the formation/antecedents of policy/development-bank architecture.",
-      "Exact institution creation dates, mandates, funding instruments, fiscal/PBOC relations, loan portfolios, policy phrases and official terminology remain Evidence-stage questions.",
+      "TIME-1990-1994 remains incomplete until an independent orthogonal pass challenges institutional handoffs, initial funding, project-selection authority, fiscal/PBOC relations, old terminology and policy-versus-commercial boundary counterexamples.",
+      "Exact founding mechanics, transferred portfolios/staff/branches, policy-bank bond chronology, fiscal capital/subsidy arrangements and original mandate wording remain Evidence-stage questions.",
+      "Do not equate policy-purpose credit with policy-bank lender identity; commercial banks may still carry legacy or subsidized/directed policy credit after dedicated policy banks form.",
+      "Do not project later CDB/Exim/ADBC mandate changes backward into 1990-1994.",
       "No fresh Banking search or Banking source material is allowed while BANK-POLICY-DEVELOPMENT is unsealed."
     ]
   },
-  "selection_basis":{"rule":"next_unsealed_atomic_shard_after_bank_rural_memory_seal","selected_shard_id":"BANK-POLICY-DEVELOPMENT","selected_time_slice_id":"TIME-1990-1994"},
-  "open_frontiers":[{"frontier_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__BROAD-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001"}],
+  "selection_basis":{"rule":"same_slice_orthogonal_required_after_substantive_broad_pass","selected_shard_id":"BANK-POLICY-DEVELOPMENT","selected_time_slice_id":"TIME-1990-1994"},
+  "open_frontiers":[{"frontier_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__ORTHOGONAL-002","priority_rank":1,"state":"open","selected_probe_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-002"}],
   "next_probe":{
-    "probe_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001",
-    "family":"time_slice_broad_blind_recall",
+    "probe_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-002",
+    "family":"time_slice_orthogonal_blind_recall",
     "time_slice_id":"TIME-1990-1994",
     "shard_id":"BANK-POLICY-DEVELOPMENT",
     "period":["1990-01-01","1994-12-31"],
-    "instruction":"Run one isolated BANK-POLICY-DEVELOPMENT 1990-1994 broad blind-memory recall using only this rev179 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read any completed Banking raw/receipts, including sealed BANK-RURAL material, Banking Evidence/source material or fresh Banking search. Recover obvious landmarks plus long-tail leads for the policy-versus-commercial credit boundary: pre-1994 policy-credit antecedents only where needed for the primary horizon; formation and role separation of policy/development-bank institutions; funding and balance-sheet logic; fiscal/PBOC/state-commercial-bank relationships; actors and institutional handoffs; old vocabulary/search keys; contemporaneous expectations; metrics/semantic discontinuities; failed/dead-end arrangements and counterexamples. Preserve uncertainty and do not invent exact dates, amounts, mandates or official wording. Output MEMORY_LEADS_ONLY. After the pass, append one bounded receipt, update the sparse map with measured novelty and exactly one next frontier, and close through substantive S, cursor-only H and exact-H CLEAN before any later probe.",
+    "instruction":"Run one isolated same-slice orthogonal BANK-POLICY-DEVELOPMENT blind recall using only this rev180 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read blind-001 raw/receipt or any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Independently challenge actors and institutional handoffs, initial funding/liability mechanics, planning/fiscal/PBOC relationships, specialized-bank antecedents, old terminology/search keys, contemporaneous expectations, metric semantics, soft-budget/failure/dead-end risks and boundary counterexamples. Do not merely restate the three policy-bank names. Preserve uncertainty and do not invent exact dates, amounts, portfolio transfers or official wording. If this orthogonal pass confirms/refines the broad structure without a second material same-period category, mark TIME-1990-1994 broad+orthogonal complete and advance to TIME-1995-1999. If a material same-period category appears, keep the slice open and select exactly one bounded frontier. Output MEMORY_LEADS_ONLY and close through substantive S, cursor-only H and exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs including BANK-RURAL","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["TIME-1990-1994 BANK-POLICY-DEVELOPMENT blind-001 raw and receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only BANK-POLICY-DEVELOPMENT TIME-1990-1994 blind-001 raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only BANK-POLICY-DEVELOPMENT TIME-1990-1994 blind-002 raw and bounded receipt exist; the sparse map records measured novelty, truthfully closes or reopens the slice and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
