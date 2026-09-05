@@ -1,6 +1,6 @@
 {
   "schema_version":"longcycle-industry-memory-exploration-map/v1",
-  "map_revision":182,
+  "map_revision":183,
   "campaign_id":"banking-china-1990-2026-v2",
   "workstream_id":"banking-domain-v1",
   "industry":"China Banking",
@@ -14,8 +14,8 @@
   "model_vintage":"GPT-5.6 Sol",
   "campaign_ref":"research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json",
   "current_prompt_ref":"research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json#/next_probe/instruction",
-  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-TIME-1990-1994__BANK-POLICY-DEVELOPMENT__china-investment-bank-antecedent__blind-003.json",
-  "latest_pass_receipt_status":"reopen_confirmed_complete_advance_next_time_slice",
+  "latest_pass_receipt_ref":".longcycle/workstreams/banking-domain-v1/receipts/2026-09-05-TIME-1995-1999__BANK-POLICY-DEVELOPMENT__blind-001.json",
+  "latest_pass_receipt_status":"broad_pass_complete_orthogonal_required",
   "sealed_shards":[
     {"shard_id":"SYS-REGULATION-RESOLUTION","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
     {"shard_id":"SYS-MONETARY-CREDIT","state":"sealed","evidence_status":"not_started_deferred_to_later_clean_handoff"},
@@ -27,41 +27,40 @@
   "active_shards":[{
     "shard_id":"BANK-POLICY-DEVELOPMENT",
     "selected_time_slice_id":"TIME-1995-1999",
-    "stage":"time_slice_recall",
+    "stage":"time_slice_orthogonal_recall",
     "fresh_search_used":false,
     "recent_outcomes":[
-      {"pass_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-001","family":"time_slice_broad_blind_recall","novel_lead_count":45,"duplicate_lead_count":2,"high_importance_novel_count":21,"outcome":"broad_pass_complete_orthogonal_required"},
-      {"pass_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__blind-002","family":"time_slice_orthogonal_blind_recall","novel_lead_count":37,"duplicate_lead_count":5,"high_importance_novel_count":16,"outcome":"material_same_period_gap_reopen_required"},
-      {"pass_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__china-investment-bank-antecedent__blind-003","family":"development_finance_antecedent_reopen_blind_recall","novel_lead_count":30,"duplicate_lead_count":5,"high_importance_novel_count":13,"outcome":"reopen_confirmed_complete_advance_next_time_slice"}
+      {"pass_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT__china-investment-bank-antecedent__blind-003","family":"development_finance_antecedent_reopen_blind_recall","novel_lead_count":30,"duplicate_lead_count":5,"high_importance_novel_count":13,"outcome":"reopen_confirmed_complete_advance_next_time_slice"},
+      {"pass_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__blind-001","family":"time_slice_broad_blind_recall","novel_lead_count":47,"duplicate_lead_count":3,"high_importance_novel_count":19,"outcome":"broad_pass_complete_orthogonal_required"}
     ],
     "low_novelty_confirmations":0,
     "required_consecutive_low_novelty_confirmations":3
   }],
   "coverage_snapshot":{
     "reviewed_high_value_regions":[
-      {"region_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Broad+orthogonal recall established policy/commercial separation and the 1994 policy/development-bank architecture. A bounded independent reopen confirmed China Investment Bank / 中国投资银行 as a distinct early development-finance or foreign-development-credit intermediary/boundary institution, likely connected to CCB/fixed-investment finance and external on-lending; exact affiliation and later commercial-bank absorption remain Evidence questions."}
+      {"region_id":"TIME-1990-1994__BANK-POLICY-DEVELOPMENT","state":"broad_plus_orthogonal_complete_reopen_reviewed","note":"Policy/commercial separation, policy-bank formation and China Investment Bank antecedent/boundary independently reviewed."},
+      {"region_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT","state":"broad_complete_orthogonal_pending","note":"Broad blind-001 recovered differentiated CDB project/bond funding, ADBC procurement/closed-management/PBOC linkage, Exim export-credit/FX-risk architecture, Asian-crisis/stimulus context, policy-commercial boundary and CIB exit continuation. Independent orthogonal challenge remains required."}
     ],
     "known_major_gaps":[
-      "TIME-1990-1994 is memory-stage broad+orthogonal+reopen reviewed; no second material same-period category remains open.",
-      "China Investment Bank must remain distinct from China Development Bank, generic investment banking, CICC and later similarly named institutions. Its later exit is an Outcome continuation for 1995-1999 and remains uncertain pending Evidence.",
-      "TIME-1995-1999 has not yet received v2 broad blind depth for BANK-POLICY-DEVELOPMENT.",
-      "The next slice should test how the three policy/development banks moved from formation into operation: bond/funding evolution, mandate implementation, fiscal/PBOC/commercial-bank boundaries, Asian-crisis context, CIB continuation/exit, old terminology, soft-budget risks and counterexamples.",
-      "Exact bond chronology, capital/fiscal arrangements, mandate wording, portfolio transfers, loan amounts and CIB successor transaction remain Evidence-stage questions.",
+      "TIME-1995-1999 remains incomplete until an orthogonal pass independently challenges liability/funding differences, ADBC grain-circulation changes, CDB bond-market transition, Exim risk/product perimeter, CIB exit, fiscal-versus-credit decomposition and soft-budget counterexamples.",
+      "Policy financial bond issuance/outstanding/holdings must remain distinct metrics; early placement versus market issuance is an Evidence question.",
+      "ADBC procurement loan balances may reflect commodity purchase/inventory policy and PBOC refinancing rather than ordinary commercial credit demand; exact mandate changes remain Evidence questions.",
+      "CIB likely exits via later commercial-bank absorption but exact counterparty/date/asset transfer remain uncertain and must not be promoted before Evidence.",
       "No fresh Banking search or Banking source material is allowed while BANK-POLICY-DEVELOPMENT is unsealed."
     ]
   },
-  "selection_basis":{"rule":"prior_slice_reopen_closed_advance_next_time_slice","selected_shard_id":"BANK-POLICY-DEVELOPMENT","selected_time_slice_id":"TIME-1995-1999"},
-  "open_frontiers":[{"frontier_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__BROAD-001","priority_rank":1,"state":"open","selected_probe_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__blind-001"}],
+  "selection_basis":{"rule":"same_slice_orthogonal_required_after_substantive_broad_pass","selected_shard_id":"BANK-POLICY-DEVELOPMENT","selected_time_slice_id":"TIME-1995-1999"},
+  "open_frontiers":[{"frontier_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__ORTHOGONAL-002","priority_rank":1,"state":"open","selected_probe_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__blind-002"}],
   "next_probe":{
-    "probe_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__blind-001",
-    "family":"time_slice_broad_blind_recall",
+    "probe_id":"TIME-1995-1999__BANK-POLICY-DEVELOPMENT__blind-002",
+    "family":"time_slice_orthogonal_blind_recall",
     "time_slice_id":"TIME-1995-1999",
     "shard_id":"BANK-POLICY-DEVELOPMENT",
     "period":["1995-01-01","1999-12-31"],
-    "instruction":"Run one isolated BANK-POLICY-DEVELOPMENT 1995-1999 broad blind-memory recall using only this rev182 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read the China-Investment-Bank antecedent blind-003 raw/receipt, blind-002/blind-001 raw/receipts, any completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Recover obvious landmarks plus long-tail leads for the first post-formation operating period: mandate implementation and differentiation among development/export-import/agricultural policy finance; policy-bank bond and other funding evolution; fiscal/PBOC/commercial-bank relations; directed or legacy policy credit outside dedicated policy banks; CIB continuation/exit as Outcome; Asian-crisis and macro-policy context; actors and project-selection mechanisms; old vocabulary/search keys; contemporaneous expectations; soft-budget/failure risks; counterexamples and metric semantics. Preserve uncertainty and do not invent exact dates, amounts, mandates or transaction details. Output MEMORY_LEADS_ONLY. After the pass, append one bounded receipt, update the sparse map with measured novelty and exactly one next frontier, and close through substantive S, cursor-only H and exact-H CLEAN before any later probe.",
+    "instruction":"Run one isolated same-slice orthogonal BANK-POLICY-DEVELOPMENT blind recall using only this rev183 compact map, the exhaustion manifest and current model internal memory/reasoning. Do not read 1995-1999 blind-001 raw/receipt, the China-Investment-Bank antecedent raw/receipt, any earlier completed Banking raw/receipts, Banking Evidence/source material or fresh Banking search. Independently challenge liability/funding differences among CDB/Exim/ADBC, CDB policy-financial-bond placement and interbank-market transition, ADBC grain-circulation/procurement mandate shifts and closed management, Exim export-credit/country/FX risk, fiscal-versus-credit decomposition of late-1990s infrastructure stimulus, CIB exit direction, soft-budget risks, old vocabulary, counterexamples and metric semantics. Do not merely repeat broad blind-001. Preserve uncertainty and do not invent exact dates, amounts, bond rules or transactions. If this orthogonal pass confirms/refines the broad structure without a second material same-period category, mark TIME-1995-1999 broad+orthogonal complete and advance to TIME-2000-2004. If a material same-period category appears, keep the slice open and select exactly one bounded frontier. Output MEMORY_LEADS_ONLY and close through substantive S, cursor-only H and exact-H CLEAN.",
     "allowed_input_refs":["research_data/memory/banking/china-banking-1990-2026-memory-exhaustion-manifest-v2.json","research_data/memory/banking/china-banking-1990-2026-memory-campaign-v2/exploration-map.json","current model internal memory/reasoning"],
-    "forbidden_inputs":["TIME-1990-1994 China-Investment-Bank antecedent blind-003 raw and receipt","TIME-1990-1994 BANK-POLICY-DEVELOPMENT blind-002 raw and receipt","TIME-1990-1994 BANK-POLICY-DEVELOPMENT blind-001 raw and receipt","all completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
+    "forbidden_inputs":["TIME-1995-1999 BANK-POLICY-DEVELOPMENT blind-001 raw and receipt","TIME-1990-1994 China-Investment-Bank antecedent raw and receipt","all earlier completed Banking raw and receipts","all Batch0 raw Banking outputs","all prior v2 raw blind-pass outputs","sealed shard raw outputs","Banking source or Evidence material","fresh Banking search results"],
     "output_authority":"MEMORY_LEADS_ONLY",
-    "done_when":"One append-only BANK-POLICY-DEVELOPMENT TIME-1995-1999 blind-001 raw and bounded receipt exist; the sparse map records measured novelty and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
+    "done_when":"One append-only BANK-POLICY-DEVELOPMENT TIME-1995-1999 blind-002 raw and bounded receipt exist; the sparse map records measured novelty, truthfully closes or reopens the slice and selects exactly one next frontier; and the probe closes through substantive S, cursor-only H and exact-H CLEAN without Evidence or truth promotion."
   }
 }
